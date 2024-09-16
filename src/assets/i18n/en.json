@@ -1,3 +1,6 @@
 {
-    "title": "the title in english"
+    "TOOLBAR" : {
+        "LOGIN" : "Login", 
+        "SIGN_UP": "Sign Up"
+    }
 }
