@@ -1,0 +1,13 @@
+<nav class="px-3">
+    <div class="navbar d-flex flex-row justify-content-between">
+        <div>RISE</div>
+        <!-- Login and Sign Up buttons if the user is NOT signed in -->
+        <div *ngIf="!userIsSigned" class="d-flex flex-row gap-3">
+            <rise-button [m_sLabel]="'TOOLBAR.SIGN_UP' | translate" [m_sRole]="'default'"
+                (click)="navigateRoute('sign-up')"></rise-button>
+            <rise-button [m_sLabel]="'TOOLBAR.LOGIN' | translate" (click)="navigateRoute('login')"></rise-button>
+        </div>
+        <!-- Button options for if the user has an account AND is signed in -->
+        <div *ngIf="userIsSigned"></div>
+    </div>
+</nav>

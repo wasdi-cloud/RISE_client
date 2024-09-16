@@ -1,1 +1,2 @@
-<button>{{m_sLabel}}</button>
+<button class="btn" [class.btn-lg]="m_sSize === 'large'" [class.btn-sm]="m_sSize === 'small'"
+    [class.btn-primary]="m_sRole==='default'">{{m_sLabel}}</button>
