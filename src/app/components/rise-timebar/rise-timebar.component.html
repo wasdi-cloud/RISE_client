@@ -1,0 +1,14 @@
+{{m_iShownFrame}}
+
+<div class="timebar-container">
+    <div class="timecontrol-slider d-flex flex-row justify-content-evenly" #dragZone>
+        <div class="d-flex flex-column align-items-center" *ngFor="let oDate of m_aoDates">
+            |
+            <div>
+                {{oDate | date: 'dd/MM/yyyy'}}
+            </div>
+        </div>
+        <div class="knob" #draggable cdkDrag cdkDragBoundary=".timecontrol-slider" (cdkDragMoved)="onDrop($event)">
+        </div>
+    </div>
+</div>

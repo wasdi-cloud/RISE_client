@@ -1,0 +1,19 @@
+.timecontrol-slider {
+    position: relative;
+    height: 22px;
+    margin: 6px;
+    border: 1px solid #a5a5a5;
+    cursor: pointer;
+}
+
+.knob {
+    position: absolute;
+    width: 8px;
+    height: 22px;
+    background-color: #ddd;
+    border-radius: 2px;
+    border: 1px solid #a5a5a5;
+    cursor: ew-resize;
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+}
