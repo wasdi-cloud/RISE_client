@@ -41,7 +41,6 @@ export class RiseTimebarComponent {
     const iWidth = this.m_oDragZoneRef.nativeElement.offsetWidth;
 
     const aiDropPoints = iWidth / this.m_iFrames;
-    this.m_iShownFrame = Math.floor((oEvent.pointerPosition.x / aiDropPoints) + 1);
     if (this.m_iShownFrame > this.m_iFrames) {
       this.m_iShownFrame = this.m_iFrames;
     }
