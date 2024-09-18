@@ -10,10 +10,11 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { provideTranslation } from './config/translate-loader.config';
 import { FormsModule } from '@angular/forms';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideRouter(routes), provideClientHydration(), provideHttpClient(), BrowserAnimationsModule, BrowserModule, CommonModule, FormsModule,
   importProvidersFrom(HttpClientModule),
-  importProvidersFrom(TranslateModule.forRoot(provideTranslation()))
+  importProvidersFrom(TranslateModule.forRoot(provideTranslation())), provideAnimationsAsync()
   ]
 };
