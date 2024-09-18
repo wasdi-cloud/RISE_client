@@ -1,0 +1,18 @@
+.map-container {}
+
+.map-frame {
+    border: 2px solid black;
+    height: 500px;
+    position: relative;
+}
+
+.timebar {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    z-index: 999;
+}
+
+#map {
+    height: 100%;
+}
