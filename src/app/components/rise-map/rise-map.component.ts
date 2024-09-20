@@ -1,27 +1,61 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { MapService } from '../../services/map.service';
-import { Map } from 'leaflet';
-// declare const L: any;
-import * as L from 'leaflet';
+import { AfterViewInit, Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+import { MapService } from '../../services/map.service';
 import { RiseTimebarComponent } from '../rise-timebar/rise-timebar.component';
+
+import L from 'leaflet';
+import 'leaflet-draw'
+import { LeafletModule } from '@bluehalo/ngx-leaflet';
+import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
+
 @Component({
   selector: 'rise-map',
   standalone: true,
-  imports: [CommonModule, RiseTimebarComponent],
+  imports: [CommonModule, RiseTimebarComponent, LeafletModule, LeafletDrawModule],
   templateUrl: './rise-map.component.html',
   styleUrl: './rise-map.component.css'
 })
 export class RiseMapComponent implements OnInit, AfterViewInit {
-  private m_oMap: L.Map;
+  m_oMap: L.Map;
 
-  constructor(private m_oMapService: MapService) { }
+  m_oMapOptions: any;
 
-  ngOnInit(): void {
+  m_oDrawnItems: any;
 
+  m_oDrawOptions: any;
+  m_oActiveBaseLayer: any;
+  m_aoDrawnItems: L.FeatureGroup;
+  constructor(private m_oMapService: MapService) {
+    this.m_oMapOptions = this.m_oMapService.m_oOptions;
+    this.m_oDrawOptions = this.m_oMapService.m_oDrawOptions;
+    this.m_oDrawnItems = this.m_oMapService.m_oDrawnItems;
+    this.m_oDrawOptions.edit.featureGroup = this.m_oDrawnItems;
   }
 
-  ngAfterViewInit(): void {
-    this.m_oMapService.initWasdiMap('map');
+  ngOnInit(): void { }
+
+  ngAfterViewInit(): void { }
+
+  onMapReady(oMap) {
+    this.m_oMap = oMap;
+
+    let southWest = L.latLng(0, 0);
+    let northEast = L.latLng(0, 0);
+
+    let oBoundaries = L.latLngBounds(southWest, northEast);
+
+    oMap.fitBounds(oBoundaries);
+    oMap.setZoom(3);
+    oMap.addLayer(this.m_oMapService.m_oOSMBasic);
+
+    this.m_oMapService.addMousePositionAndScale(oMap);
+    this.m_oMapService.m_oLayersControl.addTo(oMap);
+    this.m_oMapService.initGeoSearchPluginForOpenStreetMap(oMap);
+  }
+
+  onDrawCreated(oEvent) {
+    this.m_oDrawnItems.clearLayers();
+    this.m_oMapService.onDrawCreated(oEvent)
   }
 }

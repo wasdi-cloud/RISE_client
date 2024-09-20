@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 
 import Geocoder from 'leaflet-control-geocoder';
-import * as L from "leaflet";
-// import 'node_modules/leaflet-draw/dist/leaflet.draw-src.js';
-// import 'node_modules/leaflet-mouse-position/src/L.Control.MousePosition.js'
 
-// declare var L: any;
+import L from 'leaflet';
+import 'leaflet-draw'
+import "leaflet-mouse-position";
 
 export interface TileLayer {
 
@@ -46,15 +45,62 @@ export class MapService {
    */
   m_oLayersControl: any;
 
-  m_oWasdiMap: any;
+  /**
+   * Object containing the drawn items done on the map 
+   */
+  m_oDrawnItems: L.FeatureGroup = new L.FeatureGroup();
+
+  /**
+   * Reference to the actual leaflet map itself
+   */
+  m_oRiseMap: any;
 
   m_oActiveBaseLayer: any;
+  /**
+  * Default Leaflet options
+  */
+  m_oOptions: any;
+
 
   m_oGeocoderControl: Geocoder = new Geocoder();
+
+  /**
+  * Init options for leaflet-draw
+  */
+  m_oDrawOptions: any = {
+    position: 'topright',
+    draw: {
+      circle: true,
+      circlemarker: false,
+      marker: false,
+      polyline: true,
+      polygon: true,
+      rectangle: { shapeOptions: { color: "#4AFF00" }, showArea: false }
+    },
+    edit: {
+      featureGroup: new L.FeatureGroup,
+      edit: false,
+      remove: false
+    }
+  }
 
 
   constructor() {
     this.initTilelayer();
+
+    this.m_oOptions = {
+      layers: [
+        this.m_oOSMBasic
+      ],
+      zoomControl: false,
+      zoom: 3,
+      // center: latLng(0, 0),
+      edit: { featureGroup: this.m_oDrawnItems },
+      fullscreenControl: true,
+      fullscreenControlOptions: {
+        position: 'topleft'
+      }
+    }
   }
 
   /**
@@ -62,7 +108,7 @@ export class MapService {
    * @param oMap
    */
   setMap(oMap: any) {
-    this.m_oWasdiMap = oMap;
+    this.m_oRiseMap = oMap;
   }
 
   /**
@@ -70,7 +116,7 @@ export class MapService {
    * @returns {null | *}
    */
   getMap() {
-    return this.m_oWasdiMap;
+    return this.m_oRiseMap;
   }
 
   getOSMBasicLayer() {
@@ -106,11 +152,11 @@ export class MapService {
     });
 
     // Stadi Dark
-    this.m_oStadiMapDark = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.{ext}', {
+    this.m_oStadiMapDark = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
       minZoom: 0,
       maxZoom: 20,
       attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      ext: 'png'
+      // ext: 'png'
     });
 
     // Add all to the layers control
@@ -125,9 +171,15 @@ export class MapService {
       { position: 'bottomright' }
     )
   }
+  /**
+   * Set Drawn Items
+   */
+  setDrawnItems() {
+    this.m_oDrawnItems = new L.FeatureGroup;
+  }
 
   initWasdiMap(sMapDiv: string): void {
-    this.m_oWasdiMap = this.initMap(sMapDiv);
+    this.m_oRiseMap = this.initMap(sMapDiv);
   }
 
   initMap(sMapDiv: string) {
@@ -172,7 +224,7 @@ export class MapService {
   */
   initGeoSearchPluginForOpenStreetMap(oMap) {
     if (oMap == null) {
-      oMap = this.m_oWasdiMap;
+      oMap = this.m_oRiseMap;
     }
 
     if (this.m_oGeocoderControl == null) {
@@ -189,22 +241,37 @@ export class MapService {
   * @returns 
   */
   addMousePositionAndScale(oMap) {
-
     if (oMap == null) {
-      oMap = this.m_oWasdiMap;
+      oMap = this.m_oRiseMap;
       return;
     }
-
     // coordinates in map find this plugin in lib folder
     // let oMousePosition = L.control.mousePosition();
 
     // if (oMousePosition != null) {
     //   oMousePosition.addTo(oMap);
     // }
-
     L.control.scale({
       position: "bottomright",
       imperial: false
     }).addTo(oMap);
   }
+
+  /**
+ * Handler function for drawing rectangles/polygons/etc on map - Creates bounding box to string
+ * @param event
+ */
+  onDrawCreated(event: any) {
+    console.log(event)
+    const { layerType, layer } = event;
+    if (layerType === "rectangle") {
+      const rectangleCoordinates = layer._bounds
+
+      let selectedCoordinate = new L.LatLngBounds(rectangleCoordinates._northEast, rectangleCoordinates._southWest)
+      // let m_sSelectedBBox = selectedCoordinate.toBBoxString();
+    }
+
+    this.m_oDrawnItems.addLayer(layer);
+  }
+
 }

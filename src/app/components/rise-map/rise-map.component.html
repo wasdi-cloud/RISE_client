@@ -1,7 +1,16 @@
 <div class="map-container">
-    <div class="map-frame">
-        <rise-timebar class="timebar"></rise-timebar>
-      <div id="map">
-      </div>
+  <div class="map-frame">
+    <rise-timebar class="timebar"></rise-timebar>
+    <div id="map" 
+    leaflet 
+    leafletDraw 
+    [leafletOptions]="m_oMapOptions" 
+    [leafletDrawOptions]="m_oDrawOptions"
+    (leafletMapReady)="onMapReady($event)"
+    (leafletDrawCreated)="onDrawCreated($event)">
+      
+      <div [leafletLayer]="m_oDrawnItems"></div>
     </div>
+
   </div>
+</div>
