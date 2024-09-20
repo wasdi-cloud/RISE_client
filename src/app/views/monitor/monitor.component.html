@@ -1,6 +1,10 @@
-<rise-toolbar></rise-toolbar>
-@if (m_bShow2D === true) {
-    <rise-map></rise-map>
-} @else {
-    <rise-globe></rise-globe>
-}
+<main class="d-flex flex-column">
+    <rise-toolbar></rise-toolbar>
+    <div class="flex-fill">
+        @if (m_bShow2D === true) {
+        <rise-map></rise-map>
+        } @else {
+        <rise-globe></rise-globe>
+        }
+    </div>
+</main>

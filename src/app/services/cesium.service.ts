@@ -14,14 +14,24 @@ export class CesiumService {
 
   m_aoLayers
 
+  m_sCesiumAccessToken: string = environment.cesiumToken;
+
+  m_sArcGisAccessToken: string = environment.esriToken;
+
 
   constructor() { }
 
   public createCesiumViewer(oElement: ElementRef): ViewRef | null {
     if (this.m_bFirstCall === true) {
       this.m_bFirstCall = false;
+      Cesium.ArcGisMapService.defaultAccessToken = this.m_sArcGisAccessToken;
+      Cesium.Ion.defaultAccessToken = this.m_sCesiumAccessToken;
+
+      const arcGisImagery = Cesium.ArcGisMapServerImageryProvider.fromBasemapType(Cesium.ArcGisBaseMapType.SATELLITE);
+
       let oGlobeInstance = new Cesium.Viewer(oElement.nativeElement,
         {
+          onlySunLighting: true,
           timeline: false,
           animation: false,
           infoBox: false,
@@ -32,9 +42,15 @@ export class CesiumService {
           navigationHelpButton: false,
           navigationInstructionsInitiallyVisible: false,
           imageryProvider: false,
-          scene3DOnly: true
+          scene3DOnly: true,
+          // baseLayer: 
         });
-      Cesium.Ion.defaultAccessToken = environment.cesiumToken
+      oGlobeInstance.scene.globe.baseColor = Cesium.Color.BLACK;
+
+      oGlobeInstance.scene.light = new Cesium.DirectionalLight({
+        direction: new Cesium.Cartesian3(0, 0, 0)
+      });
+      // oGlobeInstance.scene.atmosphere.dynamicLighting = Cesium.DynamicAtmosphereLightingType.SCENE_LIGHT;
 
       // Select OpenLayers and Cesium DEM Terrain by default
       oGlobeInstance.baseLayerPicker.viewModel.selectedImagery = oGlobeInstance.baseLayerPicker.viewModel.imageryProviderViewModels[14];
@@ -44,6 +60,7 @@ export class CesiumService {
 
       this.m_oWasdiGlobe = oGlobeInstance;
       return oGlobeInstance;
+
     } else {
       return null;
     }
