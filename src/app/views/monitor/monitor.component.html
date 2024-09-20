@@ -1,2 +1,6 @@
 <rise-toolbar></rise-toolbar>
-<rise-map></rise-map>
+@if (m_bShow2D === true) {
+    <rise-map></rise-map>
+} @else {
+    <rise-globe></rise-globe>
+}

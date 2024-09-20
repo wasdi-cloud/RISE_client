@@ -29,9 +29,12 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "./node_modules/leaflet/dist/leaflet.css",
               "./node_modules/leaflet-draw/dist/leaflet.draw.css",
+              "src/assets/Cesium/Widgets/widgets.css",
               "src/styles.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "src/assets/Cesium/Cesium.js"
+            ],
             "server": "src/main.server.ts",
             "prerender": false,
             "ssr": false
