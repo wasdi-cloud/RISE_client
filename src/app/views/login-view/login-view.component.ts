@@ -5,6 +5,8 @@ import { RiseButtonComponent } from '../../components/rise-button/rise-button.co
 import { UserCredentials } from '../../shared/models/user-credentials';
 import { OtpDialogComponent } from '../../dialogs/otp-dialog/otp-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+
 
 
 @Component({
@@ -20,14 +22,21 @@ export class LoginViewComponent {
     password: ""
   };
 
-  constructor(private m_oAuthService: AuthService, private m_oDialog: MatDialog) { }
+  constructor(private m_oAuthService: AuthService, private m_oDialog: MatDialog, private m_oRouter: Router) { }
 
   executeLogin() {
     // this.m_oAuthService.loginUser(this.m_oUserInput); -> Returns OTP View Model
 
     let oOtpViewModel;
-    this.m_oDialog.open(OtpDialogComponent, {
+    let oDialogRef = this.m_oDialog.open(OtpDialogComponent, {
       data: oOtpViewModel
     });
+
+    oDialogRef.afterClosed().subscribe(oResult => {
+      // OTP Dialog result returned TRUE -> IN RISE will perform a check
+      if(oResult) {
+        this.m_oRouter.navigateByUrl('/dashboard')
+      }
+    })
   }
 }
