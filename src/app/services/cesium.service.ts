@@ -50,7 +50,6 @@ export class CesiumService {
       oGlobeInstance.scene.light = new Cesium.DirectionalLight({
         direction: new Cesium.Cartesian3(0, 0, 0)
       });
-      // oGlobeInstance.scene.atmosphere.dynamicLighting = Cesium.DynamicAtmosphereLightingType.SCENE_LIGHT;
 
       // Select OpenLayers and Cesium DEM Terrain by default
       oGlobeInstance.baseLayerPicker.viewModel.selectedImagery = oGlobeInstance.baseLayerPicker.viewModel.imageryProviderViewModels[14];
@@ -67,12 +66,10 @@ export class CesiumService {
   }
 
   /**
- * Clear the globe to free the resources
- */
+   * Clear the globe to free the resources
+   */
   clearGlobe() {
-
     if (this.m_oWasdiGlobe) {
-
       // this.removeAllEntities();
 
       this.m_oWasdiGlobe.destroy();
