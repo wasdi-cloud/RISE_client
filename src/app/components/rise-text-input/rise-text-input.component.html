@@ -1,1 +1,2 @@
-<p>rise-text-input works!</p>
+<label for="{{m_sName}}">{{m_sLocalizationKey | translate}}</label>
+<input type="{{m_sType}}" class="form-control" name="{{m_sName}}" [(ngModel)]="m_sInputText" (change)="onInputChange()">

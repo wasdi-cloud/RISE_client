@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'rise-button',
   standalone: true,
-  imports: [],
+  imports: [TranslateModule],
   templateUrl: './rise-button.component.html',
   styleUrl: './rise-button.component.css'
 })
