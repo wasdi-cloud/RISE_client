@@ -1,1 +1,8 @@
-<p>login-view works!</p>
+<main class="d-flex flex-column align-items-center justify-content-center">
+    <div class="login-container d-flex flex-column align-items-center gap-2">
+        <rise-text-input [m_sName]="'username'" [(m_sInputText)]="m_oUserInput.userId"></rise-text-input>
+        <rise-text-input [m_sName]="'password'" [m_sType]="'password'"
+            [(m_sInputText)]="m_oUserInput.password"></rise-text-input>
+        <rise-button [m_sLabel]="'TOOLBAR.LOGIN'" (click)="executeLogin()"></rise-button>
+    </div>
+</main>
