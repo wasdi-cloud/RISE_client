@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
 import Geocoder from 'leaflet-control-geocoder';
 
-import L from 'leaflet';
+declare const L: any;
+// import L from 'leaflet';
 import 'leaflet-draw'
 import "leaflet-mouse-position";
 
@@ -36,7 +37,7 @@ export class MapService {
   m_oStadiMapDark: any = null;
 
   /**
-   * Is the component toggle-able to 3D map? 
+   * Is the component toggle-able to 3D map?
    */
   m_bIsToggle: boolean = false;
 
@@ -46,7 +47,7 @@ export class MapService {
   m_oLayersControl: any;
 
   /**
-   * Object containing the drawn items done on the map 
+   * Object containing the drawn items done on the map
    */
   m_oDrawnItems: L.FeatureGroup = new L.FeatureGroup();
 
@@ -57,16 +58,16 @@ export class MapService {
 
   m_oActiveBaseLayer: any;
   /**
-  * Default Leaflet options
-  */
+   * Default Leaflet options
+   */
   m_oOptions: any;
 
 
   m_oGeocoderControl: Geocoder = new Geocoder();
 
   /**
-  * Init options for leaflet-draw
-  */
+   * Init options for leaflet-draw
+   */
   m_oDrawOptions: any = {
     position: 'topright',
     draw: {
@@ -75,7 +76,7 @@ export class MapService {
       marker: false,
       polyline: true,
       polygon: true,
-      rectangle: { shapeOptions: { color: "#4AFF00" }, showArea: false }
+      rectangle: {shapeOptions: {color: "#4AFF00"}, showArea: false}
     },
     edit: {
       featureGroup: new L.FeatureGroup,
@@ -95,7 +96,7 @@ export class MapService {
       zoomControl: false,
       zoom: 3,
       // center: latLng(0, 0),
-      edit: { featureGroup: this.m_oDrawnItems },
+      edit: {featureGroup: this.m_oDrawnItems},
       fullscreenControl: true,
       fullscreenControlOptions: {
         position: 'topleft'
@@ -168,9 +169,10 @@ export class MapService {
         "EsriWorldImagery": this.m_oEsriWorldImagery,
         "Stadi Map Dark": this.m_oStadiMapDark
       }, null,
-      { position: 'bottomright' }
+      {position: 'bottomright'}
     )
   }
+
   /**
    * Set Drawn Items
    */
@@ -194,7 +196,7 @@ export class MapService {
 
     this.initGeoSearchPluginForOpenStreetMap(oMap);
     this.addMousePositionAndScale(oMap);
-    L.control.zoom({ position: 'bottomright' }).addTo(oMap);
+    L.control.zoom({position: 'bottomright'}).addTo(oMap);
     this.m_oLayersControl.addTo(oMap);
 
 
@@ -219,9 +221,9 @@ export class MapService {
   }
 
   /**
-  * Init geo search plugin, the search bar for geographical reference on the map
-  * @references https://github.com/perliedman/leaflet-control-geocoder
-  */
+   * Init geo search plugin, the search bar for geographical reference on the map
+   * @references https://github.com/perliedman/leaflet-control-geocoder
+   */
   initGeoSearchPluginForOpenStreetMap(oMap) {
     if (oMap == null) {
       oMap = this.m_oRiseMap;
@@ -237,9 +239,9 @@ export class MapService {
   }
 
   /**
-  * Adds Mouse Position and Scale to the actual map
-  * @returns 
-  */
+   * Adds Mouse Position and Scale to the actual map
+   * @returns
+   */
   addMousePositionAndScale(oMap) {
     if (oMap == null) {
       oMap = this.m_oRiseMap;
@@ -258,20 +260,60 @@ export class MapService {
   }
 
   /**
- * Handler function for drawing rectangles/polygons/etc on map - Creates bounding box to string
- * @param event
- */
+   * Handler function for drawing rectangles/polygons/etc on map - Creates bounding box to string
+   * @param event
+   */
   onDrawCreated(event: any) {
-    console.log(event)
-    const { layerType, layer } = event;
-    if (layerType === "rectangle") {
-      const rectangleCoordinates = layer._bounds
+    console.log(event);
+    const {layerType, layer} = event;
 
-      let selectedCoordinate = new L.LatLngBounds(rectangleCoordinates._northEast, rectangleCoordinates._southWest)
-      // let m_sSelectedBBox = selectedCoordinate.toBBoxString();
+    // For rectangle, calculate area
+    if (layerType === "rectangle") {
+      const bounds = layer.getBounds();  // Get the bounds of the rectangle
+      const southWest = bounds.getSouthWest();
+      const northEast = bounds.getNorthEast();
+      const area = this.calculateRectangleArea(southWest, northEast);
+      alert(`Rectangle Area: ${area.toFixed(2)} square kilometers`);
+    }
+
+    // For polyline, calculate total distance
+    if (layerType === "polyline") {
+      const latlngs = layer.getLatLngs();
+      const totalDistance = this.calculateDistance(latlngs);
+      alert(`Total distance: ${totalDistance.toFixed(2)} kilometers`);
+    }
+
+    // For polygon, calculate area
+    if (layerType === 'polygon') {
+      const latlngs = layer.getLatLngs()[0];  // Use the first array of latlngs
+      const area = L.GeometryUtil.geodesicArea(latlngs);  // Area in square meters
+      alert(`Polygon Area: ${(area / 1000000).toFixed(2)} square kilometers`);
+    }
+
+    // For circle, calculate area
+    if (layerType === 'circle') {
+      const radius = layer.getRadius();  // Radius in meters
+      const area = Math.PI * Math.pow(radius, 2);  // Area of the circle (πr²)
+      alert(`Circle Area: ${(area / 1000000).toFixed(2)} square kilometers`);
     }
 
     this.m_oDrawnItems.addLayer(layer);
+  }
+
+  calculateRectangleArea(southWest: L.LatLng, northEast: L.LatLng): number {
+    const width = southWest.distanceTo(new L.LatLng(southWest.lat, northEast.lng));  // Distance between the two points
+    const height = southWest.distanceTo(new L.LatLng(northEast.lat, southWest.lng));
+    const area = (width * height) / 1000000;  // Convert area from square meters to square kilometers
+    return area;
+  }
+
+
+  calculateDistance(latlngs: L.LatLng[]): number {
+    let totalDistance = 0;
+    for (let i = 0; i < latlngs.length - 1; i++) {
+      totalDistance += latlngs[i].distanceTo(latlngs[i + 1]);  // Calculates distance in meters
+    }
+    return totalDistance / 1000;
   }
 
 }
