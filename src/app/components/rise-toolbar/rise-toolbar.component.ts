@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RiseButtonComponent } from '../rise-button/rise-button.component';
 import { Router } from '@angular/router';
@@ -12,7 +12,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrl: './rise-toolbar.component.css'
 })
 export class RiseToolbarComponent {
-  private m_bUserIsSigned: boolean = false;
+  @Input() public m_bUserIsSigned: boolean = false;
 
   constructor(private m_oRouter: Router) { }
 

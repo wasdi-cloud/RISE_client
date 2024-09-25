@@ -1,6 +1,9 @@
 {
-    "TOOLBAR" : {
-        "LOGIN" : "Login", 
+    "TOOLBAR": {
+        "ACCOUNT": "Account",
+        "LOGIN": "Login",
+        "LOGOUT": "Logout",
+        "SETTINGS": "Settings",
         "SIGN_UP": "Sign Up"
     }
 }
