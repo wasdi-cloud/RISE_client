@@ -56,6 +56,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit {
 
   onDrawCreated(oEvent) {
     this.m_oDrawnItems.clearLayers();
-    this.m_oMapService.onDrawCreated(oEvent)
+    this.m_oMapService.onDrawCreated(oEvent);
+
   }
 }

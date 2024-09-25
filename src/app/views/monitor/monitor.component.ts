@@ -11,5 +11,5 @@ import { RiseGlobeComponent } from '../../components/rise-globe/rise-globe.compo
   styleUrl: './monitor.component.css'
 })
 export class MonitorComponent {
-  m_bShow2D: boolean = false;
+  m_bShow2D: boolean = true;
 }
