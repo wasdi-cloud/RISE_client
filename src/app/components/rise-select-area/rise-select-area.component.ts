@@ -10,7 +10,7 @@ import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
 import {RiseTimebarComponent} from "../rise-timebar/rise-timebar.component";
 import {NgIf} from "@angular/common";
 import {MatDialog} from "@angular/material/dialog";
-import {ManualBoundingBoxComponent} from "../../dialogs/lat-lon-dialog/manual-bounding-box.component";
+import {ManualBoundingBoxComponent} from "../../dialogs/manual-bounding-box-dialog/manual-bounding-box.component";
 
 @Component({
   selector: 'rise-select-area',
