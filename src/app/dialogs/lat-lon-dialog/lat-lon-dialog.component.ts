@@ -14,12 +14,17 @@ import {RiseTextInputComponent} from "../../components/rise-text-input/rise-text
   styleUrl: './lat-lon-dialog.component.css'
 })
 export class LatLonDialogComponent {
-
+  m_oBBox = {
+    north: "",
+    south: "",
+    east: "",
+    west: ""
+  }
 
   constructor(private m_oDialogRef: MatDialogRef<LatLonDialogComponent>) {
   }
   submit() {
-    this.m_oDialogRef.close("result");
+    this.m_oDialogRef.close(this.m_oBBox);
   }
   onDismiss() {
     this.m_oDialogRef.close(null);

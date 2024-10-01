@@ -83,7 +83,7 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
 
     let oController = this;
 
-    const LatLngButton= L.Control.extend({
+    const m_oLatLngButton= L.Control.extend({
       options: {
         position: "topright"
       },
@@ -100,42 +100,32 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
         // And here we decide what to do with our button
 
         L.DomEvent.on(oButton, 'click', function () {
-          console.log("here")
           // We open the Manual Boundig Box Dialog
-          // let oDialog = oController.m_oDialog.open(ManualBoundingBoxComponent, {
-          //   height: '420px',
-          //   width: '600px'
-          // })
-
-
           let oDialog = oController.m_oDialog.open(LatLonDialogComponent, {
             height: '420px',
             width: '600px'
           });
           // Once is closed...
           oDialog.afterClosed().subscribe(oResult => {
-            console.log(oResult)
-            // We need a valid result
-            // if (FadeoutUtils.utilsIsObjectNullOrUndefined(oResult) === false) {
-            //
-            //   // With all the values for lat and lon
-            //   if (isNaN(oResult.north) || isNaN(oResult.south) || isNaN(oResult.east) || isNaN(oResult.west)) {
-            //     return;
-            //   }
-            //   else {
-            //     // Get the actual values
-            //     let fNorth = parseFloat(oResult.north);
-            //     let fSouth = parseFloat(oResult.south);
-            //     let fEast = parseFloat(oResult.east);
-            //     let fWest = parseFloat(oResult.west);
-            //
-            //     // Create the bounds array
-            //     let aoBounds = [[fNorth, fWest], [fSouth, fEast]];
-            //
-            //     // And add the new rectangle layer to the map
-            //     oController.addManualBboxLayer(oMap, aoBounds);
-            //   }
-            // }
+            if(oResult!=null){
+              console.log(oResult)
+              if(oResult.north ==null ||oResult.west ==null ||oResult.east ==null ||oResult.south ==null  ){
+                return;
+              }else{
+                let fNorth = parseFloat(oResult.north);
+                let fSouth = parseFloat(oResult.south);
+                let fEast = parseFloat(oResult.east);
+                let fWest = parseFloat(oResult.west);
+                let aoBounds = [[fNorth, fWest], [fSouth, fEast]];
+                // Calculate the center of the bounds (midpoint of North-South and West-East)
+                let fCenterLat = (fNorth + fSouth) / 2;
+                let fCenterLng = (fWest + fEast) / 2;
+
+                // Move the map to the center of the bounds and set a zoom level
+                oMap.setView([fCenterLat, fCenterLng], 13);
+              }
+
+            }
             console.log('closed');
           })
         });
@@ -149,7 +139,7 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
       },
       onRemove: function (map) { },
     })
-    oMap.addControl(new LatLngButton());
+    oMap.addControl(new m_oLatLngButton());
   }
   onDrawCreated(oEvent) {
     this.m_oDrawnItems.clearLayers();

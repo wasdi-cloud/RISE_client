@@ -1,7 +1,8 @@
-<p>lat-lon-dialog works!</p>
-<rise-text-input></rise-text-input>
-<rise-text-input></rise-text-input>
-<rise-text-input></rise-text-input>
-<rise-text-input></rise-text-input>
+<h3>Please Insert The coordination</h3>
+<!--todo to change later to float input-->
+<rise-text-input [(m_sInputText)]="m_oBBox.north"  [m_sLocalizationKey]="'North'"></rise-text-input>
+<rise-text-input [(m_sInputText)]="m_oBBox.west" [m_sLocalizationKey]="'West'"></rise-text-input>
+<rise-text-input [(m_sInputText)]="m_oBBox.east" [m_sLocalizationKey]="'East'"></rise-text-input>
+<rise-text-input [(m_sInputText)]="m_oBBox.south" [m_sLocalizationKey]="'South'"></rise-text-input>
 <rise-button [m_sLabel]="'Submit'" (click)="submit()"></rise-button>
 <rise-button [m_sLabel]="'Cancel'" (click)="onDismiss()"></rise-button>
