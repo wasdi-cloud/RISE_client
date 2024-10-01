@@ -1,0 +1,16 @@
+<div *ngIf="m_sMapTitle" ><h2>{{m_sMapTitle}}</h2></div>
+<div class="h-100 w-100"  style="border-radius: 16px; z-index: 0;" >
+  <div class="map-frame">
+    <div id="map"
+         leaflet
+         leafletDraw
+         [leafletOptions]="m_oMapOptions"
+         [leafletDrawOptions]="m_oDrawOptions"
+         (leafletMapReady)="onMapReady($event)"
+         (leafletDrawCreated)="onDrawCreated($event)">
+
+      <div [leafletLayer]="m_oDrawnItems"></div>
+    </div>
+
+  </div>
+</div>
