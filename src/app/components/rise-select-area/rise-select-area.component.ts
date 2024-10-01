@@ -11,6 +11,7 @@ import {RiseTimebarComponent} from "../rise-timebar/rise-timebar.component";
 import {NgIf} from "@angular/common";
 import {OtpDialogComponent} from "../../dialogs/otp-dialog/otp-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
+import {LatLonDialogComponent} from "../../dialogs/lat-lon-dialog/lat-lon-dialog.component";
 
 @Component({
   selector: 'rise-select-area',
@@ -107,13 +108,13 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
           // })
 
 
-          let oDialog = oController.m_oDialog.open(OtpDialogComponent, {
+          let oDialog = oController.m_oDialog.open(LatLonDialogComponent, {
             height: '420px',
             width: '600px'
           });
           // Once is closed...
           oDialog.afterClosed().subscribe(oResult => {
-
+            console.log(oResult)
             // We need a valid result
             // if (FadeoutUtils.utilsIsObjectNullOrUndefined(oResult) === false) {
             //
