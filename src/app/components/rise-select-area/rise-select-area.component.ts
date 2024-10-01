@@ -9,9 +9,8 @@ import { LeafletModule } from '@bluehalo/ngx-leaflet';
 import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
 import {RiseTimebarComponent} from "../rise-timebar/rise-timebar.component";
 import {NgIf} from "@angular/common";
-import {OtpDialogComponent} from "../../dialogs/otp-dialog/otp-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
-import {LatLonDialogComponent} from "../../dialogs/lat-lon-dialog/lat-lon-dialog.component";
+import {ManualBoundingBoxComponent} from "../../dialogs/lat-lon-dialog/manual-bounding-box.component";
 
 @Component({
   selector: 'rise-select-area',
@@ -83,7 +82,7 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
 
     let oController = this;
 
-    const m_oLatLngButton= L.Control.extend({
+    const m_oManualBoxingButton= L.Control.extend({
       options: {
         position: "topright"
       },
@@ -101,7 +100,7 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
 
         L.DomEvent.on(oButton, 'click', function () {
           // We open the Manual Boundig Box Dialog
-          let oDialog = oController.m_oDialog.open(LatLonDialogComponent, {
+          let oDialog = oController.m_oDialog.open(ManualBoundingBoxComponent, {
             height: '420px',
             width: '600px'
           });
@@ -139,7 +138,7 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
       },
       onRemove: function (map) { },
     })
-    oMap.addControl(new m_oLatLngButton());
+    oMap.addControl(new m_oManualBoxingButton());
   }
   onDrawCreated(oEvent) {
     this.m_oDrawnItems.clearLayers();

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LatLonDialogComponent } from './lat-lon-dialog.component';
+import { ManualBoundingBoxComponent } from './manual-bounding-box.component';
 
 describe('LatLonDialogComponent', () => {
-  let component: LatLonDialogComponent;
-  let fixture: ComponentFixture<LatLonDialogComponent>;
+  let component: ManualBoundingBoxComponent;
+  let fixture: ComponentFixture<ManualBoundingBoxComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LatLonDialogComponent]
+      imports: [ManualBoundingBoxComponent]
     })
     .compileComponents();
-    
-    fixture = TestBed.createComponent(LatLonDialogComponent);
+
+    fixture = TestBed.createComponent(ManualBoundingBoxComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

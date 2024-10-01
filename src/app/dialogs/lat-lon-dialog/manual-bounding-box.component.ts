@@ -10,10 +10,10 @@ import {RiseTextInputComponent} from "../../components/rise-text-input/rise-text
     RiseButtonComponent,
     RiseTextInputComponent
   ],
-  templateUrl: './lat-lon-dialog.component.html',
-  styleUrl: './lat-lon-dialog.component.css'
+  templateUrl: './manual-bounding-box.component.html',
+  styleUrl: './manual-bounding-box.component.css'
 })
-export class LatLonDialogComponent {
+export class ManualBoundingBoxComponent {
   m_oBBox = {
     north: "",
     south: "",
@@ -21,7 +21,7 @@ export class LatLonDialogComponent {
     west: ""
   }
 
-  constructor(private m_oDialogRef: MatDialogRef<LatLonDialogComponent>) {
+  constructor(private m_oDialogRef: MatDialogRef<ManualBoundingBoxComponent>) {
   }
   submit() {
     this.m_oDialogRef.close(this.m_oBBox);
