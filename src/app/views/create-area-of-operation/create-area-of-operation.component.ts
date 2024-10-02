@@ -8,6 +8,7 @@ import {RiseCheckBoxComponent} from "../../components/rise-check-box/rise-check-
 import {RiseTextAreaInputComponent} from "../../components/rise-textarea-input/rise-text-area-input.component";
 import {AddRowDialogComponent} from "../../dialogs/add-row-dialog/add-row-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
+import {RiseButtonComponent} from "../../components/rise-button/rise-button.component";
 
 @Component({
   selector: 'app-create-area-of-operation',
@@ -19,7 +20,8 @@ import {MatDialog} from "@angular/material/dialog";
     RiseCrudTableComponent,
     RiseMapComponent,
     RiseCheckBoxComponent,
-    RiseTextAreaInputComponent
+    RiseTextAreaInputComponent,
+    RiseButtonComponent
   ],
   templateUrl: './create-area-of-operation.component.html',
   styleUrl: './create-area-of-operation.component.css'

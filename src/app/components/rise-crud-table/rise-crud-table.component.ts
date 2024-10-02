@@ -11,6 +11,7 @@ import {
 import {MatIcon} from "@angular/material/icon";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatPaginator} from "@angular/material/paginator";
+import {RiseButtonComponent} from "../rise-button/rise-button.component";
 
 @Component({
   selector: 'rise-crud-table',
@@ -32,7 +33,8 @@ import {MatPaginator} from "@angular/material/paginator";
     MatHeaderRowDef,
     TitleCasePipe,
     NgIf,
-    MatPaginator
+    MatPaginator,
+    RiseButtonComponent
   ],
   templateUrl: './rise-crud-table.component.html',
   styleUrl: './rise-crud-table.component.css'

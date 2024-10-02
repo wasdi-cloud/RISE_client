@@ -14,6 +14,7 @@ import {RiseTextInputComponent} from "../../components/rise-text-input/rise-text
   styleUrl: './manual-bounding-box.component.css'
 })
 export class ManualBoundingBoxComponent {
+  //todo create rise number input component
   m_oBBox = {
     north: "",
     south: "",
