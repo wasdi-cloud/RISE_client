@@ -11,6 +11,8 @@ import {RiseTimebarComponent} from "../rise-timebar/rise-timebar.component";
 import {NgIf} from "@angular/common";
 import {MatDialog} from "@angular/material/dialog";
 import {ManualBoundingBoxComponent} from "../../dialogs/manual-bounding-box-dialog/manual-bounding-box.component";
+import {RiseButtonComponent} from "../rise-button/rise-button.component";
+import {ImportStationDialogComponent} from "../../dialogs/import-station-dialog/import-station-dialog.component";
 
 @Component({
   selector: 'rise-select-area',
@@ -20,6 +22,7 @@ import {ManualBoundingBoxComponent} from "../../dialogs/manual-bounding-box-dial
     LeafletModule,
     RiseTimebarComponent,
     NgIf,
+    RiseButtonComponent,
 
   ],
   templateUrl: './rise-select-area.component.html',
@@ -29,6 +32,7 @@ import {ManualBoundingBoxComponent} from "../../dialogs/manual-bounding-box-dial
  * RISE Select Area User Control
  */
 export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
+
 
   /**
    * Map input as described by the User Interface
@@ -243,6 +247,12 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
 
     // Add the control to the map
     oMap.addControl(new circleButton());
+  }
+  openImportDialog(): void {
+    this.m_oDialog.open(ImportStationDialogComponent, {
+      height: '425px',
+      width: '660px',
+    })
   }
 
 

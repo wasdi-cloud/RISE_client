@@ -21,5 +21,5 @@ import {RiseCheckBoxComponent} from "../../components/rise-check-box/rise-check-
   styleUrl: './create-area-of-operation.component.css'
 })
 export class CreateAreaOfOperationComponent {
-
+//todo add verification before adding the area
 }
