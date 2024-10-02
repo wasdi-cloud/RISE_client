@@ -8,7 +8,14 @@
       [options]="this.m_oEvents"
       (selectionChange)="onSelectionChange($event)">
     </rise-check-box>
-    <rise-crud-table></rise-crud-table>
+    <rise-crud-table
+      [displayedColumns]=this.m_asUsersColumns
+      [dataSource]="userData"
+      (deleteRow)="onRowDelete($event)"
+      (addRow)="onRowAdd()">
+    </rise-crud-table>
+
+
   </div>
   <div class="col-8">
     <rise-select-area [m_sMapTitle]="'Define your Area'"></rise-select-area>
