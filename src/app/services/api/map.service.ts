@@ -1,14 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ConstantsService } from '../constants.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MapService {
 
-  private APIURL: string = '';
+  private APIURL: string = this.m_oConstantsService.getAPIURL();
 
   constructor(
+    private m_oConstantsService: ConstantsService,
     private m_oHttpClient: HttpClient
   ) { }
 

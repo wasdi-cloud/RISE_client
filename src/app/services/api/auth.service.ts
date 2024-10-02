@@ -3,17 +3,19 @@ import { HttpClient } from '@angular/common/http';
 
 import { UserCredentials } from '../../shared/models/user-credentials';
 import { UserRegistration } from '../../shared/models/user-registration';
+import { ConstantsService } from '../constants.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private APIURL: string = '';
+  private APIURL: string = this.m_oConstantsService.getAPIURL();
 
-  private AUTHURL: string = '';
+  // private AUTHURL: string = '';
 
   constructor(
+    private m_oConstantsService: ConstantsService,
     private m_oHttp: HttpClient
   ) { }
 

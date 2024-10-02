@@ -6,11 +6,11 @@ import {ConstantsService} from "../constants.service";
   providedIn: 'root'
 })
 export class PluginService {
-  private APIURL: string = '';
+  private APIURL: string = this.m_oConstantsService.getAPIURL();
 
   constructor(
+    private m_oConstantsService: ConstantsService,
     private m_oHttp: HttpClient,
-    private oConstantsService: ConstantsService,
   ) {
   }
 
@@ -21,7 +21,7 @@ export class PluginService {
    * @return
    */
   getPluginsList() {
-    let urlParams = "?" + "token=" + this.oConstantsService.getSessionId();
+    let urlParams = "?" + "token=" + this.m_oConstantsService.getSessionId();
     return this.m_oHttp.get<any>(this.APIURL + '/plugins/list' + urlParams);
   }
 }

@@ -1,19 +1,18 @@
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {ConstantsService} from "../constants.service";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { ConstantsService } from "../constants.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class SubscriptionService {
 
-  private APIURL: string = '';
+  private APIURL: string = this.m_oConstantsService.getAPIURL();
 
   constructor(
+    private m_oConstantsService: ConstantsService,
     private m_oHttp: HttpClient,
-    private oConstantsService: ConstantsService,
-  ) {
-  }
+  ) { }
 
   /**
    * Get a list of Subscriptions per user
@@ -23,7 +22,7 @@ export class SubscriptionService {
    * @return
    */
   getSubscriptionsList(bValid: boolean) {
-    let urlParams = "?" + "token=" + this.oConstantsService.getSessionId();
+    let urlParams = "?" + "token=" + this.m_oConstantsService.getSessionId();
     urlParams = urlParams + "&" + "valid=" + bValid;
     return this.m_oHttp.get<any>(this.APIURL + '/subscriptions/list' + urlParams);
   }
@@ -35,7 +34,7 @@ export class SubscriptionService {
    * @return
    */
   getSubscriptionById(sId: string) {
-    let urlParams = "?" + "token=" + this.oConstantsService.getSessionId();
+    let urlParams = "?" + "token=" + this.m_oConstantsService.getSessionId();
     urlParams = urlParams + "&" + "id=" + sId;
     return this.m_oHttp.get<any>(this.APIURL + '/subscriptions' + urlParams);
   }
@@ -47,7 +46,7 @@ export class SubscriptionService {
    * @return
    */
   updateSubscription(oSubscriptionViewModel) {
-    let urlParams = "?" + "token=" + this.oConstantsService.getSessionId();
+    let urlParams = "?" + "token=" + this.m_oConstantsService.getSessionId();
 
     return this.m_oHttp.put<any>(this.APIURL + '/subscriptions' + urlParams, oSubscriptionViewModel);
   }
@@ -59,7 +58,7 @@ export class SubscriptionService {
    * @return
    */
   getSubscriptionPrice(oSubscriptionViewModel) {
-    let urlParams = "?" + "token=" + this.oConstantsService.getSessionId();
+    let urlParams = "?" + "token=" + this.m_oConstantsService.getSessionId();
 
     return this.m_oHttp.post<any>(this.APIURL + '/subscriptions/price' + urlParams, oSubscriptionViewModel);
   }
@@ -70,7 +69,7 @@ export class SubscriptionService {
    * @return
    */
   getSubscriptionTypes() {
-    let urlParams = "?" + "token=" + this.oConstantsService.getSessionId();
+    let urlParams = "?" + "token=" + this.m_oConstantsService.getSessionId();
     return this.m_oHttp.get<any>(this.APIURL + '/subscriptions/types' + urlParams);
   }
 
@@ -81,7 +80,7 @@ export class SubscriptionService {
    * @return
    */
   buySubscription(oSubscriptionViewModel) {
-    let urlParams = "?" + "token=" + this.oConstantsService.getSessionId();
+    let urlParams = "?" + "token=" + this.m_oConstantsService.getSessionId();
     return this.m_oHttp.post<any>(this.APIURL + '/subscriptions' + urlParams, oSubscriptionViewModel);
   }
 }

@@ -1,15 +1,17 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {ConstantsService} from "../constants.service";
+import { Injectable } from '@angular/core';
+import { HttpClient } from "@angular/common/http";
+import { ConstantsService } from "../constants.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AreaService {
-  private APIURL: string = '';
+  private APIURL: string = this.m_oConstantsService.getAPIURL();
 
-  constructor(private m_oHttp: HttpClient, private oConstantsService: ConstantsService,) {
-  }
+  constructor(
+    private m_oConstantsService: ConstantsService,
+    private m_oHttp: HttpClient,
+  ) { }
 
   /**
    * Get a list of areas
@@ -17,7 +19,7 @@ export class AreaService {
    * @return
    */
   getAreaList() {
-    let urlParams = "?" + "token=" + this.oConstantsService.getSessionId();
+    let urlParams = "?" + "token=" + this.m_oConstantsService.getSessionId();
     return this.m_oHttp.get<any>(this.APIURL + '/area/list' + urlParams);
   }
 
@@ -29,7 +31,7 @@ export class AreaService {
    */
 
   getAreaById(sId: string) {
-    let urlParams = "?" + "token=" + this.oConstantsService.getSessionId();
+    let urlParams = "?" + "token=" + this.m_oConstantsService.getSessionId();
     urlParams = urlParams + "&" + "id=" + sId;
     return this.m_oHttp.get<any>(this.APIURL + '/area' + urlParams);
   }
@@ -41,7 +43,7 @@ export class AreaService {
    * @return
    */
   updateArea(oAreaViewModel) {
-    let urlParams = "?" + "token=" + this.oConstantsService.getSessionId();
+    let urlParams = "?" + "token=" + this.m_oConstantsService.getSessionId();
 
     return this.m_oHttp.put<any>(this.APIURL + '/area' + urlParams, oAreaViewModel);
   }
@@ -53,7 +55,7 @@ export class AreaService {
    * @return
    */
   addArea(oAreaViewModel) {
-    let urlParams = "?" + "token=" + this.oConstantsService.getSessionId();
+    let urlParams = "?" + "token=" + this.m_oConstantsService.getSessionId();
 
     return this.m_oHttp.post<any>(this.APIURL + '/area' + urlParams, oAreaViewModel);
   }
@@ -66,7 +68,7 @@ export class AreaService {
    */
 
   getUsersFromArea(sId) {
-    let urlParams = "?" + "token=" + this.oConstantsService.getSessionId();
+    let urlParams = "?" + "token=" + this.m_oConstantsService.getSessionId();
     urlParams = urlParams + "&" + "id=" + sId;
     return this.m_oHttp.get<any>(this.APIURL + '/area/users' + urlParams);
   }
@@ -80,7 +82,7 @@ export class AreaService {
    */
 
   addUserToArea(sId: string, oUserToAdd: any) {
-    let urlParams = "?" + "token=" + this.oConstantsService.getSessionId();
+    let urlParams = "?" + "token=" + this.m_oConstantsService.getSessionId();
     urlParams = urlParams + "&" + "id=" + sId;
     return this.m_oHttp.post<any>(this.APIURL + '/area/users' + urlParams, oUserToAdd);
 
@@ -95,7 +97,7 @@ export class AreaService {
    */
 
   deleteUserFromArea(sId: string, oUserToDelete) {
-    let urlParams = "?" + "token=" + this.oConstantsService.getSessionId();
+    let urlParams = "?" + "token=" + this.m_oConstantsService.getSessionId();
     urlParams = urlParams + "&" + "id=" + sId;
     return this.m_oHttp.delete<any>(this.APIURL + '/area/users' + urlParams, oUserToDelete);
   }
@@ -109,7 +111,7 @@ export class AreaService {
    */
 
   getOverlappingAreas(sId: string, oArea: any) {
-    let urlParams = "?" + "token=" + this.oConstantsService.getSessionId();
+    let urlParams = "?" + "token=" + this.m_oConstantsService.getSessionId();
     urlParams = urlParams + "&" + "id=" + sId;
     return this.m_oHttp.post<any>(this.APIURL + '/area/check_area' + urlParams, oArea);
   }
