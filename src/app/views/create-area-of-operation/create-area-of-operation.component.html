@@ -4,7 +4,10 @@
   <div class="d-flex flex-column flex-fill">
     <rise-text-input [m_sLocalizationKey]="'Name'"></rise-text-input>
     <rise-text-area-input  [m_sLocalizationKey]="'Description'"></rise-text-area-input>
-    <rise-check-box></rise-check-box>
+    <rise-check-box
+      [options]="this.m_oEvents"
+      (selectionChange)="onSelectionChange($event)">
+    </rise-check-box>
     <rise-crud-table></rise-crud-table>
   </div>
   <div class="col-8">

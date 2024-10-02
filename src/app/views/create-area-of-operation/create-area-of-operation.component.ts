@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {RiseToolbarComponent} from "../../components/rise-toolbar/rise-toolbar.component";
 import {RiseTextInputComponent} from "../../components/rise-text-input/rise-text-input.component";
 import {RiseSelectAreaComponent} from "../../components/rise-select-area/rise-select-area.component";
@@ -24,4 +24,15 @@ import {RiseTextAreaInputComponent} from "../../components/rise-textarea-input/r
 })
 export class CreateAreaOfOperationComponent {
 //todo add verification before adding the area
+  m_oEvents = [
+    {label: 'Floods', value: 1},
+    {label: 'Droughts', value: 2},
+    {label: 'Buildings', value: 3},
+    {label: 'Impacts', value: 4}
+  ];
+
+  onSelectionChange(selectedValues: any[]) {
+    console.log('Selected values:', selectedValues);
+  }
+
 }

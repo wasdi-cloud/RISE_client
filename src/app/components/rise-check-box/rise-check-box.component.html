@@ -1,1 +1,12 @@
-<p>rise-check-box works!</p>
+<div class="rise-checkbox">
+  <div *ngFor="let option of options">
+    <label>
+      <input
+        type="checkbox"
+        [value]="option.value"
+        (change)="onCheckboxChange(option.value, $event)"
+      />
+      {{ option.label }}
+    </label>
+  </div>
+</div>
