@@ -16,6 +16,16 @@ export class RiseTextInputComponent {
   @Input() m_sLocalizationKey: string = "TEST";
   @Input() m_sType: 'text' | 'password' = "text"
 
+  /**
+   * Is this input part of a validator (i.e., checking two inputs are the same)
+   */
+  @Input() m_bIsValidatorInput?: boolean = false;
+
+  /**
+   * Is the input valid?
+   */
+  @Input() m_bIsValid: boolean = true;
+
   @Input() m_sInputText: string;
   @Output() m_sInputTextChange: EventEmitter<string> = new EventEmitter<string>();
 

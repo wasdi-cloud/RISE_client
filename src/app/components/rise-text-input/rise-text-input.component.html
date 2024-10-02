@@ -1,2 +1,8 @@
-<label for="{{m_sName}}">{{m_sLocalizationKey | translate}}</label>
-<input type="{{m_sType}}" class="form-control" name="{{m_sName}}" [(ngModel)]="m_sInputText" (change)="onInputChange()">
+
+<div>
+    <label for="{{m_sName}}">{{m_sLocalizationKey | translate}}</label>
+    <input type="{{m_sType}}" class="form-control" name="{{m_sName}}" [(ngModel)]="m_sInputText" (change)="onInputChange()">
+    <div class="form-text" *ngIf="m_bIsValidatorInput && !m_bIsValid">
+        Please ensure the values are the same.
+    </div>
+</div>
