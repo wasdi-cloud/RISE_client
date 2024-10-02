@@ -77,6 +77,7 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
     this.m_oMapService.m_oLayersControl.addTo(oMap);
     this.m_oMapService.initGeoSearchPluginForOpenStreetMap(oMap);
     this.addManualBbox(oMap);
+    this.addCircleButton(oMap);
   }
   addManualBbox(oMap: any) {
 
@@ -115,7 +116,6 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
                 let fSouth = parseFloat(oResult.south);
                 let fEast = parseFloat(oResult.east);
                 let fWest = parseFloat(oResult.west);
-                let aoBounds = [[fNorth, fWest], [fSouth, fEast]];
                 // Calculate the center of the bounds (midpoint of North-South and West-East)
                 let fCenterLat = (fNorth + fSouth) / 2;
                 let fCenterLng = (fWest + fEast) / 2;
@@ -144,6 +144,105 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
     this.m_oDrawnItems.clearLayers();
     this.m_oMapService.onDrawCreated(oEvent);
 
+  }
+//Handle when the user want to choose a position and let rise draw the minimum area around that point
+  addCircleButton(oMap: any) {
+    let lastCircle: L.Circle | null = null; // Keep track of the last drawn circle
+    let lastMarker: L.Marker | null = null; // Keep track of the last added marker
+
+    const circleButton = L.Control.extend({
+      options: {
+        position: "topright"
+      },
+      onAdd: function (oMap) {
+        let oContainer = L.DomUtil.create("div", "leaflet-bar leaflet-control");
+
+        // Create the button for drawing the circle
+        let drawButton = L.DomUtil.create('a', 'leaflet-control-button', oContainer);
+        drawButton.style.cursor = 'pointer'; // Change the cursor to pointer on hover
+        drawButton.innerHTML = '<span class="material-symbols-outlined">adjust</span>';
+        drawButton.title = "Draw Circle";
+
+        // Create the cancel button to remove the circle
+        let cancelButton = L.DomUtil.create('a', 'leaflet-control-button', oContainer);
+        cancelButton.style.cursor = 'pointer'; // Change the cursor to pointer on hover
+        cancelButton.innerHTML = '<span class="material-symbols-outlined">cancel</span>';
+        cancelButton.title = "Cancel Drawing";
+
+        // Disable map interaction on button click
+        L.DomEvent.disableClickPropagation(drawButton);
+        L.DomEvent.disableClickPropagation(cancelButton);
+
+        // Add the draw button click listener
+        L.DomEvent.on(drawButton, 'click', function () {
+          // Create the function that will be triggered on map click
+          const onMapClick = function (e: any) {
+            const fLat = e.latlng.lat;
+            const fLng = e.latlng.lng;
+            const fRadius = 500000; // Set the radius of the circle (in meters)
+
+            // Remove the old circle and marker if they exist
+            if (lastCircle) {
+              oMap.removeLayer(lastCircle);
+            }
+            if (lastMarker) {
+              oMap.removeLayer(lastMarker);
+            }
+
+            // Add the new circle to the map
+            lastCircle = L.circle([fLat, fLng], { radius: fRadius }).addTo(oMap);
+
+            // Add a marker at the clicked location
+            lastMarker = L.marker([fLat, fLng]).addTo(oMap);
+
+            // Set view to the clicked location without zooming too much (custom zoom level)
+            const currentZoom = oMap.getZoom();
+            const targetZoom = Math.min(currentZoom, 13); // Ensure it doesn't zoom too much
+            oMap.setView([fLat, fLng], targetZoom); // Adjust zoom level as needed
+
+            // Remove the click listener after drawing the circle and marker
+            oMap.off('click', onMapClick);
+          };
+
+          // Activate the map click listener for drawing the circle and adding the marker
+          oMap.on('click', onMapClick);
+        });
+
+        // Add the cancel button click listener
+        L.DomEvent.on(cancelButton, 'click', function () {
+          // Remove the last drawn circle and marker if they exist
+          if (lastCircle) {
+            oMap.removeLayer(lastCircle);
+            lastCircle = null; // Reset the lastCircle variable
+          }
+          if (lastMarker) {
+            oMap.removeLayer(lastMarker);
+            lastMarker = null; // Reset the lastMarker variable
+          }
+        });
+
+        // Add hover effect: change button appearance on hover
+        drawButton.onmouseover = () => {
+          drawButton.style.backgroundColor = '#f0f0f0'; // Example hover effect
+        };
+        drawButton.onmouseout = () => {
+          drawButton.style.backgroundColor = ''; // Reset background color when not hovering
+        };
+
+        cancelButton.onmouseover = () => {
+          cancelButton.style.backgroundColor = '#f0f0f0'; // Example hover effect
+        };
+        cancelButton.onmouseout = () => {
+          cancelButton.style.backgroundColor = ''; // Reset background color when not hovering
+        };
+
+        return oContainer;
+      },
+      onRemove: function (map) { },
+    });
+
+    // Add the control to the map
+    oMap.addControl(new circleButton());
   }
 
 
