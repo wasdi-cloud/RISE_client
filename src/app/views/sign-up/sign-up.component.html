@@ -1,1 +1,68 @@
-<p>sign-up works!</p>
+<main>
+    <rise-toolbar></rise-toolbar>
+    <div class="d-flex flex-column align-items-center">
+        <h1>{{'REGISTER.HEADER' | translate}}</h1>
+        <div class="d-flex flex-row gap-4">
+            <div>
+                <rise-text-input [m_sLocalizationKey]="'REGISTER.USER_ID'"
+                    [(m_sInputText)]="m_oUserInfoInput.userId"></rise-text-input>
+                <rise-text-input [m_sLocalizationKey]="'REGISTER.PASSWORD'" [m_sType]="'password'"
+                    [(m_sInputText)]="m_oPasswordInputs.password" [m_bIsValidatorInput]="true"
+                    [m_bIsValid]="validatePassword(m_oPasswordInputs.password, m_oPasswordInputs.confirmPw)"></rise-text-input>
+                <rise-text-input [m_sLocalizationKey]="'REGISTER.CONFIRM_PW'" [m_sType]="'password'"
+                    [(m_sInputText)]="m_oPasswordInputs.confirmPw" [m_bIsValidatorInput]="true"
+                    [m_bIsValid]="validatePassword(m_oPasswordInputs.password, m_oPasswordInputs.confirmPw)"></rise-text-input>
+                <rise-text-input [m_sLocalizationKey]="'REGISTER.NAME'"
+                    [(m_sInputText)]="m_oUserInfoInput.name"></rise-text-input>
+                <rise-text-input [m_sLocalizationKey]="'REGISTER.SURNAME'"
+                    [(m_sInputText)]="m_oUserInfoInput.surname"></rise-text-input>
+                <rise-text-input [m_sLocalizationKey]="'REGISTER.MOBILE'"
+                    [(m_sInputText)]="m_oUserInfoInput.mobile"></rise-text-input>
+            </div>
+            <div class="d-flex flex-column gap-2">
+                <div class="org-info-container">
+                    <rise-text-input [m_sLocalizationKey]="'REGISTER.EMAIL'" [(m_sInputText)]="m_oEmailInputs.email"
+                        [m_bIsValidatorInput]="true"
+                        [m_bIsValid]="validateEmail(m_oEmailInputs.email, m_oEmailInputs.confirmEmail)"></rise-text-input>
+                    <rise-text-input [m_sLocalizationKey]="'REGISTER.CONFIRM_EMAIL'"
+                        [(m_sInputText)]="m_oEmailInputs.confirmEmail" [m_bIsValidatorInput]="true"
+                        [m_bIsValid]="validateEmail(m_oEmailInputs.email, m_oEmailInputs.confirmEmail)"></rise-text-input>
+                    <rise-text-input [m_sLocalizationKey]="'REGISTER.ORG_NAME'"
+                        [(m_sInputText)]="m_oOrgInfoInput.name"></rise-text-input>
+                    <!-- TODO Switch to Dropdown -->
+                    <rise-dropdown></rise-dropdown>
+                </div>
+                <div class="org-address-info">
+                    <div class="d-flex flex-row gap-2">
+                        <rise-text-input [m_sLocalizationKey]="'Street Address'"
+                            [(m_sInputText)]="m_oOrgInfoInput.street"></rise-text-input>
+                        <rise-text-input [m_sLocalizationKey]="'Street Number'"
+                            [(m_sInputText)]="m_oOrgInfoInput.number"></rise-text-input>
+                        <rise-text-input [m_sLocalizationKey]="'Postal Code'"
+                            [(m_sInputText)]="m_oOrgInfoInput.postalCode"></rise-text-input>
+                    </div>
+                    <div class="d-flex flex-row gap-2">
+                        <rise-text-input [m_sLocalizationKey]="'City'"
+                            [(m_sInputText)]="m_oOrgInfoInput.city"></rise-text-input>
+                        <rise-text-input [m_sLocalizationKey]="'Phone Number'"
+                            [(m_sInputText)]="m_oOrgInfoInput.phone"></rise-text-input>
+                    </div>
+                    <rise-dropdown></rise-dropdown>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex flex-row gap-2">
+            <input type="checkbox" name="terms-and-conditions" id=""
+                [checked]="m_oUserInfoInput.acceptedTermsAndConditions">
+            <div [innerHTML]="'REGISTER.TERMS_CONDITIONS' | translate"></div>
+        </div>
+        <div class="d-flex flex-row gap-2">
+            <input type="checkbox" name="privacy-policy" [checked]="m_oUserInfoInput.privacyAcceptedDate">
+            <div [innerHTML]="'REGISTER.PRIVACY_POLICY' | translate"></div>
+        </div>
+
+        <rise-button [m_sLabel]="'Register'" (click)="register()"></rise-button>
+    </div>
+
+
+</main>

@@ -5,5 +5,26 @@
         "LOGOUT": "Logout",
         "SETTINGS": "Settings",
         "SIGN_UP": "Sign Up"
+    },
+    "REGISTER": {
+        "HEADER": "Register in RISE",
+        "USER_ID": "User Id",
+        "PASSWORD": "Password",
+        "CONFIRM_PW": "Confirm Password",
+        "NAME": "Name",
+        "SURNAME": "Surname",
+        "MOBILE": "Mobile Number",
+        "EMAIL": "Email Address",
+        "CONFIRM_EMAIL": "Confirm Email Address",
+        "ORG_NAME": "Organization Name",
+        "ORG_TYPE": "Organization Type",
+        "ORG_ADDRESS": "Organization Address",
+        "STREET": "Street",
+        "POST_CODE": "Postal Code",
+        "CITY": "City",
+        "PHONE": "Phone",
+        "COUNTRY": "Country",
+        "TERMS_CONDITIONS": " User has read and accepted the <a href=''>Terms and Conditions</a>",
+        "PRIVACY_POLICY": "User has read and accepted the <a href=''>Privacy Policy</a>"
     }
 }
