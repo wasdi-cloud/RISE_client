@@ -5,6 +5,7 @@ import {RiseSelectAreaComponent} from "../../components/rise-select-area/rise-se
 import {RiseCrudTableComponent} from "../../components/rise-crud-table/rise-crud-table.component";
 import {RiseMapComponent} from "../../components/rise-map/rise-map.component";
 import {RiseCheckBoxComponent} from "../../components/rise-check-box/rise-check-box.component";
+import {RiseTextAreaInputComponent} from "../../components/rise-textarea-input/rise-text-area-input.component";
 
 @Component({
   selector: 'app-create-area-of-operation',
@@ -15,7 +16,8 @@ import {RiseCheckBoxComponent} from "../../components/rise-check-box/rise-check-
     RiseSelectAreaComponent,
     RiseCrudTableComponent,
     RiseMapComponent,
-    RiseCheckBoxComponent
+    RiseCheckBoxComponent,
+    RiseTextAreaInputComponent
   ],
   templateUrl: './create-area-of-operation.component.html',
   styleUrl: './create-area-of-operation.component.css'

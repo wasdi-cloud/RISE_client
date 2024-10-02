@@ -32,7 +32,7 @@ import {ImportStationDialogComponent} from "../../dialogs/import-station-dialog/
  * RISE Select Area User Control
  */
 export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
-
+  //todo make sure only one tool of selecting area is active and therefore one area is selected
 
   /**
    * Map input as described by the User Interface
@@ -248,6 +248,7 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
     // Add the control to the map
     oMap.addControl(new circleButton());
   }
+  //todo work on import logic
   openImportDialog(): void {
     this.m_oDialog.open(ImportStationDialogComponent, {
       height: '425px',
