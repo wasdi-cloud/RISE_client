@@ -2,7 +2,7 @@ import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@an
 
 import {MapService} from "../../services/map.service";
 
-import L from 'leaflet';
+import L, {Circle, Marker} from 'leaflet';
 // declare const L: any;
 import 'leaflet-draw'
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
@@ -32,7 +32,7 @@ import {ImportStationDialogComponent} from "../../dialogs/import-station-dialog/
  * RISE Select Area User Control
  */
 export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
-  //todo make sure only one tool of selecting area is active and therefore one area is selected
+
 
   /**
    * Map input as described by the User Interface
@@ -53,6 +53,8 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
   m_oDrawOptions: any;
   m_oActiveBaseLayer: any;
   m_aoDrawnItems: L.FeatureGroup;
+  private lastCircle: L.Circle | null = null;
+  private lastMarker: L.Marker | null = null;
 
   constructor(private m_oDialog: MatDialog,private m_oMapService:MapService) {
     this.m_oMapOptions = this.m_oMapService.m_oOptions;
@@ -84,9 +86,7 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
     this.addCircleButton(oMap);
   }
   addManualBbox(oMap: any) {
-
     let oController = this;
-
     const m_oManualBoxingButton= L.Control.extend({
       options: {
         position: "topright"
@@ -145,20 +145,28 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
     oMap.addControl(new m_oManualBoxingButton());
   }
   onDrawCreated(oEvent) {
+    // Clear previous circle and marker
+    if (this.lastCircle) {
+      this.m_oMap.removeLayer(this.lastCircle);
+      this.lastCircle = null;
+    }
+    if (this.lastMarker) {
+      this.m_oMap.removeLayer(this.lastMarker);
+      this.lastMarker = null;
+    }
+
     this.m_oDrawnItems.clearLayers();
     this.m_oMapService.onDrawCreated(oEvent);
-
   }
 //Handle when the user want to choose a position and let rise draw the minimum area around that point
   addCircleButton(oMap: any) {
-    let lastCircle: L.Circle | null = null; // Keep track of the last drawn circle
-    let lastMarker: L.Marker | null = null; // Keep track of the last added marker
+    let isDrawing = false; // Flag to track if drawing is active
 
     const circleButton = L.Control.extend({
       options: {
         position: "topright"
       },
-      onAdd: function (oMap) {
+      onAdd: (oMap) => {
         let oContainer = L.DomUtil.create("div", "leaflet-bar leaflet-control");
 
         // Create the button for drawing the circle
@@ -167,9 +175,9 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
         drawButton.innerHTML = '<span class="material-symbols-outlined">adjust</span>';
         drawButton.title = "Draw Circle";
 
-        // Create the cancel button to remove the circle
+        // Create the cancel button
         let cancelButton = L.DomUtil.create('a', 'leaflet-control-button', oContainer);
-        cancelButton.style.cursor = 'pointer'; // Change the cursor to pointer on hover
+        cancelButton.style.cursor = 'pointer';
         cancelButton.innerHTML = '<span class="material-symbols-outlined">cancel</span>';
         cancelButton.title = "Cancel Drawing";
 
@@ -178,34 +186,51 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
         L.DomEvent.disableClickPropagation(cancelButton);
 
         // Add the draw button click listener
-        L.DomEvent.on(drawButton, 'click', function () {
-          // Create the function that will be triggered on map click
-          const onMapClick = function (e: any) {
+        L.DomEvent.on(drawButton, 'click', () => {
+          // Debug log to ensure the function is being called
+          console.log("Circle button clicked!");
+
+          // Clear previous layers and reset drawing
+          if (this.m_oDrawnItems) {
+            console.log("Clearing layers...");
+            this.m_oDrawnItems.clearLayers();
+          } else {
+            console.error("m_oDrawnItems is undefined or null.");
+          }
+
+          // Clear previous circle and marker
+          if (this.lastCircle) {
+            oMap.removeLayer(this.lastCircle);
+          }
+          if (this.lastMarker) {
+            oMap.removeLayer(this.lastMarker);
+          }
+
+
+
+          // Set drawing flag to true
+          isDrawing = true;
+
+          // Function to create the circle on map click
+          const onMapClick = (e: any) => {
+            if (!isDrawing) return;
+
             const fLat = e.latlng.lat;
             const fLng = e.latlng.lng;
             const fRadius = 500000; // Set the radius of the circle (in meters)
 
-            // Remove the old circle and marker if they exist
-            if (lastCircle) {
-              oMap.removeLayer(lastCircle);
-            }
-            if (lastMarker) {
-              oMap.removeLayer(lastMarker);
-            }
-
             // Add the new circle to the map
-            lastCircle = L.circle([fLat, fLng], { radius: fRadius }).addTo(oMap);
+            this.lastCircle = L.circle([fLat, fLng], { radius: fRadius }).addTo(oMap);
+            this.lastMarker = L.marker([fLat, fLng]).addTo(oMap);
 
-            // Add a marker at the clicked location
-            lastMarker = L.marker([fLat, fLng]).addTo(oMap);
-
-            // Set view to the clicked location without zooming too much (custom zoom level)
+            // Set view to the clicked location without zooming too much
             const currentZoom = oMap.getZoom();
             const targetZoom = Math.min(currentZoom, 13); // Ensure it doesn't zoom too much
-            oMap.setView([fLat, fLng], targetZoom); // Adjust zoom level as needed
+            oMap.setView([fLat, fLng], targetZoom);
 
-            // Remove the click listener after drawing the circle and marker
+            // Remove the click listener after drawing
             oMap.off('click', onMapClick);
+            isDrawing = false; // Reset the drawing flag
           };
 
           // Activate the map click listener for drawing the circle and adding the marker
@@ -213,32 +238,19 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
         });
 
         // Add the cancel button click listener
-        L.DomEvent.on(cancelButton, 'click', function () {
-          // Remove the last drawn circle and marker if they exist
-          if (lastCircle) {
-            oMap.removeLayer(lastCircle);
-            lastCircle = null; // Reset the lastCircle variable
+        L.DomEvent.on(cancelButton, 'click', () => {
+          console.log("Cancel button clicked!");
+          // Clear previous circle and marker
+          if (this.lastCircle) {
+            oMap.removeLayer(this.lastCircle);
           }
-          if (lastMarker) {
-            oMap.removeLayer(lastMarker);
-            lastMarker = null; // Reset the lastMarker variable
+          if (this.lastMarker) {
+            oMap.removeLayer(this.lastMarker);
           }
+          // Stop listening for clicks and reset the flag
+          isDrawing = false;
+          oMap.off('click'); // Remove all click listeners to stop drawing
         });
-
-        // Add hover effect: change button appearance on hover
-        drawButton.onmouseover = () => {
-          drawButton.style.backgroundColor = '#f0f0f0'; // Example hover effect
-        };
-        drawButton.onmouseout = () => {
-          drawButton.style.backgroundColor = ''; // Reset background color when not hovering
-        };
-
-        cancelButton.onmouseover = () => {
-          cancelButton.style.backgroundColor = '#f0f0f0'; // Example hover effect
-        };
-        cancelButton.onmouseout = () => {
-          cancelButton.style.backgroundColor = ''; // Reset background color when not hovering
-        };
 
         return oContainer;
       },
@@ -248,6 +260,7 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
     // Add the control to the map
     oMap.addControl(new circleButton());
   }
+
   //todo work on import logic
   openImportDialog(): void {
     this.m_oDialog.open(ImportStationDialogComponent, {
