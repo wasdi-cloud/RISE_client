@@ -26,5 +26,12 @@
         "COUNTRY": "Country",
         "TERMS_CONDITIONS": " User has read and accepted the <a href=''>Terms and Conditions</a>",
         "PRIVACY_POLICY": "User has read and accepted the <a href=''>Privacy Policy</a>"
+    },
+    "LAYER_TYPES": {
+        "FLOOD": "Flood",
+        "DROUGHT": "Drought",
+        "BUILDINGS": "Buildings",
+        "IMPACTS": "Impacts",
+        "MORE": "More"
     }
 }

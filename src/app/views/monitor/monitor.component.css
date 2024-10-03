@@ -1,0 +1,22 @@
+.map-output-container {
+    position: relative;
+}
+
+.timebar {
+    bottom: 1rem;
+    left: 1rem;
+    position: absolute;
+    width: 94%;
+    z-index: 999;
+}
+
+.btn-select-container {
+    top: 1rem;
+    left: 1rem;
+    position: absolute;
+    z-index: 999;
+}
+
+.layer-list-container {
+    width: 300px;
+}
