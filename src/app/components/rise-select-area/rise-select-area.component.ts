@@ -53,8 +53,8 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
   m_oDrawOptions: any;
   m_oActiveBaseLayer: any;
   m_aoDrawnItems: L.FeatureGroup;
-  private lastCircle: L.Circle | null = null;
-  private lastMarker: L.Marker | null = null;
+  m_oLastCircle: L.Circle | null = null;
+  m_oLastMarker: L.Marker | null = null;
 
   constructor(private m_oDialog: MatDialog,private m_oMapService:MapService) {
     this.m_oMapOptions = this.m_oMapService.m_oOptions;
@@ -146,13 +146,13 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
   }
   onDrawCreated(oEvent) {
     // Clear previous circle and marker
-    if (this.lastCircle) {
-      this.m_oMap.removeLayer(this.lastCircle);
-      this.lastCircle = null;
+    if (this.m_oLastCircle) {
+      this.m_oMap.removeLayer(this.m_oLastCircle);
+      this.m_oLastCircle = null;
     }
-    if (this.lastMarker) {
-      this.m_oMap.removeLayer(this.lastMarker);
-      this.lastMarker = null;
+    if (this.m_oLastMarker) {
+      this.m_oMap.removeLayer(this.m_oLastMarker);
+      this.m_oLastMarker = null;
     }
 
     this.m_oDrawnItems.clearLayers();
@@ -160,7 +160,7 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
   }
 //Handle when the user want to choose a position and let rise draw the minimum area around that point
   addCircleButton(oMap: any) {
-    let isDrawing = false; // Flag to track if drawing is active
+    let bIsDrawing = false; // Flag to track if drawing is active
 
     const circleButton = L.Control.extend({
       options: {
@@ -180,48 +180,44 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
         cancelButton.style.cursor = 'pointer';
         cancelButton.innerHTML = '<span class="material-symbols-outlined">cancel</span>';
         cancelButton.title = "Cancel Drawing";
-
         // Disable map interaction on button click
         L.DomEvent.disableClickPropagation(drawButton);
         L.DomEvent.disableClickPropagation(cancelButton);
 
         // Add the draw button click listener
         L.DomEvent.on(drawButton, 'click', () => {
-          // Debug log to ensure the function is being called
-          console.log("Circle button clicked!");
-
           // Clear previous layers and reset drawing
           if (this.m_oDrawnItems) {
-            console.log("Clearing layers...");
+
             this.m_oDrawnItems.clearLayers();
           } else {
             console.error("m_oDrawnItems is undefined or null.");
           }
 
           // Clear previous circle and marker
-          if (this.lastCircle) {
-            oMap.removeLayer(this.lastCircle);
+          if (this.m_oLastCircle) {
+            oMap.removeLayer(this.m_oLastCircle);
           }
-          if (this.lastMarker) {
-            oMap.removeLayer(this.lastMarker);
+          if (this.m_oLastMarker) {
+            oMap.removeLayer(this.m_oLastMarker);
           }
 
 
 
           // Set drawing flag to true
-          isDrawing = true;
+          bIsDrawing = true;
 
           // Function to create the circle on map click
           const onMapClick = (e: any) => {
-            if (!isDrawing) return;
+            if (!bIsDrawing) return;
 
             const fLat = e.latlng.lat;
             const fLng = e.latlng.lng;
             const fRadius = 500000; // Set the radius of the circle (in meters)
 
             // Add the new circle to the map
-            this.lastCircle = L.circle([fLat, fLng], { radius: fRadius }).addTo(oMap);
-            this.lastMarker = L.marker([fLat, fLng]).addTo(oMap);
+            this.m_oLastCircle = L.circle([fLat, fLng], { radius: fRadius }).addTo(oMap);
+            this.m_oLastMarker = L.marker([fLat, fLng]).addTo(oMap);
 
             // Set view to the clicked location without zooming too much
             const currentZoom = oMap.getZoom();
@@ -230,7 +226,7 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
 
             // Remove the click listener after drawing
             oMap.off('click', onMapClick);
-            isDrawing = false; // Reset the drawing flag
+            bIsDrawing = false; // Reset the drawing flag
           };
 
           // Activate the map click listener for drawing the circle and adding the marker
@@ -241,14 +237,14 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
         L.DomEvent.on(cancelButton, 'click', () => {
           console.log("Cancel button clicked!");
           // Clear previous circle and marker
-          if (this.lastCircle) {
-            oMap.removeLayer(this.lastCircle);
+          if (this.m_oLastCircle) {
+            oMap.removeLayer(this.m_oLastCircle);
           }
-          if (this.lastMarker) {
-            oMap.removeLayer(this.lastMarker);
+          if (this.m_oLastMarker) {
+            oMap.removeLayer(this.m_oLastMarker);
           }
           // Stop listening for clicks and reset the flag
-          isDrawing = false;
+          bIsDrawing = false;
           oMap.off('click'); // Remove all click listeners to stop drawing
         });
 

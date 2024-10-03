@@ -63,25 +63,25 @@ export class CreateAreaOfOperationComponent {
     {label: 'Buildings', value: 3},
     {label: 'Impacts', value: 4}
   ];
-  userData = [
+  m_aoUserData = [
     { Mail: 'John Doe', User_ID: 'john@example.com' },
     { Mail: 'Jane Smith', User_ID: 'jane@example.com' }
   ];
   m_asUsersColumns: string[]=["Mail","User_ID"];
 
   onRowDelete(row: any) {
-    this.userData = this.userData.filter(item => item !== row); // Remove the deleted row
+    this.m_aoUserData = this.m_aoUserData.filter(item => item !== row); // Remove the deleted row
   }
 
   onRowAdd() {
-    const dialogRef = this.dialog.open(AddRowDialogComponent, {
+    const oDialogRef = this.dialog.open(AddRowDialogComponent, {
       width: '300px',
       data: { fields: this.m_asUsersColumns }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    oDialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.userData = [...this.userData, result];
+        this.m_aoUserData = [...this.m_aoUserData, result];
       }
     });
   }

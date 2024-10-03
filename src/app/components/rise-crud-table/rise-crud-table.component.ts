@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, ViewChild} from '@angular/core';
 import {NgForOf, NgIf, TitleCasePipe} from "@angular/common";
 import {
   MatCell, MatCellDef,
@@ -39,31 +39,31 @@ import {RiseButtonComponent} from "../rise-button/rise-button.component";
   templateUrl: './rise-crud-table.component.html',
   styleUrl: './rise-crud-table.component.css'
 })
-export class RiseCrudTableComponent {
-  @Input() displayedColumns: string[] = [];
-  @Input() dataSource: any[] = [];
+export class RiseCrudTableComponent implements OnChanges, AfterViewInit{
+  @Input() m_asDisplayedColumns: string[] = [];
+  @Input() m_aoDataSource: any[] = [];
 
   // Output to emit when a row is added or deleted
-  @Output() addRow = new EventEmitter<void>();
-  @Output() deleteRow = new EventEmitter<any>();
-  dataSourceWithPaginator = new MatTableDataSource<any>(this.dataSource);
+  @Output() m_oAddRow = new EventEmitter<void>();
+  @Output() m_oDeleteRow = new EventEmitter<any>();
+  m_oDataSourceWithPaginator = new MatTableDataSource<any>(this.m_aoDataSource);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngAfterViewInit() {
-    this.dataSourceWithPaginator.paginator = this.paginator;
+    this.m_oDataSourceWithPaginator.paginator = this.paginator;
   }
 
   ngOnChanges() {
     // Update the paginator whenever the dataSource changes
-    this.dataSourceWithPaginator.data = this.dataSource;
+    this.m_oDataSourceWithPaginator.data = this.m_aoDataSource;
   }
 
   onAddClick() {
-    this.addRow.emit();
+    this.m_oAddRow.emit();
   }
 
   onDeleteClick(row: any) {
-    this.deleteRow.emit(row);
+    this.m_oDeleteRow.emit(row);
   }
 }

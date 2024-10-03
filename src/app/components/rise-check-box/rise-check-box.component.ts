@@ -11,22 +11,22 @@ import {NgForOf} from "@angular/common";
   styleUrl: './rise-check-box.component.css'
 })
 export class RiseCheckBoxComponent {
-  @Input() options: { label: string; value: any }[] = []; // Input for checkbox options
-  @Output() selectionChange = new EventEmitter<any[]>(); // Output for selected values
+  @Input() m_aoOptions: { label: string; value: any }[] = []; // Input for checkbox options
+  @Output() m_oSelectionChange = new EventEmitter<any[]>(); // Output for selected values
 
-  selectedValues: any[] = []; // Store selected values
+  m_aoSelectedValues: any[] = []; // Store selected values
 
   // Method to handle checkbox change
   onCheckboxChange(value: any, event: any) {
     if (event.target.checked) {
-      this.selectedValues.push(value);
+      this.m_aoSelectedValues.push(value);
     } else {
-      const index = this.selectedValues.indexOf(value);
+      const index = this.m_aoSelectedValues.indexOf(value);
       if (index > -1) {
-        this.selectedValues.splice(index, 1);
+        this.m_aoSelectedValues.splice(index, 1);
       }
     }
     // Emit the selected values
-    this.selectionChange.emit(this.selectedValues);
+    this.m_oSelectionChange.emit(this.m_aoSelectedValues);
   }
 }

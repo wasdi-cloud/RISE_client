@@ -9,18 +9,18 @@
     <!-- Spacing added with mb-3 for margin bottom -->
     <div class="mb-3">
       <rise-check-box
-        [options]="this.m_oEvents"
-        (selectionChange)="onSelectionChange($event)">
+        [m_aoOptions]="this.m_oEvents"
+        (m_oSelectionChange)="onSelectionChange($event)">
       </rise-check-box>
     </div>
 
     <!-- Spacing added with mb-3 for margin bottom -->
     <div class="mb-3">
       <rise-crud-table
-        [displayedColumns]="m_asUsersColumns"
-        [dataSource]="userData"
-        (deleteRow)="onRowDelete($event)"
-        (addRow)="onRowAdd()">
+        [m_asDisplayedColumns]="m_asUsersColumns"
+        [m_aoDataSource]="m_aoUserData"
+        (m_oDeleteRow)="onRowDelete($event)"
+        (m_oAddRow)="onRowAdd()">
       </rise-crud-table>
     </div>
   </div>

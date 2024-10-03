@@ -32,15 +32,15 @@ export class AddRowDialogComponent {
   rowData: any = {};
 
   constructor(
-    public dialogRef: MatDialogRef<AddRowDialogComponent>,
+    public m_oDialog: MatDialogRef<AddRowDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
   onSave(): void {
-    this.dialogRef.close(this.rowData);
+    this.m_oDialog.close(this.rowData);
   }
 
   onCancel(): void {
-    this.dialogRef.close();
+    this.m_oDialog.close();
   }
 }
