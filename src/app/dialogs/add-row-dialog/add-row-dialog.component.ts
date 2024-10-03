@@ -29,7 +29,7 @@ import {NgForOf} from "@angular/common";
   styleUrl: './add-row-dialog.component.css'
 })
 export class AddRowDialogComponent {
-  rowData: any = {};
+  m_aoRowData: any = {};
 
   constructor(
     public m_oDialog: MatDialogRef<AddRowDialogComponent>,
@@ -37,7 +37,7 @@ export class AddRowDialogComponent {
   ) {}
 
   onSave(): void {
-    this.m_oDialog.close(this.rowData);
+    this.m_oDialog.close(this.m_aoRowData);
   }
 
   onCancel(): void {

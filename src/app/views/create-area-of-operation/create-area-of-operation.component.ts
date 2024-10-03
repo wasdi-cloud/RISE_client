@@ -89,6 +89,34 @@ export class CreateAreaOfOperationComponent {
   onSelectionChange(selectedValues: any[]) {
     console.log('Selected values:', selectedValues);
   }
+  onSave(){
+    /*todo add verification before adding the area:
+  todo 4.HQ Operator confirms the inserted area
+  todo 5. RISE adjust the area to fit the requirements of the system (area not too big and
+    not too small)
+  todo 6. If the selected area overlaps or have the same name of an existing one:
+    a. RISE communicates to the HQ Operator that there is already an
+      overlapping area that is up and running
+    b. RISE ask confirmation to the HQ Operator if we really wants to proceed;
+    c. If the user cancels the operation, RISE clears the form and comes back
+    to Step 1, otherwise proceed to step 7.
+
+  todo 9.RISE verifies the subscription status of the organization
+  todo 10. If the Organization does not have a valid subscription:
+      a. RISE invites the user to buy a New Subscription (UC_095)
+  todo 11. RISE communicates to the HQ Operator the success of adding the new Area of
+      Operations.
+  todo 12. RISE communicates to the HQ Operator that the processing started, and she/he
+      will be notified by e-mail when it is done.
+  todo 13. RISE automatically start the processing of the last week of data
+      a. When the processing is done, RISE sends an e-mail to the HQ Operator
+      to notify that it is possible to start the near real time monitoring.
+  todo 14. If it is a long term Area of Operations:
+      a. RISE start to process the satellite archive to reconstruct the past event
+      over the area of interest
+      b. When the processing is done , RISE sends an e-mail to the HQ Operator
+      to notify that the full archive is available.*/
+  }
 
 
 }

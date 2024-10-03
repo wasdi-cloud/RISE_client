@@ -170,22 +170,22 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
         let oContainer = L.DomUtil.create("div", "leaflet-bar leaflet-control");
 
         // Create the button for drawing the circle
-        let drawButton = L.DomUtil.create('a', 'leaflet-control-button', oContainer);
-        drawButton.style.cursor = 'pointer'; // Change the cursor to pointer on hover
-        drawButton.innerHTML = '<span class="material-symbols-outlined">adjust</span>';
-        drawButton.title = "Draw Circle";
+        let oDrawButton = L.DomUtil.create('a', 'leaflet-control-button', oContainer);
+        oDrawButton.style.cursor = 'pointer'; // Change the cursor to pointer on hover
+        oDrawButton.innerHTML = '<span class="material-symbols-outlined">adjust</span>';
+        oDrawButton.title = "Draw Circle";
 
         // Create the cancel button
-        let cancelButton = L.DomUtil.create('a', 'leaflet-control-button', oContainer);
-        cancelButton.style.cursor = 'pointer';
-        cancelButton.innerHTML = '<span class="material-symbols-outlined">cancel</span>';
-        cancelButton.title = "Cancel Drawing";
+        let oCancelButton = L.DomUtil.create('a', 'leaflet-control-button', oContainer);
+        oCancelButton.style.cursor = 'pointer';
+        oCancelButton.innerHTML = '<span class="material-symbols-outlined">cancel</span>';
+        oCancelButton.title = "Cancel Drawing";
         // Disable map interaction on button click
-        L.DomEvent.disableClickPropagation(drawButton);
-        L.DomEvent.disableClickPropagation(cancelButton);
+        L.DomEvent.disableClickPropagation(oDrawButton);
+        L.DomEvent.disableClickPropagation(oCancelButton);
 
         // Add the draw button click listener
-        L.DomEvent.on(drawButton, 'click', () => {
+        L.DomEvent.on(oDrawButton, 'click', () => {
           // Clear previous layers and reset drawing
           if (this.m_oDrawnItems) {
 
@@ -234,7 +234,7 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
         });
 
         // Add the cancel button click listener
-        L.DomEvent.on(cancelButton, 'click', () => {
+        L.DomEvent.on(oCancelButton, 'click', () => {
           console.log("Cancel button clicked!");
           // Clear previous circle and marker
           if (this.m_oLastCircle) {
