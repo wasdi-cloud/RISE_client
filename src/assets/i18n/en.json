@@ -26,5 +26,15 @@
         "COUNTRY": "Country",
         "TERMS_CONDITIONS": " User has read and accepted the <a href=''>Terms and Conditions</a>",
         "PRIVACY_POLICY": "User has read and accepted the <a href=''>Privacy Policy</a>"
+    },
+    "ACCOUNT": {
+        "MY_ORGANIZATION": "My Organization",
+        "MY_USER": "My User",
+        "AREA_OF_OPERATIONS": "Area Of Operations",
+        "SUBSCRIPTIONS": "Subscriptions"
+    },
+    "AREA_OF_OPERATIONS": {
+        "CREATE_NEW_AREA_OF_OPERATION": "Create new area of operations"
     }
 }
+

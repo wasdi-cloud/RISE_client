@@ -6,6 +6,7 @@ declare const L: any;
 // import L from 'leaflet';
 import 'leaflet-draw'
 import "leaflet-mouse-position";
+import {OtpDialogComponent} from "../dialogs/otp-dialog/otp-dialog.component";
 
 export interface TileLayer {
 
@@ -315,5 +316,6 @@ export class MapService {
     }
     return totalDistance / 1000;
   }
+
 
 }

@@ -1,0 +1,21 @@
+<div class="d-flex align-items-center justify-content-between mb-3">
+  <div *ngIf="m_sMapTitle">
+    <h2 class="map-title">{{m_sMapTitle}}</h2>
+  </div>
+  <rise-button [m_sLabel]="'Upload Shape File'" (click)="openImportDialog()"></rise-button>
+</div>
+
+<div class="h-100 w-100" style="border-radius: 16px; z-index: 0;">
+  <div class="map-frame">
+    <div id="map"
+         leaflet
+         leafletDraw
+         [leafletOptions]="m_oMapOptions"
+         [leafletDrawOptions]="m_oDrawOptions"
+         (leafletMapReady)="onMapReady($event)"
+         (leafletDrawCreated)="onDrawCreated($event)">
+
+      <div [leafletLayer]="m_oDrawnItems"></div>
+    </div>
+  </div>
+</div>
