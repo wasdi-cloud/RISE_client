@@ -42,6 +42,8 @@ export class CreateAreaOfOperationComponent {
   m_sAreaOfOperationDescription: string;
   m_sAreaOfOperationName: string;
   m_oAreaInfo = {}
+  m_asEventsSelected=[]
+  m_aoFieldUsers=[]
 
   constructor(private dialog: MatDialog) {
   }
@@ -65,6 +67,7 @@ export class CreateAreaOfOperationComponent {
 
   onSelectionChange(selectedValues: any[]) {
     console.log('Selected values:', selectedValues);
+    this.m_asEventsSelected=selectedValues;
   }
 
   onMapInputChange(shapeInfo: any) {
@@ -93,13 +96,23 @@ export class CreateAreaOfOperationComponent {
       //todo alert user or make input in red
       return;
     }
-    console.log(this.m_sAreaOfOperationName);
-    console.log(this.m_sAreaOfOperationDescription);
     if (this.m_oAreaInfo === null) {
       //todo alert user
       return;
     }
+    if (this.m_asEventsSelected === null || this.m_asEventsSelected.length ==0) {
+      //todo alert user
+      return;
+    }
+    if (this.m_aoFieldUsers === null || this.m_aoFieldUsers.length ==0) {
+      //todo alert user
+      return;
+    }
     console.log(this.m_oAreaInfo);
+    console.log(this.m_sAreaOfOperationName);
+    console.log(this.m_sAreaOfOperationDescription);
+    console.log(this.m_asEventsSelected);
+    console.log(this.m_aoFieldUsers);
     /*todo add verification before adding the area:
   ****
   **do that before make him click on the save button
@@ -138,5 +151,12 @@ export class CreateAreaOfOperationComponent {
 
   cancelCreatingAreaOfOperation() {
 
+  }
+
+  handleTableData(tableData: any[]) {
+    console.log('Received table data:', tableData);
+    this.m_aoFieldUsers=tableData;
+    // Process the data as needed in your component
+    // For example, you can store it in a local variable or pass it to another service
   }
 }

@@ -20,7 +20,8 @@
         [m_asDisplayedColumns]="m_asUsersColumns"
         [m_aoDataSource]="m_aoUserData"
         (m_oDeleteRow)="onRowDelete($event)"
-        (m_oAddRow)="onRowAdd()">
+        (m_oAddRow)="onRowAdd()"
+      (m_oTableData)="handleTableData($event)">
       </rise-crud-table>
     </div>
   </div>
