@@ -1,16 +1,6 @@
-.map-container {}
-
 .map-frame {
-    border: 2px solid black;
     height: 93vh;
     position: relative;
-}
-
-.timebar {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    z-index: 999;
 }
 
 #map {

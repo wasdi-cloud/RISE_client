@@ -1,10 +1,25 @@
 <main class="d-flex flex-column">
     <rise-toolbar [m_bUserIsSigned]="true"></rise-toolbar>
-    <div class="flex-fill">
-        @if (m_bShow2D === true) {
-        <rise-map></rise-map>
-        } @else {
-        <rise-globe></rise-globe>
-        }
+    <div class="flex-fill d-flex flex-row">
+        <div class="layer-list-container d-flex flex-column gap-2 px-2">
+            <!-- Layer List output -->
+            <div></div>
+            LAYER LIST
+            <rise-layer-item *ngFor="let oLayer of m_aoLayers"></rise-layer-item>
+        </div>
+        <div class="map-output-container flex-fill">
+            @if (m_bShow2D === true) {
+            <div class="layer-select-container">
+            </div>
+            <div class="btn-select-container d-flex flex-row gap-2">
+                <rise-button *ngFor="let oButton of m_aoButtons"
+                    [m_sLabel]="oButton.translateKey | translate"></rise-button>
+            </div>
+            <rise-timebar class="timebar"></rise-timebar>
+            <rise-map></rise-map>
+            } @else {
+            <rise-globe></rise-globe>
+            }
+        </div>
     </div>
 </main>
