@@ -2,8 +2,8 @@ import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@an
 
 import {MapService} from "../../services/map.service";
 
-import L, {Circle, Marker} from 'leaflet';
-// declare const L: any;
+
+declare const L: any;
 import 'leaflet-draw'
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
 import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
@@ -157,6 +157,46 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
 
     this.m_oDrawnItems.clearLayers();
     this.m_oMapService.onDrawCreated(oEvent);
+    let selectedArea = 0;
+    let shapeInfo = {};
+
+    // Check if it's a circle
+    if (oEvent.layer instanceof L.Circle) {
+      const center = oEvent.layer.getLatLng();
+      const radius = oEvent.layer.getRadius();
+      selectedArea = Math.PI * Math.pow(radius, 2); // Calculate area of the circle
+
+      shapeInfo = {
+        type: 'circle',
+        center: {
+          lat: center.lat,
+          lng: center.lng
+        },
+        radius: radius,
+        area: selectedArea
+      };
+    }
+    // Check if it's a polygon (including rectangles)
+    else if (oEvent.layer instanceof L.Polygon) {
+      const latLngs = oEvent.layer.getLatLngs()[0]; // Get the array of points (vertices)
+      selectedArea = L.GeometryUtil.geodesicArea(latLngs); // Get the area of the polygon
+
+      // Collect all points (vertices) of the polygon
+      const points = latLngs.map((point: L.LatLng) => {
+        return { lat: point.lat, lng: point.lng };
+      });
+
+      shapeInfo = {
+        type: 'polygon',
+        points: points,
+        area: selectedArea
+      };
+    }
+
+    console.log('Shape Info:', shapeInfo);
+
+    // Emit the shape information (area, points, center, radius) to the parent component
+    this.m_oMapInputChange.emit(shapeInfo);
   }
 //Handle when the user want to choose a position and let rise draw the minimum area around that point
   addCircleButton(oMap: any) {
