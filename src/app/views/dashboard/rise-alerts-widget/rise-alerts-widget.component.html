@@ -1,1 +1,20 @@
-<p>rise-alerts-widget works!</p>
+<div class="widget-container">
+    <div class="widget-header d-flex flex-row justify-content-between">
+        {{"WIDGET.ALERTS" | translate}}
+        <div class="btn btn-sm" (click)="collapseWidget()">
+            x
+        </div>
+    </div>
+    <div *ngIf="m_bShowContent" class="affected-ppl">
+        @if (m_aoAlerts.length > 0) {
+        <div *ngFor="let oAlert of m_aoAlerts">
+            {{oAlert.name}}
+            {{oAlert.startDate}}
+        </div>
+        } @else {
+        <div>
+            {{"WIDGET.NO_ALERTS" | translate}}
+        </div>
+        }
+    </div>
+</div>
