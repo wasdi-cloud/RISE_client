@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'rise-alerts-widget',
@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './rise-alerts-widget.component.css'
 })
 export class RiseAlertsWidgetComponent {
-
+ @Input() m_aoAlerts: Array<any> = [];
 }

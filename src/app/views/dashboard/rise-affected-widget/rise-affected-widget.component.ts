@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'rise-affected-widget',
@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './rise-affected-widget.component.css'
 })
 export class RiseAffectedWidgetComponent {
-
+  @Input() m_aoAffectedAreas: Array<any> = [];
 }
