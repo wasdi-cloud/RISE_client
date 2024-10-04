@@ -46,6 +46,7 @@ export class RiseCrudTableComponent implements OnChanges, AfterViewInit{
   // Output to emit when a row is added or deleted
   @Output() m_oAddRow = new EventEmitter<void>();
   @Output() m_oDeleteRow = new EventEmitter<any>();
+  @Output() m_oTableData = new EventEmitter<any[]>();  // New output to emit table data
   m_oDataSourceWithPaginator = new MatTableDataSource<any>(this.m_aoDataSource);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -57,13 +58,23 @@ export class RiseCrudTableComponent implements OnChanges, AfterViewInit{
   ngOnChanges() {
     // Update the paginator whenever the dataSource changes
     this.m_oDataSourceWithPaginator.data = this.m_aoDataSource;
+    this.emitTableData();  // Emit the updated table data when the data source changes
   }
 
   onAddClick() {
     this.m_oAddRow.emit();
+    this.emitTableData();  // Emit the current table data after a row is added
   }
 
   onDeleteClick(row: any) {
     this.m_oDeleteRow.emit(row);
+    this.emitTableData();  // Emit the current table data after a row is deleted
+  }
+
+  /**
+   * Method to emit the current table data
+   */
+  emitTableData() {
+    this.m_oTableData.emit(this.m_aoDataSource);  // Emit the current table data
   }
 }

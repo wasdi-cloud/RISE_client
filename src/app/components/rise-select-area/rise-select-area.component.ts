@@ -2,8 +2,8 @@ import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@an
 
 import {MapService} from "../../services/map.service";
 
-import L, {Circle, Marker} from 'leaflet';
-// declare const L: any;
+
+declare const L: any;
 import 'leaflet-draw'
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
 import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
@@ -157,7 +157,49 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
 
     this.m_oDrawnItems.clearLayers();
     this.m_oMapService.onDrawCreated(oEvent);
+    this.emitDrawnAreaEvent(oEvent);
   }
+
+  private emitDrawnAreaEvent(oEvent) {
+    let iSelectedArea = 0;
+    let oShapeInfo = {};
+
+    // Check if it's a circle
+    if (oEvent.layer instanceof L.Circle) {
+      const center = oEvent.layer.getLatLng();
+      const radius = oEvent.layer.getRadius();
+      iSelectedArea = Math.PI * Math.pow(radius, 2); // Calculate area of the circle
+
+      oShapeInfo = {
+        type: 'circle',
+        center: {
+          lat: center.lat,
+          lng: center.lng
+        },
+        radius: radius,
+        area: iSelectedArea
+      };
+    }
+    // Check if it's a polygon (including rectangles)
+    else if (oEvent.layer instanceof L.Polygon) {
+      const latLngs = oEvent.layer.getLatLngs()[0]; // Get the array of points (vertices)
+      iSelectedArea = L.GeometryUtil.geodesicArea(latLngs); // Get the area of the polygon
+
+      // Collect all points (vertices) of the polygon
+      const points = latLngs.map((point: L.LatLng) => {
+        return {lat: point.lat, lng: point.lng};
+      });
+
+      oShapeInfo = {
+        type: 'polygon',
+        points: points,
+        area: iSelectedArea
+      };
+    }
+    // Emit the shape information (area, points, center, radius) to the parent component
+    this.m_oMapInputChange.emit(oShapeInfo);
+  }
+
 //Handle when the user want to choose a position and let rise draw the minimum area around that point
   addCircleButton(oMap: any) {
     let bIsDrawing = false; // Flag to track if drawing is active
@@ -218,7 +260,7 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
             // Add the new circle to the map
             this.m_oLastCircle = L.circle([fLat, fLng], { radius: fRadius }).addTo(oMap);
             this.m_oLastMarker = L.marker([fLat, fLng]).addTo(oMap);
-
+            this.emitCircleButtonAreaEvent(fRadius, fLat, fLng);
             // Set view to the clicked location without zooming too much
             const currentZoom = oMap.getZoom();
             const targetZoom = Math.min(currentZoom, 13); // Ensure it doesn't zoom too much
@@ -245,6 +287,8 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
           }
           // Stop listening for clicks and reset the flag
           bIsDrawing = false;
+          // Emit null to reset the shape
+          this.m_oMapInputChange.emit(null);
           oMap.off('click'); // Remove all click listeners to stop drawing
         });
 
@@ -257,7 +301,20 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
     oMap.addControl(new circleButton());
   }
 
-  //todo work on import logic
+  private emitCircleButtonAreaEvent(fRadius: number, fLat, fLng) {
+    const fArea = Math.PI * fRadius * fRadius;
+
+    // Emit the circle info (center, radius, and area)
+    const oShapeInfo = {
+      type: 'circle',
+      center: {lat: fLat, lng: fLng},
+      radius: fRadius,
+      area: fArea // Add area to the emitted shape info
+    };
+    this.m_oMapInputChange.emit(oShapeInfo);
+  }
+
+//todo work on import logic
   openImportDialog(): void {
     this.m_oDialog.open(ImportStationDialogComponent, {
       height: '425px',
