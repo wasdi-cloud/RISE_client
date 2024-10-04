@@ -1,0 +1,20 @@
+<div class="widget-container">
+    <div class="widget-header d-flex flex-row justify-content-between">
+        {{"WIDGET.ONGOING_EVENTS" | translate}}
+        <div class="btn btn-sm" (click)="collapseWidget()">
+            x
+        </div>
+    </div>
+    <div *ngIf="m_bShowContent" class="affected-ppl">
+        @if (m_aoOngoingEvent.length > 0) {
+        <div *ngFor="let oEvent of m_aoOngoingEvent">
+            {{oEvent.name}}
+            {{oEvent.startDate}}
+        </div>
+        } @else {
+        <div>
+            {{"WIDGET.NO_EVENTS" | translate}}
+        </div>
+        }
+    </div>
+</div>

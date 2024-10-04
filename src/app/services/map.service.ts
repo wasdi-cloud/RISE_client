@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import Geocoder from 'leaflet-control-geocoder';
 
@@ -9,7 +9,26 @@ declare const L: any;
 import 'leaflet-draw'
 import "leaflet-mouse-position";
 import {OtpDialogComponent} from "../dialogs/otp-dialog/otp-dialog.component";
+import { Area } from '../shared/models/area';
+import { Map, Marker } from 'leaflet';
+import { MatDialog } from '@angular/material/dialog';
+import { AreaInfoComponent } from '../dialogs/area-info/area-info.component';
+import { Router } from '@angular/router';
 
+const iconRetinaUrl = '/assets/marker-icon-2x.png';
+const iconUrl = '/assets/marker-icon.png';
+const shadowUrl = '/assets/marker-shadow.png';
+const iconDefault = L.icon({
+  iconRetinaUrl,
+  iconUrl,
+  shadowUrl,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  tooltipAnchor: [16, -28],
+  shadowSize: [41, 41]
+});
+L.Marker.prototype.options.icon = iconDefault;
 export interface TileLayer {
 
 }
@@ -81,7 +100,7 @@ export class MapService {
       marker: false,
       polyline: true,
       polygon: true,
-      rectangle: {shapeOptions: {color: "#4AFF00"}, showArea: false}
+      rectangle: { shapeOptions: { color: "#4AFF00" }, showArea: false }
     },
     edit: {
       featureGroup: new L.FeatureGroup,
@@ -91,7 +110,10 @@ export class MapService {
   }
 
 
-  constructor() {
+  constructor(
+    private m_oDialog: MatDialog,
+    private m_oRouter: Router
+  ) {
     this.initTilelayer();
 
     this.m_oOptions = {
@@ -101,7 +123,7 @@ export class MapService {
       zoomControl: false,
       zoom: 3,
       // center: latLng(0, 0),
-      edit: {featureGroup: this.m_oDrawnItems},
+      edit: { featureGroup: this.m_oDrawnItems },
       fullscreenControl: true,
       fullscreenControlOptions: {
         position: 'topleft'
@@ -176,7 +198,7 @@ export class MapService {
         "EsriWorldImagery": this.m_oEsriWorldImagery,
         "Stadi Map Dark": this.m_oStadiMapDark
       }, null,
-      {position: 'bottomright'}
+      { position: 'bottomright' }
     )
   }
 
@@ -206,7 +228,7 @@ export class MapService {
 
     this.initGeoSearchPluginForOpenStreetMap(oMap);
     this.addMousePositionAndScale(oMap);
-    L.control.zoom({position: 'bottomright'}).addTo(oMap);
+    L.control.zoom({ position: 'bottomright' }).addTo(oMap);
     this.m_oLayersControl.addTo(oMap);
 
 
@@ -225,8 +247,6 @@ export class MapService {
     oMap.on('baselayerchange', function (e) {
       oActiveBaseLayer = e;
     });
-
-    console.log(oMap)
     return oMap;
   }
 
@@ -275,7 +295,7 @@ export class MapService {
    */
   onDrawCreated(event: any) {
     console.log(event);
-    const {layerType, layer} = event;
+    const { layerType, layer } = event;
 
     // For rectangle, calculate area
     if (layerType === "rectangle") {
@@ -317,7 +337,6 @@ export class MapService {
     return area;
   }
 
-
   calculateDistance(latlngs: L.LatLng[]): number {
     let totalDistance = 0;
     for (let i = 0; i < latlngs.length - 1; i++) {
@@ -326,5 +345,25 @@ export class MapService {
     return totalDistance / 1000;
   }
 
+  addMarker(oArea: Area, oMap: Map): Marker {
+    let asCoordinates = oArea.markerCoordinates.split(",").map(sCoordinate => sCoordinate.trim());
+    let lat = parseFloat(asCoordinates[0]);
+    let lon = parseFloat(asCoordinates[1])
+    let oMarker = L.marker([lat, lon]).on('click', () => {
+      this.m_oRouter.navigateByUrl('/monitor')
+    }).addTo(oMap);
 
+
+
+    // .on('click', () => {
+    //   console.log(oArea)
+    //   this.m_oDialog.open(AreaInfoComponent, {
+    //     data: {
+    //       selectedArea: oArea
+    //     }
+    //   })
+    // }).addTo(oMap)
+
+    return oMarker;
+  }
 }

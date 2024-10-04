@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MapService } from '../../services/map.service';
@@ -8,6 +8,8 @@ import L from 'leaflet';
 import 'leaflet-draw'
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
 import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
+import { Area } from '../../shared/models/area';
+
 
 @Component({
   selector: 'rise-map',
@@ -17,6 +19,7 @@ import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
   styleUrl: './rise-map.component.css'
 })
 export class RiseMapComponent implements OnInit, AfterViewInit {
+  @Input() m_aoAreas: Array<Area> = [];
   m_oMap: L.Map;
 
   m_oMapOptions: any;
@@ -39,6 +42,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit {
 
   onMapReady(oMap) {
     this.m_oMap = oMap;
+    this.m_oMapService.setMap(this.m_oMap)
 
     let southWest = L.latLng(0, 0);
     let northEast = L.latLng(0, 0);
@@ -52,11 +56,14 @@ export class RiseMapComponent implements OnInit, AfterViewInit {
     this.m_oMapService.addMousePositionAndScale(oMap);
     this.m_oMapService.m_oLayersControl.addTo(oMap);
     this.m_oMapService.initGeoSearchPluginForOpenStreetMap(oMap);
+
+    for (let oArea of this.m_aoAreas) {
+      this.m_oMapService.addMarker(oArea, oMap);
+    }
   }
 
   onDrawCreated(oEvent) {
     this.m_oDrawnItems.clearLayers();
     this.m_oMapService.onDrawCreated(oEvent);
-
   }
 }
