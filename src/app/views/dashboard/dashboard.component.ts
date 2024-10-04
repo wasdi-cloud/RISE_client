@@ -23,7 +23,7 @@ export class DashboardComponent {
   /**
    * TODO: add appropriate typing
    */
-  public m_aoAffectedAreas: Array<any> = [];
+  public m_iAffectedPpl: number = 0;
 
   /** 
    * TODO: add appropriate typing

@@ -26,5 +26,9 @@
         "COUNTRY": "Country",
         "TERMS_CONDITIONS": " User has read and accepted the <a href=''>Terms and Conditions</a>",
         "PRIVACY_POLICY": "User has read and accepted the <a href=''>Privacy Policy</a>"
+    },
+    "WIDGET": {
+        "AFFECTED_PPL": "Affected People",
+        "NO_AFFECTED": "No people affected"
     }
 }

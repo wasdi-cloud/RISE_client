@@ -11,3 +11,11 @@ body {
 main {
     min-height: 100vh;
 }
+
+div.widget-container {
+    border: 1px solid #000000;
+    border-radius: 8px;
+    margin: 10px;
+    padding: 1rem;
+    width: 400px;
+}
