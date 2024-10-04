@@ -35,6 +35,19 @@
     },
     "AREA_OF_OPERATIONS": {
         "CREATE_NEW_AREA_OF_OPERATION": "Create new area of operations"
-    }
+    },
+    "CREATE_NEW_AREA_OF_OPERATION": {
+      "NAME": "Name",
+      "DESCRIPTION": "Description",
+      "MAP_TITLE": "Define your Area",
+      "SAVE": "Save",
+      "CANCEL": "Cancel"
+    },
+  "RISE_SELECT_AREA": {
+    "UPLOAD_SHAPE_FILE":"Upload Shape File"
+  },
+  "RISE_CRUD_TABLE": {
+    "ADD_FIELD_USER":"Add Field User"
+  }
 }
 

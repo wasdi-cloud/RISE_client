@@ -3,6 +3,8 @@ import {Injectable} from '@angular/core';
 import Geocoder from 'leaflet-control-geocoder';
 
 declare const L: any;
+
+
 // import L from 'leaflet';
 import 'leaflet-draw'
 import "leaflet-mouse-position";
@@ -11,11 +13,13 @@ import {OtpDialogComponent} from "../dialogs/otp-dialog/otp-dialog.component";
 export interface TileLayer {
 
 }
-
+const MIN_ZOOM = 3;
+const MAX_ZOOM = 18;
 @Injectable({
   providedIn: 'root'
 })
 export class MapService {
+
   /**
    * OSM Basic Map
    */
@@ -132,14 +136,16 @@ export class MapService {
     // Basic OSM Layer
     this.m_oOSMBasic = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
-      maxZoom: 18,
+      maxZoom: MAX_ZOOM,
+      minZoom:MIN_ZOOM,
       // this option disables loading tiles outside of the world bounds.
       noWrap: true
     });
 
     // Topo Map
     this.m_oOpenTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-      maxZoom: 17,
+      maxZoom:MAX_ZOOM,
+      minZoom:MIN_ZOOM,
       attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
     });
 
@@ -155,8 +161,8 @@ export class MapService {
 
     // Stadi Dark
     this.m_oStadiMapDark = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
-      minZoom: 0,
-      maxZoom: 20,
+      minZoom: MIN_ZOOM,
+      maxZoom: MAX_ZOOM,
       attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       // ext: 'png'
     });
@@ -190,7 +196,10 @@ export class MapService {
     let oMap: L.Map = L.map(sMapDiv, {
       zoomControl: false,
       center: [0, 0],
-      zoom: 3,
+      zoom: 6,
+      maxZoom: MAX_ZOOM,
+      minZoom: MIN_ZOOM,
+
 
     });
     this.m_oOSMBasic.addTo(oMap)
