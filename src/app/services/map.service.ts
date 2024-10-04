@@ -10,6 +10,7 @@ import { Area } from '../shared/models/area';
 import { Map, Marker } from 'leaflet';
 import { MatDialog } from '@angular/material/dialog';
 import { AreaInfoComponent } from '../dialogs/area-info/area-info.component';
+import { Router } from '@angular/router';
 
 const iconRetinaUrl = '/assets/marker-icon-2x.png';
 const iconUrl = '/assets/marker-icon.png';
@@ -105,7 +106,8 @@ export class MapService {
 
 
   constructor(
-    private m_oDialog: MatDialog
+    private m_oDialog: MatDialog,
+    private m_oRouter: Router
   ) {
     this.initTilelayer();
 
@@ -235,8 +237,6 @@ export class MapService {
     oMap.on('baselayerchange', function (e) {
       oActiveBaseLayer = e;
     });
-
-    console.log(oMap)
     return oMap;
   }
 
@@ -340,18 +340,20 @@ export class MapService {
     let lat = parseFloat(asCoordinates[0]);
     let lon = parseFloat(asCoordinates[1])
     let oMarker = L.marker([lat, lon]).on('click', () => {
-      this.m_oDialog.open(AreaInfoComponent)
-    }).addTo(oMap)
+      this.m_oRouter.navigateByUrl('/monitor')
+    }).addTo(oMap);
+
+
+
+    // .on('click', () => {
+    //   console.log(oArea)
+    //   this.m_oDialog.open(AreaInfoComponent, {
+    //     data: {
+    //       selectedArea: oArea
+    //     }
+    //   })
+    // }).addTo(oMap)
 
     return oMarker;
-  }
-
-  onClick(oArea) {
-    console.log(oArea)
-    alert('clicked');
-  }
-
-  openMarkerPopup(oArea) {
-    this.m_oDialog.open(AreaInfoComponent)
   }
 }
