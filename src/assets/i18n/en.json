@@ -1,32 +1,4 @@
 {
-  "TOOLBAR": {
-    "ACCOUNT": "Account",
-    "LOGIN": "Login",
-    "LOGOUT": "Logout",
-    "SETTINGS": "Settings",
-    "SIGN_UP": "Sign Up"
-  },
-  "REGISTER": {
-    "HEADER": "Register in RISE",
-    "USER_ID": "User Id",
-    "PASSWORD": "Password",
-    "CONFIRM_PW": "Confirm Password",
-    "NAME": "Name",
-    "SURNAME": "Surname",
-    "MOBILE": "Mobile Number",
-    "EMAIL": "Email Address",
-    "CONFIRM_EMAIL": "Confirm Email Address",
-    "ORG_NAME": "Organization Name",
-    "ORG_TYPE": "Organization Type",
-    "ORG_ADDRESS": "Organization Address",
-    "STREET": "Street",
-    "POST_CODE": "Postal Code",
-    "CITY": "City",
-    "PHONE": "Phone",
-    "COUNTRY": "Country",
-    "TERMS_CONDITIONS": " User has read and accepted the <a href=''>Terms and Conditions</a>",
-    "PRIVACY_POLICY": "User has read and accepted the <a href=''>Privacy Policy</a>"
-  },
   "ACCOUNT": {
     "MY_ORGANIZATION": "My Organization",
     "MY_USER": "My User",
@@ -43,11 +15,16 @@
     "SAVE": "Save",
     "CANCEL": "Cancel"
   },
-  "RISE_SELECT_AREA": {
-    "UPLOAD_SHAPE_FILE": "Upload Shape File"
-  },
-  "RISE_CRUD_TABLE": {
-    "ADD_FIELD_USER": "Add Field User"
+  "ERROR_MSG": {
+    "ERROR_API_ORG_ALREADY_EXISTS": "An organization with this information already exists.",
+    "ERROR_API_USERID_ALREADY_EXISTS": "A user with this ID already exists.",
+    "ERROR_API_MAIL_ALREADY_EXISTS": "This email is already in use",
+    "ERROR_API_MISSING_ACCEPT_TERMS_AND_PRIVACY": "Please accept the Terms and Conditions as well as RISE's Privacy Policy",
+    "ERROR_API_WRONG_USER_OR_PASSWORD": "Either the entered username or password is incorrect",
+    "ERROR_API_WRONG_OTP": "This OPT does not match.",
+    "ERROR_API_USER_ALREADY_EXISTS": "A user with this information already exists.",
+    "ERROR_API_CONFIRM_EXPIRED": "Confirmation is expired.",
+    "ERROR_API_NO_VALID_SUBSCRIPTION": "You do not have a valid subscription at this time."
   },
   "LAYER_TYPES": {
     "FLOOD": "Flood",
@@ -55,6 +32,40 @@
     "BUILDINGS": "Buildings",
     "IMPACTS": "Impacts",
     "MORE": "More"
+  },
+  "REGISTER": {
+    "HEADER": "Register in RISE",
+    "USER_ID": "User Id",
+    "PASSWORD": "Password",
+    "CONFIRM_PW": "Confirm Password",
+    "NAME": "Name",
+    "SURNAME": "Surname",
+    "MOBILE": "Mobile Number",
+    "EMAIL": "User Email Address",
+    "CONFIRM_EMAIL": "Confirm User Email Address",
+    "ORG_NAME": "Organization Name",
+    "ORG_TYPE": "Organization Type",
+    "ORG_ADDRESS": "Organization Address",
+    "STREET": "Street",
+    "POST_CODE": "Postal Code",
+    "CITY": "City",
+    "PHONE": "Phone",
+    "COUNTRY": "Country",
+    "TERMS_CONDITIONS": " User has read and accepted the <a href=''>Terms and Conditions</a>",
+    "PRIVACY_POLICY": "User has read and accepted the <a href=''>Privacy Policy</a>"
+  },
+  "RISE_CRUD_TABLE": {
+    "ADD_FIELD_USER": "Add Field User"
+  },
+  "RISE_SELECT_AREA": {
+    "UPLOAD_SHAPE_FILE": "Upload Shape File"
+  },
+  "TOOLBAR": {
+    "ACCOUNT": "Account",
+    "LOGIN": "Login",
+    "LOGOUT": "Logout",
+    "SETTINGS": "Settings",
+    "SIGN_UP": "Sign Up"
   },
   "WIDGET": {
     "AFFECTED_PPL": "Affected People",
