@@ -2,22 +2,30 @@ import { Component, OnInit } from '@angular/core';
 import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
 import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
 import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { RiseDropdownComponent } from '../../components/rise-dropdown/rise-dropdown.component';
 import { AuthService } from '../../services/api/auth.service';
 import { Register } from '../../shared/models/register';
 import { User } from '../../shared/models/user';
 import { Organization } from '../../shared/models/organization';
 import { UserRegistration } from '../../shared/models/user-registration';
+import { OrganizationsService } from '../../services/api/organizations.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-sign-up',
   standalone: true,
-  imports: [RiseButtonComponent, RiseDropdownComponent, RiseTextInputComponent, RiseToolbarComponent, TranslateModule],
+  imports: [
+    FormsModule,
+    RiseButtonComponent,
+    RiseDropdownComponent,
+    RiseTextInputComponent,
+    RiseToolbarComponent,
+    TranslateModule,
+  ],
   templateUrl: './sign-up.component.html',
-  styleUrl: './sign-up.component.css'
+  styleUrl: './sign-up.component.css',
 })
-
 export class SignUpComponent implements OnInit {
   m_oRegisterInput: UserRegistration = {} as UserRegistration;
 
@@ -28,16 +36,19 @@ export class SignUpComponent implements OnInit {
   m_aoOrganizationTypes: Array<any> = [];
 
   m_oEmailInputs = {
-    email: "",
-    confirmEmail: ""
-  }
+    email: '',
+    confirmEmail: '',
+  };
 
   m_oPasswordInputs = {
-    password: "",
-    confirmPw: ""
-  }
+    password: '',
+    confirmPw: '',
+  };
 
-  constructor(private m_oAuthService: AuthService) { }
+  constructor(
+    private m_oAuthService: AuthService,
+    private m_oTranslate: TranslateService
+  ) {}
 
   ngOnInit(): void {
     this.getOrganizationTypes();
@@ -45,7 +56,8 @@ export class SignUpComponent implements OnInit {
 
   validatePassword(sPassword: string, sConfirmPw: string): boolean {
     // Minimum 8 Characters, at least one letter, one number, and one special character:
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}/;
+    const passwordRegex =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}/;
     // If the user has modified both inputs
     if (sPassword && sConfirmPw) {
       //If the first password doesn't pass regex OR the pw's don't match
@@ -73,7 +85,7 @@ export class SignUpComponent implements OnInit {
       }
       // If there is no input, do not show validation message
     } else {
-      return true
+      return true;
     }
   }
 
@@ -81,26 +93,47 @@ export class SignUpComponent implements OnInit {
     return true;
   }
 
-  getOrganizationTypes() {
-
-  }
+  getOrganizationTypes() {}
 
   register() {
-    //Check validations 
-    if (this.validateEmail(this.m_oEmailInputs.email, this.m_oEmailInputs.confirmEmail)) {
+    //Check validations
+    if (
+      this.validateEmail(
+        this.m_oEmailInputs.email,
+        this.m_oEmailInputs.confirmEmail
+      )
+    ) {
       this.m_oUserInfoInput.email = this.m_oEmailInputs.email;
     }
-    if(this.validatePassword(this.m_oPasswordInputs.password, this.m_oPasswordInputs.confirmPw)) {
+    if (
+      this.validatePassword(
+        this.m_oPasswordInputs.password,
+        this.m_oPasswordInputs.confirmPw
+      )
+    ) {
       this.m_oRegisterInput.password = this.m_oPasswordInputs.password;
     }
-    //TODO Phone Number Validations 
-    
-    this.m_oRegisterInput.user = this.m_oUserInfoInput;
+
+    this.m_oRegisterInput.admin = this.m_oUserInfoInput;
     this.m_oRegisterInput.organization = this.m_oOrgInfoInput;
 
-    // this.m_oAuthService.registerUser(this.m_oRegisterInput).subscribe({
-    //   next: oResponse => {},
-    //   error: oError => {}
-    // })
+    console.log(this.m_oRegisterInput);
+
+    this.m_oAuthService.registerUser(this.m_oRegisterInput).subscribe({
+      next: (oResponse) => {
+        if(oResponse.status === 200) {
+          alert("User Registered");
+          alert("Organization Registered");
+        }
+      },
+      error: (oError) => {
+        if (oError.error.errorStringCodes) {
+          let asTranslationKeys: Array<string> = oError.error.errorStringCodes;
+          asTranslationKeys.forEach((sKey) =>
+            console.log(this.m_oTranslate.instant(sKey))
+          );
+        }
+      },
+    });
   }
 }
