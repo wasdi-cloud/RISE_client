@@ -7,35 +7,78 @@ import { OtpDialogComponent } from '../../dialogs/otp-dialog/otp-dialog.componen
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
-
-
 @Component({
   selector: 'app-login-view',
   standalone: true,
-  imports: [RiseButtonComponent, RiseTextInputComponent, OtpDialogComponent,],
+  imports: [RiseButtonComponent, RiseTextInputComponent, OtpDialogComponent],
   templateUrl: './login-view.component.html',
-  styleUrl: './login-view.component.css'
+  styleUrl: './login-view.component.css',
 })
 export class LoginViewComponent {
   public m_oUserInput: UserCredentials = {
-    userId: "",
-    password: ""
+    userId: '',
+    password: '',
   };
 
-  constructor(private m_oAuthService: AuthService, private m_oDialog: MatDialog, private m_oRouter: Router) { }
+  private m_oOTPVerifyVM: any = {};
+
+  constructor(
+    private m_oAuthService: AuthService,
+    private m_oDialog: MatDialog,
+    private m_oRouter: Router
+  ) {}
 
   executeLogin() {
     // this.m_oAuthService.loginUser(this.m_oUserInput); -> Returns OTP View Model
-
-    let oOtpViewModel;
-    let oDialogRef = this.m_oDialog.open(OtpDialogComponent, {
-      data: oOtpViewModel
+    this.m_oAuthService.loginUser(this.m_oUserInput).subscribe({
+      next: (oResponse) => {
+        if (oResponse) {
+          this.m_oOTPVerifyVM = oResponse;
+          let oDialogRef = this.m_oDialog.open(OtpDialogComponent);
+          oDialogRef.afterClosed().subscribe((sResult) => {
+            this.verifyOtp(sResult);
+          });
+        }
+      },
+      error: (oError) => {
+        console.log(oError);
+      },
     });
+  }
 
-    oDialogRef.afterClosed().subscribe(oResult => {
-      // OTP Dialog result returned TRUE -> IN RISE will perform a check
-      if(oResult) {
-        this.m_oRouter.navigateByUrl('/dashboard')
+  verifyOtp(sOTP) {
+    if (sOTP) {
+      this.m_oOTPVerifyVM.userProvidedCode = sOTP;
+      console.log(this.m_oOTPVerifyVM);
+      this.m_oAuthService.verifyOTP(this.m_oOTPVerifyVM).subscribe({
+        next: (oResponse) => {
+          if (oResponse.status === 200) {
+            this.verifyLogin()
+          }
+        },
+        error: (oError) => {
+          console.log(oError);
+        },
+      });
+    }
+  }
+
+  verifyLogin() {
+    let oOtpVerify = {
+      id: this.m_oOTPVerifyVM.id,
+      userId: this.m_oOTPVerifyVM.userId
+    }
+
+    this.m_oAuthService.loginVerify(oOtpVerify).subscribe({
+      next: oResponse => {
+        if(oResponse.token) {
+          //Set user Token and login
+          this.m_oAuthService.saveToken(oResponse.token);
+          this.m_oRouter.navigateByUrl('/dashboard');
+        }
+      },
+      error: oError => {
+        console.log(oError)
       }
     })
   }
