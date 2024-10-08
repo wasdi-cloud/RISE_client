@@ -154,7 +154,6 @@ export class CreateAreaOfOperationComponent {
   }
 
   handleTableData(tableData: any[]) {
-    console.log('Received table data:', tableData);
     this.m_aoFieldUsers=tableData;
     // Process the data as needed in your component
     // For example, you can store it in a local variable or pass it to another service

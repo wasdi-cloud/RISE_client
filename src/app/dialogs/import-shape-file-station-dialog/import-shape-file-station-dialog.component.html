@@ -5,18 +5,15 @@
   </div>
   <div class="dialog-content flex-fill d-flex flex-column gap-3">
     <div>
-<!--      <div class="header font-bold">{{ "DIALOG_IMPORT_LOCATION" }}</div>-->
-<!--      <div>{{'something' }}</div>-->
+      <!--      <div class="header font-bold">{{ "DIALOG_IMPORT_LOCATION" }}</div>-->
+      <!--      <div>{{'something' }}</div>-->
     </div>
-<!--    <div>{{ "DIALOG_IMPORT_FILE_TYPES" }}</div>-->
+    <!--    <div>{{ "DIALOG_IMPORT_FILE_TYPES" }}</div>-->
 
     <div class="drag-drop-container">
 
-      <rise-drag-and-drop (m_oSelectedFileOutput)="getSelectedFile($event)"></rise-drag-and-drop>
+      <rise-drag-and-drop (m_oSelectedFileOutput)="onFileSelected($event)"></rise-drag-and-drop>
 
-    </div>
-    <div class="mt-3">
-<!--      <div class="font-bold">{{ "DIALOG_IMPORT_APPLY_STYLE" }}</div>-->
 
     </div>
   </div>

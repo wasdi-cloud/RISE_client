@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ImportStationDialogComponent } from './import-station-dialog.component';
+import { ImportShapeFileStationDialogComponent } from './import-shape-file-station-dialog.component';
 
 describe('ImportStationDialogComponent', () => {
-  let component: ImportStationDialogComponent;
-  let fixture: ComponentFixture<ImportStationDialogComponent>;
+  let component: ImportShapeFileStationDialogComponent;
+  let fixture: ComponentFixture<ImportShapeFileStationDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ImportStationDialogComponent]
+      imports: [ImportShapeFileStationDialogComponent]
     })
     .compileComponents();
-    
-    fixture = TestBed.createComponent(ImportStationDialogComponent);
+
+    fixture = TestBed.createComponent(ImportShapeFileStationDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

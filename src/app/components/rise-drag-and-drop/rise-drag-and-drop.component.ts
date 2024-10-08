@@ -15,32 +15,23 @@ export class RiseDragAndDropComponent {
   @Input() m_sPrompt?: string = "Drop file"
   @Input() m_sFormDataType: string = 'file'
   m_sSelectedFileName: string = '';
-  m_oSelectedFile: any;
+  m_oSelectedFile: File|null=null;
 
   /**
    * Handle Files selected by the browse feature
    * @param oInput
    */
   onFileSelect(oInput: any) {
-    let oInputFile
-
-    if (oInput['0']) {
-      oInputFile = oInput['0'];
-
-    } else if (oInput.files['0']) {
-      oInputFile = oInput.files['0']
+    const file = oInput.target.files[0];
+    if (file) {
+      this.m_oSelectedFile = file;
+      this.m_oSelectedFileOutput.emit({
+        name: this.m_sSelectedFileName,
+        file: this.m_oSelectedFile
+      });
+    } else {
+      console.error('No file selected.');
     }
-    this.m_sSelectedFileName = oInputFile.name;
-    this.m_oSelectedFile = new FormData();
-    if (this.m_sFormDataType === 'file') {
-      this.m_oSelectedFile.append('file', oInputFile);
-    } else if (this.m_sFormDataType === 'image') {
-      this.m_oSelectedFile.append('image', oInputFile)
-    }
-    this.m_oSelectedFileOutput.emit({
-      name: this.m_sSelectedFileName,
-      file: this.m_oSelectedFile
-    });
   }
 
   /**

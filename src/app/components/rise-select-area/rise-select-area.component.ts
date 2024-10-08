@@ -12,7 +12,7 @@ import {NgIf} from "@angular/common";
 import {MatDialog} from "@angular/material/dialog";
 import {ManualBoundingBoxComponent} from "../../dialogs/manual-bounding-box-dialog/manual-bounding-box.component";
 import {RiseButtonComponent} from "../rise-button/rise-button.component";
-import {ImportStationDialogComponent} from "../../dialogs/import-station-dialog/import-station-dialog.component";
+import {ImportShapeFileStationDialogComponent} from "../../dialogs/import-shape-file-station-dialog/import-shape-file-station-dialog.component";
 
 @Component({
   selector: 'rise-select-area',
@@ -316,10 +316,39 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
 
 //todo work on import logic
   openImportDialog(): void {
-    this.m_oDialog.open(ImportStationDialogComponent, {
+    let oDialog=this.m_oDialog.open(ImportShapeFileStationDialogComponent, {
       height: '425px',
       width: '660px',
     })
+    oDialog.afterClosed().subscribe(oResult => {
+      if (oResult) {
+        console.log(oResult); // The GeoJSON result from the dialog
+
+        // Check if the map is defined
+        if (this.m_oMap) {
+          // Add GeoJSON to the map
+          const geoJsonLayer = L.geoJSON(oResult, {
+            style: function (feature) {
+              return { color: "#ff7800", weight: 2 }; // You can customize the style
+            },
+            onEachFeature: function (feature, layer) {
+              layer.bindPopup(`<b>Feature:</b> ${feature.properties.name || 'No Name'}`);
+            }
+          }).addTo(this.m_oMap);
+
+          // Optionally, fit the map view to the bounds of the added GeoJSON layer
+          this.m_oMap.fitBounds(geoJsonLayer.getBounds());
+        } else {
+          console.error('Map is not initialized.');
+        }
+      }
+    });
+  }
+  addGeoJSONToMap(geojson: any) {
+    if (this.m_oMap && geojson) {
+      L.geoJSON(geojson).addTo(this.m_oMap); // Adds the GeoJSON layer to the map
+      console.log('GeoJSON added to the map:', geojson);
+    }
   }
 
 
