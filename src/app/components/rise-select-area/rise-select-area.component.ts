@@ -55,6 +55,8 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
   m_aoDrawnItems: L.FeatureGroup;
   m_oLastCircle: L.Circle | null = null;
   m_oLastMarker: L.Marker | null = null;
+  oGeoJsonLayer: L.GeoJSON | null = null;
+
 
   constructor(private m_oDialog: MatDialog,private m_oMapService:MapService) {
     this.m_oMapOptions = this.m_oMapService.m_oOptions;
@@ -145,21 +147,150 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
     oMap.addControl(new m_oManualBoxingButton());
   }
   onDrawCreated(oEvent) {
-    // Clear previous circle and marker
-    if (this.m_oLastCircle) {
-      this.m_oMap.removeLayer(this.m_oLastCircle);
-      this.m_oLastCircle = null;
-    }
-    if (this.m_oLastMarker) {
-      this.m_oMap.removeLayer(this.m_oLastMarker);
-      this.m_oLastMarker = null;
-    }
-
-    this.m_oDrawnItems.clearLayers();
+    this.clearPreviousDrawings()
     this.m_oMapService.onDrawCreated(oEvent);
     this.emitDrawnAreaEvent(oEvent);
   }
+//Handle when the user want to choose a position and let rise draw the minimum area around that point
+  addCircleButton(oMap: any) {
+    let bIsDrawing = false; // Flag to track if drawing is active
 
+    const circleButton = L.Control.extend({
+      options: {
+        position: "topright"
+      },
+      onAdd: (oMap) => {
+        let oContainer = L.DomUtil.create("div", "leaflet-bar leaflet-control");
+
+        // Create the button for drawing the circle
+        let oDrawButton = L.DomUtil.create('a', 'leaflet-control-button', oContainer);
+        oDrawButton.style.cursor = 'pointer'; // Change the cursor to pointer on hover
+        oDrawButton.innerHTML = '<span class="material-symbols-outlined">adjust</span>';
+        oDrawButton.title = "Draw Circle";
+
+        // Create the cancel button
+        let oCancelButton = L.DomUtil.create('a', 'leaflet-control-button', oContainer);
+        oCancelButton.style.cursor = 'pointer';
+        oCancelButton.innerHTML = '<span class="material-symbols-outlined">cancel</span>';
+        oCancelButton.title = "Cancel Drawing";
+        // Disable map interaction on button click
+        L.DomEvent.disableClickPropagation(oDrawButton);
+        L.DomEvent.disableClickPropagation(oCancelButton);
+
+        // Add the draw button click listener
+        L.DomEvent.on(oDrawButton, 'click', () => {
+          // Clear previous layers and reset drawing
+          this.clearPreviousDrawings();
+
+
+
+
+
+          // Set drawing flag to true
+          bIsDrawing = true;
+
+          // Function to create the circle on map click
+          const onMapClick = (e: any) => {
+            if (!bIsDrawing) return;
+
+            const fLat = e.latlng.lat;
+            const fLng = e.latlng.lng;
+            const fRadius = 500000; // Set the radius of the circle (in meters)
+
+            // Add the new circle to the map
+            this.m_oLastCircle = L.circle([fLat, fLng], { radius: fRadius }).addTo(oMap);
+            this.m_oLastMarker = L.marker([fLat, fLng]).addTo(oMap);
+            this.emitCircleButtonAreaEvent(fRadius, fLat, fLng);
+            // Set view to the clicked location without zooming too much
+            const currentZoom = oMap.getZoom();
+            const targetZoom = Math.min(currentZoom, 13); // Ensure it doesn't zoom too much
+            oMap.setView([fLat, fLng], targetZoom);
+
+            // Remove the click listener after drawing
+            oMap.off('click', onMapClick);
+            bIsDrawing = false; // Reset the drawing flag
+          };
+
+          // Activate the map click listener for drawing the circle and adding the marker
+          oMap.on('click', onMapClick);
+        });
+
+        // Add the cancel button click listener
+        L.DomEvent.on(oCancelButton, 'click', () => {
+          console.log("Cancel button clicked!");
+          this.clearPreviousDrawings();
+          // Stop listening for clicks and reset the flag
+          bIsDrawing = false;
+          // Emit null to reset the shape
+          this.m_oMapInputChange.emit(null);
+          oMap.off('click'); // Remove all click listeners to stop drawing
+        });
+
+        return oContainer;
+      },
+      onRemove: function (map) { },
+    });
+
+    // Add the control to the map
+    oMap.addControl(new circleButton());
+  }
+  clearPreviousDrawings() {
+    if (this.m_oDrawnItems) {
+      this.m_oDrawnItems.clearLayers();
+    }
+
+    // Clear last circle and marker
+    if (this.m_oLastCircle) {
+      this.m_oMap.removeLayer(this.m_oLastCircle);
+      this.m_oLastCircle = null; // Reset reference
+    }
+    if (this.m_oLastMarker) {
+      this.m_oMap.removeLayer(this.m_oLastMarker);
+      this.m_oLastMarker = null; // Reset reference
+    }
+    // Remove the previous GeoJSON layer if it exists
+    if (this.oGeoJsonLayer) {
+      this.m_oMap.removeLayer(this.oGeoJsonLayer);
+      this.oGeoJsonLayer=null;
+    }
+  }
+  openImportDialog(): void {
+    let oDialog=this.m_oDialog.open(ImportShapeFileStationDialogComponent, {
+      height: '425px',
+      width: '660px',
+    })
+    // Declare a variable to hold the GeoJSON layer
+
+    oDialog.afterClosed().subscribe(oResult => {
+      if (oResult) {
+        console.log(oResult); // The GeoJSON result from the dialog
+
+        // Check if the map is defined
+        if (this.m_oMap) {
+          this.clearPreviousDrawings();
+
+
+          // Add GeoJSON to the map
+          this.oGeoJsonLayer = L.geoJSON(oResult, {
+            style: function (feature) {
+              return { color: "#ff7800", weight: 2 }; // Customize the style
+            },
+            onEachFeature: function (feature, layer) {
+              layer.bindPopup(`<b>Feature:</b> ${feature.properties.name || 'No Name'}`);
+            }
+          }).addTo(this.m_oMap);
+
+          // Optionally, fit the map view to the bounds of the added GeoJSON layer
+          this.m_oMap.fitBounds(this.oGeoJsonLayer.getBounds());
+        } else {
+          console.error('Map is not initialized.');
+        }
+      }
+    });
+  }
+
+
+  //emitting the area to the parent component
   private emitDrawnAreaEvent(oEvent) {
     let iSelectedArea = 0;
     let oShapeInfo = {};
@@ -199,108 +330,6 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
     // Emit the shape information (area, points, center, radius) to the parent component
     this.m_oMapInputChange.emit(oShapeInfo);
   }
-
-//Handle when the user want to choose a position and let rise draw the minimum area around that point
-  addCircleButton(oMap: any) {
-    let bIsDrawing = false; // Flag to track if drawing is active
-
-    const circleButton = L.Control.extend({
-      options: {
-        position: "topright"
-      },
-      onAdd: (oMap) => {
-        let oContainer = L.DomUtil.create("div", "leaflet-bar leaflet-control");
-
-        // Create the button for drawing the circle
-        let oDrawButton = L.DomUtil.create('a', 'leaflet-control-button', oContainer);
-        oDrawButton.style.cursor = 'pointer'; // Change the cursor to pointer on hover
-        oDrawButton.innerHTML = '<span class="material-symbols-outlined">adjust</span>';
-        oDrawButton.title = "Draw Circle";
-
-        // Create the cancel button
-        let oCancelButton = L.DomUtil.create('a', 'leaflet-control-button', oContainer);
-        oCancelButton.style.cursor = 'pointer';
-        oCancelButton.innerHTML = '<span class="material-symbols-outlined">cancel</span>';
-        oCancelButton.title = "Cancel Drawing";
-        // Disable map interaction on button click
-        L.DomEvent.disableClickPropagation(oDrawButton);
-        L.DomEvent.disableClickPropagation(oCancelButton);
-
-        // Add the draw button click listener
-        L.DomEvent.on(oDrawButton, 'click', () => {
-          // Clear previous layers and reset drawing
-          if (this.m_oDrawnItems) {
-
-            this.m_oDrawnItems.clearLayers();
-          } else {
-            console.error("m_oDrawnItems is undefined or null.");
-          }
-
-          // Clear previous circle and marker
-          if (this.m_oLastCircle) {
-            oMap.removeLayer(this.m_oLastCircle);
-          }
-          if (this.m_oLastMarker) {
-            oMap.removeLayer(this.m_oLastMarker);
-          }
-
-
-
-          // Set drawing flag to true
-          bIsDrawing = true;
-
-          // Function to create the circle on map click
-          const onMapClick = (e: any) => {
-            if (!bIsDrawing) return;
-
-            const fLat = e.latlng.lat;
-            const fLng = e.latlng.lng;
-            const fRadius = 500000; // Set the radius of the circle (in meters)
-
-            // Add the new circle to the map
-            this.m_oLastCircle = L.circle([fLat, fLng], { radius: fRadius }).addTo(oMap);
-            this.m_oLastMarker = L.marker([fLat, fLng]).addTo(oMap);
-            this.emitCircleButtonAreaEvent(fRadius, fLat, fLng);
-            // Set view to the clicked location without zooming too much
-            const currentZoom = oMap.getZoom();
-            const targetZoom = Math.min(currentZoom, 13); // Ensure it doesn't zoom too much
-            oMap.setView([fLat, fLng], targetZoom);
-
-            // Remove the click listener after drawing
-            oMap.off('click', onMapClick);
-            bIsDrawing = false; // Reset the drawing flag
-          };
-
-          // Activate the map click listener for drawing the circle and adding the marker
-          oMap.on('click', onMapClick);
-        });
-
-        // Add the cancel button click listener
-        L.DomEvent.on(oCancelButton, 'click', () => {
-          console.log("Cancel button clicked!");
-          // Clear previous circle and marker
-          if (this.m_oLastCircle) {
-            oMap.removeLayer(this.m_oLastCircle);
-          }
-          if (this.m_oLastMarker) {
-            oMap.removeLayer(this.m_oLastMarker);
-          }
-          // Stop listening for clicks and reset the flag
-          bIsDrawing = false;
-          // Emit null to reset the shape
-          this.m_oMapInputChange.emit(null);
-          oMap.off('click'); // Remove all click listeners to stop drawing
-        });
-
-        return oContainer;
-      },
-      onRemove: function (map) { },
-    });
-
-    // Add the control to the map
-    oMap.addControl(new circleButton());
-  }
-
   private emitCircleButtonAreaEvent(fRadius: number, fLat, fLng) {
     const fArea = Math.PI * fRadius * fRadius;
 
@@ -314,42 +343,8 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
     this.m_oMapInputChange.emit(oShapeInfo);
   }
 
-//todo work on import logic
-  openImportDialog(): void {
-    let oDialog=this.m_oDialog.open(ImportShapeFileStationDialogComponent, {
-      height: '425px',
-      width: '660px',
-    })
-    oDialog.afterClosed().subscribe(oResult => {
-      if (oResult) {
-        console.log(oResult); // The GeoJSON result from the dialog
 
-        // Check if the map is defined
-        if (this.m_oMap) {
-          // Add GeoJSON to the map
-          const geoJsonLayer = L.geoJSON(oResult, {
-            style: function (feature) {
-              return { color: "#ff7800", weight: 2 }; // You can customize the style
-            },
-            onEachFeature: function (feature, layer) {
-              layer.bindPopup(`<b>Feature:</b> ${feature.properties.name || 'No Name'}`);
-            }
-          }).addTo(this.m_oMap);
 
-          // Optionally, fit the map view to the bounds of the added GeoJSON layer
-          this.m_oMap.fitBounds(geoJsonLayer.getBounds());
-        } else {
-          console.error('Map is not initialized.');
-        }
-      }
-    });
-  }
-  addGeoJSONToMap(geojson: any) {
-    if (this.m_oMap && geojson) {
-      L.geoJSON(geojson).addTo(this.m_oMap); // Adds the GeoJSON layer to the map
-      console.log('GeoJSON added to the map:', geojson);
-    }
-  }
 
 
 }
