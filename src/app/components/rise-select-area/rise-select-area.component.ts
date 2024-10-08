@@ -234,26 +234,7 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
     // Add the control to the map
     oMap.addControl(new circleButton());
   }
-  clearPreviousDrawings() {
-    if (this.m_oDrawnItems) {
-      this.m_oDrawnItems.clearLayers();
-    }
 
-    // Clear last circle and marker
-    if (this.m_oLastCircle) {
-      this.m_oMap.removeLayer(this.m_oLastCircle);
-      this.m_oLastCircle = null; // Reset reference
-    }
-    if (this.m_oLastMarker) {
-      this.m_oMap.removeLayer(this.m_oLastMarker);
-      this.m_oLastMarker = null; // Reset reference
-    }
-    // Remove the previous GeoJSON layer if it exists
-    if (this.oGeoJsonLayer) {
-      this.m_oMap.removeLayer(this.oGeoJsonLayer);
-      this.oGeoJsonLayer=null;
-    }
-  }
   openImportDialog(): void {
     let oDialog=this.m_oDialog.open(ImportShapeFileStationDialogComponent, {
       height: '425px',
@@ -282,13 +263,35 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
 
           // Optionally, fit the map view to the bounds of the added GeoJSON layer
           this.m_oMap.fitBounds(this.oGeoJsonLayer.getBounds());
+
+          // Emit the shape information from the GeoJSON
+          this.emitGeoJSONShapeInfo(oResult);
         } else {
           console.error('Map is not initialized.');
         }
       }
     });
   }
+  clearPreviousDrawings() {
+    if (this.m_oDrawnItems) {
+      this.m_oDrawnItems.clearLayers();
+    }
 
+    // Clear last circle and marker
+    if (this.m_oLastCircle) {
+      this.m_oMap.removeLayer(this.m_oLastCircle);
+      this.m_oLastCircle = null; // Reset reference
+    }
+    if (this.m_oLastMarker) {
+      this.m_oMap.removeLayer(this.m_oLastMarker);
+      this.m_oLastMarker = null; // Reset reference
+    }
+    // Remove the previous GeoJSON layer if it exists
+    if (this.oGeoJsonLayer) {
+      this.m_oMap.removeLayer(this.oGeoJsonLayer);
+      this.oGeoJsonLayer=null;
+    }
+  }
 
   //emitting the area to the parent component
   private emitDrawnAreaEvent(oEvent) {
@@ -341,6 +344,24 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
       area: fArea // Add area to the emitted shape info
     };
     this.m_oMapInputChange.emit(oShapeInfo);
+  }
+  private emitGeoJSONShapeInfo(geoJson: any) {
+    const shapeInfo = {
+      type: geoJson.type,
+      // features: geoJson.features.map((feature: any) => {
+      //   const coordinates = feature.geometry.coordinates;
+      //   const type = feature.geometry.type;
+      //
+      //   return {
+      //     type: type,
+      //     coordinates: coordinates,
+      //     properties: feature.properties,
+      //   };
+      // }),
+    };
+
+    // Emit the shape information to the parent component
+    this.m_oMapInputChange.emit(shapeInfo);
   }
 
 
