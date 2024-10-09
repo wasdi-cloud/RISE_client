@@ -244,8 +244,6 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
 
     oDialog.afterClosed().subscribe(oResult => {
       if (oResult) {
-        console.log(oResult); // The GeoJSON result from the dialog
-
         // Check if the map is defined
         if (this.m_oMap) {
           this.clearPreviousDrawings();
@@ -346,22 +344,35 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
     this.m_oMapInputChange.emit(oShapeInfo);
   }
   private emitGeoJSONShapeInfo(geoJson: any) {
-    const shapeInfo = {
-      type: geoJson.type,
-      // features: geoJson.features.map((feature: any) => {
-      //   const coordinates = feature.geometry.coordinates;
-      //   const type = feature.geometry.type;
-      //
-      //   return {
-      //     type: type,
-      //     coordinates: coordinates,
-      //     properties: feature.properties,
-      //   };
-      // }),
-    };
+    let oShapeInfo = {};
+    let iSelectedArea=0;
+    console.log(geoJson)
+    if(geoJson.geometry.type==="Polygon"){
+      // GeoJSON coordinates are in [lng, lat] format, need to convert to [lat, lng]
+      const latLngs = geoJson.geometry.coordinates[0].map((point: [number, number]) => {
+        return L.latLng(point[1], point[0]); // Convert [lng, lat] to [lat, lng]
+      });
 
+      // Calculate the area of the polygon using Leaflet GeometryUtil
+      iSelectedArea = L.GeometryUtil.geodesicArea(latLngs);
+
+      // Prepare the points data
+      const points = latLngs.map((point: L.LatLng) => {
+        return { lat: point.lat, lng: point.lng };
+      });
+
+      oShapeInfo = {
+        type: 'polygon',
+        points: points,
+        area: iSelectedArea
+      };
+
+    }else if ( geoJson.type==="circle"){
+      //todo will have to test with file to verify
+    }
+    console.log(oShapeInfo)
     // Emit the shape information to the parent component
-    this.m_oMapInputChange.emit(shapeInfo);
+    this.m_oMapInputChange.emit(oShapeInfo);
   }
 
 

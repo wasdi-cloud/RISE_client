@@ -71,6 +71,7 @@ export class CreateAreaOfOperationComponent {
   }
 
   onMapInputChange(shapeInfo: any) {
+    console.log(shapeInfo)
     if (shapeInfo.type === 'circle') {
       this.m_oAreaInfo = {
         type: 'circle',
@@ -87,6 +88,7 @@ export class CreateAreaOfOperationComponent {
         points: shapeInfo.points,
         area: shapeInfo.area
       };
+      console.log('polygone is here')
     }
   }
 
