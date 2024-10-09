@@ -49,7 +49,6 @@ export class LoginViewComponent {
   verifyOtp(sOTP) {
     if (sOTP) {
       this.m_oOTPVerifyVM.userProvidedCode = sOTP;
-      console.log(this.m_oOTPVerifyVM);
       this.m_oAuthService.verifyOTP(this.m_oOTPVerifyVM).subscribe({
         next: (oResponse) => {
           if (oResponse.status === 200) {
