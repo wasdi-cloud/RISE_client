@@ -18,8 +18,6 @@ export class AuthService {
     private m_oHttp: HttpClient
   ) {}
 
-  
-
   saveToken(sToken: string) {
     localStorage.setItem('access_token', sToken);
     localStorage.setItem('refresh_token', sToken);
@@ -78,7 +76,9 @@ export class AuthService {
    * @returns
    */
   registerUser(oUser: UserRegistration) {
-    return this.m_oHttp.post<any>(this.APIURL + '/auth/login', oUser);
+    return this.m_oHttp.post<any>(this.APIURL + '/auth/register', oUser, {
+      observe: 'response',
+    });
   }
 
   /**
