@@ -33,6 +33,14 @@
     "IMPACTS": "Impacts",
     "MORE": "More"
   },
+  "LOGIN": {
+    "USER_ID": "User Id",
+    "PASSWORD": "Password"
+  },
+  "OTP_DIALOG": {
+    "SUBMIT": "Submit", 
+    "ENTER_PW": "Please enter your One Time Pass Code"
+  },
   "REGISTER": {
     "HEADER": "Register in RISE",
     "USER_ID": "User Id",

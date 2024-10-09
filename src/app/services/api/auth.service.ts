@@ -6,10 +6,9 @@ import { UserRegistration } from '../../shared/models/user-registration';
 import { ConstantsService } from '../constants.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   private APIURL: string = this.m_oConstantsService.getAPIURL();
 
   // private AUTHURL: string = '';
@@ -17,12 +16,34 @@ export class AuthService {
   constructor(
     private m_oConstantsService: ConstantsService,
     private m_oHttp: HttpClient
-  ) { }
+  ) {}
+
+  
+
+  saveToken(sToken: string) {
+    localStorage.setItem('access_token', sToken);
+    localStorage.setItem('refresh_token', sToken);
+  }
+
+  getTokenObject() {
+    if (
+      localStorage.getItem('access_token') &&
+      localStorage.getItem('refresh_token')
+    ) {
+      return {
+        access_token: localStorage.getItem('access_token'),
+        refresh_token: localStorage.getItem('refresh_token'),
+      };
+    }
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    return null;
+  }
 
   /**
    * Log a user into RISE
-   * @param oCredentials 
-   * @returns 
+   * @param oCredentials
+   * @returns
    */
   loginUser(oCredentials: UserCredentials) {
     return this.m_oHttp.post<any>(this.APIURL + '/auth/login', oCredentials);
@@ -30,26 +51,31 @@ export class AuthService {
 
   /**
    * Verify the user's one time password execution
-   * @param oOTPViewModel 
-   * @returns 
+   * @param oOTPViewModel
+   * @returns
    */
   verifyOTP(oOTPViewModel) {
-    return this.m_oHttp.post<any>(this.APIURL + '/auth/otp', oOTPViewModel)
+    return this.m_oHttp.post<any>(this.APIURL + '/auth/otp', oOTPViewModel, {
+      observe: 'response',
+    });
   }
 
   /**
    * Verify the user upon login
-   * @param oOTPVerifyVM 
-   * @returns 
+   * @param oOTPVerifyVM
+   * @returns
    */
   loginVerify(oOTPVerifyVM) {
-    return this.m_oHttp.post<any>(this.APIURL + '/auth/login_verify', oOTPVerifyVM);
+    return this.m_oHttp.post<any>(
+      this.APIURL + '/auth/login_verify',
+      oOTPVerifyVM
+    );
   }
 
   /**
    * Register a user in an organization
-   * @param oUser 
-   * @returns 
+   * @param oUser
+   * @returns
    */
   registerUser(oUser: UserRegistration) {
     return this.m_oHttp.post<any>(this.APIURL + '/auth/login', oUser);
@@ -57,20 +83,26 @@ export class AuthService {
 
   /**
    * Confirm an admin user
-   * @param iConfirmationCode 
-   * @param sUser 
-   * @returns 
+   * @param iConfirmationCode
+   * @param sUser
+   * @returns
    */
   confirmAdm(iConfirmationCode: number, sUser: any) {
-    return this.m_oHttp.get<any>(this.APIURL + `/auth/confirm_adm?code="${iConfirmationCode}"&usr="${sUser}"`)
+    return this.m_oHttp.get<any>(
+      this.APIURL +
+        `/auth/confirm_adm?code="${iConfirmationCode}"&usr="${sUser}"`
+    );
   }
 
   /**
    * Confirm an invited user's account
-   * @param oConfirmationVM 
-   * @returns 
+   * @param oConfirmationVM
+   * @returns
    */
   confirmUser(oConfirmationVM: any) {
-    return this.m_oHttp.post<any>(this.APIURL + '/auth/confirm_usr', oConfirmationVM)
+    return this.m_oHttp.post<any>(
+      this.APIURL + '/auth/confirm_usr',
+      oConfirmationVM
+    );
   }
 }
