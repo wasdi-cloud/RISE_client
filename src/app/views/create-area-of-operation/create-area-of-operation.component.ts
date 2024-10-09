@@ -9,6 +9,8 @@ import {RiseTextAreaInputComponent} from "../../components/rise-textarea-input/r
 import {AddRowDialogComponent} from "../../dialogs/add-row-dialog/add-row-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {RiseButtonComponent} from "../../components/rise-button/rise-button.component";
+import {AreaViewModel} from "../../models/AreaViewModel";
+import {AreaService} from "../../services/api/area.service";
 
 @Component({
   selector: 'app-create-area-of-operation',
@@ -34,18 +36,25 @@ export class CreateAreaOfOperationComponent {
     {label: 'Buildings', value: 3},
     {label: 'Impacts', value: 4}
   ];
+
+  //todo get users from org
   m_aoUserData = [
     {Mail: 'John Doe', User_ID: 'john@example.com'},
     {Mail: 'Jane Smith', User_ID: 'jane@example.com'}
   ];
   m_asUsersColumns: string[] = ["Mail", "User_ID"];
+
+
+  m_oAreaOfOperation:AreaViewModel;
   m_sAreaOfOperationDescription: string;
   m_sAreaOfOperationName: string;
   m_oAreaInfo = {}
   m_asEventsSelected=[]
   m_aoFieldUsers=[]
 
-  constructor(private dialog: MatDialog) {
+  constructor(
+    private oDialog: MatDialog,
+    private  m_oAreaOfOperationService:AreaService) {
   }
 
   onRowDelete(row: any) {
@@ -53,7 +62,7 @@ export class CreateAreaOfOperationComponent {
   }
 
   onRowAdd() {
-    const oDialogRef = this.dialog.open(AddRowDialogComponent, {
+    const oDialogRef = this.oDialog.open(AddRowDialogComponent, {
       width: '300px',
       data: {fields: this.m_asUsersColumns}
     });
@@ -93,6 +102,7 @@ export class CreateAreaOfOperationComponent {
   }
 
   SaveAreaOfOperation() {
+    //todo add confirmation
     //todo rise utils
     if (this.m_sAreaOfOperationDescription === null || this.m_sAreaOfOperationName === null) {
       //todo alert user or make input in red
@@ -110,11 +120,21 @@ export class CreateAreaOfOperationComponent {
       //todo alert user
       return;
     }
-    console.log(this.m_oAreaInfo);
-    console.log(this.m_sAreaOfOperationName);
-    console.log(this.m_sAreaOfOperationDescription);
-    console.log(this.m_asEventsSelected);
-    console.log(this.m_aoFieldUsers);
+    this.m_oAreaOfOperation={
+      name:this.m_sAreaOfOperationName,
+      description:this.m_sAreaOfOperationDescription
+    }
+    this.m_oAreaOfOperationService.addArea(this.m_oAreaOfOperation).subscribe(
+      {
+        next: () => {
+          console.log('Success');
+        },
+        error:(e)=>{
+          console.log(e)
+        }
+      }
+    )
+
     /*todo add verification before adding the area:
   ****
   **do that before make him click on the save button
