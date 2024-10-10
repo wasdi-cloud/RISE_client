@@ -11,6 +11,7 @@ import 'leaflet-draw';
 import 'leaflet-mouse-position';
 import { EventEmitter } from 'stream';
 import { BehaviorSubject } from 'rxjs';
+import {wktToGeoJSON} from "@terraformer/wkt";
 
 declare const L: any;
 
@@ -363,32 +364,41 @@ export class MapService {
 
   addMarker(oArea: AreaViewModel, oMap: Map): Marker {
     let asCoordinates = this.convertPointLatLng(oArea);
-    let lat = parseFloat(asCoordinates[0]);
-    let lon = parseFloat(asCoordinates[1]);
-    let oMarker = L.marker([lat, lon])
-      .on('click', () => {
-        this.m_oMarkerSubject.next(oArea);
-        // this.m_oMarkerClicked.emit(oArea);
-        // this.m_oRouter.navigateByUrl('/monitor');
-      })
-      .addTo(oMap);
+    if(asCoordinates){
+      let lat = parseFloat(asCoordinates[0]);
+      let lon = parseFloat(asCoordinates[1]);
+      let oMarker = L.marker([lat, lon])
+        .on('click', () => {
+          this.m_oMarkerSubject.next(oArea);
+          // this.m_oMarkerClicked.emit(oArea);
+          // this.m_oRouter.navigateByUrl('/monitor');
+        })
+        .addTo(oMap);
 
-    // .on('click', () => {
-    //   console.log(oArea)
-    //   this.m_oDialog.open(AreaInfoComponent, {
-    //     data: {
-    //       selectedArea: oArea
-    //     }
-    //   })
-    // }).addTo(oMap)
+      // .on('click', () => {
+      //   console.log(oArea)
+      //   this.m_oDialog.open(AreaInfoComponent, {
+      //     data: {
+      //       selectedArea: oArea
+      //     }
+      //   })
+      // }).addTo(oMap)
 
-    return oMarker;
+      return oMarker;
+    }
+    return null;
   }
 
   convertPointLatLng(oArea) {
-    let asCoordinates = oArea.markerCoordinates.slice(6).slice(0, -1);
-    asCoordinates = asCoordinates.split(' ');
-    return asCoordinates;
+
+    console.log(oArea);
+    if(oArea.markerCoordinates){
+      console.log(wktToGeoJSON(oArea.markerCoordinates));
+      let asCoordinates = oArea.markerCoordinates.slice(6).slice(0, -1);
+      asCoordinates = asCoordinates.split(' ');
+      return asCoordinates;
+    }
+    return null;
   }
 
   addLayerMap2DByServer(sLayerId: string, sServer: string) {

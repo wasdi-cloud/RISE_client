@@ -1,5 +1,5 @@
 
-export class UserCredentialsViewModel extends RiseViewModel {
+export class UserCredentialsViewModel  {
 
    userId:string;
 
