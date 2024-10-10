@@ -107,7 +107,6 @@ export class MapService {
 
   m_oMarkerSubject$ = this.m_oMarkerSubject.asObservable();
 
-
   constructor(private m_oDialog: MatDialog, private m_oRouter: Router) {
     this.initTilelayer();
 
@@ -390,5 +389,50 @@ export class MapService {
     let asCoordinates = oArea.markerCoordinates.slice(6).slice(0, -1);
     asCoordinates = asCoordinates.split(' ');
     return asCoordinates;
+  }
+
+  addLayerMap2DByServer(sLayerId: string, sServer: string) {
+    if (!sLayerId) {
+      return false;
+    }
+    //TODO: add default server
+    // if(!sServer) {
+    //   sServer
+    // }
+    let oMap = this.getMap();
+
+    let oWmsLayer = L.tileLayer.wms(sServer, {
+      layers: sLayerId,
+      format: 'image/png',
+      transparent: true,
+      noWrap: true,
+    });
+    console.log(oWmsLayer);
+    oWmsLayer.setZIndex(1000);
+    oWmsLayer.addTo(oMap);
+    return true;
+  }
+
+  zoomBandImageOnGeoserverBoundingBox(geoserverBoundingBox) {
+    try {
+      if (!geoserverBoundingBox) {
+        console.log(
+          'MapService.zoomBandImageOnGeoserverBoundingBox: geoserverBoundingBox is null or empty '
+        );
+        return;
+      }
+
+      geoserverBoundingBox = geoserverBoundingBox.replace(/\n/g, '');
+      let oBounds = JSON.parse(geoserverBoundingBox);
+
+      //Zoom on layer
+      let corner1 = L.latLng(oBounds.maxy, oBounds.maxx),
+        corner2 = L.latLng(oBounds.miny, oBounds.minx),
+        bounds = L.latLngBounds(corner1, corner2);
+
+      this.m_oRiseMap.flyToBounds(bounds, { maxZoom: 8 });
+    } catch (e) {
+      console.log(e);
+    }
   }
 }

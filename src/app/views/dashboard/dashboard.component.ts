@@ -56,7 +56,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.m_oActiveAOI = this.m_oMapService.m_oMarkerSubject$.subscribe(
       (oResponse) => {
         if (oResponse) {
-          this.m_oRouter.navigateByUrl(`monitor/${oResponse.id}`);
+          this.openMonitor(oResponse);
         }
       }
     );
@@ -111,7 +111,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   /**
    * TODO: Open the Monitor view with selected area of interest
    */
-  openMonitor(oArea) {}
+  openMonitor(oArea) {
+    this.m_oRouter.navigateByUrl(`monitor/${oArea.id}`);
+  }
 
   /**
    * TODO: A widget showing the estimation of people affected in the different area of operations if there is any event ongoing
