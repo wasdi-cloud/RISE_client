@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { ConstantsService } from "../constants.service";
+import {AreaViewModel} from "../../models/AreaViewModel";
 
 @Injectable({
   providedIn: 'root'
@@ -54,10 +55,10 @@ export class AreaService {
    * @param oAreaViewModel
    * @return
    */
-  addArea(oAreaViewModel) {
-    let urlParams = "?" + "token=" + this.m_oConstantsService.getSessionId();
+  addArea(oAreaViewModel:AreaViewModel) {
+    // let urlParams = "?" + "token=" + this.m_oConstantsService.getSessionId();
 
-    return this.m_oHttp.post<any>(this.APIURL + '/area' + urlParams, oAreaViewModel);
+    return this.m_oHttp.post<any>(this.APIURL + '/area', oAreaViewModel);
   }
 
   /**

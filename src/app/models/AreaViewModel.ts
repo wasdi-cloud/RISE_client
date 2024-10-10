@@ -5,28 +5,29 @@ export class AreaViewModel extends RiseViewModel {
   /**
    * Default Id
    */
-  id: string;
+  id?: string;
 
-  name: string;
+ name?: string;
 
-  description: string;
+ description?: string;
 
-  creationDate: number;
+ creationDate?: number;
 
-  subscriptionId: string;
+ subscriptionId?: string;
 
-  bbox: string;
+ bbox?: string;
 
-  markerCoordinates: string;
+ markerCoordinates?: string;
 
-  shapeFileMask: string;
+ shapeFileMask?: string;
 
-  supportArchive: boolean;
+ supportArchive?: boolean;
 
-  archiveStartDate: number;
 
-  archiveEndDate: number;
+  archiveStartDate?: number;
 
-  plugins: string[];
+  archiveEndDate?: number;
+
+  plugins?: string[];
 
 }

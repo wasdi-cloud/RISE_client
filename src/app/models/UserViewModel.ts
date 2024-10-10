@@ -1,4 +1,5 @@
 import {UserRole} from "./UserRole";
+import {RiseViewModel} from "./RiseViewModel";
 
 
 export class UserViewModel extends RiseViewModel {
