@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { UserCredentials } from '../../shared/models/user-credentials';
-import { UserRegistration } from '../../shared/models/user-registration';
+import { RegisterViewModel } from '../../models/RegisterViewModel';
+import { UserCredentialsViewModel } from '../../models/UserCredentialsViewModel';
 import { ConstantsService } from '../constants.service';
 
 @Injectable({
@@ -43,7 +43,7 @@ export class AuthService {
    * @param oCredentials
    * @returns
    */
-  loginUser(oCredentials: UserCredentials) {
+  loginUser(oCredentials: UserCredentialsViewModel) {
     return this.m_oHttp.post<any>(this.APIURL + '/auth/login', oCredentials);
   }
 
@@ -75,7 +75,7 @@ export class AuthService {
    * @param oUser
    * @returns
    */
-  registerUser(oUser: UserRegistration) {
+  registerUser(oUser: RegisterViewModel) {
     return this.m_oHttp.post<any>(this.APIURL + '/auth/register', oUser, {
       observe: 'response',
     });

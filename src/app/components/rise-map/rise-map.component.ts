@@ -8,8 +8,7 @@ import L from 'leaflet';
 import 'leaflet-draw'
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
 import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
-import { Area } from '../../shared/models/area';
-
+import { AreaViewModel } from '../../models/AreaViewModel';
 
 @Component({
   selector: 'rise-map',
@@ -19,7 +18,7 @@ import { Area } from '../../shared/models/area';
   styleUrl: './rise-map.component.css'
 })
 export class RiseMapComponent implements OnInit, AfterViewInit {
-  @Input() m_aoAreas: Array<Area> = [];
+  @Input() m_aoAreas: Array<AreaViewModel> = [];
   m_oMap: L.Map;
 
   m_oMapOptions: any;

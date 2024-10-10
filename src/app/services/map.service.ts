@@ -1,19 +1,16 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { AreaViewModel } from '../models/AreaViewModel';
+
+import { MatDialog } from '@angular/material/dialog';
 
 import Geocoder from 'leaflet-control-geocoder';
+import { Map, Marker } from 'leaflet';
+import 'leaflet-draw';
+import 'leaflet-mouse-position';
 
 declare const L: any;
-
-
-// import L from 'leaflet';
-import 'leaflet-draw'
-import "leaflet-mouse-position";
-import {OtpDialogComponent} from "../dialogs/otp-dialog/otp-dialog.component";
-import { Area } from '../shared/models/area';
-import { Map, Marker } from 'leaflet';
-import { MatDialog } from '@angular/material/dialog';
-import { AreaInfoComponent } from '../dialogs/area-info/area-info.component';
-import { Router } from '@angular/router';
 
 const iconRetinaUrl = '/assets/marker-icon-2x.png';
 const iconUrl = '/assets/marker-icon.png';
@@ -26,19 +23,16 @@ const iconDefault = L.icon({
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
   tooltipAnchor: [16, -28],
-  shadowSize: [41, 41]
+  shadowSize: [41, 41],
 });
 L.Marker.prototype.options.icon = iconDefault;
-export interface TileLayer {
-
-}
+export interface TileLayer {}
 const MIN_ZOOM = 3;
 const MAX_ZOOM = 18;
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MapService {
-
   /**
    * OSM Basic Map
    */
@@ -86,7 +80,6 @@ export class MapService {
    */
   m_oOptions: any;
 
-
   m_oGeocoderControl: Geocoder = new Geocoder();
 
   /**
@@ -100,35 +93,29 @@ export class MapService {
       marker: false,
       polyline: true,
       polygon: true,
-      rectangle: { shapeOptions: { color: "#4AFF00" }, showArea: false }
+      rectangle: { shapeOptions: { color: '#4AFF00' }, showArea: false },
     },
     edit: {
-      featureGroup: new L.FeatureGroup,
+      featureGroup: new L.FeatureGroup(),
       edit: false,
-      remove: false
-    }
-  }
+      remove: false,
+    },
+  };
 
-
-  constructor(
-    private m_oDialog: MatDialog,
-    private m_oRouter: Router
-  ) {
+  constructor(private m_oDialog: MatDialog, private m_oRouter: Router) {
     this.initTilelayer();
 
     this.m_oOptions = {
-      layers: [
-        this.m_oOSMBasic
-      ],
+      layers: [this.m_oOSMBasic],
       zoomControl: false,
       zoom: 3,
       // center: latLng(0, 0),
       edit: { featureGroup: this.m_oDrawnItems },
       fullscreenControl: true,
       fullscreenControlOptions: {
-        position: 'topleft'
-      }
-    }
+        position: 'topleft',
+      },
+    };
   }
 
   /**
@@ -156,57 +143,78 @@ export class MapService {
    */
   initTilelayer() {
     // Basic OSM Layer
-    this.m_oOSMBasic = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
-      maxZoom: MAX_ZOOM,
-      minZoom:MIN_ZOOM,
-      // this option disables loading tiles outside of the world bounds.
-      noWrap: true
-    });
+    this.m_oOSMBasic = L.tileLayer(
+      'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+      {
+        attribution:
+          '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
+        maxZoom: MAX_ZOOM,
+        minZoom: MIN_ZOOM,
+        // this option disables loading tiles outside of the world bounds.
+        noWrap: true,
+      }
+    );
 
     // Topo Map
-    this.m_oOpenTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-      maxZoom:MAX_ZOOM,
-      minZoom:MIN_ZOOM,
-      attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
-    });
+    this.m_oOpenTopoMap = L.tileLayer(
+      'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+      {
+        maxZoom: MAX_ZOOM,
+        minZoom: MIN_ZOOM,
+        attribution:
+          'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
+      }
+    );
 
     // Esri Streets
-    this.m_oEsriWorldStreetMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-      attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
-    });
+    this.m_oEsriWorldStreetMap = L.tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
+      {
+        attribution:
+          'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
+      }
+    );
 
     // Esri Images
-    this.m_oEsriWorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-      attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-    });
+    this.m_oEsriWorldImagery = L.tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+      {
+        attribution:
+          'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+      }
+    );
 
     // Stadi Dark
-    this.m_oStadiMapDark = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
-      minZoom: MIN_ZOOM,
-      maxZoom: MAX_ZOOM,
-      attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      // ext: 'png'
-    });
+    this.m_oStadiMapDark = L.tileLayer(
+      'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png',
+      {
+        minZoom: MIN_ZOOM,
+        maxZoom: MAX_ZOOM,
+        attribution:
+          '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        // ext: 'png'
+      }
+    );
 
     // Add all to the layers control
     this.m_oLayersControl = L.control.layers(
       {
-        'Standard': this.m_oOSMBasic,
-        "OpenTopoMap": this.m_oOpenTopoMap,
-        "EsriWorldStreetMap": this.m_oEsriWorldStreetMap,
-        "EsriWorldImagery": this.m_oEsriWorldImagery,
-        "Stadi Map Dark": this.m_oStadiMapDark
-      }, null,
+        Standard: this.m_oOSMBasic,
+        OpenTopoMap: this.m_oOpenTopoMap,
+        EsriWorldStreetMap: this.m_oEsriWorldStreetMap,
+        EsriWorldImagery: this.m_oEsriWorldImagery,
+        'Stadi Map Dark': this.m_oStadiMapDark,
+      },
+      null,
       { position: 'bottomright' }
-    )
+    );
   }
 
   /**
    * Set Drawn Items
    */
   setDrawnItems() {
-    this.m_oDrawnItems = new L.FeatureGroup;
+    this.m_oDrawnItems = new L.FeatureGroup();
   }
 
   initWasdiMap(sMapDiv: string): void {
@@ -221,16 +229,13 @@ export class MapService {
       zoom: 6,
       maxZoom: MAX_ZOOM,
       minZoom: MIN_ZOOM,
-
-
     });
-    this.m_oOSMBasic.addTo(oMap)
+    this.m_oOSMBasic.addTo(oMap);
 
     this.initGeoSearchPluginForOpenStreetMap(oMap);
     this.addMousePositionAndScale(oMap);
     L.control.zoom({ position: 'bottomright' }).addTo(oMap);
     this.m_oLayersControl.addTo(oMap);
-
 
     // center map
     let southWest = L.latLng(0, 0);
@@ -283,10 +288,12 @@ export class MapService {
     // if (oMousePosition != null) {
     //   oMousePosition.addTo(oMap);
     // }
-    L.control.scale({
-      position: "bottomright",
-      imperial: false
-    }).addTo(oMap);
+    L.control
+      .scale({
+        position: 'bottomright',
+        imperial: false,
+      })
+      .addTo(oMap);
   }
 
   /**
@@ -298,8 +305,8 @@ export class MapService {
     const { layerType, layer } = event;
 
     // For rectangle, calculate area
-    if (layerType === "rectangle") {
-      const bounds = layer.getBounds();  // Get the bounds of the rectangle
+    if (layerType === 'rectangle') {
+      const bounds = layer.getBounds(); // Get the bounds of the rectangle
       const southWest = bounds.getSouthWest();
       const northEast = bounds.getNorthEast();
       const area = this.calculateRectangleArea(southWest, northEast);
@@ -307,7 +314,7 @@ export class MapService {
     }
 
     // For polyline, calculate total distance
-    if (layerType === "polyline") {
+    if (layerType === 'polyline') {
       const latlngs = layer.getLatLngs();
       const totalDistance = this.calculateDistance(latlngs);
       alert(`Total distance: ${totalDistance.toFixed(2)} kilometers`);
@@ -315,15 +322,15 @@ export class MapService {
 
     // For polygon, calculate area
     if (layerType === 'polygon') {
-      const latlngs = layer.getLatLngs()[0];  // Use the first array of latlngs
-      const area = L.GeometryUtil.geodesicArea(latlngs);  // Area in square meters
+      const latlngs = layer.getLatLngs()[0]; // Use the first array of latlngs
+      const area = L.GeometryUtil.geodesicArea(latlngs); // Area in square meters
       alert(`Polygon Area: ${(area / 1000000).toFixed(2)} square kilometers`);
     }
 
     // For circle, calculate area
     if (layerType === 'circle') {
-      const radius = layer.getRadius();  // Radius in meters
-      const area = Math.PI * Math.pow(radius, 2);  // Area of the circle (πr²)
+      const radius = layer.getRadius(); // Radius in meters
+      const area = Math.PI * Math.pow(radius, 2); // Area of the circle (πr²)
       alert(`Circle Area: ${(area / 1000000).toFixed(2)} square kilometers`);
     }
 
@@ -331,29 +338,35 @@ export class MapService {
   }
 
   calculateRectangleArea(southWest: L.LatLng, northEast: L.LatLng): number {
-    const width = southWest.distanceTo(new L.LatLng(southWest.lat, northEast.lng));  // Distance between the two points
-    const height = southWest.distanceTo(new L.LatLng(northEast.lat, southWest.lng));
-    const area = (width * height) / 1000000;  // Convert area from square meters to square kilometers
+    const width = southWest.distanceTo(
+      new L.LatLng(southWest.lat, northEast.lng)
+    ); // Distance between the two points
+    const height = southWest.distanceTo(
+      new L.LatLng(northEast.lat, southWest.lng)
+    );
+    const area = (width * height) / 1000000; // Convert area from square meters to square kilometers
     return area;
   }
 
   calculateDistance(latlngs: L.LatLng[]): number {
     let totalDistance = 0;
     for (let i = 0; i < latlngs.length - 1; i++) {
-      totalDistance += latlngs[i].distanceTo(latlngs[i + 1]);  // Calculates distance in meters
+      totalDistance += latlngs[i].distanceTo(latlngs[i + 1]); // Calculates distance in meters
     }
     return totalDistance / 1000;
   }
 
-  addMarker(oArea: Area, oMap: Map): Marker {
-    let asCoordinates = oArea.markerCoordinates.split(",").map(sCoordinate => sCoordinate.trim());
+  addMarker(oArea: AreaViewModel, oMap: Map): Marker {
+    let asCoordinates = oArea.markerCoordinates
+      .split(',')
+      .map((sCoordinate) => sCoordinate.trim());
     let lat = parseFloat(asCoordinates[0]);
-    let lon = parseFloat(asCoordinates[1])
-    let oMarker = L.marker([lat, lon]).on('click', () => {
-      this.m_oRouter.navigateByUrl('/monitor')
-    }).addTo(oMap);
-
-
+    let lon = parseFloat(asCoordinates[1]);
+    let oMarker = L.marker([lat, lon])
+      .on('click', () => {
+        this.m_oRouter.navigateByUrl('/monitor');
+      })
+      .addTo(oMap);
 
     // .on('click', () => {
     //   console.log(oArea)

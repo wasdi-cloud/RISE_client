@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
-import { AuthService } from '../../services/api/auth.service';
-import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
-import { UserCredentials } from '../../shared/models/user-credentials';
-import { OtpDialogComponent } from '../../dialogs/otp-dialog/otp-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+
+import { AuthService } from '../../services/api/auth.service';
+
+import { OtpDialogComponent } from '../../dialogs/otp-dialog/otp-dialog.component';
+import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
+import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
+
+import { UserCredentialsViewModel } from '../../models/UserCredentialsViewModel';
 
 @Component({
   selector: 'app-login-view',
@@ -15,7 +18,7 @@ import { Router } from '@angular/router';
   styleUrl: './login-view.component.css',
 })
 export class LoginViewComponent {
-  public m_oUserInput: UserCredentials = {
+  public m_oUserInput: UserCredentialsViewModel = {
     userId: '',
     password: '',
   };
@@ -29,7 +32,6 @@ export class LoginViewComponent {
   ) {}
 
   executeLogin() {
-    // this.m_oAuthService.loginUser(this.m_oUserInput); -> Returns OTP View Model
     this.m_oAuthService.loginUser(this.m_oUserInput).subscribe({
       next: (oResponse) => {
         if (oResponse) {
@@ -52,7 +54,7 @@ export class LoginViewComponent {
       this.m_oAuthService.verifyOTP(this.m_oOTPVerifyVM).subscribe({
         next: (oResponse) => {
           if (oResponse.status === 200) {
-            this.verifyLogin()
+            this.verifyLogin();
           }
         },
         error: (oError) => {
@@ -65,20 +67,20 @@ export class LoginViewComponent {
   verifyLogin() {
     let oOtpVerify = {
       id: this.m_oOTPVerifyVM.id,
-      userId: this.m_oOTPVerifyVM.userId
-    }
+      userId: this.m_oOTPVerifyVM.userId,
+    };
 
     this.m_oAuthService.loginVerify(oOtpVerify).subscribe({
-      next: oResponse => {
-        if(oResponse.token) {
+      next: (oResponse) => {
+        if (oResponse.token) {
           //Set user Token and login
           this.m_oAuthService.saveToken(oResponse.token);
           this.m_oRouter.navigateByUrl('/dashboard');
         }
       },
-      error: oError => {
-        console.log(oError)
-      }
-    })
+      error: (oError) => {
+        console.log(oError);
+      },
+    });
   }
 }

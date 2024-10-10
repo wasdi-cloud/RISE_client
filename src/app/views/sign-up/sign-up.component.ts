@@ -1,16 +1,18 @@
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+
+import { AuthService } from '../../services/api/auth.service';
+
 import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
+import { RiseDropdownComponent } from '../../components/rise-dropdown/rise-dropdown.component';
 import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
 import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { RiseDropdownComponent } from '../../components/rise-dropdown/rise-dropdown.component';
-import { AuthService } from '../../services/api/auth.service';
-import { Register } from '../../shared/models/register';
-import { User } from '../../shared/models/user';
-import { Organization } from '../../shared/models/organization';
-import { UserRegistration } from '../../shared/models/user-registration';
-import { OrganizationsService } from '../../services/api/organizations.service';
-import { FormsModule } from '@angular/forms';
+
+import { OrganizationViewModel } from '../../models/OrganizationViewModel';
+import { RegisterViewModel } from '../../models/RegisterViewModel';
+import { UserViewModel } from '../../models/UserViewModel';
 
 @Component({
   selector: 'app-sign-up',
@@ -27,11 +29,11 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './sign-up.component.css',
 })
 export class SignUpComponent implements OnInit {
-  m_oRegisterInput: UserRegistration = {} as UserRegistration;
+  m_oRegisterInput: RegisterViewModel = {} as RegisterViewModel;
 
-  m_oUserInfoInput: User = {} as User;
+  m_oUserInfoInput: UserViewModel = {} as UserViewModel;
 
-  m_oOrgInfoInput: Organization = {} as Organization;
+  m_oOrgInfoInput: OrganizationViewModel = {} as OrganizationViewModel;
 
   m_aoOrganizationTypes: Array<any> = [];
 
@@ -121,9 +123,9 @@ export class SignUpComponent implements OnInit {
 
     this.m_oAuthService.registerUser(this.m_oRegisterInput).subscribe({
       next: (oResponse) => {
-        if(oResponse.status === 200) {
-          alert("User Registered");
-          alert("Organization Registered");
+        if (oResponse.status === 200) {
+          alert('User Registered');
+          alert('Organization Registered');
         }
       },
       error: (oError) => {

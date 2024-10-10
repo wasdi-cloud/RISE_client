@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Area } from '../../shared/models/area';
+import { AreaViewModel } from '../../models/AreaViewModel';
 
 @Component({
   selector: 'app-area-info',
@@ -10,7 +10,7 @@ import { Area } from '../../shared/models/area';
   styleUrl: './area-info.component.css'
 })
 export class AreaInfoComponent implements OnInit {
-  m_oSelectedArea: Area = null;
+  m_oSelectedArea: AreaViewModel = null;
   constructor(@Inject(MAT_DIALOG_DATA) public m_oData) { 
     // if (this.m_oData) {
     //   this.m_oSelectedArea = this.m_oData.selectedArea;

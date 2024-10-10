@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
-import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
-import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
 import { Router } from '@angular/router';
-import { RiseMapComponent } from '../../components/rise-map/rise-map.component';
-import { RiseAlertsWidgetComponent } from './rise-alerts-widget/rise-alerts-widget.component';
+
 import { RiseAffectedWidgetComponent } from './rise-affected-widget/rise-affected-widget.component';
+import { RiseAlertsWidgetComponent } from './rise-alerts-widget/rise-alerts-widget.component';
+import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
+import { RiseMapComponent } from '../../components/rise-map/rise-map.component';
 import { RiseOngoingWidgetComponent } from './rise-ongoing-widget/rise-ongoing-widget.component';
-import { Event } from '../../shared/models/event';
-import { Area } from '../../shared/models/area';
-import { exampleArea } from '../../shared/models/area';
+import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
+
+import { EventViewModel } from '../../models/EventViewModel';
+import { AreaViewModel } from '../../models/AreaViewModel';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,7 +19,7 @@ import { exampleArea } from '../../shared/models/area';
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
-  public m_aoOngoingEvents: Array<Event> = [];
+  public m_aoOngoingEvents: Array<EventViewModel> = [];
 
   /**
    * TODO: add appropriate typing
@@ -30,7 +31,7 @@ export class DashboardComponent {
    */
   public m_aoAlerts: Array<any> = [];
 
-  public m_aoAreas: Array<Area> = [exampleArea];
+  public m_aoAreas: Array<AreaViewModel> = [];
 
   constructor(private m_oRouter: Router) { }
 
