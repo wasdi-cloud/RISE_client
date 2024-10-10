@@ -1,11 +1,18 @@
-import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MapService } from '../../services/map.service';
 import { RiseTimebarComponent } from '../rise-timebar/rise-timebar.component';
 
 import L from 'leaflet';
-import 'leaflet-draw'
+import 'leaflet-draw';
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
 import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
 import { AreaViewModel } from '../../models/AreaViewModel';
@@ -13,11 +20,16 @@ import { AreaViewModel } from '../../models/AreaViewModel';
 @Component({
   selector: 'rise-map',
   standalone: true,
-  imports: [CommonModule, RiseTimebarComponent, LeafletModule, LeafletDrawModule],
+  imports: [
+    CommonModule,
+    RiseTimebarComponent,
+    LeafletModule,
+    LeafletDrawModule,
+  ],
   templateUrl: './rise-map.component.html',
-  styleUrl: './rise-map.component.css'
+  styleUrl: './rise-map.component.css',
 })
-export class RiseMapComponent implements OnInit, AfterViewInit {
+export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() m_aoAreas: Array<AreaViewModel> = [];
   m_oMap: L.Map;
 
@@ -35,13 +47,19 @@ export class RiseMapComponent implements OnInit, AfterViewInit {
     this.m_oDrawOptions.edit.featureGroup = this.m_oDrawnItems;
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
-  ngAfterViewInit(): void { }
+  ngAfterViewInit(): void {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+      for(let oArea of this.m_aoAreas) {
+        this.m_oMapService.addMarker(oArea, this.m_oMap)
+      }
+  }
 
   onMapReady(oMap) {
     this.m_oMap = oMap;
-    this.m_oMapService.setMap(this.m_oMap)
+    this.m_oMapService.setMap(this.m_oMap);
 
     let southWest = L.latLng(0, 0);
     let northEast = L.latLng(0, 0);
