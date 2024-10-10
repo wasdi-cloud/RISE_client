@@ -9,6 +9,8 @@ import Geocoder from 'leaflet-control-geocoder';
 import { Map, Marker } from 'leaflet';
 import 'leaflet-draw';
 import 'leaflet-mouse-position';
+import { EventEmitter } from 'stream';
+import { BehaviorSubject } from 'rxjs';
 
 declare const L: any;
 
@@ -101,6 +103,9 @@ export class MapService {
       remove: false,
     },
   };
+  private m_oMarkerSubject = new BehaviorSubject<AreaViewModel>(null);
+
+  m_oMarkerSubject$ = this.m_oMarkerSubject.asObservable();
 
   constructor(private m_oDialog: MatDialog, private m_oRouter: Router) {
     this.initTilelayer();
@@ -357,14 +362,14 @@ export class MapService {
   }
 
   addMarker(oArea: AreaViewModel, oMap: Map): Marker {
-    let asCoordinates = oArea.markerCoordinates
-      .split(',')
-      .map((sCoordinate) => sCoordinate.trim());
+    let asCoordinates = this.convertPointLatLng(oArea);
     let lat = parseFloat(asCoordinates[0]);
     let lon = parseFloat(asCoordinates[1]);
     let oMarker = L.marker([lat, lon])
       .on('click', () => {
-        this.m_oRouter.navigateByUrl('/monitor');
+        this.m_oMarkerSubject.next(oArea);
+        // this.m_oMarkerClicked.emit(oArea);
+        // this.m_oRouter.navigateByUrl('/monitor');
       })
       .addTo(oMap);
 
@@ -378,5 +383,56 @@ export class MapService {
     // }).addTo(oMap)
 
     return oMarker;
+  }
+
+  convertPointLatLng(oArea) {
+    let asCoordinates = oArea.markerCoordinates.slice(6).slice(0, -1);
+    asCoordinates = asCoordinates.split(' ');
+    return asCoordinates;
+  }
+
+  addLayerMap2DByServer(sLayerId: string, sServer: string) {
+    if (!sLayerId) {
+      return false;
+    }
+    //TODO: add default server
+    // if(!sServer) {
+    //   sServer
+    // }
+    let oMap = this.getMap();
+
+    let oWmsLayer = L.tileLayer.wms(sServer, {
+      layers: sLayerId,
+      format: 'image/png',
+      transparent: true,
+      noWrap: true,
+    });
+    console.log(oWmsLayer);
+    oWmsLayer.setZIndex(1000);
+    oWmsLayer.addTo(oMap);
+    return true;
+  }
+
+  zoomBandImageOnGeoserverBoundingBox(geoserverBoundingBox) {
+    try {
+      if (!geoserverBoundingBox) {
+        console.log(
+          'MapService.zoomBandImageOnGeoserverBoundingBox: geoserverBoundingBox is null or empty '
+        );
+        return;
+      }
+
+      geoserverBoundingBox = geoserverBoundingBox.replace(/\n/g, '');
+      let oBounds = JSON.parse(geoserverBoundingBox);
+
+      //Zoom on layer
+      let corner1 = L.latLng(oBounds.maxy, oBounds.maxx),
+        corner2 = L.latLng(oBounds.miny, oBounds.minx),
+        bounds = L.latLngBounds(corner1, corner2);
+
+      this.m_oRiseMap.flyToBounds(bounds, { maxZoom: 8 });
+    } catch (e) {
+      console.log(e);
+    }
   }
 }

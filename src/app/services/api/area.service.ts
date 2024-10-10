@@ -31,9 +31,9 @@ export class AreaService {
    */
 
   getAreaById(sId: string) {
-    let urlParams = "?" + "token=" + this.m_oConstantsService.getSessionId();
-    urlParams = urlParams + "&" + "id=" + sId;
-    return this.m_oHttp.get<any>(this.APIURL + '/area' + urlParams);
+    // let urlParams = "?" + "token=" + this.m_oConstantsService.getSessionId();
+    // urlParams = urlParams + "&" + ;
+    return this.m_oHttp.get<any>(this.APIURL + '/area?' + "id=" + sId);
   }
 
   /**

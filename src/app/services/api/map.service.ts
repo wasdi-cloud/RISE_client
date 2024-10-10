@@ -5,7 +5,7 @@ import { ConstantsService } from '../constants.service';
 @Injectable({
   providedIn: 'root'
 })
-export class MapService {
+export class MapAPIService {
 
   private APIURL: string = this.m_oConstantsService.getAPIURL();
 
