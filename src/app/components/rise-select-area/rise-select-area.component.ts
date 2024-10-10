@@ -13,6 +13,9 @@ import {MatDialog} from "@angular/material/dialog";
 import {ManualBoundingBoxComponent} from "../../dialogs/manual-bounding-box-dialog/manual-bounding-box.component";
 import {RiseButtonComponent} from "../rise-button/rise-button.component";
 import {ImportShapeFileStationDialogComponent} from "../../dialogs/import-shape-file-station-dialog/import-shape-file-station-dialog.component";
+import {
+  ConfirmInsertedAreaDialogComponent
+} from "../../dialogs/confirm-inserted-area-dialog/confirm-inserted-area-dialog.component";
 
 @Component({
   selector: 'rise-select-area',
@@ -56,6 +59,9 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
   m_oLastCircle: L.Circle | null = null;
   m_oLastMarker: L.Marker | null = null;
   oGeoJsonLayer: L.GeoJSON | null = null;
+  m_bIsDrawCreated: boolean = false;
+  m_bIsAutoDrawCreated: boolean = false;
+  m_bIsImportDrawCreated: boolean=false;
 
 
   constructor(private m_oDialog: MatDialog,private m_oMapService:MapService) {
@@ -87,6 +93,9 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
     this.addManualBbox(oMap);
     this.addCircleButton(oMap);
   }
+
+
+  //go to position by inserting coords
   addManualBbox(oMap: any) {
     let oController = this;
     const m_oManualBoxingButton= L.Control.extend({
@@ -146,12 +155,43 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
     })
     oMap.addControl(new m_oManualBoxingButton());
   }
+
+  //confirm inserted area
+  confirmInsertedArea(oEvent?: any, fRadius?: number, fLat?: number, fLng?: number, geoJson?: any) {
+    let oDialog = this.m_oDialog.open(ConfirmInsertedAreaDialogComponent, {
+      width: '400px',
+      height: 'auto',
+      minWidth: '300px',
+      minHeight: '150px',
+    });
+
+    oDialog.afterClosed().subscribe(oResult => {
+      if (oResult) {
+        // Emit the appropriate area based on the shape creation method
+        if (this.m_bIsImportDrawCreated && geoJson) {
+          this.emitGeoJSONShapeInfo(geoJson);
+        } else if (this.m_bIsDrawCreated && oEvent) {
+          this.emitDrawnAreaEvent(oEvent);
+        } else if (this.m_bIsAutoDrawCreated && fRadius !== undefined && fLat !== undefined && fLng !== undefined) {
+          this.emitCircleButtonAreaEvent(fRadius, fLat, fLng);
+        }
+      } else {
+        // Clear the area
+        this.clearPreviousDrawings();
+      }
+    });
+  }
+
+  // different ways to draw an area
+  //Using leaflet drawings
   onDrawCreated(oEvent) {
     this.clearPreviousDrawings()
     this.m_oMapService.onDrawCreated(oEvent);
-    this.emitDrawnAreaEvent(oEvent);
+    this.m_bIsDrawCreated=true;
+    this.confirmInsertedArea(oEvent);
+    // this.emitDrawnAreaEvent(oEvent);
   }
-//Handle when the user want to choose a position and let rise draw the minimum area around that point
+  //Handle when the user want to choose a position and let rise draw the minimum area around that point
   addCircleButton(oMap: any) {
     let bIsDrawing = false; // Flag to track if drawing is active
 
@@ -200,7 +240,7 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
             // Add the new circle to the map
             this.m_oLastCircle = L.circle([fLat, fLng], { radius: fRadius }).addTo(oMap);
             this.m_oLastMarker = L.marker([fLat, fLng]).addTo(oMap);
-            this.emitCircleButtonAreaEvent(fRadius, fLat, fLng);
+
             // Set view to the clicked location without zooming too much
             const currentZoom = oMap.getZoom();
             const targetZoom = Math.min(currentZoom, 13); // Ensure it doesn't zoom too much
@@ -209,6 +249,9 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
             // Remove the click listener after drawing
             oMap.off('click', onMapClick);
             bIsDrawing = false; // Reset the drawing flag
+            this.m_bIsAutoDrawCreated=true;
+            this.confirmInsertedArea(null, fRadius, fLat, fLng);
+            // this.emitCircleButtonAreaEvent(fRadius, fLat, fLng);
           };
 
           // Activate the map click listener for drawing the circle and adding the marker
@@ -234,7 +277,7 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
     // Add the control to the map
     oMap.addControl(new circleButton());
   }
-
+  //Import shape file
   openImportDialog(): void {
     let oDialog=this.m_oDialog.open(ImportShapeFileStationDialogComponent, {
       height: '425px',
@@ -247,8 +290,6 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
         // Check if the map is defined
         if (this.m_oMap) {
           this.clearPreviousDrawings();
-
-
           // Add GeoJSON to the map
           this.oGeoJsonLayer = L.geoJSON(oResult, {
             style: function (feature) {
@@ -261,16 +302,22 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
 
           // Optionally, fit the map view to the bounds of the added GeoJSON layer
           this.m_oMap.fitBounds(this.oGeoJsonLayer.getBounds());
-
+          this.m_bIsImportDrawCreated=true;
+          this.confirmInsertedArea(null, null, null, null, oResult);
           // Emit the shape information from the GeoJSON
-          this.emitGeoJSONShapeInfo(oResult);
+          // this.emitGeoJSONShapeInfo(oResult);
         } else {
           console.error('Map is not initialized.');
         }
       }
     });
   }
+
+  //Clearing previous drawing so to ensure only one area is emitted
   clearPreviousDrawings() {
+    this.m_bIsDrawCreated=false;
+    this.m_bIsAutoDrawCreated=false;
+    this.m_bIsImportDrawCreated=false;
     if (this.m_oDrawnItems) {
       this.m_oDrawnItems.clearLayers();
     }
@@ -291,7 +338,7 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
     }
   }
 
-  //emitting the area to the parent component
+  //Emitting the area to the parent component
   private emitDrawnAreaEvent(oEvent) {
     let iSelectedArea = 0;
     let oShapeInfo = {};

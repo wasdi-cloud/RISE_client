@@ -45,16 +45,16 @@ export class CreateAreaOfOperationComponent {
   m_asUsersColumns: string[] = ["Mail", "User_ID"];
 
 
-  m_oAreaOfOperation:AreaViewModel;
+  m_oAreaOfOperation: AreaViewModel;
   m_sAreaOfOperationDescription: string;
   m_sAreaOfOperationName: string;
   m_oAreaInfo = {}
-  m_asEventsSelected=[]
-  m_aoFieldUsers=[]
+  m_asEventsSelected = []
+  m_aoFieldUsers = []
 
   constructor(
     private oDialog: MatDialog,
-    private  m_oAreaOfOperationService:AreaService) {
+    private m_oAreaOfOperationService: AreaService) {
   }
 
   onRowDelete(row: any) {
@@ -76,29 +76,32 @@ export class CreateAreaOfOperationComponent {
 
   onSelectionChange(selectedValues: any[]) {
     console.log('Selected values:', selectedValues);
-    this.m_asEventsSelected=selectedValues;
+    this.m_asEventsSelected = selectedValues;
   }
 
   onMapInputChange(shapeInfo: any) {
     console.log(shapeInfo)
-    if (shapeInfo.type === 'circle') {
-      this.m_oAreaInfo = {
-        type: 'circle',
-        center: {
-          lat: shapeInfo.center.lat,
-          lng: shapeInfo.center.lng
-        },
-        radius: shapeInfo.radius,
-        area: shapeInfo.area
-      };
-    } else if (shapeInfo.type === 'polygon') {
-      this.m_oAreaInfo = {
-        type: 'polygon',
-        points: shapeInfo.points,
-        area: shapeInfo.area
-      };
-      console.log('polygone is here')
+    if (shapeInfo) {
+      if (shapeInfo.type === 'circle') {
+        this.m_oAreaInfo = {
+          type: 'circle',
+          center: {
+            lat: shapeInfo.center.lat,
+            lng: shapeInfo.center.lng
+          },
+          radius: shapeInfo.radius,
+          area: shapeInfo.area
+        };
+      } else if (shapeInfo.type === 'polygon') {
+        this.m_oAreaInfo = {
+          type: 'polygon',
+          points: shapeInfo.points,
+          area: shapeInfo.area
+        };
+
+      }
     }
+
   }
 
   SaveAreaOfOperation() {
@@ -112,24 +115,24 @@ export class CreateAreaOfOperationComponent {
       //todo alert user
       return;
     }
-    if (this.m_asEventsSelected === null || this.m_asEventsSelected.length ==0) {
+    if (this.m_asEventsSelected === null || this.m_asEventsSelected.length == 0) {
       //todo alert user
       return;
     }
-    if (this.m_aoFieldUsers === null || this.m_aoFieldUsers.length ==0) {
+    if (this.m_aoFieldUsers === null || this.m_aoFieldUsers.length == 0) {
       //todo alert user
       return;
     }
-    this.m_oAreaOfOperation={
-      name:this.m_sAreaOfOperationName,
-      description:this.m_sAreaOfOperationDescription
+    this.m_oAreaOfOperation = {
+      name: this.m_sAreaOfOperationName,
+      description: this.m_sAreaOfOperationDescription
     }
     this.m_oAreaOfOperationService.addArea(this.m_oAreaOfOperation).subscribe(
       {
         next: () => {
           console.log('Success');
         },
-        error:(e)=>{
+        error: (e) => {
           console.log(e)
         }
       }
@@ -176,7 +179,7 @@ export class CreateAreaOfOperationComponent {
   }
 
   handleTableData(tableData: any[]) {
-    this.m_aoFieldUsers=tableData;
+    this.m_aoFieldUsers = tableData;
     // Process the data as needed in your component
     // For example, you can store it in a local variable or pass it to another service
   }
