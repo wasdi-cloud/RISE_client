@@ -1,21 +1,23 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 import {MapService} from "../../services/map.service";
-
-
-declare const L: any;
 import 'leaflet-draw'
-import { LeafletModule } from '@bluehalo/ngx-leaflet';
-import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
+import {LeafletModule} from '@bluehalo/ngx-leaflet';
+import {LeafletDrawModule} from '@asymmetrik/ngx-leaflet-draw';
 import {RiseTimebarComponent} from "../rise-timebar/rise-timebar.component";
 import {NgIf} from "@angular/common";
 import {MatDialog} from "@angular/material/dialog";
 import {ManualBoundingBoxComponent} from "../../dialogs/manual-bounding-box-dialog/manual-bounding-box.component";
 import {RiseButtonComponent} from "../rise-button/rise-button.component";
-import {ImportShapeFileStationDialogComponent} from "../../dialogs/import-shape-file-station-dialog/import-shape-file-station-dialog.component";
+import {
+  ImportShapeFileStationDialogComponent
+} from "../../dialogs/import-shape-file-station-dialog/import-shape-file-station-dialog.component";
 import {
   ConfirmInsertedAreaDialogComponent
 } from "../../dialogs/confirm-inserted-area-dialog/confirm-inserted-area-dialog.component";
+
+
+declare const L: any;
 
 @Component({
   selector: 'rise-select-area',
@@ -34,13 +36,13 @@ import {
 /**
  * RISE Select Area User Control
  */
-export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
+export class RiseSelectAreaComponent implements OnInit, AfterViewInit {
 
 
   /**
    * Map input as described by the User Interface
    */
-  @Input() m_sMapTitle:string="default";
+  @Input() m_sMapTitle: string = "default";
 
   /**
    * Event about map changed
@@ -61,15 +63,18 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
   oGeoJsonLayer: L.GeoJSON | null = null;
   m_bIsDrawCreated: boolean = false;
   m_bIsAutoDrawCreated: boolean = false;
-  m_bIsImportDrawCreated: boolean=false;
+  m_bIsImportDrawCreated: boolean = false;
+  m_oImportShapeMarker: L.Marker | null = null;
+  m_oDrawMarker: L.Marker | null = null;
 
 
-  constructor(private m_oDialog: MatDialog,private m_oMapService:MapService) {
+  constructor(private m_oDialog: MatDialog, private m_oMapService: MapService) {
     this.m_oMapOptions = this.m_oMapService.m_oOptions;
     this.m_oDrawOptions = this.m_oMapService.m_oDrawOptions;
     this.m_oDrawnItems = this.m_oMapService.m_oDrawnItems;
     this.m_oDrawOptions.edit.featureGroup = this.m_oDrawnItems;
   }
+
   ngAfterViewInit(): void {
   }
 
@@ -95,10 +100,10 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
   }
 
 
-  //go to position by inserting coords
+  //Go to position by inserting coords
   addManualBbox(oMap: any) {
     let oController = this;
-    const m_oManualBoxingButton= L.Control.extend({
+    const m_oManualBoxingButton = L.Control.extend({
       options: {
         position: "topright"
       },
@@ -122,11 +127,11 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
           });
           // Once is closed...
           oDialog.afterClosed().subscribe(oResult => {
-            if(oResult!=null){
+            if (oResult != null) {
               console.log(oResult)
-              if(oResult.north ==null ||oResult.west ==null ||oResult.east ==null ||oResult.south ==null  ){
+              if (oResult.north == null || oResult.west == null || oResult.east == null || oResult.south == null) {
                 return;
-              }else{
+              } else {
                 let fNorth = parseFloat(oResult.north);
                 let fSouth = parseFloat(oResult.south);
                 let fEast = parseFloat(oResult.east);
@@ -151,12 +156,13 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
 
         return oContainer;
       },
-      onRemove: function (map) { },
+      onRemove: function (map) {
+      },
     })
     oMap.addControl(new m_oManualBoxingButton());
   }
 
-  //confirm inserted area
+  //Confirm inserted area
   confirmInsertedArea(oEvent?: any, fRadius?: number, fLat?: number, fLng?: number, geoJson?: any) {
     let oDialog = this.m_oDialog.open(ConfirmInsertedAreaDialogComponent, {
       width: '400px',
@@ -182,15 +188,16 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
     });
   }
 
-  // different ways to draw an area
+  // Different ways to draw an area
   //Using leaflet drawings
   onDrawCreated(oEvent) {
     this.clearPreviousDrawings()
     this.m_oMapService.onDrawCreated(oEvent);
-    this.m_bIsDrawCreated=true;
+    this.m_bIsDrawCreated = true;
     this.confirmInsertedArea(oEvent);
     // this.emitDrawnAreaEvent(oEvent);
   }
+
   //Handle when the user want to choose a position and let rise draw the minimum area around that point
   addCircleButton(oMap: any) {
     let bIsDrawing = false; // Flag to track if drawing is active
@@ -223,9 +230,6 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
           this.clearPreviousDrawings();
 
 
-
-
-
           // Set drawing flag to true
           bIsDrawing = true;
 
@@ -238,7 +242,7 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
             const fRadius = 500000; // Set the radius of the circle (in meters)
 
             // Add the new circle to the map
-            this.m_oLastCircle = L.circle([fLat, fLng], { radius: fRadius }).addTo(oMap);
+            this.m_oLastCircle = L.circle([fLat, fLng], {radius: fRadius}).addTo(oMap);
             this.m_oLastMarker = L.marker([fLat, fLng]).addTo(oMap);
 
             // Set view to the clicked location without zooming too much
@@ -249,7 +253,7 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
             // Remove the click listener after drawing
             oMap.off('click', onMapClick);
             bIsDrawing = false; // Reset the drawing flag
-            this.m_bIsAutoDrawCreated=true;
+            this.m_bIsAutoDrawCreated = true;
             this.confirmInsertedArea(null, fRadius, fLat, fLng);
             // this.emitCircleButtonAreaEvent(fRadius, fLat, fLng);
           };
@@ -261,7 +265,14 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
         // Add the cancel button click listener
         L.DomEvent.on(oCancelButton, 'click', () => {
           console.log("Cancel button clicked!");
-          this.clearPreviousDrawings();
+          if (this.m_oLastCircle) {
+            this.m_oMap.removeLayer(this.m_oLastCircle);
+            this.m_oLastCircle = null; // Reset reference
+          }
+          if (this.m_oLastMarker) {
+            this.m_oMap.removeLayer(this.m_oLastMarker);
+            this.m_oLastMarker = null; // Reset reference
+          }
           // Stop listening for clicks and reset the flag
           bIsDrawing = false;
           // Emit null to reset the shape
@@ -271,15 +282,17 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
 
         return oContainer;
       },
-      onRemove: function (map) { },
+      onRemove: function (map) {
+      },
     });
 
     // Add the control to the map
     oMap.addControl(new circleButton());
   }
+
   //Import shape file
   openImportDialog(): void {
-    let oDialog=this.m_oDialog.open(ImportShapeFileStationDialogComponent, {
+    let oDialog = this.m_oDialog.open(ImportShapeFileStationDialogComponent, {
       height: '425px',
       width: '660px',
     })
@@ -293,7 +306,7 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
           // Add GeoJSON to the map
           this.oGeoJsonLayer = L.geoJSON(oResult, {
             style: function (feature) {
-              return { color: "#ff7800", weight: 2 }; // Customize the style
+              return {color: "#ff7800", weight: 2}; // Customize the style
             },
             onEachFeature: function (feature, layer) {
               layer.bindPopup(`<b>Feature:</b> ${feature.properties.name || 'No Name'}`);
@@ -302,7 +315,7 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
 
           // Optionally, fit the map view to the bounds of the added GeoJSON layer
           this.m_oMap.fitBounds(this.oGeoJsonLayer.getBounds());
-          this.m_bIsImportDrawCreated=true;
+          this.m_bIsImportDrawCreated = true;
           this.confirmInsertedArea(null, null, null, null, oResult);
           // Emit the shape information from the GeoJSON
           // this.emitGeoJSONShapeInfo(oResult);
@@ -315,14 +328,23 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
 
   //Clearing previous drawing so to ensure only one area is emitted
   clearPreviousDrawings() {
-    this.m_bIsDrawCreated=false;
-    this.m_bIsAutoDrawCreated=false;
-    this.m_bIsImportDrawCreated=false;
+
+    this.m_bIsDrawCreated = false;
+    this.m_bIsAutoDrawCreated = false;
+    this.m_bIsImportDrawCreated = false;
     if (this.m_oDrawnItems) {
       this.m_oDrawnItems.clearLayers();
     }
 
     // Clear last circle and marker
+    if (this.m_oDrawMarker) {
+      this.m_oMap.removeLayer(this.m_oDrawMarker);
+      this.m_oDrawMarker = null; // Reset reference
+    }
+    if (this.m_oImportShapeMarker) {
+      this.m_oMap.removeLayer(this.m_oImportShapeMarker);
+      this.m_oImportShapeMarker = null; // Reset reference
+    }
     if (this.m_oLastCircle) {
       this.m_oMap.removeLayer(this.m_oLastCircle);
       this.m_oLastCircle = null; // Reset reference
@@ -334,8 +356,26 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
     // Remove the previous GeoJSON layer if it exists
     if (this.oGeoJsonLayer) {
       this.m_oMap.removeLayer(this.oGeoJsonLayer);
-      this.oGeoJsonLayer=null;
+      this.oGeoJsonLayer = null;
     }
+  }
+
+  // Function to calculate the centroid of a polygon
+  calculateCentroid(points: Array<{ lat: number, lng: number }>): { lat: number, lng: number } {
+    let latSum = 0;
+    let lngSum = 0;
+    const numPoints = points.length;
+
+    points.forEach(point => {
+      latSum += point.lat;
+      lngSum += point.lng;
+    });
+
+    // Return the average lat and lng to get the centroid
+    return {
+      lat: latSum / numPoints,
+      lng: lngSum / numPoints
+    };
   }
 
   //Emitting the area to the parent component
@@ -358,6 +398,8 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
         radius: radius,
         area: iSelectedArea
       };
+      this.m_oDrawMarker = L.marker([center.lat, center.lng]).addTo(this.m_oMap);
+
     }
     // Check if it's a polygon (including rectangles)
     else if (oEvent.layer instanceof L.Polygon) {
@@ -368,16 +410,21 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
       const points = latLngs.map((point: L.LatLng) => {
         return {lat: point.lat, lng: point.lng};
       });
-
+      // Calculate the centroid (center) of the polygon
+      const centroid = this.calculateCentroid(points);
       oShapeInfo = {
         type: 'polygon',
         points: points,
-        area: iSelectedArea
+        area: iSelectedArea,
+        center: centroid,
+        geoJson: oEvent.layer.toGeoJSON().geometry
       };
+      this.m_oDrawMarker = L.marker([centroid.lat, centroid.lng]).addTo(this.m_oMap);
     }
     // Emit the shape information (area, points, center, radius) to the parent component
     this.m_oMapInputChange.emit(oShapeInfo);
   }
+
   private emitCircleButtonAreaEvent(fRadius: number, fLat, fLng) {
     const fArea = Math.PI * fRadius * fRadius;
 
@@ -390,11 +437,12 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
     };
     this.m_oMapInputChange.emit(oShapeInfo);
   }
+
   private emitGeoJSONShapeInfo(geoJson: any) {
     let oShapeInfo = {};
-    let iSelectedArea=0;
+    let iSelectedArea = 0;
     console.log(geoJson)
-    if(geoJson.geometry.type==="Polygon"){
+    if (geoJson.geometry.type === "Polygon") {
       // GeoJSON coordinates are in [lng, lat] format, need to convert to [lat, lng]
       const latLngs = geoJson.geometry.coordinates[0].map((point: [number, number]) => {
         return L.latLng(point[1], point[0]); // Convert [lng, lat] to [lat, lng]
@@ -405,25 +453,26 @@ export class RiseSelectAreaComponent  implements OnInit, AfterViewInit {
 
       // Prepare the points data
       const points = latLngs.map((point: L.LatLng) => {
-        return { lat: point.lat, lng: point.lng };
+        return {lat: point.lat, lng: point.lng};
       });
-
+      // Calculate the centroid (center) of the polygon
+      const centroid = this.calculateCentroid(points);
       oShapeInfo = {
         type: 'polygon',
         points: points,
-        area: iSelectedArea
+        area: iSelectedArea,
+        center: centroid,
+        geoJson: geoJson
       };
+      this.m_oImportShapeMarker = L.marker([centroid.lat, centroid.lng]).addTo(this.m_oMap);
 
-    }else if ( geoJson.type==="circle"){
+    } else if (geoJson.type === "circle") {
       //todo will have to test with file to verify
     }
     console.log(oShapeInfo)
     // Emit the shape information to the parent component
     this.m_oMapInputChange.emit(oShapeInfo);
   }
-
-
-
 
 
 }

@@ -23,6 +23,10 @@ export class AreaOfOperationsComponent {
   }
 
   public navigateRoute(sLocation: string) {
+    //todo Admin registered the organization
+    //todo The organization has a valid subscription or a valid credit card
+    //todo HQ Operator has been added to the organization
+    //todo HQ Operator selected New Area of Operations
     this.m_oRouter.navigateByUrl(`/${sLocation}`);
   }
 }
