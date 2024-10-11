@@ -3,7 +3,7 @@ import {RiseViewModel} from "./RiseViewModel";
 
 export class LayerViewModel extends RiseViewModel {
 
-  link:string;
+  layerId: string;
 
   referenceDate: number;
 
@@ -18,5 +18,7 @@ export class LayerViewModel extends RiseViewModel {
   areaId: string;
 
   id: string;
+
+  geoserverUrl: string;
 
 }
