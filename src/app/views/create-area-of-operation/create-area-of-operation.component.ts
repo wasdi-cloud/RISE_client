@@ -11,8 +11,11 @@ import {MatDialog} from "@angular/material/dialog";
 import {RiseButtonComponent} from "../../components/rise-button/rise-button.component";
 import {AreaViewModel} from "../../models/AreaViewModel";
 import {AreaService} from "../../services/api/area.service";
-import { geojsonToWKT } from '@terraformer/wkt';
-import {ErrorViewModel} from "../../models/ErrorViewModel";
+import {geojsonToWKT} from '@terraformer/wkt';
+import {
+  BuyNewSubscriptionDialogComponent
+} from "../../dialogs/buy-new-subscription-dialog/buy-new-subscription-dialog.component";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-create-area-of-operation',
@@ -53,12 +56,13 @@ export class CreateAreaOfOperationComponent {
   m_oAreaInfo = {}
   m_asEventsSelected = []
   m_aoFieldUsers = []
-  m_sAreaOfOperationBBox: string="";
-  private m_sMarkerCoordinates: string="";
+  m_sAreaOfOperationBBox: string = "";
+  private m_sMarkerCoordinates: string = "";
 
   constructor(
     private oDialog: MatDialog,
-    private m_oAreaOfOperationService: AreaService) {
+    private m_oAreaOfOperationService: AreaService,
+    private m_oRouter: Router) {
   }
 
   onRowDelete(row: any) {
@@ -84,7 +88,7 @@ export class CreateAreaOfOperationComponent {
   }
 
   onMapInputChange(shapeInfo: any) {
-    console.log(shapeInfo)
+
     if (shapeInfo) {
       if (shapeInfo.type === 'circle') {
         // Store circle information as before
@@ -97,27 +101,26 @@ export class CreateAreaOfOperationComponent {
           radius: shapeInfo.radius,
           area: shapeInfo.area
         };
-        this.m_sMarkerCoordinates='POINT('+shapeInfo.center.lng+' '+shapeInfo.center.lat+')'
+        this.m_sMarkerCoordinates = 'POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')'
         // Convert circle to WKT (approximated as a polygon with 64 points)
         const wktCircle = this.convertCircleToWKT(shapeInfo.center, shapeInfo.radius);
         console.log("WKT for Circle: ", wktCircle);
-        this.m_sAreaOfOperationBBox=wktCircle;
+        this.m_sAreaOfOperationBBox = wktCircle;
 
-      }
-      else if (shapeInfo.type === 'polygon') {
+      } else if (shapeInfo.type === 'polygon') {
         // Store polygon information as before
         this.m_oAreaInfo = {
           type: 'polygon',
           points: shapeInfo.points,
           area: shapeInfo.area,
-          geoJson:shapeInfo.geoJson,
-          center:shapeInfo.center
+          geoJson: shapeInfo.geoJson,
+          center: shapeInfo.center
         };
 
         // Convert polygon to WKT
         console.log(geojsonToWKT(shapeInfo.geoJson))
-        this.m_sAreaOfOperationBBox=geojsonToWKT(shapeInfo.geoJson);
-        this.m_sMarkerCoordinates='POINT('+shapeInfo.center.lng+' '+shapeInfo.center.lat+')'
+        this.m_sAreaOfOperationBBox = geojsonToWKT(shapeInfo.geoJson);
+        this.m_sMarkerCoordinates = 'POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')'
 
       }
     }
@@ -143,8 +146,6 @@ export class CreateAreaOfOperationComponent {
   }
 
 
-
-
   SaveAreaOfOperation() {
 
     //todo rise utils
@@ -167,17 +168,22 @@ export class CreateAreaOfOperationComponent {
     this.m_oAreaOfOperation = {
       name: this.m_sAreaOfOperationName,
       description: this.m_sAreaOfOperationDescription,
-      bbox:this.m_sAreaOfOperationBBox,
-      markerCoordinates:this.m_sMarkerCoordinates
+      bbox: this.m_sAreaOfOperationBBox,
+      markerCoordinates: this.m_sMarkerCoordinates
     }
     this.m_oAreaOfOperationService.addArea(this.m_oAreaOfOperation).subscribe(
       {
         next: () => {
           console.log('Success');
         },
-        error: (e:ErrorViewModel) => {
+        error: (e) => {
           // here handle no valid subscription
-          console.log(e.errorStringCodes[0])
+
+          if (e.error.errorStringCodes[0] === 'ERROR_API_NO_VALID_SUBSCRIPTION') {
+            //open dialog to invite user to buy new subscription
+            this.inviteUserToBuyNewSubscription();
+          }
+
         }
       }
     )
@@ -217,7 +223,6 @@ export class CreateAreaOfOperationComponent {
       to notify that the full archive is available.*/
   }
 
-
   cancelCreatingAreaOfOperation() {
 
   }
@@ -226,5 +231,20 @@ export class CreateAreaOfOperationComponent {
     this.m_aoFieldUsers = tableData;
     // Process the data as needed in your component
     // For example, you can store it in a local variable or pass it to another service
+  }
+
+  private inviteUserToBuyNewSubscription() {
+    let oDialog = this.oDialog.open(BuyNewSubscriptionDialogComponent, {
+      height: '420px',
+      width: '600px'
+    });
+    // Once is closed...
+    oDialog.afterClosed().subscribe(oResult => {
+      if (oResult) {
+        //todo go to subscription page
+        this.m_oRouter.navigateByUrl('/buy-new-subscription');
+      }
+
+    })
   }
 }

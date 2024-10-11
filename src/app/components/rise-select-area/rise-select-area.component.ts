@@ -79,6 +79,7 @@ export class RiseSelectAreaComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.clearPreviousDrawings();
   }
 
   onMapReady(oMap) {
@@ -145,7 +146,7 @@ export class RiseSelectAreaComponent implements OnInit, AfterViewInit {
               }
 
             }
-            console.log('closed');
+
           })
         });
 
