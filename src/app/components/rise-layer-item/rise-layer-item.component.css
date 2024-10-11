@@ -1,5 +1,11 @@
 .layer-list-item {
-    border: 1px solid #000000;
-    border-radius: 8px;
-    width: 100%;
+  border: 1px solid #000000;
+  border-radius: 8px;
+  cursor: pointer;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+div.layer-id {
+  overflow-wrap: break-word;
 }
