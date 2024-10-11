@@ -41,13 +41,20 @@ export class MonitorComponent implements OnInit {
 
   m_sAreaId: string = null;
 
-  m_aoLayers: Array<any> = [1, 2, 3, 4];
+  m_aoLayers: Array<any> = [];
 
   m_aoButtons = LayerTypes;
 
   m_sStartDate: Date = null;
   m_sEndDate: Date = null;
   m_iTestDate: number = 172767150000;
+
+  /**
+   * Available plugins for the workspace
+   */
+  m_aoPlugins: Array<any> = [];
+
+  m_oActivePlugin: any = null;
 
   constructor(
     private m_oActivatedRoute: ActivatedRoute,
@@ -63,25 +70,19 @@ export class MonitorComponent implements OnInit {
   }
 
   getActiveAOI() {
-    //Check if the AOI is stored in the Constants Service
     if (this.m_oConstantsService.getActiveAOI()) {
       this.m_oAreaOfOperation = this.m_oConstantsService.getActiveAOI();
-      console.log('here');
     } else if (this.m_oActivatedRoute.snapshot.params['aoiId']) {
-      console.log('there');
       this.m_sAreaId = this.m_oActivatedRoute.snapshot.params['aoiId'];
       this.openAOI(this.m_sAreaId);
     } else {
+      console.log('MONITOR.CONTROLLER: Error - could not open monitor space');
     }
-    //Check if the ID is stored in the URL snapshot
-
-    //Re-direct if ID not present
   }
 
   openAOI(sAreaId: string) {
     this.m_oAreaService.getAreaById(sAreaId).subscribe({
       next: (oResponse) => {
-        console.log(oResponse);
         if (oResponse) {
           this.getMapsByArea(oResponse.id, oResponse.startDate);
         }
@@ -92,13 +93,19 @@ export class MonitorComponent implements OnInit {
     });
   }
 
-  getMapsByArea(sAreaId: string, iAreaDate) {
+  getMapsByArea(sAreaId: string, iAreaDate?: string | number) {
+    if (!iAreaDate) {
+      iAreaDate = '';
+    }
     this.m_oMapAPIService.byArea(sAreaId).subscribe({
       next: (oResponse) => {
         if (oResponse.length > 0) {
-          oResponse.forEach((oMap) => {
-            if (oMap.id === 'sar_flood')
-              this.getLayers(oMap.id, sAreaId, iAreaDate);
+          this.m_aoPlugins = oResponse;
+          this.m_aoPlugins.forEach((oPlugin) => {
+            if (this.m_aoPlugins[0].name === oPlugin.name) {
+              this.m_oActivePlugin = this.m_aoPlugins[0];
+            }
+            this.getLayers(oPlugin, sAreaId, iAreaDate);
           });
         }
       },
@@ -111,24 +118,23 @@ export class MonitorComponent implements OnInit {
    * TODO: Get the layers for the selected type from the button execution
    * @param sLayerType
    */
-  getLayers(sMapId: string, sAreaId: string, iDate: number) {
-    this.m_oLayerService
-      .findLayer(sMapId, sAreaId, this.m_iTestDate)
-      .subscribe({
-        next: (oResponse) => {
-          if (oResponse) {
-            console.log(oResponse);
-            this.m_oMapService.addLayerMap2DByServer(
-              oResponse.layerId,
-              oResponse.geoserverUrl
-            );
-            // this.m_oMapService.zoomBandImageOnGeoserverBoundingBox(oResponse.geoserverBoundingBox);
-          }
-        },
-        error: (oError) => {
-          console.log(oError);
-        },
-      });
+  getLayers(oPlugin: any, sAreaId: string, iDate: string | number) {
+    this.m_oLayerService.findLayer(oPlugin.id, sAreaId, '').subscribe({
+      next: (oResponse) => {
+        if (oResponse) {
+          oPlugin.layers = oResponse;
+          return oResponse;
+          // this.m_oMapService.addLayerMap2DByServer(
+          //   oResponse.layerId,
+          //   oResponse.geoserverUrl
+          // );
+          // this.m_oMapService.zoomBandImageOnGeoserverBoundingBox(oResponse.geoserverBoundingBox);
+        }
+      },
+      error: (oError) => {
+        console.log(oError);
+      },
+    });
   }
 
   /**
@@ -144,10 +150,22 @@ export class MonitorComponent implements OnInit {
   /**
    * TODO: Add a layer to the map
    */
-  addLayerToMap(oLayer) {}
+  addLayerToMap(oLayer) {
+    this.m_oMapService.addLayerMap2DByServer(oLayer.layerId, oLayer.geoserverUrl);
+  }
 
   /**
    * TODO: Open Cross-section tool
    */
   openCrossSectionTool() {}
+
+  setActivePlugin(oPlugin) {
+    this.m_oActivePlugin = oPlugin;
+    if (oPlugin.layers) {
+      // TODO: Check when multiple layer - may not need to type as Array
+      this.m_aoLayers = [oPlugin.layers];
+    } else {
+      this.m_aoLayers = [];
+    }
+  }
 }

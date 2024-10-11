@@ -1,25 +1,35 @@
 <main class="d-flex flex-column">
-    <rise-toolbar [m_bUserIsSigned]="true"></rise-toolbar>
-    <div class="flex-fill d-flex flex-row">
-        <div class="layer-list-container d-flex flex-column gap-2 px-2">
-            <!-- Layer List output -->
-            <div></div>
-            LAYER LIST
-            <rise-layer-item *ngFor="let oLayer of m_aoLayers"></rise-layer-item>
-        </div>
-        <div class="map-output-container flex-fill">
-            @if (m_bShow2D === true) {
-            <div class="layer-select-container">
-            </div>
-            <div class="btn-select-container d-flex flex-row gap-2">
-                <rise-button *ngFor="let oButton of m_aoButtons"
-                    [m_sLabel]="oButton.translateKey | translate"></rise-button>
-            </div>
-            <rise-timebar class="timebar"></rise-timebar>
-            <rise-map></rise-map>
-            } @else {
-            <rise-globe></rise-globe>
-            }
-        </div>
+  <rise-toolbar [m_bUserIsSigned]="true"></rise-toolbar>
+  <div class="flex-fill d-flex flex-row">
+    <div class="layer-list-container d-flex flex-column gap-2 px-2">
+      <!-- Layer List output -->
+      @if(m_aoLayers.length > 0) {
+      <rise-layer-item
+        *ngFor="let oLayer of m_aoLayers"
+        [m_oLayer]="oLayer"
+        (click)="addLayerToMap(oLayer)"
+      ></rise-layer-item>
+      } @else { No layers to show }
     </div>
+    <div class="map-output-container flex-fill">
+      @if (m_bShow2D === true) {
+      <div class="layer-select-container"></div>
+      <div
+        *ngIf="m_aoPlugins.length > 0"
+        class="btn-select-container d-flex flex-row gap-2"
+      >
+        <rise-button
+          *ngFor="let oPlugin of m_aoPlugins"
+          [m_sLabel]="oPlugin.name"
+          (click)="setActivePlugin(oPlugin)"
+          [m_bActive]="oPlugin.id === m_oActivePlugin.id"
+        ></rise-button>
+      </div>
+      <rise-timebar class="timebar"></rise-timebar>
+      <rise-map></rise-map>
+      } @else {
+      <rise-globe></rise-globe>
+      }
+    </div>
+  </div>
 </main>
