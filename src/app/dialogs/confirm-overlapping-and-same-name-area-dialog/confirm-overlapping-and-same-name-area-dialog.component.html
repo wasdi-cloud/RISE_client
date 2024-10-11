@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>Confirmation</h2>
+<mat-dialog-content>
+  <p>{{ data}}</p>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <rise-button [m_sLabel]="'No'"  (click)="onNoClick()"></rise-button>
+  <rise-button [m_sLabel]="'Yes'"  (click)="onYesClick()"></rise-button>
+</mat-dialog-actions>
