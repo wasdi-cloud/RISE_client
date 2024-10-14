@@ -58,4 +58,9 @@ export class RiseButtonComponent {
    * Is the button "muted" (i.e., "white")?
    */
   @Input() m_bMuted?: boolean = false;
+
+  /**
+   * Is the button Active? (i.e., clicked)
+   */
+  @Input() m_bActive?: boolean = false;
 }

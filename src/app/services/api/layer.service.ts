@@ -12,7 +12,7 @@ export class LayerService {
     private m_oHttp: HttpClient
   ) {}
 
-  findLayer(sMapId: string, sAreaId: string, iDate: number) {
+  findLayer(sMapId: string, sAreaId: string, iDate: string | number) {
     return this.m_oHttp.get<any>(this.APIURL + '/layer/find?map_id=' + sMapId + '&area_id=' + sAreaId + '&date=' + iDate);
   }
 }

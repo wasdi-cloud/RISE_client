@@ -6,12 +6,11 @@ import { AreaViewModel } from '../models/AreaViewModel';
 import { MatDialog } from '@angular/material/dialog';
 
 import Geocoder from 'leaflet-control-geocoder';
-import { Map, Marker } from 'leaflet';
+import { geoJSON, Map, Marker } from 'leaflet';
 import 'leaflet-draw';
 import 'leaflet-mouse-position';
-import { EventEmitter } from 'stream';
 import { BehaviorSubject } from 'rxjs';
-import {wktToGeoJSON} from "@terraformer/wkt";
+import { wktToGeoJSON } from '@terraformer/wkt';
 
 declare const L: any;
 
@@ -363,10 +362,10 @@ export class MapService {
   }
 
   addMarker(oArea: AreaViewModel, oMap: Map): Marker {
-    let asCoordinates = this.convertPointLatLng(oArea);
-    if(asCoordinates){
-      let lat = parseFloat(asCoordinates[0]);
-      let lon = parseFloat(asCoordinates[1]);
+    let asCoordinates = this.convertPointLatLng(oArea)._northEast;
+    if (asCoordinates) {
+      let lat = parseFloat(asCoordinates.lat);
+      let lon = parseFloat(asCoordinates.lng);
       let oMarker = L.marker([lat, lon])
         .on('click', () => {
           this.m_oMarkerSubject.next(oArea);
@@ -390,13 +389,11 @@ export class MapService {
   }
 
   convertPointLatLng(oArea) {
-
-    console.log(oArea);
-    if(oArea.markerCoordinates){
-      console.log(wktToGeoJSON(oArea.markerCoordinates));
-      let asCoordinates = oArea.markerCoordinates.slice(6).slice(0, -1);
-      asCoordinates = asCoordinates.split(' ');
-      return asCoordinates;
+    if (oArea.markerCoordinates) {
+      let aoCoordinates: any = wktToGeoJSON(oArea.markerCoordinates);
+      aoCoordinates = geoJSON(aoCoordinates).getBounds();
+      console.log(aoCoordinates)
+      return aoCoordinates;
     }
     return null;
   }
@@ -414,10 +411,9 @@ export class MapService {
     let oWmsLayer = L.tileLayer.wms(sServer, {
       layers: sLayerId,
       format: 'image/png',
-      transparent: true,
+      transparent: false,
       noWrap: true,
     });
-    console.log(oWmsLayer);
     oWmsLayer.setZIndex(1000);
     oWmsLayer.addTo(oMap);
     return true;
