@@ -1,5 +1,7 @@
 {
   "ACCOUNT": {
+    "ORGANIZATION": "Organization",
+    "USER":"User",
     "MY_ORGANIZATION": "My Organization",
     "MY_USER": "My User",
     "AREA_OF_OPERATIONS": "Area Of Operations",

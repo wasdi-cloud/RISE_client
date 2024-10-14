@@ -1,1 +1,7 @@
-<p>account-sidebar works!</p>
+<div class="sidebar-container d-flex flex-column gap-3 px-3">
+  <rise-button
+    *ngFor="let oButton of m_aoAccountButtons"
+    [m_sLabel]="oButton.labelKey"
+    (click)="emitButtonSelection(oButton.route)"
+  ></rise-button>
+</div>

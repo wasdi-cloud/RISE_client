@@ -1,3 +1,10 @@
-<rise-toolbar [m_bUserIsSigned]="true"></rise-toolbar>
-<p>account works!</p>
-<rise-button [m_sLabel]="'ACCOUNT.AREA_OF_OPERATIONS' | translate" (click)="navigateRoute('area-of-operations')"></rise-button>
+<main class="d-flex flex-column">
+  <rise-toolbar [m_bUserIsSigned]="true"></rise-toolbar>
+  <div class="flex-fill d-flex flex-row">
+    <account-sidebar
+      [m_aoAccountButtons]="m_aoAccountButtons"
+      (m_sSelectedButton)="getActiveOutlet($event)"
+    ></account-sidebar>
+  </div>
+  <!-- <rise-button [m_sLabel]="'ACCOUNT.AREA_OF_OPERATIONS' | translate" (click)="navigateRoute('area-of-operations')"></rise-button> -->
+</main>
