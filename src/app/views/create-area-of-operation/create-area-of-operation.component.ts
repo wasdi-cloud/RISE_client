@@ -42,7 +42,7 @@ import {PluginService} from "../../services/api/plugin.service";
 })
 export class CreateAreaOfOperationComponent implements OnInit{
 
-  m_asPlugins:string[] = [];
+  m_asPlugins:{label:string,value:string}[] = [];
 
   //todo get users from org
   m_aoUserData = [
@@ -56,7 +56,7 @@ export class CreateAreaOfOperationComponent implements OnInit{
   m_sAreaOfOperationDescription: string;
   m_sAreaOfOperationName: string;
   m_oAreaInfo = {}
-  m_asEventsSelected = []
+  m_asPluginsSelected :string[]= []
   m_aoFieldUsers = []
   m_sAreaOfOperationBBox: string = "";
   m_sMarkerCoordinates: string = "";
@@ -76,8 +76,8 @@ export class CreateAreaOfOperationComponent implements OnInit{
     this.m_oPluginService.getPluginsList().subscribe({
       next:(aoResponse)=>{
         for (const aoResponseElement of aoResponse) {
-          if(aoResponseElement!=''){
-            this.m_asPlugins.push(aoResponseElement.name)
+          if(aoResponseElement!='' && aoResponseElement.name && aoResponseElement.id){
+            this.m_asPlugins.push({label:aoResponseElement.name,value:aoResponseElement.id})
           }
         }
         console.log(this.m_asPlugins);
@@ -110,7 +110,7 @@ export class CreateAreaOfOperationComponent implements OnInit{
 
   onSelectionChange(selectedValues: any[]) {
     console.log('Selected values:', selectedValues);
-    this.m_asEventsSelected = selectedValues;
+    this.m_asPluginsSelected = selectedValues;
   }
 
   onMapInputChange(shapeInfo: any) {
@@ -182,11 +182,15 @@ export class CreateAreaOfOperationComponent implements OnInit{
       //todo alert user
       return;
     }
-    if (this.m_asEventsSelected === null || this.m_asEventsSelected.length == 0) {
+    if (this.m_asPluginsSelected === null || this.m_asPluginsSelected.length == 0) {
       //todo alert user
       return;
     }
     if (this.m_aoFieldUsers === null || this.m_aoFieldUsers.length == 0) {
+      //todo alert user
+      return;
+    }
+    if(this.m_asPluginsSelected.length<1){
       //todo alert user
       return;
     }
@@ -195,6 +199,7 @@ export class CreateAreaOfOperationComponent implements OnInit{
       description: this.m_sAreaOfOperationDescription,
       bbox: this.m_sAreaOfOperationBBox,
       markerCoordinates: this.m_sMarkerCoordinates
+      // plugins:this.m_asPluginsSelected
     }
 
     //check if the selected area overlaps or have the same name of an existing one
@@ -327,7 +332,7 @@ export class CreateAreaOfOperationComponent implements OnInit{
     this.m_sMarkerCoordinates = '';
 
     // Reset the selected events (checkboxes)
-    this.m_asEventsSelected = [];
+    this.m_asPluginsSelected = [];
 
     // Reset the users in the table
     this.m_aoFieldUsers = [];

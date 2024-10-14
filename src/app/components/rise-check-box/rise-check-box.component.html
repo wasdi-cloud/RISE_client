@@ -3,10 +3,10 @@
     <label>
       <input
         type="checkbox"
-        [value]="option"
-        (change)="onCheckboxChange(option, $event)"
+        [value]="option.value"
+        (change)="onCheckboxChange(option.value, $event)"
       />
-      {{ option }}
+      {{ option.label }}
     </label>
   </div>
 </div>
