@@ -329,37 +329,52 @@ export class RiseSelectAreaComponent implements OnInit, AfterViewInit {
 
   //Clearing previous drawing so to ensure only one area is emitted
   clearPreviousDrawings() {
-
     this.m_bIsDrawCreated = false;
     this.m_bIsAutoDrawCreated = false;
     this.m_bIsImportDrawCreated = false;
+
+    // Clear all drawn shapes (polygons, circles, etc.)
     if (this.m_oDrawnItems) {
-      this.m_oDrawnItems.clearLayers();
+      this.m_oDrawnItems.clearLayers();  // Clear layers added by Leaflet Draw
     }
 
-    // Clear last circle and marker
+    // Clear manually added marker (from manual draw)
     if (this.m_oDrawMarker) {
       this.m_oMap.removeLayer(this.m_oDrawMarker);
-      this.m_oDrawMarker = null; // Reset reference
+      this.m_oDrawMarker = null;  // Reset reference
     }
+
+    // Clear any markers added from importing a shape file
     if (this.m_oImportShapeMarker) {
       this.m_oMap.removeLayer(this.m_oImportShapeMarker);
-      this.m_oImportShapeMarker = null; // Reset reference
+      this.m_oImportShapeMarker = null;  // Reset reference
     }
+
+    // Clear last circle drawn (from auto-draw or manual circle drawing)
     if (this.m_oLastCircle) {
       this.m_oMap.removeLayer(this.m_oLastCircle);
-      this.m_oLastCircle = null; // Reset reference
+      this.m_oLastCircle = null;  // Reset reference
     }
+
+    // Clear last marker (in case a marker was placed, but the area was not a circle)
     if (this.m_oLastMarker) {
       this.m_oMap.removeLayer(this.m_oLastMarker);
-      this.m_oLastMarker = null; // Reset reference
+      this.m_oLastMarker = null;  // Reset reference
     }
-    // Remove the previous GeoJSON layer if it exists
+
+    // Remove any previous GeoJSON layers (from imports or other drawing methods)
     if (this.oGeoJsonLayer) {
       this.m_oMap.removeLayer(this.oGeoJsonLayer);
-      this.oGeoJsonLayer = null;
+      this.oGeoJsonLayer = null;  // Reset reference
     }
+
+    // Log and remove all layers except the base map layer
+
+
+    console.log('Map and drawings cleared');
   }
+
+
 
   // Function to calculate the centroid of a polygon
   calculateCentroid(points: Array<{ lat: number, lng: number }>): { lat: number, lng: number } {

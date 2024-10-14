@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RiseToolbarComponent} from "../../components/rise-toolbar/rise-toolbar.component";
 import {RiseTextInputComponent} from "../../components/rise-text-input/rise-text-input.component";
 import {RiseSelectAreaComponent} from "../../components/rise-select-area/rise-select-area.component";
@@ -16,10 +16,17 @@ import {
   BuyNewSubscriptionDialogComponent
 } from "../../dialogs/buy-new-subscription-dialog/buy-new-subscription-dialog.component";
 import {Router} from "@angular/router";
+import {
+  ConfirmOverlappingAndSameNameAreaDialogComponent
+} from "../../dialogs/confirm-overlapping-and-same-name-area-dialog/confirm-overlapping-and-same-name-area-dialog.component";
+import {PluginService} from "../../services/api/plugin.service";
 
 @Component({
   selector: 'app-create-area-of-operation',
   standalone: true,
+  providers:[
+    RiseSelectAreaComponent
+  ],
   imports: [
     RiseToolbarComponent,
     RiseTextInputComponent,
@@ -33,14 +40,9 @@ import {Router} from "@angular/router";
   templateUrl: './create-area-of-operation.component.html',
   styleUrl: './create-area-of-operation.component.css'
 })
-export class CreateAreaOfOperationComponent {
+export class CreateAreaOfOperationComponent implements OnInit{
 
-  m_oEvents = [
-    {label: 'Floods', value: 1},
-    {label: 'Droughts', value: 2},
-    {label: 'Buildings', value: 3},
-    {label: 'Impacts', value: 4}
-  ];
+  m_asPlugins:string[] = [];
 
   //todo get users from org
   m_aoUserData = [
@@ -57,13 +59,37 @@ export class CreateAreaOfOperationComponent {
   m_asEventsSelected = []
   m_aoFieldUsers = []
   m_sAreaOfOperationBBox: string = "";
-  private m_sMarkerCoordinates: string = "";
+  m_sMarkerCoordinates: string = "";
+  m_aoAreasOfOperations: AreaViewModel[];
 
   constructor(
     private oDialog: MatDialog,
     private m_oAreaOfOperationService: AreaService,
-    private m_oRouter: Router) {
+    private m_oRouter: Router,
+    private m_oRiseSelectAreaComponent:RiseSelectAreaComponent,
+    private m_oPluginService:PluginService,
+    ) {
   }
+
+  ngOnInit() {
+
+    this.m_oPluginService.getPluginsList().subscribe({
+      next:(aoResponse)=>{
+        for (const aoResponseElement of aoResponse) {
+          if(aoResponseElement!=''){
+            this.m_asPlugins.push(aoResponseElement.name)
+          }
+        }
+        console.log(this.m_asPlugins);
+      }
+    })
+        this.m_oAreaOfOperationService.getAreaList().subscribe({
+          next:(aoResponse)=>{
+            this.m_aoAreasOfOperations=aoResponse;
+            console.log(this.m_aoAreasOfOperations);
+          }
+        })
+    }
 
   onRowDelete(row: any) {
     this.m_aoUserData = this.m_aoUserData.filter(item => item !== row); // Remove the deleted row
@@ -147,7 +173,6 @@ export class CreateAreaOfOperationComponent {
 
 
   SaveAreaOfOperation() {
-
     //todo rise utils
     if (this.m_sAreaOfOperationDescription === null || this.m_sAreaOfOperationName === null) {
       //todo alert user or make input in red
@@ -171,6 +196,9 @@ export class CreateAreaOfOperationComponent {
       bbox: this.m_sAreaOfOperationBBox,
       markerCoordinates: this.m_sMarkerCoordinates
     }
+
+    //check if the selected area overlaps or have the same name of an existing one
+    // this.checkOverlappingAreasAndSameName(this.m_oAreaOfOperation);
     this.m_oAreaOfOperationService.addArea(this.m_oAreaOfOperation).subscribe(
       {
         next: () => {
@@ -188,39 +216,6 @@ export class CreateAreaOfOperationComponent {
       }
     )
 
-    /*todo add verification before adding the area:
-  ****
-  **do that before make him click on the save button
-  **Admin registered the organization
-  **The organization has a valid subscription or a valid credit card
-  **HQ Operator has been added to the organization
-  **HQ Operator selected New Area of Operations
-  ***
-  todo 4.HQ Operator confirms the inserted area
-  todo 5. RISE adjust the area to fit the requirements of the system (area not too big and
-    not too small)
-  todo 6. If the selected area overlaps or have the same name of an existing one:
-    a. RISE communicates to the HQ Operator that there is already an
-      overlapping area that is up and running
-    b. RISE ask confirmation to the HQ Operator if we really wants to proceed;
-    c. If the user cancels the operation, RISE clears the form and comes back
-    to Step 1, otherwise proceed to step 7.
-
-  todo 9.RISE verifies the subscription status of the organization
-  todo 10. If the Organization does not have a valid subscription:
-      a. RISE invites the user to buy a New Subscription (UC_095)
-  todo 11. RISE communicates to the HQ Operator the success of adding the new Area of
-      Operations.
-  todo 12. RISE communicates to the HQ Operator that the processing started, and she/he
-      will be notified by e-mail when it is done.
-  todo 13. RISE automatically start the processing of the last week of data
-      a. When the processing is done, RISE sends an e-mail to the HQ Operator
-      to notify that it is possible to start the near real time monitoring.
-  todo 14. If it is a long term Area of Operations:
-      a. RISE start to process the satellite archive to reconstruct the past event
-      over the area of interest
-      b. When the processing is done , RISE sends an e-mail to the HQ Operator
-      to notify that the full archive is available.*/
   }
 
   cancelCreatingAreaOfOperation() {
@@ -247,4 +242,98 @@ export class CreateAreaOfOperationComponent {
 
     })
   }
+
+  private checkOverlappingAreas(m_oAreaOfOperation: AreaViewModel) {
+    //TODO the service is not implemented yet in the backend
+    return false;
+  }
+
+  private checkSameNameAreas(m_oAreaOfOperation: AreaViewModel) {
+    for (const area of this.m_aoAreasOfOperations) {
+      if(area.name===m_oAreaOfOperation.name){
+        return true;
+      }
+
+    }
+    return false;
+
+  }
+
+  private checkOverlappingAreasAndSameName(m_oAreaOfOperation: AreaViewModel) {
+
+    if(this.checkOverlappingAreas(m_oAreaOfOperation) && this.checkSameNameAreas(m_oAreaOfOperation)){
+      //ask user to confirm
+      const oDialogRef = this.oDialog.open(ConfirmOverlappingAndSameNameAreaDialogComponent, {
+        width: '300px',
+        data:'The area that you have just created is overlapping with another area and also have the same name of an existing area,Do you want to proceed ?'
+      });
+
+      oDialogRef.afterClosed().subscribe(result => {
+        return result;
+      });
+    }
+    else if(this.checkSameNameAreas(m_oAreaOfOperation)){
+      //ask user to confirm
+      const oDialogRef = this.oDialog.open(ConfirmOverlappingAndSameNameAreaDialogComponent, {
+        width: '300px',
+        data:'The area that you have just created has the same name of an existing area,Do you want to proceed ?'
+      });
+
+      oDialogRef.afterClosed().subscribe(result => {
+        if(result){
+          this.m_oAreaOfOperationService.addArea(this.m_oAreaOfOperation).subscribe(
+            {
+              next: () => {
+                console.log('Success');
+              },
+              error: (e) => {
+                // here handle no valid subscription
+
+                if (e.error.errorStringCodes[0] === 'ERROR_API_NO_VALID_SUBSCRIPTION') {
+                  //open dialog to invite user to buy new subscription
+                  this.inviteUserToBuyNewSubscription();
+                }
+
+              }
+            }
+          )
+        }else{
+          //todo clear everything
+          this.resetAreaOfOperationForm()
+        }
+      });
+    }else if (this.checkOverlappingAreas(m_oAreaOfOperation)){
+      //ask user to confirm
+      const oDialogRef = this.oDialog.open(ConfirmOverlappingAndSameNameAreaDialogComponent, {
+        width: '300px',
+        data:'The area that you have just created has the same name of an existing area,Do you want to proceed ?'
+      });
+
+      oDialogRef.afterClosed().subscribe(result => {
+        return result;
+      });
+    }
+    return false;
+
+  }
+  private resetAreaOfOperationForm() {
+    // Reset the name and description
+    this.m_sAreaOfOperationName = '';
+    this.m_sAreaOfOperationDescription = '';
+
+    // Reset the map area
+    this.m_oAreaInfo = {};
+    this.m_sAreaOfOperationBBox = '';
+    this.m_sMarkerCoordinates = '';
+
+    // Reset the selected events (checkboxes)
+    this.m_asEventsSelected = [];
+
+    // Reset the users in the table
+    this.m_aoFieldUsers = [];
+
+    this.m_oRiseSelectAreaComponent.clearPreviousDrawings();
+    console.log("Form has been reset");
+  }
+
 }

@@ -21,7 +21,6 @@ export class PluginService {
    * @return
    */
   getPluginsList() {
-    let urlParams = "?" + "token=" + this.m_oConstantsService.getSessionId();
-    return this.m_oHttp.get<any>(this.APIURL + '/plugins/list' + urlParams);
+    return this.m_oHttp.get<any>(this.APIURL + '/plugins/list');
   }
 }

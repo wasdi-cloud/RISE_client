@@ -6,11 +6,11 @@ import { AreaViewModel } from '../models/AreaViewModel';
 import { MatDialog } from '@angular/material/dialog';
 
 import Geocoder from 'leaflet-control-geocoder';
-import { geoJSON, Map, Marker } from 'leaflet';
+import {geoJSON, Map, Marker} from 'leaflet';
 import 'leaflet-draw';
 import 'leaflet-mouse-position';
 import { BehaviorSubject } from 'rxjs';
-import { wktToGeoJSON } from '@terraformer/wkt';
+import {wktToGeoJSON} from "@terraformer/wkt";
 
 declare const L: any;
 
@@ -306,7 +306,7 @@ export class MapService {
    * @param event
    */
   onDrawCreated(event: any) {
-    console.log(event);
+
     const { layerType, layer } = event;
 
     // For rectangle, calculate area
