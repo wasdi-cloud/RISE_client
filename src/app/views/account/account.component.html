@@ -5,6 +5,9 @@
       [m_aoAccountButtons]="m_aoAccountButtons"
       (m_sSelectedButton)="getActiveOutlet($event)"
     ></account-sidebar>
+    <div class="outlet-container flex-fill px-3">
+      <user-account *ngIf="m_sActiveOutlet === 'user'"></user-account>
+    </div>
   </div>
   <!-- <rise-button [m_sLabel]="'ACCOUNT.AREA_OF_OPERATIONS' | translate" (click)="navigateRoute('area-of-operations')"></rise-button> -->
 </main>

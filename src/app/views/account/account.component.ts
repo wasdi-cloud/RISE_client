@@ -5,14 +5,18 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { AccountSidebarComponent } from './account-sidebar/account-sidebar.component';
 import { AccountBtns } from './account-sidebar/account-btns';
+import { UserAccountComponent } from './user-account/user-account.component';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-account',
   standalone: true,
   imports: [
     AccountSidebarComponent,
+    CommonModule,
     RiseToolbarComponent,
     RiseButtonComponent,
     TranslateModule,
+    UserAccountComponent,
   ],
   templateUrl: './account.component.html',
   styleUrl: './account.component.css',
@@ -31,7 +35,7 @@ export class AccountComponent {
   public getActiveOutlet(sSelectedOutlet: string) {
     if (sSelectedOutlet) {
       this.m_sActiveOutlet = sSelectedOutlet;
-      console.log(this.m_sActiveOutlet)
+      console.log(this.m_sActiveOutlet);
     }
   }
 }
