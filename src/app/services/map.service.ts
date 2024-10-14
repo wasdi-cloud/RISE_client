@@ -307,7 +307,7 @@ export class MapService {
    * @param event
    */
   onDrawCreated(event: any) {
-    console.log(event);
+
     const { layerType, layer } = event;
 
     // For rectangle, calculate area
@@ -391,9 +391,9 @@ export class MapService {
 
   convertPointLatLng(oArea) {
 
-    console.log(oArea);
+
     if(oArea.markerCoordinates){
-      console.log(wktToGeoJSON(oArea.markerCoordinates));
+
       let asCoordinates = oArea.markerCoordinates.slice(6).slice(0, -1);
       asCoordinates = asCoordinates.split(' ');
       return asCoordinates;
@@ -417,7 +417,7 @@ export class MapService {
       transparent: true,
       noWrap: true,
     });
-    console.log(oWmsLayer);
+
     oWmsLayer.setZIndex(1000);
     oWmsLayer.addTo(oMap);
     return true;

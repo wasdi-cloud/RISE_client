@@ -11,7 +11,7 @@ import {NgForOf} from "@angular/common";
   styleUrl: './rise-check-box.component.css'
 })
 export class RiseCheckBoxComponent {
-  @Input() m_aoOptions: { label: string; value: any }[] = []; // Input for checkbox options
+  @Input() m_aoOptions: string[] = []; // Input for checkbox options
   @Output() m_oSelectionChange = new EventEmitter<any[]>(); // Output for selected values
 
   m_aoSelectedValues: any[] = []; // Store selected values

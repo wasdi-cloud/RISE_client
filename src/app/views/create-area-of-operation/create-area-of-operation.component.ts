@@ -19,6 +19,7 @@ import {Router} from "@angular/router";
 import {
   ConfirmOverlappingAndSameNameAreaDialogComponent
 } from "../../dialogs/confirm-overlapping-and-same-name-area-dialog/confirm-overlapping-and-same-name-area-dialog.component";
+import {PluginService} from "../../services/api/plugin.service";
 
 @Component({
   selector: 'app-create-area-of-operation',
@@ -41,12 +42,7 @@ import {
 })
 export class CreateAreaOfOperationComponent implements OnInit{
 
-  m_oEvents = [
-    {label: 'Floods', value: 1},
-    {label: 'Droughts', value: 2},
-    {label: 'Buildings', value: 3},
-    {label: 'Impacts', value: 4}
-  ];
+  m_asPlugins:string[] = [];
 
   //todo get users from org
   m_aoUserData = [
@@ -70,10 +66,23 @@ export class CreateAreaOfOperationComponent implements OnInit{
     private oDialog: MatDialog,
     private m_oAreaOfOperationService: AreaService,
     private m_oRouter: Router,
-    private m_oRiseSelectAreaComponent:RiseSelectAreaComponent) {
+    private m_oRiseSelectAreaComponent:RiseSelectAreaComponent,
+    private m_oPluginService:PluginService,
+    ) {
   }
 
   ngOnInit() {
+
+    this.m_oPluginService.getPluginsList().subscribe({
+      next:(aoResponse)=>{
+        for (const aoResponseElement of aoResponse) {
+          if(aoResponseElement!=''){
+            this.m_asPlugins.push(aoResponseElement.name)
+          }
+        }
+        console.log(this.m_asPlugins);
+      }
+    })
         this.m_oAreaOfOperationService.getAreaList().subscribe({
           next:(aoResponse)=>{
             this.m_aoAreasOfOperations=aoResponse;
@@ -189,7 +198,23 @@ export class CreateAreaOfOperationComponent implements OnInit{
     }
 
     //check if the selected area overlaps or have the same name of an existing one
-    this.checkOverlappingAreasAndSameName(this.m_oAreaOfOperation)
+    // this.checkOverlappingAreasAndSameName(this.m_oAreaOfOperation);
+    this.m_oAreaOfOperationService.addArea(this.m_oAreaOfOperation).subscribe(
+      {
+        next: () => {
+          console.log('Success');
+        },
+        error: (e) => {
+          // here handle no valid subscription
+
+          if (e.error.errorStringCodes[0] === 'ERROR_API_NO_VALID_SUBSCRIPTION') {
+            //open dialog to invite user to buy new subscription
+            this.inviteUserToBuyNewSubscription();
+          }
+
+        }
+      }
+    )
 
   }
 
