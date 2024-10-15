@@ -10,4 +10,7 @@
     (click)="openInviteUser(true)"
   ></rise-button>
 </div>
-<invite-user *ngIf="m_bInviteUser"></invite-user>
+<invite-user
+  *ngIf="m_bInviteUser"
+  (m_oBackEmitter)="openInviteUser(false)"
+></invite-user>

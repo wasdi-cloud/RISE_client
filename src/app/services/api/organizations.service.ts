@@ -24,7 +24,8 @@ export class OrganizationsService {
   inviteUser(oInviteViewModel) {
     return this.m_oHttp.post<any>(
       this.APIURL + '/org/invite',
-      oInviteViewModel
+      oInviteViewModel,
+      { observe: 'response' }
     );
   }
 }

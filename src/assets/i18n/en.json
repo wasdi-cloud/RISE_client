@@ -28,6 +28,11 @@
     "ERROR_API_CONFIRM_EXPIRED": "Confirmation is expired.",
     "ERROR_API_NO_VALID_SUBSCRIPTION": "You do not have a valid subscription at this time."
   },
+  "INVITE_USER": {
+    "EMAIL": "Enter the email of the person to invite",
+    "CONFIRM": "Confirm the email of your invitee", 
+    "SELECT_ROLE": "Assign a role"
+  },
   "LAYER_TYPES": {
     "FLOOD": "Flood",
     "DROUGHT": "Drought",
