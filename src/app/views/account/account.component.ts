@@ -8,17 +8,19 @@ import { AccountBtns } from './account-sidebar/account-btns';
 import { UserAccountComponent } from './user-account/user-account.component';
 import { CommonModule } from '@angular/common';
 import { UserOrganizationComponent } from './user-organization/user-organization.component';
+import { AreaOfOperationsComponent } from '../area-of-operations/area-of-operations.component';
 @Component({
   selector: 'app-account',
   standalone: true,
   imports: [
+    AreaOfOperationsComponent,
     AccountSidebarComponent,
     CommonModule,
     RiseToolbarComponent,
     RiseButtonComponent,
     TranslateModule,
     UserAccountComponent,
-    UserOrganizationComponent
+    UserOrganizationComponent,
   ],
   templateUrl: './account.component.html',
   styleUrl: './account.component.css',
