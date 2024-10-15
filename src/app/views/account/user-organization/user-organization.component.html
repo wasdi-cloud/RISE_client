@@ -1,7 +1,13 @@
-<div class="organization-container">
-    Organization: {{m_oOrganization.name}}
+<div *ngIf="!m_bInviteUser && m_oOrganization" class="organization-container">
+  Organization: {{ m_oOrganization.name }}
   <rise-text-input [m_sLocalizationKey]="'ORGANIZATION.NAME'"></rise-text-input>
   <!-- Dropdown -->
   <rise-text-input [m_sLocalizationKey]="'ORGANIZATION.NAME'"></rise-text-input>
   <rise-text-input [m_sLocalizationKey]="'ORGANIZATION.NAME'"></rise-text-input>
+
+  <rise-button
+    [m_sLabel]="'ORGANIZATION.INVITE'"
+    (click)="openInviteUser(true)"
+  ></rise-button>
 </div>
+<invite-user *ngIf="m_bInviteUser"></invite-user>

@@ -13,11 +13,18 @@ export class OrganizationsService {
     private m_oHttp: HttpClient
   ) {}
 
+  getOrg(sOrgId: string) {
+    return this.m_oHttp.get<any>(this.APIURL + '/org?id=' + sOrgId);
+  }
+
   getByUser() {
     return this.m_oHttp.get<any>(this.APIURL + '/org/by_usr');
   }
 
   inviteUser(oInviteViewModel) {
-    return this.m_oHttp.post<any>(this.APIURL + '/org/invite', oInviteViewModel);
+    return this.m_oHttp.post<any>(
+      this.APIURL + '/org/invite',
+      oInviteViewModel
+    );
   }
 }
