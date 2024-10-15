@@ -1,16 +1,85 @@
-<div *ngIf="!m_bInviteUser && m_oOrganization" class="organization-container">
-  Organization: {{ m_oOrganization.name }}
-  <rise-text-input [m_sLocalizationKey]="'ORGANIZATION.NAME'"></rise-text-input>
-  <!-- Dropdown -->
-  <rise-text-input [m_sLocalizationKey]="'ORGANIZATION.NAME'"></rise-text-input>
-  <rise-text-input [m_sLocalizationKey]="'ORGANIZATION.NAME'"></rise-text-input>
+<div class="outlet">
+  <div
+    *ngIf="!m_bInviteUser && m_oOrganization"
+    class="organization-container d-flex flex-column justify-content-between p-2"
+  >
+    <div
+      class="header d-flex flex-row align-items-center justify-content-between gap-3"
+    >
+      <h4>Organization: {{ m_oOrganization.name }}</h4>
+      <rise-button
+        class="justify-self-end"
+        [m_sLabel]="'ORGANIZATION.DELETE'"
+        [m_sRole]="'danger'"
+      ></rise-button>
+    </div>
+    <div class="orgs-body flex-fill">
+      <div class="org-info-container d-flex flex-row gap-5">
+        <div class="flex-fill d-flex flex-column gap-3">
+          <rise-text-input
+            [m_sLocalizationKey]="'ORGANIZATION.NAME'"
+            [(m_sInputText)]="m_oOrganization.name"
+          ></rise-text-input>
+          <rise-dropdown
+            [m_sLabel]="'ORGANIZATION.TYPE'"
+            [m_sPlaceholder]="m_oOrganization.type"
+            [m_aoDropdownItems]="m_aoOrgTypes"
+          ></rise-dropdown>
+        </div>
 
-  <rise-button
-    [m_sLabel]="'ORGANIZATION.INVITE'"
-    (click)="openInviteUser(true)"
-  ></rise-button>
+        <div class="address-container flex-fill">
+          <h5>{{ "ORGANIZATION.ADDRESS" | translate }}</h5>
+          <div class="d-flex flex-row gap-2">
+            <rise-text-input
+              class="flex-fill"
+              [m_sLocalizationKey]="'REGISTER.STREET'"
+              [(m_sInputText)]="m_oOrganization.street"
+            ></rise-text-input>
+            <rise-text-input
+              [m_sLocalizationKey]="'REGISTER.NUMBER'"
+              [(m_sInputText)]="m_oOrganization.number"
+            ></rise-text-input>
+          </div>
+          <div class="d-flex flex-row gap-2">
+            <rise-text-input
+              class="flex-fill"
+              [m_sLocalizationKey]="'REGISTER.POST_CODE'"
+              [(m_sInputText)]="m_oOrganization.postalCode"
+            ></rise-text-input>
+            <rise-text-input
+              [m_sLocalizationKey]="'REGISTER.CITY'"
+              [(m_sInputText)]="m_oOrganization.city"
+            ></rise-text-input>
+          </div>
+          <div class="d-flex flex-row gap-2">
+            <rise-text-input
+              class="flex-fill"
+              [m_sLocalizationKey]="'REGISTER.PHONE'"
+              [(m_sInputText)]="m_oOrganization.phone"
+            ></rise-text-input>
+            <rise-text-input
+              [m_sLocalizationKey]="'REGISTER.COUNTRY'"
+              [(m_sInputText)]="m_oOrganization.country"
+            ></rise-text-input>
+          </div>
+        </div>
+      </div>
+
+      <div class="users-container">
+        <h5>{{ "ORGANIZATION.USERS" | translate }}</h5>
+        <rise-crud-table [m_aoDataSource]="m_aoOrgUsers"></rise-crud-table>
+        <rise-button
+          [m_sLabel]="'ORGANIZATION.INVITE'"
+          (click)="openInviteUser(true)"
+        ></rise-button>
+      </div>
+    </div>
+    <div class="footer d-flex flex-row justify-content-end">
+      <rise-button [m_sLabel]="'ORGANIZATION.SAVE'"></rise-button>
+    </div>
+  </div>
+  <invite-user
+    *ngIf="m_bInviteUser"
+    (m_oBackEmitter)="openInviteUser(false)"
+  ></invite-user>
 </div>
-<invite-user
-  *ngIf="m_bInviteUser"
-  (m_oBackEmitter)="openInviteUser(false)"
-></invite-user>

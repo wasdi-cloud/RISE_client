@@ -19,3 +19,7 @@ div.widget-container {
     padding: 1rem;
     width: 400px;
 }
+
+div.outlet {
+    height: 100%;
+}

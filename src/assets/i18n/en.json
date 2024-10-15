@@ -49,7 +49,7 @@
     "DELETE": "Delete Organization",
     "INVITE": "Invite New User",
     "NAME": "Organization Name",
-    "SAVE": "Save",
+    "SAVE": "Save Changes",
     "TYPE": "Organization Type",
     "USERS": "Organization Users"
   },
@@ -71,6 +71,7 @@
     "ORG_TYPE": "Organization Type",
     "ORG_ADDRESS": "Organization Address",
     "STREET": "Street",
+    "NUMBER": "Number",
     "POST_CODE": "Postal Code",
     "CITY": "City",
     "PHONE": "Phone",

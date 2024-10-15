@@ -7,6 +7,9 @@ import { RiseCrudTableComponent } from '../../../components/rise-crud-table/rise
 import { RiseButtonComponent } from '../../../components/rise-button/rise-button.component';
 import { CommonModule } from '@angular/common';
 import { InviteUserComponent } from './invite-user/invite-user.component';
+import { OrganizationTypes } from '../../../shared/organization-types';
+import { RiseDropdownComponent } from '../../../components/rise-dropdown/rise-dropdown.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'user-organization',
@@ -14,9 +17,11 @@ import { InviteUserComponent } from './invite-user/invite-user.component';
   imports: [
     CommonModule,
     FormsModule,
+    TranslateModule,
     InviteUserComponent,
     RiseButtonComponent,
     RiseCrudTableComponent,
+    RiseDropdownComponent,
     RiseTextInputComponent,
   ],
   templateUrl: './user-organization.component.html',
@@ -25,17 +30,12 @@ import { InviteUserComponent } from './invite-user/invite-user.component';
 export class UserOrganizationComponent implements OnInit {
   m_oOrganization: OrganizationViewModel = null;
 
+  m_aoOrgTypes = OrganizationTypes;
+
+  m_aoOrgUsers: Array<any> = [];
+
   m_bInviteUser: boolean = false;
   constructor(private m_oOrganizationsService: OrganizationsService) {}
-  // Admin can edit the basic information of the Organization inserted at the time of the registration (UC_010)
-  // Admin can see the list of users of the Organization
-  // Admin can remove users from the Organization
-  // Admin can change the role (Admin, HQ Operator, Field Operator) of a user of the Organization
-  // Admin can delete the organization
-  // RISE ask confirmation for  the deletion
-  // Admin confirm to delete
-  // RISE ask another confirmation using OTP (UC_005)
-  // If the OTP is correct, WASDI deletes the Organization and all the related areas of operations.
 
   ngOnInit(): void {
     this.getOrganization();
@@ -62,6 +62,36 @@ export class UserOrganizationComponent implements OnInit {
       error: (oError) => {},
     });
   }
+
+  /**
+   * Use Case: Admin can see the list of users of the Organization
+   * Set the m_aoOrgUsers array after call
+   */
+  getOrgUsers() {}
+
+  /**
+   * Use Case: Admin can remove users from the Organization
+   * Remove one User from the Organization via table
+   */
+  removeOrgUser() {}
+
+  /**
+   * User Case: Admin can change the role (Admin, HQ Operator, Field Operator) of a user of the Organization
+   * Change User Role via table
+   */
+  changeUserRole() {}
+
+  /**
+   * Use Case: Admin can edit the basic information of the Organization inserted at the time of the registration (UC_010)
+   * Open confirmation dialog and then save the user's changes (if yes)
+   */
+  saveChanges() {}
+
+  /**
+   * Use Case: Admin can delete the organization
+   * Execute beginning of Delete Org Call and open Confirmation + OTP dialog
+   */
+  deleteOrganization() {}
 
   openInviteUser(bStatus: boolean) {
     this.m_bInviteUser = bStatus;
