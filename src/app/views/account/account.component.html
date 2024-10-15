@@ -7,6 +7,7 @@
     ></account-sidebar>
     <div class="outlet-container flex-fill px-3">
       <user-account *ngIf="m_sActiveOutlet === 'user'"></user-account>
+      <user-organization *ngIf="m_sActiveOutlet === 'organization'"></user-organization>
     </div>
   </div>
   <!-- <rise-button [m_sLabel]="'ACCOUNT.AREA_OF_OPERATIONS' | translate" (click)="navigateRoute('area-of-operations')"></rise-button> -->

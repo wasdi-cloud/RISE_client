@@ -1,7 +1,7 @@
 {
   "ACCOUNT": {
     "ORGANIZATION": "Organization",
-    "USER":"User",
+    "USER": "User",
     "MY_ORGANIZATION": "My Organization",
     "MY_USER": "My User",
     "AREA_OF_OPERATIONS": "Area Of Operations",
@@ -39,8 +39,17 @@
     "USER_ID": "User Id",
     "PASSWORD": "Password"
   },
+  "ORGANIZATION": {
+    "ADDRESS": "Organization Address",
+    "DELETE": "Delete Organization",
+    "INVITE": "Invite New User",
+    "NAME": "Organization Name",
+    "SAVE": "Save",
+    "TYPE": "Organization Type",
+    "USERS": "Organization Users"
+  },
   "OTP_DIALOG": {
-    "SUBMIT": "Submit", 
+    "SUBMIT": "Submit",
     "ENTER_PW": "Please enter your One Time Pass Code"
   },
   "REGISTER": {

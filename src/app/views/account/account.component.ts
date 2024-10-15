@@ -7,6 +7,7 @@ import { AccountSidebarComponent } from './account-sidebar/account-sidebar.compo
 import { AccountBtns } from './account-sidebar/account-btns';
 import { UserAccountComponent } from './user-account/user-account.component';
 import { CommonModule } from '@angular/common';
+import { UserOrganizationComponent } from './user-organization/user-organization.component';
 @Component({
   selector: 'app-account',
   standalone: true,
@@ -17,6 +18,7 @@ import { CommonModule } from '@angular/common';
     RiseButtonComponent,
     TranslateModule,
     UserAccountComponent,
+    UserOrganizationComponent
   ],
   templateUrl: './account.component.html',
   styleUrl: './account.component.css',
