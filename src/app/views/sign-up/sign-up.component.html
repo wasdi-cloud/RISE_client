@@ -67,8 +67,11 @@
             [m_sLocalizationKey]="'REGISTER.ORG_NAME'"
             [(m_sInputText)]="m_oOrgInfoInput.name"
           ></rise-text-input>
-          <!-- TODO Switch to Dropdown -->
-          <rise-dropdown></rise-dropdown>
+          <rise-dropdown
+            [m_sLabel]="'REGISTER.ORG_TYPE'"
+            [m_aoDropdownItems]="m_aoOrganizationTypes"
+            (m_oSelectionChange)="handleSelection($event)"
+          ></rise-dropdown>
         </div>
         <div class="org-address-info">
           <div class="d-flex flex-row gap-2">
@@ -95,7 +98,6 @@
               [(m_sInputText)]="m_oOrgInfoInput.phone"
             ></rise-text-input>
           </div>
-          <rise-dropdown></rise-dropdown>
         </div>
       </div>
     </div>

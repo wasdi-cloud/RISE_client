@@ -13,6 +13,7 @@ import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar
 import { OrganizationViewModel } from '../../models/OrganizationViewModel';
 import { RegisterViewModel } from '../../models/RegisterViewModel';
 import { UserViewModel } from '../../models/UserViewModel';
+import { OrganizationTypes } from '../../shared/organization-types';
 
 @Component({
   selector: 'app-sign-up',
@@ -28,14 +29,14 @@ import { UserViewModel } from '../../models/UserViewModel';
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.css',
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent {
   m_oRegisterInput: RegisterViewModel = {} as RegisterViewModel;
 
   m_oUserInfoInput: UserViewModel = {} as UserViewModel;
 
   m_oOrgInfoInput: OrganizationViewModel = {} as OrganizationViewModel;
 
-  m_aoOrganizationTypes: Array<any> = [];
+  m_aoOrganizationTypes: Array<any> = OrganizationTypes;
 
   m_oEmailInputs = {
     email: '',
@@ -51,10 +52,6 @@ export class SignUpComponent implements OnInit {
     private m_oAuthService: AuthService,
     private m_oTranslate: TranslateService
   ) {}
-
-  ngOnInit(): void {
-    this.getOrganizationTypes();
-  }
 
   validatePassword(sPassword: string, sConfirmPw: string): boolean {
     // Minimum 8 Characters, at least one letter, one number, and one special character:
@@ -95,8 +92,6 @@ export class SignUpComponent implements OnInit {
     return true;
   }
 
-  getOrganizationTypes() {}
-
   register() {
     //Check validations
     if (
@@ -119,8 +114,6 @@ export class SignUpComponent implements OnInit {
     this.m_oRegisterInput.admin = this.m_oUserInfoInput;
     this.m_oRegisterInput.organization = this.m_oOrgInfoInput;
 
-    console.log(this.m_oRegisterInput);
-
     this.m_oAuthService.registerUser(this.m_oRegisterInput).subscribe({
       next: (oResponse) => {
         if (oResponse.status === 200) {
@@ -137,5 +130,11 @@ export class SignUpComponent implements OnInit {
         }
       },
     });
+  }
+
+  handleSelection(oEvent) {
+    if (oEvent.value) {
+      this.m_oOrgInfoInput.type = oEvent.value;
+    }
   }
 }

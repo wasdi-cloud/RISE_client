@@ -85,6 +85,7 @@ export class MonitorComponent implements OnInit {
       next: (oResponse) => {
         if (oResponse) {
           this.getMapsByArea(oResponse.id, oResponse.startDate);
+          this.m_oMapService.flyToMonitorBounds(oResponse.bbox);
         }
       },
       error: (oError) => {

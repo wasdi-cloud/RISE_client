@@ -24,5 +24,6 @@ export const SessionInjectorInterceptor: HttpInterceptorFn = (req, next) => {
       'x-session-token': sToken,
     },
   });
+
   return next(req);
 };

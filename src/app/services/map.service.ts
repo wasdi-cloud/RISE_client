@@ -306,7 +306,6 @@ export class MapService {
    * @param event
    */
   onDrawCreated(event: any) {
-    console.log(event);
     const { layerType, layer } = event;
 
     // For rectangle, calculate area
@@ -388,11 +387,16 @@ export class MapService {
     return null;
   }
 
+  flyToMonitorBounds(sBbox: string) {
+    let boundingBox: any = wktToGeoJSON(sBbox.slice(0, -1));
+    boundingBox = geoJSON(boundingBox).getBounds();
+    this.m_oRiseMap.fitBounds(boundingBox);
+  }
+
   convertPointLatLng(oArea) {
     if (oArea.markerCoordinates) {
       let aoCoordinates: any = wktToGeoJSON(oArea.markerCoordinates);
       aoCoordinates = geoJSON(aoCoordinates).getBounds();
-      console.log(aoCoordinates)
       return aoCoordinates;
     }
     return null;
@@ -408,14 +412,24 @@ export class MapService {
     // }
     let oMap = this.getMap();
 
+    // console.log(sServer);
+    // if (sServer.endsWith('?')) {
+    //   sServer = sServer.replace('wms?', 'ows?');
+    // } else {
+    //   sServer = sServer.replace('ows', 'wms?');
+    // }
+
+    // console.log(sServer);
     let oWmsLayer = L.tileLayer.wms(sServer, {
       layers: sLayerId,
       format: 'image/png',
-      transparent: false,
+      transparent: true,
       noWrap: true,
     });
+    // console.log(oWmsLayer);
     oWmsLayer.setZIndex(1000);
     oWmsLayer.addTo(oMap);
+
     return true;
   }
 
