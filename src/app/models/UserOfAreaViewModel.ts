@@ -1,7 +1,7 @@
 import {UserRole} from "./UserRole";
 
 
-export class UserOfAreaViewModel extends RiseViewModel {
+export class UserOfAreaViewModel {
   userId: string;
 
   email: string;
