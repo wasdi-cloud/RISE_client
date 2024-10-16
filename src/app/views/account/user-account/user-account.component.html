@@ -1,1 +1,79 @@
-<p>user-account works!</p>
+<div class="outlet p-2">
+  <div class="user-container d-flex flex-column justify-content-between">
+    <div class="header d-flex flex-row justify-content-between">
+      <h4>{{ "USER.MY_ACCOUNT" | translate }}</h4>
+      <rise-button
+        [m_sLabel]="'USER.DELETE_ACCOUNT'"
+        [m_sRole]="'danger'"
+        (click)="deleteUser()"
+      ></rise-button>
+    </div>
+    <div class="body d-flex flex-fill flex-column gap-2">
+      <div class="d-flex flex-row gap-2">
+        <div class="d-flex flex-column gap-1 flex-fill">
+          <rise-text-input
+            [m_sLocalizationKey]="'LOGIN.USER_ID'"
+          ></rise-text-input>
+          <rise-text-input
+            [m_sLocalizationKey]="'REGISTER.NAME'"
+          ></rise-text-input>
+          <rise-text-input
+            [m_sLocalizationKey]="'REGISTER.SURNAME'"
+          ></rise-text-input>
+          <rise-text-input
+            [m_sLocalizationKey]="'REGISTER.MOBILE'"
+          ></rise-text-input>
+          <rise-dropdown [m_sLabel]="'USER.LANGUAGE'"></rise-dropdown>
+        </div>
+        <div class="d-flex flex-column gap-1 flex-fill">
+          <rise-text-input
+            [m_sLocalizationKey]="'USER.EMAIL'"
+          ></rise-text-input>
+          <rise-text-input
+            [m_sLocalizationKey]="'USER.NEW_EMAIL'"
+          ></rise-text-input>
+          <rise-text-input
+            [m_sLocalizationKey]="'USER.CONFIRM_EMAIL'"
+          ></rise-text-input>
+          <rise-button [m_sLabel]="'USER.CHANGE_EMAIL'"></rise-button>
+        </div>
+      </div>
+      <div class="d-flex flex-row gap-5">
+        <div class="d-flex flex-column gap-2 flex-fill">
+          <h5>{{ "USER.CHANGE_PW" | translate }}</h5>
+          <rise-text-input
+            [m_sLocalizationKey]="'USER.OLD_PW'"
+          ></rise-text-input>
+          <rise-text-input
+            [m_sLocalizationKey]="'USER.NEW_PW'"
+          ></rise-text-input>
+          <rise-text-input
+            [m_sLocalizationKey]="'USER.CONFIRM_PW'"
+          ></rise-text-input>
+          <rise-button [m_sLabel]="'USER.CHANGE_PW'"></rise-button>
+        </div>
+        <div class="d-flex flex-column gap-2 flex-fill">
+          <h5>Notifications</h5>
+          <div class="d-flex flex-row align-items-center gap-2">
+            <input type="checkbox" name="" id="" /><label for="newsletter"
+              >Newsletter</label
+            >
+          </div>
+          <div class="d-flex flex-row align-items-center gap-2">
+            <input type="checkbox" name="" id="" /><label for="mintenance"
+              >Maintenance</label
+            >
+          </div>
+          <div class="d-flex flex-row align-items-center gap-2">
+            <input type="checkbox" name="" id="" /><label for="activities"
+              >Activities</label
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer d-flex flex-row justify-content-end">
+      <rise-button [m_sLabel]="'ORGANIZATION.SAVE'"></rise-button>
+    </div>
+  </div>
+</div>

@@ -30,7 +30,7 @@
   },
   "INVITE_USER": {
     "EMAIL": "Enter the email of the person to invite",
-    "CONFIRM": "Confirm the email of your invitee", 
+    "CONFIRM": "Confirm the email of your invitee",
     "SELECT_ROLE": "Assign a role"
   },
   "LAYER_TYPES": {
@@ -91,6 +91,21 @@
     "LOGOUT": "Logout",
     "SETTINGS": "Settings",
     "SIGN_UP": "Sign Up"
+  },
+  "USER": {
+    "CHANGE_EMAIL": "Change email",
+    "CHANGE_PW": "Change Password",
+    "CONFIRM_EMAIL": "Confirm New Email",
+    "CONFIRM_PW": "Confirm Password",
+    "DELETE_ACCOUNT": "Delete Account",
+    "EMAIL": "Email",
+    "LANGUAGE": "Language",
+    "MOBILE_NUMBER": "Mobile Number",
+    "MY_ACCOUNT": "My Account",
+    "NEW_EMAIL": "New Email",
+    "NEW_PW": "New Password",
+    "NOTIFICATIONS": "Notifications",
+    "OLD_PW": "Old Password"
   },
   "WIDGET": {
     "AFFECTED_PPL": "Affected People",
