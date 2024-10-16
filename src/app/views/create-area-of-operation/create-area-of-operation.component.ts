@@ -20,6 +20,7 @@ import {
   ConfirmOverlappingAndSameNameAreaDialogComponent
 } from "../../dialogs/confirm-overlapping-and-same-name-area-dialog/confirm-overlapping-and-same-name-area-dialog.component";
 import {PluginService} from "../../services/api/plugin.service";
+import {UserOfAreaViewModel} from "../../models/UserOfAreaViewModel";
 
 @Component({
   selector: 'app-create-area-of-operation',
@@ -53,6 +54,7 @@ export class CreateAreaOfOperationComponent implements OnInit{
 
 
   m_oAreaOfOperation: AreaViewModel;
+  m_asFieldUsers:UserOfAreaViewModel[]=[]
   m_sAreaOfOperationDescription: string;
   m_sAreaOfOperationName: string;
   m_oAreaInfo = {}
@@ -72,7 +74,7 @@ export class CreateAreaOfOperationComponent implements OnInit{
   }
 
   ngOnInit() {
-
+    //todo get users that belong to current user org eithr by direct call or get all users and match with current user org id
     this.m_oPluginService.getPluginsList().subscribe({
       next:(aoResponse)=>{
         for (const aoResponseElement of aoResponse) {
@@ -80,7 +82,7 @@ export class CreateAreaOfOperationComponent implements OnInit{
             this.m_asPlugins.push({label:aoResponseElement.name,value:aoResponseElement.id})
           }
         }
-        console.log(this.m_asPlugins);
+
       }
     })
         this.m_oAreaOfOperationService.getAreaList().subscribe({
@@ -109,7 +111,6 @@ export class CreateAreaOfOperationComponent implements OnInit{
   }
 
   onSelectionChange(selectedValues: any[]) {
-    console.log('Selected values:', selectedValues);
     this.m_asPluginsSelected = selectedValues;
   }
 
@@ -206,12 +207,15 @@ export class CreateAreaOfOperationComponent implements OnInit{
     // this.checkOverlappingAreasAndSameName(this.m_oAreaOfOperation);
     this.m_oAreaOfOperationService.addArea(this.m_oAreaOfOperation).subscribe(
       {
-        next: () => {
+        next: (oResponse) => {
+          //todo send confirmation to HQ operator
           console.log('Success');
+          console.log(oResponse);
+          // this.m_oAreaOfOperationService.addUserToArea(oResponse.id,)
         },
         error: (e) => {
-          // here handle no valid subscription
 
+          // Here handle no valid subscription
           if (e.error.errorStringCodes[0] === 'ERROR_API_NO_VALID_SUBSCRIPTION') {
             //open dialog to invite user to buy new subscription
             this.inviteUserToBuyNewSubscription();
@@ -224,13 +228,11 @@ export class CreateAreaOfOperationComponent implements OnInit{
   }
 
   cancelCreatingAreaOfOperation() {
-
+    //todo go back to managing area of operations
   }
 
   handleTableData(tableData: any[]) {
     this.m_aoFieldUsers = tableData;
-    // Process the data as needed in your component
-    // For example, you can store it in a local variable or pass it to another service
   }
 
   private inviteUserToBuyNewSubscription() {
