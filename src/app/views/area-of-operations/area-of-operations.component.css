@@ -13,20 +13,17 @@
 
 /* Map and Card heights */
 .map-container {
-  height: 33%; /* 1/3 of right column height */
-  position: relative;
-
+  height: 50vh;
 }
-
 .card-container {
-  height: 66%; /* 2/3 of right column height */
+  height: 80vh; /* 2/3 of right column height */
   border: 1px solid #ccc; /* Card styling */
   padding: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .empty-card {
-  height: 66%;
+  height: 70vh;
   display: flex;
   align-items: center;
   justify-content: center;

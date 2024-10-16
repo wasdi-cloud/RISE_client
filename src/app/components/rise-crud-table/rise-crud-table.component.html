@@ -5,12 +5,13 @@
 <div class="table-container mt-3">
   <table mat-table [dataSource]="m_oDataSourceWithPaginator" class="mat-elevation-z8" *ngIf="m_asDisplayedColumns.length > 0">
 
-
+    <!-- Iterate over displayed columns -->
     <ng-container *ngFor="let column of m_asDisplayedColumns" [matColumnDef]="column">
       <th mat-header-cell *matHeaderCellDef>{{ column | titlecase }}</th>
       <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
     </ng-container>
 
+    <!-- Actions column -->
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>Delete</th>
       <td mat-cell *matCellDef="let element">
@@ -20,8 +21,14 @@
       </td>
     </ng-container>
 
+    <!-- Header row -->
     <tr mat-header-row *matHeaderRowDef="m_asDisplayedColumns.concat(['actions'])"></tr>
-    <tr mat-row *matRowDef="let row; columns: m_asDisplayedColumns.concat(['actions']);"></tr>
+
+    <!-- Row definition with click event listener -->
+    <tr mat-row *matRowDef="let row; columns: m_asDisplayedColumns.concat(['actions']);"
+        (click)="onRowClick(row)"
+        [class.selectable]="canClickRow">
+    </tr>
 
   </table>
 

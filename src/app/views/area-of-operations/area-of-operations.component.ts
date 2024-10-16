@@ -12,6 +12,7 @@ import {RiseTextAreaInputComponent} from "../../components/rise-textarea-input/r
 import {RiseTextInputComponent} from "../../components/rise-text-input/rise-text-input.component";
 import {RiseMapComponent} from "../../components/rise-map/rise-map.component";
 import {NgIf} from "@angular/common";
+import {PluginService} from "../../services/api/plugin.service";
 
 @Component({
   selector: 'app-area-of-operations',
@@ -31,24 +32,46 @@ import {NgIf} from "@angular/common";
   templateUrl: './area-of-operations.component.html',
   styleUrl: './area-of-operations.component.css'
 })
-export class AreaOfOperationsComponent implements OnInit{
-  m_aoAreasOfOperations: AreaViewModel[]=[];
-  selectedArea: true;
+export class AreaOfOperationsComponent implements OnInit {
+  m_aoAreasOfOperations: AreaViewModel[] = [];
+  m_bIsAreaSelected: boolean=false;
+  m_sAreaOfOperationName: string = "name";
+  m_sAreaOfOperationDescription: string = "description";
+  m_asPlugins: { label: string; value: string }[] = [];
+  m_asUsersColumns: string[] = ["Mail", "User_ID"];
+  m_aoUserData = [
+    {Mail: 'John Doe', User_ID: 'john@example.com'},
+    {Mail: 'Jane Smith', User_ID: 'jane@example.com'}
+  ];
+  m_oSelectedArea: AreaViewModel={};
 
   constructor(
     private m_oRouter: Router,
-    private m_oAreaService:AreaService
+    private m_oAreaService: AreaService,
+    private m_oPluginService: PluginService
   ) {
   }
 
-  ngOnInit(){
-        this.m_oAreaService.getAreaList().subscribe({
-          next:(aoResponse)=>{
-            console.log(aoResponse.creationDate)
-            this.m_aoAreasOfOperations=aoResponse;
+  ngOnInit() {
+    this.m_oAreaService.getAreaList().subscribe({
+      next: (aoResponse) => {
+        console.log(aoResponse.creationDate)
+        this.m_aoAreasOfOperations = aoResponse;
+      }
+    })
+    this.m_oPluginService.getPluginsList().subscribe({
+      next: (aoResponse) => {
+        console.log(aoResponse)
+        for (const aoResponseElement of aoResponse) {
+          if (aoResponseElement != '' && aoResponseElement.name && aoResponseElement.id) {
+            this.m_asPlugins.push({label: aoResponseElement.name, value: aoResponseElement.id});
+
           }
-        })
-    }
+        }
+
+      }
+    })
+  }
 
   public navigateRoute(sLocation: string) {
     //todo Admin registered the organization
@@ -56,5 +79,52 @@ export class AreaOfOperationsComponent implements OnInit{
     //todo HQ Operator has been added to the organization
     //todo HQ Operator selected New Area of Operations
     this.m_oRouter.navigateByUrl(`/${sLocation}`);
+  }
+
+  onSelectionChange($event: any[]) {
+
+  }
+
+  onRowDelete($event: any) {
+
+  }
+
+  onRowAdd() {
+
+  }
+
+  handleTableData(area: any[]) {
+    console.log(area)
+  }
+
+  cancelCreatingAreaOfOperation() {
+
+  }
+
+  SaveAreaOfOperation() {
+    console.log(this.m_oSelectedArea)
+    if(this.m_oSelectedArea){
+      this.m_oAreaService.updateArea(this.m_oSelectedArea).subscribe({
+        next:(oResponse)=>{
+          console.log(oResponse)
+        }
+      })
+    }
+
+  }
+
+  handleAreaSelection(area: any) {
+    this.m_bIsAreaSelected=true;
+    console.log(area.id)
+    if (area.id) {
+      this.m_oAreaService.getAreaById(area.id).subscribe({
+        next: (oResponse) => {
+          if(oResponse){
+            this.m_oSelectedArea=oResponse;
+          }
+        }
+      })
+    }
+
   }
 }

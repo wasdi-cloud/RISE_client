@@ -1,0 +1,9 @@
+/* Add a hover effect for selectable rows */
+tr.selectable {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+tr.selectable:hover {
+  background-color: #f0f0f0;
+}

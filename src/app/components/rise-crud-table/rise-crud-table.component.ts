@@ -43,11 +43,14 @@ export class RiseCrudTableComponent implements OnChanges, AfterViewInit{
   @Input() m_asDisplayedColumns: string[] = [];
   @Input() m_aoDataSource: any[] = [];
   @Input() m_sButtonLabel: string="default";
+  @Input() canClickRow: boolean = false;  // New input to allow row selection
+
 
   // Output to emit when a row is added or deleted
-  @Output() m_oAddRow = new EventEmitter<void>();
-  @Output() m_oDeleteRow = new EventEmitter<any>();
+  @Output() m_oAdd = new EventEmitter<void>();
+  @Output() m_oDelete = new EventEmitter<any>();
   @Output() m_oTableData = new EventEmitter<any[]>();  // New output to emit table data
+  @Output() m_oClickedRow = new EventEmitter<any[]>();  // New output to emit table data
   m_oDataSourceWithPaginator = new MatTableDataSource<any>(this.m_aoDataSource);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -64,12 +67,12 @@ export class RiseCrudTableComponent implements OnChanges, AfterViewInit{
   }
 
   onAddClick() {
-    this.m_oAddRow.emit();
+    this.m_oAdd.emit();
     this.emitTableData();  // Emit the current table data after a row is added
   }
 
   onDeleteClick(row: any) {
-    this.m_oDeleteRow.emit(row);
+    this.m_oDelete.emit(row);
     this.emitTableData();  // Emit the current table data after a row is deleted
   }
 
@@ -78,5 +81,11 @@ export class RiseCrudTableComponent implements OnChanges, AfterViewInit{
    */
   emitTableData() {
     this.m_oTableData.emit(this.m_aoDataSource);  // Emit the current table data
+  }
+  onRowClick(row: any) {
+    if (this.canClickRow) {
+      console.log('Selected row:', row);
+      this.m_oClickedRow.emit(row)
+    }
   }
 }

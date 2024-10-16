@@ -20,8 +20,8 @@
         [m_sButtonLabel]="'CREATE_NEW_AREA_OF_OPERATION.ADD_FIELD_OPERATOR'"
         [m_asDisplayedColumns]="m_asUsersColumns"
         [m_aoDataSource]="m_aoUserData"
-        (m_oDeleteRow)="onRowDelete($event)"
-        (m_oAddRow)="onRowAdd()"
+        (m_oDelete)="onRowDelete($event)"
+        (m_oAdd)="onRowAdd()"
       (m_oTableData)="handleTableData($event)">
       </rise-crud-table>
     </div>
