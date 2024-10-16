@@ -15,7 +15,8 @@
     "DESCRIPTION": "Description",
     "MAP_TITLE": "Define your Area",
     "SAVE": "Save",
-    "CANCEL": "Cancel"
+    "CANCEL": "Cancel",
+    "ADD_FIELD_OPERATOR": "Add Field Operator"
   },
   "ERROR_MSG": {
     "ERROR_API_ORG_ALREADY_EXISTS": "An organization with this information already exists.",

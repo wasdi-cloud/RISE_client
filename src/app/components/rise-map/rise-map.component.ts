@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 import { MapService } from '../../services/map.service';
 import { RiseTimebarComponent } from '../rise-timebar/rise-timebar.component';
 
-import L from 'leaflet';
+import * as L from 'leaflet';
 import 'leaflet-draw';
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
 import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';

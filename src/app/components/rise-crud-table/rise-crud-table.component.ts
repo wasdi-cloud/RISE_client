@@ -42,6 +42,7 @@ import {RiseButtonComponent} from "../rise-button/rise-button.component";
 export class RiseCrudTableComponent implements OnChanges, AfterViewInit{
   @Input() m_asDisplayedColumns: string[] = [];
   @Input() m_aoDataSource: any[] = [];
+  @Input() m_sButtonLabel: string="default";
 
   // Output to emit when a row is added or deleted
   @Output() m_oAddRow = new EventEmitter<void>();
@@ -50,6 +51,7 @@ export class RiseCrudTableComponent implements OnChanges, AfterViewInit{
   m_oDataSourceWithPaginator = new MatTableDataSource<any>(this.m_aoDataSource);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+
 
   ngAfterViewInit() {
     this.m_oDataSourceWithPaginator.paginator = this.paginator;

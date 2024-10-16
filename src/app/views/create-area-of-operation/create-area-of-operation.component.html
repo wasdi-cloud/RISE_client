@@ -17,6 +17,7 @@
     <!-- Spacing added with mb-3 for margin bottom -->
     <div class="mb-3">
       <rise-crud-table
+        [m_sButtonLabel]="'CREATE_NEW_AREA_OF_OPERATION.ADD_FIELD_OPERATOR'"
         [m_asDisplayedColumns]="m_asUsersColumns"
         [m_aoDataSource]="m_aoUserData"
         (m_oDeleteRow)="onRowDelete($event)"

@@ -11,7 +11,7 @@ import 'leaflet-draw';
 import 'leaflet-mouse-position';
 import { BehaviorSubject } from 'rxjs';
 import { wktToGeoJSON } from '@terraformer/wkt';
-
+// import L from 'leaflet';
 declare const L: any;
 
 const iconRetinaUrl = '/assets/marker-icon-2x.png';
