@@ -12,9 +12,7 @@ import {RiseButtonComponent} from "../rise-button/rise-button.component";
 import {
   ImportShapeFileStationDialogComponent
 } from "../../dialogs/import-shape-file-station-dialog/import-shape-file-station-dialog.component";
-import {
-  ConfirmInsertedAreaDialogComponent
-} from "../../dialogs/confirm-inserted-area-dialog/confirm-inserted-area-dialog.component";
+import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
 
 
 declare const L: any;
@@ -68,7 +66,7 @@ export class RiseSelectAreaComponent implements OnInit, AfterViewInit {
   m_oDrawMarker: L.Marker | null = null;
 
 
-  constructor(private m_oDialog: MatDialog, private m_oMapService: MapService) {
+  constructor(private m_oDialog: MatDialog, private m_oMapService: MapService, private m_oNotificationService: NotificationsDialogsService) {
     this.m_oMapOptions = this.m_oMapService.m_oOptions;
     this.m_oDrawOptions = this.m_oMapService.m_oDrawOptions;
     this.m_oDrawnItems = this.m_oMapService.m_oDrawnItems;
@@ -165,15 +163,9 @@ export class RiseSelectAreaComponent implements OnInit, AfterViewInit {
 
   //Confirm inserted area
   confirmInsertedArea(oEvent?: any, fRadius?: number, fLat?: number, fLng?: number, geoJson?: any) {
-    let oDialog = this.m_oDialog.open(ConfirmInsertedAreaDialogComponent, {
-      width: '400px',
-      height: 'auto',
-      minWidth: '300px',
-      minHeight: '150px',
-    });
-
-    oDialog.afterClosed().subscribe(oResult => {
-      if (oResult) {
+    let sMessage: string = "Please confirm your input"
+    this.m_oNotificationService.openConfirmationDialog(sMessage).subscribe(bDialogResult => {
+      if (bDialogResult) {
         // Emit the appropriate area based on the shape creation method
         if (this.m_bIsImportDrawCreated && geoJson) {
           this.emitGeoJSONShapeInfo(geoJson);

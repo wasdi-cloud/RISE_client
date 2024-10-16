@@ -1,0 +1,19 @@
+<div class="dialog-container d-flex flex-row" [ngClass]="m_sClassName">
+  <div class="icon-container">
+    <span class="material-symbols-outlined"> check_circle </span>
+  </div>
+  <div class="dialog-content-container d-flex flex-column gap-3 flex-fill">
+    <div
+      class="alert-header font-bold d-flex flex-row justify-content-between align-items-center"
+    >
+      <div>Alert</div>
+      <span class="close-btn material-symbols-outlined" (click)="onDismiss()">
+        close</span
+      >
+    </div>
+    <div
+      class="flex-fill dialog-message-container"
+      [innerHTML]="m_sMessage"
+    ></div>
+  </div>
+</div>
