@@ -123,7 +123,8 @@ export class AreaOfOperationsComponent implements OnInit {
     if(this.m_oSelectedArea){
       this.m_oAreaService.updateArea(this.m_oSelectedArea).subscribe({
         next:(oResponse)=>{
-          console.log(oResponse)
+          console.log(oResponse);
+
         }
       })
     }
@@ -146,6 +147,6 @@ export class AreaOfOperationsComponent implements OnInit {
   }
 
   onFieldUserDelete($event: any) {
-    
+
   }
 }

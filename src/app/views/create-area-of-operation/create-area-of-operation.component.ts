@@ -211,6 +211,7 @@ export class CreateAreaOfOperationComponent implements OnInit{
           //todo send confirmation to HQ operator
           console.log('Success');
           console.log(oResponse);
+          this.m_oRouter.navigateByUrl('/area-of-operations');
           // this.m_oAreaOfOperationService.addUserToArea(oResponse.id,)
         },
         error: (e) => {
