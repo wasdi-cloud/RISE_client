@@ -7,7 +7,8 @@
       [m_asDisplayedColumns]="['name','activation date']"
       [m_aoDataSource]="this.m_aoAreasOfOperations"
       [canClickRow]="true"
-      (m_oClickedRow)="handleAreaSelection($event)"
+      (m_oDelete)="onAreaDelete($event)"
+      (m_oClickedRow)="onAreaSelection($event)"
     >
     </rise-crud-table>
   </div>
@@ -36,8 +37,8 @@
               [m_sButtonLabel]="'CREATE_NEW_AREA_OF_OPERATION.ADD_FIELD_OPERATOR'"
               [m_asDisplayedColumns]="m_asUsersColumns"
               [m_aoDataSource]="m_aoUserData"
-              (m_oDelete)="onRowDelete($event)"
-              (m_oAdd)="onRowAdd()"
+              (m_oDelete)="onFieldUserDelete($event)"
+              (m_oAdd)="onFiledUserAdd()"
               (m_oTableData)="handleTableData($event)"
               [canClickRow]="false"
 

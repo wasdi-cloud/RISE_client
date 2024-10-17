@@ -13,6 +13,11 @@ import {RiseTextInputComponent} from "../../components/rise-text-input/rise-text
 import {RiseMapComponent} from "../../components/rise-map/rise-map.component";
 import {NgIf} from "@angular/common";
 import {PluginService} from "../../services/api/plugin.service";
+import {AddRowDialogComponent} from "../../dialogs/add-row-dialog/add-row-dialog.component";
+import {
+  ConfirmDialogComponent
+} from "../../dialogs/confirm-overlapping-and-same-name-area-dialog/confirm-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-area-of-operations',
@@ -48,7 +53,8 @@ export class AreaOfOperationsComponent implements OnInit {
   constructor(
     private m_oRouter: Router,
     private m_oAreaService: AreaService,
-    private m_oPluginService: PluginService
+    private m_oPluginService: PluginService,
+    private m_oDialog: MatDialog,
   ) {
   }
 
@@ -85,11 +91,22 @@ export class AreaOfOperationsComponent implements OnInit {
 
   }
 
-  onRowDelete($event: any) {
+  onAreaDelete(area: AreaViewModel) {
+    const oDialogRef = this.m_oDialog.open(ConfirmDialogComponent, {
+      width: '300px',
+      data: 'Are you Sure you want to delete this Area'+area.name+'?'
+    });
 
+    oDialogRef.afterClosed().subscribe(result => {
+
+      if (result) {
+       //todo call api service here to delete user
+        console.log(result)
+      }
+    });
   }
 
-  onRowAdd() {
+  onFiledUserAdd() {
 
   }
 
@@ -113,7 +130,7 @@ export class AreaOfOperationsComponent implements OnInit {
 
   }
 
-  handleAreaSelection(area: any) {
+  onAreaSelection(area: any) {
     this.m_bIsAreaSelected=true;
     console.log(area.id)
     if (area.id) {
@@ -126,5 +143,9 @@ export class AreaOfOperationsComponent implements OnInit {
       })
     }
 
+  }
+
+  onFieldUserDelete($event: any) {
+    
   }
 }

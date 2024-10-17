@@ -19,12 +19,12 @@ import {RiseButtonComponent} from "../../components/rise-button/rise-button.comp
     MatDialogTitle,
     RiseButtonComponent
   ],
-  templateUrl: './confirm-overlapping-and-same-name-area-dialog.component.html',
-  styleUrl: './confirm-overlapping-and-same-name-area-dialog.component.css'
+  templateUrl: './confirm-dialog.component.html',
+  styleUrl: './confirm-dialog.component.css'
 })
-export class ConfirmOverlappingAndSameNameAreaDialogComponent {
+export class ConfirmDialogComponent {
   constructor(
-    public dialogRef: MatDialogRef<ConfirmOverlappingAndSameNameAreaDialogComponent>,
+    public dialogRef: MatDialogRef<ConfirmDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any // Data passed to the dialog
   ) {}
 

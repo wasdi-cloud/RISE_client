@@ -17,8 +17,8 @@ import {
 } from "../../dialogs/buy-new-subscription-dialog/buy-new-subscription-dialog.component";
 import {Router} from "@angular/router";
 import {
-  ConfirmOverlappingAndSameNameAreaDialogComponent
-} from "../../dialogs/confirm-overlapping-and-same-name-area-dialog/confirm-overlapping-and-same-name-area-dialog.component";
+  ConfirmDialogComponent
+} from "../../dialogs/confirm-overlapping-and-same-name-area-dialog/confirm-dialog.component";
 import {PluginService} from "../../services/api/plugin.service";
 import {UserOfAreaViewModel} from "../../models/UserOfAreaViewModel";
 
@@ -65,7 +65,7 @@ export class CreateAreaOfOperationComponent implements OnInit{
   m_aoAreasOfOperations: AreaViewModel[];
 
   constructor(
-    private oDialog: MatDialog,
+    private m_oDialog: MatDialog,
     private m_oAreaOfOperationService: AreaService,
     private m_oRouter: Router,
     private m_oRiseSelectAreaComponent:RiseSelectAreaComponent,
@@ -98,7 +98,7 @@ export class CreateAreaOfOperationComponent implements OnInit{
   }
 
   onRowAdd() {
-    const oDialogRef = this.oDialog.open(AddRowDialogComponent, {
+    const oDialogRef = this.m_oDialog.open(AddRowDialogComponent, {
       width: '300px',
       data: {fields: this.m_asUsersColumns}
     });
@@ -236,7 +236,7 @@ export class CreateAreaOfOperationComponent implements OnInit{
   }
 
   private inviteUserToBuyNewSubscription() {
-    let oDialog = this.oDialog.open(BuyNewSubscriptionDialogComponent, {
+    let oDialog = this.m_oDialog.open(BuyNewSubscriptionDialogComponent, {
       height: '420px',
       width: '600px'
     });
@@ -270,7 +270,7 @@ export class CreateAreaOfOperationComponent implements OnInit{
 
     if(this.checkOverlappingAreas(m_oAreaOfOperation) && this.checkSameNameAreas(m_oAreaOfOperation)){
       //ask user to confirm
-      const oDialogRef = this.oDialog.open(ConfirmOverlappingAndSameNameAreaDialogComponent, {
+      const oDialogRef = this.m_oDialog.open(ConfirmDialogComponent, {
         width: '300px',
         data:'The area that you have just created is overlapping with another area and also have the same name of an existing area,Do you want to proceed ?'
       });
@@ -281,7 +281,7 @@ export class CreateAreaOfOperationComponent implements OnInit{
     }
     else if(this.checkSameNameAreas(m_oAreaOfOperation)){
       //ask user to confirm
-      const oDialogRef = this.oDialog.open(ConfirmOverlappingAndSameNameAreaDialogComponent, {
+      const oDialogRef = this.m_oDialog.open(ConfirmDialogComponent, {
         width: '300px',
         data:'The area that you have just created has the same name of an existing area,Do you want to proceed ?'
       });
@@ -311,7 +311,7 @@ export class CreateAreaOfOperationComponent implements OnInit{
       });
     }else if (this.checkOverlappingAreas(m_oAreaOfOperation)){
       //ask user to confirm
-      const oDialogRef = this.oDialog.open(ConfirmOverlappingAndSameNameAreaDialogComponent, {
+      const oDialogRef = this.m_oDialog.open(ConfirmDialogComponent, {
         width: '300px',
         data:'The area that you have just created has the same name of an existing area,Do you want to proceed ?'
       });
