@@ -16,9 +16,7 @@ import {
   BuyNewSubscriptionDialogComponent
 } from "../../dialogs/buy-new-subscription-dialog/buy-new-subscription-dialog.component";
 import {Router} from "@angular/router";
-import {
-  ConfirmDialogComponent
-} from "../../dialogs/confirm-dialog/confirm-dialog.component";
+import {ConfirmDialogComponent} from "../../dialogs/confirm-dialog/confirm-dialog.component";
 import {PluginService} from "../../services/api/plugin.service";
 import {UserOfAreaViewModel} from "../../models/UserOfAreaViewModel";
 import {NotificationsDialogsService} from "../../services/notifications-dialogs.service";
@@ -131,9 +129,7 @@ export class CreateAreaOfOperationComponent implements OnInit{
         };
         this.m_sMarkerCoordinates = 'POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')'
         // Convert circle to WKT (approximated as a polygon with 64 points)
-        const wktCircle = this.convertCircleToWKT(shapeInfo.center, shapeInfo.radius);
-        console.log("WKT for Circle: ", wktCircle);
-        this.m_sAreaOfOperationBBox = wktCircle;
+        this.m_sAreaOfOperationBBox = this.convertCircleToWKT(shapeInfo.center, shapeInfo.radius);
 
       } else if (shapeInfo.type === 'polygon') {
         // Store polygon information as before
@@ -146,7 +142,7 @@ export class CreateAreaOfOperationComponent implements OnInit{
         };
 
         // Convert polygon to WKT
-        console.log(geojsonToWKT(shapeInfo.geoJson))
+
         this.m_sAreaOfOperationBBox = geojsonToWKT(shapeInfo.geoJson);
         this.m_sMarkerCoordinates = 'POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')'
 
@@ -175,69 +171,62 @@ export class CreateAreaOfOperationComponent implements OnInit{
 
 
   SaveAreaOfOperation() {
-    // //todo rise utils
-    // if (this.m_sAreaOfOperationDescription === null || this.m_sAreaOfOperationName === null) {
-    //   //todo alert user or make input in red
-    //   return;
-    // }
-    // if (this.m_oAreaInfo === null) {
-    //   //todo alert user
-    //   return;
-    // }
-    // if (this.m_asPluginsSelected === null || this.m_asPluginsSelected.length == 0) {
-    //   //todo alert user
-    //   return;
-    // }
-    // if (this.m_aoFieldUsers === null || this.m_aoFieldUsers.length == 0) {
-    //   //todo alert user
-    //   return;
-    // }
-    // if(this.m_asPluginsSelected.length<1){
-    //   //todo alert user
-    //   return;
-    // }
-    // this.m_oAreaOfOperation = {
-    //   name: this.m_sAreaOfOperationName,
-    //   description: this.m_sAreaOfOperationDescription,
-    //   bbox: this.m_sAreaOfOperationBBox,
-    //   markerCoordinates: this.m_sMarkerCoordinates
-    //   // plugins:this.m_asPluginsSelected
-    // }
-    //
-    // //check if the selected area overlaps or have the same name of an existing one
-    // // this.checkOverlappingAreasAndSameName(this.m_oAreaOfOperation);
-    // this.m_oAreaOfOperationService.addArea(this.m_oAreaOfOperation).subscribe(
-    //   {
-    //     next: (oResponse) => {
-    //       //todo send confirmation to HQ operator
-    //       console.log('Success');
-    //       console.log(oResponse);
-    //       this.m_oNotificationService.openInfoDialog(
-    //         "New Area have been added successefully",
-    //         "CreateAreaOfOperationComponent",
-    //         "Success"
-    //       )
-    //       this.m_oRouter.navigateByUrl('/area-of-operations');
-    //       // this.m_oAreaOfOperationService.addUserToArea(oResponse.id,)
-    //     },
-    //     error: (e) => {
-    //
-    //       // Here handle no valid subscription
-    //       if (e.error.errorStringCodes[0] === 'ERROR_API_NO_VALID_SUBSCRIPTION') {
-    //         //open dialog to invite user to buy new subscription
-    //         this.inviteUserToBuyNewSubscription();
-    //       }
-    //
-    //     }
-    //   }
-    // )
-    // console.log("here")
-    // this.m_oNotificationService.openInfoDialog(
-    //   "New Area have been added successefully",
-    //   null,
-    //   "Success"
-    // )
-    this.m_oRouter.navigateByUrl('/area-of-operations');
+    //todo rise utils
+    if (this.m_sAreaOfOperationDescription === null || this.m_sAreaOfOperationName === null) {
+      //todo alert user or make input in red
+      return;
+    }
+    if (this.m_oAreaInfo === null) {
+      //todo alert user
+      return;
+    }
+    if (this.m_asPluginsSelected === null || this.m_asPluginsSelected.length == 0) {
+      //todo alert user
+      return;
+    }
+    if (this.m_aoFieldUsers === null || this.m_aoFieldUsers.length == 0) {
+      //todo alert user
+      return;
+    }
+    if(this.m_asPluginsSelected.length<1){
+      //todo alert user
+      return;
+    }
+    this.m_oAreaOfOperation = {
+      name: this.m_sAreaOfOperationName,
+      description: this.m_sAreaOfOperationDescription,
+      bbox: this.m_sAreaOfOperationBBox,
+      markerCoordinates: this.m_sMarkerCoordinates
+      // plugins:this.m_asPluginsSelected
+    }
+
+    //check if the selected area overlaps or have the same name of an existing one
+    // this.checkOverlappingAreasAndSameName(this.m_oAreaOfOperation);
+    this.m_oAreaOfOperationService.addArea(this.m_oAreaOfOperation).subscribe(
+      {
+        next: (oResponse) => {
+          //todo send confirmation to HQ operator
+          this.m_oNotificationService.openInfoDialog(
+            "New Area have been added successfully",
+            'success',
+            "Success"
+          )
+          this.m_oRouter.navigateByUrl('/area-of-operations');
+          // this.m_oAreaOfOperationService.addUserToArea(oResponse.id,)
+        },
+        error: (e) => {
+
+          // Here handle no valid subscription
+          if (e.error.errorStringCodes[0] === 'ERROR_API_NO_VALID_SUBSCRIPTION') {
+            //open dialog to invite user to buy new subscription
+            this.inviteUserToBuyNewSubscription();
+          }
+
+        }
+      }
+    )
+
+
 
   }
 
@@ -354,7 +343,7 @@ export class CreateAreaOfOperationComponent implements OnInit{
     this.m_aoFieldUsers = [];
 
     this.m_oRiseSelectAreaComponent.clearPreviousDrawings();
-    console.log("Form has been reset");
+
   }
 
 }
