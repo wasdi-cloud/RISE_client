@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environments';
 import { AreaViewModel } from '../models/AreaViewModel';
+import { OrganizationViewModel } from '../models/OrganizationViewModel';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,8 @@ export class ConstantsService {
   APIURL: string = this.URL + '/rise-api/api';
 
   m_oActiveAOI: AreaViewModel = null;
+
+  m_oOrganization: OrganizationViewModel = null;
 
   constructor() {}
 
@@ -32,5 +35,13 @@ export class ConstantsService {
 
   getActiveAOI(): AreaViewModel {
     return this.m_oActiveAOI;
+  }
+
+  setOrganization(oOrganization: OrganizationViewModel) {
+    this.m_oOrganization = oOrganization;
+  }
+
+  getOrganization() {
+    return this.m_oOrganization;
   }
 }

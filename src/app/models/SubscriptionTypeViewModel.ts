@@ -1,4 +1,4 @@
-export class SubscriptionTypeViewModel extends RiseViewModel {
+export class SubscriptionTypeViewModel {
   /**
    * Default Id
    */

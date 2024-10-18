@@ -9,6 +9,7 @@ import { UserAccountComponent } from './user-account/user-account.component';
 import { CommonModule } from '@angular/common';
 import { UserOrganizationComponent } from './user-organization/user-organization.component';
 import { AreaOfOperationsComponent } from '../area-of-operations/area-of-operations.component';
+import { UserSubscriptionsComponent } from './user-subscriptions/user-subscriptions.component';
 @Component({
   selector: 'app-account',
   standalone: true,
@@ -21,6 +22,7 @@ import { AreaOfOperationsComponent } from '../area-of-operations/area-of-operati
     TranslateModule,
     UserAccountComponent,
     UserOrganizationComponent,
+    UserSubscriptionsComponent
   ],
   templateUrl: './account.component.html',
   styleUrl: './account.component.css',

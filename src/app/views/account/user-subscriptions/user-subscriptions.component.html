@@ -1,0 +1,13 @@
+<div class="outlet">
+  <div
+    *ngIf="!m_bShowBuySub"
+    class="header d-flex flex-row justify-content-between align-items-center"
+  >
+    <h4>{{ "SUBSCRIPTIONS.HEADER" | translate }}</h4>
+    <rise-button
+      [m_sLabel]="'SUBSCRIPTIONS.BUY_BUTTON'"
+      (click)="openBuyNewSub(true)"
+    ></rise-button>
+  </div>
+  <buy-new-subscription *ngIf="m_bShowBuySub" [m_sOrganizationId]=""></buy-new-subscription>
+</div>

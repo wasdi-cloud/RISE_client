@@ -8,6 +8,9 @@ import { RiseCheckBoxComponent } from '../../../components/rise-check-box/rise-c
 import { RiseDropdownComponent } from '../../../components/rise-dropdown/rise-dropdown.component';
 import { RiseTextInputComponent } from '../../../components/rise-text-input/rise-text-input.component';
 import { UserViewModel } from '../../../models/UserViewModel';
+import { OrganizationsService } from '../../../services/api/organizations.service';
+import { OrganizationViewModel } from '../../../models/OrganizationViewModel';
+import { ConstantsService } from '../../../services/constants.service';
 
 @Component({
   selector: 'user-account',
@@ -25,8 +28,13 @@ import { UserViewModel } from '../../../models/UserViewModel';
 })
 export class UserAccountComponent implements OnInit {
   m_oUser: UserViewModel = {} as UserViewModel;
+
+  m_oOrganization: OrganizationViewModel = {} as OrganizationViewModel;
   //TODO : UPDATE USER INFORMATION
-  constructor() {}
+  constructor(
+    private m_oConstantsService: ConstantsService,
+    private m_oOrganizationService: OrganizationsService
+  ) {}
 
   ngOnInit(): void {
     this.getUserInfo();
@@ -35,7 +43,19 @@ export class UserAccountComponent implements OnInit {
   /**
    * Get user information from the server and set the user object
    */
-  getUserInfo() {}
+  getUserInfo() {
+    this.m_oOrganizationService.getByUser().subscribe({
+      next: (oResponse) => {
+        if (oResponse) {
+          this.m_oOrganization = oResponse;
+          this.m_oConstantsService.setOrganization(this.m_oOrganization);
+        }
+      },
+      error: (oError) => {
+        console.log(oError);
+      },
+    });
+  }
 
   /**
    * Delete user account
