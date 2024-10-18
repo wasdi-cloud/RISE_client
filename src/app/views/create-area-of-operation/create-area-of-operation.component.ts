@@ -16,11 +16,10 @@ import {
   BuyNewSubscriptionDialogComponent
 } from "../../dialogs/buy-new-subscription-dialog/buy-new-subscription-dialog.component";
 import {Router} from "@angular/router";
-import {
-  ConfirmDialogComponent
-} from "../../dialogs/confirm-overlapping-and-same-name-area-dialog/confirm-dialog.component";
+import {ConfirmDialogComponent} from "../../dialogs/confirm-dialog/confirm-dialog.component";
 import {PluginService} from "../../services/api/plugin.service";
 import {UserOfAreaViewModel} from "../../models/UserOfAreaViewModel";
+import {NotificationsDialogsService} from "../../services/notifications-dialogs.service";
 
 @Component({
   selector: 'app-create-area-of-operation',
@@ -70,6 +69,7 @@ export class CreateAreaOfOperationComponent implements OnInit{
     private m_oRouter: Router,
     private m_oRiseSelectAreaComponent:RiseSelectAreaComponent,
     private m_oPluginService:PluginService,
+    private m_oNotificationService:NotificationsDialogsService,
     ) {
   }
 
@@ -88,7 +88,6 @@ export class CreateAreaOfOperationComponent implements OnInit{
         this.m_oAreaOfOperationService.getAreaList().subscribe({
           next:(aoResponse)=>{
             this.m_aoAreasOfOperations=aoResponse;
-            console.log(this.m_aoAreasOfOperations);
           }
         })
     }
@@ -130,9 +129,7 @@ export class CreateAreaOfOperationComponent implements OnInit{
         };
         this.m_sMarkerCoordinates = 'POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')'
         // Convert circle to WKT (approximated as a polygon with 64 points)
-        const wktCircle = this.convertCircleToWKT(shapeInfo.center, shapeInfo.radius);
-        console.log("WKT for Circle: ", wktCircle);
-        this.m_sAreaOfOperationBBox = wktCircle;
+        this.m_sAreaOfOperationBBox = this.convertCircleToWKT(shapeInfo.center, shapeInfo.radius);
 
       } else if (shapeInfo.type === 'polygon') {
         // Store polygon information as before
@@ -145,7 +142,7 @@ export class CreateAreaOfOperationComponent implements OnInit{
         };
 
         // Convert polygon to WKT
-        console.log(geojsonToWKT(shapeInfo.geoJson))
+
         this.m_sAreaOfOperationBBox = geojsonToWKT(shapeInfo.geoJson);
         this.m_sMarkerCoordinates = 'POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')'
 
@@ -209,8 +206,11 @@ export class CreateAreaOfOperationComponent implements OnInit{
       {
         next: (oResponse) => {
           //todo send confirmation to HQ operator
-          console.log('Success');
-          console.log(oResponse);
+          this.m_oNotificationService.openInfoDialog(
+            "New Area have been added successfully",
+            'success',
+            "Success"
+          )
           this.m_oRouter.navigateByUrl('/area-of-operations');
           // this.m_oAreaOfOperationService.addUserToArea(oResponse.id,)
         },
@@ -225,6 +225,8 @@ export class CreateAreaOfOperationComponent implements OnInit{
         }
       }
     )
+
+
 
   }
 
@@ -341,7 +343,7 @@ export class CreateAreaOfOperationComponent implements OnInit{
     this.m_aoFieldUsers = [];
 
     this.m_oRiseSelectAreaComponent.clearPreviousDrawings();
-    console.log("Form has been reset");
+
   }
 
 }

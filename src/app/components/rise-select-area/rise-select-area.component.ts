@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 import {MapService} from "../../services/map.service";
-import 'leaflet-draw'
+
 import {LeafletModule} from '@bluehalo/ngx-leaflet';
 import {LeafletDrawModule} from '@asymmetrik/ngx-leaflet-draw';
 import {RiseTimebarComponent} from "../rise-timebar/rise-timebar.component";
@@ -12,10 +12,11 @@ import {RiseButtonComponent} from "../rise-button/rise-button.component";
 import {
   ImportShapeFileStationDialogComponent
 } from "../../dialogs/import-shape-file-station-dialog/import-shape-file-station-dialog.component";
-import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
-
-
+import {NotificationsDialogsService} from '../../services/notifications-dialogs.service';
 declare const L: any;
+// import * as L from 'leaflet';
+import 'leaflet-draw'
+
 
 @Component({
   selector: 'rise-select-area',
@@ -363,9 +364,7 @@ export class RiseSelectAreaComponent implements OnInit, AfterViewInit {
     // Log and remove all layers except the base map layer
 
 
-    console.log('Map and drawings cleared');
   }
-
 
 
   // Function to calculate the centroid of a polygon
@@ -412,6 +411,7 @@ export class RiseSelectAreaComponent implements OnInit, AfterViewInit {
     // Check if it's a polygon (including rectangles)
     else if (oEvent.layer instanceof L.Polygon) {
       const latLngs = oEvent.layer.getLatLngs()[0]; // Get the array of points (vertices)
+
       iSelectedArea = L.GeometryUtil.geodesicArea(latLngs); // Get the area of the polygon
 
       // Collect all points (vertices) of the polygon
@@ -449,7 +449,7 @@ export class RiseSelectAreaComponent implements OnInit, AfterViewInit {
   private emitGeoJSONShapeInfo(geoJson: any) {
     let oShapeInfo = {};
     let iSelectedArea = 0;
-    console.log(geoJson)
+
     if (geoJson.geometry.type === "Polygon") {
       // GeoJSON coordinates are in [lng, lat] format, need to convert to [lat, lng]
       const latLngs = geoJson.geometry.coordinates[0].map((point: [number, number]) => {
@@ -457,6 +457,7 @@ export class RiseSelectAreaComponent implements OnInit, AfterViewInit {
       });
 
       // Calculate the area of the polygon using Leaflet GeometryUtil
+
       iSelectedArea = L.GeometryUtil.geodesicArea(latLngs);
 
       // Prepare the points data

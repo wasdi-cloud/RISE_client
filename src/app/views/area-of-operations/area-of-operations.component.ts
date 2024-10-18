@@ -13,10 +13,10 @@ import {RiseTextInputComponent} from "../../components/rise-text-input/rise-text
 import {RiseMapComponent} from "../../components/rise-map/rise-map.component";
 import {NgIf} from "@angular/common";
 import {PluginService} from "../../services/api/plugin.service";
-import {AddRowDialogComponent} from "../../dialogs/add-row-dialog/add-row-dialog.component";
+
 import {
   ConfirmDialogComponent
-} from "../../dialogs/confirm-overlapping-and-same-name-area-dialog/confirm-dialog.component";
+} from "../../dialogs/confirm-dialog/confirm-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 
 @Component({
