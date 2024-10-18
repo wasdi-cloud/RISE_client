@@ -8,8 +8,11 @@
     <div class="outlet-container flex-fill px-3">
       <user-account *ngIf="m_sActiveOutlet === 'user'"></user-account>
       <user-organization
-        *ngIf="m_sActiveOutlet === 'organization'"
+        *ngIf="m_sActiveOutlet === 'organization'" 
       ></user-organization>
+      <user-subscriptions
+        *ngIf="m_sActiveOutlet === 'subscriptions'" [m_oOrganizationId]=""
+      ></user-subscriptions>
       <app-area-of-operations
         *ngIf="m_sActiveOutlet === 'area-of-operations'"
       ></app-area-of-operations>

@@ -86,6 +86,29 @@
   "RISE_SELECT_AREA": {
     "UPLOAD_SHAPE_FILE": "Upload Shape File"
   },
+  "SUBSCRIPTIONS": {
+    "AREA_TYPE": "Area Type",
+    "BACK": "Back to Subscriptions",
+    "BILLING": "Billing",
+    "BUY_BUTTON": "Buy New Subscription",
+    "COMPUTE_PRICE": "Get Computed Price",
+    "COMPUTED_PRICE": "Computed Price",
+    "CONTACT": "Contact Us",
+    "CREDIT": "Credit Card",
+    "DESCRIPTION": "Description",
+    "EMERGENCY": "Emergency Only Area",
+    "HEADER": "My Subscriptions",
+    "LONG_TERM": "Long Term Area",
+    "MONTHLY": "Monthly",
+    "NAME": "Name",
+    "PAYMENT": "Payment Method",
+    "PLUGINS": "Plugins",
+    "PURCHASE": "Purchase",
+    "TYPE": "Type",
+    "UPDATE": "Update Subscription",
+    "WIRE": "Wire Transfer",
+    "YEAR": "One Year"
+  },
   "TOOLBAR": {
     "ACCOUNT": "Account",
     "LOGIN": "Login",

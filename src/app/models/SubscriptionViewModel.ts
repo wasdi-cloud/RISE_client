@@ -1,36 +1,33 @@
-import {PaymentType} from "./PaymentType";
-
-export class SubscriptionViewModel extends RiseViewModel  {
-
+import { PaymentType } from './PaymentType';
+export class SubscriptionViewModel {
   /**
    * Default Id
    */
-  id:string;
+  id: string;
 
-  organizationId:string;
+  organizationId: string;
 
-  name:string;
+  name: string;
 
-  type:string;
+  type: string;
 
-  description:string;
+  description: string;
 
-  creationDate:number;
+  creationDate: number;
 
-  buyDate:number;
+  buyDate: number | Date;
 
-  valid:boolean;
+  valid: boolean;
 
-  expireDate:number;
+  expireDate: number;
 
-  paymentType:PaymentType;
+  paymentType: PaymentType;
 
-  price:number;
+  price: number;
 
-  currency:string;
+  currency: string;
 
-  supportsArchive:boolean;
+  supportsArchive: boolean;
 
-  plugins:string[];
-
+  plugins: string[];
 }

@@ -1,0 +1,32 @@
+<div class="m-2 d-flex flex-column gap-3">
+  <div
+    class="header d-flex flex-row justify-content-between align-items-center"
+  >
+    {{ m_oSubscription.name }}
+    <rise-button
+      (click)="onDismiss(false)"
+      [m_sSize]="'small'"
+      [m_sLabel]="'X'"
+    ></rise-button>
+  </div>
+  <div class="body flex-fill">
+    <rise-text-input
+      [(m_sInputText)]="m_oSubscription.name"
+      [m_sLocalizationKey]="'SUBSCRIPTIONS.NAME'"
+    ></rise-text-input>
+    <rise-text-area-input
+      [(m_sInputText)]="m_oSubscription.description"
+      [m_sLocalizationKey]="'SUBSCRIPTIONS.DESCRIPTION'"
+    ></rise-text-area-input>
+    <!-- <rise-text-input [(m_sInputText)]=""></rise-text-input> -->
+    <!-- <rise-text-input [(m_sInputText)]="m_oSubscription."></rise-text-input> -->
+    <rise-text-input
+      [(m_sInputText)]="m_oSubscription.paymentType"
+      [m_sLocalizationKey]="'SUBSCRIPTIONS.TYPE'"
+    ></rise-text-input>
+    <!-- <rise-text-input [(m_sInputText)]="m_oSubscription.price"></rise-text-input> -->
+  </div>
+  <div class="footer">
+    <rise-button [m_sLabel]="'SUBSCRIPTIONS.UPDATE'" (click)="updateSubscription()"></rise-button>
+  </div>
+</div>

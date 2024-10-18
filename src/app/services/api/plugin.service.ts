@@ -15,7 +15,7 @@ export class PluginService {
   }
 
   /**
-   * Get a list of Subscriptions per user
+   * Get the list of available plugins
    *
    * @param sSessionId
    * @return
