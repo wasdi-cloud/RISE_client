@@ -47,7 +47,6 @@ export class UserOrganizationComponent implements OnInit {
         if (oResponse) {
           this.m_oOrganization = oResponse;
           this.getOrgVM(this.m_oOrganization.id);
-          console.log(this.m_oOrganization);
         }
       },
       error: (oError) => {

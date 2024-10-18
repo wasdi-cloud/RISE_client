@@ -65,7 +65,6 @@ export class BuyNewSubscriptionComponent implements OnInit {
   getSubTypes() {
     this.m_oSubscriptionService.getSubscriptionTypes().subscribe({
       next: (oResponse) => {
-        console.log(oResponse);
         this.m_aoSubTypes = oResponse;
         this.initSubTypeNames();
       },
@@ -84,7 +83,6 @@ export class BuyNewSubscriptionComponent implements OnInit {
           );
         } else {
           this.m_aoPluginTypes = oResponse;
-          console.log(this.m_aoPluginTypes);
           this.initPluginNames();
         }
       },
@@ -96,7 +94,6 @@ export class BuyNewSubscriptionComponent implements OnInit {
     this.m_asSubTypeNames = this.m_aoSubTypes.map(
       (oSubType) => oSubType.stringCode.slice(8) + ' Location(s)'
     );
-    console.log(this.m_asSubTypeNames);
   }
 
   initPluginNames() {
@@ -106,7 +103,6 @@ export class BuyNewSubscriptionComponent implements OnInit {
   handleSubTypeSelect(oEvent) {
     let sSelectedType = oEvent.value;
     this.m_aoSubTypes.forEach((oType) => {
-      console.log(sSelectedType.slice(0, -12));
       if (oType.stringCode.includes(sSelectedType.slice(0, -12))) {
         this.m_oSelectedType = oType;
       }
@@ -131,7 +127,9 @@ export class BuyNewSubscriptionComponent implements OnInit {
       next: (oResponse) => {
         console.log(oResponse);
       },
-      error: (oError) => {},
+      error: (oError) => {
+        console.log(oError)
+      },
     });
   }
 

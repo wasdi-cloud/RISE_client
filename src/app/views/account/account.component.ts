@@ -41,7 +41,6 @@ export class AccountComponent {
   public getActiveOutlet(sSelectedOutlet: string) {
     if (sSelectedOutlet) {
       this.m_sActiveOutlet = sSelectedOutlet;
-      console.log(this.m_sActiveOutlet);
     }
   }
 }
