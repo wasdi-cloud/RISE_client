@@ -18,9 +18,10 @@ import {
 import {Router} from "@angular/router";
 import {
   ConfirmDialogComponent
-} from "../../dialogs/confirm-overlapping-and-same-name-area-dialog/confirm-dialog.component";
+} from "../../dialogs/confirm-dialog/confirm-dialog.component";
 import {PluginService} from "../../services/api/plugin.service";
 import {UserOfAreaViewModel} from "../../models/UserOfAreaViewModel";
+import {NotificationsDialogsService} from "../../services/notifications-dialogs.service";
 
 @Component({
   selector: 'app-create-area-of-operation',
@@ -70,6 +71,7 @@ export class CreateAreaOfOperationComponent implements OnInit{
     private m_oRouter: Router,
     private m_oRiseSelectAreaComponent:RiseSelectAreaComponent,
     private m_oPluginService:PluginService,
+    private m_oNotificationService:NotificationsDialogsService,
     ) {
   }
 
@@ -88,7 +90,6 @@ export class CreateAreaOfOperationComponent implements OnInit{
         this.m_oAreaOfOperationService.getAreaList().subscribe({
           next:(aoResponse)=>{
             this.m_aoAreasOfOperations=aoResponse;
-            console.log(this.m_aoAreasOfOperations);
           }
         })
     }
@@ -174,57 +175,69 @@ export class CreateAreaOfOperationComponent implements OnInit{
 
 
   SaveAreaOfOperation() {
-    //todo rise utils
-    if (this.m_sAreaOfOperationDescription === null || this.m_sAreaOfOperationName === null) {
-      //todo alert user or make input in red
-      return;
-    }
-    if (this.m_oAreaInfo === null) {
-      //todo alert user
-      return;
-    }
-    if (this.m_asPluginsSelected === null || this.m_asPluginsSelected.length == 0) {
-      //todo alert user
-      return;
-    }
-    if (this.m_aoFieldUsers === null || this.m_aoFieldUsers.length == 0) {
-      //todo alert user
-      return;
-    }
-    if(this.m_asPluginsSelected.length<1){
-      //todo alert user
-      return;
-    }
-    this.m_oAreaOfOperation = {
-      name: this.m_sAreaOfOperationName,
-      description: this.m_sAreaOfOperationDescription,
-      bbox: this.m_sAreaOfOperationBBox,
-      markerCoordinates: this.m_sMarkerCoordinates
-      // plugins:this.m_asPluginsSelected
-    }
-
-    //check if the selected area overlaps or have the same name of an existing one
-    // this.checkOverlappingAreasAndSameName(this.m_oAreaOfOperation);
-    this.m_oAreaOfOperationService.addArea(this.m_oAreaOfOperation).subscribe(
-      {
-        next: (oResponse) => {
-          //todo send confirmation to HQ operator
-          console.log('Success');
-          console.log(oResponse);
-          this.m_oRouter.navigateByUrl('/area-of-operations');
-          // this.m_oAreaOfOperationService.addUserToArea(oResponse.id,)
-        },
-        error: (e) => {
-
-          // Here handle no valid subscription
-          if (e.error.errorStringCodes[0] === 'ERROR_API_NO_VALID_SUBSCRIPTION') {
-            //open dialog to invite user to buy new subscription
-            this.inviteUserToBuyNewSubscription();
-          }
-
-        }
-      }
-    )
+    // //todo rise utils
+    // if (this.m_sAreaOfOperationDescription === null || this.m_sAreaOfOperationName === null) {
+    //   //todo alert user or make input in red
+    //   return;
+    // }
+    // if (this.m_oAreaInfo === null) {
+    //   //todo alert user
+    //   return;
+    // }
+    // if (this.m_asPluginsSelected === null || this.m_asPluginsSelected.length == 0) {
+    //   //todo alert user
+    //   return;
+    // }
+    // if (this.m_aoFieldUsers === null || this.m_aoFieldUsers.length == 0) {
+    //   //todo alert user
+    //   return;
+    // }
+    // if(this.m_asPluginsSelected.length<1){
+    //   //todo alert user
+    //   return;
+    // }
+    // this.m_oAreaOfOperation = {
+    //   name: this.m_sAreaOfOperationName,
+    //   description: this.m_sAreaOfOperationDescription,
+    //   bbox: this.m_sAreaOfOperationBBox,
+    //   markerCoordinates: this.m_sMarkerCoordinates
+    //   // plugins:this.m_asPluginsSelected
+    // }
+    //
+    // //check if the selected area overlaps or have the same name of an existing one
+    // // this.checkOverlappingAreasAndSameName(this.m_oAreaOfOperation);
+    // this.m_oAreaOfOperationService.addArea(this.m_oAreaOfOperation).subscribe(
+    //   {
+    //     next: (oResponse) => {
+    //       //todo send confirmation to HQ operator
+    //       console.log('Success');
+    //       console.log(oResponse);
+    //       this.m_oNotificationService.openInfoDialog(
+    //         "New Area have been added successefully",
+    //         "CreateAreaOfOperationComponent",
+    //         "Success"
+    //       )
+    //       this.m_oRouter.navigateByUrl('/area-of-operations');
+    //       // this.m_oAreaOfOperationService.addUserToArea(oResponse.id,)
+    //     },
+    //     error: (e) => {
+    //
+    //       // Here handle no valid subscription
+    //       if (e.error.errorStringCodes[0] === 'ERROR_API_NO_VALID_SUBSCRIPTION') {
+    //         //open dialog to invite user to buy new subscription
+    //         this.inviteUserToBuyNewSubscription();
+    //       }
+    //
+    //     }
+    //   }
+    // )
+    // console.log("here")
+    // this.m_oNotificationService.openInfoDialog(
+    //   "New Area have been added successefully",
+    //   null,
+    //   "Success"
+    // )
+    this.m_oRouter.navigateByUrl('/area-of-operations');
 
   }
 
