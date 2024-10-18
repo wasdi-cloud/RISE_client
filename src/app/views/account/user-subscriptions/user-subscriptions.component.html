@@ -9,5 +9,21 @@
       (click)="openBuyNewSub(true)"
     ></rise-button>
   </div>
-  <buy-new-subscription *ngIf="m_bShowBuySub" [m_sOrganizationId]=""></buy-new-subscription>
+  <div class="body" *ngIf="!m_bShowBuySub">
+    <div class="button">
+      <rise-crud-table
+        [m_aoDataSource]="m_aoSubscriptions"
+        [m_asDisplayedColumns]="m_asTableHeadings"
+        [m_bEmitClick]="true"
+        [m_bAddUserBtn]="false"
+        (m_oEditRow)="openEditor($event)"
+      ></rise-crud-table>
+    </div>
+  </div>
+  <buy-new-subscription
+    *ngIf="m_bShowBuySub"
+    (m_oEmitBack)="openBuyNewSub($event)"
+    [m_sOrganizationId]=""
+  ></buy-new-subscription>
+  
 </div>

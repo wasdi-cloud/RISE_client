@@ -15,7 +15,7 @@ export class SubscriptionViewModel {
 
   creationDate: number;
 
-  buyDate: number;
+  buyDate: number | Date;
 
   valid: boolean;
 
