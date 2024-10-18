@@ -7,6 +7,8 @@ import { RiseTextInputComponent } from '../../../../components/rise-text-input/r
 import { RiseTextAreaInputComponent } from '../../../../components/rise-textarea-input/rise-text-area-input.component';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
+import { SubscriptionTypeViewModel } from '../../../../models/SubscriptionTypeViewModel';
+import { NotificationsDialogsService } from '../../../../services/notifications-dialogs.service';
 
 @Component({
   selector: 'app-subscription-editor',
@@ -24,11 +26,14 @@ import { TranslateModule } from '@ngx-translate/core';
 export class SubscriptionEditorComponent implements OnInit {
   m_bIsEditing: boolean = false;
   m_sSubscriptionHeader: string = '';
+  m_aoSubTypes: Array<SubscriptionTypeViewModel> = [];
+
   m_oSubscription: SubscriptionViewModel = {} as SubscriptionViewModel;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private m_oData: any,
     private m_oDialogRef: MatDialogRef<SubscriptionEditorComponent>,
+    private m_oNotificationService: NotificationsDialogsService,
     private m_oSubscriptionService: SubscriptionService
   ) {}
 
@@ -43,13 +48,22 @@ export class SubscriptionEditorComponent implements OnInit {
     }
   }
 
-  getSubscriptionTypes() {}
+  getSubscriptionTypes() {
+    this.m_oSubscriptionService.getSubscriptionTypes().subscribe({
+      next: (oResponse) => {
+        if (oResponse) {
+          this.m_aoSubTypes = oResponse;
+        }
+      },
+      error: (oError) => {},
+    });
+  }
 
   getSubscriptionVM(sSubscriptionId: string) {
     this.m_oSubscriptionService.getSubscriptionById(sSubscriptionId).subscribe({
       next: (oResponse) => {
         if (oResponse) {
-          console.log(oResponse)
+          console.log(oResponse);
           this.m_oSubscription = oResponse;
         }
       },
@@ -57,7 +71,29 @@ export class SubscriptionEditorComponent implements OnInit {
     });
   }
 
-  updateSubscription() {}
+  updateSubscription() {
+    this.m_oSubscriptionService
+      .updateSubscription(this.m_oSubscription)
+      .subscribe({
+        next: (oResponse) => {
+          if (oResponse.status === 200) {
+            this.m_oNotificationService.openInfoDialog(
+              'Your subscription was updated',
+              'success',
+              'Success'
+            );
+            this.onDismiss(true);
+          }
+        },
+        error: (oError) => {
+          this.m_oNotificationService.openInfoDialog(
+            'Could not update subscription',
+            'error',
+            'Error'
+          );
+        },
+      });
+  }
 
   onDismiss(bUpdated: boolean) {
     this.m_oDialogRef.close(bUpdated);

@@ -92,9 +92,14 @@ export class UserSubscriptionsComponent implements OnInit {
 
   openEditor(oEvent) {
     console.log(oEvent);
-    this.m_oDialog.open(SubscriptionEditorComponent, {
+    let oDialog = this.m_oDialog.open(SubscriptionEditorComponent, {
       data: { subscription: oEvent, isEditing: false },
-      width: '500px'
+      width: '500px',
+    });
+    oDialog.afterClosed().subscribe((bResult) => {
+      if (bResult === true) {
+        this.getSubscriptions();
+      }
     });
   }
 

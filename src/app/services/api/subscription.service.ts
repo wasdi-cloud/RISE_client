@@ -46,7 +46,8 @@ export class SubscriptionService {
   updateSubscription(oSubscriptionViewModel) {
     return this.m_oHttp.put<any>(
       this.APIURL + '/subscriptions',
-      oSubscriptionViewModel
+      oSubscriptionViewModel,
+      { observe: 'response' }
     );
   }
 
