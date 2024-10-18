@@ -91,7 +91,7 @@ export class AreaOfOperationsComponent implements OnInit {
 
   }
 
-  onAreaDelete(area: AreaViewModel) {
+  onAreaDelete(area: any) {
     const oDialogRef = this.m_oDialog.open(ConfirmDialogComponent, {
       width: '300px',
       data: 'Are you Sure you want to delete this Area'+area.name+'?'
