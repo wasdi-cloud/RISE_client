@@ -1,9 +1,6 @@
 <button
   class="btn"
-  [class.btn-lg]="m_sSize === 'large'"
-  [class.btn-sm]="m_sSize === 'small'"
-  [class.btn-primary]="m_sRole === 'default'"
-  [class.btn-danger]="m_sRole === 'danger'"
+  [ngClass]="m_sRole"
   [class.active]="m_bActive"
 >
   {{ m_sLabel | translate }}

@@ -1,25 +1,43 @@
+:root {
+  /* Primitive Colors */
+  --rise-teal: #274d59;
+  --rise-teal-600: #0c303c;
+  --rise-teal-800: #001f28;
+  --rise-black: #000;
+  --rise-white: #ffffff;
+  --rise-gold: #efba35;
+
+  /* Semantic Colors */
+  --rise-warning: #efba35;
+  --rise-danger-text: #f5919f;
+  --rise-text-bright: rgba(255, 255, 255, 0.9);
+  --text-inverse: rgba(0, 0, 0, 0.95);
+  --surface-glass-interactive: rgba(0, 0, 0, 0.5);
+}
+
 html,
 body {
-    height: 100%;
+  height: 100%;
 }
 
 body {
-    margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: var(--rise-teal-800);
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 main {
-    min-height: 100vh;
+  min-height: 100vh;
 }
 
 div.widget-container {
-    border: 1px solid #000000;
-    border-radius: 8px;
-    margin: 10px;
-    padding: 1rem;
-    width: 400px;
+  border: 1px solid #000000;
+  border-radius: 8px;
+  margin: 10px;
+  padding: 1rem;
+  width: 400px;
 }
 
 div.outlet {
-    height: 100%;
+  height: 100%;
 }
