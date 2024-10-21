@@ -105,6 +105,7 @@
     "PLUGINS": "Plugins",
     "PURCHASE": "Purchase",
     "TYPE": "Type",
+    "PAYMENT_TYPE": "Payment Type",
     "UPDATE": "Update Subscription",
     "WIRE": "Wire Transfer",
     "YEAR": "One Year"
