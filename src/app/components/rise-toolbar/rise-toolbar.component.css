@@ -1,3 +1,7 @@
+img {
+    height: 24px;
+}
+
 nav.navbar-container {
     background-color: rgba(0, 31, 40, 0.1);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);

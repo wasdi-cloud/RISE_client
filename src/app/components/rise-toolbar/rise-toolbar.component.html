@@ -1,6 +1,8 @@
 <nav class="navbar-container px-3">
   <div class="navbar d-flex flex-row justify-content-between">
-    <div (click)="m_bUserIsSigned ? navigateRoute('dashboard') : ''">RISE</div>
+    <div (click)="m_bUserIsSigned ? navigateRoute('dashboard') : ''">
+      <img src="/assets/rise-assets/logo-white-horizontal.svg" alt="" />
+    </div>
     <!-- Login and Sign Up buttons if the user is NOT signed in -->
     <div *ngIf="!userIsSigned" class="d-flex flex-row gap-3">
       <rise-button
