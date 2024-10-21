@@ -1,1 +1,20 @@
-<rise-toolbar></rise-toolbar>
+<main class="d-flex flex-column justify-content-between">
+  <rise-toolbar></rise-toolbar>
+  <div
+    class="flex-fill d-flex flex-row justify-content-center align-items-ceonter"
+  >
+    <div class="rise-container flex-fill d-flex flex-row align-items-center">
+      <!-- <img class="rise-img" src="/assets/rise-assets/cover-dark2x.png" alt=""> -->
+      <div id="hero-img"></div>
+      <div class="rise-info-container">
+        <h2>Natural Disaster management starts with you</h2>
+        <p>Be aware. Stay prepared. For anything. From anywhere.</p>
+        <rise-button
+          [m_sRole]="'action'"
+          [m_sLabel]="'Get started for free'"
+          (click)="navigateRoute('sign-up')"
+        ></rise-button>
+      </div>
+    </div>
+  </div>
+</main>

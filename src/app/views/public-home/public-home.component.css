@@ -1,0 +1,12 @@
+.rise-container {
+  position: relative;
+}
+
+div#hero-img {
+  left: -10%;
+  height: 100%;
+  width: 55%;
+  background-repeat: no-repeat;
+  background-image: url(/assets/rise-assets/cover-dark2x.png);
+  background-position: center;
+}
