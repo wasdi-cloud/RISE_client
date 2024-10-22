@@ -13,7 +13,11 @@
   --rise-text-dim: rgba(255, 255, 255, 0.6);
   --rise-text-bright: rgba(255, 255, 255, 0.9);
   --text-inverse: rgba(0, 0, 0, 0.95);
+  --surface-glass-elevation: rgba(255, 255, 255, 0.04);
   --surface-glass-interactive: rgba(0, 0, 0, 0.5);
+
+  /* style colors */
+  --rise-border-default: rgba(255, 255, 255, 0.1);
 }
 
 html,
@@ -81,4 +85,3 @@ div.outlet {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--rise-teal-600);
 }
-
