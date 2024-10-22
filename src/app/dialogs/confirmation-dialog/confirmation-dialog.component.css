@@ -1,7 +1,6 @@
 .dialog-container {
   border-radius: 8px;
-  border: 1px solid var(--neutral20);
-  color: var(--neutral80);
+  background-color: var(--rise-teal-600);
   gap: 16px;
   overflow: hidden;
   overflow-wrap: break-word;
@@ -39,4 +38,9 @@
 
 .info > .icon-container {
   color: var(--neutral50Brand);
+}
+
+
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
+  background-color: transparent;
 }

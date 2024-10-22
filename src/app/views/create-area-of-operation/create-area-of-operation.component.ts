@@ -271,7 +271,7 @@ export class CreateAreaOfOperationComponent implements OnInit{
   }
 
   private checkOverlappingAreasAndSameName(m_oAreaOfOperation: AreaViewModel) {
-
+    // TODO: Switch out Confirm dialog for Confirmation Dialog Service + add localization
     if(this.checkOverlappingAreas(m_oAreaOfOperation) && this.checkSameNameAreas(m_oAreaOfOperation)){
       //ask user to confirm
       const oDialogRef = this.m_oDialog.open(ConfirmDialogComponent, {
