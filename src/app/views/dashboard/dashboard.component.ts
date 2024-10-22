@@ -13,6 +13,8 @@ import { AreaViewModel } from '../../models/AreaViewModel';
 import { AreaService } from '../../services/api/area.service';
 import { MapService } from '../../services/map.service';
 import { Subscription } from 'rxjs';
+import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
+import { RiseBannerComponent } from '../../components/rise-banner/rise-banner.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,8 +24,10 @@ import { Subscription } from 'rxjs';
     RiseButtonComponent,
     RiseMapComponent,
     RiseAlertsWidgetComponent,
+    RiseBannerComponent,
     RiseAffectedWidgetComponent,
     RiseOngoingWidgetComponent,
+    RiseTextInputComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
