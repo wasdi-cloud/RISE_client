@@ -10,6 +10,11 @@
   "AREA_OF_OPERATIONS": {
     "CREATE_NEW_AREA_OF_OPERATION": "Create new area of operations"
   },
+  "BANNER": {
+    "LIVE_SIT": "Live Situation",
+    "BACK": "Back to Live"
+  },
+
   "CREATE_NEW_AREA_OF_OPERATION": {
     "NAME": "Name",
     "DESCRIPTION": "Description",
@@ -17,6 +22,9 @@
     "SAVE": "Save",
     "CANCEL": "Cancel",
     "ADD_FIELD_OPERATOR": "Add Field Operator"
+  },
+  "DASHBOARD": {
+    "SEARCH": "Search Map"
   },
   "ERROR_MSG": {
     "ERROR_API_ORG_ALREADY_EXISTS": "An organization with this information already exists.",
