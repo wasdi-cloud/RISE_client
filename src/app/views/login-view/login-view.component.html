@@ -1,5 +1,8 @@
-<main class="d-flex flex-column align-items-center justify-content-center">
-  <div class="login-container d-flex flex-column align-items-center gap-2">
+<main class="d-flex flex-column justify-content-between">
+  <rise-toolbar [m_bUserIsSigned]="false"></rise-toolbar>
+  <div
+    class="flex-fill login-container d-flex flex-column align-items-center justify-content-center gap-2"
+  >
     <rise-text-input
       [m_sLocalizationKey]="'LOGIN.USER_ID'"
       [m_sName]="'username'"

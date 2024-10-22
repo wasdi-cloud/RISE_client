@@ -1,0 +1,14 @@
+.otp-dialog {
+  border-radius: 8px;
+  background-color: var(--rise-teal-600);
+  gap: 16px;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  padding: 16px;
+  width: 300px;
+  height: 200px;
+}
+
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
+  background-color: transparent;
+}

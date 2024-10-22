@@ -1,17 +1,20 @@
-<div class="otp-dialog p-2">
-  <div class="dialog-header d-flex flex-row justify-content-end">
+<div class="otp-dialog d-flex flex-column gap-2 p-2">
+  <div class="dialog-header d-flex flex-row justify-content-between">
+    {{ "OTP_DIALOG.ENTER_PW" | translate }}
     <span class="material-symbols-outlined" (click)="onDismiss()"> close </span>
   </div>
-  <div class="dialog-content d-flex flex-column">
-    <div class="flex-fill d-flex flex-column ">
-      <rise-text-input
-        [m_sLocalizationKey]="'OTP_DIALOG.ENTER_PW'"
-        [(m_sInputText)]="m_sOneTimePW"
-      ></rise-text-input>
-      <rise-button
-        [m_sLabel]="'OTP_DIALOG.SUBMIT'"
-        (click)="submitOTP()"
-      ></rise-button>
-    </div>
+  <div
+    class="dialog-content flex-fill d-flex flex-column justify-content-center gap-2"
+  >
+    <rise-text-input
+      [m_sLocalizationKey]=""
+      [(m_sInputText)]="m_sOneTimePW"
+    ></rise-text-input>
+  </div>
+  <div class="dialog-footer d-flex flex-row justify-content-end">
+    <rise-button
+      [m_sLabel]="'OTP_DIALOG.SUBMIT'"
+      (click)="submitOTP()"
+    ></rise-button>
   </div>
 </div>

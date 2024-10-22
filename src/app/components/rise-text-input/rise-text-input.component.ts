@@ -12,8 +12,8 @@ import { FormsModule } from '@angular/forms';
 })
 export class RiseTextInputComponent {
   @Input() m_sName: string;
-  @Input() m_sLocalizationKey: string = 'TEST';
-  @Input() m_sType: 'text' | 'password' = 'text';
+  @Input() m_sLocalizationKey: string = '';
+  @Input() m_sType?: 'text' | 'password' = 'text';
 
   /**
    * Is this input part of a validator (i.e., checking two inputs are the same)

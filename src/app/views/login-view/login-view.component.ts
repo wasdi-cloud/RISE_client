@@ -9,11 +9,17 @@ import { RiseButtonComponent } from '../../components/rise-button/rise-button.co
 import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
 
 import { UserCredentialsViewModel } from '../../models/UserCredentialsViewModel';
+import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
 
 @Component({
   selector: 'app-login-view',
   standalone: true,
-  imports: [RiseButtonComponent, RiseTextInputComponent, OtpDialogComponent],
+  imports: [
+    RiseToolbarComponent,
+    RiseButtonComponent,
+    RiseTextInputComponent,
+    OtpDialogComponent,
+  ],
   templateUrl: './login-view.component.html',
   styleUrl: './login-view.component.css',
 })
