@@ -331,28 +331,28 @@ export class MapService {
       const southWest = bounds.getSouthWest();
       const northEast = bounds.getNorthEast();
       const area = this.calculateRectangleArea(southWest, northEast);
-      alert(`Rectangle Area: ${area.toFixed(2)} square kilometers`);
+      // alert(`Rectangle Area: ${area.toFixed(2)} square kilometers`);
     }
 
     // For polyline, calculate total distance
     if (layerType === 'polyline') {
       const latlngs = layer.getLatLngs();
       const totalDistance = this.calculateDistance(latlngs);
-      alert(`Total distance: ${totalDistance.toFixed(2)} kilometers`);
+      // alert(`Total distance: ${totalDistance.toFixed(2)} kilometers`);
     }
 
     // For polygon, calculate area
     if (layerType === 'polygon') {
       const latlngs = layer.getLatLngs()[0]; // Use the first array of latlngs
       const area = L.GeometryUtil.geodesicArea(latlngs); // Area in square meters
-      alert(`Polygon Area: ${(area / 1000000).toFixed(2)} square kilometers`);
+      // alert(`Polygon Area: ${(area / 1000000).toFixed(2)} square kilometers`);
     }
 
     // For circle, calculate area
     if (layerType === 'circle') {
       const radius = layer.getRadius(); // Radius in meters
       const area = Math.PI * Math.pow(radius, 2); // Area of the circle (πr²)
-      alert(`Circle Area: ${(area / 1000000).toFixed(2)} square kilometers`);
+      // alert(`Circle Area: ${(area / 1000000).toFixed(2)} square kilometers`);
     }
 
     this.m_oDrawnItems.addLayer(layer);

@@ -128,7 +128,7 @@ export class RiseSelectAreaComponent implements OnInit, AfterViewInit {
           // Once is closed...
           oDialog.afterClosed().subscribe(oResult => {
             if (oResult != null) {
-              console.log(oResult)
+
               if (oResult.north == null || oResult.west == null || oResult.east == null || oResult.south == null) {
                 return;
               } else {
@@ -258,7 +258,7 @@ export class RiseSelectAreaComponent implements OnInit, AfterViewInit {
 
         // Add the cancel button click listener
         L.DomEvent.on(oCancelButton, 'click', () => {
-          console.log("Cancel button clicked!");
+
           if (this.m_oLastCircle) {
             this.m_oMap.removeLayer(this.m_oLastCircle);
             this.m_oLastCircle = null; // Reset reference
@@ -478,7 +478,7 @@ export class RiseSelectAreaComponent implements OnInit, AfterViewInit {
     } else if (geoJson.type === "circle") {
       //todo will have to test with file to verify
     }
-    console.log(oShapeInfo)
+
     // Emit the shape information to the parent component
     this.m_oMapInputChange.emit(oShapeInfo);
   }
