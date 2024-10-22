@@ -2,7 +2,7 @@ input,
 span.input-group-text,
 input:focus {
   background-color: var(--surface-glass-interactive);
-  border: 1px solid var;
+  border: 1px solid var(--rise-text-dim);
   color: var(--rise-text-bright);
 }
 
@@ -10,8 +10,9 @@ input:focus {
   border-left: none;
 }
 
-input:focus, input.form-control:focus {
-    outline-width: 0!important;
+input:focus,
+input.form-control:focus {
+  outline-width: 0 !important;
 }
 
 span.input-group-text {

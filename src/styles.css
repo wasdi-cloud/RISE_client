@@ -58,3 +58,27 @@ div.outlet {
   font-style: italic;
   font-display: swap;
 }
+
+/* width */
+::-webkit-scrollbar {
+  border-radius: 8px;
+  width: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--rise-teal);
+  border-radius: 8px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--rise-teal-600);
+  border-radius: 8px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--rise-teal-600);
+}
+

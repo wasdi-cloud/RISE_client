@@ -1,9 +1,9 @@
 <div class="d-flex flex-column justify-content-between">
-  <label for="{{m_sLabel}}" *ngIf="m_sLabel">{{ m_sLabel | translate }}</label>
+ 
   <mat-select
     [multiple]="m_bIsMultiSelect"
     class="form-control"
-    placeholder="{{ m_sPlaceholder }}"
+    placeholder="{{ m_sLabel | translate }}"
     name="dropdown"
     (selectionChange)="emitSelectionChange($event)"
     [(value)]="m_aoSelectedItems"
