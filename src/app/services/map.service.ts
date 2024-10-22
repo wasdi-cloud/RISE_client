@@ -115,7 +115,7 @@ export class MapService {
     this.initTilelayer();
 
     this.m_oOptions = {
-      layers: [this.m_oStadiMapDark],
+      layers: [this.m_oDarkGrayArcGIS],
       zoomControl: false,
       zoom: 3,
       // center: latLng(0, 0),
@@ -222,7 +222,7 @@ export class MapService {
         OpenTopoMap: this.m_oOpenTopoMap,
         EsriWorldStreetMap: this.m_oEsriWorldStreetMap,
         EsriWorldImagery: this.m_oEsriWorldImagery,
-        'Stadi Map Dark': this.m_oStadiMapDark,
+        // 'Stadi Map Dark': this.m_oStadiMapDark,
         'Arcgis Dark gray Map': this.m_oDarkGrayArcGIS,
       },
       null,
@@ -250,8 +250,8 @@ export class MapService {
       maxZoom: MAX_ZOOM,
       minZoom: MIN_ZOOM,
     });
-    this.m_oStadiMapDark.addTo(oMap);
-    // this.m_oDarkGrayArcGIS.addTo(oMap);
+    // this.m_oStadiMapDark.addTo(oMap);
+    this.m_oDarkGrayArcGIS.addTo(oMap);
     // this.m_oOSMBasic.addTo(oMap);
 
     this.initGeoSearchPluginForOpenStreetMap(oMap);
