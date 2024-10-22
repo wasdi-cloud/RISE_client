@@ -55,6 +55,10 @@ export class MapService {
    * Dark Stadia Map
    */
   m_oStadiMapDark: any = null;
+  /**
+   * Dark Gray Arcgis Map
+   */
+  m_oDarkGrayArcGIS: any = null;
 
   /**
    * Is the component toggle-able to 3D map?
@@ -111,7 +115,7 @@ export class MapService {
     this.initTilelayer();
 
     this.m_oOptions = {
-      layers: [this.m_oOSMBasic],
+      layers: [this.m_oStadiMapDark],
       zoomControl: false,
       zoom: 3,
       // center: latLng(0, 0),
@@ -200,6 +204,16 @@ export class MapService {
         // ext: 'png'
       }
     );
+    this.m_oDarkGrayArcGIS = L.tileLayer(
+      'https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+      {
+        minZoom: MIN_ZOOM,
+        maxZoom: MAX_ZOOM,
+        attribution:
+          '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        // ext: 'png'
+      }
+    );
 
     // Add all to the layers control
     this.m_oLayersControl = L.control.layers(
@@ -209,6 +223,7 @@ export class MapService {
         EsriWorldStreetMap: this.m_oEsriWorldStreetMap,
         EsriWorldImagery: this.m_oEsriWorldImagery,
         'Stadi Map Dark': this.m_oStadiMapDark,
+        'Arcgis Dark gray Map': this.m_oDarkGrayArcGIS,
       },
       null,
       { position: 'bottomright' }
@@ -235,7 +250,9 @@ export class MapService {
       maxZoom: MAX_ZOOM,
       minZoom: MIN_ZOOM,
     });
-    this.m_oOSMBasic.addTo(oMap);
+    this.m_oStadiMapDark.addTo(oMap);
+    // this.m_oDarkGrayArcGIS.addTo(oMap);
+    // this.m_oOSMBasic.addTo(oMap);
 
     this.initGeoSearchPluginForOpenStreetMap(oMap);
     this.addMousePositionAndScale(oMap);
