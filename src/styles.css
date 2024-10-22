@@ -10,6 +10,7 @@
   /* Semantic Colors */
   --rise-warning: #efba35;
   --rise-danger-text: #f5919f;
+  --rise-text-dim: rgba(255, 255, 255, 0.6);
   --rise-text-bright: rgba(255, 255, 255, 0.9);
   --text-inverse: rgba(0, 0, 0, 0.95);
   --surface-glass-interactive: rgba(0, 0, 0, 0.5);

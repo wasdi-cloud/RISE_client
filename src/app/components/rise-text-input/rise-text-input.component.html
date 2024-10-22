@@ -1,8 +1,21 @@
-
-<div>
-    <label for="{{m_sName}}">{{m_sLocalizationKey | translate}}</label>
-    <input type="{{m_sType}}" class="form-control" name="{{m_sName}}" [(ngModel)]="m_sInputText" (change)="onInputChange()">
-    <div class="form-text" *ngIf="m_bIsValidatorInput && !m_bIsValid">
-        Please ensure the values are the same.
-    </div>
+<div class="input-group">
+  <span
+    *ngIf="m_bHasIcon"
+    class="input-group-text material-symbols-outlined"
+    id="basic-addon1"
+    >{{ m_sIcon }}</span
+  >
+  <!-- <label  for="{{m_sName}}">{{m_sLocalizationKey | translate}}</label> -->
+  <input
+    class="form-control"
+    type="{{ m_sType }}"
+    name="{{ m_sName }}"
+    [class.no-border]="m_bHasIcon"
+    [(ngModel)]="m_sInputText"
+    (change)="onInputChange()"
+    [placeholder]="m_sLocalizationKey | translate"
+  />
+  <div class="form-text" *ngIf="m_bIsValidatorInput && !m_bIsValid">
+    Please ensure the values are the same.
+  </div>
 </div>

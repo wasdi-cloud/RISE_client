@@ -1,0 +1,27 @@
+input,
+span.input-group-text,
+input:focus {
+  background-color: var(--surface-glass-interactive);
+  border: 1px solid var;
+  color: var(--rise-text-bright);
+}
+
+.no-border {
+  border-left: none;
+}
+
+input:focus, input.form-control:focus {
+    outline-width: 0!important;
+}
+
+span.input-group-text {
+  border-right: none;
+}
+
+::placeholder {
+  color: var(--rise-text-dim);
+}
+
+:-ms-input-placeholder {
+  color: var(--rise-text-dim);
+}
