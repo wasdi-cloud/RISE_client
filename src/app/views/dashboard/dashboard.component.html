@@ -1,13 +1,12 @@
-<main>
-  <!-- <rise-toolbar [m_bUserIsSigned]="true"></rise-toolbar> -->
-  <!-- <rise-button [m_sLabel]="'Go To Monitor'" (click)="navigateRoute('monitor')"></rise-button> -->
-  <div class="d-flex flex-row">
+<main class="d-flex flex-column">
+  <rise-toolbar [m_bUserIsSigned]="true"></rise-toolbar>
+  <div class="flex-fill d-flex flex-row">
     <div class="rise-sidebar d-flex flex-column gap-3">
-      <img
+      <!-- <img
         class="align-self-start"
         src="/assets/rise-assets/logo-white-horizontal.svg"
         alt=""
-      />
+      /> -->
       <rise-text-input
         [m_sLocalizationKey]="'DASHBOARD.SEARCH'"
         [m_sIcon]="'search'"
@@ -15,13 +14,13 @@
       ></rise-text-input>
 
       <rise-banner [m_sHeaderKey]="'BANNER.LIVE_SIT'"></rise-banner>
-      <!-- <rise-ongoing-widget
+      <rise-ongoing-widget
         [m_aoOngoingEvent]="m_aoOngoingEvents"
       ></rise-ongoing-widget>
       <rise-affected-widget
         [m_iAffectedPpl]="m_iAffectedPpl"
       ></rise-affected-widget>
-      <rise-alerts-widget [m_aoAlerts]="m_aoAlerts"></rise-alerts-widget> -->
+      <rise-alerts-widget [m_aoAlerts]="m_aoAlerts"></rise-alerts-widget>
     </div>
     <div class="map-container flex-fill">
       <rise-map [m_aoAreas]="m_aoAreas"></rise-map>

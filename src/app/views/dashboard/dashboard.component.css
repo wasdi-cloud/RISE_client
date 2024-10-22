@@ -1,17 +1,16 @@
 div.map-container {
-  height: 100vh;
 }
 
 .rise-sidebar {
-    background-color: rgba(0, 31, 40, 0.8);
-    border-right: 1px solid var(--rise-border-default);
-    backdrop-filter: blur(10px);
-    position: absolute;
-    z-index: 999;
-    padding: 1rem;
-    height: 100%;
-    width: 25%;
+  background-color: rgba(0, 31, 40, 0.8);
+  border-right: 1px solid var(--rise-border-default);
+  backdrop-filter: blur(10px);
+  position: absolute;
+  z-index: 999;
+  padding: 1rem;
+  height: calc(93vh - 2px);
+  width: 25%;
 }
 img {
-    height: 24px;
+  height: 24px;
 }
