@@ -14,6 +14,7 @@
       [m_sLocalizationKey]="'SUBSCRIPTIONS.DESCRIPTION'"
       [(m_sInputText)]="m_oSubInput.description"
     ></rise-text-area-input>
+    <!-- TODO:make rise check box -->
     <div class="d-flex flex-row">
       <div class="">
         {{ "SUBSCRIPTIONS.AREA_TYPE" | translate }}
@@ -69,6 +70,11 @@
       [m_sLabel]="'SUBSCRIPTIONS.TYPE'"
       [m_aoDropdownItems]="m_asSubTypeNames"
       (m_oSelectionChange)="handleSubTypeSelect($event)"
+    ></rise-dropdown>
+    <rise-dropdown
+      [m_sLabel]="'SUBSCRIPTIONS.PAYMENT_TYPE'"
+      [m_aoDropdownItems]="m_asPaymentTypeNames"
+      (m_oSelectionChange)="handlePaymentTypeSelect($event)"
     ></rise-dropdown>
     <rise-dropdown
       [m_sLabel]="'SUBSCRIPTIONS.PLUGINS'"
