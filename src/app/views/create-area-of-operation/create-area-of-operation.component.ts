@@ -232,6 +232,7 @@ export class CreateAreaOfOperationComponent implements OnInit{
 
   cancelCreatingAreaOfOperation() {
     //todo go back to managing area of operations
+    this.m_oRouter.navigateByUrl('/account');
   }
 
   handleTableData(tableData: any[]) {
