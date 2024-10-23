@@ -20,11 +20,12 @@ import {ConfirmDialogComponent} from "../../dialogs/confirm-dialog/confirm-dialo
 import {PluginService} from "../../services/api/plugin.service";
 import {UserOfAreaViewModel} from "../../models/UserOfAreaViewModel";
 import {NotificationsDialogsService} from "../../services/notifications-dialogs.service";
+import {RiseUtils} from "../../shared/RiseUtils";
 
 @Component({
   selector: 'app-create-area-of-operation',
   standalone: true,
-  providers:[
+  providers: [
     RiseSelectAreaComponent
   ],
   imports: [
@@ -40,9 +41,9 @@ import {NotificationsDialogsService} from "../../services/notifications-dialogs.
   templateUrl: './create-area-of-operation.component.html',
   styleUrl: './create-area-of-operation.component.css'
 })
-export class CreateAreaOfOperationComponent implements OnInit{
+export class CreateAreaOfOperationComponent implements OnInit {
 
-  m_asPlugins:{label:string,value:string}[] = [];
+  m_asPlugins: { label: string, value: string }[] = [];
 
   //todo get users from org
   m_aoUserData = [
@@ -53,11 +54,11 @@ export class CreateAreaOfOperationComponent implements OnInit{
 
 
   m_oAreaOfOperation: AreaViewModel;
-  m_asFieldUsers:UserOfAreaViewModel[]=[]
+  m_asFieldUsers: UserOfAreaViewModel[] = []
   m_sAreaOfOperationDescription: string;
   m_sAreaOfOperationName: string;
   m_oAreaInfo = {}
-  m_asPluginsSelected :string[]= []
+  m_asPluginsSelected: string[] = []
   m_aoFieldUsers = []
   m_sAreaOfOperationBBox: string = "";
   m_sMarkerCoordinates: string = "";
@@ -67,30 +68,31 @@ export class CreateAreaOfOperationComponent implements OnInit{
     private m_oDialog: MatDialog,
     private m_oAreaOfOperationService: AreaService,
     private m_oRouter: Router,
-    private m_oRiseSelectAreaComponent:RiseSelectAreaComponent,
-    private m_oPluginService:PluginService,
-    private m_oNotificationService:NotificationsDialogsService,
-    ) {
+    private m_oRiseSelectAreaComponent: RiseSelectAreaComponent,
+    private m_oPluginService: PluginService,
+    private m_oNotificationService: NotificationsDialogsService,
+    private m_oRiseUtils: RiseUtils,
+  ) {
   }
 
   ngOnInit() {
     //todo get users that belong to current user org eithr by direct call or get all users and match with current user org id
     this.m_oPluginService.getPluginsList().subscribe({
-      next:(aoResponse)=>{
+      next: (aoResponse) => {
         for (const aoResponseElement of aoResponse) {
-          if(aoResponseElement!='' && aoResponseElement.name && aoResponseElement.id){
-            this.m_asPlugins.push({label:aoResponseElement.name,value:aoResponseElement.id})
+          if (aoResponseElement != '' && aoResponseElement.name && aoResponseElement.id) {
+            this.m_asPlugins.push({label: aoResponseElement.name, value: aoResponseElement.id})
           }
         }
 
       }
     })
-        this.m_oAreaOfOperationService.getAreaList().subscribe({
-          next:(aoResponse)=>{
-            this.m_aoAreasOfOperations=aoResponse;
-          }
-        })
-    }
+    this.m_oAreaOfOperationService.getAreaList().subscribe({
+      next: (aoResponse) => {
+        this.m_aoAreasOfOperations = aoResponse;
+      }
+    })
+  }
 
   onRowDelete(row: any) {
     this.m_aoUserData = this.m_aoUserData.filter(item => item !== row); // Remove the deleted row
@@ -172,23 +174,31 @@ export class CreateAreaOfOperationComponent implements OnInit{
 
   SaveAreaOfOperation() {
     //todo rise utils
-    if (this.m_sAreaOfOperationDescription === null || this.m_sAreaOfOperationName === null) {
+    if (this.m_oRiseUtils.IsStrNullOrEmpty(this.m_sAreaOfOperationDescription) || this.m_oRiseUtils.IsStrNullOrEmpty(this.m_sAreaOfOperationName)) {
       //todo alert user or make input in red
       return;
     }
+    //todo rise utils
+
     if (this.m_oAreaInfo === null) {
       //todo alert user
       return;
     }
+    //todo rise utils
+
     if (this.m_asPluginsSelected === null || this.m_asPluginsSelected.length == 0) {
       //todo alert user
       return;
     }
+    //todo rise utils
+
     if (this.m_aoFieldUsers === null || this.m_aoFieldUsers.length == 0) {
       //todo alert user
       return;
     }
-    if(this.m_asPluginsSelected.length<1){
+    //todo rise utils
+
+    if (this.m_asPluginsSelected.length < 1) {
       //todo alert user
       return;
     }
@@ -227,7 +237,6 @@ export class CreateAreaOfOperationComponent implements OnInit{
     )
 
 
-
   }
 
   cancelCreatingAreaOfOperation() {
@@ -261,7 +270,7 @@ export class CreateAreaOfOperationComponent implements OnInit{
 
   private checkSameNameAreas(m_oAreaOfOperation: AreaViewModel) {
     for (const area of this.m_aoAreasOfOperations) {
-      if(area.name===m_oAreaOfOperation.name){
+      if (area.name === m_oAreaOfOperation.name) {
         return true;
       }
 
@@ -272,26 +281,25 @@ export class CreateAreaOfOperationComponent implements OnInit{
 
   private checkOverlappingAreasAndSameName(m_oAreaOfOperation: AreaViewModel) {
     // TODO: Switch out Confirm dialog for Confirmation Dialog Service + add localization
-    if(this.checkOverlappingAreas(m_oAreaOfOperation) && this.checkSameNameAreas(m_oAreaOfOperation)){
+    if (this.checkOverlappingAreas(m_oAreaOfOperation) && this.checkSameNameAreas(m_oAreaOfOperation)) {
       //ask user to confirm
       const oDialogRef = this.m_oDialog.open(ConfirmDialogComponent, {
         width: '300px',
-        data:'The area that you have just created is overlapping with another area and also have the same name of an existing area,Do you want to proceed ?'
+        data: 'The area that you have just created is overlapping with another area and also have the same name of an existing area,Do you want to proceed ?'
       });
 
       oDialogRef.afterClosed().subscribe(result => {
         return result;
       });
-    }
-    else if(this.checkSameNameAreas(m_oAreaOfOperation)){
+    } else if (this.checkSameNameAreas(m_oAreaOfOperation)) {
       //ask user to confirm
       const oDialogRef = this.m_oDialog.open(ConfirmDialogComponent, {
         width: '300px',
-        data:'The area that you have just created has the same name of an existing area,Do you want to proceed ?'
+        data: 'The area that you have just created has the same name of an existing area,Do you want to proceed ?'
       });
 
       oDialogRef.afterClosed().subscribe(result => {
-        if(result){
+        if (result) {
           this.m_oAreaOfOperationService.addArea(this.m_oAreaOfOperation).subscribe(
             {
               next: () => {
@@ -308,16 +316,16 @@ export class CreateAreaOfOperationComponent implements OnInit{
               }
             }
           )
-        }else{
+        } else {
           //todo clear everything
           this.resetAreaOfOperationForm()
         }
       });
-    }else if (this.checkOverlappingAreas(m_oAreaOfOperation)){
+    } else if (this.checkOverlappingAreas(m_oAreaOfOperation)) {
       //ask user to confirm
       const oDialogRef = this.m_oDialog.open(ConfirmDialogComponent, {
         width: '300px',
-        data:'The area that you have just created has the same name of an existing area,Do you want to proceed ?'
+        data: 'The area that you have just created has the same name of an existing area,Do you want to proceed ?'
       });
 
       oDialogRef.afterClosed().subscribe(result => {
@@ -327,6 +335,7 @@ export class CreateAreaOfOperationComponent implements OnInit{
     return false;
 
   }
+
   private resetAreaOfOperationForm() {
     // Reset the name and description
     this.m_sAreaOfOperationName = '';
