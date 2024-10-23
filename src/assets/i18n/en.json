@@ -14,7 +14,6 @@
     "LIVE_SIT": "Live Situation",
     "BACK": "Back to Live"
   },
-
   "CREATE_NEW_AREA_OF_OPERATION": {
     "NAME": "Name",
     "DESCRIPTION": "Description",
@@ -35,7 +34,8 @@
     "ERROR_API_WRONG_OTP": "This OPT does not match.",
     "ERROR_API_USER_ALREADY_EXISTS": "A user with this information already exists.",
     "ERROR_API_CONFIRM_EXPIRED": "Confirmation is expired.",
-    "ERROR_API_NO_VALID_SUBSCRIPTION": "You do not have a valid subscription at this time."
+    "ERROR_API_NO_VALID_SUBSCRIPTION": "You do not have a valid subscription at this time.",
+    "ERROR_LAYER_FAILURE": "Could not load layers for this plugin"
   },
   "INVITE_USER": {
     "EMAIL": "Enter the email of the person to invite",
