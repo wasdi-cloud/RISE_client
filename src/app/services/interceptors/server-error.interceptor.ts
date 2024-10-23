@@ -1,39 +1,31 @@
-import { HttpInterceptorFn } from '@angular/common/http';
-import { tap, catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { inject } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
+import {HttpErrorResponse, HttpInterceptorFn} from '@angular/common/http';
+import {catchError, tap} from 'rxjs/operators';
+import {throwError} from 'rxjs';
+import {inject} from '@angular/core';
 import {NotificationsDialogsService} from "../notifications-dialogs.service";
+import {TranslateService} from '@ngx-translate/core';
 
 export const serverErrorInterceptor: HttpInterceptorFn = (req, next) => {
-  const snackbar = inject(MatSnackBar);
-  const m_oNotificationService=inject(NotificationsDialogsService)
+
+  const m_oNotificationService = inject(NotificationsDialogsService);
+  const m_oTranslate = inject(TranslateService);
 
   return next(req).pipe(
     tap((httpEvent) => {
-      // You can process successful responses if needed
+      //process successful responses if needed
     }),
     catchError((error: HttpErrorResponse) => {
-      let errorMessage = 'An unexpected error occurred.';
-
-      // Check if it's a server-side error
-      if (error.error instanceof ErrorEvent) {
-        // Client-side or network error
-        errorMessage = `Error: ${error.error.message}`;
-      } else {
-        // Server-side error
-        errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+      let sErrorMessage = 'An unexpected error occurred.';
+      //TODO: Client-side or network error
+      //TODO: Check if it's a server-side error
+      if (error.error.errorStringCodes[0]) {
+        let translatedMessage = m_oTranslate.instant(error.error.errorStringCodes[0]);
+        sErrorMessage = `Error: ${translatedMessage}`;
       }
-
-
       m_oNotificationService.openInfoDialog(
-        errorMessage,'danger',"Error"
+        sErrorMessage, 'danger', "Error"
       );
-      // // Show the error message using MatSnackBar
-      // snackbar.open(errorMessage, 'Close', {
-      //   duration: 5000, // Duration in milliseconds
-      // });
+
 
       // Re-throw the error so that other interceptors or components can handle it
       return throwError(() => error);
