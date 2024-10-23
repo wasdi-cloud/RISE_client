@@ -22,12 +22,13 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
 import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
 import { SessionInjectorInterceptor } from './services/interceptors/session-injector.interceptor';
+import {serverErrorInterceptor} from "./services/interceptors/server-error.interceptor";
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideClientHydration(),
-    provideHttpClient(withInterceptors([SessionInjectorInterceptor])),
+    provideHttpClient(withInterceptors([SessionInjectorInterceptor,serverErrorInterceptor])),
     BrowserAnimationsModule,
     BrowserModule,
     CommonModule,
