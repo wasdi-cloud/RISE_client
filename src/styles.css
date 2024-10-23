@@ -18,6 +18,25 @@
 
   /* style colors */
   --rise-border-default: rgba(255, 255, 255, 0.1);
+
+  /* WASDI system colours */
+  --darkAccessible: #006526;
+  --wasdiGreen: #009036;
+  --wasdiBlue: #212f45;
+  --wasdiWarn: #fbac00;
+  --wasdiDanger: #ff3d00;
+
+  /* Shade Variants */
+  --wasdiWarn10: #fef5e0;
+  --wasdiDanger10: #ffe7e0;
+  --wasdiGreen10: #e0f1e6;
+  --wasdiBlue10: #e1eafb;
+
+  /* Lighter Shade Variants */
+  --wasdiWarnLight: #fff9eb;
+  --wasdiDangerLight: #fff0eb;
+  --wasdiGreenLight: #ebf7ef;
+  --wasdiBluelight: #f0f5fd;
 }
 
 html,
@@ -39,9 +58,7 @@ main {
 div.widget-container {
   border: 1px solid #000000;
   border-radius: 8px;
-  margin: 10px;
   padding: 1rem;
-  width: 400px;
 }
 
 div.outlet {
