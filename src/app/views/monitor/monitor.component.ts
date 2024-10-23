@@ -179,4 +179,38 @@ export class MonitorComponent implements OnInit {
       this.getLayers(oPlugin, this.m_sAreaId, '');
     }
   }
+
+  getLayerVisibility(bIsVisible, oLayer) {
+    console.log(oLayer);
+    console.log(bIsVisible);
+    let oMap2D = this.m_oMapService.getMap();
+    if (bIsVisible === false) {
+      oMap2D.eachLayer((oInputLayer) => {
+        console.log(oInputLayer.options.layers);
+        if (oLayer.layerId === oInputLayer.options.layers) {
+          oMap2D.removeLayer(oInputLayer);
+        }
+      });
+    } else {
+      this.m_oMapService.addLayerMap2DByServer(
+        oLayer.layerId,
+        oLayer.geoserverUrl
+      );
+    }
+  }
+
+  setOpacity(iValue, sLayerId): void {
+    let iOpacity = iValue;
+    let oMap = this.m_oMapService.getMap();
+    let fPercentage = iOpacity / 100;
+
+    oMap.eachLayer(function (layer) {
+      if (
+        layer.options.layers == 'wasdi:' + sLayerId ||
+        layer.options.layers == sLayerId
+      ) {
+        layer.setOpacity(fPercentage);
+      }
+    });
+  }
 }

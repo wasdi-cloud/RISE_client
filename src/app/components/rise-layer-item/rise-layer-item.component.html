@@ -1,13 +1,40 @@
 <div class="layer-list-item d-flex flex-column gap-2 p-2">
-  <div class="layer-header d-flex flex-row align-items-center justify-content-between">
+  <div
+    class="layer-header d-flex flex-row align-items-center justify-content-between"
+  >
     <div class="d-flex flex-row gap-2">
       <span class="material-symbols-outlined"> {{ m_sIcon }} </span>
-      {{m_oLayer.mapId}}
+      <div class="d-flex flex-column gap-1">
+        <div>
+          {{ m_oLayer.mapId }}
+        </div>
+        <div>
+          {{ m_oLayer.referenceDate | date : "d/M/yy, h:mm a" }}
+        </div>
+      </div>
     </div>
-    <input type="checkbox" name="" id="">
+    <input
+      type="checkbox"
+      name=""
+      id=""
+      [(ngModel)]="m_bShowLayer"
+      (change)="emitVisibility()"
+    />
   </div>
-  <div class="options-container">
-    OPTIONS
+  <div
+    class="options-container d-flex flex-row justify-content-between align-items-center"
+  >
+    <div class="d-flex flex-row gap-3 align-items-center">
+      Opacity
+      <input
+        type="range"
+        name=""
+        id=""
+        [(ngModel)]="m_iOpacity"
+        (change)="emitOpacity()"
+      />
+    </div>
+    {{ m_iOpacity }}%
   </div>
   <!-- <div class="layer-id">{{ m_oLayer.layerId }}</div>
   <div>{{ m_oLayer.pluginId }}</div>
