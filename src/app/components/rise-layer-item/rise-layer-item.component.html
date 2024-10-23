@@ -1,5 +1,15 @@
-<div class="layer-list-item px-1">
-  <div class="layer-id">{{ m_oLayer.layerId }}</div>
+<div class="layer-list-item d-flex flex-column gap-2 p-2">
+  <div class="layer-header d-flex flex-row align-items-center justify-content-between">
+    <div class="d-flex flex-row gap-2">
+      <span class="material-symbols-outlined"> {{ m_sIcon }} </span>
+      {{m_oLayer.mapId}}
+    </div>
+    <input type="checkbox" name="" id="">
+  </div>
+  <div class="options-container">
+    OPTIONS
+  </div>
+  <!-- <div class="layer-id">{{ m_oLayer.layerId }}</div>
   <div>{{ m_oLayer.pluginId }}</div>
-  <div>{{ m_oLayer.referenceDate | date : "HH:mm:ss dd/MM/yyyy" }}</div>
+  <div>{{ m_oLayer.referenceDate | date : "HH:mm:ss dd/MM/yyyy" }}</div> -->
 </div>

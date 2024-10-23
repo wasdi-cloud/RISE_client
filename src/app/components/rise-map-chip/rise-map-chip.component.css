@@ -1,0 +1,23 @@
+.map-chip-container {
+  background-color: var(--rise-teal);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 6px 8px;
+}
+.material-symbols-outlined {
+  font-size: 14px;
+}
+
+.map-chip-container:hover {
+    background-color: var(--rise-teal-600);
+    transition: 400ms;
+}
+
+.active {
+    background-color: var(--rise-teal-800);
+}
+
+.check {
+    font-size: 18px;
+}

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { RiseMapComponent } from '../../components/rise-map/rise-map.component';
 import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
@@ -17,6 +17,8 @@ import { ActivatedRoute } from '@angular/router';
 import { MapAPIService } from '../../services/api/map.service';
 import { MapService } from '../../services/map.service';
 import { LayerService } from '../../services/api/layer.service';
+import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
+import { RiseMapChipComponent } from '../../components/rise-map-chip/rise-map-chip.component';
 
 @Component({
   selector: 'app-monitor',
@@ -24,6 +26,7 @@ import { LayerService } from '../../services/api/layer.service';
   imports: [
     CommonModule,
     RiseButtonComponent,
+    RiseMapChipComponent,
     RiseMapComponent,
     RiseToolbarComponent,
     RiseGlobeComponent,
@@ -62,7 +65,9 @@ export class MonitorComponent implements OnInit {
     private m_oConstantsService: ConstantsService,
     private m_oLayerService: LayerService,
     private m_oMapAPIService: MapAPIService,
-    private m_oMapService: MapService
+    private m_oMapService: MapService,
+    private m_oNotificationService: NotificationsDialogsService,
+    private m_oTranslate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -106,7 +111,7 @@ export class MonitorComponent implements OnInit {
             if (this.m_aoPlugins[0].name === oPlugin.name) {
               this.m_oActivePlugin = this.m_aoPlugins[0];
             }
-            this.getLayers(oPlugin, sAreaId, iAreaDate);
+            // this.getLayers(oPlugin, sAreaId, iAreaDate);
           });
         }
       },
@@ -123,17 +128,20 @@ export class MonitorComponent implements OnInit {
     this.m_oLayerService.findLayer(oPlugin.id, sAreaId, '').subscribe({
       next: (oResponse) => {
         if (oResponse) {
-          oPlugin.layers = oResponse;
-          return oResponse;
-          // this.m_oMapService.addLayerMap2DByServer(
-          //   oResponse.layerId,
-          //   oResponse.geoserverUrl
-          // );
-          // this.m_oMapService.zoomBandImageOnGeoserverBoundingBox(oResponse.geoserverBoundingBox);
+          oPlugin.layers.push(oResponse);
+          this.m_aoLayers.push(oResponse);
+          oPlugin.loaded = true;
+          this.m_oMapService.addLayerMap2DByServer(
+            oResponse.layerId,
+            oResponse.geoserverUrl
+          );
         }
       },
       error: (oError) => {
-        console.log(oError);
+        let sError: string = this.m_oTranslate.instant(
+          'ERROR_MSG.ERROR_LAYER_FAILURE'
+        );
+        this.m_oNotificationService.openInfoDialog(sError, 'error', 'Error');
       },
     });
   }
@@ -152,7 +160,10 @@ export class MonitorComponent implements OnInit {
    * TODO: Add a layer to the map
    */
   addLayerToMap(oLayer) {
-    this.m_oMapService.addLayerMap2DByServer(oLayer.layerId, oLayer.geoserverUrl);
+    this.m_oMapService.addLayerMap2DByServer(
+      oLayer.layerId,
+      oLayer.geoserverUrl
+    );
   }
 
   /**
@@ -162,11 +173,10 @@ export class MonitorComponent implements OnInit {
 
   setActivePlugin(oPlugin) {
     this.m_oActivePlugin = oPlugin;
-    if (oPlugin.layers) {
-      // TODO: Check when multiple layer - may not need to type as Array
-      this.m_aoLayers = [oPlugin.layers];
-    } else {
-      this.m_aoLayers = [];
+
+    if (!oPlugin.layers || oPlugin.layers.length < 1) {
+      oPlugin.layers = []; //Init layers array in plugin to hold it after loading
+      this.getLayers(oPlugin, this.m_sAreaId, '');
     }
   }
 }

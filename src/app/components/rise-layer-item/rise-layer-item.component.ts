@@ -8,6 +8,11 @@ import { Component, Input, OnInit } from '@angular/core';
   templateUrl: './rise-layer-item.component.html',
   styleUrl: './rise-layer-item.component.css',
 })
-export class RiseLayerItemComponent {
+export class RiseLayerItemComponent implements OnInit {
   @Input() m_oLayer: any;
+  m_sIcon: string = 'flood';
+
+  ngOnInit(): void {
+    console.log(this.m_oLayer);
+  }
 }
