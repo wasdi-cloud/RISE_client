@@ -8,7 +8,10 @@
     "SUBSCRIPTIONS": "Subscriptions"
   },
   "AREA_OF_OPERATIONS": {
-    "CREATE_NEW_AREA_OF_OPERATION": "Create new area of operations"
+    "CREATE_NEW_AREA_OF_OPERATION": "Create new area of operations", 
+    "CONFIRM_SAME_AREA": "The area that you have selected overlaps with another area.",
+    "CONFIRM_SAME_NAME": "The area that you have selected shares a name with an already existing area",
+    "CONFIRM": "<bt>Proceed anyways?"
   },
   "BANNER": {
     "LIVE_SIT": "Live Situation",

@@ -49,8 +49,12 @@ export class BuyNewSubscriptionComponent implements OnInit {
   m_asSelectedPlugins: Array<string> = [];
 
   m_iComputedPrice: number = 0;
-  m_asPaymentTypeNames: { name: string; value: string }[] = [];
-  m_asSelectedPaymentType: PaymentType;
+
+  m_aoPaymentTypes: Array<{ name: string; value: string }> = [];
+
+  m_asPaymentTypeNames: Array<string> = [];
+
+  m_oSelectedPaymentType = null;
 
   constructor(
     private m_oConstantsService: ConstantsService,
@@ -64,6 +68,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
     this.getPlugins();
     this.getPaymentTypes();
     this.m_sOrganizationId = this.m_oConstantsService.getOrganization().id;
+    this.m_oNotificationService.openInfoDialog("Success!", "", "Success")
   }
 
   getSubTypes() {
@@ -129,7 +134,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
 
     this.m_oSubscriptionService.buySubscription(this.m_oSubInput).subscribe({
       next: (oResponse) => {
-        console.log(oResponse);
+       
       },
       error: (oError) => {
         console.log(oError);
@@ -142,7 +147,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
     this.m_oSubInput.plugins = this.m_asSelectedPlugins;
     this.m_oSubInput.price = this.m_iComputedPrice;
     this.m_oSubInput.organizationId = this.m_sOrganizationId;
-    this.m_oSubInput.paymentType = this.m_asSelectedPaymentType;
+    this.m_oSubInput.paymentType = this.m_oSelectedPaymentType.value;
   }
 
   getComputedPrice() {
@@ -176,14 +181,24 @@ export class BuyNewSubscriptionComponent implements OnInit {
     this.m_oEmitBack.emit(bInput);
   }
 
-  handlePaymentTypeSelect(paymentTypes: any) {
-    this.m_asSelectedPaymentType = paymentTypes.value.value;
+  handlePaymentTypeSelect(oPaymentType: any) {
+    let sTypeName = oPaymentType.value;
+    console.log(oPaymentType.value);
+    this.m_oSelectedPaymentType = this.m_aoPaymentTypes.find(
+      (oType) => oType.name === sTypeName
+    );
+
+    console.log(this.m_oSelectedPaymentType);
   }
 
   getPaymentTypes() {
-    this.m_asPaymentTypeNames = [
+    this.m_aoPaymentTypes = [
       { name: 'Year', value: 'YEAR' },
       { name: 'Month', value: 'MONTH' },
     ];
+
+    this.m_asPaymentTypeNames = this.m_aoPaymentTypes.map(
+      (oType) => oType.name
+    );
   }
 }

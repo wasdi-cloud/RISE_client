@@ -14,7 +14,6 @@ import { RiseMapComponent } from '../../components/rise-map/rise-map.component';
 import { NgIf } from '@angular/common';
 import { PluginService } from '../../services/api/plugin.service';
 
-import { ConfirmDialogComponent } from '../../dialogs/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateAreaOfOperationComponent } from '../create-area-of-operation/create-area-of-operation.component';
 
@@ -95,17 +94,17 @@ export class AreaOfOperationsComponent implements OnInit {
   onSelectionChange($event: any[]) {}
 
   onAreaDelete(area: any) {
-    const oDialogRef = this.m_oDialog.open(ConfirmDialogComponent, {
-      width: '300px',
-      data: 'Are you Sure you want to delete this Area' + area.name + '?',
-    });
+    // const oDialogRef = this.m_oDialog.open(ConfirmDialogComponent, {
+    //   width: '300px',
+    //   data: 'Are you Sure you want to delete this Area' + area.name + '?',
+    // });
 
-    oDialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        //todo call api service here to delete user
-        console.log(result);
-      }
-    });
+    // oDialogRef.afterClosed().subscribe((result) => {
+    //   if (result) {
+    //     //todo call api service here to delete user
+    //     console.log(result);
+    //   }
+    // });
   }
 
   onFiledUserAdd() {}

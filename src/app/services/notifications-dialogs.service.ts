@@ -21,7 +21,7 @@ export class NotificationsDialogsService {
     sClassName?: string
   ): Observable<boolean> {
     let oDialogRef = this.m_oMatDialog.open(ConfirmationDialogComponent, {
-      height: '200px',
+      minHeight: '200px',
       width: '500px',
       panelClass: sClassName ? sClassName : 'generic',
       data: {
@@ -36,9 +36,9 @@ export class NotificationsDialogsService {
 
   /**
    * Handler to open the alert/information dialog component
-   * @param sMessage 
-   * @param sClassName 
-   * @param sTitle 
+   * @param sMessage
+   * @param sClassName
+   * @param sTitle
    */
   openInfoDialog(sMessage: string, sClassName: string, sTitle: string): void {
     //Set default 4 second timeout to close alert dialog
@@ -46,6 +46,7 @@ export class NotificationsDialogsService {
 
     let oDialogRef = this.m_oMatDialog.open(NotificationDialogComponent, {
       maxWidth: '500px',
+      minWidth: '500px',
       panelClass: sClassName ? sClassName : 'generic',
       data: {
         message: sMessage,

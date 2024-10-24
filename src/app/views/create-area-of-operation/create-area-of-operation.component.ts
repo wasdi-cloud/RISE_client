@@ -14,11 +14,12 @@ import { AreaService } from '../../services/api/area.service';
 import { geojsonToWKT } from '@terraformer/wkt';
 import { BuyNewSubscriptionDialogComponent } from '../../dialogs/buy-new-subscription-dialog/buy-new-subscription-dialog.component';
 import { Router } from '@angular/router';
-import { ConfirmDialogComponent } from '../../dialogs/confirm-dialog/confirm-dialog.component';
+
 import { PluginService } from '../../services/api/plugin.service';
 import { UserOfAreaViewModel } from '../../models/UserOfAreaViewModel';
 import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
 import { RiseUtils } from '../../shared/RiseUtils';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-create-area-of-operation',
@@ -63,13 +64,14 @@ export class CreateAreaOfOperationComponent implements OnInit {
   m_aoAreasOfOperations: AreaViewModel[];
 
   constructor(
-    private m_oDialog: MatDialog,
     private m_oAreaOfOperationService: AreaService,
-    private m_oRouter: Router,
-    private m_oRiseSelectAreaComponent: RiseSelectAreaComponent,
-    private m_oPluginService: PluginService,
+    private m_oDialog: MatDialog,
     private m_oNotificationService: NotificationsDialogsService,
-    private m_oRiseUtils: RiseUtils
+    private m_oPluginService: PluginService,
+    private m_oRiseSelectAreaComponent: RiseSelectAreaComponent,
+    private m_oRiseUtils: RiseUtils,
+    private m_oRouter: Router,
+    private m_oTranslate: TranslateService
   ) {}
 
   ngOnInit() {
@@ -294,57 +296,69 @@ export class CreateAreaOfOperationComponent implements OnInit {
       this.checkOverlappingAreas(m_oAreaOfOperation) &&
       this.checkSameNameAreas(m_oAreaOfOperation)
     ) {
-      //ask user to confirm
-      const oDialogRef = this.m_oDialog.open(ConfirmDialogComponent, {
-        width: '300px',
-        data: 'The area that you have just created is overlapping with another area and also have the same name of an existing area,Do you want to proceed ?',
-      });
+      let sConfirmMsg = `<ul>
+      <li>${this.m_oTranslate.instant(
+        'AREA_OF_OPERATIONS.CONFIRM_SAME_AREA'
+      )}</li>
+      <li>${this.m_oTranslate.instant(
+        'AREA_OF_OPERATIONS.CONFIRM_SAME_NAME'
+      )}</li>
+      </ul>${this.m_oTranslate.instant('AREA_OF_OPERATIONS.CONFIRM')}`;
 
-      oDialogRef.afterClosed().subscribe((result) => {
-        return result;
-      });
+      //ask user to confirm
+      this.m_oNotificationService
+        .openConfirmationDialog(sConfirmMsg, 'alert')
+        .subscribe((bResult) => {
+          return bResult;
+        });
     } else if (this.checkSameNameAreas(m_oAreaOfOperation)) {
       //ask user to confirm
-      const oDialogRef = this.m_oDialog.open(ConfirmDialogComponent, {
-        width: '300px',
-        data: 'The area that you have just created has the same name of an existing area,Do you want to proceed ?',
-      });
+      let sConfirmMsg = `<ul>
+      <li>${this.m_oTranslate.instant(
+        'AREA_OF_OPERATIONS.CONFIRM_SAME_NAME'
+      )}</li>
+      </ul>${this.m_oTranslate.instant('AREA_OF_OPERATIONS.CONFIRM')}`;
 
-      oDialogRef.afterClosed().subscribe((result) => {
-        if (result) {
-          this.m_oAreaOfOperationService
-            .addArea(this.m_oAreaOfOperation)
-            .subscribe({
-              next: () => {
-                console.log('Success');
-              },
-              error: (e) => {
-                // here handle no valid subscription
-
-                if (
-                  e.error.errorStringCodes[0] ===
-                  'ERROR_API_NO_VALID_SUBSCRIPTION'
-                ) {
-                  //open dialog to invite user to buy new subscription
-                  this.inviteUserToBuyNewSubscription();
-                }
-              },
-            });
-        } else {
-          //todo clear everything
-          this.resetAreaOfOperationForm();
-        }
-      });
-    } else if (this.checkOverlappingAreas(m_oAreaOfOperation)) {
       //ask user to confirm
-      const oDialogRef = this.m_oDialog.open(ConfirmDialogComponent, {
-        width: '300px',
-        data: 'The area that you have just created has the same name of an existing area,Do you want to proceed ?',
-      });
+      this.m_oNotificationService
+        .openConfirmationDialog(sConfirmMsg, 'alert')
+        .subscribe((bResult) => {
+          if (bResult) {
+            this.m_oAreaOfOperationService
+              .addArea(this.m_oAreaOfOperation)
+              .subscribe({
+                next: () => {
+                  console.log('Success');
+                },
+                error: (e) => {
+                  // here handle no valid subscription
+                  if (
+                    e.error.errorStringCodes[0] ===
+                    'ERROR_API_NO_VALID_SUBSCRIPTION'
+                  ) {
+                    //open dialog to invite user to buy new subscription
+                    this.inviteUserToBuyNewSubscription();
+                  }
+                },
+              });
+          } else {
+            //todo clear everything
+            this.resetAreaOfOperationForm();
+          }
+        });
+    } else if (this.checkOverlappingAreas(m_oAreaOfOperation)) {
+      let sConfirmMsg = `<ul>
+      <li>${this.m_oTranslate.instant(
+        'AREA_OF_OPERATIONS.CONFIRM_SAME_AREA'
+      )}</li>
+      </ul>${this.m_oTranslate.instant('AREA_OF_OPERATIONS.CONFIRM')}`;
 
-      oDialogRef.afterClosed().subscribe((result) => {
-        return result;
-      });
+      //ask user to confirm
+      this.m_oNotificationService
+        .openConfirmationDialog(sConfirmMsg, 'alert')
+        .subscribe((bResult) => {
+          return bResult;
+        });
     }
     return false;
   }

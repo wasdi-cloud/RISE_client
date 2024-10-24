@@ -51,14 +51,8 @@ export class RiseDropdownComponent {
 
   @Input() m_bIsDisabled?: boolean = false;
 
-  /**
-   * Does the dropdown have a file extension checkbox?
-   */
-  @Input() m_bFileExt: boolean = false;
-
   @Input() m_oDeleteFn?: (args: any, controller: any) => void;
 
-  @Input() m_bShowFileExtension: boolean = false;
   /**
    * Emit the selection to listening parent
    */
@@ -70,6 +64,7 @@ export class RiseDropdownComponent {
    * Emit selection change to listening parent component
    */
   emitSelectionChange(oEvent) {
+    console.log(oEvent)
     this.m_oSelectionChange.emit(oEvent);
   }
 
@@ -93,9 +88,5 @@ export class RiseDropdownComponent {
       }
     }
     return aoNewValues;
-  }
-
-  switchFileExtension(oEvent) {
-    this.m_bShowFileExtension = oEvent.target.checked;
   }
 }
