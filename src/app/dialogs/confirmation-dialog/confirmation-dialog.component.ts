@@ -15,7 +15,7 @@ export class ConfirmationDialogComponent implements OnInit {
   m_sMessage: string = '';
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public m_oData,
+    @Inject(MAT_DIALOG_DATA) public m_oData:any,
     private m_oDialogRef: MatDialogRef<ConfirmationDialogComponent>
   ) {}
 

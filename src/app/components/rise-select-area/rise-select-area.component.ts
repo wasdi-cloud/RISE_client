@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 import {MapService} from "../../services/map.service";
 
@@ -244,6 +244,9 @@ export class RiseSelectAreaComponent implements OnInit, AfterViewInit {
             const targetZoom = Math.min(currentZoom, 13); // Ensure it doesn't zoom too much
             oMap.setView([fLat, fLng], targetZoom);
             this.confirmInsertedArea(null, fRadius, fLat, fLng);
+            setTimeout(() => {
+              window.dispatchEvent(new Event('resize'));
+            }, 100);
             // Remove the click listener after drawing
             oMap.off('click', onMapClick);
             bIsDrawing = false; // Reset the drawing flag

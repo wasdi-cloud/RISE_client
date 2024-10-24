@@ -300,16 +300,16 @@ export class MapService {
     if (this.m_oGeocoderControl != null) {
       const geocoderControl = this.m_oGeocoderControl;
       geocoderControl.addTo(oMap);
-      geocoderControl.on('markgeocode', (event) => {
-        // Remove the existing marker if it exists
-        if (this.m_oGeocoderMarker) {
-          this.m_oRiseMap.removeLayer(this.m_oGeocoderMarker);
-        }
-
-        // Add a new marker based on the geocode result
-        const latlng = event.geocode.center;
-        this.m_oGeocoderMarker = L.marker(latlng,{iconDefault}).addTo(oMap);
-      });
+      // geocoderControl.on('markgeocode', (event) => {
+      //   // Remove the existing marker if it exists
+      //   if (this.m_oGeocoderMarker) {
+      //     this.m_oRiseMap.removeLayer(this.m_oGeocoderMarker);
+      //   }
+      //
+      //   // Add a new marker based on the geocode result
+      //   const latlng = event.geocode.center;
+      //   this.m_oGeocoderMarker = L.marker(latlng,{iconDefault}).addTo(oMap);
+      // });
 
     }
   }
