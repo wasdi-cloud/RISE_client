@@ -174,7 +174,7 @@ export class CreateAreaOfOperationComponent implements OnInit {
 
   SaveAreaOfOperation() {
     //todo rise utils
-    if (this.m_oRiseUtils.IsStrNullOrEmpty(this.m_sAreaOfOperationDescription) || this.m_oRiseUtils.IsStrNullOrEmpty(this.m_sAreaOfOperationName)) {
+    if (this.m_oRiseUtils.isStrNullOrEmpty(this.m_sAreaOfOperationDescription) || this.m_oRiseUtils.isStrNullOrEmpty(this.m_sAreaOfOperationName)) {
       //todo alert user or make input in red
       return;
     }

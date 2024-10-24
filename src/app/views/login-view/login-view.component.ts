@@ -1,18 +1,18 @@
-import {Component} from '@angular/core';
-import {Router} from '@angular/router';
-import {MatDialog} from '@angular/material/dialog';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
-import {AuthService} from '../../services/api/auth.service';
+import { AuthService } from '../../services/api/auth.service';
 
-import {OtpDialogComponent} from '../../dialogs/otp-dialog/otp-dialog.component';
-import {RiseButtonComponent} from '../../components/rise-button/rise-button.component';
-import {RiseTextInputComponent} from '../../components/rise-text-input/rise-text-input.component';
+import { OtpDialogComponent } from '../../dialogs/otp-dialog/otp-dialog.component';
+import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
+import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
 
-import {UserCredentialsViewModel} from '../../models/UserCredentialsViewModel';
-import {RiseToolbarComponent} from '../../components/rise-toolbar/rise-toolbar.component';
-import {NotificationsDialogsService} from "../../services/notifications-dialogs.service";
-import {TranslateService} from "@ngx-translate/core";
-import {RiseUtils} from "../../shared/RiseUtils";
+import { UserCredentialsViewModel } from '../../models/UserCredentialsViewModel';
+import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
+import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
+import { TranslateService } from '@ngx-translate/core';
+import { RiseUtils } from '../../shared/RiseUtils';
 
 @Component({
   selector: 'app-login-view',
@@ -38,9 +38,8 @@ export class LoginViewComponent {
     private m_oAuthService: AuthService,
     private m_oDialog: MatDialog,
     private m_oRouter: Router,
-    private m_oRiseUtils:RiseUtils
-  ) {
-  }
+    private m_oRiseUtils: RiseUtils
+  ) {}
 
   executeLogin() {
     this.m_oAuthService.loginUser(this.m_oUserInput).subscribe({
@@ -55,12 +54,9 @@ export class LoginViewComponent {
       },
       error: (oError) => {
         this.m_oRiseUtils.handleError(oError);
-
       },
     });
   }
-
-
 
   verifyOtp(sOTP) {
     if (sOTP) {
@@ -73,7 +69,6 @@ export class LoginViewComponent {
         },
         error: (oError) => {
           this.m_oRiseUtils.handleError(oError);
-          console.log(oError);
         },
       });
     }
