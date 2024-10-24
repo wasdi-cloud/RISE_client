@@ -16,9 +16,4 @@ export const routes: Routes = [
   { path: 'login', component: LoginViewComponent },
   { path: 'monitor/:aoiId', component: MonitorComponent },
   { path: 'sign-up', component: SignUpComponent },
-  {
-    path: 'create-area-of-operation',
-    component: CreateAreaOfOperationComponent,
-  },
-  { path: 'area-of-operations', component: AreaOfOperationsComponent },
 ];

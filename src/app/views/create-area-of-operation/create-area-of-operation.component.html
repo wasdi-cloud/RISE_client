@@ -1,16 +1,23 @@
-<rise-toolbar [m_bUserIsSigned]="true"></rise-toolbar>
-
-<div class="d-flex flex-row gap-3 px-4">
+<div class="d-flex flex-row gap-3 p-2">
   <!-- Left column -->
   <div class="d-flex flex-column flex-fill gap-5">
-    <rise-text-input [(m_sInputText)]="m_sAreaOfOperationName" [m_sLocalizationKey]="'CREATE_NEW_AREA_OF_OPERATION.NAME'" class="mb-3"></rise-text-input>
-    <rise-text-area-input [(m_sInputText)]="m_sAreaOfOperationDescription" [m_sLocalizationKey]="'CREATE_NEW_AREA_OF_OPERATION.DESCRIPTION'" class="mb-3"></rise-text-area-input>
+    <rise-text-input
+      [(m_sInputText)]="m_sAreaOfOperationName"
+      [m_sLocalizationKey]="'CREATE_NEW_AREA_OF_OPERATION.NAME'"
+      class="mb-3"
+    ></rise-text-input>
+    <rise-text-area-input
+      [(m_sInputText)]="m_sAreaOfOperationDescription"
+      [m_sLocalizationKey]="'CREATE_NEW_AREA_OF_OPERATION.DESCRIPTION'"
+      class="mb-3"
+    ></rise-text-area-input>
 
     <!-- Spacing added with mb-3 for margin bottom -->
     <div class="mb-3">
       <rise-check-box
         [m_aoOptions]="this.m_asPlugins"
-        (m_oSelectionChange)="onSelectionChange($event)">
+        (m_oSelectionChange)="onSelectionChange($event)"
+      >
       </rise-check-box>
     </div>
 
@@ -22,20 +29,32 @@
         [m_aoDataSource]="m_aoUserData"
         (m_oDelete)="onRowDelete($event)"
         (m_oAdd)="onRowAdd()"
-      (m_oTableData)="handleTableData($event)">
+        (m_oTableData)="handleTableData($event)"
+      >
       </rise-crud-table>
     </div>
   </div>
 
   <!-- Right column for the map -->
-  <div class="col-8" >
-    <div style="height: 500px; position: relative;">
-      <rise-select-area (m_oMapInputChange)="onMapInputChange($event)" [m_sMapTitle]="'Define your Area'" class="h-100"></rise-select-area>
+  <div class="col-8">
+    <div style="height: 500px; position: relative">
+      <rise-select-area
+        (m_oMapInputChange)="onMapInputChange($event)"
+        [m_sMapTitle]="'Define your Area'"
+        class="h-100"
+      ></rise-select-area>
     </div>
     <!-- Buttons aligned at the bottom-right -->
-    <div class="position-absolute" style="bottom: 10px; right: 10px;">
-      <rise-button [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.SAVE'" (click)="SaveAreaOfOperation()" class="me-2"></rise-button>
-      <rise-button [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.CANCEL'" (click)="cancelCreatingAreaOfOperation()"></rise-button>
+    <div class="position-absolute" style="bottom: 10px; right: 10px">
+      <rise-button
+        [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.SAVE'"
+        (click)="SaveAreaOfOperation()"
+        class="me-2"
+      ></rise-button>
+      <rise-button
+        [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.CANCEL'"
+        (click)="cancelCreatingAreaOfOperation()"
+      ></rise-button>
     </div>
   </div>
 </div>
