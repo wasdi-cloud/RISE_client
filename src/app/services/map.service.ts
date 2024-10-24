@@ -1,16 +1,16 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
 
-import { AreaViewModel } from '../models/AreaViewModel';
+import {AreaViewModel} from '../models/AreaViewModel';
 
-import { MatDialog } from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 
 import Geocoder from 'leaflet-control-geocoder';
-import { geoJSON, Map, Marker } from 'leaflet';
+import {geoJSON, Map, Marker} from 'leaflet';
 import 'leaflet-draw';
 import 'leaflet-mouse-position';
-import { BehaviorSubject } from 'rxjs';
-import { wktToGeoJSON } from '@terraformer/wkt';
+import {BehaviorSubject} from 'rxjs';
+import {wktToGeoJSON} from '@terraformer/wkt';
 // import L from 'leaflet';
 declare const L: any;
 
@@ -28,9 +28,13 @@ const iconDefault = L.icon({
   shadowSize: [41, 41],
 });
 L.Marker.prototype.options.icon = iconDefault;
-export interface TileLayer {}
+
+export interface TileLayer {
+}
+
 const MIN_ZOOM = 3;
 const MAX_ZOOM = 18;
+
 @Injectable({
   providedIn: 'root',
 })
@@ -88,6 +92,9 @@ export class MapService {
 
   m_oGeocoderControl: Geocoder = new Geocoder();
 
+  m_oGeocoderMarker: L.Marker = null;
+
+
   /**
    * Init options for leaflet-draw
    */
@@ -99,7 +106,7 @@ export class MapService {
       marker: false,
       polyline: true,
       polygon: true,
-      rectangle: { shapeOptions: { color: '#4AFF00' }, showArea: false },
+      rectangle: {shapeOptions: {color: '#4AFF00'}, showArea: false},
     },
     edit: {
       featureGroup: new L.FeatureGroup(),
@@ -119,7 +126,7 @@ export class MapService {
       zoomControl: false,
       zoom: 3,
       // center: latLng(0, 0),
-      edit: { featureGroup: this.m_oDrawnItems },
+      edit: {featureGroup: this.m_oDrawnItems},
       fullscreenControl: true,
       fullscreenControlOptions: {
         position: 'topleft',
@@ -226,7 +233,7 @@ export class MapService {
         'Arcgis Dark gray Map': this.m_oDarkGrayArcGIS,
       },
       null,
-      { position: 'bottomright' }
+      {position: 'bottomright'}
     );
   }
 
@@ -256,7 +263,7 @@ export class MapService {
 
     this.initGeoSearchPluginForOpenStreetMap(oMap);
     this.addMousePositionAndScale(oMap);
-    L.control.zoom({ position: 'bottomright' }).addTo(oMap);
+    L.control.zoom({position: 'bottomright'}).addTo(oMap);
     this.m_oLayersControl.addTo(oMap);
 
     // center map
@@ -287,11 +294,23 @@ export class MapService {
     }
 
     if (this.m_oGeocoderControl == null) {
-      // this.m_oGeocoderControl = L.geocoder();
+      this.m_oGeocoderControl = L.geocoder();
     }
 
     if (this.m_oGeocoderControl != null) {
-      this.m_oGeocoderControl.addTo(oMap);
+      const geocoderControl = this.m_oGeocoderControl;
+      geocoderControl.addTo(oMap);
+      geocoderControl.on('markgeocode', (event) => {
+        // Remove the existing marker if it exists
+        if (this.m_oGeocoderMarker) {
+          this.m_oRiseMap.removeLayer(this.m_oGeocoderMarker);
+        }
+
+        // Add a new marker based on the geocode result
+        const latlng = event.geocode.center;
+        this.m_oGeocoderMarker = L.marker(latlng,{iconDefault}).addTo(oMap);
+      });
+
     }
   }
 
@@ -323,8 +342,11 @@ export class MapService {
    * @param event
    */
   onDrawCreated(event: any) {
-    const { layerType, layer } = event;
-
+    const {layerType, layer} = event;
+    if (this.m_oGeocoderMarker) {
+      this.m_oRiseMap.removeLayer(this.m_oGeocoderMarker);
+      this.m_oGeocoderMarker = null; // Reset the marker reference
+    }
     // For rectangle, calculate area
     if (layerType === 'rectangle') {
       const bounds = layer.getBounds(); // Get the bounds of the rectangle
@@ -467,7 +489,7 @@ export class MapService {
         corner2 = L.latLng(oBounds.miny, oBounds.minx),
         bounds = L.latLngBounds(corner1, corner2);
 
-      this.m_oRiseMap.flyToBounds(bounds, { maxZoom: 8 });
+      this.m_oRiseMap.flyToBounds(bounds, {maxZoom: 8});
     } catch (e) {
       console.log(e);
     }

@@ -243,12 +243,12 @@ export class RiseSelectAreaComponent implements OnInit, AfterViewInit {
             const currentZoom = oMap.getZoom();
             const targetZoom = Math.min(currentZoom, 13); // Ensure it doesn't zoom too much
             oMap.setView([fLat, fLng], targetZoom);
-
+            this.confirmInsertedArea(null, fRadius, fLat, fLng);
             // Remove the click listener after drawing
             oMap.off('click', onMapClick);
             bIsDrawing = false; // Reset the drawing flag
             this.m_bIsAutoDrawCreated = true;
-            this.confirmInsertedArea(null, fRadius, fLat, fLng);
+
             // this.emitCircleButtonAreaEvent(fRadius, fLat, fLng);
           };
 
