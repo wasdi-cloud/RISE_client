@@ -15,6 +15,7 @@
   --text-inverse: rgba(0, 0, 0, 0.95);
   --surface-glass-elevation: rgba(255, 255, 255, 0.04);
   --surface-glass-interactive: rgba(0, 0, 0, 0.5);
+  --surface-glass: rgba(0, 31, 40, 0.1);
 
   /* style colors */
   --rise-border-default: rgba(255, 255, 255, 0.1);

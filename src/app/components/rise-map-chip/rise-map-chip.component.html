@@ -1,1 +1,12 @@
-<p>rise-map-chip works!</p>
+<div
+  class="map-chip-container d-flex flex-row align-items-center gap-2"
+  [class.active]="m_bIsActive"
+>
+  <span class="material-symbols-outlined"> {{ m_sIcon }} </span>
+  <div>
+    {{ m_sTitle }}
+  </div>
+  <span *ngIf="m_bIsActive" class="material-symbols-outlined check">
+    check</span
+  >
+</div>
