@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RiseButtonComponent } from '../rise-button/rise-button.component';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { MapService } from '../../services/map.service';
 
 @Component({
   selector: 'rise-toolbar',
@@ -14,7 +15,9 @@ import { TranslateModule } from '@ngx-translate/core';
 export class RiseToolbarComponent {
   @Input() public m_bUserIsSigned: boolean = false;
 
-  constructor(private m_oRouter: Router) { }
+  constructor(
+    private m_oMapService: MapService,
+    private m_oRouter: Router) { }
 
   /**
    * Getter for user's logged-in/out status'
@@ -28,6 +31,9 @@ export class RiseToolbarComponent {
    * Handle routing on clicks of visible buttons
    */
   public navigateRoute(sLocation: string) {
+    if(sLocation === 'dashboard') {
+      this.m_oMapService.closeWorkspace();
+    }
     this.m_oRouter.navigateByUrl(`/${sLocation}`);
   }
 

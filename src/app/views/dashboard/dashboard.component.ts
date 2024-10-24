@@ -59,6 +59,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.getUsersAOI();
     this.m_oActiveAOI = this.m_oMapService.m_oMarkerSubject$.subscribe(
       (oResponse) => {
+        console.log(oResponse)
         if (oResponse) {
           this.openMonitor(oResponse);
         }

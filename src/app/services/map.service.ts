@@ -14,7 +14,7 @@ import { wktToGeoJSON } from '@terraformer/wkt';
 // import L from 'leaflet';
 declare const L: any;
 
-const iconRetinaUrl = '/assets/marker-icon-2x.png';
+const iconRetinaUrl = '/assets/rise-assets/icon-location-hazard-filled.png';
 const iconUrl = '/assets/marker-icon.png';
 const shadowUrl = '/assets/marker-shadow.png';
 const iconDefault = L.icon({
@@ -471,5 +471,9 @@ export class MapService {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  closeWorkspace() {
+    this.m_oMarkerSubject.next(null);
   }
 }
