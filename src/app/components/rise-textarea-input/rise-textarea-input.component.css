@@ -1,0 +1,23 @@
+textarea,
+textarea:focus {
+  background-color: var(--surface-glass-interactive);
+  border: 1px solid var(--rise-text-dim);
+  color: var(--rise-text-bright);
+}
+
+.no-border {
+  border-left: none;
+}
+
+textarea:focus,
+textarea.form-control:focus {
+  outline-width: 0 !important;
+}
+
+::placeholder {
+  color: var(--rise-text-dim);
+}
+
+:-ms-input-placeholder {
+  color: var(--rise-text-dim);
+}

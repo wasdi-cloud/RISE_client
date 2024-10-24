@@ -4,7 +4,7 @@ import { SubscriptionService } from '../../../../services/api/subscription.servi
 import { SubscriptionViewModel } from '../../../../models/SubscriptionViewModel';
 import { RiseButtonComponent } from '../../../../components/rise-button/rise-button.component';
 import { RiseTextInputComponent } from '../../../../components/rise-text-input/rise-text-input.component';
-import { RiseTextAreaInputComponent } from '../../../../components/rise-textarea-input/rise-text-area-input.component';
+import { RiseTextareaInputComponent } from '../../../../components/rise-textarea-input/rise-textarea-input.component';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { SubscriptionTypeViewModel } from '../../../../models/SubscriptionTypeViewModel';
@@ -16,7 +16,7 @@ import { NotificationsDialogsService } from '../../../../services/notifications-
   imports: [
     RiseButtonComponent,
     RiseTextInputComponent,
-    RiseTextAreaInputComponent,
+    RiseTextareaInputComponent,
     CommonModule,
     TranslateModule,
   ],

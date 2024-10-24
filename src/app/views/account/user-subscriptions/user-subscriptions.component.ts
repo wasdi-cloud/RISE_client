@@ -1,16 +1,19 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { SubscriptionService } from '../../../services/api/subscription.service';
-import { SubscriptionViewModel } from '../../../models/SubscriptionViewModel';
+import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-import { RiseButtonComponent } from '../../../components/rise-button/rise-button.component';
-import { CommonModule, getLocaleDateTimeFormat } from '@angular/common';
-import { RiseTextInputComponent } from '../../../components/rise-text-input/rise-text-input.component';
-import { RiseTextAreaInputComponent } from '../../../components/rise-textarea-input/rise-text-area-input.component';
+
 import { BuyNewSubscriptionComponent } from './buy-new-subscription/buy-new-subscription.component';
-import { ConstantsService } from '../../../services/constants.service';
-import { RiseCrudTableComponent } from '../../../components/rise-crud-table/rise-crud-table.component';
 import { MatDialog } from '@angular/material/dialog';
+import { RiseButtonComponent } from '../../../components/rise-button/rise-button.component';
+import { RiseCrudTableComponent } from '../../../components/rise-crud-table/rise-crud-table.component';
+import { RiseTextInputComponent } from '../../../components/rise-text-input/rise-text-input.component';
+import { RiseTextareaInputComponent } from '../../../components/rise-textarea-input/rise-textarea-input.component';
 import { SubscriptionEditorComponent } from './subscription-editor/subscription-editor.component';
+
+import { ConstantsService } from '../../../services/constants.service';
+import { SubscriptionService } from '../../../services/api/subscription.service';
+
+import { SubscriptionViewModel } from '../../../models/SubscriptionViewModel';
 
 @Component({
   selector: 'user-subscriptions',
@@ -21,7 +24,7 @@ import { SubscriptionEditorComponent } from './subscription-editor/subscription-
     TranslateModule,
     RiseButtonComponent,
     RiseCrudTableComponent,
-    RiseTextAreaInputComponent,
+    RiseTextareaInputComponent,
     RiseTextInputComponent,
   ],
   templateUrl: './user-subscriptions.component.html',
@@ -34,7 +37,6 @@ export class UserSubscriptionsComponent implements OnInit {
 
   m_asTableHeadings: Array<string> = [];
 
-  //
   // For each line RISE show:
   // Subscription Name
   // Subscription Type

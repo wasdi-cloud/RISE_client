@@ -16,6 +16,9 @@
   color: var(--rise-text-dim) !important;
 }
 
+::ng-deep .cdk-overlay-pane {
+  right: -12px !important;
+}
 ::ng-deep
   .cdk-overlay-pane:not(.mat-mdc-select-panel-above)
   div.mat-mdc-select-panel {

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RiseTextAreaInputComponent } from './rise-text-area-input.component';
+import { RiseTextareaInputComponent } from './rise-textarea-input.component';
 
 describe('RiseTextAreaInputComponent', () => {
-  let component: RiseTextAreaInputComponent;
-  let fixture: ComponentFixture<RiseTextAreaInputComponent>;
+  let component: RiseTextareaInputComponent;
+  let fixture: ComponentFixture<RiseTextareaInputComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RiseTextAreaInputComponent]
+      imports: [RiseTextareaInputComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(RiseTextAreaInputComponent);
+    fixture = TestBed.createComponent(RiseTextareaInputComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

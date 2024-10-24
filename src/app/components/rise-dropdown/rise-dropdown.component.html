@@ -1,20 +1,19 @@
 <div class="d-flex flex-column justify-content-between">
- 
   <mat-select
-    [multiple]="m_bIsMultiSelect"
     class="form-control"
-    placeholder="{{ m_sLabel | translate }}"
+    disableOptionCentering="'false'"
     name="dropdown"
+    [multiple]="m_bIsMultiSelect"
+    [placeholder]="m_sLabel | translate"
     (selectionChange)="emitSelectionChange($event)"
     [(value)]="m_aoSelectedItems"
-    disableOptionCentering="'false'"
   >
     <div *ngIf="m_bHasSearch" class="mat-search-container">
       <input
-        type="text"
+        class="mat-select-search"
         name="m_sStyle"
         placeholder="Search..."
-        class="mat-select-search"
+        type="text"
         [(ngModel)]="m_sSearchString"
       />
     </div>
@@ -25,60 +24,12 @@
       <mat-option
         *ngFor="let oItem; in: m_aoDropdownItems | filter : m_sSearchString"
         [value]="oItem"
-        ><span *ngIf="m_bShowFileExtension === false">
-          {{
-            oItem.name
-              ? oItem.name
-              : oItem.workspaceName
-              ? oItem.workspaceName
-              : oItem
-          }}
-        </span>
-        <span *ngIf="m_bShowFileExtension === true">
-          {{ oItem.fileName ? oItem.fileName : oItem.name }}</span
-        >
-        <span
-          *ngIf="oItem.workspaceName"
-          class="material-symbols-outlined"
-          (click)="m_oDeleteFn(oItem, m_oController)"
-        >
-          delete
-        </span></mat-option
       >
+      </mat-option>
     </div>
     <div *ngIf="!m_bHasSearch">
-      <mat-option *ngFor="let oItem of m_aoDropdownItems" [value]="oItem"
-        ><span *ngIf="m_bShowFileExtension === false">
-          {{
-            oItem.name
-              ? oItem.name
-              : oItem.workspaceName
-              ? oItem.workspaceName
-              : oItem
-          }}
-        </span>
-        <span *ngIf="m_bShowFileExtension === true">
-          {{ oItem.fileName ? oItem.fileName : oItem.name }}</span
-        >
-        <span
-          *ngIf="oItem.workspaceName"
-          class="material-symbols-outlined"
-          (click)="m_oDeleteFn(oItem, m_oController)"
-        >
-          delete
-        </span></mat-option
-      >
+      <mat-option *ngFor="let oItem of m_aoDropdownItems" [value]="oItem">{{oItem}}
+      </mat-option>
     </div>
   </mat-select>
-
-  <!-- <div *ngIf="m_bFileExt" class="d-flex flex-row align-items-center gap-1">
-    <input
-      class="wasdi-checkbox"
-      type="checkbox"
-      name="show-file-ext"
-      id=""
-      (click)="switchFileExtension($event)"
-    />
-    <label for="show-file-ext">Show File Extension</label>
-  </div> -->
 </div>

@@ -1,0 +1,16 @@
+<div class="input-group">
+  <textarea
+    [placeholder]="m_sLocalizationKey | translate"
+    name=""
+    id=""
+    class="form-control"
+    [(ngModel)]="m_sInputText"
+    (change)="onInputChange()"
+  ></textarea>
+  <div class="form-text" *ngIf="m_bIsValidatorInput && !m_bIsValid">
+    Please ensure the values are the same.
+  </div>
+</div>
+<!-- <label for="{{m_sName}}">{{m_sLocalizationKey | translate}}</label>
+<textarea  class="form-control no-resize" rows="5"
+           cols="50" name="{{m_sName}}" ></textarea> -->
