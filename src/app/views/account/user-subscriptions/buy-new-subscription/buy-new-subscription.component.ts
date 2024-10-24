@@ -4,7 +4,7 @@ import { SubscriptionTypeViewModel } from '../../../../models/SubscriptionTypeVi
 import { RiseDropdownComponent } from '../../../../components/rise-dropdown/rise-dropdown.component';
 import { RiseButtonComponent } from '../../../../components/rise-button/rise-button.component';
 import { RiseTextInputComponent } from '../../../../components/rise-text-input/rise-text-input.component';
-import { RiseTextAreaInputComponent } from '../../../../components/rise-textarea-input/rise-text-area-input.component';
+import { RiseTextareaInputComponent } from '../../../../components/rise-textarea-input/rise-textarea-input.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { PluginService } from '../../../../services/api/plugin.service';
@@ -12,7 +12,7 @@ import { PluginViewModel } from '../../../../models/PluginViewModel';
 import { NotificationsDialogsService } from '../../../../services/notifications-dialogs.service';
 import { SubscriptionViewModel } from '../../../../models/SubscriptionViewModel';
 import { ConstantsService } from '../../../../services/constants.service';
-import {PaymentType} from "../../../../models/PaymentType";
+import { PaymentType } from '../../../../models/PaymentType';
 
 @Component({
   selector: 'buy-new-subscription',
@@ -22,7 +22,7 @@ import {PaymentType} from "../../../../models/PaymentType";
     TranslateModule,
     RiseButtonComponent,
     RiseTextInputComponent,
-    RiseTextAreaInputComponent,
+    RiseTextareaInputComponent,
     RiseDropdownComponent,
   ],
   templateUrl: './buy-new-subscription.component.html',
@@ -48,9 +48,8 @@ export class BuyNewSubscriptionComponent implements OnInit {
 
   m_asSelectedPlugins: Array<string> = [];
 
-
   m_iComputedPrice: number = 0;
-  m_asPaymentTypeNames: {name:string,value:string}[]=[];
+  m_asPaymentTypeNames: { name: string; value: string }[] = [];
   m_asSelectedPaymentType: PaymentType;
 
   constructor(
@@ -133,7 +132,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
         console.log(oResponse);
       },
       error: (oError) => {
-        console.log(oError)
+        console.log(oError);
       },
     });
   }
@@ -143,7 +142,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
     this.m_oSubInput.plugins = this.m_asSelectedPlugins;
     this.m_oSubInput.price = this.m_iComputedPrice;
     this.m_oSubInput.organizationId = this.m_sOrganizationId;
-    this.m_oSubInput.paymentType=this.m_asSelectedPaymentType;
+    this.m_oSubInput.paymentType = this.m_asSelectedPaymentType;
   }
 
   getComputedPrice() {
@@ -178,11 +177,13 @@ export class BuyNewSubscriptionComponent implements OnInit {
   }
 
   handlePaymentTypeSelect(paymentTypes: any) {
-    this.m_asSelectedPaymentType=paymentTypes.value.value;
+    this.m_asSelectedPaymentType = paymentTypes.value.value;
   }
 
   getPaymentTypes() {
-    this.m_asPaymentTypeNames=[{name:"Year",value:"YEAR"},{name:"Month",value:"MONTH"}];
-
+    this.m_asPaymentTypeNames = [
+      { name: 'Year', value: 'YEAR' },
+      { name: 'Month', value: 'MONTH' },
+    ];
   }
 }

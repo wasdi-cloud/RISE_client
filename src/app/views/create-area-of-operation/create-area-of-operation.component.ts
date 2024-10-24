@@ -5,7 +5,7 @@ import { RiseSelectAreaComponent } from '../../components/rise-select-area/rise-
 import { RiseCrudTableComponent } from '../../components/rise-crud-table/rise-crud-table.component';
 import { RiseMapComponent } from '../../components/rise-map/rise-map.component';
 import { RiseCheckBoxComponent } from '../../components/rise-check-box/rise-check-box.component';
-import { RiseTextAreaInputComponent } from '../../components/rise-textarea-input/rise-text-area-input.component';
+import { RiseTextareaInputComponent } from '../../components/rise-textarea-input/rise-textarea-input.component';
 import { AddRowDialogComponent } from '../../dialogs/add-row-dialog/add-row-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
@@ -31,7 +31,7 @@ import { RiseUtils } from '../../shared/RiseUtils';
     RiseCrudTableComponent,
     RiseMapComponent,
     RiseCheckBoxComponent,
-    RiseTextAreaInputComponent,
+    RiseTextareaInputComponent,
     RiseButtonComponent,
   ],
   templateUrl: './create-area-of-operation.component.html',
@@ -41,7 +41,7 @@ export class CreateAreaOfOperationComponent implements OnInit {
   @Output() m_oEmitCancel: EventEmitter<boolean> = new EventEmitter<boolean>(
     null
   );
-  
+
   m_asPlugins: { label: string; value: string }[] = [];
 
   //todo get users from org

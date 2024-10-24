@@ -8,7 +8,7 @@ import { AreaViewModel } from '../../models/AreaViewModel';
 import { AreaService } from '../../services/api/area.service';
 import { RiseCheckBoxComponent } from '../../components/rise-check-box/rise-check-box.component';
 import { RiseSelectAreaComponent } from '../../components/rise-select-area/rise-select-area.component';
-import { RiseTextAreaInputComponent } from '../../components/rise-textarea-input/rise-text-area-input.component';
+import { RiseTextareaInputComponent } from '../../components/rise-textarea-input/rise-textarea-input.component';
 import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
 import { RiseMapComponent } from '../../components/rise-map/rise-map.component';
 import { NgIf } from '@angular/common';
@@ -29,7 +29,7 @@ import { CreateAreaOfOperationComponent } from '../create-area-of-operation/crea
     RiseCrudTableComponent,
     RiseCheckBoxComponent,
     RiseSelectAreaComponent,
-    RiseTextAreaInputComponent,
+    RiseTextareaInputComponent,
     RiseTextInputComponent,
     RiseMapComponent,
     NgIf,
@@ -56,7 +56,7 @@ export class AreaOfOperationsComponent implements OnInit {
     private m_oAreaService: AreaService,
     private m_oDialog: MatDialog,
     private m_oPluginService: PluginService,
-    private m_oRouter: Router,
+    private m_oRouter: Router
   ) {}
 
   ngOnInit() {
