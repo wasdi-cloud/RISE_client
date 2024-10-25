@@ -119,3 +119,18 @@ div.outlet {
 .rise-checkbox {
   cursor: pointer;
 }
+
+input[type="radio"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-clip: content-box;
+  border: 2px solid var(--rise-text-dim);
+}
+
+input[type="radio"]:checked {
+  background-color: var(--rise-white);
+  padding: 5px;
+  border: 2px solid var(--rise-white);
+}
