@@ -7,7 +7,7 @@ import { RiseCrudTableComponent } from '../../components/rise-crud-table/rise-cr
 import { AreaViewModel } from '../../models/AreaViewModel';
 import { AreaService } from '../../services/api/area.service';
 import { RiseCheckBoxComponent } from '../../components/rise-check-box/rise-check-box.component';
-import { RiseSelectAreaComponent } from '../../components/rise-select-area/rise-select-area.component';
+
 import { RiseTextareaInputComponent } from '../../components/rise-textarea-input/rise-textarea-input.component';
 import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
 import { RiseMapComponent } from '../../components/rise-map/rise-map.component';
@@ -27,7 +27,6 @@ import { CreateAreaOfOperationComponent } from '../create-area-of-operation/crea
     RiseToolbarComponent,
     RiseCrudTableComponent,
     RiseCheckBoxComponent,
-    RiseSelectAreaComponent,
     RiseTextareaInputComponent,
     RiseTextInputComponent,
     RiseMapComponent,

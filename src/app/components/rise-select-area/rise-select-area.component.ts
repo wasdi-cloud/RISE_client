@@ -11,9 +11,9 @@ import {ManualBoundingBoxComponent} from "../../dialogs/manual-bounding-box-dial
 import {RiseButtonComponent} from "../rise-button/rise-button.component";
 import {NotificationsDialogsService} from '../../services/notifications-dialogs.service';
 // import * as L from 'leaflet';
-import 'leaflet-draw'
-
 declare const L: any;
+
+import 'leaflet-draw'
 
 
 @Component({
@@ -53,11 +53,6 @@ export class RiseSelectAreaComponent implements OnInit, AfterViewInit {
   m_oDrawnItems: any;
 
   m_oDrawOptions: any;
-  m_oActiveBaseLayer: any;
-  m_aoDrawnItems: L.FeatureGroup;
-  m_oLastCircle: L.Circle | null = null;
-  m_oLastMarker: L.Marker | null = null;
-  oGeoJsonLayer: L.GeoJSON | null = null;
   m_bIsDrawCreated: boolean = false;
   m_bIsAutoDrawCreated: boolean = false;
   m_bIsImportDrawCreated: boolean = false;
