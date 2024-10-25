@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgForOf } from '@angular/common';
 import { CheckboxInput } from './checkbox-input';
 import { TranslateModule } from '@ngx-translate/core';
@@ -10,15 +10,11 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './rise-checkbox.component.html',
   styleUrl: './rise-checkbox.component.css',
 })
-export class RiseCheckboxComponent implements OnInit {
+export class RiseCheckboxComponent {
   @Input() m_aoOptions: Array<CheckboxInput> = [];
   @Output() m_oSelectionChange = new EventEmitter<Array<any>>();
 
   m_aoSelectedValues: any[] = [];
-
-  ngOnInit() {
-    console.log(this.m_aoOptions);
-  }
 
   // Method to handle checkbox change
   onCheckboxChange(value: any, event: any) {
