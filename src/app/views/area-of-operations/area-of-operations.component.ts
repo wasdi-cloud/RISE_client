@@ -6,7 +6,7 @@ import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar
 import { RiseCrudTableComponent } from '../../components/rise-crud-table/rise-crud-table.component';
 import { AreaViewModel } from '../../models/AreaViewModel';
 import { AreaService } from '../../services/api/area.service';
-import { RiseCheckBoxComponent } from '../../components/rise-check-box/rise-check-box.component';
+
 
 import { RiseTextareaInputComponent } from '../../components/rise-textarea-input/rise-textarea-input.component';
 import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
@@ -16,6 +16,7 @@ import { PluginService } from '../../services/api/plugin.service';
 
 import { MatDialog } from '@angular/material/dialog';
 import { CreateAreaOfOperationComponent } from '../create-area-of-operation/create-area-of-operation.component';
+import {RiseCheckboxComponent} from "../../components/rise-checkbox/rise-checkbox.component";
 
 @Component({
   selector: 'app-area-of-operations',
@@ -26,7 +27,7 @@ import { CreateAreaOfOperationComponent } from '../create-area-of-operation/crea
     TranslateModule,
     RiseToolbarComponent,
     RiseCrudTableComponent,
-    RiseCheckBoxComponent,
+    RiseCheckboxComponent,
     RiseTextareaInputComponent,
     RiseTextInputComponent,
     RiseMapComponent,
