@@ -14,34 +14,29 @@
       [m_sLocalizationKey]="'SUBSCRIPTIONS.DESCRIPTION'"
       [(m_sInputText)]="m_oSubInput.description"
     ></rise-textarea-input>
-    <!-- TODO:make rise check box -->
-    <div class="d-flex flex-row">
-      <div class="">
-        {{ "SUBSCRIPTIONS.AREA_TYPE" | translate }}
-        <div class="radio-options d-flex flex-column">
-          <div class="d-flex flex-row gap-2">
-            <input
-              type="radio"
-              name="area_type"
-              id="long-term"
-              (change)="m_oSubInput.supportsArchive = true"
-            />
-            <label for="long-term">{{
-              "SUBSCRIPTIONS.LONG_TERM" | translate
-            }}</label>
-          </div>
-          <div class="d-flex flex-row gap-2">
-            <input
-              type="radio"
-              name="area_type"
-              id="emergency"
-              (change)="m_oSubInput.supportsArchive = false"
-            />
-            <label for="emergency">{{
-              "SUBSCRIPTIONS.EMERGENCY" | translate
-            }}</label>
-          </div>
-        </div>
+    <div class="">
+      {{ "SUBSCRIPTIONS.AREA_TYPE" | translate }}
+      <div class="radio-options d-flex flex-column">
+        <label for="long-term" class="d-flex flex-row gap-2">
+          <input
+            class="rise-radio"
+            type="radio"
+            name="area_type"
+            id="long-term"
+            (change)="m_oSubInput.supportsArchive = true"
+          />
+          {{ "SUBSCRIPTIONS.LONG_TERM" | translate }}</label
+        >
+
+        <label class="d-flex flex-row gap-2" for="emergency">
+          <input
+            type="radio"
+            name="area_type"
+            id="emergency"
+            (change)="m_oSubInput.supportsArchive = false"
+          />
+          {{ "SUBSCRIPTIONS.EMERGENCY" | translate }}</label
+        >
       </div>
     </div>
     <div class="d-flex flex-row">
@@ -49,18 +44,18 @@
       <div class="">
         {{ "SUBSCRIPTIONS.PAYMENT" | translate }}
         <div class="radio-options d-flex flex-column">
-          <div class="d-flex flex-row gap-2">
+          <label for="credit" class="d-flex flex-row gap-2">
             <input type="radio" name="payment" id="credit" />
-            <label for="credit">{{ "SUBSCRIPTIONS.CREDIT" | translate }}</label>
-          </div>
-          <div class="d-flex flex-row gap-2">
+            {{ "SUBSCRIPTIONS.CREDIT" | translate }}</label
+          >
+          <label class="d-flex flex-row gap-2" for="wire">
             <input type="radio" name="payment" id="wire" />
-            <label for="wire">{{ "SUBSCRIPTIONS.WIRE" | translate }}</label>
-          </div>
-          <div class="d-flex flex-row gap-2">
+            {{ "SUBSCRIPTIONS.WIRE" | translate }}</label
+          >
+          <label class="d-flex flex-row gap-2" for="wire">
             <input type="radio" name="payment" id="wire" />
-            <label for="wire">{{ "SUBSCRIPTIONS.WIRE" | translate }}</label>
-          </div>
+            {{ "SUBSCRIPTIONS.WIRE" | translate }}</label
+          >
         </div>
       </div>
     </div>

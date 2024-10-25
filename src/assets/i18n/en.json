@@ -1,11 +1,14 @@
 {
   "ACCOUNT": {
-    "ORGANIZATION": "Organization",
-    "USER": "User",
+    "AREA_OF_OPERATIONS": "Area Of Operations",
     "MY_ORGANIZATION": "My Organization",
     "MY_USER": "My User",
-    "AREA_OF_OPERATIONS": "Area Of Operations",
-    "SUBSCRIPTIONS": "Subscriptions"
+    "NOT_ACTIVITIES": "Activities",
+    "NOT_MAINTENANCE": "Maintenance",
+    "NOT_NEWSLETTER": "Newsletter",
+    "SUBSCRIPTIONS": "Subscriptions",
+    "ORGANIZATION": "Organization",
+    "USER": "User"
   },
   "AREA_OF_OPERATIONS": {
     "CREATE_NEW_AREA_OF_OPERATION": "Create new area of operations", 

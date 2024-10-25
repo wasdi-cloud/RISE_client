@@ -12,6 +12,7 @@
 .dialog-container.success {
   border: 1px solid #009036 !important;
   background-color: #ebf7ef !important;
+  color: #000000;
 }
 .alert-header {
   color: #000000;

@@ -54,21 +54,10 @@
         </div>
         <div class="d-flex flex-column gap-2 flex-fill">
           <h5>Notifications</h5>
-          <div class="d-flex flex-row align-items-center gap-2">
-            <input type="checkbox" name="" id="" /><label for="newsletter"
-              >Newsletter</label
-            >
-          </div>
-          <div class="d-flex flex-row align-items-center gap-2">
-            <input type="checkbox" name="" id="" /><label for="mintenance"
-              >Maintenance</label
-            >
-          </div>
-          <div class="d-flex flex-row align-items-center gap-2">
-            <input type="checkbox" name="" id="" /><label for="activities"
-              >Activities</label
-            >
-          </div>
+          <rise-checkbox
+            [m_aoOptions]="m_aoNotificationOptions"
+            (m_oSelectionChange)="handleCheckboxChange($event)"
+          ></rise-checkbox>
         </div>
       </div>
     </div>

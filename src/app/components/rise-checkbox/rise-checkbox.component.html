@@ -1,0 +1,12 @@
+<div class="rise-checkbox-container" *ngFor="let option of m_aoOptions">
+  <label class="d-flex flex-row align-items-center gap-2">
+    <input
+      class="rise-checkbox"
+      type="checkbox"
+      [value]="option.value"
+      (change)="onCheckboxChange(option.value, $event)"
+    />
+    <!-- If there is a translate key, it will be translated, if not the label will be shown -->
+    {{ option.label | translate }}
+  </label>
+</div>

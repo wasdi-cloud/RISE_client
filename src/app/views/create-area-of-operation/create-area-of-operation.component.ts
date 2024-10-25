@@ -4,7 +4,7 @@ import { RiseTextInputComponent } from '../../components/rise-text-input/rise-te
 
 import { RiseCrudTableComponent } from '../../components/rise-crud-table/rise-crud-table.component';
 import { RiseMapComponent } from '../../components/rise-map/rise-map.component';
-import { RiseCheckBoxComponent } from '../../components/rise-check-box/rise-check-box.component';
+import { RiseCheckboxComponent } from '../../components/rise-checkbox/rise-checkbox.component';
 import { RiseTextareaInputComponent } from '../../components/rise-textarea-input/rise-textarea-input.component';
 import { AddRowDialogComponent } from '../../dialogs/add-row-dialog/add-row-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -31,7 +31,7 @@ import { TranslateService } from '@ngx-translate/core';
 
     RiseCrudTableComponent,
     RiseMapComponent,
-    RiseCheckBoxComponent,
+    RiseCheckboxComponent,
     RiseTextareaInputComponent,
     RiseButtonComponent,
   ],

@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { RiseButtonComponent } from '../../../components/rise-button/rise-button.component';
-import { RiseCheckBoxComponent } from '../../../components/rise-check-box/rise-check-box.component';
+import { RiseCheckboxComponent } from '../../../components/rise-checkbox/rise-checkbox.component';
 import { RiseDropdownComponent } from '../../../components/rise-dropdown/rise-dropdown.component';
 import { RiseTextInputComponent } from '../../../components/rise-text-input/rise-text-input.component';
 import { UserViewModel } from '../../../models/UserViewModel';
 import { OrganizationsService } from '../../../services/api/organizations.service';
 import { OrganizationViewModel } from '../../../models/OrganizationViewModel';
 import { ConstantsService } from '../../../services/constants.service';
+import { NotificationOptions } from '../../../shared/notification-options/notification-options';
 
 @Component({
   selector: 'user-account',
@@ -19,7 +20,7 @@ import { ConstantsService } from '../../../services/constants.service';
     CommonModule,
     TranslateModule,
     RiseButtonComponent,
-    RiseCheckBoxComponent,
+    RiseCheckboxComponent,
     RiseDropdownComponent,
     RiseTextInputComponent,
   ],
@@ -28,16 +29,18 @@ import { ConstantsService } from '../../../services/constants.service';
 })
 export class UserAccountComponent implements OnInit {
   m_oUser: UserViewModel = {} as UserViewModel;
-
   m_oOrganization: OrganizationViewModel = {} as OrganizationViewModel;
+  m_aoNotificationOptions = NotificationOptions;
   //TODO : UPDATE USER INFORMATION
   constructor(
     private m_oConstantsService: ConstantsService,
-    private m_oOrganizationService: OrganizationsService
+    private m_oOrganizationService: OrganizationsService,
+    private m_oTranslate: TranslateService
   ) {}
 
   ngOnInit(): void {
     this.getUserInfo();
+    this.translateNotifications();
   }
 
   /**
@@ -75,6 +78,21 @@ export class UserAccountComponent implements OnInit {
    * Use case: The user can select the default language to use in RISE: English, French, Spanish, Arabic
    */
   changeLanguage() {}
+
+  translateNotifications() {
+    this.m_aoNotificationOptions = this.m_aoNotificationOptions.map(
+      (oOption) => {
+        return {
+          label: this.m_oTranslate.instant(oOption.label),
+          value: oOption.value,
+        };
+      }
+    );
+  }
+
+  handleCheckboxChange(aoEvent: Array<string>) {
+    console.log(aoEvent);
+  }
 
   // The user can activate or deactivate the RISE mail notification:
   // Newsletter

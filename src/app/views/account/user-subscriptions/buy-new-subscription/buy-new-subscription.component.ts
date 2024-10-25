@@ -68,7 +68,6 @@ export class BuyNewSubscriptionComponent implements OnInit {
     this.getPlugins();
     this.getPaymentTypes();
     this.m_sOrganizationId = this.m_oConstantsService.getOrganization().id;
-    this.m_oNotificationService.openInfoDialog("Success!", "", "Success")
   }
 
   getSubTypes() {
