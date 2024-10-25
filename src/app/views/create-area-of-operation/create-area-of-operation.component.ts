@@ -239,7 +239,7 @@ export class CreateAreaOfOperationComponent implements OnInit {
           'success',
           'Success'
         );
-        this.m_oRouter.navigateByUrl('/area-of-operations');
+        this.m_oRouter.navigateByUrl('/account');
         // this.m_oAreaOfOperationService.addUserToArea(oResponse.id,)
       },
       error: (e) => {
