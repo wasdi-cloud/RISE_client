@@ -104,7 +104,18 @@ div.outlet {
   background: var(--rise-teal-600);
 }
 
-
 .leaflet-marker-icon {
   width: 41px !important;
+}
+
+.rise-checkbox {
+  accent-color: var(--rise-gold);
+  border: 1.5px solid var(--rise-text-dim);
+  border-radius: 2px;
+  height: 20px;
+  width: 20px;
+}
+
+.rise-checkbox {
+  cursor: pointer;
 }

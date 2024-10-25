@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './rise-layer-item.component.html',
   styleUrl: './rise-layer-item.component.css',
 })
-export class RiseLayerItemComponent implements OnInit {
+export class RiseLayerItemComponent {
   @Input() m_oLayer: any;
   m_sIcon: string = 'flood';
   m_bShowLayer = true;
@@ -20,10 +20,7 @@ export class RiseLayerItemComponent implements OnInit {
   @Output() m_oLayerOpacity: EventEmitter<number> = new EventEmitter<number>(
     null
   );
-  
-  ngOnInit(): void {
-    console.log(this.m_oLayer);
-  }
+
 
   emitVisibility() {
     this.m_oLayerVisibility.emit(this.m_bShowLayer);
