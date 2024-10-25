@@ -9,7 +9,7 @@ import Geocoder from 'leaflet-control-geocoder';
 import {geoJSON, Map, Marker} from 'leaflet';
 import 'leaflet-draw';
 import 'leaflet-mouse-position';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable, Subject, tap} from 'rxjs';
 import {wktToGeoJSON} from '@terraformer/wkt';
 import {ManualBoundingBoxComponent} from "../dialogs/manual-bounding-box-dialog/manual-bounding-box.component";
 import {
@@ -118,9 +118,6 @@ export class MapService {
       remove: false,
     },
   };
-  private m_oMarkerSubject = new BehaviorSubject<AreaViewModel>(null);
-
-  m_oMarkerSubject$ = this.m_oMarkerSubject.asObservable();
   m_aoDrawnItems: L.FeatureGroup;
   m_oLastCircle: L.Circle | null = null;
   m_oLastMarker: L.Marker | null = null;
@@ -130,6 +127,10 @@ export class MapService {
   m_bIsImportDrawCreated: boolean = false;
   m_oImportShapeMarker: L.Marker | null = null;
   m_oDrawMarker: L.Marker | null = null;
+  private m_oMarkerSubject = new BehaviorSubject<AreaViewModel>(null);
+  m_oMarkerSubject$ = this.m_oMarkerSubject.asObservable();
+  // Declare a Subject at the class level
+  private circleDrawnSubject = new Subject<{ center: { lat: number; lng: number }; radius: number }>();
 
   constructor(private m_oDialog: MatDialog, private m_oRouter: Router) {
     this.initTilelayer();
@@ -556,6 +557,10 @@ export class MapService {
 
 
   }
+
+
+  // Different ways to draw an area
+
   //Go to position by inserting coords
   addManualBbox(oMap: any) {
     let oController = this;
@@ -618,11 +623,10 @@ export class MapService {
     oMap.addControl(new m_oManualBoxingButton());
   }
 
+  //Handle when the user want to choose a position and let rise draw the minimum area around that point
 
-
-  // Different ways to draw an area
   //Using leaflet drawings
-  onDrawCreated(oEvent,oMap) {
+  onDrawCreated(oEvent, oMap) {
     this.clearPreviousDrawings(oMap);
     this.onDrawCreatedMain(oEvent);
     // this.m_oMapService.onDrawCreated(oEvent);
@@ -631,76 +635,53 @@ export class MapService {
     // this.emitDrawnAreaEvent(oEvent);
   }
 
-  //Handle when the user want to choose a position and let rise draw the minimum area around that point
-  addCircleButton(oMap: any) {
-    let bIsDrawing = false; // Flag to track if drawing is active
+// Modify the addCircleButton method
+  addCircleButton(oMap: L.Map): Observable<{ center: { lat: number; lng: number }; radius: number }> {
+    let bIsDrawing = false;
 
     const circleButton = L.Control.extend({
-      options: {
-        position: "topright"
-      },
-      onAdd: (oMap) => {
-        let oContainer = L.DomUtil.create("div", "leaflet-bar leaflet-control");
+      options: {position: "topright"},
+      onAdd: () => {
+        const oContainer = L.DomUtil.create("div", "leaflet-bar leaflet-control");
 
-        // Create the button for drawing the circle
-        let oDrawButton = L.DomUtil.create('a', 'leaflet-control-button', oContainer);
-        oDrawButton.style.cursor = 'pointer'; // Change the cursor to pointer on hover
+        const oDrawButton = L.DomUtil.create('a', 'leaflet-control-button', oContainer);
         oDrawButton.innerHTML = '<span class="material-symbols-outlined">adjust</span>';
         oDrawButton.title = "Draw Circle";
 
-        // Create the cancel button
-        let oCancelButton = L.DomUtil.create('a', 'leaflet-control-button', oContainer);
-        oCancelButton.style.cursor = 'pointer';
+        const oCancelButton = L.DomUtil.create('a', 'leaflet-control-button', oContainer);
         oCancelButton.innerHTML = '<span class="material-symbols-outlined">cancel</span>';
         oCancelButton.title = "Cancel Drawing";
-        // Disable map interaction on button click
+
         L.DomEvent.disableClickPropagation(oDrawButton);
         L.DomEvent.disableClickPropagation(oCancelButton);
 
-        // Add the draw button click listener
         L.DomEvent.on(oDrawButton, 'click', () => {
-          // Clear previous layers and reset drawing
           this.clearPreviousDrawings(oMap);
-
-
-          // Set drawing flag to true
           bIsDrawing = true;
 
-          // Function to create the circle on map click
-          const onMapClick = (e: any) => {
+          const onMapClick = (e: L.LeafletMouseEvent) => {
             if (!bIsDrawing) return;
 
             const fLat = e.latlng.lat;
             const fLng = e.latlng.lng;
             const fRadius = 500000; // Set the radius of the circle (in meters)
 
-            // Add the new circle to the map
             this.m_oLastCircle = L.circle([fLat, fLng], {radius: fRadius}).addTo(oMap);
             this.m_oLastMarker = L.marker([fLat, fLng]).addTo(oMap);
+            setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
 
-            // Set view to the clicked location without zooming too much
-            const currentZoom = oMap.getZoom();
-            const targetZoom = Math.min(currentZoom, 13); // Ensure it doesn't zoom too much
-            oMap.setView([fLat, fLng], targetZoom);
-            // this.confirmInsertedArea(null, fRadius, fLat, fLng);
-            setTimeout(() => {
-              window.dispatchEvent(new Event('resize'));
-            }, 100);
-            // Remove the click listener after drawing
+            // Emit the circle data through the Subject
+            this.circleDrawnSubject.next({center: {lat: fLat, lng: fLng}, radius: fRadius});
+            // Don't complete the Subject here to allow future emissions
+
             oMap.off('click', onMapClick);
-            bIsDrawing = false; // Reset the drawing flag
-            this.m_bIsAutoDrawCreated = true;
-
-            // this.emitCircleButtonAreaEvent(fRadius, fLat, fLng);
+            bIsDrawing = false;
           };
 
-          // Activate the map click listener for drawing the circle and adding the marker
           oMap.on('click', onMapClick);
         });
 
-        // Add the cancel button click listener
         L.DomEvent.on(oCancelButton, 'click', () => {
-
           if (this.m_oLastCircle) {
             oMap.removeLayer(this.m_oLastCircle);
             this.m_oLastCircle = null; // Reset reference
@@ -709,56 +690,30 @@ export class MapService {
             oMap.removeLayer(this.m_oLastMarker);
             this.m_oLastMarker = null; // Reset reference
           }
-          // Stop listening for clicks and reset the flag
           bIsDrawing = false;
-          // Emit null to reset the shape
-          // this.m_oMapInputChange.emit(null);
-          oMap.off('click'); // Remove all click listeners to stop drawing
+          oMap.off('click');
         });
 
         return oContainer;
       },
-      onRemove: function (map) {
-      },
     });
 
-    // Add the control to the map
     oMap.addControl(new circleButton());
+
+    // Return the Subject as an Observable to subscribe in the component
+    return this.circleDrawnSubject.asObservable();
   }
 
+
   //Import shape file
-  openImportDialog(oMap): void {
-    let oDialog = this.m_oDialog.open(ImportShapeFileStationDialogComponent, {
-      height: '425px',
-      width: '660px',
-    })
-    // Declare a variable to hold the GeoJSON layer
-
-    oDialog.afterClosed().subscribe(oResult => {
-      if (oResult) {
-        // Check if the map is defined
-        if (oMap) {
-          this.clearPreviousDrawings(oMap);
-          // Add GeoJSON to the map
-          this.oGeoJsonLayer = L.geoJSON(oResult, {
-            style: function (feature) {
-              return {color: "#ff7800", weight: 2}; // Customize the style
-            },
-            onEachFeature: function (feature, layer) {
-              layer.bindPopup(`<b>Feature:</b> ${feature.properties.name || 'No Name'}`);
-            }
-          }).addTo(oMap);
-
-          // Optionally, fit the map view to the bounds of the added GeoJSON layer
-          oMap.fitBounds(this.oGeoJsonLayer.getBounds());
-          this.m_bIsImportDrawCreated = true;
-          // this.confirmInsertedArea(null, null, null, null, oResult);
-          // Emit the shape information from the GeoJSON
-          // this.emitGeoJSONShapeInfo(oResult);
-        } else {
-          console.error('Map is not initialized.');
-        }
-      }
-    });
+  openImportDialog(oMap: L.Map): Observable<any> {
+    let oDialog = this.m_oDialog.open(ImportShapeFileStationDialogComponent, {height: '425px', width: '660px'});
+    return oDialog.afterClosed().pipe(
+      tap(oResult => {
+        this.clearPreviousDrawings(oMap);
+        this.oGeoJsonLayer = L.geoJSON(oResult).addTo(oMap);
+        oMap.fitBounds(this.oGeoJsonLayer.getBounds());
+      })
+    );
   }
 }

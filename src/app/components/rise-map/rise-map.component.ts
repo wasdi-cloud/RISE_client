@@ -1,25 +1,17 @@
-import {
-  AfterViewInit,
-  Component, EventEmitter,
-  Input,
-  OnChanges,
-  OnInit, Output,
-  SimpleChanges,
-} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges,} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
-import { MapService } from '../../services/map.service';
-import { RiseTimebarComponent } from '../rise-timebar/rise-timebar.component';
+import {MapService} from '../../services/map.service';
+import {RiseTimebarComponent} from '../rise-timebar/rise-timebar.component';
+import 'leaflet-draw';
+import {LeafletModule} from '@bluehalo/ngx-leaflet';
+import {LeafletDrawModule} from '@asymmetrik/ngx-leaflet-draw';
+import {AreaViewModel} from '../../models/AreaViewModel';
+import {NotificationsDialogsService} from "../../services/notifications-dialogs.service";
+import {RiseButtonComponent} from "../rise-button/rise-button.component";
 
 // import * as L from 'leaflet';
 declare const L: any;
-
-import 'leaflet-draw';
-import { LeafletModule } from '@bluehalo/ngx-leaflet';
-import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
-import { AreaViewModel } from '../../models/AreaViewModel';
-import {NotificationsDialogsService} from "../../services/notifications-dialogs.service";
-import {RiseButtonComponent} from "../rise-button/rise-button.component";
 
 @Component({
   selector: 'rise-map',
@@ -37,7 +29,7 @@ import {RiseButtonComponent} from "../rise-button/rise-button.component";
 export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() m_aoAreas: Array<AreaViewModel> = [];
   @Input() m_sMapTitle: string = "default";
-  @Input() m_bIsSelectingArea:boolean=false;
+  @Input() m_bIsSelectingArea: boolean = false;
   @Output() m_oMapInputChange = new EventEmitter;
 
 
@@ -55,19 +47,22 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   m_bIsImportDrawCreated: boolean = false;
   m_oImportShapeMarker: L.Marker | null = null;
   m_oDrawMarker: L.Marker | null = null;
-  constructor(private m_oMapService: MapService,private m_oNotificationService:NotificationsDialogsService) {
+
+  constructor(private m_oMapService: MapService, private m_oNotificationService: NotificationsDialogsService) {
     this.m_oMapOptions = this.m_oMapService.m_oOptions;
     this.m_oDrawOptions = this.m_oMapService.m_oDrawOptions;
     this.m_oDrawnItems = this.m_oMapService.m_oDrawnItems;
     this.m_oDrawOptions.edit.featureGroup = this.m_oDrawnItems;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void {
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(!this.m_bIsSelectingArea){
+    if (!this.m_bIsSelectingArea) {
       for (let oArea of this.m_aoAreas) {
         this.m_oMapService.addMarker(oArea, this.m_oMap);
       }
@@ -77,7 +72,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
 
   onMapReady(oMap) {
     this.m_oMap = oMap;
-    if(this.m_bIsSelectingArea){
+    if (this.m_bIsSelectingArea) {
       this.m_oMapService.clearPreviousDrawings(oMap);
     }
     this.m_oMapService.setMap(this.m_oMap);
@@ -94,11 +89,11 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     this.m_oMapService.addMousePositionAndScale(oMap);
     this.m_oMapService.m_oLayersControl.addTo(oMap);
     this.m_oMapService.initGeoSearchPluginForOpenStreetMap(oMap);
-    if(!this.m_bIsSelectingArea){
+    if (!this.m_bIsSelectingArea) {
       for (let oArea of this.m_aoAreas) {
         this.m_oMapService.addMarker(oArea, oMap);
       }
-    }else{
+    } else {
       this.addManualBbox(oMap);
       this.addCircleButton(oMap);
     }
@@ -106,21 +101,24 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
 
-
   //Import shape file
-  //todo confirmation + emit
-  openImportDialog(): void {
-    this.m_oMapService.openImportDialog(this.m_oMap);
+  openImportDialog() {
+    this.m_oMapService.openImportDialog(this.m_oMap).subscribe(oResult => {
+      this.confirmInsertedArea(null, null, null, null, oResult);
+    });
   }
-  //todo add confirmation and emit
-  addCircleButton(oMap: any) {
-    this.m_oMapService.addCircleButton(oMap);
+  addCircleButton(oMap: L.Map): void {
+    this.m_oMapService.addCircleButton(oMap).subscribe(circleData => {
+      const {center, radius} = circleData;
+      this.confirmInsertedArea(null, radius, center.lat, center.lng);
+    });
   }
 
 //Go to position by inserting coords
   addManualBbox(oMap: any) {
     this.m_oMapService.addManualBbox(oMap)
   }
+
   // Different ways to draw an area
   //Using leaflet drawings
   onDrawCreated(oEvent) {
@@ -128,6 +126,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     this.confirmInsertedArea(oEvent);
     this.emitDrawnAreaEvent(oEvent);
   }
+
   //Confirm inserted area
   confirmInsertedArea(oEvent?: any, fRadius?: number, fLat?: number, fLng?: number, geoJson?: any) {
     let sMessage: string = "Please confirm your input"
@@ -147,6 +146,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       }
     });
   }
+
   // Function to calculate the centroid of a polygon
   calculateCentroid(points: Array<{ lat: number, lng: number }>): { lat: number, lng: number } {
     let latSum = 0;
@@ -164,6 +164,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       lng: lngSum / numPoints
     };
   }
+
 //Emitting the area to the parent component
   private emitDrawnAreaEvent(oEvent) {
     let iSelectedArea = 0;
