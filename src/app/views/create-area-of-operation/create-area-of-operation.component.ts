@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
 import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
-import { RiseSelectAreaComponent } from '../../components/rise-select-area/rise-select-area.component';
+
 import { RiseCrudTableComponent } from '../../components/rise-crud-table/rise-crud-table.component';
 import { RiseMapComponent } from '../../components/rise-map/rise-map.component';
 import { RiseCheckBoxComponent } from '../../components/rise-check-box/rise-check-box.component';
@@ -24,11 +24,11 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-create-area-of-operation',
   standalone: true,
-  providers: [RiseSelectAreaComponent],
+  providers: [],
   imports: [
     RiseToolbarComponent,
     RiseTextInputComponent,
-    RiseSelectAreaComponent,
+
     RiseCrudTableComponent,
     RiseMapComponent,
     RiseCheckBoxComponent,
@@ -68,7 +68,6 @@ export class CreateAreaOfOperationComponent implements OnInit {
     private m_oDialog: MatDialog,
     private m_oNotificationService: NotificationsDialogsService,
     private m_oPluginService: PluginService,
-    private m_oRiseSelectAreaComponent: RiseSelectAreaComponent,
     private m_oRiseUtils: RiseUtils,
     private m_oRouter: Router,
     private m_oTranslate: TranslateService
@@ -379,6 +378,6 @@ export class CreateAreaOfOperationComponent implements OnInit {
     // Reset the users in the table
     this.m_aoFieldUsers = [];
 
-    this.m_oRiseSelectAreaComponent.clearPreviousDrawings();
+    // this.m_oRiseSelectAreaComponent.clearPreviousDrawings();
   }
 }
