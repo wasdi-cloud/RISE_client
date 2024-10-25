@@ -257,11 +257,17 @@ export class MapService {
   setDrawnItems() {
     this.m_oDrawnItems = new L.FeatureGroup();
   }
-
+  /**
+   * Initialize Wasdi Map
+   * @param sMapDiv
+   */
   initWasdiMap(sMapDiv: string): void {
     this.m_oRiseMap = this.initMap(sMapDiv);
   }
-
+  /**
+   * Initialize Map
+   * @param sMapDiv
+   */
   initMap(sMapDiv: string) {
     // Create the Map Object
     let oMap: L.Map = L.map(sMapDiv, {
@@ -352,48 +358,10 @@ export class MapService {
   }
 
   /**
-   * Handler function for drawing rectangles/polygons/etc on map - Creates bounding box to string
-   * @param event
+   * Calculate Area of a rectangle
+   * @param southWest
+   * @param northEast
    */
-  onDrawCreatedMain(event: any) {
-    const {layerType, layer} = event;
-    if (this.m_oGeocoderMarker) {
-      this.m_oRiseMap.removeLayer(this.m_oGeocoderMarker);
-      this.m_oGeocoderMarker = null; // Reset the marker reference
-    }
-    // For rectangle, calculate area
-    if (layerType === 'rectangle') {
-      const bounds = layer.getBounds(); // Get the bounds of the rectangle
-      const southWest = bounds.getSouthWest();
-      const northEast = bounds.getNorthEast();
-      const area = this.calculateRectangleArea(southWest, northEast);
-      // alert(`Rectangle Area: ${area.toFixed(2)} square kilometers`);
-    }
-
-    // For polyline, calculate total distance
-    if (layerType === 'polyline') {
-      const latlngs = layer.getLatLngs();
-      const totalDistance = this.calculateDistance(latlngs);
-      // alert(`Total distance: ${totalDistance.toFixed(2)} kilometers`);
-    }
-
-    // For polygon, calculate area
-    if (layerType === 'polygon') {
-      const latlngs = layer.getLatLngs()[0]; // Use the first array of latlngs
-      const area = L.GeometryUtil.geodesicArea(latlngs); // Area in square meters
-      // alert(`Polygon Area: ${(area / 1000000).toFixed(2)} square kilometers`);
-    }
-
-    // For circle, calculate area
-    if (layerType === 'circle') {
-      const radius = layer.getRadius(); // Radius in meters
-      const area = Math.PI * Math.pow(radius, 2); // Area of the circle (πr²)
-      // alert(`Circle Area: ${(area / 1000000).toFixed(2)} square kilometers`);
-    }
-
-    this.m_oDrawnItems.addLayer(layer);
-  }
-
   calculateRectangleArea(southWest: L.LatLng, northEast: L.LatLng): number {
     const width = southWest.distanceTo(
       new L.LatLng(southWest.lat, northEast.lng)
@@ -404,7 +372,10 @@ export class MapService {
     const area = (width * height) / 1000000; // Convert area from square meters to square kilometers
     return area;
   }
-
+  /**
+   * Calculate Distance
+   * @param latlngs
+   */
   calculateDistance(latlngs: L.LatLng[]): number {
     let totalDistance = 0;
     for (let i = 0; i < latlngs.length - 1; i++) {
@@ -412,7 +383,11 @@ export class MapService {
     }
     return totalDistance / 1000;
   }
-
+  /**
+   * Add Marker
+   * @param oArea
+   * @param oMap
+   */
   addMarker(oArea: AreaViewModel, oMap: Map): Marker {
     let asCoordinates = this.convertPointLatLng(oArea)._northEast;
     if (asCoordinates) {
@@ -439,13 +414,19 @@ export class MapService {
     }
     return null;
   }
-
+  /**
+   * Fly to Monitor Bounds
+   * @param sBbox
+   */
   flyToMonitorBounds(sBbox: string) {
     let boundingBox: any = wktToGeoJSON(sBbox.slice(0, -1));
     boundingBox = geoJSON(boundingBox).getBounds();
     this.m_oRiseMap.fitBounds(boundingBox);
   }
-
+  /**
+   * Convert Point from WKT to Lat,Lng
+   * @param oArea
+   */
   convertPointLatLng(oArea) {
     if (oArea.markerCoordinates) {
       let aoCoordinates: any = wktToGeoJSON(oArea.markerCoordinates);
@@ -454,7 +435,11 @@ export class MapService {
     }
     return null;
   }
-
+  /**
+   * Add Layer Map 2D By Server
+   * @param sLayerId
+   * @param sServer
+   */
   addLayerMap2DByServer(sLayerId: string, sServer: string) {
     if (!sLayerId) {
       return false;
@@ -485,7 +470,10 @@ export class MapService {
 
     return true;
   }
-
+  /**
+   * zoom B and Image On Geoserver Bounding Box
+   * @param geoserverBoundingBox
+   */
   zoomBandImageOnGeoserverBoundingBox(geoserverBoundingBox) {
     try {
       if (!geoserverBoundingBox) {
@@ -508,11 +496,16 @@ export class MapService {
       console.log(e);
     }
   }
-
+  /**
+   * Close workspace
+   */
   closeWorkspace() {
     this.m_oMarkerSubject.next(null);
   }
-
+  /**
+   * Clear all drawing on map
+   * @param oMap
+   */
   clearPreviousDrawings(oMap) {
     this.m_bIsDrawCreated = false;
     this.m_bIsAutoDrawCreated = false;
@@ -552,16 +545,11 @@ export class MapService {
       oMap.removeLayer(this.oGeoJsonLayer);
       this.oGeoJsonLayer = null;  // Reset reference
     }
-
-    // Log and remove all layers except the base map layer
-
-
   }
-
-
-  // Different ways to draw an area
-
-  //Go to position by inserting coords
+  /**
+   * Go to a position by inserting coords
+   * @param oMap
+   */
   addManualBbox(oMap: any) {
     let oController = this;
     const m_oManualBoxingButton = L.Control.extend({
@@ -622,20 +610,55 @@ export class MapService {
     })
     oMap.addControl(new m_oManualBoxingButton());
   }
-
-  //Handle when the user want to choose a position and let rise draw the minimum area around that point
-
-  //Using leaflet drawings
+  /**
+   * Handler function for drawing rectangles/polygons/etc on map - Creates bounding box to string
+   * @param oEvent
+   * @param oMap
+   */
   onDrawCreated(oEvent, oMap) {
     this.clearPreviousDrawings(oMap);
-    this.onDrawCreatedMain(oEvent);
-    // this.m_oMapService.onDrawCreated(oEvent);
-    this.m_bIsDrawCreated = true;
-    // this.confirmInsertedArea(oEvent);
-    // this.emitDrawnAreaEvent(oEvent);
-  }
+    const {layerType, layer} = oEvent;
+    if (this.m_oGeocoderMarker) {
+      this.m_oRiseMap.removeLayer(this.m_oGeocoderMarker);
+      this.m_oGeocoderMarker = null; // Reset the marker reference
+    }
+    // For rectangle, calculate area
+    if (layerType === 'rectangle') {
+      const bounds = layer.getBounds(); // Get the bounds of the rectangle
+      const southWest = bounds.getSouthWest();
+      const northEast = bounds.getNorthEast();
+      const area = this.calculateRectangleArea(southWest, northEast);
+      // alert(`Rectangle Area: ${area.toFixed(2)} square kilometers`);
+    }
 
-// Modify the addCircleButton method
+    // For polyline, calculate total distance
+    if (layerType === 'polyline') {
+      const latlngs = layer.getLatLngs();
+      const totalDistance = this.calculateDistance(latlngs);
+      // alert(`Total distance: ${totalDistance.toFixed(2)} kilometers`);
+    }
+
+    // For polygon, calculate area
+    if (layerType === 'polygon') {
+      const latlngs = layer.getLatLngs()[0]; // Use the first array of latlngs
+      const area = L.GeometryUtil.geodesicArea(latlngs); // Area in square meters
+      // alert(`Polygon Area: ${(area / 1000000).toFixed(2)} square kilometers`);
+    }
+
+    // For circle, calculate area
+    if (layerType === 'circle') {
+      const radius = layer.getRadius(); // Radius in meters
+      const area = Math.PI * Math.pow(radius, 2); // Area of the circle (πr²)
+      // alert(`Circle Area: ${(area / 1000000).toFixed(2)} square kilometers`);
+    }
+
+    this.m_oDrawnItems.addLayer(layer);
+    this.m_bIsDrawCreated = true;
+  }
+  /**
+   * Select a point in map and rise draw a circle with minimum radius
+   * @param oMap
+   */
   addCircleButton(oMap: L.Map): Observable<{ center: { lat: number; lng: number }; radius: number }> {
     let bIsDrawing = false;
 
@@ -703,9 +726,10 @@ export class MapService {
     // Return the Subject as an Observable to subscribe in the component
     return this.circleDrawnSubject.asObservable();
   }
-
-
-  //Import shape file
+  /**
+   * Import shape file
+   * @param oMap
+   */
   openImportDialog(oMap: L.Map): Observable<any> {
     let oDialog = this.m_oDialog.open(ImportShapeFileStationDialogComponent, {height: '425px', width: '660px'});
     return oDialog.afterClosed().pipe(
