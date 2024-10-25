@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RiseCheckBoxComponent } from './rise-check-box.component';
+import { RiseCheckboxComponent } from './rise-checkbox.component';
 
 describe('RiseCheckBoxComponent', () => {
-  let component: RiseCheckBoxComponent;
-  let fixture: ComponentFixture<RiseCheckBoxComponent>;
+  let component: RiseCheckboxComponent;
+  let fixture: ComponentFixture<RiseCheckboxComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RiseCheckBoxComponent]
-    })
-    .compileComponents();
-    
-    fixture = TestBed.createComponent(RiseCheckBoxComponent);
+      imports: [RiseCheckboxComponent],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(RiseCheckboxComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

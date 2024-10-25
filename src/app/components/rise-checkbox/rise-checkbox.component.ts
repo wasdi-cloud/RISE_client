@@ -2,15 +2,15 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {NgForOf} from "@angular/common";
 
 @Component({
-  selector: 'rise-check-box',
+  selector: 'rise-checkbox',
   standalone: true,
   imports: [
     NgForOf
   ],
-  templateUrl: './rise-check-box.component.html',
-  styleUrl: './rise-check-box.component.css'
+  templateUrl: './rise-checkbox.component.html',
+  styleUrl: './rise-checkbox.component.css'
 })
-export class RiseCheckBoxComponent {
+export class RiseCheckboxComponent {
   @Input() m_aoOptions: {label:string,value:string}[] = []; // Input for checkbox options
   @Output() m_oSelectionChange = new EventEmitter<any[]>(); // Output for selected values
 

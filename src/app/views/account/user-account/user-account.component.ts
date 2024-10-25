@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { RiseButtonComponent } from '../../../components/rise-button/rise-button.component';
-import { RiseCheckBoxComponent } from '../../../components/rise-check-box/rise-check-box.component';
+import { RiseCheckboxComponent } from '../../../components/rise-checkbox/rise-checkbox.component';
 import { RiseDropdownComponent } from '../../../components/rise-dropdown/rise-dropdown.component';
 import { RiseTextInputComponent } from '../../../components/rise-text-input/rise-text-input.component';
 import { UserViewModel } from '../../../models/UserViewModel';
@@ -19,7 +19,7 @@ import { ConstantsService } from '../../../services/constants.service';
     CommonModule,
     TranslateModule,
     RiseButtonComponent,
-    RiseCheckBoxComponent,
+    RiseCheckboxComponent,
     RiseDropdownComponent,
     RiseTextInputComponent,
   ],
