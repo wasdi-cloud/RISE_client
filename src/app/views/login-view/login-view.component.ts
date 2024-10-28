@@ -11,8 +11,9 @@ import { RiseTextInputComponent } from '../../components/rise-text-input/rise-te
 import { UserCredentialsViewModel } from '../../models/UserCredentialsViewModel';
 import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
 import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { RiseUtils } from '../../shared/RiseUtils';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-login-view',
@@ -21,6 +22,8 @@ import { RiseUtils } from '../../shared/RiseUtils';
     RiseToolbarComponent,
     RiseButtonComponent,
     RiseTextInputComponent,
+    TranslateModule,
+    NgIf,
     OtpDialogComponent,
   ],
   templateUrl: './login-view.component.html',
@@ -32,13 +35,20 @@ export class LoginViewComponent {
     password: '',
   };
 
-  private m_oOTPVerifyVM: any = {};
+  public m_bShowOtp: boolean = false;
+
+  public m_sErrorInput: string = '';
+
+  public m_bValidOtp: boolean = true;
+
+  public m_oOTPVerifyVM: any = {};
 
   constructor(
     private m_oAuthService: AuthService,
     private m_oDialog: MatDialog,
     private m_oRouter: Router,
-    private m_oRiseUtils: RiseUtils
+    private m_oRiseUtils: RiseUtils,
+    private m_oTranslate: TranslateService
   ) {}
 
   executeLogin() {
@@ -46,32 +56,37 @@ export class LoginViewComponent {
       next: (oResponse) => {
         if (oResponse) {
           this.m_oOTPVerifyVM = oResponse;
-          let oDialogRef = this.m_oDialog.open(OtpDialogComponent);
-          oDialogRef.afterClosed().subscribe((sResult) => {
-            this.verifyOtp(sResult);
-          });
+          this.m_bShowOtp = true;
         }
       },
       error: (oError) => {
-        this.m_oRiseUtils.handleError(oError);
+        this.invalidOtp(oError.error.errorStringCodes[0]);
       },
     });
   }
 
-  verifyOtp(sOTP) {
-    if (sOTP) {
-      this.m_oOTPVerifyVM.userProvidedCode = sOTP;
-      this.m_oAuthService.verifyOTP(this.m_oOTPVerifyVM).subscribe({
-        next: (oResponse) => {
-          if (oResponse.status === 200) {
-            this.verifyLogin();
-          }
-        },
-        error: (oError) => {
-          this.m_oRiseUtils.handleError(oError);
-        },
-      });
-    }
+  backToLogin() {
+    this.m_bShowOtp = false;
+  }
+
+  verifyOtp() {
+    this.m_oAuthService.verifyOTP(this.m_oOTPVerifyVM).subscribe({
+      next: (oResponse) => {
+        if (oResponse.status === 200) {
+          this.verifyLogin();
+        }
+      },
+      error: (oError) => {
+        console.log(oError);
+        this.invalidOtp(oError.error.errorStringCodes[0]);
+        // this.m_oRiseUtils.handleError(oError);
+      },
+    });
+  }
+
+  invalidOtp(sErrorStringCode) {
+    this.m_sErrorInput = 'ERROR_MSG.' + sErrorStringCode;
+    this.m_bValidOtp = false;
   }
 
   verifyLogin() {

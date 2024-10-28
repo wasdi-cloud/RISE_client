@@ -15,7 +15,11 @@
     (change)="onInputChange()"
     [placeholder]="m_sLocalizationKey | translate"
   />
-  <div class="form-text" *ngIf="m_bIsValidatorInput && !m_bIsValid">
-    Please ensure the values are the same.
-  </div>
+</div>
+<div
+  class="invalid-input d-flex flex-row p-1 gap-1 mt-2"
+  *ngIf="m_bIsValidatorInput && !m_bIsValid"
+>
+  <span class="material-symbols-outlined"> info </span>
+  {{ m_sErrorText | translate }}
 </div>

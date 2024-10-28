@@ -37,7 +37,7 @@
     "ERROR_API_MAIL_ALREADY_EXISTS": "This email is already in use",
     "ERROR_API_MISSING_ACCEPT_TERMS_AND_PRIVACY": "Please accept the Terms and Conditions as well as RISE's Privacy Policy",
     "ERROR_API_WRONG_USER_OR_PASSWORD": "Either the entered username or password is incorrect",
-    "ERROR_API_WRONG_OTP": "This OPT does not match.",
+    "ERROR_API_WRONG_OTP": "This one time password does not match the one sent to the email above.",
     "ERROR_API_USER_ALREADY_EXISTS": "A user with this information already exists.",
     "ERROR_API_CONFIRM_EXPIRED": "Confirmation is expired.",
     "ERROR_API_NO_VALID_SUBSCRIPTION": "You do not have a valid subscription at this time.",
