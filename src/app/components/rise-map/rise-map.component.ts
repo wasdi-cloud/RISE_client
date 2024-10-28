@@ -49,7 +49,10 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   m_oDrawMarker: L.Marker | null = null;
 
   constructor(private m_oMapService: MapService, private m_oNotificationService: NotificationsDialogsService) {
+    this.m_oMapService.initTilelayer();
+    this.m_oMapService.setMapOptions();
     this.m_oMapOptions = this.m_oMapService.m_oOptions;
+
     this.m_oDrawOptions = this.m_oMapService.m_oDrawOptions;
     this.m_oDrawnItems = this.m_oMapService.m_oDrawnItems;
     this.m_oDrawOptions.edit.featureGroup = this.m_oDrawnItems;
@@ -72,20 +75,19 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
 
   onMapReady(oMap) {
     this.m_oMap = oMap;
+    this.m_oMapService.setMap(this.m_oMap);
+
     if (this.m_bIsSelectingArea) {
       this.m_oMapService.clearPreviousDrawings(oMap);
     }
-    this.m_oMapService.setMap(this.m_oMap);
 
     let southWest = L.latLng(0, 0);
     let northEast = L.latLng(0, 0);
 
     let oBoundaries = L.latLngBounds(southWest, northEast);
-
     oMap.fitBounds(oBoundaries);
     oMap.setZoom(3);
-    oMap.addLayer(this.m_oMapService.m_oOSMBasic);
-
+    this.m_oMapService.setActiveLayer(oMap, this.m_oMapService.m_oDarkGrayArcGIS);
     this.m_oMapService.addMousePositionAndScale(oMap);
     this.m_oMapService.m_oLayersControl.addTo(oMap);
     this.m_oMapService.initGeoSearchPluginForOpenStreetMap(oMap);
@@ -98,6 +100,11 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       this.addCircleButton(oMap);
     }
 
+
+    oMap.on('baselayerchange', (e) => {
+      console.log('base layer changed');
+      this.m_oMapService.setActiveLayer(oMap, e.layer);
+    });
   }
 
 
@@ -107,6 +114,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       this.confirmInsertedArea(null, null, null, null, oResult);
     });
   }
+
   addCircleButton(oMap: L.Map): void {
     this.m_oMapService.addCircleButton(oMap).subscribe(circleData => {
       const {center, radius} = circleData;
