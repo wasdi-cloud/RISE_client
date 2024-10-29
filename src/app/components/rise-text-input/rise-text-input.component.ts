@@ -27,9 +27,15 @@ export class RiseTextInputComponent {
 
   @Input() m_sInputText: string;
 
+  @Input() m_sErrorText?: string = 'The input was not valid';
+
   @Input() m_bHasIcon: boolean = false;
 
   @Input() m_sIcon: string = 'search';
+
+  @Input() m_bHasTitle?: boolean = false;
+
+  @Input() m_bRequired?: boolean = false;
 
   @Output() m_sInputTextChange: EventEmitter<string> =
     new EventEmitter<string>();

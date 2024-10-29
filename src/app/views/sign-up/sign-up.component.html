@@ -1,105 +1,223 @@
-<main>
+<main class="d-flex flex-column">
   <rise-toolbar></rise-toolbar>
-  <div class="d-flex flex-column align-items-center">
-    <h1>{{ "REGISTER.HEADER" | translate }}</h1>
-    <div class="d-flex flex-row gap-4">
-      <div>
+  <div
+    class="outlet-container flex-fill d-flex flex-column align-items-center justify-content-center"
+  >
+    <div class="hero-img"></div>
+    <div
+      *ngIf="m_sCurrentPg === 'username'"
+      class="login-container pg-1 d-flex flex-column gap-3"
+    >
+      <h2 class="space-mono-regular">Create a RISE account</h2>
+      <div class="d-flex flex-column gap-1">
         <rise-text-input
-          [m_sLocalizationKey]="'REGISTER.USER_ID'"
-          [(m_sInputText)]="m_oUserInfoInput.userId"
+          [m_sLocalizationKey]="'REGISTER.EMAIL'"
+          [m_bRequired]="true"
+          [m_bHasTitle]="true"
+          [(m_sInputText)]="m_oEmailInputs.email"
+          [m_bIsValid]="validateEmail() && m_bEmailIsValid"
+        ></rise-text-input>
+        <rise-text-input
+          [m_sLocalizationKey]="'REGISTER.CONFIRM_EMAIL'"
+          [m_bRequired]="true"
+          [m_bHasTitle]="true"
+          [(m_sInputText)]="m_oEmailInputs.confirmEmail"
+          [m_sErrorText]="m_sEmilError"
+          [m_bIsValidatorInput]="true"
+          [m_bIsValid]="validateEmail() && m_bEmailIsValid"
         ></rise-text-input>
         <rise-text-input
           [m_sLocalizationKey]="'REGISTER.PASSWORD'"
+          [m_bRequired]="true"
+          [m_bHasTitle]="true"
           [m_sType]="'password'"
           [(m_sInputText)]="m_oPasswordInputs.password"
-          [m_bIsValidatorInput]="true"
-          [m_bIsValid]="
-            validatePassword(
-              m_oPasswordInputs.password,
-              m_oPasswordInputs.confirmPw
-            )
-          "
+          [m_bIsValid]="validatePassword()"
         ></rise-text-input>
         <rise-text-input
           [m_sLocalizationKey]="'REGISTER.CONFIRM_PW'"
+          [m_bRequired]="true"
+          [m_bHasTitle]="true"
           [m_sType]="'password'"
-          [(m_sInputText)]="m_oPasswordInputs.confirmPw"
           [m_bIsValidatorInput]="true"
-          [m_bIsValid]="
-            validatePassword(
-              m_oPasswordInputs.password,
-              m_oPasswordInputs.confirmPw
-            )
-          "
+          [m_sErrorText]="m_sPasswordError"
+          [(m_sInputText)]="m_oPasswordInputs.confirmPw"
+          [m_bIsValid]="validatePassword()"
         ></rise-text-input>
+      </div>
+      <div class="d-flex flex-column gap-1">
+        <rise-button
+          [m_sLabel]="'Next'"
+          [m_sRole]="'primary'"
+          (click)="checkInputs('personal')"
+        ></rise-button>
+        <p>
+          By creating an account you agree to the
+          <a href="">Terms and Conditions</a> and
+          <a href="">Privacy Policy</a> of RISE.
+        </p>
+      </div>
+    </div>
+    <div
+      *ngIf="m_sCurrentPg === 'personal'"
+      class="login-container pg-2 d-flex flex-column gap-3"
+    >
+      <h2 class="space-mono-regular">Enter your Personal Information</h2>
+      <div class="d-flex flex-column gap-1">
         <rise-text-input
           [m_sLocalizationKey]="'REGISTER.NAME'"
+          [m_bHasTitle]="true"
           [(m_sInputText)]="m_oUserInfoInput.name"
+          [m_bIsValid]="m_bPersonalValid"
         ></rise-text-input>
         <rise-text-input
           [m_sLocalizationKey]="'REGISTER.SURNAME'"
+          [m_bHasTitle]="true"
           [(m_sInputText)]="m_oUserInfoInput.surname"
+          [m_bIsValid]="m_bPersonalValid"
         ></rise-text-input>
         <rise-text-input
           [m_sLocalizationKey]="'REGISTER.MOBILE'"
+          [m_bHasTitle]="true"
           [(m_sInputText)]="m_oUserInfoInput.mobile"
+          [m_bIsValid]="m_bPersonalValid"
+          [m_bIsValidatorInput]="true"
+          [m_sErrorText]="m_sPersonalError"
         ></rise-text-input>
       </div>
-      <div class="d-flex flex-column gap-2">
-        <div class="org-info-container">
-          <rise-text-input
-            [m_sLocalizationKey]="'REGISTER.EMAIL'"
-            [(m_sInputText)]="m_oEmailInputs.email"
-            [m_bIsValidatorInput]="true"
-            [m_bIsValid]="
-              validateEmail(m_oEmailInputs.email, m_oEmailInputs.confirmEmail)
-            "
-          ></rise-text-input>
-          <rise-text-input
-            [m_sLocalizationKey]="'REGISTER.CONFIRM_EMAIL'"
-            [(m_sInputText)]="m_oEmailInputs.confirmEmail"
-            [m_bIsValidatorInput]="true"
-            [m_bIsValid]="
-              validateEmail(m_oEmailInputs.email, m_oEmailInputs.confirmEmail)
-            "
-          ></rise-text-input>
+      <div class="d-flex flex-column gap-1">
+        <rise-button
+          [m_sLabel]="'Next'"
+          [m_sRole]="'primary'"
+          (click)="checkInputs('organization')"
+        ></rise-button>
+        <rise-button
+          [m_sLabel]="'Previous'"
+          [m_sRole]="'regular'"
+          (click)="setPage('username')"
+        ></rise-button>
+        <p>
+          By creating an account you agree to the
+          <a href="">Terms and Conditions</a> and
+          <a href="">Privacy Policy</a> of RISE.
+        </p>
+      </div>
+    </div>
+    <div
+      *ngIf="m_sCurrentPg === 'organization'"
+      class="login-container pg-3 d-flex flex-column gap-3"
+    >
+      <h2 class="space-mono-regular">Enter your Organization's Information</h2>
+      <div class="d-flex flex-column">
+        <div class="d-flex flex-column gap-2">
           <rise-text-input
             [m_sLocalizationKey]="'REGISTER.ORG_NAME'"
+            [m_bIsValid]="m_bOrgIsValid"
             [(m_sInputText)]="m_oOrgInfoInput.name"
+            [m_sErrorText]="m_sOrgError"
+            [m_bIsValidatorInput]="true"
           ></rise-text-input>
           <rise-dropdown
             [m_sLabel]="'REGISTER.ORG_TYPE'"
             [m_aoDropdownItems]="m_aoOrganizationTypes"
+            [m_bIsValid]="m_bOrgIsValid"
             (m_oSelectionChange)="handleSelection($event)"
           ></rise-dropdown>
         </div>
-        <div class="org-address-info">
-          <div class="d-flex flex-row gap-2">
-            <rise-text-input
-              [m_sLocalizationKey]="'Street Address'"
-              [(m_sInputText)]="m_oOrgInfoInput.street"
-            ></rise-text-input>
+        <div class="org-address-info my-2">
+          <rise-text-input
+            [m_sLocalizationKey]="'Street Address'"
+            [m_bIsValid]="m_bOrgIsValid"
+            [(m_sInputText)]="m_oOrgInfoInput.street"
+          ></rise-text-input>
+          <rise-text-input
+            [m_sLocalizationKey]="'Country'"
+            [m_bIsValid]="m_bOrgIsValid"
+            [(m_sInputText)]="m_oOrgInfoInput.country"
+          ></rise-text-input>
+          <div class="d-flex flex-row gap-1">
             <rise-text-input
               [m_sLocalizationKey]="'Street Number'"
+              [m_bIsValid]="m_bOrgIsValid"
               [(m_sInputText)]="m_oOrgInfoInput.number"
             ></rise-text-input>
             <rise-text-input
               [m_sLocalizationKey]="'Postal Code'"
+              [m_bIsValid]="m_bOrgIsValid"
               [(m_sInputText)]="m_oOrgInfoInput.postalCode"
             ></rise-text-input>
           </div>
-          <div class="d-flex flex-row gap-2">
+          <div class="d-flex flex-row gap-1">
             <rise-text-input
               [m_sLocalizationKey]="'City'"
+              [m_bIsValid]="m_bOrgIsValid"
               [(m_sInputText)]="m_oOrgInfoInput.city"
             ></rise-text-input>
             <rise-text-input
               [m_sLocalizationKey]="'Phone Number'"
+              [m_bIsValid]="m_bOrgIsValid"
               [(m_sInputText)]="m_oOrgInfoInput.phone"
             ></rise-text-input>
           </div>
         </div>
       </div>
+      <div class="d-flex flex-column gap-1">
+        <rise-button
+          [m_sLabel]="'Next'"
+          [m_sRole]="'primary'"
+          (click)="checkInputs('userId')"
+        ></rise-button>
+        <rise-button
+          [m_sLabel]="'Previous'"
+          [m_sRole]="'regular'"
+          (click)="setPage('personal')"
+        ></rise-button>
+        <p>
+          By creating an account you agree to the
+          <a href="">Terms and Conditions</a> and
+          <a href="">Privacy Policy</a> of RISE.
+        </p>
+      </div>
+    </div>
+    <div
+      *ngIf="m_sCurrentPg === 'userId'"
+      class="login-container pg-3 d-flex flex-column gap-3"
+    >
+      <h2 class="space-mono-regular">Choose a Username</h2>
+      <rise-text-input
+        [m_sLocalizationKey]="'REGISTER.USER_ID'"
+        [(m_sInputText)]="m_oUserInfoInput.userId"
+        [m_bIsValid]="m_bUsernameIsValid"
+        [m_sErrorText]="m_sUsernameError"
+        [m_bIsValidatorInput]="true"
+      ></rise-text-input>
+      <div class="d-flex flex-column gap-1">
+        <rise-button
+          [m_sLabel]="'Submit'"
+          [m_sRole]="'primary'"
+          (click)="register()"
+        ></rise-button>
+        <rise-button
+          [m_sLabel]="'Previous'"
+          [m_sRole]="'regular'"
+          (click)="setPage('organization')"
+        ></rise-button>
+        <p>
+          By creating an account you agree to the
+          <a href="">Terms and Conditions</a> and
+          <a href="">Privacy Policy</a> of RISE.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="d-flex flex-column align-items-center"> -->
+  <!-- <h1>{{ "REGISTER.HEADER" | translate }}</h1>
+    <div class="d-flex flex-row gap-4">
+      <div>
+       
+     
+      
     </div>
     <div class="d-flex flex-row gap-2">
       <input
@@ -122,5 +240,5 @@
     </div>
 
     <rise-button [m_sLabel]="'Register'" (click)="register()"></rise-button>
-  </div>
+  </div> -->
 </main>

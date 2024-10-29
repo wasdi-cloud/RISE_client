@@ -51,6 +51,8 @@ export class RiseDropdownComponent {
 
   @Input() m_bIsDisabled?: boolean = false;
 
+  @Input() m_bIsValid?: boolean = true;
+
   @Input() m_oDeleteFn?: (args: any, controller: any) => void;
 
   /**
@@ -64,7 +66,7 @@ export class RiseDropdownComponent {
    * Emit selection change to listening parent component
    */
   emitSelectionChange(oEvent) {
-    console.log(oEvent)
+    console.log(oEvent);
     this.m_oSelectionChange.emit(oEvent);
   }
 

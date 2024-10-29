@@ -6,6 +6,11 @@ input:focus {
   color: var(--rise-text-bright);
 }
 
+.form-label {
+  color: var(--rise-text-dim);
+  line-height: 12px;
+}
+
 .no-border {
   border-left: none;
 }
@@ -25,4 +30,15 @@ span.input-group-text {
 
 :-ms-input-placeholder {
   color: var(--rise-text-dim);
+}
+
+input.invalid {
+  border: 1px solid var(--rise-danger-text);
+}
+
+.invalid-feedback {
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--rise-text-dim);
+  border-radius: 6px;
+  color: var(--rise-danger-text);
 }

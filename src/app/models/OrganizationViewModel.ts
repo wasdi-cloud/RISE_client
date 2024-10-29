@@ -1,12 +1,10 @@
-import {RiseViewModel} from "./RiseViewModel";
-
+import { RiseViewModel } from './RiseViewModel';
 
 export class OrganizationViewModel extends RiseViewModel {
-
   /**
    * Default Id
    */
-  id: string;
+  id?: string;
 
   name: string;
 
@@ -24,8 +22,7 @@ export class OrganizationViewModel extends RiseViewModel {
 
   postalCode: string;
 
-  vat: string;
+  vat?: string;
 
-  creationDate: number;
-
+  creationDate?: number;
 }

@@ -1,12 +1,10 @@
-import {RiseViewModel} from "./RiseViewModel";
-
+import { RiseViewModel } from './RiseViewModel';
 
 export class OTPViewModel extends RiseViewModel {
-
   /**
    * Default Id
    */
- id:string;
+  id: string;
 
   userId: string;
 
@@ -15,5 +13,4 @@ export class OTPViewModel extends RiseViewModel {
   userProvidedCode: string;
 
   verifyAPI: string;
-
 }

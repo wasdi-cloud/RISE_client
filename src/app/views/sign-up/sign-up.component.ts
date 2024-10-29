@@ -14,6 +14,8 @@ import { OrganizationViewModel } from '../../models/OrganizationViewModel';
 import { RegisterViewModel } from '../../models/RegisterViewModel';
 import { UserViewModel } from '../../models/UserViewModel';
 import { OrganizationTypes } from '../../shared/organization-types';
+import { NgIf } from '@angular/common';
+import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -25,6 +27,7 @@ import { OrganizationTypes } from '../../shared/organization-types';
     RiseTextInputComponent,
     RiseToolbarComponent,
     TranslateModule,
+    NgIf,
   ],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.css',
@@ -34,9 +37,20 @@ export class SignUpComponent {
 
   m_oUserInfoInput: UserViewModel = {} as UserViewModel;
 
-  m_oOrgInfoInput: OrganizationViewModel = {} as OrganizationViewModel;
+  m_oOrgInfoInput: OrganizationViewModel = {
+    city: '',
+    country: '',
+    name: '',
+    number: '',
+    phone: '',
+    postalCode: '',
+    street: '',
+    type: '',
+  };
 
   m_aoOrganizationTypes: Array<any> = OrganizationTypes;
+
+  m_sCurrentPg: string = 'username';
 
   m_oEmailInputs = {
     email: '',
@@ -48,19 +62,41 @@ export class SignUpComponent {
     confirmPw: '',
   };
 
+  m_sEmilError: string = '';
+  m_sPasswordError: string = '';
+  m_sOrgError: string = '';
+  m_sPersonalError: string = '';
+  m_bPersonalValid: boolean = true;
+
+  m_bEmailIsValid: boolean = true;
+
+  m_bOrgIsValid: boolean = true;
+
+  m_bUsernameIsValid: boolean = true;
+
+  m_sUsernameError: string = '';
+
   constructor(
     private m_oAuthService: AuthService,
+    private m_oNotificationService: NotificationsDialogsService,
     private m_oTranslate: TranslateService
   ) {}
 
-  validatePassword(sPassword: string, sConfirmPw: string): boolean {
+  validatePassword(): boolean {
+    let sPassword = this.m_oPasswordInputs.password;
+    let sConfirmPw = this.m_oPasswordInputs.confirmPw;
     // Minimum 8 Characters, at least one letter, one number, and one special character:
     const passwordRegex =
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}/;
     // If the user has modified both inputs
     if (sPassword && sConfirmPw) {
       //If the first password doesn't pass regex OR the pw's don't match
-      if (!passwordRegex.test(sPassword) || sPassword !== sConfirmPw) {
+      if (!passwordRegex.test(sPassword)) {
+        this.m_sPasswordError =
+          'A good password contains: <br><ul><li>Minimum 8 characters</li><li>At least 1 letter</li><li>At least one number</li><li>At least one special character</li></ul>';
+        return false;
+      } else if (sPassword !== sConfirmPw) {
+        this.m_sPasswordError = 'The passwords do not match';
         return false;
       } else {
         return true;
@@ -71,13 +107,17 @@ export class SignUpComponent {
     }
   }
 
-  validateEmail(sEmail: string, sConfirmEmail: string): boolean {
+  validateEmail(): boolean {
+    let sEmail = this.m_oEmailInputs.email;
+    let sConfirmEmail = this.m_oEmailInputs.confirmEmail;
     // Standard email regex:
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     // if the user has modified both inputs
     if (sEmail && sConfirmEmail) {
       // if the first email doesn't pass Regex OR the emails don't match
       if (!emailRegex.test(sEmail) || sEmail !== sConfirmEmail) {
+        this.m_sEmilError =
+          'Please ensure the inputted emails are valid emails and match';
         return false;
       } else {
         return true;
@@ -94,20 +134,10 @@ export class SignUpComponent {
 
   register() {
     //Check validations
-    if (
-      this.validateEmail(
-        this.m_oEmailInputs.email,
-        this.m_oEmailInputs.confirmEmail
-      )
-    ) {
+    if (this.validateEmail()) {
       this.m_oUserInfoInput.email = this.m_oEmailInputs.email;
     }
-    if (
-      this.validatePassword(
-        this.m_oPasswordInputs.password,
-        this.m_oPasswordInputs.confirmPw
-      )
-    ) {
+    if (this.validatePassword()) {
       this.m_oRegisterInput.password = this.m_oPasswordInputs.password;
     }
 
@@ -117,16 +147,22 @@ export class SignUpComponent {
     this.m_oAuthService.registerUser(this.m_oRegisterInput).subscribe({
       next: (oResponse) => {
         if (oResponse.status === 200) {
-          alert('User Registered');
-          alert('Organization Registered');
+          //Alert User to success and re-direct to login
+          this.m_oNotificationService.openInfoDialog(
+            'User Registered - Check your email for a confirmation link',
+            'success',
+            'User Registered'
+          );
         }
       },
       error: (oError) => {
+        this.m_oNotificationService.openInfoDialog(
+          'There were some problems with your inputted information. Please review your entries',
+          'alert',
+          'Error'
+        );
         if (oError.error.errorStringCodes) {
-          let asTranslationKeys: Array<string> = oError.error.errorStringCodes;
-          asTranslationKeys.forEach((sKey) =>
-            console.log(this.m_oTranslate.instant(sKey))
-          );
+          this.handleAPIErrors(oError.error.errorStringCodes);
         }
       },
     });
@@ -136,5 +172,75 @@ export class SignUpComponent {
     if (oEvent.value) {
       this.m_oOrgInfoInput.type = oEvent.value;
     }
+  }
+
+  setPage(sPage) {
+    this.m_sCurrentPg = sPage;
+  }
+
+  checkInputs(sPage) {
+    switch (this.m_sCurrentPg) {
+      case 'username':
+        this.validateEmail() && this.validatePassword()
+          ? this.setPage(sPage)
+          : '';
+        break;
+      case 'personal':
+        this.checkPersonalInfo();
+        this.m_bPersonalValid ? this.setPage(sPage) : '';
+        break;
+      case 'organization':
+        this.checkOrgInfo();
+        this.m_bOrgIsValid ? this.setPage(sPage) : '';
+        break;
+      default:
+        this.setPage(sPage);
+        break;
+    }
+  }
+
+  checkOrgInfo() {
+    this.m_bOrgIsValid = true;
+    Object.entries(this.m_oOrgInfoInput).forEach((aEntry) => {
+      aEntry[1] === '' ? (this.m_bOrgIsValid = false) : '';
+    });
+
+    if (!this.m_bOrgIsValid) {
+      this.m_sOrgError = "Please ensure your organization's input is complete.";
+    }
+  }
+
+  checkPersonalInfo() {
+    if (
+      this.m_oUserInfoInput.name &&
+      this.m_oUserInfoInput.surname &&
+      this.m_oUserInfoInput.mobile
+    ) {
+      this.m_bPersonalValid = true;
+      return true;
+    } else {
+      this.m_sPersonalError =
+        "Please ensure you've entered a name, surname, and mobile number";
+      this.m_bPersonalValid = false;
+      return false;
+    }
+  }
+
+  handleAPIErrors(asStringCodes) {
+    asStringCodes.forEach((sCode) => {
+      if (sCode.includes('ORG')) {
+        this.m_sOrgError = 'ERROR_MSG.' + sCode;
+        this.m_bOrgIsValid = false;
+      }
+      if (sCode.includes('MAIL')) {
+        this.m_sEmilError = 'ERROR_MSG.' + sCode;
+        this.m_bEmailIsValid = false;
+      }
+      if (sCode.includes('USER')) {
+        this.m_sUsernameError = 'ERROR_MSG.' + sCode;
+        this.m_bUsernameIsValid = false;
+      }
+    });
+    this.setPage('username');
   }
 }

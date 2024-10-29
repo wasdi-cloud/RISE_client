@@ -11,7 +11,7 @@
     "USER": "User"
   },
   "AREA_OF_OPERATIONS": {
-    "CREATE_NEW_AREA_OF_OPERATION": "Create new area of operations", 
+    "CREATE_NEW_AREA_OF_OPERATION": "Create new area of operations",
     "CONFIRM_SAME_AREA": "The area that you have selected overlaps with another area.",
     "CONFIRM_SAME_NAME": "The area that you have selected shares a name with an already existing area",
     "CONFIRM": "<bt>Proceed anyways?"
@@ -33,13 +33,11 @@
   },
   "ERROR_MSG": {
     "ERROR_API_ORG_ALREADY_EXISTS": "An organization with this information already exists.",
-    "ERROR_API_USERID_ALREADY_EXISTS": "A user with this ID already exists.",
+    "ERROR_API_USER_ALREADY_EXISTS": "A user with this ID already exists.",
     "ERROR_API_MAIL_ALREADY_EXISTS": "This email is already in use",
     "ERROR_API_MISSING_ACCEPT_TERMS_AND_PRIVACY": "Please accept the Terms and Conditions as well as RISE's Privacy Policy",
     "ERROR_API_WRONG_USER_OR_PASSWORD": "Either the entered username or password is incorrect",
-    "ERROR_API_WRONG_OTP": "This OPT does not match.",
-    "ERROR_API_USER_ALREADY_EXISTS": "A user with this information already exists.",
-    "ERROR_API_CONFIRM_EXPIRED": "Confirmation is expired.",
+    "ERROR_API_WRONG_OTP": "This one time password does not match the one sent to the email above.",
     "ERROR_API_NO_VALID_SUBSCRIPTION": "You do not have a valid subscription at this time.",
     "ERROR_LAYER_FAILURE": "Could not load layers for this plugin"
   },

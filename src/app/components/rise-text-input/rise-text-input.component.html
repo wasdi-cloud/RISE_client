@@ -1,3 +1,6 @@
+<label *ngIf="m_bHasTitle" class="form-label" for="{{ m_sName }}"
+  >{{ m_sLocalizationKey | translate }}
+</label>
 <div class="input-group">
   <span
     *ngIf="m_bHasIcon"
@@ -5,17 +8,22 @@
     id="basic-addon1"
     >{{ m_sIcon }}</span
   >
-  <!-- <label  for="{{m_sName}}">{{m_sLocalizationKey | translate}}</label> -->
   <input
     class="form-control"
     type="{{ m_sType }}"
     name="{{ m_sName }}"
     [class.no-border]="m_bHasIcon"
+    [class.invalid]="!m_bIsValid"
     [(ngModel)]="m_sInputText"
     (change)="onInputChange()"
-    [placeholder]="m_sLocalizationKey | translate"
+    [placeholder]="!m_bHasTitle ? (m_sLocalizationKey | translate) : ''"
+    [required]="m_bRequired"
   />
-  <div class="form-text" *ngIf="m_bIsValidatorInput && !m_bIsValid">
-    Please ensure the values are the same.
-  </div>
+</div>
+<div
+  class="invalid-feedback d-flex flex-row p-1 gap-1 mt-2"
+  *ngIf="m_bIsValidatorInput && !m_bIsValid"
+>
+  <span class="material-symbols-outlined"> info </span>
+  <div [innerHTML]="m_sErrorText | translate"></div>
 </div>

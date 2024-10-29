@@ -236,6 +236,8 @@ export class MapService {
       }
     );
 
+    
+
     // Add all to the layers control
     this.m_oLayersControl = L.control.layers(
       {
