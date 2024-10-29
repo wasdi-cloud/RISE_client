@@ -6,6 +6,11 @@ input:focus {
   color: var(--rise-text-bright);
 }
 
+.form-label {
+  color: var(--rise-text-dim);
+  line-height: 12px;
+}
+
 .no-border {
   border-left: none;
 }
@@ -27,7 +32,11 @@ span.input-group-text {
   color: var(--rise-text-dim);
 }
 
-.invalid-input {
+input.invalid {
+  border: 1px solid var(--rise-danger-text);
+}
+
+.invalid-feedback {
   background-color: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--rise-text-dim);
   border-radius: 6px;

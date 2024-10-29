@@ -33,6 +33,10 @@ export class RiseTextInputComponent {
 
   @Input() m_sIcon: string = 'search';
 
+  @Input() m_bHasTitle?: boolean = false;
+
+  @Input() m_bRequired?: boolean = false;
+
   @Output() m_sInputTextChange: EventEmitter<string> =
     new EventEmitter<string>();
 

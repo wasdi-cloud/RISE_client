@@ -1,0 +1,35 @@
+.outlet-container {
+  position: relative;
+}
+.hero-img {
+  height: 100vh;
+  width: 100vw;
+  background-repeat: no-repeat;
+  background-position: right;
+  background-size: cover;
+  background-image: url(/assets/rise-assets/cover.png);
+  z-index: -1;
+  top: -8%;
+  position: absolute;
+}
+div.login-container {
+  background-color: var(--surface-glass);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: absolute;
+  left: 51%;
+  height: inherit;
+  width: 350px;
+}
+
+p {
+  color: var(--rise-text-dim);
+  font-size: 14px;
+  text-align: center;
+}
+
+p > a {
+  color: var(--rise-text-bright);
+}
