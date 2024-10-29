@@ -276,11 +276,11 @@ export class MapService {
 
           if (cachedTile) {
             // Use the cached tile
-            console.log(" it is working");
+
             event.tile.src = URL.createObjectURL(cachedTile);  // Set the tile's source to the cached blob
           } else {
             // Tile was not found in cache, fetch it from the network
-            console.log('Tile not found in cache, fetching from network:', url);
+            // console.log('Tile not found in cache, fetching from network:', url);
 
             // Fetch the tile from the network
             const response = await fetch(url);
@@ -918,11 +918,11 @@ export class MapService {
       const request = store.put(tileData);  // Use 'put' to add or update the tile
 
       request.onsuccess = () => {
-        console.log('Tile cached:', tileUrl);
+        // console.log('Tile cached:', tileUrl);
       };
 
       request.onerror = () => {
-        console.error('Error caching tile:', tileUrl);
+        // console.error('Error caching tile:', tileUrl);
       };
 
       // Ensure the transaction is complete
