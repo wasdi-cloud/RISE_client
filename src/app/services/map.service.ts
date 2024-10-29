@@ -6,7 +6,7 @@ import {AreaViewModel} from '../models/AreaViewModel';
 import {MatDialog} from '@angular/material/dialog';
 
 import Geocoder from 'leaflet-control-geocoder';
-import {geoJSON, Map, Marker} from 'leaflet';
+import {Coords, geoJSON, Map, Marker} from 'leaflet';
 import 'leaflet-draw';
 import 'leaflet-mouse-position';
 import {BehaviorSubject, Observable, Subject, tap} from 'rxjs';
@@ -256,6 +256,7 @@ export class MapService {
   }
 
   setActiveLayer(oMap,oMapLayer: L.TileLayer) {
+    // this.loadTilesInitially(oMap,oMapLayer);
     if (this.m_oActiveBaseLayer !== oMapLayer) {
       this.m_oActiveBaseLayer = oMapLayer;
       oMap.addLayer(oMapLayer);
@@ -264,7 +265,7 @@ export class MapService {
 
     activeLayer.off('tileloadstart');  // Remove any existing listener on this layer
 
-    activeLayer.on('tileloadstart', async (event) => {
+    activeLayer.on('tileloadstart', async (event: { tile: { src: string; }; }) => {
       let oMap = this.getMap();
       const zoomLevel = oMap?.getZoom();
       if (zoomLevel && zoomLevel >= 3 && zoomLevel <= 13) {
@@ -274,10 +275,9 @@ export class MapService {
           const cachedTile = await this.getTileFromCache(url);
 
           if (cachedTile) {
-            // Use the cached tile (create a Blob URL or use the blob directly)
+            // Use the cached tile
             console.log(" it is working");
-            const blobUrl = URL.createObjectURL(cachedTile);
-            event.tile.src = blobUrl;  // Set the tile's source to the cached blob
+            event.tile.src = URL.createObjectURL(cachedTile);  // Set the tile's source to the cached blob
           } else {
             // Tile was not found in cache, fetch it from the network
             console.log('Tile not found in cache, fetching from network:', url);
@@ -292,9 +292,9 @@ export class MapService {
             // Cache the tile
             await this.cacheEsriTile(url, blob);
 
-            // Create a Blob URL for the fetched tile and set it
+
             const blobUrl = URL.createObjectURL(blob);
-            event.tile.src = blobUrl;  // Set the tile's source to the fetched blob
+            event.tile.src = blobUrl;
           }
         } catch (error) {
           console.error('Error during tile load:', error);
@@ -306,6 +306,77 @@ export class MapService {
 
     });
   }
+
+  // async loadTilesInitially(oMap, oMapLayer: L.TileLayer) {
+  //   const zoomLevel = oMap.getZoom();
+  //
+  //   // Check if the zoom level is within the allowed range
+  //   if (zoomLevel < 3 || zoomLevel > 13) {
+  //     console.log("Zoom level needs to be between 3 and 13 for cache to work");
+  //     return;
+  //   }
+  //
+  //   const tileBounds = oMap.getPixelBounds(); // Get bounds of the current map view in pixels
+  //   const tileSize = oMapLayer.options.tileSize as number; // Default tile size is 256px
+  //   const tilesInView = {
+  //     xMin: Math.floor(tileBounds.min.x / tileSize),
+  //     yMin: Math.floor(tileBounds.min.y / tileSize),
+  //     xMax: Math.ceil(tileBounds.max.x / tileSize),
+  //     yMax: Math.ceil(tileBounds.max.y / tileSize),
+  //   };
+  //
+  //
+  //   // Loop through each tile in the visible range
+  //   for (let x = tilesInView.xMin; x <= tilesInView.xMax; x++) {
+  //     for (let y = tilesInView.yMin; y <= tilesInView.yMax; y++) {
+  //
+  //       const tileUrl =oMapLayer.getTileUrl(<Coords>{x:x,y:y,z:zoomLevel as number})
+  //
+  //       try {
+  //         const cachedTile = await this.getTileFromCache(tileUrl);
+  //
+  //         if (cachedTile) {
+  //
+  //           console.log("Initial Tile loaded from cache:", tileUrl);
+  //           const blobUrl = URL.createObjectURL(cachedTile);
+  //           // Instead of directly changing tile's src, you can listen to the 'tileload' event
+  //           oMapLayer.on('tileload', (event) => {
+  //             if (event.tile.src === tileUrl) {
+  //               event.tile.src = blobUrl; // Set the tile's source to the cached Blob URL
+  //             }
+  //           });
+  //         } else {
+  //           // Tile was not found in cache, fetch it from the network
+  //           console.log("Initially Tile not found in cache, fetching from network:", tileUrl);
+  //
+  //           // Fetch the tile from the network
+  //           const response = await fetch(tileUrl);
+  //           if (!response.ok) {
+  //             throw new Error('Network response was not ok');
+  //           }
+  //           const blob = await response.blob();
+  //
+  //           // Cache the tile
+  //           await this.cacheEsriTile(tileUrl, blob);
+  //
+  //           // Create a Blob URL for the fetched tile
+  //           const blobUrl = URL.createObjectURL(blob);
+  //           // Do something with blobUrl here if needed for the initial load
+  //           // Set the tile's source to the cached blob;
+  //           // Listen to 'tileload' for setting the source as before
+  //           oMapLayer.on('tileload', (event) => {
+  //             if (event.tile.src === tileUrl) {
+  //               event.tile.src = blobUrl; // Set the tile's source
+  //             }
+  //           });
+  //         }
+  //       } catch (error) {
+  //         console.error("Error loading tile initially:", error);
+  //       }
+  //     }
+  //   }
+  // }
+
 
 
 
@@ -916,7 +987,7 @@ export class MapService {
     return new Promise((resolve, reject) => {
       const transaction = db.transaction('tileStore', 'readonly');
       const store = transaction.objectStore('tileStore');
-
+      console.log(url)
       const request = store.get(url);  // Use 'url' as the key
 
       request.onsuccess = (event) => {
