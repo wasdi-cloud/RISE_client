@@ -12,7 +12,7 @@ import { UserCredentialsViewModel } from '../../models/UserCredentialsViewModel'
 import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
 import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { RiseUtils } from '../../shared/RiseUtils';
+import { RiseUtils } from '../../shared/utilities/RiseUtils';
 import { NgIf } from '@angular/common';
 
 @Component({

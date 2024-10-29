@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
 import { PluginService } from '../../services/api/plugin.service';
 import { UserOfAreaViewModel } from '../../models/UserOfAreaViewModel';
 import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
-import { RiseUtils } from '../../shared/RiseUtils';
+import { RiseUtils } from '../../shared/utilities/RiseUtils';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({

@@ -1,5 +1,5 @@
 import { TranslateService } from '@ngx-translate/core';
-import { NotificationsDialogsService } from '../services/notifications-dialogs.service';
+import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
 import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
