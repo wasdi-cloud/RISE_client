@@ -40,8 +40,8 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   m_oDrawnItems: any;
 
   m_oDrawOptions: any;
-  m_oActiveBaseLayer: any;
-  m_aoDrawnItems: L.FeatureGroup;
+  // m_oActiveBaseLayer: any;
+  // m_aoDrawnItems: L.FeatureGroup;
   m_bIsDrawCreated: boolean = false;
   m_bIsAutoDrawCreated: boolean = false;
   m_bIsImportDrawCreated: boolean = false;
@@ -111,12 +111,14 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   //Import shape file
   openImportDialog() {
     this.m_oMapService.openImportDialog(this.m_oMap).subscribe(oResult => {
+      this.m_bIsImportDrawCreated=true;
       this.confirmInsertedArea(null, null, null, null, oResult);
     });
   }
 
   addCircleButton(oMap: L.Map): void {
     this.m_oMapService.addCircleButton(oMap).subscribe(circleData => {
+      this.m_bIsAutoDrawCreated=true;
       const {center, radius} = circleData;
       this.confirmInsertedArea(null, radius, center.lat, center.lng);
     });
@@ -131,8 +133,9 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   //Using leaflet drawings
   onDrawCreated(oEvent) {
     this.m_oMapService.onDrawCreated(oEvent, this.m_oMap);
+    this.m_bIsDrawCreated=true;
     this.confirmInsertedArea(oEvent);
-    this.emitDrawnAreaEvent(oEvent);
+    // this.emitDrawnAreaEvent(oEvent);
   }
 
   //Confirm inserted area
@@ -142,10 +145,13 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       if (bDialogResult) {
         // Emit the appropriate area based on the shape creation method
         if (this.m_bIsImportDrawCreated && geoJson) {
+          this.m_bIsImportDrawCreated=false;
           this.emitGeoJSONShapeInfo(geoJson);
         } else if (this.m_bIsDrawCreated && oEvent) {
+          this.m_bIsDrawCreated=false;
           this.emitDrawnAreaEvent(oEvent);
         } else if (this.m_bIsAutoDrawCreated && fRadius !== undefined && fLat !== undefined && fLng !== undefined) {
+          this.m_bIsAutoDrawCreated=false;
           this.emitCircleButtonAreaEvent(fRadius, fLat, fLng);
         }
       } else {
