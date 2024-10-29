@@ -39,6 +39,9 @@ export interface TileLayer {
 const MAX_STORAGE_SIZE = 2 * 1024 * 1024; // 2MB for testing
 const MIN_ZOOM = 3;
 const MAX_ZOOM = 18;
+const MIN_AREA = 10000 * 1000 * 1000; // 10,000 square kilometers in square meters
+const MAX_AREA = 1000000 * 1000 * 1000; // 1,000,000 square kilometers in square meters
+
 
 @Injectable({
   providedIn: 'root',
@@ -378,6 +381,7 @@ export class MapService {
   //     }
   //   }
   // }
+
 
 
 
@@ -791,14 +795,17 @@ export class MapService {
     // For polygon, calculate area
     if (layerType === 'polygon') {
       const latlngs = layer.getLatLngs()[0]; // Use the first array of latlngs
-      const area = L.GeometryUtil.geodesicArea(latlngs); // Area in square meters
+      const area = this.calculatePolygonArea(latlngs); // Area in square meters
       // alert(`Polygon Area: ${(area / 1000000).toFixed(2)} square kilometers`);
     }
 
     // For circle, calculate area
     if (layerType === 'circle') {
       const radius = layer.getRadius(); // Radius in meters
-      const area = Math.PI * Math.pow(radius, 2); // Area of the circle (πr²)
+      const area = this.calculateCircleArea(radius); // Area of the circle (πr²)
+      if(area<MIN_AREA ||area>MAX_AREA ){
+        this.adjustArea(layer,area)
+      }
       // alert(`Circle Area: ${(area / 1000000).toFixed(2)} square kilometers`);
     }
 
@@ -1027,5 +1034,28 @@ export class MapService {
         reject('Error opening IndexedDB');
       };
     });
+  }
+
+  //Auto adjusting the area if it is too big or too small
+  adjustArea(layer, area) {
+    let newRadius;
+    if (area > MAX_AREA) {
+      newRadius = Math.sqrt(MAX_AREA / Math.PI);
+    } else if (area < MIN_AREA) {
+      newRadius = Math.sqrt(MIN_AREA / Math.PI);
+    }
+    if (newRadius) {
+      layer.setRadius(newRadius);
+    }
+  }
+
+  calculatePolygonArea(latlngs: any) {
+    return L.GeometryUtil.geodesicArea(latlngs)
+
+  }
+
+  calculateCircleArea(radius: any) {
+    return Math.PI * Math.pow(radius, 2)
+
   }
 }

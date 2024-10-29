@@ -132,6 +132,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   // Different ways to draw an area
   //Using leaflet drawings
   onDrawCreated(oEvent) {
+
     this.m_oMapService.onDrawCreated(oEvent, this.m_oMap);
     this.m_bIsDrawCreated=true;
     this.confirmInsertedArea(oEvent);
@@ -199,6 +200,10 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
         radius: radius,
         area: iSelectedArea
       };
+      if(this.m_oDrawMarker){
+        this.m_oMap.removeLayer(this.m_oDrawMarker);
+
+      }
       this.m_oDrawMarker = L.marker([center.lat, center.lng]).addTo(this.m_oMap);
 
     }
