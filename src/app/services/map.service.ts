@@ -6,7 +6,7 @@ import {AreaViewModel} from '../models/AreaViewModel';
 import {MatDialog} from '@angular/material/dialog';
 
 import Geocoder from 'leaflet-control-geocoder';
-import {geoJSON, Map, Marker} from 'leaflet';
+import {Coords, geoJSON, Map, Marker} from 'leaflet';
 import 'leaflet-draw';
 import 'leaflet-mouse-position';
 import {BehaviorSubject, Observable, Subject, tap} from 'rxjs';
@@ -36,6 +36,7 @@ L.Marker.prototype.options.icon = iconDefault;
 export interface TileLayer {
 }
 
+const MAX_STORAGE_SIZE = 2 * 1024 * 1024; // 2MB for testing
 const MIN_ZOOM = 3;
 const MAX_ZOOM = 18;
 
@@ -133,8 +134,9 @@ export class MapService {
   private circleDrawnSubject = new Subject<{ center: { lat: number; lng: number }; radius: number }>();
 
   constructor(private m_oDialog: MatDialog, private m_oRouter: Router) {
-    this.initTilelayer();
+  }
 
+  setMapOptions() {
     this.m_oOptions = {
       layers: [this.m_oDarkGrayArcGIS],
       zoomControl: false,
@@ -146,6 +148,7 @@ export class MapService {
         position: 'topleft',
       },
     };
+
   }
 
   /**
@@ -236,7 +239,8 @@ export class MapService {
       }
     );
 
-    
+
+
 
     // Add all to the layers control
     this.m_oLayersControl = L.control.layers(
@@ -253,6 +257,136 @@ export class MapService {
     );
   }
 
+  setActiveLayer(oMap,oMapLayer: L.TileLayer) {
+    // this.loadTilesInitially(oMap,oMapLayer);
+    if (this.m_oActiveBaseLayer !== oMapLayer) {
+      this.m_oActiveBaseLayer = oMapLayer;
+      oMap.addLayer(oMapLayer);
+    }
+    const activeLayer = this.getActiveLayer();
+
+    activeLayer.off('tileloadstart');  // Remove any existing listener on this layer
+
+    activeLayer.on('tileloadstart', async (event: { tile: { src: string; }; }) => {
+      let oMap = this.getMap();
+      const zoomLevel = oMap?.getZoom();
+      if (zoomLevel && zoomLevel >= 3 && zoomLevel <= 13) {
+        const url = event.tile.src;  // URL of the tile being loaded
+        try {
+          // Try to get the tile from the cache
+          const cachedTile = await this.getTileFromCache(url);
+
+          if (cachedTile) {
+            // Use the cached tile
+
+            event.tile.src = URL.createObjectURL(cachedTile);  // Set the tile's source to the cached blob
+          } else {
+            // Tile was not found in cache, fetch it from the network
+            // console.log('Tile not found in cache, fetching from network:', url);
+
+            // Fetch the tile from the network
+            const response = await fetch(url);
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            const blob = await response.blob();
+
+            // Cache the tile
+            await this.cacheEsriTile(url, blob);
+
+
+            const blobUrl = URL.createObjectURL(blob);
+            event.tile.src = blobUrl;
+          }
+        } catch (error) {
+          console.error('Error during tile load:', error);
+        }
+      } else {
+        console.log("Zoom Levels needs to be between 10 and 13 for cache to work")
+      }
+
+
+    });
+  }
+
+  // async loadTilesInitially(oMap, oMapLayer: L.TileLayer) {
+  //   const zoomLevel = oMap.getZoom();
+  //
+  //   // Check if the zoom level is within the allowed range
+  //   if (zoomLevel < 3 || zoomLevel > 13) {
+  //     console.log("Zoom level needs to be between 3 and 13 for cache to work");
+  //     return;
+  //   }
+  //
+  //   const tileBounds = oMap.getPixelBounds(); // Get bounds of the current map view in pixels
+  //   const tileSize = oMapLayer.options.tileSize as number; // Default tile size is 256px
+  //   const tilesInView = {
+  //     xMin: Math.floor(tileBounds.min.x / tileSize),
+  //     yMin: Math.floor(tileBounds.min.y / tileSize),
+  //     xMax: Math.ceil(tileBounds.max.x / tileSize),
+  //     yMax: Math.ceil(tileBounds.max.y / tileSize),
+  //   };
+  //
+  //
+  //   // Loop through each tile in the visible range
+  //   for (let x = tilesInView.xMin; x <= tilesInView.xMax; x++) {
+  //     for (let y = tilesInView.yMin; y <= tilesInView.yMax; y++) {
+  //
+  //       const tileUrl =oMapLayer.getTileUrl(<Coords>{x:x,y:y,z:zoomLevel as number})
+  //
+  //       try {
+  //         const cachedTile = await this.getTileFromCache(tileUrl);
+  //
+  //         if (cachedTile) {
+  //
+  //           console.log("Initial Tile loaded from cache:", tileUrl);
+  //           const blobUrl = URL.createObjectURL(cachedTile);
+  //           // Instead of directly changing tile's src, you can listen to the 'tileload' event
+  //           oMapLayer.on('tileload', (event) => {
+  //             if (event.tile.src === tileUrl) {
+  //               event.tile.src = blobUrl; // Set the tile's source to the cached Blob URL
+  //             }
+  //           });
+  //         } else {
+  //           // Tile was not found in cache, fetch it from the network
+  //           console.log("Initially Tile not found in cache, fetching from network:", tileUrl);
+  //
+  //           // Fetch the tile from the network
+  //           const response = await fetch(tileUrl);
+  //           if (!response.ok) {
+  //             throw new Error('Network response was not ok');
+  //           }
+  //           const blob = await response.blob();
+  //
+  //           // Cache the tile
+  //           await this.cacheEsriTile(tileUrl, blob);
+  //
+  //           // Create a Blob URL for the fetched tile
+  //           const blobUrl = URL.createObjectURL(blob);
+  //           // Do something with blobUrl here if needed for the initial load
+  //           // Set the tile's source to the cached blob;
+  //           // Listen to 'tileload' for setting the source as before
+  //           oMapLayer.on('tileload', (event) => {
+  //             if (event.tile.src === tileUrl) {
+  //               event.tile.src = blobUrl; // Set the tile's source
+  //             }
+  //           });
+  //         }
+  //       } catch (error) {
+  //         console.error("Error loading tile initially:", error);
+  //       }
+  //     }
+  //   }
+  // }
+
+
+
+
+
+  getActiveLayer() {
+    return this.m_oActiveBaseLayer;
+  }
+
   /**
    * Set Drawn Items
    */
@@ -260,11 +394,20 @@ export class MapService {
     this.m_oDrawnItems = new L.FeatureGroup();
   }
 
+  /**
+   * Initialize Wasdi Map
+   * @param sMapDiv
+   */
   initWasdiMap(sMapDiv: string): void {
     this.m_oRiseMap = this.initMap(sMapDiv);
   }
 
+  /**
+   * Initialize Map
+   * @param sMapDiv
+   */
   initMap(sMapDiv: string) {
+
     // Create the Map Object
     let oMap: L.Map = L.map(sMapDiv, {
       zoomControl: false,
@@ -274,8 +417,8 @@ export class MapService {
       minZoom: MIN_ZOOM,
     });
     // this.m_oStadiMapDark.addTo(oMap);
-    this.m_oDarkGrayArcGIS.addTo(oMap);
-    // this.m_oOSMBasic.addTo(oMap);
+    // this.m_oDarkGrayArcGIS.addTo(oMap);
+    this.m_oOSMBasic.addTo(oMap);
 
     this.initGeoSearchPluginForOpenStreetMap(oMap);
     this.addMousePositionAndScale(oMap);
@@ -297,6 +440,7 @@ export class MapService {
     oMap.on('baselayerchange', function (e) {
       oActiveBaseLayer = e;
     });
+
     return oMap;
   }
 
@@ -354,48 +498,10 @@ export class MapService {
   }
 
   /**
-   * Handler function for drawing rectangles/polygons/etc on map - Creates bounding box to string
-   * @param event
+   * Calculate Area of a rectangle
+   * @param southWest
+   * @param northEast
    */
-  onDrawCreatedMain(event: any) {
-    const {layerType, layer} = event;
-    if (this.m_oGeocoderMarker) {
-      this.m_oRiseMap.removeLayer(this.m_oGeocoderMarker);
-      this.m_oGeocoderMarker = null; // Reset the marker reference
-    }
-    // For rectangle, calculate area
-    if (layerType === 'rectangle') {
-      const bounds = layer.getBounds(); // Get the bounds of the rectangle
-      const southWest = bounds.getSouthWest();
-      const northEast = bounds.getNorthEast();
-      const area = this.calculateRectangleArea(southWest, northEast);
-      // alert(`Rectangle Area: ${area.toFixed(2)} square kilometers`);
-    }
-
-    // For polyline, calculate total distance
-    if (layerType === 'polyline') {
-      const latlngs = layer.getLatLngs();
-      const totalDistance = this.calculateDistance(latlngs);
-      // alert(`Total distance: ${totalDistance.toFixed(2)} kilometers`);
-    }
-
-    // For polygon, calculate area
-    if (layerType === 'polygon') {
-      const latlngs = layer.getLatLngs()[0]; // Use the first array of latlngs
-      const area = L.GeometryUtil.geodesicArea(latlngs); // Area in square meters
-      // alert(`Polygon Area: ${(area / 1000000).toFixed(2)} square kilometers`);
-    }
-
-    // For circle, calculate area
-    if (layerType === 'circle') {
-      const radius = layer.getRadius(); // Radius in meters
-      const area = Math.PI * Math.pow(radius, 2); // Area of the circle (πr²)
-      // alert(`Circle Area: ${(area / 1000000).toFixed(2)} square kilometers`);
-    }
-
-    this.m_oDrawnItems.addLayer(layer);
-  }
-
   calculateRectangleArea(southWest: L.LatLng, northEast: L.LatLng): number {
     const width = southWest.distanceTo(
       new L.LatLng(southWest.lat, northEast.lng)
@@ -407,6 +513,10 @@ export class MapService {
     return area;
   }
 
+  /**
+   * Calculate Distance
+   * @param latlngs
+   */
   calculateDistance(latlngs: L.LatLng[]): number {
     let totalDistance = 0;
     for (let i = 0; i < latlngs.length - 1; i++) {
@@ -415,6 +525,11 @@ export class MapService {
     return totalDistance / 1000;
   }
 
+  /**
+   * Add Marker
+   * @param oArea
+   * @param oMap
+   */
   addMarker(oArea: AreaViewModel, oMap: Map): Marker {
     let asCoordinates = this.convertPointLatLng(oArea)._northEast;
     if (asCoordinates) {
@@ -442,12 +557,20 @@ export class MapService {
     return null;
   }
 
+  /**
+   * Fly to Monitor Bounds
+   * @param sBbox
+   */
   flyToMonitorBounds(sBbox: string) {
     let boundingBox: any = wktToGeoJSON(sBbox.slice(0, -1));
     boundingBox = geoJSON(boundingBox).getBounds();
     this.m_oRiseMap.fitBounds(boundingBox);
   }
 
+  /**
+   * Convert Point from WKT to Lat,Lng
+   * @param oArea
+   */
   convertPointLatLng(oArea) {
     if (oArea.markerCoordinates) {
       let aoCoordinates: any = wktToGeoJSON(oArea.markerCoordinates);
@@ -457,6 +580,11 @@ export class MapService {
     return null;
   }
 
+  /**
+   * Add Layer Map 2D By Server
+   * @param sLayerId
+   * @param sServer
+   */
   addLayerMap2DByServer(sLayerId: string, sServer: string) {
     if (!sLayerId) {
       return false;
@@ -488,6 +616,10 @@ export class MapService {
     return true;
   }
 
+  /**
+   * zoom B and Image On Geoserver Bounding Box
+   * @param geoserverBoundingBox
+   */
   zoomBandImageOnGeoserverBoundingBox(geoserverBoundingBox) {
     try {
       if (!geoserverBoundingBox) {
@@ -511,10 +643,17 @@ export class MapService {
     }
   }
 
+  /**
+   * Close workspace
+   */
   closeWorkspace() {
     this.m_oMarkerSubject.next(null);
   }
 
+  /**
+   * Clear all drawing on map
+   * @param oMap
+   */
   clearPreviousDrawings(oMap) {
     this.m_bIsDrawCreated = false;
     this.m_bIsAutoDrawCreated = false;
@@ -554,16 +693,12 @@ export class MapService {
       oMap.removeLayer(this.oGeoJsonLayer);
       this.oGeoJsonLayer = null;  // Reset reference
     }
-
-    // Log and remove all layers except the base map layer
-
-
   }
 
-
-  // Different ways to draw an area
-
-  //Go to position by inserting coords
+  /**
+   * Go to a position by inserting coords
+   * @param oMap
+   */
   addManualBbox(oMap: any) {
     let oController = this;
     const m_oManualBoxingButton = L.Control.extend({
@@ -625,19 +760,56 @@ export class MapService {
     oMap.addControl(new m_oManualBoxingButton());
   }
 
-  //Handle when the user want to choose a position and let rise draw the minimum area around that point
-
-  //Using leaflet drawings
+  /**
+   * Handler function for drawing rectangles/polygons/etc on map - Creates bounding box to string
+   * @param oEvent
+   * @param oMap
+   */
   onDrawCreated(oEvent, oMap) {
     this.clearPreviousDrawings(oMap);
-    this.onDrawCreatedMain(oEvent);
-    // this.m_oMapService.onDrawCreated(oEvent);
+    const {layerType, layer} = oEvent;
+    if (this.m_oGeocoderMarker) {
+      this.m_oRiseMap.removeLayer(this.m_oGeocoderMarker);
+      this.m_oGeocoderMarker = null; // Reset the marker reference
+    }
+    // For rectangle, calculate area
+    if (layerType === 'rectangle') {
+      const bounds = layer.getBounds(); // Get the bounds of the rectangle
+      const southWest = bounds.getSouthWest();
+      const northEast = bounds.getNorthEast();
+      const area = this.calculateRectangleArea(southWest, northEast);
+      // alert(`Rectangle Area: ${area.toFixed(2)} square kilometers`);
+    }
+
+    // For polyline, calculate total distance
+    if (layerType === 'polyline') {
+      const latlngs = layer.getLatLngs();
+      const totalDistance = this.calculateDistance(latlngs);
+      // alert(`Total distance: ${totalDistance.toFixed(2)} kilometers`);
+    }
+
+    // For polygon, calculate area
+    if (layerType === 'polygon') {
+      const latlngs = layer.getLatLngs()[0]; // Use the first array of latlngs
+      const area = L.GeometryUtil.geodesicArea(latlngs); // Area in square meters
+      // alert(`Polygon Area: ${(area / 1000000).toFixed(2)} square kilometers`);
+    }
+
+    // For circle, calculate area
+    if (layerType === 'circle') {
+      const radius = layer.getRadius(); // Radius in meters
+      const area = Math.PI * Math.pow(radius, 2); // Area of the circle (πr²)
+      // alert(`Circle Area: ${(area / 1000000).toFixed(2)} square kilometers`);
+    }
+
+    this.m_oDrawnItems.addLayer(layer);
     this.m_bIsDrawCreated = true;
-    // this.confirmInsertedArea(oEvent);
-    // this.emitDrawnAreaEvent(oEvent);
   }
 
-// Modify the addCircleButton method
+  /**
+   * Select a point in map and rise draw a circle with minimum radius
+   * @param oMap
+   */
   addCircleButton(oMap: L.Map): Observable<{ center: { lat: number; lng: number }; radius: number }> {
     let bIsDrawing = false;
 
@@ -706,8 +878,10 @@ export class MapService {
     return this.circleDrawnSubject.asObservable();
   }
 
-
-  //Import shape file
+  /**
+   * Import shape file
+   * @param oMap
+   */
   openImportDialog(oMap: L.Map): Observable<any> {
     let oDialog = this.m_oDialog.open(ImportShapeFileStationDialogComponent, {height: '425px', width: '660px'});
     return oDialog.afterClosed().pipe(
@@ -717,5 +891,141 @@ export class MapService {
         oMap.fitBounds(this.oGeoJsonLayer.getBounds());
       })
     );
+  }
+
+  async cacheEsriTile(tileUrl: string, blob: Blob) {
+    try {
+      // Open the IndexedDB and store the tile
+      const db = await this.openIndexedDb();
+      const transaction = db.transaction('tileStore', 'readwrite');
+      const store = transaction.objectStore('tileStore');
+
+      // Calculate total storage size within the transaction
+      let totalSize = await this.calculateTotalStorageSize(store);
+      console.log(`Current total size: ${(totalSize / (1024 * 1024)).toFixed(2)} MB`);
+
+      const tileData = {
+        url: tileUrl,
+        blob: blob,
+        timestamp: Date.now()
+      };
+
+      // If the total size exceeds the limit, evict oldest tiles
+      if (totalSize > MAX_STORAGE_SIZE) {
+        console.log('Max storage limit exceeded. Evicting oldest tiles...');
+        await this.evictOldestTiles(store);  // Pass the store to avoid transaction issues
+      }
+
+      // After eviction (if needed), put the new tile in the same transaction
+      const request = store.put(tileData);  // Use 'put' to add or update the tile
+
+      request.onsuccess = () => {
+        // console.log('Tile cached:', tileUrl);
+      };
+
+      request.onerror = () => {
+        // console.error('Error caching tile:', tileUrl);
+      };
+
+      // Ensure the transaction is complete
+      await new Promise((resolve, reject) => {
+        transaction.oncomplete = () => resolve(null);
+        transaction.onerror = () => reject('Transaction failed');
+      });
+
+    } catch (error) {
+      console.error('Error caching tile:', error);
+    }
+  }
+
+// Modify calculateTotalStorageSize to accept a store as a parameter
+  async calculateTotalStorageSize(store: IDBObjectStore): Promise<number> {
+    return new Promise((resolve, reject) => {
+      let totalSize = 0;
+      const cursorRequest = store.openCursor();
+
+      cursorRequest.onsuccess = (event: any) => {
+        const cursor = event.target.result;
+        if (cursor) {
+          const tile = cursor.value;
+          totalSize += tile.blob.size;  // Add the size of each tile's blob
+          cursor.continue();
+        } else {
+          resolve(totalSize);  // Return the total size once all tiles are counted
+        }
+      };
+
+      cursorRequest.onerror = (event) => {
+        reject('Error calculating storage size');
+      };
+    });
+  }
+
+  async evictOldestTiles(store: IDBObjectStore) {
+    return new Promise((resolve, reject) => {
+      console.log(store.index('timestamp'))
+      const index = store.index('timestamp');  // Assuming there's an index on 'timestamp'
+      const cursorRequest = index.openCursor(null, 'next');  // Iterate over tiles in order of oldest first
+
+      cursorRequest.onsuccess = (event: any) => {
+        const cursor = event.target.result;
+        if (cursor) {
+          store.delete(cursor.primaryKey);  // Delete the oldest tile
+          cursor.continue();  // Continue to the next tile (FIFO)
+        } else {
+          resolve('Eviction complete');
+        }
+      };
+
+      cursorRequest.onerror = (event) => {
+        reject('Error evicting tiles');
+      };
+    });
+  }
+
+  async getTileFromCache(url: string): Promise<Blob | null> {
+    const db = await this.openIndexedDb();
+
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction('tileStore', 'readonly');
+      const store = transaction.objectStore('tileStore');
+      console.log(url)
+      const request = store.get(url);  // Use 'url' as the key
+
+      request.onsuccess = (event) => {
+        const result = request.result;
+        if (result) {
+          resolve(result.blob);  // Return the tile's blob data
+        } else {
+          resolve(null);  // Tile not found in cache
+        }
+      };
+
+      request.onerror = () => {
+        reject('Error retrieving tile from cache');
+      };
+    });
+  }
+
+  async openIndexedDb(): Promise<IDBDatabase> {
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open('tileDB', 1);
+
+      request.onupgradeneeded = (event: any) => {
+        const db = event.target.result;
+        if (!db.objectStoreNames.contains('tileStore')) {
+          const tileStore = db.createObjectStore('tileStore', {keyPath: 'url'});
+          tileStore.createIndex('timestamp', 'timestamp', {unique: false});  // Create an index on 'timestamp'
+        }
+      };
+
+      request.onsuccess = (event: any) => {
+        resolve(event.target.result);
+      };
+
+      request.onerror = (event) => {
+        reject('Error opening IndexedDB');
+      };
+    });
   }
 }
