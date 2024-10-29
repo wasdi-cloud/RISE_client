@@ -15,6 +15,7 @@ import { MapService } from '../../services/map.service';
 import { Subscription } from 'rxjs';
 import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
 import { RiseBannerComponent } from '../../components/rise-banner/rise-banner.component';
+import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 
 @Component({
   selector: 'app-dashboard',
@@ -59,8 +60,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.getUsersAOI();
     this.m_oActiveAOI = this.m_oMapService.m_oMarkerSubject$.subscribe(
       (oResponse) => {
-        console.log(oResponse)
-        if (oResponse) {
+        if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           this.openMonitor(oResponse);
         }
       }
@@ -95,9 +95,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   getUsersAOI() {
     this.m_oAreaService.getAreaList().subscribe({
       next: (oResponse) => {
-        if (oResponse) {
+        if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           this.m_aoAreas = oResponse;
-          console.log(this.m_aoAreas);
           if (this.m_aoAreas.length > 0) {
             this.m_aoAlerts.forEach((oArea) => {
               this.addAOIToMap(oArea);

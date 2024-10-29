@@ -19,6 +19,7 @@ import { MapService } from '../../services/map.service';
 import { LayerService } from '../../services/api/layer.service';
 import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
 import { RiseMapChipComponent } from '../../components/rise-map-chip/rise-map-chip.component';
+import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 
 @Component({
   selector: 'app-monitor',
@@ -88,7 +89,7 @@ export class MonitorComponent implements OnInit {
   openAOI(sAreaId: string) {
     this.m_oAreaService.getAreaById(sAreaId).subscribe({
       next: (oResponse) => {
-        if (oResponse) {
+        if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           this.getMapsByArea(oResponse.id, oResponse.startDate);
           this.m_oMapService.flyToMonitorBounds(oResponse.bbox);
         }
@@ -127,7 +128,7 @@ export class MonitorComponent implements OnInit {
   getLayers(oPlugin: any, sAreaId: string, iDate: string | number) {
     this.m_oLayerService.findLayer(oPlugin.id, sAreaId, '').subscribe({
       next: (oResponse) => {
-        if (oResponse) {
+        if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           oPlugin.layers.push(oResponse);
           this.m_aoLayers.push(oResponse);
           oPlugin.loaded = true;

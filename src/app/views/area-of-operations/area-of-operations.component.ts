@@ -7,7 +7,6 @@ import { RiseCrudTableComponent } from '../../components/rise-crud-table/rise-cr
 import { AreaViewModel } from '../../models/AreaViewModel';
 import { AreaService } from '../../services/api/area.service';
 
-
 import { RiseTextareaInputComponent } from '../../components/rise-textarea-input/rise-textarea-input.component';
 import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
 import { RiseMapComponent } from '../../components/rise-map/rise-map.component';
@@ -16,7 +15,8 @@ import { PluginService } from '../../services/api/plugin.service';
 
 import { MatDialog } from '@angular/material/dialog';
 import { CreateAreaOfOperationComponent } from '../create-area-of-operation/create-area-of-operation.component';
-import {RiseCheckboxComponent} from "../../components/rise-checkbox/rise-checkbox.component";
+import { RiseCheckboxComponent } from '../../components/rise-checkbox/rise-checkbox.component';
+import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 
 @Component({
   selector: 'app-area-of-operations',
@@ -98,7 +98,6 @@ export class AreaOfOperationsComponent implements OnInit {
     //   width: '300px',
     //   data: 'Are you Sure you want to delete this Area' + area.name + '?',
     // });
-
     // oDialogRef.afterClosed().subscribe((result) => {
     //   if (result) {
     //     //todo call api service here to delete user
@@ -132,7 +131,7 @@ export class AreaOfOperationsComponent implements OnInit {
     if (area.id) {
       this.m_oAreaService.getAreaById(area.id).subscribe({
         next: (oResponse) => {
-          if (oResponse) {
+          if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
             this.m_oSelectedArea = oResponse;
           }
         },

@@ -10,6 +10,7 @@ import { InviteUserComponent } from './invite-user/invite-user.component';
 import { OrganizationTypes } from '../../../shared/organization-types';
 import { RiseDropdownComponent } from '../../../components/rise-dropdown/rise-dropdown.component';
 import { TranslateModule } from '@ngx-translate/core';
+import FadeoutUtils from '../../../shared/utilities/FadeoutUtils';
 
 @Component({
   selector: 'user-organization',
@@ -44,7 +45,7 @@ export class UserOrganizationComponent implements OnInit {
   getOrganization(): void {
     this.m_oOrganizationsService.getByUser().subscribe({
       next: (oResponse) => {
-        if (oResponse) {
+        if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           this.m_oOrganization = oResponse;
           this.getOrgVM(this.m_oOrganization.id);
         }

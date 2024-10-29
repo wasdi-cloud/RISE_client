@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { SubscriptionTypeViewModel } from '../../../../models/SubscriptionTypeViewModel';
 import { NotificationsDialogsService } from '../../../../services/notifications-dialogs.service';
+import FadeoutUtils from '../../../../shared/utilities/FadeoutUtils';
 
 @Component({
   selector: 'app-subscription-editor',
@@ -51,7 +52,7 @@ export class SubscriptionEditorComponent implements OnInit {
   getSubscriptionTypes() {
     this.m_oSubscriptionService.getSubscriptionTypes().subscribe({
       next: (oResponse) => {
-        if (oResponse) {
+        if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           this.m_aoSubTypes = oResponse;
         }
       },
@@ -62,7 +63,7 @@ export class SubscriptionEditorComponent implements OnInit {
   getSubscriptionVM(sSubscriptionId: string) {
     this.m_oSubscriptionService.getSubscriptionById(sSubscriptionId).subscribe({
       next: (oResponse) => {
-        if (oResponse) {
+        if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           console.log(oResponse);
           this.m_oSubscription = oResponse;
         }

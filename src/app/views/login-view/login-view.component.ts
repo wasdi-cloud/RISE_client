@@ -14,6 +14,7 @@ import { NotificationsDialogsService } from '../../services/notifications-dialog
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { RiseUtils } from '../../shared/utilities/RiseUtils';
 import { NgIf } from '@angular/common';
+import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 
 @Component({
   selector: 'app-login-view',
@@ -54,7 +55,7 @@ export class LoginViewComponent {
   executeLogin() {
     this.m_oAuthService.loginUser(this.m_oUserInput).subscribe({
       next: (oResponse) => {
-        if (oResponse) {
+        if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           this.m_oOTPVerifyVM = oResponse;
           this.m_bShowOtp = true;
         }

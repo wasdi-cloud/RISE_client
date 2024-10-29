@@ -12,6 +12,7 @@ import { OrganizationsService } from '../../../services/api/organizations.servic
 import { OrganizationViewModel } from '../../../models/OrganizationViewModel';
 import { ConstantsService } from '../../../services/constants.service';
 import { NotificationOptions } from '../../../shared/notification-options/notification-options';
+import FadeoutUtils from '../../../shared/utilities/FadeoutUtils';
 
 @Component({
   selector: 'user-account',
@@ -49,7 +50,7 @@ export class UserAccountComponent implements OnInit {
   getUserInfo() {
     this.m_oOrganizationService.getByUser().subscribe({
       next: (oResponse) => {
-        if (oResponse) {
+        if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           this.m_oOrganization = oResponse;
           this.m_oConstantsService.setOrganization(this.m_oOrganization);
         }
