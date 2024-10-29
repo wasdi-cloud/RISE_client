@@ -159,3 +159,7 @@ input[type="radio"]:checked {
   padding: 5px;
   border: 2px solid var(--rise-white);
 }
+
+.close-btn {
+  cursor: pointer;
+}

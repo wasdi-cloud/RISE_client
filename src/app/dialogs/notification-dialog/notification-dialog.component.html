@@ -1,6 +1,17 @@
 <div class="dialog-container d-flex flex-row" [ngClass]="m_sClassName">
-  <div class="icon-container">
-    <span class="material-symbols-outlined"> check_circle </span>
+  <div *ngIf="m_sClassName" class="icon-container">
+    <span *ngIf="m_sClassName === 'success'" class="material-symbols-outlined">
+      check_circle
+    </span>
+    <span *ngIf="m_sClassName === 'alert'" class="material-symbols-outlined">
+      error
+    </span>
+    <span *ngIf="m_sClassName === 'danger'" class="material-symbols-outlined">
+      warning
+    </span>
+    <span *ngIf="m_sClassName === 'info'" class="material-symbols-outlined">
+      info
+    </span>
   </div>
   <div class="dialog-content-container d-flex flex-column gap-3 flex-fill">
     <div
@@ -11,9 +22,7 @@
         close</span
       >
     </div>
-    <div
-      class="flex-fill dialog-message-container"
-      [innerHTML]="m_sMessage"
-    ></div>
+
+    <div class="dialog-message-container" [innerHTML]="m_sMessage"></div>
   </div>
 </div>

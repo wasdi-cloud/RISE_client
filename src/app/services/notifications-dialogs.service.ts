@@ -21,8 +21,7 @@ export class NotificationsDialogsService {
     sClassName?: string
   ): Observable<boolean> {
     let oDialogRef = this.m_oMatDialog.open(ConfirmationDialogComponent, {
-      minHeight: '200px',
-      width: '500px',
+      maxWidth: '500px',
       panelClass: sClassName ? sClassName : 'generic',
       data: {
         message: sMessage,
@@ -46,7 +45,6 @@ export class NotificationsDialogsService {
 
     let oDialogRef = this.m_oMatDialog.open(NotificationDialogComponent, {
       maxWidth: '500px',
-      minWidth: '500px',
       panelClass: sClassName ? sClassName : 'generic',
       data: {
         message: sMessage,
@@ -57,10 +55,10 @@ export class NotificationsDialogsService {
     });
 
     //Set Automatic timeout for dialog
-    oDialogRef.afterOpened().subscribe((oResponse) => {
-      setTimeout(() => {
-        oDialogRef.close();
-      }, iTimeout);
-    });
+    // oDialogRef.afterOpened().subscribe((oResponse) => {
+    //   setTimeout(() => {
+    //     oDialogRef.close();
+    //   }, iTimeout);
+    // });
   }
 }

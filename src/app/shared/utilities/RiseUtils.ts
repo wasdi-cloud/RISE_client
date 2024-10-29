@@ -10,24 +10,45 @@ export class RiseUtils {
     private m_oNotificationService: NotificationsDialogsService
   ) {}
 
-  handleError(oError) {
-    //TODO: check client, server, network error
-    let sErrorMessage = 'An unexpected error occurred.';
+  // handleError(oError) {
+  //   //TODO: check client, server, network error
+  //   let sErrorMessage = 'An unexpected error occurred.';
 
-    // Use the TranslationServiceWithoutInterception to get translations
-    if (oError.error.errorStringCodes && oError.error.errorStringCodes[0]) {
-      let sTranslatedText = this.m_oTranslationService.instant(
-        'ERROR_MSG.' + oError.error.errorStringCodes[0]
+  //   // Use the TranslationServiceWithoutInterception to get translations
+  //   if (oError.error.errorStringCodes && oError.error.errorStringCodes[0]) {
+  //     let sTranslatedText = this.m_oTranslationService.instant(
+  //       'ERROR_MSG.' + oError.error.errorStringCodes[0]
+  //     );
+  //     sErrorMessage = `Error: ${sTranslatedText}`;
+  //   }
+  //   // Show the translated error message in a dialog
+  //   this.m_oNotificationService.openInfoDialog(
+  //     sErrorMessage,
+  //     'danger',
+  //     'Error'
+  //   );
+  // }
+
+  /**
+   * Format Error Array to pass to either a notification dialog or a snackbar
+   */
+  handleError(aoError: Array<string>): string {
+    let sErrorMsg = `<ul>${aoError.map((sError) => {
+      let sErrorTranslated = this.m_oTranslationService.instant(
+        'ERROR_MSG.' + sError
       );
-      sErrorMessage = `Error: ${sTranslatedText}`;
-    }
-    // Show the translated error message in a dialog
-    this.m_oNotificationService.openInfoDialog(
-      sErrorMessage,
-      'danger',
-      'Error'
-    );
+      return `<li>${sErrorTranslated}</li>`;
+    })}</ul>`;
+
+    return sErrorMsg;
   }
+
+  handleNotificationError(aoError: Array<string>) {
+    let sErrorMsg = this.handleError(aoError);
+    this.m_oNotificationService.openInfoDialog(sErrorMsg, 'alert', 'Error');
+  }
+
+  handleSnackbarError() {}
 
   isStrNullOrEmpty(sString: string) {
     if (sString && typeof sString != 'string') {

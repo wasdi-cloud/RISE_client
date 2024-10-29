@@ -61,7 +61,9 @@ export class LoginViewComponent {
         }
       },
       error: (oError) => {
-        this.invalidOtp(oError.error.errorStringCodes[0]);
+        this.m_oRiseUtils.handleNotificationError(
+          oError.error.errorStringCodes
+        );
       },
     });
   }
@@ -78,16 +80,11 @@ export class LoginViewComponent {
         }
       },
       error: (oError) => {
-        console.log(oError);
-        this.invalidOtp(oError.error.errorStringCodes[0]);
-        // this.m_oRiseUtils.handleError(oError);
+        this.m_oRiseUtils.handleNotificationError(
+          oError.error.errorStringCodes
+        );
       },
     });
-  }
-
-  invalidOtp(sErrorStringCode) {
-    this.m_sErrorInput = 'ERROR_MSG.' + sErrorStringCode;
-    this.m_bValidOtp = false;
   }
 
   verifyLogin() {
