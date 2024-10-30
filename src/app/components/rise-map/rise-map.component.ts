@@ -12,6 +12,14 @@ import {RiseButtonComponent} from "../rise-button/rise-button.component";
 
 // import * as L from 'leaflet';
 declare const L: any;
+const MIN_AREA_CIRCLE = 10000 * 1000 * 1000; // 10,000 square kilometers in square meters
+const MAX_AREA_CIRCLE = 1000000 * 1000 * 1000; // 1,000,000 square kilometers in square meters
+const MAX_WIDTH = 1000 ; // 1,500 kilometers in meters
+const MAX_HEIGHT = 1000; // 1,500 kilometers in meters
+const MIN_WIDTH = 100; // 100 kilometers in meters
+const MIN_HEIGHT = 100; // 100 kilometers in meters
+const MIN_AREA_POLYGON = 10000 * 1000; // Define minimum area (e.g., 10,000 square meters)
+const MAX_AREA_POLYGON = 1000000 * 1000; // Define maximum area (e.g., 1,000,000 square meters)
 
 @Component({
   selector: 'rise-map',
@@ -132,14 +140,83 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   // Different ways to draw an area
   //Using leaflet drawings
   onDrawCreated(oEvent) {
+    const {layerType, layer} = oEvent;
+    if (layerType === 'rectangle') {
+      const bounds = layer.getBounds(); // Get the bounds of the rectangle
+      const southWest = bounds.getSouthWest();
+      const northEast = bounds.getNorthEast();
+      const area = this.m_oMapService.calculateRectangleArea(southWest, northEast);
+      const width = this.m_oMapService.calculateDistance([southWest, { lat: southWest.lat, lng: northEast.lng }]);
+      const height = this.m_oMapService.calculateDistance([southWest, { lat: northEast.lat, lng: southWest.lng }]);
 
-    this.m_oMapService.onDrawCreated(oEvent, this.m_oMap);
-    this.m_bIsDrawCreated=true;
-    this.confirmInsertedArea(oEvent);
-    // this.emitDrawnAreaEvent(oEvent);
+      // Adjust if width or height are out of bounds
+      if (width > MAX_WIDTH || height > MAX_HEIGHT || width < MIN_WIDTH || height < MIN_HEIGHT) {
+        this.m_oNotificationService.openConfirmationDialog(
+          "Area does not respect the limiting Size(X-Y) - Do you want RISE to automatically adjust?",
+          'danger'
+        ).subscribe({
+            next: (oResponse) => {
+              if (oResponse) {
+                this.m_oMapService.adjustRectangleDimensions(layer, width,height);
+                this.m_oMapService.onDrawCreated(oEvent, this.m_oMap);
+                this.m_bIsDrawCreated = true;
+                this.confirmInsertedArea(oEvent);
+              } else {
+                return;
+              }
+            }
+          }
+        )
+      }else{
+        this.m_oMapService.onDrawCreated(oEvent, this.m_oMap);
+        this.m_bIsDrawCreated=true;
+        this.confirmInsertedArea(oEvent);
+      }
+    }
+    if (layerType === 'polygon') {
+      const latlngs = layer.getLatLngs()[0]; // Use the first array of latlngs
+      const area = this.m_oMapService.calculatePolygonArea(latlngs); // Area in square meters
+      if (area < MIN_AREA_POLYGON || area > MAX_AREA_POLYGON){
+        this.m_oNotificationService.openInfoDialog(
+          "Area does not respect the limiting Size(X-Y) - Do you want RISE to automatically adjust?",
+          'danger',
+          'Area does not respond to requirements'
+        )
+      }else{
+        this.m_oMapService.onDrawCreated(oEvent, this.m_oMap);
+        this.m_bIsDrawCreated = true;
+        this.confirmInsertedArea(oEvent);
+      }
+    }
+    if (layerType === 'circle') {
+      const radius = layer.getRadius(); // Radius in meters
+      const area = this.m_oMapService.calculateCircleArea(radius); // Area of the circle (πr²)
+      if(area<MIN_AREA_CIRCLE ||area>MAX_AREA_CIRCLE ){
+        this.m_oNotificationService.openConfirmationDialog(
+          "Area does not respect the limiting Size(X-Y) - Do you want RISE to automatically adjust?",
+          'danger'
+        ).subscribe({
+            next: (oResponse) => {
+              if (oResponse) {
+                this.m_oMapService.adjustCircleArea(layer, area);
+                this.m_oMapService.onDrawCreated(oEvent, this.m_oMap);
+                this.m_bIsDrawCreated = true;
+                this.confirmInsertedArea(oEvent);
+              } else {
+                return;
+              }
+            }
+          }
+        )
+      }else{
+        this.m_oMapService.onDrawCreated(oEvent, this.m_oMap);
+        this.m_bIsDrawCreated=true;
+        this.confirmInsertedArea(oEvent);
+      }
+    }
   }
 
-  //Confirm inserted area
+//Confirm inserted area
   confirmInsertedArea(oEvent?: any, fRadius?: number, fLat?: number, fLng?: number, geoJson?: any) {
     let sMessage: string = "Please confirm your input"
     this.m_oNotificationService.openConfirmationDialog(sMessage).subscribe(bDialogResult => {

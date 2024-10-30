@@ -4,9 +4,10 @@
       class="rise-checkbox"
       type="checkbox"
       [value]="option.value"
+      [checked]="m_aoSelectedValues.includes(option.value)"
       (change)="onCheckboxChange(option.value, $event)"
     />
-    <!-- If there is a translate key, it will be translated, if not the label will be shown -->
+    <!-- Translate or show label directly -->
     {{ option.label | translate }}
   </label>
 </div>

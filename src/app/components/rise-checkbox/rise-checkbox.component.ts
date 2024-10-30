@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import { NgForOf } from '@angular/common';
 import { CheckboxInput } from './checkbox-input';
 import { TranslateModule } from '@ngx-translate/core';
@@ -10,12 +10,20 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './rise-checkbox.component.html',
   styleUrl: './rise-checkbox.component.css',
 })
-export class RiseCheckboxComponent {
+export class RiseCheckboxComponent implements OnChanges{
   @Input() m_aoOptions: Array<CheckboxInput> = [];
   @Output() m_oSelectionChange = new EventEmitter<Array<any>>();
+  @Input() m_aoSelectedValues: any[] = []; // Input for selected values
+  resetKey: number = 0; // Trigger reset on key change
 
-  m_aoSelectedValues: any[] = [];
-
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['resetKey']) {
+      console.log('here')
+      // Reset selected values visually and emit the change
+      this.m_aoSelectedValues = [];
+      this.m_oSelectionChange.emit(this.m_aoSelectedValues);
+    }
+  }
   // Method to handle checkbox change
   onCheckboxChange(value: any, event: any) {
     if (event.target.checked) {

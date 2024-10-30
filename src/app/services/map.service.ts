@@ -665,6 +665,9 @@ export class MapService {
    * @param oMap
    */
   clearPreviousDrawings(oMap) {
+    if(!oMap){
+      oMap=this.getMap();
+    }
     this.m_bIsDrawCreated = false;
     this.m_bIsAutoDrawCreated = false;
     this.m_bIsImportDrawCreated = false;
@@ -783,44 +786,36 @@ export class MapService {
       this.m_oGeocoderMarker = null; // Reset the marker reference
     }
     // For rectangle, calculate area
-    if (layerType === 'rectangle') {
-      const bounds = layer.getBounds(); // Get the bounds of the rectangle
-      const southWest = bounds.getSouthWest();
-      const northEast = bounds.getNorthEast();
-      const area = this.calculateRectangleArea(southWest, northEast);
-      const width = this.calculateDistance([southWest, { lat: southWest.lat, lng: northEast.lng }]);
-      const height = this.calculateDistance([southWest, { lat: northEast.lat, lng: southWest.lng }]);
-
-      // Adjust if width or height are out of bounds
-      if (width > MAX_WIDTH || height > MAX_HEIGHT || width < MIN_WIDTH || height < MIN_HEIGHT) {
-        this.adjustRectangleDimensions(layer, width, height);
-      }
-    }
-
-    // For polyline, calculate total distance
-    if (layerType === 'polyline') {
-      const latlngs = layer.getLatLngs();
-      const totalDistance = this.calculateDistance(latlngs);
-      // alert(`Total distance: ${totalDistance.toFixed(2)} kilometers`);
-    }
-
-    // For polygon, calculate area
-    if (layerType === 'polygon') {
-      const latlngs = layer.getLatLngs()[0]; // Use the first array of latlngs
-      const area = this.calculatePolygonArea(latlngs); // Area in square meters
-      // alert(`Polygon Area: ${(area / 1000000).toFixed(2)} square kilometers`);
-    }
-
-    // For circle, calculate area
-    if (layerType === 'circle') {
-      const radius = layer.getRadius(); // Radius in meters
-      const area = this.calculateCircleArea(radius); // Area of the circle (πr²)
-      if(area<MIN_AREA_CIRCLE ||area>MAX_AREA_CIRCLE ){
-        this.adjustCircleArea(layer,area)
-      }
-      // alert(`Circle Area: ${(area / 1000000).toFixed(2)} square kilometers`);
-    }
-
+    // if (layerType === 'rectangle') {
+    //   const bounds = layer.getBounds(); // Get the bounds of the rectangle
+    //   const southWest = bounds.getSouthWest();
+    //   const northEast = bounds.getNorthEast();
+    //   const area = this.calculateRectangleArea(southWest, northEast);
+    //   const width = this.calculateDistance([southWest, { lat: southWest.lat, lng: northEast.lng }]);
+    //   const height = this.calculateDistance([southWest, { lat: northEast.lat, lng: southWest.lng }]);
+    //
+    // }
+    //
+    // // For polyline, calculate total distance
+    // if (layerType === 'polyline') {
+    //   const latlngs = layer.getLatLngs();
+    //   const totalDistance = this.calculateDistance(latlngs);
+    //   // alert(`Total distance: ${totalDistance.toFixed(2)} kilometers`);
+    // }
+    //
+    // // For polygon, calculate area
+    // if (layerType === 'polygon') {
+    //   const latlngs = layer.getLatLngs()[0]; // Use the first array of latlngs
+    //   const area = this.calculatePolygonArea(latlngs); // Area in square meters
+    //   // alert(`Polygon Area: ${(area / 1000000).toFixed(2)} square kilometers`);
+    // }
+    //
+    // // For circle, calculate area
+    // if (layerType === 'circle') {
+    //   const radius = layer.getRadius(); // Radius in meters
+    //   const area = this.calculateCircleArea(radius); // Area of the circle (πr²)
+    //   // alert(`Circle Area: ${(area / 1000000).toFixed(2)} square kilometers`);
+    // }
     this.m_oDrawnItems.addLayer(layer);
     this.m_bIsDrawCreated = true;
   }

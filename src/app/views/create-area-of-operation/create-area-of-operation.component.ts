@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import {Component, OnInit, EventEmitter, Output, ViewChild, AfterViewInit} from '@angular/core';
 import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
 import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
 
@@ -20,6 +20,7 @@ import { UserOfAreaViewModel } from '../../models/UserOfAreaViewModel';
 import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
 import { RiseUtils } from '../../shared/utilities/RiseUtils';
 import { TranslateService } from '@ngx-translate/core';
+import {MapService} from "../../services/map.service";
 
 @Component({
   selector: 'app-create-area-of-operation',
@@ -38,7 +39,11 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './create-area-of-operation.component.html',
   styleUrl: './create-area-of-operation.component.css',
 })
-export class CreateAreaOfOperationComponent implements OnInit {
+export class CreateAreaOfOperationComponent implements OnInit ,AfterViewInit{
+  resetKey: number = 0; // Reset key for checkboxes
+
+  @ViewChild(RiseCheckboxComponent) riseCheckboxComponent!: RiseCheckboxComponent;
+
   @Output() m_oEmitCancel: EventEmitter<boolean> = new EventEmitter<boolean>(
     null
   );
@@ -70,10 +75,15 @@ export class CreateAreaOfOperationComponent implements OnInit {
     private m_oPluginService: PluginService,
     private m_oRiseUtils: RiseUtils,
     private m_oRouter: Router,
-    private m_oTranslate: TranslateService
+    private m_oTranslate: TranslateService,
+    private m_oMapService: MapService,
   ) {}
-
+ngAfterViewInit(){
+  console.log('RiseCheckboxComponent:', this.riseCheckboxComponent);
+}
   ngOnInit() {
+    // Optional: Ensure the component reference is available
+
     //todo get users that belong to current user org eithr by direct call or get all users and match with current user org id
     this.m_oPluginService.getPluginsList().subscribe({
       next: (aoResponse) => {
@@ -157,7 +167,7 @@ export class CreateAreaOfOperationComponent implements OnInit {
       }
     }
   }
-
+  //todo moving this to map service
   // Convert circle to WKT (approximated as a polygon)
   convertCircleToWKT(
     center: { lat: number; lng: number },
@@ -227,34 +237,35 @@ export class CreateAreaOfOperationComponent implements OnInit {
       markerCoordinates: this.m_sMarkerCoordinates,
       // plugins:this.m_asPluginsSelected
     };
-
+    this.resetAreaOfOperationForm()
     //check if the selected area overlaps or have the same name of an existing one
     // this.checkOverlappingAreasAndSameName(this.m_oAreaOfOperation);
-    this.m_oAreaOfOperationService.addArea(this.m_oAreaOfOperation).subscribe({
-      next: (oResponse) => {
-        //todo send confirmation to HQ operator
-        this.m_oNotificationService.openInfoDialog(
-          'New Area have been added successfully',
-          'success',
-          'Success'
-        );
-        this.m_oRouter.navigateByUrl('/account');
-        // this.m_oAreaOfOperationService.addUserToArea(oResponse.id,)
-      },
-      error: (e) => {
-        // Here handle no valid subscription
-        if (e.error.errorStringCodes[0] === 'ERROR_API_NO_VALID_SUBSCRIPTION') {
-          //open dialog to invite user to buy new subscription
-          this.inviteUserToBuyNewSubscription();
-        }
-      },
-    });
+    // this.m_oAreaOfOperationService.addArea(this.m_oAreaOfOperation).subscribe({
+    //   next: (oResponse) => {
+    //     //todo send confirmation to HQ operator
+    //     this.m_oNotificationService.openInfoDialog(
+    //       'New Area have been added successfully',
+    //       'success',
+    //       'Success'
+    //     );
+    //     this.m_oRouter.navigateByUrl('/account');
+    //     this.resetAreaOfOperationForm()
+    //     // this.m_oAreaOfOperationService.addUserToArea(oResponse.id,)
+    //   },
+    //   error: (e) => {
+    //     // Here handle no valid subscription
+    //     if (e.error.errorStringCodes[0] === 'ERROR_API_NO_VALID_SUBSCRIPTION') {
+    //       //open dialog to invite user to buy new subscription
+    //       this.inviteUserToBuyNewSubscription();
+    //     }
+    //   },
+    // });
   }
 
   cancelCreatingAreaOfOperation() {
     //todo go back to managing area of operations
-    // this.m_oRouter.navigateByUrl('/account');
     this.m_oEmitCancel.emit(false);
+    // this.m_oRouter.navigateByUrl('/account');
   }
 
   handleTableData(tableData: any[]) {
@@ -375,9 +386,11 @@ export class CreateAreaOfOperationComponent implements OnInit {
     // Reset the selected events (checkboxes)
     this.m_asPluginsSelected = [];
 
+
+
     // Reset the users in the table
     this.m_aoFieldUsers = [];
-
+    this.m_oMapService.clearPreviousDrawings(null)
     // this.m_oRiseSelectAreaComponent.clearPreviousDrawings();
   }
 }
