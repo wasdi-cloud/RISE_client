@@ -51,10 +51,7 @@ export class CreateAreaOfOperationComponent implements OnInit ,AfterViewInit{
   m_asPlugins: { label: string; value: string }[] = [];
 
   //todo get users from org
-  m_aoUserData = [
-    { Mail: 'John Doe', User_ID: 'john@example.com' },
-    { Mail: 'Jane Smith', User_ID: 'jane@example.com' },
-  ];
+  m_aoUserData = [];
   m_asUsersColumns: string[] = ['Mail', 'User_ID'];
 
   m_oAreaOfOperation: AreaViewModel;
@@ -390,6 +387,7 @@ ngAfterViewInit(){
 
     // Reset the users in the table
     this.m_aoFieldUsers = [];
+    this.m_aoUserData=[];
     this.m_oMapService.clearPreviousDrawings(null)
     // this.m_oRiseSelectAreaComponent.clearPreviousDrawings();
   }
