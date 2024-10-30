@@ -39,8 +39,14 @@ export interface TileLayer {
 const MAX_STORAGE_SIZE = 2 * 1024 * 1024; // 2MB for testing
 const MIN_ZOOM = 3;
 const MAX_ZOOM = 18;
-const MIN_AREA = 10000 * 1000 * 1000; // 10,000 square kilometers in square meters
-const MAX_AREA = 1000000 * 1000 * 1000; // 1,000,000 square kilometers in square meters
+const MIN_AREA_CIRCLE = 10000 * 1000 * 1000; // 10,000 square kilometers in square meters
+const MAX_AREA_CIRCLE = 1000000 * 1000 * 1000; // 1,000,000 square kilometers in square meters
+const MAX_WIDTH = 1000 ; // 1,500 kilometers in meters
+const MAX_HEIGHT = 1000; // 1,500 kilometers in meters
+const MIN_WIDTH = 100; // 100 kilometers in meters
+const MIN_HEIGHT = 100; // 100 kilometers in meters
+
+
 
 
 @Injectable({
@@ -782,7 +788,13 @@ export class MapService {
       const southWest = bounds.getSouthWest();
       const northEast = bounds.getNorthEast();
       const area = this.calculateRectangleArea(southWest, northEast);
-      // alert(`Rectangle Area: ${area.toFixed(2)} square kilometers`);
+      const width = this.calculateDistance([southWest, { lat: southWest.lat, lng: northEast.lng }]);
+      const height = this.calculateDistance([southWest, { lat: northEast.lat, lng: southWest.lng }]);
+
+      // Adjust if width or height are out of bounds
+      if (width > MAX_WIDTH || height > MAX_HEIGHT || width < MIN_WIDTH || height < MIN_HEIGHT) {
+        this.adjustRectangleDimensions(layer, width, height);
+      }
     }
 
     // For polyline, calculate total distance
@@ -803,8 +815,8 @@ export class MapService {
     if (layerType === 'circle') {
       const radius = layer.getRadius(); // Radius in meters
       const area = this.calculateCircleArea(radius); // Area of the circle (πr²)
-      if(area<MIN_AREA ||area>MAX_AREA ){
-        this.adjustArea(layer,area)
+      if(area<MIN_AREA_CIRCLE ||area>MAX_AREA_CIRCLE ){
+        this.adjustCircleArea(layer,area)
       }
       // alert(`Circle Area: ${(area / 1000000).toFixed(2)} square kilometers`);
     }
@@ -1037,12 +1049,12 @@ export class MapService {
   }
 
   //Auto adjusting the area if it is too big or too small
-  adjustArea(layer, area) {
+  adjustCircleArea(layer, area) {
     let newRadius;
-    if (area > MAX_AREA) {
-      newRadius = Math.sqrt(MAX_AREA / Math.PI);
-    } else if (area < MIN_AREA) {
-      newRadius = Math.sqrt(MIN_AREA / Math.PI);
+    if (area > MAX_AREA_CIRCLE) {
+      newRadius = Math.sqrt(MAX_AREA_CIRCLE / Math.PI);
+    } else if (area < MIN_AREA_CIRCLE) {
+      newRadius = Math.sqrt(MIN_AREA_CIRCLE / Math.PI);
     }
     if (newRadius) {
       layer.setRadius(newRadius);
@@ -1057,5 +1069,25 @@ export class MapService {
   calculateCircleArea(radius: any) {
     return Math.PI * Math.pow(radius, 2)
 
+  }
+
+  adjustRectangleDimensions(layer, width, height) {
+    const bounds = layer.getBounds();
+    const center = bounds.getCenter();
+
+    // Adjust dimensions to max or min constraints
+    // Use max or min dimensions as needed
+    const adjustedWidth = Math.max(MIN_WIDTH, Math.min(width, MAX_WIDTH));
+    const adjustedHeight = Math.max(MIN_HEIGHT, Math.min(height, MAX_HEIGHT));
+
+
+    const metersToDegrees = 0.000009; // Approximately for 1,000 meters scale
+
+    // Calculate new bounds based on the adjusted width and height
+    const newBounds = [
+      [center.lat - (adjustedHeight / 2) * metersToDegrees, center.lng - (adjustedWidth / 2) * metersToDegrees],
+      [center.lat + (adjustedHeight / 2) * metersToDegrees, center.lng + (adjustedWidth / 2) * metersToDegrees],
+    ];
+    layer.setBounds(newBounds); // Apply the new bounds to the rectangle
   }
 }

@@ -226,6 +226,10 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
         center: centroid,
         geoJson: oEvent.layer.toGeoJSON().geometry
       };
+      if(this.m_oDrawMarker){
+        this.m_oMap.removeLayer(this.m_oDrawMarker);
+
+      }
       this.m_oDrawMarker = L.marker([centroid.lat, centroid.lng]).addTo(this.m_oMap);
     }
     // Emit the shape information (area, points, center, radius) to the parent component
