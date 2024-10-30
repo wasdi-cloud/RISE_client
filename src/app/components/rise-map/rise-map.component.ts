@@ -53,8 +53,6 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   m_bIsDrawCreated: boolean = false;
   m_bIsAutoDrawCreated: boolean = false;
   m_bIsImportDrawCreated: boolean = false;
-  m_oImportShapeMarker: L.Marker | null = null;
-  m_oDrawMarker: L.Marker | null = null;
 
   constructor(private m_oMapService: MapService, private m_oNotificationService: NotificationsDialogsService) {
     this.m_oMapService.initTilelayer();
@@ -145,7 +143,6 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       const bounds = layer.getBounds(); // Get the bounds of the rectangle
       const southWest = bounds.getSouthWest();
       const northEast = bounds.getNorthEast();
-      const area = this.m_oMapService.calculateRectangleArea(southWest, northEast);
       const width = this.m_oMapService.calculateDistance([southWest, { lat: southWest.lat, lng: northEast.lng }]);
       const height = this.m_oMapService.calculateDistance([southWest, { lat: northEast.lat, lng: southWest.lng }]);
 
@@ -178,7 +175,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       const area = this.m_oMapService.calculatePolygonArea(latlngs); // Area in square meters
       if (area < MIN_AREA_POLYGON || area > MAX_AREA_POLYGON){
         this.m_oNotificationService.openInfoDialog(
-          "Area does not respect the limiting Size(X-Y) - Do you want RISE to automatically adjust?",
+          "Area does not respect the limiting Size(X-Y) - Please create new area again?",
           'danger',
           'Area does not respond to requirements'
         )
@@ -277,12 +274,6 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
         radius: radius,
         area: iSelectedArea
       };
-      if(this.m_oDrawMarker){
-        this.m_oMap.removeLayer(this.m_oDrawMarker);
-
-      }
-      this.m_oDrawMarker = L.marker([center.lat, center.lng]).addTo(this.m_oMap);
-
     }
     // Check if it's a polygon (including rectangles)
     else if (oEvent.layer instanceof L.Polygon) {
@@ -303,11 +294,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
         center: centroid,
         geoJson: oEvent.layer.toGeoJSON().geometry
       };
-      if(this.m_oDrawMarker){
-        this.m_oMap.removeLayer(this.m_oDrawMarker);
 
-      }
-      this.m_oDrawMarker = L.marker([centroid.lat, centroid.lng]).addTo(this.m_oMap);
     }
     // Emit the shape information (area, points, center, radius) to the parent component
     this.m_oMapInputChange.emit(oShapeInfo);
@@ -353,7 +340,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
         center: centroid,
         geoJson: geoJson
       };
-      this.m_oImportShapeMarker = L.marker([centroid.lat, centroid.lng]).addTo(this.m_oMap);
+
 
     } else if (geoJson.type === "circle") {
       //todo will have to test with file to verify

@@ -786,36 +786,32 @@ export class MapService {
       this.m_oGeocoderMarker = null; // Reset the marker reference
     }
     // For rectangle, calculate area
-    // if (layerType === 'rectangle') {
-    //   const bounds = layer.getBounds(); // Get the bounds of the rectangle
-    //   const southWest = bounds.getSouthWest();
-    //   const northEast = bounds.getNorthEast();
-    //   const area = this.calculateRectangleArea(southWest, northEast);
-    //   const width = this.calculateDistance([southWest, { lat: southWest.lat, lng: northEast.lng }]);
-    //   const height = this.calculateDistance([southWest, { lat: northEast.lat, lng: southWest.lng }]);
-    //
-    // }
-    //
-    // // For polyline, calculate total distance
-    // if (layerType === 'polyline') {
-    //   const latlngs = layer.getLatLngs();
-    //   const totalDistance = this.calculateDistance(latlngs);
-    //   // alert(`Total distance: ${totalDistance.toFixed(2)} kilometers`);
-    // }
-    //
-    // // For polygon, calculate area
-    // if (layerType === 'polygon') {
-    //   const latlngs = layer.getLatLngs()[0]; // Use the first array of latlngs
-    //   const area = this.calculatePolygonArea(latlngs); // Area in square meters
-    //   // alert(`Polygon Area: ${(area / 1000000).toFixed(2)} square kilometers`);
-    // }
-    //
-    // // For circle, calculate area
-    // if (layerType === 'circle') {
-    //   const radius = layer.getRadius(); // Radius in meters
-    //   const area = this.calculateCircleArea(radius); // Area of the circle (πr²)
-    //   // alert(`Circle Area: ${(area / 1000000).toFixed(2)} square kilometers`);
-    // }
+    if (layerType === 'rectangle' ||layerType === 'polygon' ) {
+      const latlngs = layer.getLatLngs()[0]; // Use the first array of latlngs
+      const points = latlngs.map((point: L.LatLng) => {
+        return {lat: point.lat, lng: point.lng};
+      });
+      // Calculate the centroid (center) of the polygon
+      const centroid = this.calculateCentroid(points);
+      if(this.m_oDrawMarker){
+        oMap.removeLayer(this.m_oDrawMarker);
+
+      }
+      this.m_oDrawMarker = L.marker([centroid.lat, centroid.lng]).addTo(oMap);
+    }
+    // For circle, calculate area
+    if (layerType === 'circle') {
+      const radius = layer.getRadius(); // Radius in meters
+      const center = oEvent.layer.getLatLng();
+      const area = this.calculateCircleArea(radius); // Area of the circle (πr²)
+      if(this.m_oDrawMarker){
+        oMap.removeLayer(this.m_oDrawMarker);
+
+      }
+      this.m_oDrawMarker = L.marker([center.lat, center.lng]).addTo(oMap);
+      // alert(`Circle Area: ${(area / 1000000).toFixed(2)} square kilometers`);
+    }
+
     this.m_oDrawnItems.addLayer(layer);
     this.m_bIsDrawCreated = true;
   }
@@ -901,7 +897,19 @@ export class MapService {
     return oDialog.afterClosed().pipe(
       tap(oResult => {
         this.clearPreviousDrawings(oMap);
+
         this.oGeoJsonLayer = L.geoJSON(oResult).addTo(oMap);
+        // GeoJSON coordinates are in [lng, lat] format, need to convert to [lat, lng]
+        const latLngs = oResult.geometry.coordinates[0].map((point: [number, number]) => {
+          return L.latLng(point[1], point[0]); // Convert [lng, lat] to [lat, lng]
+        });
+        // Prepare the points data
+        const points = latLngs.map((point: L.LatLng) => {
+          return {lat: point.lat, lng: point.lng};
+        });
+        // Calculate the centroid (center) of the polygon
+        const centroid = this.calculateCentroid(points);
+        this.m_oImportShapeMarker = L.marker([centroid.lat, centroid.lng]).addTo(oMap);
         oMap.fitBounds(this.oGeoJsonLayer.getBounds());
       })
     );
@@ -1084,5 +1092,21 @@ export class MapService {
       [center.lat + (adjustedHeight / 2) * metersToDegrees, center.lng + (adjustedWidth / 2) * metersToDegrees],
     ];
     layer.setBounds(newBounds); // Apply the new bounds to the rectangle
+  }
+  calculateCentroid(points: Array<{ lat: number, lng: number }>): { lat: number, lng: number } {
+    let latSum = 0;
+    let lngSum = 0;
+    const numPoints = points.length;
+
+    points.forEach(point => {
+      latSum += point.lat;
+      lngSum += point.lng;
+    });
+
+    // Return the average lat and lng to get the centroid
+    return {
+      lat: latSum / numPoints,
+      lng: lngSum / numPoints
+    };
   }
 }
