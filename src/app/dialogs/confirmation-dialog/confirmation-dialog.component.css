@@ -1,6 +1,7 @@
 .dialog-container {
+  background-color: var(--wasdiBluelight) !important;
   border-radius: 8px;
-  border: 1px solid var(--neutral20);
+  border: 1px solid var(--neutral50Brand) !important;
   color: #000000;
   gap: 16px;
   overflow: hidden;
