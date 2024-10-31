@@ -301,7 +301,7 @@ export class MapService {
             const blob = await response.blob();
 
             // Cache the tile
-            await this.cacheEsriTile(url, blob);
+            await this.cacheTiles(url, blob);
 
 
             const blobUrl = URL.createObjectURL(blob);
@@ -459,30 +459,29 @@ export class MapService {
    * @references https://github.com/perliedman/leaflet-control-geocoder
    */
   initGeoSearchPluginForOpenStreetMap(oMap) {
-    if (oMap == null) {
+    if (!oMap) {
       oMap = this.m_oRiseMap;
     }
 
-    if (this.m_oGeocoderControl == null) {
+
+    if (!this.m_oGeocoderControl) {
       this.m_oGeocoderControl = L.geocoder();
     }
 
-    if (this.m_oGeocoderControl != null) {
-      const geocoderControl = this.m_oGeocoderControl;
-      geocoderControl.addTo(oMap);
-      // geocoderControl.on('markgeocode', (event) => {
-      //   // Remove the existing marker if it exists
-      //   if (this.m_oGeocoderMarker) {
-      //     this.m_oRiseMap.removeLayer(this.m_oGeocoderMarker);
-      //   }
-      //
-      //   // Add a new marker based on the geocode result
-      //   const latlng = event.geocode.center;
-      //   this.m_oGeocoderMarker = L.marker(latlng,{iconDefault}).addTo(oMap);
-      // });
+    const oGeocoderControl = this.m_oGeocoderControl;
+    oGeocoderControl.addTo(oMap);
 
-    }
+    // Clear any previous 'markgeocode' listeners to prevent multiple markers
+    oGeocoderControl.off('markgeocode');
+
+    oGeocoderControl.on('markgeocode', (event) => {
+      this.clearPreviousDrawings(oMap);
+      const aoLatLng = event.geocode.center;
+      this.m_oGeocoderMarker = L.marker(aoLatLng).addTo(oMap);
+      oMap.setView(aoLatLng, 14);
+    });
   }
+
 
   /**
    * Adds Mouse Position and Scale to the actual map
@@ -706,6 +705,10 @@ export class MapService {
       oMap.removeLayer(this.oGeoJsonLayer);
       this.oGeoJsonLayer = null;  // Reset reference
     }
+    if(this.m_oGeocoderMarker){
+      oMap.removeLayer(this.m_oGeocoderMarker);
+      this.m_oGeocoderMarker=null;
+    }
   }
 
   /**
@@ -914,8 +917,12 @@ export class MapService {
       })
     );
   }
-
-  async cacheEsriTile(tileUrl: string, blob: Blob) {
+  /**
+   * Cache Tiles of the Map
+   * @param tileUrl
+   * @param blob
+   */
+  async cacheTiles(tileUrl: string, blob: Blob) {
     try {
       // Open the IndexedDB and store the tile
       const db = await this.openIndexedDb();
@@ -959,8 +966,11 @@ export class MapService {
       console.error('Error caching tile:', error);
     }
   }
+  /**
+   * Calculate total storage size
+   * @param store
+   */
 
-// Modify calculateTotalStorageSize to accept a store as a parameter
   async calculateTotalStorageSize(store: IDBObjectStore): Promise<number> {
     return new Promise((resolve, reject) => {
       let totalSize = 0;
@@ -982,7 +992,10 @@ export class MapService {
       };
     });
   }
-
+  /**
+   * Evict the oldest tiles to free the storage
+   * @param store
+   */
   async evictOldestTiles(store: IDBObjectStore) {
     return new Promise((resolve, reject) => {
       console.log(store.index('timestamp'))
@@ -1004,7 +1017,10 @@ export class MapService {
       };
     });
   }
-
+  /**
+   * Evict the oldest tiles to free the storage
+   * @param url
+   */
   async getTileFromCache(url: string): Promise<Blob | null> {
     const db = await this.openIndexedDb();
 
