@@ -1,0 +1,11 @@
+.dialog-container {
+  /*border-radius: 8px;*/
+  /*border: 1px solid var(--neutral20);*/
+  background-color: var(--rise-teal);
+  /*gap: 16px;*/
+  /*overflow: hidden;*/
+  /*overflow-wrap: break-word;*/
+  /*padding: 16px;*/
+  /*width: 100%;*/
+  /*height: 100%;*/
+}
