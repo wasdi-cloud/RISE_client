@@ -163,3 +163,25 @@ input[type="radio"]:checked {
 .close-btn {
   cursor: pointer;
 }
+
+/* Selector for Leaflet buttons - excluding Geocoder and attributions */
+.leaflet-bar a,
+.leaflet-control-layers-toggle {
+  background-color: rgba(0, 31, 40, 0.5) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--rise-text-bright) !important;
+  gap: 8px;
+  border-radius: 6px;
+}
+.leaflet-control-layers,
+.leaflet-control-geocoder {
+  background-color: transparent !important;
+}
+
+.leaflet-top.leaflet-right {
+  top: 4rem !important;
+}
+
+.leaflet-top {
+  z-index: 998 !important;
+}
