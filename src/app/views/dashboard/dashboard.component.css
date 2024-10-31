@@ -1,4 +1,12 @@
 div.map-container {
+  position: relative;
+}
+
+.user-menu {
+  position: absolute;
+  right: 0.75rem;
+  z-index: 999;
+  top: 1rem;
 }
 
 .rise-sidebar {
@@ -8,7 +16,7 @@ div.map-container {
   position: absolute;
   z-index: 999;
   padding: 1rem;
-  height: calc(93vh - 2px);
+  height: 100%;
   width: 25%;
 }
 img {

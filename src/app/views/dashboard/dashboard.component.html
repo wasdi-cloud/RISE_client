@@ -1,12 +1,12 @@
 <main class="d-flex flex-column">
-  <rise-toolbar [m_bUserIsSigned]="true"></rise-toolbar>
+  <!-- <rise-toolbar [m_bUserIsSigned]="true"></rise-toolbar> -->
   <div class="flex-fill d-flex flex-row">
     <div class="rise-sidebar d-flex flex-column gap-3">
-      <!-- <img
+      <img
         class="align-self-start"
         src="/assets/rise-assets/logo-white-horizontal.svg"
         alt=""
-      /> -->
+      />
       <rise-text-input
         [m_sLocalizationKey]="'DASHBOARD.SEARCH'"
         [m_sIcon]="'search'"
@@ -23,6 +23,7 @@
       <rise-alerts-widget [m_aoAlerts]="m_aoAlerts"></rise-alerts-widget>
     </div>
     <div class="map-container flex-fill">
+      <rise-user-menu class="user-menu"></rise-user-menu>
       <rise-map [m_aoAreas]="m_aoAreas"></rise-map>
     </div>
   </div>

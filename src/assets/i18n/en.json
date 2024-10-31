@@ -147,6 +147,13 @@
     "NOTIFICATIONS": "Notifications",
     "OLD_PW": "Old Password"
   },
+  "USER_MENU": {
+    "ACCOUNT": "Account",
+    "HELP": "Help",
+    "LANGUAGE": "Language",
+    "LOGOUT": "Logout",
+    "SUBSCRIPTIONS": "Subscriptions"
+  },
   "WIDGET": {
     "AFFECTED_PPL": "Affected People",
     "ALERTS": "Alerts",

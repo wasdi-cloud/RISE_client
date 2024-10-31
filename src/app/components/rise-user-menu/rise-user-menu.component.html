@@ -1,0 +1,26 @@
+<div class="dropdown">
+  <div
+    class="user-icon"
+    data-bs-toggle="dropdown"
+    aria-expanded="false"
+    aria-haspopup="true"
+    (click)="toggleDropdown()"
+  >
+    <span class="material-symbols-outlined"> account_circle </span>
+  </div>
+
+  <div *ngIf="m_bShowDropdown" class="dropdown-list d-flex flex-column gap-1">
+    <div class="name">Jane Doe</div>
+    <div class="email">jane.doe&#64;wasdi.cloud</div>
+    <ul class="d-flex flex-column gap-2 pt-2">
+      <li
+        *ngFor="let oItem of m_aoMenuItems"
+        class="d-flex flex-row align-items-center gap-2"
+        (click)="handleClick(oItem.name)"
+      >
+        <span class="material-symbols-outlined"> {{ oItem.icon }} </span>
+        {{ oItem.translation | translate }}
+      </li>
+    </ul>
+  </div>
+</div>

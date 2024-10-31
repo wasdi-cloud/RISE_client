@@ -1089,6 +1089,4 @@ export class MapService {
     // Return the Subject as an Observable to subscribe in the component
     return this.circleDrawnSubject.asObservable();
   }
-
-  addProfileButton() {}
 }

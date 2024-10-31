@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
 import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
 import { TranslateModule } from '@ngx-translate/core';
@@ -22,17 +22,21 @@ import { UserSubscriptionsComponent } from './user-subscriptions/user-subscripti
     TranslateModule,
     UserAccountComponent,
     UserOrganizationComponent,
-    UserSubscriptionsComponent
+    UserSubscriptionsComponent,
   ],
   templateUrl: './account.component.html',
   styleUrl: './account.component.css',
 })
-export class AccountComponent {
-  m_sActiveOutlet: string = 'user';
+export class AccountComponent implements OnInit {
+  @Input() m_sActiveOutlet: string = 'user';
 
   m_aoAccountButtons: Array<any> = AccountBtns;
 
   constructor(private m_oRouter: Router) {}
+
+  ngOnInit(): void {
+    this.m_sActiveOutlet = history.state['m_sActiveOutlet'];
+  }
 
   public navigateRoute(sLocation: string) {
     this.m_oRouter.navigateByUrl(`/${sLocation}`);

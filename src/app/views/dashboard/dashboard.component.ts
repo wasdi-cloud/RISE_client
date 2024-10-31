@@ -3,32 +3,34 @@ import { Router } from '@angular/router';
 
 import { RiseAffectedWidgetComponent } from './rise-affected-widget/rise-affected-widget.component';
 import { RiseAlertsWidgetComponent } from './rise-alerts-widget/rise-alerts-widget.component';
+import { RiseBannerComponent } from '../../components/rise-banner/rise-banner.component';
 import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
 import { RiseMapComponent } from '../../components/rise-map/rise-map.component';
 import { RiseOngoingWidgetComponent } from './rise-ongoing-widget/rise-ongoing-widget.component';
+import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
 import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
+import { RiseUserMenuComponent } from '../../components/rise-user-menu/rise-user-menu.component';
 
 import { EventViewModel } from '../../models/EventViewModel';
 import { AreaViewModel } from '../../models/AreaViewModel';
 import { AreaService } from '../../services/api/area.service';
 import { MapService } from '../../services/map.service';
 import { Subscription } from 'rxjs';
-import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
-import { RiseBannerComponent } from '../../components/rise-banner/rise-banner.component';
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [
-    RiseToolbarComponent,
-    RiseButtonComponent,
-    RiseMapComponent,
+    RiseAffectedWidgetComponent,
     RiseAlertsWidgetComponent,
     RiseBannerComponent,
-    RiseAffectedWidgetComponent,
+    RiseButtonComponent,
+    RiseMapComponent,
     RiseOngoingWidgetComponent,
     RiseTextInputComponent,
+    RiseToolbarComponent,
+    RiseUserMenuComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
