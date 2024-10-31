@@ -22,7 +22,11 @@
         (click)="onConfirm()"
         [m_sRole]="'action'"
       ></rise-button>
-      <rise-button [m_sLabel]="'Cancel'" (click)="onDismiss()"></rise-button>
+      <rise-button
+        [m_sLabel]="'Cancel'"
+        [m_sRole]="'primary'"
+        (click)="onDismiss()"
+      ></rise-button>
     </div>
   </div>
 </div>

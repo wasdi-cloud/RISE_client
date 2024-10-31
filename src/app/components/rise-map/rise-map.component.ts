@@ -9,6 +9,7 @@ import {LeafletDrawModule} from '@asymmetrik/ngx-leaflet-draw';
 import {AreaViewModel} from '../../models/AreaViewModel';
 import {NotificationsDialogsService} from "../../services/notifications-dialogs.service";
 import {RiseButtonComponent} from "../rise-button/rise-button.component";
+import { TranslateService } from '@ngx-translate/core';
 
 // import * as L from 'leaflet';
 declare const L: any;
@@ -54,7 +55,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   m_bIsAutoDrawCreated: boolean = false;
   m_bIsImportDrawCreated: boolean = false;
 
-  constructor(private m_oMapService: MapService, private m_oNotificationService: NotificationsDialogsService) {
+  constructor(private m_oMapService: MapService, private m_oNotificationService: NotificationsDialogsService, private m_oTranslate:TranslateService) {
     this.m_oMapService.initTilelayer();
     this.m_oMapService.setMapOptions();
     this.m_oMapOptions = this.m_oMapService.m_oOptions;
@@ -139,6 +140,9 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   //Using leaflet drawings
   onDrawCreated(oEvent) {
     const {layerType, layer} = oEvent;
+    const sErrorMsg: string = this.m_oTranslate.instant("AREA_OF_OPERATIONS.CONFIRM_AREA_TOO_BIG");
+    const sErrorMsgAdjust: string = this.m_oTranslate.instant("AREA_OF_OPERATIONS.CONFIRM_CREATE_NEW_AREA");
+    const sErrorHeader: string = this.m_oTranslate.instant("AREA_OF_OPERATIONS.AREA_HEADER");
     if (layerType === 'rectangle') {
       const bounds = layer.getBounds(); // Get the bounds of the rectangle
       const southWest = bounds.getSouthWest();
@@ -149,7 +153,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       // Adjust if width or height are out of bounds
       if (width > MAX_WIDTH || height > MAX_HEIGHT || width < MIN_WIDTH || height < MIN_HEIGHT) {
         this.m_oNotificationService.openConfirmationDialog(
-          "Area does not respect the limiting Size(X-Y) - Do you want RISE to automatically adjust?",
+          sErrorMsg,
           'danger'
         ).subscribe({
             next: (oResponse) => {
@@ -175,9 +179,9 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       const area = this.m_oMapService.calculatePolygonArea(latlngs); // Area in square meters
       if (area < MIN_AREA_POLYGON || area > MAX_AREA_POLYGON){
         this.m_oNotificationService.openInfoDialog(
-          "Area does not respect the limiting Size(X-Y) - Please create new area again?",
+          sErrorMsgAdjust,
           'danger',
-          'Area does not respond to requirements'
+          sErrorHeader
         )
       }else{
         this.m_oMapService.onDrawCreated(oEvent, this.m_oMap);
@@ -190,8 +194,8 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       const area = this.m_oMapService.calculateCircleArea(radius); // Area of the circle (πr²)
       if(area<MIN_AREA_CIRCLE ||area>MAX_AREA_CIRCLE ){
         this.m_oNotificationService.openConfirmationDialog(
-          "Area does not respect the limiting Size(X-Y) - Do you want RISE to automatically adjust?",
-          'danger'
+          sErrorMsg,
+          'danger',
         ).subscribe({
             next: (oResponse) => {
               if (oResponse) {

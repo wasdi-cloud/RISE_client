@@ -14,7 +14,10 @@
     "CREATE_NEW_AREA_OF_OPERATION": "Create new area of operations",
     "CONFIRM_SAME_AREA": "The area that you have selected overlaps with another area.",
     "CONFIRM_SAME_NAME": "The area that you have selected shares a name with an already existing area",
-    "CONFIRM": "<bt>Proceed anyways?"
+    "CONFIRM": "<bt>Proceed anyways?",
+    "CONFIRM_AREA_TOO_BIG": "The area you've selected is too large. Click 'confirm' to have RISE automatically adjust it.",
+    "CONFIRM_CREATE_NEW_AREA": "The area you've selected is too large. Please adjust the dimensions.",
+    "AREA_HEADER": "Area too large!"
   },
   "BANNER": {
     "LIVE_SIT": "Live Situation",

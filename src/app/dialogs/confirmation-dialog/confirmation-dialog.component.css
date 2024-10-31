@@ -1,18 +1,50 @@
 .dialog-container {
   border-radius: 8px;
-  background-color: var(--rise-teal-600);
+  border: 1px solid var(--neutral20);
+  color: #000000;
   gap: 16px;
+  overflow: hidden;
+  overflow-wrap: break-word;
   padding: 16px;
+  width: 100%;
+  height: 100%;
 }
 
 .dialog-container.success {
-  border: 1px solid #009036 !important;
-  background-color: #ebf7ef !important;
+  border: 1px solid var(--wasdiGreen) !important;
+  background-color: var(--wasdiGreenLight) !important;
 }
+
+.dialog-container.alert {
+  border: 1px solid var(--wasdiWarn) !important;
+  background-color: var(--wasdiWarnLight) !important;
+  margin-bottom: 0 !important;
+}
+
+.dialog-container.danger {
+  border: 1px solid var(--wasdiDanger) !important;
+  background-color: var(--wasdiDangerLight) !important;
+}
+
+.dialog-container.info {
+  border: 1px solid var(--neutral50Brand) !important;
+  background-color: var(--wasdiBluelight) !important;
+}
+
 .alert-header {
   color: #000000;
   font-size: 16px;
   line-height: 24px;
+}
+
+.dialog-content-container {
+  overflow: hidden;
+  overflow-wrap: break-word;
+}
+
+.dialog-message-container {
+  max-height: 50vh;
+  /* overflow-y: scroll; */
 }
 
 .success > .icon-container {
@@ -30,8 +62,6 @@
 .info > .icon-container {
   color: var(--neutral50Brand);
 }
-
-
 ::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
-  background-color: transparent;
+  background-color: transparent !important;
 }
