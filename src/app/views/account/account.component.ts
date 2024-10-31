@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { UserOrganizationComponent } from './user-organization/user-organization.component';
 import { AreaOfOperationsComponent } from '../area-of-operations/area-of-operations.component';
 import { UserSubscriptionsComponent } from './user-subscriptions/user-subscriptions.component';
+import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 @Component({
   selector: 'app-account',
   standalone: true,
@@ -35,7 +36,9 @@ export class AccountComponent implements OnInit {
   constructor(private m_oRouter: Router) {}
 
   ngOnInit(): void {
-    this.m_sActiveOutlet = history.state['m_sActiveOutlet'];
+    if (!FadeoutUtils.utilsIsObjectNullOrUndefined(history.state['m_sActiveOutlet'])) {
+      this.m_sActiveOutlet = history.state['m_sActiveOutlet'];
+    }
   }
 
   public navigateRoute(sLocation: string) {
