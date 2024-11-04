@@ -163,7 +163,21 @@ input[type="radio"]:checked {
 .close-btn {
   cursor: pointer;
 }
+.leaflet-control-geocoder-icon {
+  border-radius: 8px;
+}
 
+.leaflet-touch .leaflet-bar {
+  border: none !important;
+  border-radius: 8px;
+}
+.leaflet-touch .leaflet-bar a {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 36px !important;
+  width: 36px !important;
+}
 /* Selector for Leaflet buttons - excluding Geocoder and attributions */
 .leaflet-bar a,
 .leaflet-control-layers-toggle {
@@ -171,17 +185,119 @@ input[type="radio"]:checked {
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: var(--rise-text-bright) !important;
   gap: 8px;
-  border-radius: 6px;
+  border-radius: 8px !important;
 }
+.leaflet-control-layers,
+.leaflet-control-geocoder {
+  background-color: transparent !important;
+  color: var(--rise-text-bright);
+}
+.leaflet-touch .leaflet-control-layers {
+  border: none !important;
+}
+.leaflet-touch .leaflet-control-layers-toggle {
+  height: 36px;
+  width: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.leaflet-draw-toolbar > a:not(:first-child) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.dashboard-map > .leaflet-control-container > .leaflet-top.leaflet-right {
+  top: 3.5rem !important;
+  right: 0.15rem !important;
+}
+
+.leaflet-top {
+  z-index: 998 !important;
+}
+
+/* Selector for the Leaflet Geocoder */
+button.leaflet-control-geocoder-icon {
+  backdrop-filter: blur(20px);
+  background-color: rgba(0, 31, 40, 0.4) !important;
+  background-image: url("/assets/rise-assets/geocoder-search.svg");
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+  height: 36px !important;
+  width: 36px !important;
+}
+
 .leaflet-control-layers,
 .leaflet-control-geocoder {
   background-color: transparent !important;
 }
 
-.dashboard-map > .leaflet-control-container > .leaflet-top.leaflet-right {
-  top: 3rem !important;
+.leaflet-control-geocoder-expanded {
+  background-color: rgba(13, 16, 21, 0.8) !important;
+  border-radius: 24px !important;
+  color: #ffffff;
 }
 
-.leaflet-top {
-  z-index: 998 !important;
+.leaflet-control-geocoder-form input {
+  width: 200px !important;
+  color: #ffffff;
+}
+
+.leaflet-control-geocoder-expanded > .leaflet-control-geocoder-icon {
+  background-color: transparent !important;
+}
+
+.leaflet-control-geocoder-form {
+  color: #ffffff !important;
+  padding-left: 8px;
+}
+
+.leaflet-control-geocoder-address-context {
+  color: #ffffff !important;
+}
+
+.leaflet-control-geocoder-alternatives > li > a {
+  background-color: transparent !important;
+  width: 250px !important;
+  line-height: 18px !important;
+}
+
+.leaflet-control-geocoder-alternatives > li:hover,
+.leaflet-control-geocoder-alternatives > li > a:hover {
+  background-color: rgba(13, 16, 21, 0.9) !important;
+}
+
+.leaflet-touch .leaflet-draw-toolbar,
+.leaflet-draw-draw-rectangle,
+.leaflet-draw-draw-polyline,
+.leaflet-draw-draw-polygon,
+.leaflet-draw-draw-circle {
+  background-position: center !important;
+  background-size: 25px !important;
+}
+
+.leaflet-touch .leaflet-draw-toolbar .leaflet-draw-draw-rectangle {
+  background-image: url("/assets/rise-assets/square-icon.svg") !important;
+}
+
+.leaflet-touch .leaflet-draw-toolbar .leaflet-draw-draw-polyline {
+  background-image: url("/assets/rise-assets/diagonal-line.svg") !important;
+}
+
+.leaflet-touch .leaflet-draw-toolbar .leaflet-draw-draw-polygon {
+  background-image: url("/assets/rise-assets/pentagon.svg") !important;
+}
+
+.leaflet-touch .leaflet-draw-toolbar .leaflet-draw-draw-circle {
+  background-image: url("/assets/rise-assets/circle.svg") !important;
+}
+
+.leaflet-control-layers-toggle {
+  background-image: url("/assets/rise-assets/layers.svg") !important;
+}
+
+.leaflet-top .leaflet-control {
+  margin-top: 8px !important;
 }

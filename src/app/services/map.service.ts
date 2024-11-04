@@ -294,9 +294,8 @@ export class MapService {
               }
               const blob = await response.blob();
 
-            // Cache the tile
-            await this.cacheTiles(url, blob);
-
+              // Cache the tile
+              await this.cacheTiles(url, blob);
 
               const blobUrl = URL.createObjectURL(blob);
               event.tile.src = blobUrl;
@@ -403,7 +402,6 @@ export class MapService {
       oMap = this.m_oRiseMap;
     }
 
-
     if (!this.m_oGeocoderControl) {
       this.m_oGeocoderControl = L.geocoder();
     }
@@ -421,7 +419,6 @@ export class MapService {
       oMap.setView(aoLatLng, 14);
     });
   }
-
 
   /**
    * Adds Mouse Position and Scale to the actual map
@@ -645,9 +642,9 @@ export class MapService {
       oMap.removeLayer(this.oGeoJsonLayer);
       this.oGeoJsonLayer = null; // Reset reference
     }
-    if(this.m_oGeocoderMarker){
+    if (this.m_oGeocoderMarker) {
       oMap.removeLayer(this.m_oGeocoderMarker);
-      this.m_oGeocoderMarker=null;
+      this.m_oGeocoderMarker = null;
     }
   }
 
@@ -1040,20 +1037,10 @@ export class MapService {
           oContainer
         );
         oDrawButton.innerHTML =
-          '<span class="material-symbols-outlined">adjust</span>';
-        oDrawButton.title = 'Draw Circle';
-
-        const oCancelButton = L.DomUtil.create(
-          'a',
-          'leaflet-control-button',
-          oContainer
-        );
-        oCancelButton.innerHTML =
-          '<span class="material-symbols-outlined">cancel</span>';
-        oCancelButton.title = 'Cancel Drawing';
+          '<span class="material-symbols-outlined">architecture</span>';
+        oDrawButton.title = 'Insert Circle';
 
         L.DomEvent.disableClickPropagation(oDrawButton);
-        L.DomEvent.disableClickPropagation(oCancelButton);
 
         L.DomEvent.on(oDrawButton, 'click', () => {
           this.clearPreviousDrawings(oMap);
@@ -1084,19 +1071,6 @@ export class MapService {
           };
 
           oMap.on('click', onMapClick);
-        });
-
-        L.DomEvent.on(oCancelButton, 'click', () => {
-          if (this.m_oLastCircle) {
-            oMap.removeLayer(this.m_oLastCircle);
-            this.m_oLastCircle = null; // Reset reference
-          }
-          if (this.m_oLastMarker) {
-            oMap.removeLayer(this.m_oLastMarker);
-            this.m_oLastMarker = null; // Reset reference
-          }
-          bIsDrawing = false;
-          oMap.off('click');
         });
 
         return oContainer;
