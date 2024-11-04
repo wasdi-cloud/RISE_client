@@ -178,8 +178,8 @@ input[type="radio"]:checked {
   background-color: transparent !important;
 }
 
-.leaflet-top.leaflet-right {
-  top: 4rem !important;
+.dashboard-map > .leaflet-control-container > .leaflet-top.leaflet-right {
+  top: 3rem !important;
 }
 
 .leaflet-top {

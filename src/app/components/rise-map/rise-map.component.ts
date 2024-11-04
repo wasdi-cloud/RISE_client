@@ -64,6 +64,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
    * Is the map appearing on the user dashboard area?
    */
   @Input() m_bDashboardMap: boolean = false;
+  
   @Output() m_oMapInputChange = new EventEmitter();
 
   m_oMap: L.Map;
