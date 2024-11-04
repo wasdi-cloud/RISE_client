@@ -64,7 +64,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
    * Is the map appearing on the user dashboard area?
    */
   @Input() m_bDashboardMap: boolean = false;
-  
+
   @Output() m_oMapInputChange = new EventEmitter();
 
   m_oMap: L.Map;
@@ -88,6 +88,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     this.m_oMapService.initTilelayer();
     this.m_oMapService.setMapOptions();
     this.m_oMapOptions = this.m_oMapService.m_oOptions;
+
 
     this.m_oDrawOptions = this.m_oMapService.m_oDrawOptions;
     this.m_oDrawnItems = this.m_oMapService.m_oDrawnItems;
@@ -136,6 +137,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       this.addCircleButton(oMap);
     }
 
+    this.m_oMapService.addZoom()
     oMap.on('baselayerchange', (e) => {
       console.log('base layer changed');
       this.m_oMapService.setActiveLayer(oMap, e.layer);

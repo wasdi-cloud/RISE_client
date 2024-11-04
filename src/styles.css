@@ -169,7 +169,8 @@ input[type="radio"]:checked {
 
 .leaflet-touch .leaflet-bar {
   border: none !important;
-  border-radius: 8px;
+  border-radius: 8px !important;
+  cursor: pointer;
 }
 .leaflet-touch .leaflet-bar a {
   display: flex;
@@ -178,6 +179,16 @@ input[type="radio"]:checked {
   height: 36px !important;
   width: 36px !important;
 }
+
+a.leaflet-control-zoom-in {
+  border-top-left-radius: 8px !important;
+  border-top-right-radius: 8px !important;
+}
+
+a.leaflet-control-zoom-out {
+  border-bottom-left-radius: 8px !important;
+  border-bottom-right-radius: 8px !important;
+}
 /* Selector for Leaflet buttons - excluding Geocoder and attributions */
 .leaflet-bar a,
 .leaflet-control-layers-toggle {
@@ -185,7 +196,6 @@ input[type="radio"]:checked {
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: var(--rise-text-bright) !important;
   gap: 8px;
-  border-radius: 8px !important;
 }
 .leaflet-control-layers,
 .leaflet-control-geocoder {
@@ -199,6 +209,7 @@ input[type="radio"]:checked {
   height: 36px;
   width: 36px;
   border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
 }
 
 .leaflet-draw-toolbar > a:not(:first-child) {
@@ -235,8 +246,9 @@ button.leaflet-control-geocoder-icon {
 }
 
 .leaflet-control-geocoder-expanded {
-  background-color: rgba(13, 16, 21, 0.8) !important;
-  border-radius: 24px !important;
+  backdrop-filter: blur(20px);
+  background-color: rgba(0, 31, 40, 0.4) !important;
+  border-radius: 8px !important;
   color: #ffffff;
 }
 
@@ -269,6 +281,7 @@ button.leaflet-control-geocoder-icon {
   background-color: rgba(13, 16, 21, 0.9) !important;
 }
 
+a.leaflet-control-button,
 .leaflet-touch .leaflet-draw-toolbar,
 .leaflet-draw-draw-rectangle,
 .leaflet-draw-draw-polyline,
@@ -276,6 +289,7 @@ button.leaflet-control-geocoder-icon {
 .leaflet-draw-draw-circle {
   background-position: center !important;
   background-size: 25px !important;
+  border-radius: 8px;
 }
 
 .leaflet-touch .leaflet-draw-toolbar .leaflet-draw-draw-rectangle {
@@ -300,4 +314,22 @@ button.leaflet-control-geocoder-icon {
 
 .leaflet-top .leaflet-control {
   margin-top: 8px !important;
+}
+
+.leaflet-control-layers-expanded {
+  backdrop-filter: blur(20px);
+  background-color: rgba(0, 31, 40, 0.4) !important;
+  border-radius: 10px;
+}
+
+.leaflet-control-layers-base {
+  border-radius: 8px;
+}
+
+.leaflet-control-layers-base > label > span {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  padding: 6px;
 }

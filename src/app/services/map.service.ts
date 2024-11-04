@@ -1082,4 +1082,9 @@ export class MapService {
     // Return the Subject as an Observable to subscribe in the component
     return this.circleDrawnSubject.asObservable();
   }
+
+  addZoom() {
+    let oMap = this.m_oRiseMap
+    L.control.zoom({ position: 'bottomright' }).addTo(oMap);
+  }
 }
