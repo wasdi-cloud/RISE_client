@@ -16,15 +16,6 @@
       ></rise-button>
     </div>
     <!-- Button options for if the user has an account AND is signed in -->
-    <div class="d-flex flex-row gap-3" *ngIf="userIsSigned">
-      <rise-button
-        [m_sLabel]="'TOOLBAR.ACCOUNT' | translate"
-        (click)="navigateRoute('account')"
-      ></rise-button>
-      <rise-button
-        [m_sLabel]="'TOOLBAR.LOGOUT' | translate"
-        (click)="navigateRoute('login')"
-      ></rise-button>
-    </div>
+   <rise-user-menu *ngIf="m_bUserIsSigned"></rise-user-menu>
   </div>
 </nav>

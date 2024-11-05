@@ -149,6 +149,7 @@
   },
   "USER_MENU": {
     "ACCOUNT": "Account",
+    "DASHBOARD": "Dashboard",
     "HELP": "Help",
     "LANGUAGE": "Language",
     "LOGOUT": "Logout",
