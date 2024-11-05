@@ -167,6 +167,14 @@ input[type="radio"]:checked {
   border-radius: 8px;
 }
 
+.leaflet-control-button {
+  border-radius: 8px !important;
+}
+
+.leaflet-draw-toolbar > a {
+  border-radius: 8px !important;
+}
+
 .leaflet-touch .leaflet-bar {
   border: none !important;
   border-radius: 8px !important;
