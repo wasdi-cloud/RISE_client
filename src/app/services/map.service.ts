@@ -690,40 +690,6 @@ export class MapService {
   }
 
   /**
-   * Import shape file
-   * @param oMap
-   */
-  openImportDialog(oMap: L.Map): Observable<any> {
-    let oDialog = this.m_oDialog.open(ImportShapeFileStationDialogComponent, {
-      height: '425px',
-      width: '660px',
-    });
-    return oDialog.afterClosed().pipe(
-      tap((oResult) => {
-        this.clearPreviousDrawings(oMap);
-
-        this.oGeoJsonLayer = L.geoJSON(oResult).addTo(oMap);
-        // GeoJSON coordinates are in [lng, lat] format, need to convert to [lat, lng]
-        const latLngs = oResult.geometry.coordinates[0].map(
-          (point: [number, number]) => {
-            return L.latLng(point[1], point[0]); // Convert [lng, lat] to [lat, lng]
-          }
-        );
-        // Prepare the points data
-        const points = latLngs.map((point: L.LatLng) => {
-          return { lat: point.lat, lng: point.lng };
-        });
-        // Calculate the centroid (center) of the polygon
-        const centroid = this.calculateCentroid(points);
-        this.m_oImportShapeMarker = L.marker([
-          centroid.lat,
-          centroid.lng,
-        ]).addTo(oMap);
-        oMap.fitBounds(this.oGeoJsonLayer.getBounds());
-      })
-    );
-  }
-  /**
    * Cache Tiles of the Map
    * @param tileUrl
    * @param blob
@@ -944,6 +910,66 @@ export class MapService {
   }
 
   /****** MAP BUTTONS ******/
+
+  addImportButton(oMap: any) {
+    let oController = this;
+    const oImportButton = L.Control.extend({
+      options: {
+        position: 'topright',
+      },
+      onAdd: function (oMap) {
+        // Create the container for the dialog
+        let oContainer = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+        // Create the button to add to leaflet
+        let oButton = L.DomUtil.create(
+          'a',
+          'leaflet-control-button',
+          oContainer
+        );
+        // Click stops on our button
+        L.DomEvent.disableClickPropagation(oButton);
+
+        L.DomEvent.on(oButton, 'click', function () {
+          let oDialog = oController.m_oDialog.open(
+            ImportShapeFileStationDialogComponent,
+            {
+              height: '425px',
+              width: '660px',
+            }
+          );
+          oDialog.afterClosed().subscribe((oResult) => {
+            oController.clearPreviousDrawings(oMap);
+
+            oController.oGeoJsonLayer = L.geoJSON(oResult).addTo(oMap);
+            // GeoJSON coordinates are in [lng, lat] format, need to convert to [lat, lng]
+            const latLngs = oResult.geometry.coordinates[0].map(
+              (point: [number, number]) => {
+                return L.latLng(point[1], point[0]); // Convert [lng, lat] to [lat, lng]
+              }
+            );
+            // Prepare the points data
+            const points = latLngs.map((point: L.LatLng) => {
+              return { lat: point.lat, lng: point.lng };
+            });
+            // Calculate the centroid (center) of the polygon
+            const centroid = oController.calculateCentroid(points);
+            oController.m_oImportShapeMarker = L.marker([
+              centroid.lat,
+              centroid.lng,
+            ]).addTo(oMap);
+            oMap.fitBounds(oController.oGeoJsonLayer.getBounds());
+          });
+        });
+
+        oButton.innerHTML =
+          '<span class="material-symbols-outlined">shapes</span>';
+
+        oContainer.title = 'Import Shape File';
+        return oContainer;
+      },
+    });
+    oMap.addControl(new oImportButton());
+  }
   /**
    * Go to a position by inserting coords
    * @param oMap
@@ -1084,7 +1110,7 @@ export class MapService {
   }
 
   addZoom() {
-    let oMap = this.m_oRiseMap
+    let oMap = this.m_oRiseMap;
     L.control.zoom({ position: 'bottomright' }).addTo(oMap);
   }
 }

@@ -1,4 +1,11 @@
-import {Component, OnInit, EventEmitter, Output, ViewChild, AfterViewInit} from '@angular/core';
+import {
+  Component,
+  OnInit,
+  EventEmitter,
+  Output,
+  ViewChild,
+  AfterViewInit,
+} from '@angular/core';
 import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
 import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
 
@@ -19,8 +26,8 @@ import { PluginService } from '../../services/api/plugin.service';
 import { UserOfAreaViewModel } from '../../models/UserOfAreaViewModel';
 import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
 import { RiseUtils } from '../../shared/utilities/RiseUtils';
-import { TranslateService } from '@ngx-translate/core';
-import {MapService} from "../../services/map.service";
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MapService } from '../../services/map.service';
 
 @Component({
   selector: 'app-create-area-of-operation',
@@ -29,7 +36,7 @@ import {MapService} from "../../services/map.service";
   imports: [
     RiseToolbarComponent,
     RiseTextInputComponent,
-
+    TranslateModule,
     RiseCrudTableComponent,
     RiseMapComponent,
     RiseCheckboxComponent,
@@ -39,10 +46,11 @@ import {MapService} from "../../services/map.service";
   templateUrl: './create-area-of-operation.component.html',
   styleUrl: './create-area-of-operation.component.css',
 })
-export class CreateAreaOfOperationComponent implements OnInit ,AfterViewInit{
+export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
   resetKey: number = 0; // Reset key for checkboxes
 
-  @ViewChild(RiseCheckboxComponent) riseCheckboxComponent!: RiseCheckboxComponent;
+  @ViewChild(RiseCheckboxComponent)
+  riseCheckboxComponent!: RiseCheckboxComponent;
 
   @Output() m_oEmitCancel: EventEmitter<boolean> = new EventEmitter<boolean>(
     null
@@ -73,11 +81,11 @@ export class CreateAreaOfOperationComponent implements OnInit ,AfterViewInit{
     private m_oRiseUtils: RiseUtils,
     private m_oRouter: Router,
     private m_oTranslate: TranslateService,
-    private m_oMapService: MapService,
+    private m_oMapService: MapService
   ) {}
-ngAfterViewInit(){
-  console.log('RiseCheckboxComponent:', this.riseCheckboxComponent);
-}
+  ngAfterViewInit() {
+    console.log('RiseCheckboxComponent:', this.riseCheckboxComponent);
+  }
   ngOnInit() {
     // Optional: Ensure the component reference is available
 
@@ -234,7 +242,7 @@ ngAfterViewInit(){
       markerCoordinates: this.m_sMarkerCoordinates,
       // plugins:this.m_asPluginsSelected
     };
-    this.resetAreaOfOperationForm()
+    this.resetAreaOfOperationForm();
     //check if the selected area overlaps or have the same name of an existing one
     // this.checkOverlappingAreasAndSameName(this.m_oAreaOfOperation);
     // this.m_oAreaOfOperationService.addArea(this.m_oAreaOfOperation).subscribe({
@@ -383,12 +391,10 @@ ngAfterViewInit(){
     // Reset the selected events (checkboxes)
     this.m_asPluginsSelected = [];
 
-
-
     // Reset the users in the table
     this.m_aoFieldUsers = [];
-    this.m_aoUserData=[];
-    this.m_oMapService.clearPreviousDrawings(null)
+    this.m_aoUserData = [];
+    this.m_oMapService.clearPreviousDrawings(null);
     // this.m_oRiseSelectAreaComponent.clearPreviousDrawings();
   }
 }

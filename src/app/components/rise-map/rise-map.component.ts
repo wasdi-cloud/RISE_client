@@ -89,7 +89,6 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     this.m_oMapService.setMapOptions();
     this.m_oMapOptions = this.m_oMapService.m_oOptions;
 
-
     this.m_oDrawOptions = this.m_oMapService.m_oDrawOptions;
     this.m_oDrawnItems = this.m_oMapService.m_oDrawnItems;
     this.m_oDrawOptions.edit.featureGroup = this.m_oDrawnItems;
@@ -133,25 +132,18 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
         this.m_oMapService.addMarker(oArea, oMap);
       }
     } else {
+      this.addImportBtn(oMap);
       this.addManualBbox(oMap);
       this.addCircleButton(oMap);
     }
 
-    this.m_oMapService.addZoom()
+    this.m_oMapService.addZoom();
     oMap.on('baselayerchange', (e) => {
       console.log('base layer changed');
       this.m_oMapService.setActiveLayer(oMap, e.layer);
     });
   }
-
-  //Import shape file
-  openImportDialog() {
-    this.m_oMapService.openImportDialog(this.m_oMap).subscribe((oResult) => {
-      this.m_bIsImportDrawCreated = true;
-      this.confirmInsertedArea(null, null, null, null, oResult);
-    });
-  }
-
+  
   addCircleButton(oMap: L.Map): void {
     this.m_oMapService.addCircleButton(oMap).subscribe((circleData) => {
       this.m_bIsAutoDrawCreated = true;
@@ -163,6 +155,10 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   //Go to position by inserting coords
   addManualBbox(oMap: any) {
     this.m_oMapService.addManualBbox(oMap);
+  }
+
+  addImportBtn(oMap: any) {
+    this.m_oMapService.addImportButton(oMap);
   }
 
   // Different ways to draw an area
