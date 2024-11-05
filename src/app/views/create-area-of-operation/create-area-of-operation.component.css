@@ -1,0 +1,31 @@
+.area-outlet {
+  height: 100%;
+}
+.header {
+  background-color: var(--surface-glass-interactive);
+  border-radius: 10px;
+  backdrop-filter: blur(20px);
+  color: var(--rise-text-bright);
+  font-size: 20px;
+  line-height: 30px;
+  font-weight: 900;
+}
+
+.create-container {
+  width: 100%;
+}
+
+.map-container {
+  height: 100%;
+  width: 100%;
+}
+
+.create-sidebar {
+  background-color: rgba(0, 31, 40, 0.8);
+  border-right: 1px solid var(--rise-border-default);
+  backdrop-filter: blur(10px);
+  height: 100%;
+  padding: 1rem;
+  width: 40%;
+  z-index: 999;
+}

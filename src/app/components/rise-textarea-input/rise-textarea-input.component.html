@@ -1,3 +1,6 @@
+<label *ngIf="m_bHasTitle" class="form-label" for="{{ m_sName }}"
+>{{ m_sLocalizationKey | translate }}
+</label>
 <div class="input-group">
   <textarea
     [placeholder]="m_sLocalizationKey | translate"
@@ -11,6 +14,4 @@
     Please ensure the values are the same.
   </div>
 </div>
-<!-- <label for="{{m_sName}}">{{m_sLocalizationKey | translate}}</label>
-<textarea  class="form-control no-resize" rows="5"
-           cols="50" name="{{m_sName}}" ></textarea> -->
+

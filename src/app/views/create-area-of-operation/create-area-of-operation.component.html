@@ -1,29 +1,63 @@
-<div class="d-flex flex-row gap-3 p-2">
-  <!-- Left column -->
-  <div class="d-flex flex-column flex-fill gap-5">
-    <rise-text-input
-      [(m_sInputText)]="m_sAreaOfOperationName"
-      [m_sLocalizationKey]="'CREATE_NEW_AREA_OF_OPERATION.NAME'"
-      class="mb-3"
-    ></rise-text-input>
-    <rise-textarea-input
-      [(m_sInputText)]="m_sAreaOfOperationDescription"
-      [m_sLocalizationKey]="'CREATE_NEW_AREA_OF_OPERATION.DESCRIPTION'"
-      class="mb-3"
-    ></rise-textarea-input>
-
-    <!-- Spacing added with mb-3 for margin bottom -->
-    <div class="mb-3">
-      <rise-checkbox
-        [m_aoOptions]="this.m_asPlugins"
-        (m_oSelectionChange)="onSelectionChange($event)"
-        [m_aoSelectedValues]="this.m_asPluginsSelected"
-
-      >
-      </rise-checkbox>
+<div class="area-outlet flex-fill d-flex flex-column">
+  <div
+    class="header d-flex flex-row align-items-center justify-content-between mt-2 p-2"
+  >
+    Create New Area of Operations
+    <rise-button
+      [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.SAVE'"
+      (click)="SaveAreaOfOperation()"
+    ></rise-button>
+  </div>
+  <div class="create-container flex-fill d-flex flex-row my-3">
+    <div class="create-sidebar d-flex flex-column justify-content-between">
+      <div class="d-flex flex-column gap-2">
+        <rise-text-input
+          [m_bHasTitle]="true"
+          [(m_sInputText)]="m_sAreaOfOperationName"
+          [m_sLocalizationKey]="'CREATE_NEW_AREA_OF_OPERATION.NAME'"
+        ></rise-text-input>
+        <rise-textarea-input
+          [m_bHasTitle]="true"
+          [(m_sInputText)]="m_sAreaOfOperationDescription"
+          [m_sLocalizationKey]="'CREATE_NEW_AREA_OF_OPERATION.DESCRIPTION'"
+        ></rise-textarea-input>
+        <div>
+          Select Plugins:
+          <rise-checkbox
+            [m_aoOptions]="this.m_asPlugins"
+            (m_oSelectionChange)="onSelectionChange($event)"
+            [m_aoSelectedValues]="this.m_asPluginsSelected"
+          >
+          </rise-checkbox>
+        </div>
+        <rise-button [m_sLabel]="'Manage Users'"></rise-button>
+      </div>
+      <div class="d-flex flex-column gap-2">
+        <rise-button
+          [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.SAVE'"
+          (click)="SaveAreaOfOperation()"
+        ></rise-button>
+        <rise-button
+          [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.CANCEL'"
+          [m_sRole]="'muted'"
+          (click)="cancelCreatingAreaOfOperation()"
+        ></rise-button>
+      </div>
     </div>
+    <div class="map-container">
+      <rise-map
+        (m_oMapInputChange)="onMapInputChange($event)"
+        [m_bIsSelectingArea]="true"
+      ></rise-map>
+    </div>
+  </div>
+</div>
+<!-- <div class="d-flex flex-row gap-3 p-2">
 
-    <!-- Spacing added with mb-3 for margin bottom -->
+  <div class="d-flex flex-column flex-fill gap-5">
+  
+
+
     <div class="mb-3">
       <rise-crud-table
         [m_sButtonLabel]="'CREATE_NEW_AREA_OF_OPERATION.ADD_FIELD_OPERATOR'"
@@ -37,17 +71,10 @@
     </div>
   </div>
 
-  <!-- Right column for the map -->
+
   <div class="col-8">
-    <div style="height: 500px; position: relative">
-      <rise-map
-        (m_oMapInputChange)="onMapInputChange($event)"
-        [m_sMapTitle]="'Define your Area'"
-        [m_bIsSelectingArea]="true"
-        class="h-100"
-      ></rise-map>
-    </div>
-    <!-- Buttons aligned at the bottom-right -->
+   
+
     <div class="position-absolute" style="bottom: 10px; right: 10px">
       <rise-button
         [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.SAVE'"
@@ -60,4 +87,4 @@
       ></rise-button>
     </div>
   </div>
-</div>
+</div> -->

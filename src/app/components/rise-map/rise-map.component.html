@@ -1,17 +1,8 @@
 <div class="map-container">
-  <div
-    class="d-flex align-items-center justify-content-between mb-3"
-    *ngIf="m_bIsSelectingArea"
-  >
-    <div *ngIf="m_sMapTitle">
-      <h2 class="map-title">{{ m_sMapTitle }}</h2>
-    </div>
-    <rise-button
+  <!-- <rise-button
       [m_sLabel]="'RISE_SELECT_AREA.UPLOAD_SHAPE_FILE'"
       (click)="openImportDialog()"
-    ></rise-button>
-  </div>
-
+    ></rise-button> -->
   <div class="map-frame">
     <ng-container *ngIf="m_bIsSelectingArea; else nonDrawMap">
       <!-- Map with leafletDraw when selecting area -->

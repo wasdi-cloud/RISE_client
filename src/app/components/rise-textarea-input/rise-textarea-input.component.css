@@ -4,6 +4,10 @@ textarea:focus {
   border: 1px solid var(--rise-text-dim);
   color: var(--rise-text-bright);
 }
+.form-label {
+  color: var(--rise-text-dim);
+  line-height: 12px;
+}
 
 .no-border {
   border-left: none;
