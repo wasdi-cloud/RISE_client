@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { DefaultMenuItems, ReducedMenuItems } from './menu-items';
+import {
+  DefaultMenuItems,
+  FullMenuItems,
+  ReducedMenuItems,
+} from './menu-items';
 import { NgFor, NgIf } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import {
@@ -29,10 +33,13 @@ export class RiseUserMenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.m_oActivatedRoute.url.subscribe((params) => {
-      let bInAccount = params.toString().includes('account');
-      !bInAccount
-        ? (this.m_aoMenuItems = DefaultMenuItems)
-        : (this.m_aoMenuItems = ReducedMenuItems);
+      if (params.toString().includes('account')) {
+        this.m_aoMenuItems = ReducedMenuItems;
+      } else if (params.toString().includes('monitor')) {
+        this.m_aoMenuItems = FullMenuItems;
+      } else {
+        this.m_aoMenuItems = DefaultMenuItems;
+      }
     });
   }
 
@@ -56,14 +63,10 @@ export class RiseUserMenuComponent implements OnInit {
     }
   }
 
-  /**
-   * Support function to check if the account button should be replaced with dashboard
-   */
-  hideAccount() {
-    return true;
-  }
 
   toggleDropdown() {
     this.m_bShowDropdown = !this.m_bShowDropdown;
+    console.log("clicked")
+    console.log(this.m_bShowDropdown)
   }
 }

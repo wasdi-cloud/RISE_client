@@ -1,7 +1,13 @@
 <main class="d-flex flex-column">
-  <rise-toolbar [m_bUserIsSigned]="true"></rise-toolbar>
+  <!-- <rise-user-menu ></rise-user-menu> -->
+  <!-- <rise-toolbar [m_bUserIsSigned]="true"></rise-toolbar> -->
   <div class="flex-fill d-flex flex-row">
     <div class="rise-sidebar d-flex flex-column gap-2 px-2">
+      <img
+        class="align-self-start"
+        src="/assets/rise-assets/logo-white-horizontal.svg"
+        alt=""
+      />
       <!-- Layer List output -->
       @if(m_aoLayers.length > 0) {
       <rise-layer-item
@@ -12,7 +18,12 @@
       ></rise-layer-item>
       } @else { No layers to show }
     </div>
-    <div class="map-output-container flex-fill">
+    <div class="map-container flex-fill">
+      <rise-user-menu class="user-menu"></rise-user-menu>
+      <rise-map [m_bDashboardMap]="true"></rise-map>
+    </div>
+    <!-- <div class="map-output-container flex-fill">
+      <rise-timebar class="timebar"></rise-timebar>
       @if (m_bShow2D === true) {
       <div class="layer-select-container"></div>
       <div
@@ -26,11 +37,11 @@
           (click)="setActivePlugin(oPlugin)"
         ></rise-map-chip>
       </div>
-      <!-- <rise-timebar class="timebar"></rise-timebar> -->
-      <rise-map></rise-map>
+    
+      <rise-map [m_bDashboardMap]="true"></rise-map>
       } @else {
       <rise-globe></rise-globe>
       }
-    </div>
+    </div> -->
   </div>
 </main>

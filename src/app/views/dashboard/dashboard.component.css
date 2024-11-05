@@ -2,13 +2,6 @@ div.map-container {
   position: relative;
 }
 
-.user-menu {
-  position: absolute;
-  right: 0.75rem;
-  z-index: 999;
-  top: 1rem;
-}
-
 .rise-sidebar {
   background-color: rgba(0, 31, 40, 0.8);
   border-right: 1px solid var(--rise-border-default);

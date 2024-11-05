@@ -160,6 +160,13 @@ input[type="radio"]:checked {
   border: 2px solid var(--rise-white);
 }
 
+.user-menu {
+  position: absolute;
+  right: 0.75rem;
+  z-index: 999;
+  top: 1rem;
+}
+
 .close-btn {
   cursor: pointer;
 }

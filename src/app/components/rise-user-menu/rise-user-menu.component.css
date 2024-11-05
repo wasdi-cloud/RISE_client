@@ -23,7 +23,7 @@ div.dropdown-list {
   right: 0rem;
   top: 2.5rem;
   width: 260px;
-  z-index: 99999;
+  z-index: 999999;
 }
 
 .email {

@@ -20,8 +20,7 @@ export class AreaService {
    * @return
    */
   getAreaList() {
-    let urlParams = "?" + "token=" + this.m_oConstantsService.getSessionId();
-    return this.m_oHttp.get<any>(this.APIURL + '/area/list' + urlParams);
+    return this.m_oHttp.get<any>(this.APIURL + '/area/list');
   }
 
   /**
@@ -116,6 +115,4 @@ export class AreaService {
     urlParams = urlParams + "&" + "id=" + sId;
     return this.m_oHttp.post<any>(this.APIURL + '/area/check_area' + urlParams, oArea);
   }
-
-
 }

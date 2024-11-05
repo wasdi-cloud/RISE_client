@@ -16,7 +16,6 @@
     <ul class="d-flex flex-column gap-2 pt-2">
       <li
         *ngFor="let oItem of m_aoMenuItems"
-        [hidden]="hideAccount()"
         class="d-flex flex-row align-items-center gap-2"
         (click)="handleClick(oItem.name)"
       >

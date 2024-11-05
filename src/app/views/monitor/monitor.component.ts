@@ -20,6 +20,7 @@ import { LayerService } from '../../services/api/layer.service';
 import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
 import { RiseMapChipComponent } from '../../components/rise-map-chip/rise-map-chip.component';
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
+import { RiseUserMenuComponent } from '../../components/rise-user-menu/rise-user-menu.component';
 
 @Component({
   selector: 'app-monitor',
@@ -32,6 +33,7 @@ import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
     RiseToolbarComponent,
     RiseGlobeComponent,
     RiseTimebarComponent,
+    RiseUserMenuComponent,
     RiseLayerItemComponent,
     TranslateModule,
   ],
@@ -87,17 +89,17 @@ export class MonitorComponent implements OnInit {
   }
 
   openAOI(sAreaId: string) {
-    this.m_oAreaService.getAreaById(sAreaId).subscribe({
-      next: (oResponse) => {
-        if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
-          this.getMapsByArea(oResponse.id, oResponse.startDate);
-          this.m_oMapService.flyToMonitorBounds(oResponse.bbox);
-        }
-      },
-      error: (oError) => {
-        console.log(oError);
-      },
-    });
+      this.m_oAreaService.getAreaById(sAreaId).subscribe({
+        next: (oResponse) => {
+          if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
+            this.getMapsByArea(oResponse.id, oResponse.startDate);
+            this.m_oMapService.flyToMonitorBounds(oResponse.bbox);
+          }
+        },
+        error: (oError) => {
+          console.log(oError);
+        },
+      });
   }
 
   getMapsByArea(sAreaId: string, iAreaDate?: string | number) {

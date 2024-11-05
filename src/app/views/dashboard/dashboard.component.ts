@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { RiseAffectedWidgetComponent } from './rise-affected-widget/rise-affected-widget.component';
@@ -55,7 +55,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   constructor(
     private m_oAreaService: AreaService,
     private m_oMapService: MapService,
-    private m_oRouter: Router
+    private m_oRouter: Router,
+    private ngZone: NgZone
   ) {}
 
   ngOnInit(): void {
@@ -118,7 +119,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * TODO: Open the Monitor view with selected area of interest
    */
   openMonitor(oArea) {
-    this.m_oRouter.navigateByUrl(`monitor/${oArea.id}`);
+    this.ngZone.run(() => this.m_oRouter.navigateByUrl(`monitor/${oArea.id}`));
   }
 
   /**
