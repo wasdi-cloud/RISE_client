@@ -25,7 +25,7 @@
   border-right: 1px solid var(--rise-border-default);
   backdrop-filter: blur(10px);
   height: 100%;
-  padding: 1rem;
+  padding: 0rem 1rem;
   width: 40%;
   z-index: 999;
 }

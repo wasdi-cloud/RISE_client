@@ -133,12 +133,12 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
         this.m_oMapService.addMarker(oArea, oMap);
       }
     } else {
-      oMap.fullscreenControl.link.innerHTML = "<span class='material-symbols-outlined'>fullscreen</span>"
       this.addImportBtn(oMap);
       this.addManualBbox(oMap);
       this.addCircleButton(oMap);
     }
-
+    
+    oMap.fullscreenControl.link.innerHTML = "<span class='material-symbols-outlined'>fullscreen</span>"
     this.m_oMapService.addZoom();
     oMap.on('baselayerchange', (e) => {
       console.log('base layer changed');
