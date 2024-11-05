@@ -49,7 +49,7 @@ export class AreaOfOperationsComponent implements OnInit {
   ];
   m_oSelectedArea: AreaViewModel = {};
 
-  m_bShowNewArea: boolean = false;
+  m_bShowNewArea: boolean = true;
 
   constructor(
     private m_oAreaService: AreaService,

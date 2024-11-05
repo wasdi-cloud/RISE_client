@@ -19,6 +19,7 @@ import { AreaViewModel } from '../../models/AreaViewModel';
 import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
 import { RiseButtonComponent } from '../rise-button/rise-button.component';
 import { TranslateService } from '@ngx-translate/core';
+import 'leaflet.fullscreen'
 
 // import * as L from 'leaflet';
 declare const L: any;
@@ -132,6 +133,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
         this.m_oMapService.addMarker(oArea, oMap);
       }
     } else {
+      oMap.fullscreenControl.link.innerHTML = "<span class='material-symbols-outlined'>fullscreen</span>"
       this.addImportBtn(oMap);
       this.addManualBbox(oMap);
       this.addCircleButton(oMap);
@@ -143,7 +145,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       this.m_oMapService.setActiveLayer(oMap, e.layer);
     });
   }
-  
+
   addCircleButton(oMap: L.Map): void {
     this.m_oMapService.addCircleButton(oMap).subscribe((circleData) => {
       this.m_bIsAutoDrawCreated = true;

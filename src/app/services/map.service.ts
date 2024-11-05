@@ -119,6 +119,10 @@ export class MapService {
       featureGroup: new L.FeatureGroup(),
       edit: false,
       remove: false,
+      fullscreenControl: true,
+      fullscreenControlOptions: {
+        position: 'topleft'
+      }
     },
   };
 
@@ -152,7 +156,7 @@ export class MapService {
       fullscreenControlOptions: {
         position: 'topleft',
       },
-    };
+    };  
   }
 
   /**
