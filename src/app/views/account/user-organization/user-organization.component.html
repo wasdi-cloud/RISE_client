@@ -79,6 +79,7 @@
     </div>
   </div>
   <invite-user
+    [m_sOrganizationId]="m_oOrganization.id"
     *ngIf="m_bInviteUser"
     (m_oBackEmitter)="openInviteUser(false)"
   ></invite-user>

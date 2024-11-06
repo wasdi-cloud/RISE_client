@@ -127,7 +127,6 @@ export class InviteUserComponent implements OnInit {
         role: this.m_sUserRole,
         organizationId: this.m_sOrganizationId,
       };
-
       this.m_oOrganizationsService.inviteUser(oInvite).subscribe({
         next: (oResponse) => {
           if (oResponse.status === 200) {

@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { RegisterViewModel } from '../../models/RegisterViewModel';
 import { UserCredentialsViewModel } from '../../models/UserCredentialsViewModel';
 import { ConstantsService } from '../constants.service';
+import {ConfirmInviteViewModel} from "../../models/ConfirmInviteViewModel";
 
 @Injectable({
   providedIn: 'root',
@@ -99,7 +100,7 @@ export class AuthService {
    * @param oConfirmationVM
    * @returns
    */
-  confirmUser(oConfirmationVM: any) {
+  confirmUser(oConfirmationVM: ConfirmInviteViewModel) {
     return this.m_oHttp.post<any>(
       this.APIURL + '/auth/confirm_usr',
       oConfirmationVM
