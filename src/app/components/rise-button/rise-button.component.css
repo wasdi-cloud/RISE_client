@@ -8,6 +8,10 @@
   width: 100%;
 }
 
+.btn:disabled {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
 /* Default button styling */
 .regular {
   background-color: rgba(255, 255, 255, 0.12);

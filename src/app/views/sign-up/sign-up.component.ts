@@ -82,6 +82,13 @@ export class SignUpComponent {
     private m_oTranslate: TranslateService
   ) {}
 
+  /***********************
+   * Custom Form Validators
+   ************************/
+  /**
+   * Check if the passwords entered match each other + password criteria
+   * @returns boolean
+   */
   validatePassword(): boolean {
     let sPassword = this.m_oPasswordInputs.password;
     let sConfirmPw = this.m_oPasswordInputs.confirmPw;
@@ -107,6 +114,10 @@ export class SignUpComponent {
     }
   }
 
+  /**
+   * Check if the emails entered match each other + email criteria
+   * @returns boolean
+   */
   validateEmail(): boolean {
     let sEmail = this.m_oEmailInputs.email;
     let sConfirmEmail = this.m_oEmailInputs.confirmEmail;
@@ -128,6 +139,10 @@ export class SignUpComponent {
     }
   }
 
+  /**
+   * TODO: Add phone number validation
+   * @returns boolean
+   */
   validatePhone(sPhone: string): boolean {
     return true;
   }
@@ -183,52 +198,38 @@ export class SignUpComponent {
     this.m_sCurrentPg = sPage;
   }
 
-  checkInputs(sPage) {
-    switch (this.m_sCurrentPg) {
-      case 'username':
-        this.validateEmail() && this.validatePassword()
-          ? this.setPage(sPage)
-          : '';
-        break;
-      case 'personal':
-        this.checkPersonalInfo();
-        this.m_bPersonalValid ? this.setPage(sPage) : '';
-        break;
-      case 'organization':
-        this.checkOrgInfo();
-        this.m_bOrgIsValid ? this.setPage(sPage) : '';
-        break;
-      default:
-        this.setPage(sPage);
-        break;
-    }
-  }
-
-  checkOrgInfo() {
-    this.m_bOrgIsValid = true;
+  checkOrgInfo(bTouched?: boolean) {
+    let bOrgIsValid = true;
     Object.entries(this.m_oOrgInfoInput).forEach((aEntry) => {
-      aEntry[1] === '' ? (this.m_bOrgIsValid = false) : '';
+      aEntry[1] === '' ? (bOrgIsValid = false) : '';
     });
 
-    if (!this.m_bOrgIsValid) {
+    if (!bOrgIsValid) {
       this.m_sOrgError = "Please ensure your organization's input is complete.";
     }
+
+    if (bTouched) {
+      return bOrgIsValid;
+    }
+    this.m_bOrgIsValid = bOrgIsValid;
+    return this.m_bOrgIsValid;
   }
 
-  checkPersonalInfo() {
+  checkPersonalInfo(bIsTouched) {
+    let bIsValid = false;
     if (
       this.m_oUserInfoInput.name &&
       this.m_oUserInfoInput.surname &&
       this.m_oUserInfoInput.mobile
     ) {
-      this.m_bPersonalValid = true;
-      return true;
+      bIsValid = true;
     } else {
       this.m_sPersonalError =
         "Please ensure you've entered a name, surname, and mobile number";
-      this.m_bPersonalValid = false;
-      return false;
+      bIsTouched ? (bIsValid = false) : '';
     }
+
+    return bIsValid;
   }
 
   handleAPIErrors(asStringCodes) {
@@ -247,5 +248,34 @@ export class SignUpComponent {
       }
     });
     this.setPage('username');
+  }
+
+  enableUserInfo(): boolean {
+    if (
+      !this.m_oEmailInputs.email ||
+      !this.m_oEmailInputs.confirmEmail ||
+      !this.validateEmail()
+    ) {
+      return false;
+    }
+    if (
+      !this.m_oPasswordInputs.password ||
+      !this.m_oPasswordInputs.confirmPw ||
+      !this.validatePassword()
+    ) {
+      return false;
+    }
+
+    if (
+      !this.m_oUserInfoInput.acceptedPrivacy ||
+      !this.m_oUserInfoInput.acceptedTermsAndConditions
+    ) {
+      return false;
+    }
+
+    if (!this.m_oUserInfoInput.userId) {
+      return false;
+    }
+    return true;
   }
 }

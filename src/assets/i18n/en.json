@@ -93,8 +93,8 @@
     "CITY": "City",
     "PHONE": "Phone",
     "COUNTRY": "Country",
-    "TERMS_CONDITIONS": " User has read and accepted the <a href=''>Terms and Conditions</a>",
-    "PRIVACY_POLICY": "User has read and accepted the <a href=''>Privacy Policy</a>"
+    "TERMS_CONDITIONS": " I have read and accept the <a class='inner-html-link' href=''>Terms and Conditions</a>",
+    "PRIVACY_POLICY": "I have read and accept the <a class='inner-html-link' href=''>Privacy Policy</a>"
   },
   "RISE_CRUD_TABLE": {
     "ADD_FIELD_USER": "Add Field User"

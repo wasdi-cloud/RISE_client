@@ -106,6 +106,13 @@ div.outlet {
   font-style: italic;
 }
 
+.inner-html-link {
+  color: var(--rise-text-bright);
+  cursor: pointer;
+  font-weight: 900;
+  text-decoration: none;
+}
+
 /* width */
 ::-webkit-scrollbar {
   border-radius: 8px;
@@ -135,14 +142,14 @@ div.outlet {
 
 .rise-checkbox {
   accent-color: var(--rise-gold);
+  cursor: pointer;
   border: 1.5px solid var(--rise-text-dim);
   border-radius: 2px;
   height: 20px;
-  width: 20px;
 }
-
-.rise-checkbox {
-  cursor: pointer;
+input[type="checkbox"] {
+  height: 20px;
+  width: 20px !important;
 }
 
 input[type="radio"] {

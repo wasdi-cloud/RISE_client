@@ -20,8 +20,7 @@ div.login-container {
   border: 1px solid rgba(255, 255, 255, 0.1);
   position: absolute;
   left: 51%;
-  height: inherit;
-  width: 350px;
+  max-width: 450px;
 }
 
 p {

@@ -11,6 +11,14 @@
       <h2 class="space-mono-regular">Create a RISE account</h2>
       <div class="d-flex flex-column gap-1">
         <rise-text-input
+        [m_sLocalizationKey]="'REGISTER.USER_ID'"
+        [m_bIsValidatorInput]="true"
+        [m_sErrorText]="m_sUsernameError"
+        [m_bHasTitle]="true"
+        [(m_sInputText)]="m_oUserInfoInput.userId"
+        [m_bIsValid]="m_bUsernameIsValid"
+      ></rise-text-input>
+        <rise-text-input
           [m_sLocalizationKey]="'REGISTER.EMAIL'"
           [m_bRequired]="true"
           [m_bHasTitle]="true"
@@ -44,18 +52,39 @@
           [(m_sInputText)]="m_oPasswordInputs.confirmPw"
           [m_bIsValid]="validatePassword()"
         ></rise-text-input>
-      </div>
-      <div class="d-flex flex-column gap-1">
-        <rise-button
-          [m_sLabel]="'Next'"
-          [m_sRole]="'primary'"
-          (click)="checkInputs('personal')"
-        ></rise-button>
-        <p>
-          By creating an account you agree to the
-          <a href="">Terms and Conditions</a> and
-          <a href="">Privacy Policy</a> of RISE.
-        </p>
+        <div class="d-flex flex-row align-items-center gap-2">
+          <input
+            type="checkbox"
+            name="terms-and-conditions"
+            class="rise-checkbox"
+            id=""
+            [(ngModel)]="m_oUserInfoInput.acceptedTermsAndConditions"
+          />
+          <div
+            class="policy-text"
+            [innerHTML]="'REGISTER.TERMS_CONDITIONS' | translate"
+          ></div>
+        </div>
+        <div class="d-flex flex-row align-items-center gap-2">
+          <input
+            type="checkbox"
+            name="privacy-policy"
+            class="rise-checkbox"
+            [(ngModel)]="m_oUserInfoInput.acceptedPrivacy"
+          />
+          <div
+            class="policy-text"
+            [innerHTML]="'REGISTER.PRIVACY_POLICY' | translate"
+          ></div>
+        </div>
+        <div class="d-flex flex-column gap-1">
+          <rise-button
+            [m_sLabel]="'Next'"
+            [m_sRole]="'primary'"
+            [m_bDisabled]="!enableUserInfo()"
+            (click)="enableUserInfo() ? setPage('personal') : ''"
+          ></rise-button>
+        </div>
       </div>
     </div>
     <div
@@ -80,27 +109,23 @@
           [m_sLocalizationKey]="'REGISTER.MOBILE'"
           [m_bHasTitle]="true"
           [(m_sInputText)]="m_oUserInfoInput.mobile"
-          [m_bIsValid]="m_bPersonalValid"
           [m_bIsValidatorInput]="true"
           [m_sErrorText]="m_sPersonalError"
+          [m_bIsValid]="m_bPersonalValid"
         ></rise-text-input>
       </div>
       <div class="d-flex flex-column gap-1">
         <rise-button
           [m_sLabel]="'Next'"
           [m_sRole]="'primary'"
-          (click)="checkInputs('organization')"
+          [m_bDisabled]="!checkPersonalInfo(true)"
+          (click)="checkPersonalInfo(true) ? setPage('organization') : ''"
         ></rise-button>
         <rise-button
           [m_sLabel]="'Previous'"
           [m_sRole]="'regular'"
           (click)="setPage('username')"
         ></rise-button>
-        <p>
-          By creating an account you agree to the
-          <a href="">Terms and Conditions</a> and
-          <a href="">Privacy Policy</a> of RISE.
-        </p>
       </div>
     </div>
     <div
@@ -137,23 +162,27 @@
           ></rise-text-input>
           <div class="d-flex flex-row gap-1">
             <rise-text-input
+              class="flex-fill"
               [m_sLocalizationKey]="'Street Number'"
               [m_bIsValid]="m_bOrgIsValid"
               [(m_sInputText)]="m_oOrgInfoInput.number"
             ></rise-text-input>
             <rise-text-input
+              class="flex-fill"
               [m_sLocalizationKey]="'Postal Code'"
               [m_bIsValid]="m_bOrgIsValid"
               [(m_sInputText)]="m_oOrgInfoInput.postalCode"
             ></rise-text-input>
           </div>
-          <div class="d-flex flex-row gap-1">
+          <div class="d-flex flex-row gap-2">
             <rise-text-input
+              class="flex-fill"
               [m_sLocalizationKey]="'City'"
               [m_bIsValid]="m_bOrgIsValid"
               [(m_sInputText)]="m_oOrgInfoInput.city"
             ></rise-text-input>
             <rise-text-input
+              class="flex-fill"
               [m_sLocalizationKey]="'Phone Number'"
               [m_bIsValid]="m_bOrgIsValid"
               [(m_sInputText)]="m_oOrgInfoInput.phone"
@@ -161,84 +190,20 @@
           </div>
         </div>
       </div>
+
       <div class="d-flex flex-column gap-1">
         <rise-button
-          [m_sLabel]="'Next'"
+          [m_sLabel]="'Register'"
           [m_sRole]="'primary'"
-          (click)="checkInputs('userId')"
+          [m_bDisabled]="!checkOrgInfo(true)"
+          (click)="m_bOrgIsValid ? register() : ''"
         ></rise-button>
         <rise-button
           [m_sLabel]="'Previous'"
           [m_sRole]="'regular'"
           (click)="setPage('personal')"
         ></rise-button>
-        <p>
-          By creating an account you agree to the
-          <a href="">Terms and Conditions</a> and
-          <a href="">Privacy Policy</a> of RISE.
-        </p>
-      </div>
-    </div>
-    <div
-      *ngIf="m_sCurrentPg === 'userId'"
-      class="login-container pg-3 d-flex flex-column gap-3"
-    >
-      <h2 class="space-mono-regular">Choose a Username</h2>
-      <rise-text-input
-        [m_sLocalizationKey]="'REGISTER.USER_ID'"
-        [(m_sInputText)]="m_oUserInfoInput.userId"
-        [m_bIsValid]="m_bUsernameIsValid"
-        [m_sErrorText]="m_sUsernameError"
-        [m_bIsValidatorInput]="true"
-      ></rise-text-input>
-      <div class="d-flex flex-column gap-1">
-        <rise-button
-          [m_sLabel]="'Submit'"
-          [m_sRole]="'primary'"
-          (click)="register()"
-        ></rise-button>
-        <rise-button
-          [m_sLabel]="'Previous'"
-          [m_sRole]="'regular'"
-          (click)="setPage('organization')"
-        ></rise-button>
-        <p>
-          By creating an account you agree to the
-          <a href="">Terms and Conditions</a> and
-          <a href="">Privacy Policy</a> of RISE.
-        </p>
       </div>
     </div>
   </div>
-
-  <!-- <div class="d-flex flex-column align-items-center"> -->
-  <!-- <h1>{{ "REGISTER.HEADER" | translate }}</h1>
-    <div class="d-flex flex-row gap-4">
-      <div>
-       
-     
-      
-    </div>
-    <div class="d-flex flex-row gap-2">
-      <input
-        type="checkbox"
-        name="terms-and-conditions"
-        class="rise-checkbox"
-        id=""
-        [(ngModel)]="m_oUserInfoInput.acceptedTermsAndConditions"
-      />
-      <div [innerHTML]="'REGISTER.TERMS_CONDITIONS' | translate"></div>
-    </div>
-    <div class="d-flex flex-row gap-2">
-      <input
-        type="checkbox"
-        name="privacy-policy"
-        class="rise-checkbox"
-        [(ngModel)]="m_oUserInfoInput.acceptedPrivacy"
-      />
-      <div [innerHTML]="'REGISTER.PRIVACY_POLICY' | translate"></div>
-    </div>
-
-    <rise-button [m_sLabel]="'Register'" (click)="register()"></rise-button>
-  </div> -->
 </main>
