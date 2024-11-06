@@ -22,7 +22,14 @@
             [m_sType]="'password'"
             [(m_sInputText)]="m_oUserInput.password"
           ></rise-text-input>
-          <div *ngIf="!m_bValidOtp && m_sErrorInput" class="invalid-user d-flex flex-row p-1 gap-1 mt-2">
+          <div
+            class="password-link"
+            [innerHTML]="'LOGIN.FORGOT_PASSWORD' | translate"
+          ></div>
+          <div
+            *ngIf="!m_bValidOtp && m_sErrorInput"
+            class="invalid-user d-flex flex-row p-1 gap-1 mt-2"
+          >
             <span class="material-symbols-outlined"> info </span>
             {{ m_sErrorInput | translate }}
           </div>

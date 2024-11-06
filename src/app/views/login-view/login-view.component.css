@@ -45,3 +45,13 @@ div.login-container {
   text-decoration: underline;
   cursor: pointer;
 }
+
+.password-link {
+  color: var(--rise-text-dim);
+  text-decoration: none;
+}
+
+.click {
+  font-weight: 900;
+  text-decoration: none;
+}
