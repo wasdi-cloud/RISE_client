@@ -11,17 +11,14 @@ input:focus {
   line-height: 12px;
 }
 
-.no-border {
+span.icon-right {
+  cursor: pointer;
   border-left: none;
 }
 
 input:focus,
 input.form-control:focus {
   outline-width: 0 !important;
-}
-
-span.input-group-text {
-  border-right: none;
 }
 
 ::placeholder {
@@ -36,9 +33,43 @@ input.invalid {
   border: 1px solid var(--rise-danger-text);
 }
 
-.invalid-feedback {
-  background-color: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--rise-text-dim);
-  border-radius: 6px;
-  color: var(--rise-danger-text);
+.no-left-border {
+  border-left: none;
 }
+
+.no-right-border {
+  border-right: none;
+}
+
+span.input-group-text {
+  border-left: none !important;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+.icon-right {
+  cursor: pointer;
+}
+
+/* div.icon-left>div.input-group-prepend>span.input-group-text {
+  border-right: none;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+}
+
+div.input-group-append {
+  border-left: none !important;
+}
+
+div.input-group-append>span.clear-icon {
+  border-left: none !important;
+  border-top-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
+  cursor: pointer;
+}
+
+div.icon-right>span.input-group-text {
+  border-left: none;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+} */

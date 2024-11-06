@@ -12,13 +12,25 @@
     class="form-control"
     type="{{ m_sType }}"
     name="{{ m_sName }}"
-    [class.no-border]="m_bHasIcon"
+    [class.no-left-border]="m_bHasIcon"
+    [class.no-right-border]="m_bSetPassword"
     [class.invalid]="!m_bIsValid"
     [(ngModel)]="m_sInputText"
     (change)="onInputChange()"
     [placeholder]="!m_bHasTitle ? (m_sLocalizationKey | translate) : ''"
     [required]="m_bRequired"
   />
+  <div
+    class="icon-right input-group-append"
+    *ngIf="m_bSetPassword"
+    (click)="toggleType()"
+  >
+    <span
+      class="material-symbols-outlined input-group-text"
+    >
+      visibility
+    </span>
+  </div>
 </div>
 <div
   class="invalid-feedback d-flex flex-row p-1 gap-1 mt-2"

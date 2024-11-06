@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './rise-text-input.component.html',
   styleUrl: './rise-text-input.component.css',
 })
-export class RiseTextInputComponent {
+export class RiseTextInputComponent implements OnInit {
   @Input() m_sName: string;
   @Input() m_sLocalizationKey: string = '';
   @Input() m_sType?: 'text' | 'password' = 'text';
@@ -39,6 +39,22 @@ export class RiseTextInputComponent {
 
   @Output() m_sInputTextChange: EventEmitter<string> =
     new EventEmitter<string>();
+
+  m_bSetPassword: boolean = false;
+
+  ngOnInit(): void {
+    if (this.m_sType === 'password') {
+      this.m_bSetPassword = true;
+    }
+  }
+
+  toggleType() {
+    if (this.m_sType === 'password') {
+      this.m_sType = 'text';
+    } else {
+      this.m_sType = 'password';
+    }
+  }
 
   onInputChange() {
     this.m_sInputTextChange.emit(this.m_sInputText);
