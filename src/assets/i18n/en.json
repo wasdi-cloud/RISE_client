@@ -58,7 +58,8 @@
   },
   "LOGIN": {
     "USER_ID": "User Id",
-    "PASSWORD": "Password"
+    "PASSWORD": "Password",
+    "FORGOT_PASSWORD": "Forgot password? Click <a class='inner-html-link'>here</a>"
   },
   "ORGANIZATION": {
     "ADDRESS": "Organization Address",

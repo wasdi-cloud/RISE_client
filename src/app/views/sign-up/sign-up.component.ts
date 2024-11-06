@@ -156,12 +156,17 @@ export class SignUpComponent {
         }
       },
       error: (oError) => {
-        this.m_oNotificationService.openInfoDialog(
-          'There were some problems with your inputted information. Please review your entries',
-          'alert',
-          'Error'
-        );
+        let asErrorCodes = oError.error.errorStringCodes.map((sCode) => {
+          return `<li>${this.m_oTranslate.instant('ERROR_MSG.' + sCode)}</li>`;
+        });
+
+        console.log(asErrorCodes);
+        let sErrorMsg = `'There were some problems with your inputted information. Please review your entries'<ul>
+        ${asErrorCodes.toString().replaceAll(',', '')}
+        </ul>`;
+        this.m_oNotificationService.openInfoDialog(sErrorMsg, 'alert', 'Error');
         if (oError.error.errorStringCodes) {
+          console.log(oError.error);
           this.handleAPIErrors(oError.error.errorStringCodes);
         }
       },
