@@ -19,6 +19,17 @@
       } @else { No layers to show }
     </div>
     <div class="map-container flex-fill">
+      <div
+      *ngIf="m_aoPlugins.length > 0"
+      class="btn-select-container d-flex flex-row gap-2"
+    >
+      <rise-map-chip
+        *ngFor="let oPlugin of m_aoPlugins"
+        [m_sTitle]="oPlugin.name"
+        [m_bIsActive]="oPlugin.loaded"
+        (click)="setActivePlugin(oPlugin)"
+      ></rise-map-chip>
+    </div>
       <rise-user-menu class="user-menu"></rise-user-menu>
       <rise-map [m_bDashboardMap]="true"></rise-map>
     </div>
@@ -26,17 +37,7 @@
       <rise-timebar class="timebar"></rise-timebar>
       @if (m_bShow2D === true) {
       <div class="layer-select-container"></div>
-      <div
-        *ngIf="m_aoPlugins.length > 0"
-        class="btn-select-container d-flex flex-row gap-2"
-      >
-        <rise-map-chip
-          *ngFor="let oPlugin of m_aoPlugins"
-          [m_sTitle]="oPlugin.name"
-          [m_bIsActive]="oPlugin.loaded"
-          (click)="setActivePlugin(oPlugin)"
-        ></rise-map-chip>
-      </div>
+   
     
       <rise-map [m_bDashboardMap]="true"></rise-map>
       } @else {

@@ -110,11 +110,12 @@ export class MonitorComponent implements OnInit {
       next: (oResponse) => {
         if (oResponse.length > 0) {
           this.m_aoPlugins = oResponse;
+          console.log(oResponse)
           this.m_aoPlugins.forEach((oPlugin) => {
             if (this.m_aoPlugins[0].name === oPlugin.name) {
               this.m_oActivePlugin = this.m_aoPlugins[0];
             }
-            // this.getLayers(oPlugin, sAreaId, iAreaDate);
+            this.getLayers(oPlugin, sAreaId, iAreaDate);
           });
         }
       },
