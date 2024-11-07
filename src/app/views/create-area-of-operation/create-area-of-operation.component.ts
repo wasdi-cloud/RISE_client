@@ -47,12 +47,11 @@ import { MapService } from '../../services/map.service';
   styleUrl: './create-area-of-operation.component.css',
 })
 export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
-  resetKey: number = 0; // Reset key for checkboxes
 
   @ViewChild(RiseCheckboxComponent)
   riseCheckboxComponent!: RiseCheckboxComponent;
 
-  @Output() m_oEmitCancel: EventEmitter<boolean> = new EventEmitter<boolean>(
+  @Output() m_oExitPage: EventEmitter<boolean> = new EventEmitter<boolean>(
     null
   );
 
@@ -245,8 +244,9 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
           'success',
           'Success'
         );
-        this.m_oRouter.navigateByUrl('/account');
-        this.resetAreaOfOperationForm()
+        // this.m_oRouter.navigateByUrl('/account');
+        this.exitCreatingAreaOfOperation();
+
         // this.m_oAreaOfOperationService.addUserToArea(oResponse.id,)
       },
       error: (e) => {
@@ -259,10 +259,9 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
     });
   }
 
-  cancelCreatingAreaOfOperation() {
-    //todo go back to managing area of operations
-    this.m_oEmitCancel.emit(false);
-    // this.m_oRouter.navigateByUrl('/account');
+  exitCreatingAreaOfOperation() {
+    this.resetAreaOfOperationForm();
+    this.m_oExitPage.emit(false);
   }
 
   handleTableData(tableData: any[]) {
