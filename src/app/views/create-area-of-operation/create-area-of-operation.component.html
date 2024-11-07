@@ -11,11 +11,17 @@
           [m_bHasTitle]="true"
           [(m_sInputText)]="m_sAreaOfOperationName"
           [m_sLocalizationKey]="'CREATE_NEW_AREA_OF_OPERATION.NAME'"
+          [m_sErrorText]="m_sAreaOfOperationNameError"
+          [m_bIsValid]="validateAOIName()"
+          [m_bRequired]="true"
+          [m_bIsValidatorInput]="true"
         ></rise-text-input>
         <rise-textarea-input
           [m_bHasTitle]="true"
           [(m_sInputText)]="m_sAreaOfOperationDescription"
           [m_sLocalizationKey]="'CREATE_NEW_AREA_OF_OPERATION.DESCRIPTION'"
+          [m_bIsValid]="validateAOIDescription()"
+          [m_sErrorText]="m_sAreaOfOperationDescriptionError"
         ></rise-textarea-input>
         <div>
           Select Plugins:

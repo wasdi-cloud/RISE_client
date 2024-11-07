@@ -1,33 +1,28 @@
+import {AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild,} from '@angular/core';
+import {RiseToolbarComponent} from '../../components/rise-toolbar/rise-toolbar.component';
+import {RiseTextInputComponent} from '../../components/rise-text-input/rise-text-input.component';
+
+import {RiseCrudTableComponent} from '../../components/rise-crud-table/rise-crud-table.component';
+import {RiseMapComponent} from '../../components/rise-map/rise-map.component';
+import {RiseCheckboxComponent} from '../../components/rise-checkbox/rise-checkbox.component';
+import {RiseTextareaInputComponent} from '../../components/rise-textarea-input/rise-textarea-input.component';
+import {MatDialog} from '@angular/material/dialog';
+import {RiseButtonComponent} from '../../components/rise-button/rise-button.component';
+import {AreaViewModel} from '../../models/AreaViewModel';
+import {AreaService} from '../../services/api/area.service';
+import {geojsonToWKT} from '@terraformer/wkt';
 import {
-  Component,
-  OnInit,
-  EventEmitter,
-  Output,
-  ViewChild,
-  AfterViewInit,
-} from '@angular/core';
-import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
-import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
+  BuyNewSubscriptionDialogComponent
+} from '../../dialogs/buy-new-subscription-dialog/buy-new-subscription-dialog.component';
+import {Router} from '@angular/router';
 
-import { RiseCrudTableComponent } from '../../components/rise-crud-table/rise-crud-table.component';
-import { RiseMapComponent } from '../../components/rise-map/rise-map.component';
-import { RiseCheckboxComponent } from '../../components/rise-checkbox/rise-checkbox.component';
-import { RiseTextareaInputComponent } from '../../components/rise-textarea-input/rise-textarea-input.component';
-import { AddRowDialogComponent } from '../../dialogs/add-row-dialog/add-row-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
-import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
-import { AreaViewModel } from '../../models/AreaViewModel';
-import { AreaService } from '../../services/api/area.service';
-import { geojsonToWKT } from '@terraformer/wkt';
-import { BuyNewSubscriptionDialogComponent } from '../../dialogs/buy-new-subscription-dialog/buy-new-subscription-dialog.component';
-import { Router } from '@angular/router';
-
-import { PluginService } from '../../services/api/plugin.service';
-import { UserOfAreaViewModel } from '../../models/UserOfAreaViewModel';
-import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
-import { RiseUtils } from '../../shared/utilities/RiseUtils';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MapService } from '../../services/map.service';
+import {PluginService} from '../../services/api/plugin.service';
+import {UserOfAreaViewModel} from '../../models/UserOfAreaViewModel';
+import {NotificationsDialogsService} from '../../services/notifications-dialogs.service';
+import {RiseUtils} from '../../shared/utilities/RiseUtils';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
+import {MapService} from '../../services/map.service';
+import FadeoutUtils from "../../shared/utilities/FadeoutUtils";
 
 @Component({
   selector: 'app-create-area-of-operation',
@@ -59,8 +54,6 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
 
   //todo get users from org
   m_aoUserData = [];
-  m_asUsersColumns: string[] = ['Mail', 'User_ID'];
-
   m_oAreaOfOperation: AreaViewModel;
   m_asFieldUsers: UserOfAreaViewModel[] = [];
   m_sAreaOfOperationDescription: string;
@@ -71,6 +64,10 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
   m_sAreaOfOperationBBox: string = '';
   m_sMarkerCoordinates: string = '';
   m_aoAreasOfOperations: AreaViewModel[];
+  m_sAreaOfOperationNameError: string = "";
+  m_sAreaOfOperationDescriptionError: string = "";
+
+  m_bValidationActive = false;
 
   constructor(
     private m_oAreaOfOperationService: AreaService,
@@ -81,10 +78,13 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
     private m_oRouter: Router,
     private m_oTranslate: TranslateService,
     private m_oMapService: MapService
-  ) {}
+  ) {
+  }
+
   ngAfterViewInit() {
     console.log('RiseCheckboxComponent:', this.riseCheckboxComponent);
   }
+
   ngOnInit() {
     // Optional: Ensure the component reference is available
 
@@ -116,18 +116,6 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
     this.m_aoUserData = this.m_aoUserData.filter((item) => item !== row); // Remove the deleted row
   }
 
-  onRowAdd() {
-    const oDialogRef = this.m_oDialog.open(AddRowDialogComponent, {
-      width: '300px',
-      data: { fields: this.m_asUsersColumns },
-    });
-
-    oDialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.m_aoUserData = [...this.m_aoUserData, result];
-      }
-    });
-  }
 
   onSelectionChange(selectedValues: any[]) {
     this.m_asPluginsSelected = selectedValues;
@@ -171,8 +159,11 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
       }
     }
   }
+
   //todo moving this to map service
   // Convert circle to WKT (approximated as a polygon)
+
+
   convertCircleToWKT(
     center: { lat: number; lng: number },
     radius: number
@@ -199,64 +190,37 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
   }
 
   SaveAreaOfOperation() {
-    //todo rise utils
-    if (
-      this.m_oRiseUtils.isStrNullOrEmpty(this.m_sAreaOfOperationDescription) ||
-      this.m_oRiseUtils.isStrNullOrEmpty(this.m_sAreaOfOperationName)
-    ) {
-      //todo alert user or make input in red
-      return;
-    }
-    //todo rise utils
+    this.m_bValidationActive = true;
+    if (this.validateAOI()) {
+      this.m_oAreaOfOperation = {
+        name: this.m_sAreaOfOperationName,
+        description: this.m_sAreaOfOperationDescription,
+        bbox: this.m_sAreaOfOperationBBox,
+        markerCoordinates: this.m_sMarkerCoordinates,
+        // plugins:this.m_asPluginsSelected
+      };
+      this.m_oAreaOfOperationService.addArea(this.m_oAreaOfOperation).subscribe({
+        next: (oResponse) => {
+          //todo send confirmation to HQ operator
+          this.m_oNotificationService.openInfoDialog(
+            'New Area have been added successfully',
+            'success',
+            'Success'
+          );
+          // this.m_oRouter.navigateByUrl('/account');
+          this.exitCreatingAreaOfOperation();
 
-    if (this.m_oAreaInfo === null) {
-      //todo alert user
-      return;
+          // this.m_oAreaOfOperationService.addUserToArea(oResponse.id,)
+        },
+        error: (e) => {
+          // Here handle no valid subscription
+          if (e.error.errorStringCodes[0] === 'ERROR_API_NO_VALID_SUBSCRIPTION') {
+            //open dialog to invite user to buy new subscription
+            this.inviteUserToBuyNewSubscription();
+          }
+        },
+      });
     }
-    //todo rise utils
-
-    if (
-      this.m_asPluginsSelected === null ||
-      this.m_asPluginsSelected.length == 0
-    ) {
-      //todo alert user
-      return;
-    }
-    //todo rise utils
-    if (this.m_asPluginsSelected.length < 1) {
-      //todo alert user
-      return;
-    }
-    this.m_oAreaOfOperation = {
-      name: this.m_sAreaOfOperationName,
-      description: this.m_sAreaOfOperationDescription,
-      bbox: this.m_sAreaOfOperationBBox,
-      markerCoordinates: this.m_sMarkerCoordinates,
-      // plugins:this.m_asPluginsSelected
-    };
-    //check if the selected area overlaps or have the same name of an existing one
-    // this.checkOverlappingAreasAndSameName(this.m_oAreaOfOperation);
-    this.m_oAreaOfOperationService.addArea(this.m_oAreaOfOperation).subscribe({
-      next: (oResponse) => {
-        //todo send confirmation to HQ operator
-        this.m_oNotificationService.openInfoDialog(
-          'New Area have been added successfully',
-          'success',
-          'Success'
-        );
-        // this.m_oRouter.navigateByUrl('/account');
-        this.exitCreatingAreaOfOperation();
-
-        // this.m_oAreaOfOperationService.addUserToArea(oResponse.id,)
-      },
-      error: (e) => {
-        // Here handle no valid subscription
-        if (e.error.errorStringCodes[0] === 'ERROR_API_NO_VALID_SUBSCRIPTION') {
-          //open dialog to invite user to buy new subscription
-          this.inviteUserToBuyNewSubscription();
-        }
-      },
-    });
   }
 
   exitCreatingAreaOfOperation() {
@@ -267,6 +231,8 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
   handleTableData(tableData: any[]) {
     this.m_aoFieldUsers = tableData;
   }
+
+
 
   private inviteUserToBuyNewSubscription() {
     let oDialog = this.m_oDialog.open(BuyNewSubscriptionDialogComponent, {
@@ -388,4 +354,41 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
     this.m_oMapService.clearPreviousDrawings(null);
     // this.m_oRiseSelectAreaComponent.clearPreviousDrawings();
   }
+
+  private validateAOI() {
+    //check if the selected area overlaps or have the same name of an existing one
+    // this.checkOverlappingAreasAndSameName(this.m_oAreaOfOperation);
+
+    return this.validateAOIName() && this.validateAOIPlugins() && this.validateAOIDescription() && this.validateAreaInfo();
+  }
+  validateAOIName() {
+    if (!this.m_bValidationActive) return true;
+
+    if (FadeoutUtils.utilsIsStrNullOrEmpty(this.m_sAreaOfOperationName)) {
+      this.m_sAreaOfOperationNameError = "Please provide a name for your area of operations";
+      return false;
+    }
+    this.m_sAreaOfOperationNameError = "";  // Clear error when valid
+    return true;
+  }
+
+  validateAOIDescription() {
+    if (!this.m_bValidationActive) return true;
+
+    if (FadeoutUtils.utilsIsStrNullOrEmpty(this.m_sAreaOfOperationDescription)) {
+      this.m_sAreaOfOperationDescriptionError = "Please provide a description for your area of operations";
+      return false;
+    }
+    this.m_sAreaOfOperationDescriptionError = "";  // Clear error when valid
+    return true;
+  }
+
+  private validateAOIPlugins() {
+    return !(!this.m_asPluginsSelected || this.m_asPluginsSelected.length < 1);
+  }
+
+  private validateAreaInfo() {
+    return this.m_oAreaInfo !== null;
+  }
+
 }

@@ -32,7 +32,7 @@ export class RiseUtils {
   /**
    * Format Error Array to pass to either a notification dialog or a snackbar
    */
-  handleError(aoError: Array<string>): string {
+  handleServerError(aoError: Array<string>): string {
     let sErrorMsg = `<ul>${aoError.map((sError) => {
       let sErrorTranslated = this.m_oTranslationService.instant(
         'ERROR_MSG.' + sError
@@ -44,7 +44,7 @@ export class RiseUtils {
   }
 
   handleNotificationError(aoError: Array<string>) {
-    let sErrorMsg = this.handleError(aoError);
+    let sErrorMsg = this.handleServerError(aoError);
     this.m_oNotificationService.openInfoDialog(sErrorMsg, 'alert', 'Error');
   }
 

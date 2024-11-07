@@ -35,11 +35,12 @@ export class RiseTextareaInputComponent {
    * Is the input valid?
    */
   @Input() m_bIsValid: boolean = true;
-
+  @Input() m_sErrorText?: string = 'The input was not valid';
   /**
    * Does this textarea have a title input?
    */
   @Input() m_bHasTitle: boolean = false;
+
 
   @Output() m_sInputTextChange: EventEmitter<string> =
     new EventEmitter<string>();
