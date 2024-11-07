@@ -224,13 +224,6 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
       return;
     }
     //todo rise utils
-
-    if (this.m_aoFieldUsers === null || this.m_aoFieldUsers.length == 0) {
-      //todo alert user
-      return;
-    }
-    //todo rise utils
-
     if (this.m_asPluginsSelected.length < 1) {
       //todo alert user
       return;
@@ -242,29 +235,28 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
       markerCoordinates: this.m_sMarkerCoordinates,
       // plugins:this.m_asPluginsSelected
     };
-    this.resetAreaOfOperationForm();
     //check if the selected area overlaps or have the same name of an existing one
     // this.checkOverlappingAreasAndSameName(this.m_oAreaOfOperation);
-    // this.m_oAreaOfOperationService.addArea(this.m_oAreaOfOperation).subscribe({
-    //   next: (oResponse) => {
-    //     //todo send confirmation to HQ operator
-    //     this.m_oNotificationService.openInfoDialog(
-    //       'New Area have been added successfully',
-    //       'success',
-    //       'Success'
-    //     );
-    //     this.m_oRouter.navigateByUrl('/account');
-    //     this.resetAreaOfOperationForm()
-    //     // this.m_oAreaOfOperationService.addUserToArea(oResponse.id,)
-    //   },
-    //   error: (e) => {
-    //     // Here handle no valid subscription
-    //     if (e.error.errorStringCodes[0] === 'ERROR_API_NO_VALID_SUBSCRIPTION') {
-    //       //open dialog to invite user to buy new subscription
-    //       this.inviteUserToBuyNewSubscription();
-    //     }
-    //   },
-    // });
+    this.m_oAreaOfOperationService.addArea(this.m_oAreaOfOperation).subscribe({
+      next: (oResponse) => {
+        //todo send confirmation to HQ operator
+        this.m_oNotificationService.openInfoDialog(
+          'New Area have been added successfully',
+          'success',
+          'Success'
+        );
+        this.m_oRouter.navigateByUrl('/account');
+        this.resetAreaOfOperationForm()
+        // this.m_oAreaOfOperationService.addUserToArea(oResponse.id,)
+      },
+      error: (e) => {
+        // Here handle no valid subscription
+        if (e.error.errorStringCodes[0] === 'ERROR_API_NO_VALID_SUBSCRIPTION') {
+          //open dialog to invite user to buy new subscription
+          this.inviteUserToBuyNewSubscription();
+        }
+      },
+    });
   }
 
   cancelCreatingAreaOfOperation() {
