@@ -137,7 +137,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       this.addManualBbox(oMap);
       this.addCircleButton(oMap);
     }
-    
+
     oMap.fullscreenControl.link.innerHTML = "<span class='material-symbols-outlined'>fullscreen</span>"
     this.m_oMapService.addZoom();
     oMap.on('baselayerchange', (e) => {
@@ -150,7 +150,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     this.m_oMapService.addCircleButton(oMap).subscribe((circleData) => {
       this.m_bIsAutoDrawCreated = true;
       const { center, radius } = circleData;
-      this.confirmInsertedArea(null, radius, center.lat, center.lng);
+      this.emitInsertedArea(null, radius, center.lat, center.lng);
     });
   }
 
@@ -208,7 +208,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
                 );
                 this.m_oMapService.onDrawCreated(oEvent, this.m_oMap);
                 this.m_bIsDrawCreated = true;
-                this.confirmInsertedArea(oEvent);
+                this.emitInsertedArea(oEvent);
               } else {
                 return;
               }
@@ -217,7 +217,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       } else {
         this.m_oMapService.onDrawCreated(oEvent, this.m_oMap);
         this.m_bIsDrawCreated = true;
-        this.confirmInsertedArea(oEvent);
+        this.emitInsertedArea(oEvent);
       }
     }
     if (layerType === 'polygon') {
@@ -232,7 +232,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       } else {
         this.m_oMapService.onDrawCreated(oEvent, this.m_oMap);
         this.m_bIsDrawCreated = true;
-        this.confirmInsertedArea(oEvent);
+        this.emitInsertedArea(oEvent);
       }
     }
     if (layerType === 'circle') {
@@ -247,7 +247,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
                 this.m_oMapService.adjustCircleArea(layer, area);
                 this.m_oMapService.onDrawCreated(oEvent, this.m_oMap);
                 this.m_bIsDrawCreated = true;
-                this.confirmInsertedArea(oEvent);
+                this.emitInsertedArea(oEvent);
               } else {
                 return;
               }
@@ -256,45 +256,34 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       } else {
         this.m_oMapService.onDrawCreated(oEvent, this.m_oMap);
         this.m_bIsDrawCreated = true;
-        this.confirmInsertedArea(oEvent);
+        this.emitInsertedArea(oEvent);
       }
     }
   }
 
-  //Confirm inserted area
-  confirmInsertedArea(
+  //Emit inserted area
+  emitInsertedArea(
     oEvent?: any,
     fRadius?: number,
     fLat?: number,
     fLng?: number,
     geoJson?: any
   ) {
-    let sMessage: string = 'Please confirm your input';
-    this.m_oNotificationService
-      .openConfirmationDialog(sMessage)
-      .subscribe((bDialogResult) => {
-        if (bDialogResult) {
-          // Emit the appropriate area based on the shape creation method
-          if (this.m_bIsImportDrawCreated && geoJson) {
-            this.m_bIsImportDrawCreated = false;
-            this.emitGeoJSONShapeInfo(geoJson);
-          } else if (this.m_bIsDrawCreated && oEvent) {
-            this.m_bIsDrawCreated = false;
-            this.emitDrawnAreaEvent(oEvent);
-          } else if (
-            this.m_bIsAutoDrawCreated &&
-            fRadius !== undefined &&
-            fLat !== undefined &&
-            fLng !== undefined
-          ) {
-            this.m_bIsAutoDrawCreated = false;
-            this.emitCircleButtonAreaEvent(fRadius, fLat, fLng);
-          }
-        } else {
-          // Clear the area
-          this.m_oMapService.clearPreviousDrawings(this.m_oMap);
-        }
-      });
+    if (this.m_bIsImportDrawCreated && geoJson) {
+      this.m_bIsImportDrawCreated = false;
+      this.emitGeoJSONShapeInfo(geoJson);
+    } else if (this.m_bIsDrawCreated && oEvent) {
+      this.m_bIsDrawCreated = false;
+      this.emitDrawnAreaEvent(oEvent);
+    } else if (
+      this.m_bIsAutoDrawCreated &&
+      fRadius !== undefined &&
+      fLat !== undefined &&
+      fLng !== undefined
+    ) {
+      this.m_bIsAutoDrawCreated = false;
+      this.emitCircleButtonAreaEvent(fRadius, fLat, fLng);
+    }
   }
 
   // Function to calculate the centroid of a polygon
