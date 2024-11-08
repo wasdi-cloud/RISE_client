@@ -21,15 +21,25 @@ import { NotificationsDialogsService } from '../../services/notifications-dialog
 import { RiseMapChipComponent } from '../../components/rise-map-chip/rise-map-chip.component';
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 import { RiseUserMenuComponent } from '../../components/rise-user-menu/rise-user-menu.component';
+import {
+  CdkDrag,
+  CdkDragDrop,
+  CdkDropList,
+  moveItemInArray,
+} from '@angular/cdk/drag-drop';
+import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
 
 @Component({
   selector: 'app-monitor',
   standalone: true,
   imports: [
+    CdkDropList,
+    CdkDrag,
     CommonModule,
     RiseButtonComponent,
     RiseMapChipComponent,
     RiseMapComponent,
+    RiseTextInputComponent,
     RiseToolbarComponent,
     RiseGlobeComponent,
     RiseTimebarComponent,
@@ -89,17 +99,17 @@ export class MonitorComponent implements OnInit {
   }
 
   openAOI(sAreaId: string) {
-      this.m_oAreaService.getAreaById(sAreaId).subscribe({
-        next: (oResponse) => {
-          if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
-            this.getMapsByArea(oResponse.id, oResponse.startDate);
-            this.m_oMapService.flyToMonitorBounds(oResponse.bbox);
-          }
-        },
-        error: (oError) => {
-          console.log(oError);
-        },
-      });
+    this.m_oAreaService.getAreaById(sAreaId).subscribe({
+      next: (oResponse) => {
+        if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
+          this.getMapsByArea(oResponse.id, oResponse.startDate);
+          this.m_oMapService.flyToMonitorBounds(oResponse.bbox);
+        }
+      },
+      error: (oError) => {
+        console.log(oError);
+      },
+    });
   }
 
   getMapsByArea(sAreaId: string, iAreaDate?: string | number) {
@@ -110,11 +120,11 @@ export class MonitorComponent implements OnInit {
       next: (oResponse) => {
         if (oResponse.length > 0) {
           this.m_aoPlugins = oResponse;
+          console.log(oResponse);
           this.m_aoPlugins.forEach((oPlugin) => {
             if (this.m_aoPlugins[0].name === oPlugin.name) {
               this.m_oActivePlugin = this.m_aoPlugins[0];
             }
-            // this.getLayers(oPlugin, sAreaId, iAreaDate);
           });
         }
       },
@@ -184,22 +194,9 @@ export class MonitorComponent implements OnInit {
   }
 
   getLayerVisibility(bIsVisible, oLayer) {
-    console.log(oLayer);
-    console.log(bIsVisible);
-    let oMap2D = this.m_oMapService.getMap();
-    if (bIsVisible === false) {
-      oMap2D.eachLayer((oInputLayer) => {
-        console.log(oInputLayer.options.layers);
-        if (oLayer.layerId === oInputLayer.options.layers) {
-          oMap2D.removeLayer(oInputLayer);
-        }
-      });
-    } else {
-      this.m_oMapService.addLayerMap2DByServer(
-        oLayer.layerId,
-        oLayer.geoserverUrl
-      );
-    }
+    let iOpacity;
+    bIsVisible ? (iOpacity = 100) : (iOpacity = 0);
+    this.setOpacity(iOpacity, oLayer.layerId);
   }
 
   setOpacity(iValue, sLayerId): void {
@@ -214,6 +211,36 @@ export class MonitorComponent implements OnInit {
       ) {
         layer.setOpacity(fPercentage);
       }
+    });
+  }
+
+  /**
+   * Handles the list item dropping
+   * @param event
+   */
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.m_aoLayers, event.previousIndex, event.currentIndex);
+    this.handleLayerOrder();
+  }
+
+  /**
+   * When the layer order changes, manually remove and then re-add the layers
+   */
+  handleLayerOrder(): void {
+    this.m_aoLayers.forEach((oLayer) => {
+      let oMap = this.m_oMapService.getMap();
+      oMap.eachLayer((oMapLayer) => {
+        if (oLayer.layerId === oMapLayer.options.layers) {
+          oMap.removeLayer(oMapLayer);
+        }
+      });
+    });
+
+    this.m_aoLayers.forEach((oLayer) => {
+      this.m_oMapService.addLayerMap2DByServer(
+        oLayer.layerId,
+        oLayer.geoserverUrl
+      );
     });
   }
 }

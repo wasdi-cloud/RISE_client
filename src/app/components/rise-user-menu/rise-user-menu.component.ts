@@ -6,12 +6,8 @@ import {
 } from './menu-items';
 import { NgFor, NgIf } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-import {
-  ActivatedRoute,
-  ActivatedRouteSnapshot,
-  NavigationExtras,
-  Router,
-} from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
+import { MapService } from '../../services/map.service';
 @Component({
   selector: 'rise-user-menu',
   standalone: true,
@@ -26,6 +22,7 @@ export class RiseUserMenuComponent implements OnInit {
 
   constructor(
     private m_oActivatedRoute: ActivatedRoute,
+    private m_oMapService: MapService,
     private m_oRouter: Router
   ) {
     this.m_aoMenuItems = DefaultMenuItems;
@@ -58,15 +55,16 @@ export class RiseUserMenuComponent implements OnInit {
         // TODO: Execute actual logout here
         this.m_oRouter.navigateByUrl('login');
         break;
+      case 'dashboard':
+        this.m_oMapService.closeWorkspace();
+        this.m_oRouter.navigateByUrl('dashboard');
+        break;
       default:
         this.m_oRouter.navigateByUrl(sName);
     }
   }
 
-
   toggleDropdown() {
     this.m_bShowDropdown = !this.m_bShowDropdown;
-    console.log("clicked")
-    console.log(this.m_bShowDropdown)
   }
 }

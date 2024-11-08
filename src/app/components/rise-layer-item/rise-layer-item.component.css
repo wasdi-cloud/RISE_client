@@ -2,9 +2,13 @@
   background-color: rgba(0, 0, 0, 0.1);
   border: 1px solid #000000;
   border-radius: 8px;
-  cursor: pointer;
+  cursor: grab;
   text-overflow: ellipsis;
   width: 100%;
+}
+
+.ref-date {
+  font-size: 13px;
 }
 
 div.layer-id {
@@ -13,4 +17,10 @@ div.layer-id {
 
 div.options-container {
   background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+}
+
+.expand {
+  cursor: pointer;
 }

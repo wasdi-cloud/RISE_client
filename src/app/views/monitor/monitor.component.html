@@ -2,30 +2,47 @@
   <!-- <rise-user-menu ></rise-user-menu> -->
   <!-- <rise-toolbar [m_bUserIsSigned]="true"></rise-toolbar> -->
   <div class="flex-fill d-flex flex-row">
-    <div class="rise-sidebar d-flex flex-column gap-2 px-2">
+    <div
+      class="rise-sidebar d-flex flex-column gap-4 px-3"
+      cdkDropList
+      (cdkDropListDropped)="drop($event)"
+    >
       <img
         class="align-self-start"
         src="/assets/rise-assets/logo-white-horizontal.svg"
         alt=""
       />
+      <rise-text-input></rise-text-input>
       <!-- Layer List output -->
-      @if(m_aoLayers.length > 0) {
-      <rise-layer-item
-        *ngFor="let oLayer of m_aoLayers"
-        [m_oLayer]="oLayer"
-        (m_oLayerVisibility)="getLayerVisibility($event, oLayer)"
-        (m_oLayerOpacity)="setOpacity($event, oLayer.layerId)"
-      ></rise-layer-item>
-      } @else { No layers to show }
+
+      <div class="d-flex flex-column gap-2 layer-list-container p-3">
+        <div
+          class="layers-header d-flex flex-row justify-content-between gap-2"
+        >
+          <span class="material-symbols-outlined"> map </span>
+          <div class="flex-fill d-flex flex-column">
+            Map Layers
+            <span *ngIf="m_aoLayers.length > 0" class="cta-text"
+              >Drag to rearrange</span
+            >
+          </div>
+          <span class="material-symbols-outlined"> keyboard_arrow_up </span>
+        </div>
+        @if(m_aoLayers.length > 0) {
+          <div class="layer-outlet d-flex flex-column gap-2">
+            <rise-layer-item
+              *ngFor="let oLayer of m_aoLayers"
+              cdkDrag
+              [m_oLayer]="oLayer"
+              (m_oLayerVisibility)="getLayerVisibility($event, oLayer)"
+              (m_oLayerOpacity)="setOpacity($event, oLayer.layerId)"
+            ></rise-layer-item>
+
+          </div>
+        } @else { No layers to show }
+      </div>
     </div>
     <div class="map-container flex-fill">
-      <rise-user-menu class="user-menu"></rise-user-menu>
-      <rise-map [m_bDashboardMap]="true"></rise-map>
-    </div>
-    <!-- <div class="map-output-container flex-fill">
-      <rise-timebar class="timebar"></rise-timebar>
-      @if (m_bShow2D === true) {
-      <div class="layer-select-container"></div>
       <div
         *ngIf="m_aoPlugins.length > 0"
         class="btn-select-container d-flex flex-row gap-2"
@@ -37,6 +54,14 @@
           (click)="setActivePlugin(oPlugin)"
         ></rise-map-chip>
       </div>
+      <rise-user-menu class="user-menu"></rise-user-menu>
+      <rise-map [m_bDashboardMap]="true"></rise-map>
+    </div>
+    <!-- <div class="map-output-container flex-fill">
+      <rise-timebar class="timebar"></rise-timebar>
+      @if (m_bShow2D === true) {
+      <div class="layer-select-container"></div>
+   
     
       <rise-map [m_bDashboardMap]="true"></rise-map>
       } @else {
