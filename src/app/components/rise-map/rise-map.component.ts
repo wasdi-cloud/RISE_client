@@ -114,17 +114,17 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     if (this.m_bIsSelectingArea) {
       this.m_oMapService.clearPreviousDrawings(oMap);
     }
-
+    this.m_oMapService.setActiveLayer(
+      oMap,
+      this.m_oMapService.m_oDarkGrayArcGIS
+    );
     let southWest = L.latLng(0, 0);
     let northEast = L.latLng(0, 0);
 
     let oBoundaries = L.latLngBounds(southWest, northEast);
     oMap.fitBounds(oBoundaries);
     oMap.setZoom(3);
-    this.m_oMapService.setActiveLayer(
-      oMap,
-      this.m_oMapService.m_oDarkGrayArcGIS
-    );
+
     this.m_oMapService.addMousePositionAndScale(oMap);
     this.m_oMapService.m_oLayersControl.addTo(oMap);
     this.m_oMapService.initGeoSearchPluginForOpenStreetMap(oMap);
