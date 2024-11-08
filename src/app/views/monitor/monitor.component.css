@@ -1,11 +1,6 @@
-/* div.map-container {
-  position: relative;
-} */
-
 .map-output-container {
   position: relative;
   z-index: -5;
-
 }
 
 .timebar {
@@ -35,4 +30,18 @@
 
 img {
   height: 24px;
+}
+
+.layer-list-container {
+  background-color: rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+  color: var(--rise-text-dim);
+}
+
+.layer-outlet {
+  max-height: 45vh;
+  overflow-y: auto;
+}
+span.cta-text {
+  font-size: 14px;
 }

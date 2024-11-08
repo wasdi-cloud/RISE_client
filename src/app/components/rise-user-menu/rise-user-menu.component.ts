@@ -8,7 +8,6 @@ import { NgFor, NgIf } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import {
   ActivatedRoute,
-  ActivatedRouteSnapshot,
   NavigationExtras,
   Router,
 } from '@angular/router';
@@ -66,7 +65,5 @@ export class RiseUserMenuComponent implements OnInit {
 
   toggleDropdown() {
     this.m_bShowDropdown = !this.m_bShowDropdown;
-    console.log("clicked")
-    console.log(this.m_bShowDropdown)
   }
 }

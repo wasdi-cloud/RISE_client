@@ -38,8 +38,15 @@
 }
 
 .action:hover {
- 
 }
 
 .action:active {
+}
+
+.danger {
+  background-color: #992500;
+}
+
+.danger:active {
+  background-color: #661800;
 }

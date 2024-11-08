@@ -8,7 +8,7 @@
         <div>
           {{ m_oLayer.mapId }}
         </div>
-        <div>
+        <div class="ref-date">
           {{ m_oLayer.referenceDate | date : "d/M/yy, h:mm a" }}
         </div>
       </div>
@@ -22,19 +22,37 @@
       (change)="emitVisibility()"
     />
   </div>
-  <div
-    class="options-container d-flex flex-row justify-content-between align-items-center"
-  >
-    <div class="d-flex flex-row gap-3 align-items-center">
-      Opacity
-      <input
-        type="range"
-        name=""
-        id=""
-        [(ngModel)]="m_iOpacity"
-        (change)="emitOpacity()"
-      />
+  <div class="options-container d-flex flex-column gap-2 p-2">
+    <div
+      class="d-flex flex-row gap-1 align-items-center justify-content-between"
+    >
+      <div class="d-flex flex-row gap-2">
+        Opacity
+        <input
+          type="range"
+          name=""
+          id=""
+          [(ngModel)]="m_iOpacity"
+          (change)="emitOpacity()"
+        />
+        {{ m_iOpacity }}%
+      </div>
+      <span
+        class="expand material-symbols-outlined"
+        (click)="toggleExpandedContent()"
+      >
+        more_horiz
+      </span>
     </div>
-    {{ m_iOpacity }}%
+    <div
+      *ngIf="m_bShowExpanded"
+      class="expanded-content d-flex flex-column gap-2"
+    >
+      <rise-button [m_sLabel]="'Show Legend'"></rise-button>
+      <rise-button
+        [m_sLabel]="'Remove Layer'"
+        [m_sRole]="'danger'"
+      ></rise-button>
+    </div>
   </div>
 </div>
