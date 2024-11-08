@@ -359,7 +359,7 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
     //check if the selected area overlaps or have the same name of an existing one
     // this.checkOverlappingAreasAndSameName(this.m_oAreaOfOperation);
 
-    return this.validateAOIName() && this.validateAOIPlugins() && this.validateAOIDescription() && this.validateAreaInfo();
+    return this.validateAOIDescription()&& this.validateAOIName() && this.validateAOIPlugins()  && this.validateAreaInfo();
   }
   validateAOIName() {
     if (!this.m_bValidationActive) return true;
