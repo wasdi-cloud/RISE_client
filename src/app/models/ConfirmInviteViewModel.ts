@@ -2,30 +2,30 @@ import {RiseViewModel} from "./RiseViewModel";
 
 export class ConfirmInviteViewModel extends RiseViewModel {
 
-  userId: string;
+  userId?: string;
 
-  mail: string;
+  email?: string;
 
-  code: string;
+  confirmationCode?: string;
 
-  name: string;
+  name?: string;
 
-  surname: string;
+  surname?: string;
 
-  mobile: string;
+  mobile?: string;
 
-  acceptedTermsAndConditions: boolean;
+  acceptedTermsAndConditions?: boolean;
 
-  acceptedPrivacy: boolean;
+  acceptedPrivacy?: boolean;
 
-  notifyNewsletter: boolean = true;
+  notifyNewsletter?: boolean = true;
 
-  notifyMaintenance: boolean = true;
+  notifyMaintenance?: boolean = true;
 
-  notifyActivities: boolean = true;
+  notifyActivities?: boolean = true;
 
-  defaultLanguage: string = "EN";
+  defaultLanguage?: string = "EN";
 
-  password: string;
+  password?: string;
 
 }
