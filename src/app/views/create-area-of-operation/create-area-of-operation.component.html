@@ -9,18 +9,18 @@
       <div class="d-flex flex-column gap-2">
         <rise-text-input
           [m_bHasTitle]="true"
-          [(m_sInputText)]="m_sAreaOfOperationName"
+          [(m_sInputText)]="m_oAreaOfOperation.name"
           [m_sLocalizationKey]="'CREATE_NEW_AREA_OF_OPERATION.NAME'"
           [m_sErrorText]="m_sAreaOfOperationNameError"
-          [m_bIsValid]="validateAOIName()"
+          [m_bIsValid]="m_bNameIsValid"
           [m_bRequired]="true"
           [m_bIsValidatorInput]="true"
         ></rise-text-input>
         <rise-textarea-input
           [m_bHasTitle]="true"
-          [(m_sInputText)]="m_sAreaOfOperationDescription"
+          [(m_sInputText)]="m_oAreaOfOperation.description"
           [m_sLocalizationKey]="'CREATE_NEW_AREA_OF_OPERATION.DESCRIPTION'"
-          [m_bIsValid]="validateAOIDescription()"
+          [m_bIsValid]="m_bDescriptionIsValid"
           [m_sErrorText]="m_sAreaOfOperationDescriptionError"
         ></rise-textarea-input>
         <div>
@@ -31,17 +31,20 @@
             [m_aoSelectedValues]="this.m_asPluginsSelected"
           >
           </rise-checkbox>
+          <div class="invalid-feedback" *ngIf="!m_bPluginsAreValid"></div>
         </div>
         <rise-button [m_sLabel]="'Manage Users'"></rise-button>
       </div>
       <div class="d-flex flex-column gap-2">
         <rise-button
           [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.SAVE'"
-          (click)="SaveAreaOfOperation()"
+          [m_bDisabled]="!enableAOISubmit()"
+          (click)="enableAOISubmit() ? SaveAreaOfOperation() : ''"
         ></rise-button>
         <rise-button
           [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.CANCEL'"
           [m_sRole]="'muted'"
+          [m_bDisabled]=""
           (click)="exitCreatingAreaOfOperation()"
         ></rise-button>
       </div>

@@ -1,51 +1,56 @@
-import {AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild,} from '@angular/core';
-import {RiseToolbarComponent} from '../../components/rise-toolbar/rise-toolbar.component';
-import {RiseTextInputComponent} from '../../components/rise-text-input/rise-text-input.component';
-
-import {RiseCrudTableComponent} from '../../components/rise-crud-table/rise-crud-table.component';
-import {RiseMapComponent} from '../../components/rise-map/rise-map.component';
-import {RiseCheckboxComponent} from '../../components/rise-checkbox/rise-checkbox.component';
-import {RiseTextareaInputComponent} from '../../components/rise-textarea-input/rise-textarea-input.component';
-import {MatDialog} from '@angular/material/dialog';
-import {RiseButtonComponent} from '../../components/rise-button/rise-button.component';
-import {AreaViewModel} from '../../models/AreaViewModel';
-import {AreaService} from '../../services/api/area.service';
-import {geojsonToWKT} from '@terraformer/wkt';
 import {
-  BuyNewSubscriptionDialogComponent
-} from '../../dialogs/buy-new-subscription-dialog/buy-new-subscription-dialog.component';
-import {Router} from '@angular/router';
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import { NgIf } from '@angular/common';
+import { Router } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { geojsonToWKT } from '@terraformer/wkt';
 
-import {PluginService} from '../../services/api/plugin.service';
-import {UserOfAreaViewModel} from '../../models/UserOfAreaViewModel';
-import {NotificationsDialogsService} from '../../services/notifications-dialogs.service';
-import {RiseUtils} from '../../shared/utilities/RiseUtils';
-import {TranslateModule, TranslateService} from '@ngx-translate/core';
-import {MapService} from '../../services/map.service';
-import FadeoutUtils from "../../shared/utilities/FadeoutUtils";
+import { MatDialog } from '@angular/material/dialog';
+
+import { BuyNewSubscriptionDialogComponent } from '../../dialogs/buy-new-subscription-dialog/buy-new-subscription-dialog.component';
+import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
+import { RiseCheckboxComponent } from '../../components/rise-checkbox/rise-checkbox.component';
+import { RiseCrudTableComponent } from '../../components/rise-crud-table/rise-crud-table.component';
+import { RiseMapComponent } from '../../components/rise-map/rise-map.component';
+import { RiseTextareaInputComponent } from '../../components/rise-textarea-input/rise-textarea-input.component';
+import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
+import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
+
+import { AreaService } from '../../services/api/area.service';
+import { MapService } from '../../services/map.service';
+import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
+import { PluginService } from '../../services/api/plugin.service';
+
+import { AreaViewModel } from '../../models/AreaViewModel';
+import { UserOfAreaViewModel } from '../../models/UserOfAreaViewModel';
+
+import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 
 @Component({
   selector: 'app-create-area-of-operation',
   standalone: true,
   providers: [],
   imports: [
-    RiseToolbarComponent,
-    RiseTextInputComponent,
-    TranslateModule,
-    RiseCrudTableComponent,
-    RiseMapComponent,
-    RiseCheckboxComponent,
-    RiseTextareaInputComponent,
     RiseButtonComponent,
+    RiseCrudTableComponent,
+    RiseCheckboxComponent,
+    RiseMapComponent,
+    RiseTextareaInputComponent,
+    RiseTextInputComponent,
+    RiseToolbarComponent,
+    TranslateModule,
+    NgIf,
   ],
   templateUrl: './create-area-of-operation.component.html',
   styleUrl: './create-area-of-operation.component.css',
 })
 export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
-
-  @ViewChild(RiseCheckboxComponent)
-  riseCheckboxComponent!: RiseCheckboxComponent;
-
   @Output() m_oExitPage: EventEmitter<boolean> = new EventEmitter<boolean>(
     null
   );
@@ -54,36 +59,55 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
 
   //todo get users from org
   m_aoUserData = [];
-  m_oAreaOfOperation: AreaViewModel;
-  m_asFieldUsers: UserOfAreaViewModel[] = [];
-  m_sAreaOfOperationDescription: string;
-  m_sAreaOfOperationName: string;
-  m_oAreaInfo = {};
-  m_asPluginsSelected: string[] = [];
-  m_aoFieldUsers = [];
-  m_sAreaOfOperationBBox: string = '';
-  m_sMarkerCoordinates: string = '';
+
+  /**
+   * Input model for form + validations
+   */
+  m_oAreaOfOperation: AreaViewModel = {} as AreaViewModel;
+
+  /**
+   * User's existing Areas of Operations
+   */
   m_aoAreasOfOperations: AreaViewModel[];
-  m_sAreaOfOperationNameError: string = "";
-  m_sAreaOfOperationDescriptionError: string = "";
+
+  /**
+   * Field users to track
+   */
+  m_aoFieldUsers: UserOfAreaViewModel[] = [];
+
+  /**
+   * Selected Plugins
+   */
+  m_asPluginsSelected: string[] = [];
+
+  /**
+   * ?
+   */
+  m_oAreaInfo = {};
+
+  /**
+   * Error strings for validator output
+   */
+  m_sAreaOfOperationNameError: string = '';
+  m_sAreaOfOperationDescriptionError: string = '';
+  m_sPluginError: string = '';
 
   m_bValidationActive = false;
+  m_bDescriptionIsValid: boolean = true;
+  m_bNameIsValid: boolean = true;
+  m_bPluginsAreValid: boolean = true;
 
   constructor(
     private m_oAreaOfOperationService: AreaService,
     private m_oDialog: MatDialog,
     private m_oNotificationService: NotificationsDialogsService,
     private m_oPluginService: PluginService,
-    private m_oRiseUtils: RiseUtils,
     private m_oRouter: Router,
     private m_oTranslate: TranslateService,
     private m_oMapService: MapService
-  ) {
-  }
+  ) {}
 
-  ngAfterViewInit() {
-    console.log('RiseCheckboxComponent:', this.riseCheckboxComponent);
-  }
+  ngAfterViewInit() {}
 
   ngOnInit() {
     // Optional: Ensure the component reference is available
@@ -116,9 +140,9 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
     this.m_aoUserData = this.m_aoUserData.filter((item) => item !== row); // Remove the deleted row
   }
 
-
   onSelectionChange(selectedValues: any[]) {
     this.m_asPluginsSelected = selectedValues;
+    this.m_oAreaOfOperation.plugins = this.m_asPluginsSelected;
   }
 
   onMapInputChange(shapeInfo: any) {
@@ -134,10 +158,10 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
           radius: shapeInfo.radius,
           area: shapeInfo.area,
         };
-        this.m_sMarkerCoordinates =
+        this.m_oAreaOfOperation.markerCoordinates =
           'POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')';
         // Convert circle to WKT (approximated as a polygon with 64 points)
-        this.m_sAreaOfOperationBBox = this.convertCircleToWKT(
+        this.m_oAreaOfOperation.bbox = this.convertCircleToWKT(
           shapeInfo.center,
           shapeInfo.radius
         );
@@ -153,8 +177,8 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
 
         // Convert polygon to WKT
 
-        this.m_sAreaOfOperationBBox = geojsonToWKT(shapeInfo.geoJson);
-        this.m_sMarkerCoordinates =
+        this.m_oAreaOfOperation.bbox = geojsonToWKT(shapeInfo.geoJson);
+        this.m_oAreaOfOperation.markerCoordinates =
           'POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')';
       }
     }
@@ -162,7 +186,6 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
 
   //todo moving this to map service
   // Convert circle to WKT (approximated as a polygon)
-
 
   convertCircleToWKT(
     center: { lat: number; lng: number },
@@ -192,34 +215,31 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
   SaveAreaOfOperation() {
     this.m_bValidationActive = true;
     if (this.validateAOI()) {
-      this.m_oAreaOfOperation = {
-        name: this.m_sAreaOfOperationName,
-        description: this.m_sAreaOfOperationDescription,
-        bbox: this.m_sAreaOfOperationBBox,
-        markerCoordinates: this.m_sMarkerCoordinates,
-        // plugins:this.m_asPluginsSelected
-      };
-      this.m_oAreaOfOperationService.addArea(this.m_oAreaOfOperation).subscribe({
-        next: (oResponse) => {
-          //todo send confirmation to HQ operator
-          this.m_oNotificationService.openInfoDialog(
-            'New Area have been added successfully',
-            'success',
-            'Success'
-          );
-          // this.m_oRouter.navigateByUrl('/account');
-          this.exitCreatingAreaOfOperation();
+      this.m_oAreaOfOperationService
+        .addArea(this.m_oAreaOfOperation)
+        .subscribe({
+          next: (oResponse) => {
+            //todo send confirmation to HQ operator
+            this.m_oNotificationService.openInfoDialog(
+              'New Area have been added successfully',
+              'success',
+              'Success'
+            );
+            // this.m_oRouter.navigateByUrl('/account');
+            this.exitCreatingAreaOfOperation();
 
-          // this.m_oAreaOfOperationService.addUserToArea(oResponse.id,)
-        },
-        error: (e) => {
-          // Here handle no valid subscription
-          if (e.error.errorStringCodes[0] === 'ERROR_API_NO_VALID_SUBSCRIPTION') {
-            //open dialog to invite user to buy new subscription
-            this.inviteUserToBuyNewSubscription();
-          }
-        },
-      });
+            // this.m_oAreaOfOperationService.addUserToArea(oResponse.id,)
+          },
+          error: (e) => {
+            // Here handle no valid subscription
+            if (
+              e.error.errorStringCodes[0] === 'ERROR_API_NO_VALID_SUBSCRIPTION'
+            ) {
+              //open dialog to invite user to buy new subscription
+              this.inviteUserToBuyNewSubscription();
+            }
+          },
+        });
     }
   }
 
@@ -231,8 +251,6 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
   handleTableData(tableData: any[]) {
     this.m_aoFieldUsers = tableData;
   }
-
-
 
   private inviteUserToBuyNewSubscription() {
     let oDialog = this.m_oDialog.open(BuyNewSubscriptionDialogComponent, {
@@ -337,13 +355,16 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
 
   private resetAreaOfOperationForm() {
     // Reset the name and description
-    this.m_sAreaOfOperationName = '';
-    this.m_sAreaOfOperationDescription = '';
+    this.m_oAreaOfOperation = {
+      bbox: '',
+      description: '',
+      name: '',
+      plugins: [],
+      markerCoordinates: '',
+    };
 
     // Reset the map area
     this.m_oAreaInfo = {};
-    this.m_sAreaOfOperationBBox = '';
-    this.m_sMarkerCoordinates = '';
 
     // Reset the selected events (checkboxes)
     this.m_asPluginsSelected = [];
@@ -355,40 +376,82 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
     // this.m_oRiseSelectAreaComponent.clearPreviousDrawings();
   }
 
-  private validateAOI() {
-    //check if the selected area overlaps or have the same name of an existing one
+  /**
+   * enable the area of interest submission button
+   */
+  enableAOISubmit(): boolean {
+    if (!this.m_oAreaOfOperation.name) {
+      return false;
+    }
+    if (this.m_asPluginsSelected.length < 1) {
+      return false;
+    }
+    if (!this.m_oAreaOfOperation.bbox) {
+      return false;
+    }
+    return true;
+  }
+
+  private validateAOI(): boolean {
+    let bIsValid = true;
     // this.checkOverlappingAreasAndSameName(this.m_oAreaOfOperation);
 
-    return this.validateAOIDescription()&& this.validateAOIName() && this.validateAOIPlugins()  && this.validateAreaInfo();
+    if (
+      !this.validateAOIName() ||
+      !this.validateAOIDescription() ||
+      !this.validateAOIPlugins() ||
+      !this.validateAreaInfo()
+    ) {
+      bIsValid = false;
+    }
+    return bIsValid;
   }
+
   validateAOIName() {
     if (!this.m_bValidationActive) return true;
 
-    if (FadeoutUtils.utilsIsStrNullOrEmpty(this.m_sAreaOfOperationName)) {
-      this.m_sAreaOfOperationNameError = "Please provide a name for your area of operations";
+    if (
+      FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oAreaOfOperation.name) ||
+      this.m_oAreaOfOperation.name.length < 6
+    ) {
+      this.m_sAreaOfOperationNameError =
+        'Please enter a valid name of at least 6 characters.';
+      this.m_bNameIsValid = false;
       return false;
     }
-    this.m_sAreaOfOperationNameError = "";  // Clear error when valid
+
+    this.m_sAreaOfOperationNameError = ''; // Clear error when valid
+    this.m_bNameIsValid = true;
     return true;
   }
 
   validateAOIDescription() {
-    if (!this.m_bValidationActive) return true;
 
-    if (FadeoutUtils.utilsIsStrNullOrEmpty(this.m_sAreaOfOperationDescription)) {
-      this.m_sAreaOfOperationDescriptionError = "Please provide a description for your area of operations";
+    if (
+      FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oAreaOfOperation.description)
+    ) {
+      this.m_sAreaOfOperationDescriptionError =
+        'Please provide a description for your area of operations';
+      this.m_bDescriptionIsValid = false;
       return false;
     }
-    this.m_sAreaOfOperationDescriptionError = "";  // Clear error when valid
+    this.m_sAreaOfOperationDescriptionError = ''; // Clear error when valid
+    this.m_bDescriptionIsValid = true;
     return true;
   }
 
-  private validateAOIPlugins() {
-    return !(!this.m_asPluginsSelected || this.m_asPluginsSelected.length < 1);
+  private validateAOIPlugins(): boolean {
+    if (
+      !this.m_oAreaOfOperation.plugins ||
+      this.m_oAreaOfOperation.plugins.length < 1)
+    {
+      this.m_sPluginError = 'Please select at least one plugin from the list.';
+      return false;
+    }
+    return true;
   }
 
   private validateAreaInfo() {
     return this.m_oAreaInfo !== null;
   }
-
 }

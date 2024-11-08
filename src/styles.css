@@ -167,6 +167,13 @@ input[type="radio"]:checked {
   border: 2px solid var(--rise-white);
 }
 
+.invalid-feedback {
+  color: var(--rise-danger-text);
+  background-color: rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+  padding: 8px;
+}
+
 .user-menu {
   position: absolute;
   right: 0.75rem;

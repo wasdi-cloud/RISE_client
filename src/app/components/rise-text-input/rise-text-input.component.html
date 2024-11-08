@@ -25,15 +25,11 @@
     *ngIf="m_bSetPassword"
     (click)="toggleType()"
   >
-    <span
-      class="material-symbols-outlined input-group-text"
-    >
-      visibility
-    </span>
+    <span class="material-symbols-outlined input-group-text"> visibility </span>
   </div>
 </div>
 <div
-  class="invalid-feedback d-flex flex-row p-1 gap-1 mt-2"
+  class="invalid-feedback d-flex flex-row gap-1 mt-2"
   *ngIf="m_bIsValidatorInput && !m_bIsValid"
 >
   <span class="material-symbols-outlined"> info </span>
