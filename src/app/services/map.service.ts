@@ -121,8 +121,8 @@ export class MapService {
       remove: false,
       fullscreenControl: true,
       fullscreenControlOptions: {
-        position: 'topleft'
-      }
+        position: 'topleft',
+      },
     },
   };
 
@@ -156,7 +156,7 @@ export class MapService {
       fullscreenControlOptions: {
         position: 'topleft',
       },
-    };  
+    };
   }
 
   /**
@@ -805,7 +805,7 @@ export class MapService {
     return new Promise((resolve, reject) => {
       const transaction = db.transaction('tileStore', 'readonly');
       const store = transaction.objectStore('tileStore');
-      console.log(url);
+      // console.log(url);
       const request = store.get(url); // Use 'url' as the key
 
       request.onsuccess = (event) => {
