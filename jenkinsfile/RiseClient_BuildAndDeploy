@@ -119,6 +119,8 @@ pipeline {
 
     stage('NG - BUILD') {
       steps {
+        sh script: "pwd", label: "Current location"
+        sh script: "cat ./client_v2/environments/environments.ts", label: "Current location"
         sh script: """
           cd client_v2
           set NG_FORCE_TTY=false
