@@ -107,7 +107,7 @@ pipeline {
       steps {
         sh script: """
             cd ${env.sWasdiAnsiblePath}
-            ansible-playbook playbooks/prepareWasdiClient_v2.yml \
+            ansible-playbook playbooks/prepareRiseClient.yml \
               --inventory inventories/${env.sAnsibleInventory}.yml \
               --limit ${env.sAnsibleLimit} \
               --diff \
