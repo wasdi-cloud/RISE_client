@@ -97,7 +97,7 @@ pipeline {
       steps {
         sh script: """
           cd client_v2
-          npm install
+          npm install --force
         """,
         label: "Install NodeJS modules from package.json"
       }
@@ -113,7 +113,7 @@ pipeline {
               --diff \
               --extra-vars 'sCurrentRevision=${env.sCurrentRevision} sSourceDirectory=${WORKSPACE}/client_v2'
         """,
-        label: "Prepare the WASDI client"
+        label: "Prepare the RISE client"
       }
     }
 
@@ -124,7 +124,7 @@ pipeline {
           set NG_FORCE_TTY=false
           ./node_modules/.bin/ng build --configuration production
         """,
-        label: "Build WASDI client"
+        label: "Build RISE client"
       }
     }
 
@@ -133,7 +133,7 @@ pipeline {
         sh script: """
           cd ${env.sWasdiAnsiblePath}
           ansible-playbook \
-            playbooks/buildWasdiDockerContainer.yml \
+            playbooks/buildRiseClientContainer.yml \
             --inventory inventories/${env.sAnsibleInventory}.yml \
             --limit ${env.sEnvironmentLower} \
             --diff \
