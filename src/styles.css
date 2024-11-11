@@ -372,3 +372,24 @@ a.leaflet-control-zoom-fullscreen {
   height: 36px !important;
   width: 36px !important;
 }
+
+.account-header {
+  background-color: var(--surface-glass-interactive);
+  border-radius: 10px;
+  backdrop-filter: blur(20px);
+  color: var(--rise-text-bright);
+  font-size: 20px;
+  line-height: 30px;
+  font-weight: 900;
+}
+
+.account-sub-header {
+  color: var(--rise-text-bright);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.account-sub-msg {
+  color: var(--rise-text-dim);
+}

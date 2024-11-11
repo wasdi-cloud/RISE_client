@@ -1,68 +1,142 @@
-<div class="outlet p-2">
-  <div class="user-container d-flex flex-column justify-content-between">
-    <div class="header d-flex flex-row justify-content-between">
-      <h4>{{ "USER.MY_ACCOUNT" | translate }}</h4>
-      <rise-button
-        [m_sLabel]="'USER.DELETE_ACCOUNT'"
-        [m_sRole]="'danger'"
-        (click)="deleteUser()"
-      ></rise-button>
+<div class="outlet">
+  <div class="user-container d-flex flex-column justify-content-between px-4">
+    <div
+      class="account-header d-flex flex-row align-items-center justify-content-between mt-2 p-2"
+    >
+      {{ "USER.MY_ACCOUNT" | translate }}
     </div>
-    <div class="body d-flex flex-fill flex-column gap-2">
-      <div class="d-flex flex-row gap-2">
-        <div class="d-flex flex-column gap-1 flex-fill">
+    <div class="body d-flex flex-fill flex-column gap-5 py-4 px-1">
+      <!-- User Personal Information Inputs -->
+      <div class="d-flex flex-column gap-1">
+        <div class="account-sub-header">
+          {{ "USER.ACCOUNT_HEADER" | translate }}
+        </div>
+        <div class="d-flex flex-row gap-2">
           <rise-text-input
-            [m_sLocalizationKey]="'LOGIN.USER_ID'"
-          ></rise-text-input>
-          <rise-text-input
+            class="col-6"
             [m_sLocalizationKey]="'REGISTER.NAME'"
+            [m_bHasTitle]="true"
           ></rise-text-input>
           <rise-text-input
+            class="col-6"
             [m_sLocalizationKey]="'REGISTER.SURNAME'"
+            [m_bHasTitle]="true"
           ></rise-text-input>
-          <rise-text-input
-            [m_sLocalizationKey]="'REGISTER.MOBILE'"
-          ></rise-text-input>
-          <rise-dropdown [m_sLabel]="'USER.LANGUAGE'"></rise-dropdown>
         </div>
-        <div class="d-flex flex-column gap-1 flex-fill">
-          <rise-text-input
-            [m_sLocalizationKey]="'USER.EMAIL'"
-          ></rise-text-input>
-          <rise-text-input
-            [m_sLocalizationKey]="'USER.NEW_EMAIL'"
-          ></rise-text-input>
-          <rise-text-input
-            [m_sLocalizationKey]="'USER.CONFIRM_EMAIL'"
-          ></rise-text-input>
-          <rise-button [m_sLabel]="'USER.CHANGE_EMAIL'"></rise-button>
-        </div>
+        <rise-text-input
+          class="col-6"
+          [m_sLocalizationKey]="'REGISTER.MOBILE'"
+          [m_bHasTitle]="true"
+        ></rise-text-input>
+        <rise-text-input
+          class="col-6"
+          [m_sLocalizationKey]="'LOGIN.USER_ID'"
+          [m_bHasTitle]="true"
+        ></rise-text-input>
+        <rise-button
+          class="align-self-start mt-2"
+          [m_sRole]="'primary'"
+          [m_sLabel]="'ORGANIZATION.SAVE'"
+        ></rise-button>
       </div>
-      <div class="d-flex flex-row gap-5">
-        <div class="d-flex flex-column gap-2 flex-fill">
-          <h5>{{ "USER.CHANGE_PW" | translate }}</h5>
-          <rise-text-input
-            [m_sLocalizationKey]="'USER.OLD_PW'"
-          ></rise-text-input>
-          <rise-text-input
-            [m_sLocalizationKey]="'USER.NEW_PW'"
-          ></rise-text-input>
-          <rise-text-input
-            [m_sLocalizationKey]="'USER.CONFIRM_PW'"
-          ></rise-text-input>
-          <rise-button [m_sLabel]="'USER.CHANGE_PW'"></rise-button>
+
+      <div class="d-flex flex-row gap-2">
+        <!-- System Language Selector -->
+        <div class="d-flex flex-column align-items-start col-6">
+          <div class="account-sub-header">
+            {{ "USER.SELECT_LANG" | translate }}
+          </div>
+          <p class="account-sub-msg">
+            {{ "USER.SELECT_LANG_MSG" | translate }}
+          </p>
+          <rise-dropdown
+            class="col-6"
+            [m_sLabel]="'USER.LANGUAGE'"
+          ></rise-dropdown>
         </div>
-        <div class="d-flex flex-column gap-2 flex-fill">
-          <h5>Notifications</h5>
+        <div class="d-flex flex-column gap-1 ps-2">
+          <div class="account-sub-header">Notifications</div>
+          <p
+            class="account-sub-msg"
+            [innerHTML]="'USER.NOTIFICATIONS_MSG' | translate"
+          ></p>
           <rise-checkbox
             [m_aoOptions]="m_aoNotificationOptions"
             (m_oSelectionChange)="handleCheckboxChange($event)"
           ></rise-checkbox>
         </div>
       </div>
-    </div>
-    <div class="footer d-flex flex-row justify-content-end">
-      <rise-button [m_sLabel]="'ORGANIZATION.SAVE'"></rise-button>
+      <div class="d-flex flex-row gap-2">
+        <!-- Update Email and Password Container -->
+        <div class="d-flex flex-column gap-1 col-6">
+          <div class="account-sub-header">
+            {{ "USER.CONNECT_EMAIL" | translate }}
+          </div>
+          <p class="account-sub-msg">
+            <strong>RISE</strong> will use this e-mail to connect and send
+            notifications. You can manage your notification settings above.
+          </p>
+          <rise-text-input
+            [m_sLocalizationKey]="'USER.EMAIL'"
+            [m_bHasTitle]="true"
+          ></rise-text-input>
+          <rise-text-input
+            [m_sLocalizationKey]="'USER.NEW_EMAIL'"
+            [m_bHasTitle]="true"
+          ></rise-text-input>
+          <rise-text-input
+            [m_sLocalizationKey]="'USER.CONFIRM_EMAIL'"
+            [m_bHasTitle]="true"
+          ></rise-text-input>
+          <rise-button
+            class="align-self-start mt-2"
+            [m_sRole]="'primary'"
+            [m_sLabel]="'USER.CHANGE_EMAIL'"
+          ></rise-button>
+        </div>
+        <div class="d-flex flex-column gap-1 col-6">
+          <div class="account-sub-header">
+            {{ "USER.PW_SECURITY" | translate }}
+          </div>
+          <p
+            class="account-sub-msg"
+            [innerHTML]="'USER.PW_MSG' | translate"
+          ></p>
+          <rise-text-input
+            [m_bHasTitle]="true"
+            [m_sLocalizationKey]="'USER.OLD_PW'"
+          ></rise-text-input>
+          <rise-text-input
+            [m_bHasTitle]="true"
+            [m_sLocalizationKey]="'USER.NEW_PW'"
+          ></rise-text-input>
+          <rise-text-input
+            [m_bHasTitle]="true"
+            [m_sLocalizationKey]="'USER.CONFIRM_PW'"
+          ></rise-text-input>
+          <rise-button
+            class="align-self-start mt-2"
+            [m_sRole]="'primary'"
+            [m_sLabel]="'USER.CHANGE_PW'"
+          ></rise-button>
+        </div>
+      </div>
+      <div
+        class="delete-area p-3 d-flex flex-row justify-content-between align-items-center"
+      >
+        <div>
+          <div class="account-sub-header">
+            {{ "USER.DELETE_ACCOUNT" | translate }}
+          </div>
+          <p class="my-0">
+            {{ "USER.DELETE_MSG" | translate }}
+          </p>
+        </div>
+        <rise-button
+          [m_sLabel]="'USER.DELETE_ACCOUNT'"
+          [m_sRole]="'danger'"
+        ></rise-button>
+      </div>
     </div>
   </div>
 </div>

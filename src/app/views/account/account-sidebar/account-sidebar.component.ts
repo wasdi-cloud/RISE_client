@@ -11,8 +11,8 @@ import { RiseMenuButtonComponent } from '../../../components/rise-menu-button/ri
 })
 export class AccountSidebarComponent {
   @Input() m_aoAccountButtons = [];
+  @Input() m_sActiveBtn: string = 'user'
   @Output() m_sSelectedButton: EventEmitter<any> = new EventEmitter<any>(null);
-  m_sActiveBtn: string = 'user';
 
   constructor() {}
 

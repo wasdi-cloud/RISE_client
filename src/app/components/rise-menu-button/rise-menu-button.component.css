@@ -12,7 +12,7 @@
 
 .btn-container.selected {
   background-color: var(--surface-glass-elevation);
-  border: 1px solid var(--surface-glass-elevation);
+  border: 1px solid var(--rise-gold);
   border-radius: 8px;
-  color: var(--rise-text-dim);
+  color: var(--rise-gold);
 }
