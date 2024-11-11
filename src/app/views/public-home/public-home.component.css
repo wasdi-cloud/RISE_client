@@ -10,3 +10,16 @@ div#hero-img {
   background-image: url(/assets/rise-assets/cover-dark2x.png);
   background-position: center;
 }
+
+.rise-info-container {
+  width: 416px;
+}
+
+.rise-info-container > h2 {
+  font-size: 36px;
+  line-height: 50px;
+}
+
+.rise-info-container > p {
+  color: var(--rise-text-dim);
+}

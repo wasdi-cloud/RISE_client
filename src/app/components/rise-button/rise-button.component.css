@@ -35,6 +35,11 @@
 .action {
   background-color: var(--rise-gold);
   color: var(--text-inverse);
+  font-weight: 400;
+}
+
+.action > span {
+  font-size: 24px;
 }
 
 .action:hover {

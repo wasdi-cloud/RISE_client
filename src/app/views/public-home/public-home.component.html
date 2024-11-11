@@ -6,10 +6,16 @@
     <div class="rise-container flex-fill d-flex flex-row align-items-center">
       <!-- <img class="rise-img" src="/assets/rise-assets/cover-dark2x.png" alt=""> -->
       <div id="hero-img"></div>
-      <div class="rise-info-container">
-        <h2>Natural Disaster management starts with you</h2>
+      <div
+        class="rise-info-container d-flex flex-column gap-2 justify-content-start"
+      >
+        <h2 class="space-mono-regular">
+          Natural Disaster management starts with you
+        </h2>
         <p>Be aware. Stay prepared. For anything. From anywhere.</p>
         <rise-button
+          class="align-self-start"
+          [m_sIconRight]="'arrow_forward'"
           [m_sRole]="'action'"
           [m_sLabel]="'Get started for free'"
           (click)="navigateRoute('sign-up')"
