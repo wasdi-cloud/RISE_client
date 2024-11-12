@@ -1,4 +1,7 @@
 <div class="d-flex flex-column justify-content-between">
+  <label *ngIf="m_bHasTitle" class="form-label" for="">{{
+    m_sLabel | translate
+  }}</label>
   <mat-select
     class="form-control"
     disableOptionCentering="'false'"
@@ -28,7 +31,8 @@
       </mat-option>
     </div>
     <div *ngIf="!m_bHasSearch">
-      <mat-option *ngFor="let oItem of m_aoDropdownItems" [value]="oItem">{{oItem}}
+      <mat-option *ngFor="let oItem of m_aoDropdownItems" [value]="oItem"
+        >{{ oItem }}
       </mat-option>
     </div>
   </mat-select>

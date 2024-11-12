@@ -53,6 +53,8 @@ export class RiseDropdownComponent {
 
   @Input() m_bIsValid?: boolean = true;
 
+  @Input() m_bHasTitle?: boolean = false;
+
   @Input() m_oDeleteFn?: (args: any, controller: any) => void;
 
   /**

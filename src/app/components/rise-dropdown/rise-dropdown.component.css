@@ -4,6 +4,11 @@
   color: var(--rise-text-bright);
 }
 
+.form-label {
+  color: var(--rise-text-dim);
+  line-height: 12px;
+}
+
 ::ng-deep div.mat-mdc-select {
   color: var(--rise-text-bright) !important;
 }
