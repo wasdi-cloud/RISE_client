@@ -1,6 +1,6 @@
 {
   "ACCOUNT": {
-    "AREA_OF_OPERATIONS": "Area Of Operations",
+    "AREA_OF_OPERATIONS": "Areas of Operations",
     "MY_ORGANIZATION": "My Organization",
     "MY_USER": "My User",
     "NOT_ACTIVITIES": "Activities",
@@ -30,6 +30,11 @@
     "SAVE": "Save",
     "CANCEL": "Cancel",
     "ADD_FIELD_OPERATOR": "Add Field Operator"
+  },
+  "COLLABORATORS": {
+    "ADD": "Invite a Collaborator to RISE",
+    "INVITE": "Add Users",
+    "NONE": "You haven't invited any collaborators yet"
   },
   "DASHBOARD": {
     "SEARCH": "Search Map"
@@ -64,7 +69,9 @@
   "ORGANIZATION": {
     "ADDRESS": "Organization Address",
     "DELETE": "Delete Organization",
+    "DELETE_MSG":"  Once you delete your organization, this cannot be undone. Please be certain.",
     "INVITE": "Invite New User",
+    "MEMBERS": "Collaboratos",
     "NAME": "Organization Name",
     "SAVE": "Save Changes",
     "TYPE": "Organization Type",
@@ -134,19 +141,27 @@
     "SIGN_UP": "Sign Up"
   },
   "USER": {
+    "ACCOUNT_HEADER": "Account Details",
     "CHANGE_EMAIL": "Change email",
     "CHANGE_PW": "Change Password",
+    "CONNECT_EMAIL": "Connection Email Address",
     "CONFIRM_EMAIL": "Confirm New Email",
     "CONFIRM_PW": "Confirm Password",
     "DELETE_ACCOUNT": "Delete Account",
+    "DELETE_MSG": "  Once you delete your account, this cannot be undone. Please be certain.",
     "EMAIL": "Email",
-    "LANGUAGE": "Language",
+    "LANGUAGE": "Select a Language",
     "MOBILE_NUMBER": "Mobile Number",
     "MY_ACCOUNT": "My Account",
     "NEW_EMAIL": "New Email",
     "NEW_PW": "New Password",
     "NOTIFICATIONS": "Notifications",
-    "OLD_PW": "Old Password"
+    "NOTIFICATIONS_MSG": "Select the notifications you wish to receive from <strong>RISE</strong>.",
+    "OLD_PW": "Current Password",
+    "PW_MSG": "Change the password used to access your <strong>RISE</strong> account. If you have any difficulties, <a>Contact Us</a>",
+    "PW_SECURITY": "Password and Security",
+    "SELECT_LANG": "Select Language",
+    "SELECT_LANG_MSG": "Select the system language you want to use for RISE."
   },
   "USER_MENU": {
     "ACCOUNT": "Account",

@@ -1,8 +1,14 @@
 <button
-  class="btn"
+  class="btn d-flex flex-row align-items-center justify-content-center gap-1"
   [ngClass]="m_sRole"
   [class.active]="m_bActive"
   [disabled]="m_bDisabled"
 >
+  <span class="material-symbols-outlined" *ngIf="m_sIconLeft">{{
+    m_sIconLeft
+  }}</span>
   {{ m_sLabel | translate }}
+  <span class="material-symbols-outlined" *ngIf="m_sIconRight">{{
+    m_sIconRight
+  }}</span>
 </button>

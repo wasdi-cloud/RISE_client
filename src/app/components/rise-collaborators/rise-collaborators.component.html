@@ -1,0 +1,17 @@
+<!-- No Collaborators -->
+<div
+  class="collaborators-container text-center px-4 py-5 d-flex flex-column gap-4"
+  *ngIf="m_aoUsers.length === 0"
+>
+  <span class="material-symbols-outlined"> diversity_3 </span>
+  {{ "COLLABORATORS.NONE" | translate }}
+  <rise-button
+    class="align-self-center"
+    [m_sLabel]="'COLLABORATORS.INVITE'"
+    [m_sRole]="'primary'"
+    (click)="emitInviteClick()"
+  ></rise-button>
+</div>
+
+<!-- With Collaborators already -->
+<div></div>

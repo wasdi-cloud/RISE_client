@@ -1,7 +1,11 @@
-<div class="sidebar-container d-flex flex-column gap-3 px-3">
-  <rise-button
+<div class="sidebar-container d-flex flex-column">
+  <h2>User Account</h2>
+  <rise-menu-button
     *ngFor="let oButton of m_aoAccountButtons"
     [m_sLabel]="oButton.labelKey"
+    [m_sIcon]="oButton.icon"
+    [m_bSelected]="this.m_sActiveBtn === oButton.route"
     (click)="emitButtonSelection(oButton.route)"
-  ></rise-button>
+  >
+  </rise-menu-button>
 </div>

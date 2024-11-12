@@ -1,86 +1,146 @@
 <div class="outlet">
   <div
-    *ngIf="!m_bInviteUser && m_oOrganization"
-    class="organization-container d-flex flex-column justify-content-between p-2"
+    *ngIf="m_oOrganization"
+    class="org-container d-flex flex-column justify-content-between px-4"
   >
-    <div
-      class="header d-flex flex-row align-items-center justify-content-between gap-3"
-    >
-      <h4>Organization: {{ m_oOrganization.name }}</h4>
-      <rise-button
-        class="justify-self-end"
-        [m_sLabel]="'ORGANIZATION.DELETE'"
-        [m_sRole]="'danger'"
-      ></rise-button>
+    <div class="account-header d-flex flex-row align-items-center mt-2 p-2">
+      {{ "ACCOUNT.ORGANIZATION" | translate }}:
+      {{ m_oOrganization.name }}
     </div>
-    <div class="orgs-body flex-fill">
-      <div class="org-info-container d-flex flex-row gap-5">
+    <div class="body d-flex flex-fill flex-column gap-5 py-4 px-1">
+      <!-- Organization Information -->
+      <div class="org-info-container d-flex flex-row col-6">
         <div class="flex-fill d-flex flex-column gap-3">
+          <div class="account-sub-header">Organization Information</div>
           <rise-text-input
+            [m_bHasTitle]="true"
             [m_sLocalizationKey]="'ORGANIZATION.NAME'"
             [(m_sInputText)]="m_oOrganization.name"
           ></rise-text-input>
           <rise-dropdown
+            [m_bHasTitle]="true"
             [m_sLabel]="'ORGANIZATION.TYPE'"
             [m_sPlaceholder]="m_oOrganization.type"
+            [m_aoSelectedItems]="m_oOrganization.type"
             [m_aoDropdownItems]="m_aoOrgTypes"
           ></rise-dropdown>
-        </div>
-
-        <div class="address-container flex-fill">
-          <h5>{{ "ORGANIZATION.ADDRESS" | translate }}</h5>
-          <div class="d-flex flex-row gap-2">
-            <rise-text-input
-              class="flex-fill"
-              [m_sLocalizationKey]="'REGISTER.STREET'"
-              [(m_sInputText)]="m_oOrganization.street"
-            ></rise-text-input>
-            <rise-text-input
-              [m_sLocalizationKey]="'REGISTER.NUMBER'"
-              [(m_sInputText)]="m_oOrganization.number"
-            ></rise-text-input>
-          </div>
-          <div class="d-flex flex-row gap-2">
-            <rise-text-input
-              class="flex-fill"
-              [m_sLocalizationKey]="'REGISTER.POST_CODE'"
-              [(m_sInputText)]="m_oOrganization.postalCode"
-            ></rise-text-input>
-            <rise-text-input
-              [m_sLocalizationKey]="'REGISTER.CITY'"
-              [(m_sInputText)]="m_oOrganization.city"
-            ></rise-text-input>
-          </div>
-          <div class="d-flex flex-row gap-2">
-            <rise-text-input
-              class="flex-fill"
-              [m_sLocalizationKey]="'REGISTER.PHONE'"
-              [(m_sInputText)]="m_oOrganization.phone"
-            ></rise-text-input>
-            <rise-text-input
-              [m_sLocalizationKey]="'REGISTER.COUNTRY'"
-              [(m_sInputText)]="m_oOrganization.country"
-            ></rise-text-input>
-          </div>
+          <rise-button
+            class="align-self-start"
+            [m_sRole]="'primary'"
+            [m_sLabel]="'ORGANIZATION.SAVE'"
+          ></rise-button>
         </div>
       </div>
-
-      <div class="users-container">
-        <h5>{{ "ORGANIZATION.USERS" | translate }}</h5>
-        <rise-crud-table [m_aoDataSource]="m_aoOrgUsers"></rise-crud-table>
+      <!-- Organization Address -->
+      <div class="org-address-container d-flex flex-column gap-3 col-6">
+        <div class="account-sub-header">
+          {{ "ORGANIZATION.ADDRESS" | translate }}
+        </div>
+        <div class="org-address-info my-2">
+          <rise-text-input
+            [m_bHasTitle]="true"
+            [(m_sInputText)]="m_oOrganization.street"
+            [m_sLocalizationKey]="'Street Address'"
+          ></rise-text-input>
+          <rise-text-input
+            [m_bHasTitle]="true"
+            [(m_sInputText)]="m_oOrganization.country"
+            [m_sLocalizationKey]="'Country'"
+          ></rise-text-input>
+          <div class="d-flex flex-row gap-1">
+            <rise-text-input
+              [m_bHasTitle]="true"
+              [(m_sInputText)]="m_oOrganization.number"
+              class="flex-fill"
+              [m_sLocalizationKey]="'Street Number'"
+            ></rise-text-input>
+            <rise-text-input
+              [m_bHasTitle]="true"
+              [(m_sInputText)]="m_oOrganization.postalCode"
+              class="flex-fill"
+              [m_sLocalizationKey]="'Postal Code'"
+            ></rise-text-input>
+          </div>
+          <div class="d-flex flex-row gap-2">
+            <rise-text-input
+              [m_bHasTitle]="true"
+              [(m_sInputText)]="m_oOrganization.city"
+              class="flex-fill"
+              [m_sLocalizationKey]="'City'"
+            ></rise-text-input>
+            <rise-text-input
+              [m_bHasTitle]="true"
+              [(m_sInputText)]="m_oOrganization.phone"
+              class="flex-fill"
+              [m_sLocalizationKey]="'Phone Number'"
+            ></rise-text-input>
+          </div>
+        </div>
         <rise-button
-          [m_sLabel]="'ORGANIZATION.INVITE'"
-          (click)="openInviteUser(true)"
+          class="align-self-start"
+          [m_sRole]="'primary'"
+          [m_sLabel]="'ORGANIZATION.SAVE'"
+        ></rise-button>
+      </div>
+
+      <!-- Organization Members Management -->
+      <div class="members-container d-flex flex-column gap-3">
+        <div class="account-sub-header">
+          {{ "ORGANIZATION.MEMBERS" | translate }}
+        </div>
+        <rise-collaborators
+          (m_oInviteClick)="openInviteUser($event)"
+        ></rise-collaborators>
+      </div>
+
+      <!-- Delete Organization Area -->
+      <div
+        class="delete-area p-3 d-flex flex-row justify-content-between align-items-center"
+      >
+        <div>
+          <div class="account-sub-header">
+            {{ "ORGANIZATION.DELETE" | translate }}
+          </div>
+          <p class="my-0">
+            {{ "ORGANIZATION.DELETE_MSG" | translate }}
+          </p>
+        </div>
+        <rise-button
+          [m_sLabel]="'ORGANIZATION.DELETE'"
+          [m_sRole]="'danger'"
         ></rise-button>
       </div>
     </div>
-    <div class="footer d-flex flex-row justify-content-end">
-      <rise-button [m_sLabel]="'ORGANIZATION.SAVE'"></rise-button>
-    </div>
   </div>
-  <invite-user
-    [m_sOrganizationId]="m_oOrganization.id"
-    *ngIf="m_bInviteUser"
-    (m_oBackEmitter)="openInviteUser(false)"
-  ></invite-user>
 </div>
+
+<!-- <div
+*ngIf="!m_bInviteUser && m_oOrganization"
+class="organization-container d-flex flex-column justify-content-between p-2"
+>
+<div
+  class="header d-flex flex-row align-items-center justify-content-between gap-3"
+>
+ 
+</div>
+<div class="orgs-body flex-fill">
+ 
+  </div>
+
+  <div class="users-container">
+    <h5>{{ "ORGANIZATION.USERS" | translate }}</h5>
+    <rise-crud-table [m_aoDataSource]="m_aoOrgUsers"></rise-crud-table>
+    <rise-button
+      [m_sLabel]="'ORGANIZATION.INVITE'"
+      (click)="openInviteUser(true)"
+    ></rise-button>
+  </div>
+</div>
+<div class="footer d-flex flex-row justify-content-end">
+  <rise-button [m_sLabel]="'ORGANIZATION.SAVE'"></rise-button>
+</div>
+</div>
+<invite-user
+*ngIf="m_bInviteUser"
+(m_oBackEmitter)="openInviteUser(false)"
+></invite-user> -->

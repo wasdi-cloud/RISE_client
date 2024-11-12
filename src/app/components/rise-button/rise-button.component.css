@@ -31,10 +31,20 @@
   color: var(--text-inverse);
 }
 
+.primary:active {
+  background-color: var(--rise-text-dim);
+  color: var(--text-inverse);
+}
+
 /* Call to action button styling */
 .action {
   background-color: var(--rise-gold);
   color: var(--text-inverse);
+  font-weight: 400;
+}
+
+.action > span {
+  font-size: 24px;
 }
 
 .action:hover {

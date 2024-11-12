@@ -11,6 +11,8 @@ import { OrganizationTypes } from '../../../shared/organization-types';
 import { RiseDropdownComponent } from '../../../components/rise-dropdown/rise-dropdown.component';
 import { TranslateModule } from '@ngx-translate/core';
 import FadeoutUtils from '../../../shared/utilities/FadeoutUtils';
+import { RiseCollaboratorsComponent } from '../../../components/rise-collaborators/rise-collaborators.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'user-organization',
@@ -21,7 +23,7 @@ import FadeoutUtils from '../../../shared/utilities/FadeoutUtils';
     TranslateModule,
     InviteUserComponent,
     RiseButtonComponent,
-    RiseCrudTableComponent,
+    RiseCollaboratorsComponent,
     RiseDropdownComponent,
     RiseTextInputComponent,
   ],
@@ -36,7 +38,10 @@ export class UserOrganizationComponent implements OnInit {
   m_aoOrgUsers: Array<any> = [];
 
   m_bInviteUser: boolean = false;
-  constructor(private m_oOrganizationsService: OrganizationsService) {}
+  constructor(
+    private m_oDialog: MatDialog,
+    private m_oOrganizationsService: OrganizationsService
+  ) {}
 
   ngOnInit(): void {
     this.getOrganization();
@@ -58,7 +63,9 @@ export class UserOrganizationComponent implements OnInit {
 
   getOrgVM(sOrgId: string): void {
     this.m_oOrganizationsService.getOrg(sOrgId).subscribe({
-      next: (oResponse) => {},
+      next: (oResponse) => {
+        console.log(oResponse);
+      },
       error: (oError) => {},
     });
   }
@@ -93,7 +100,14 @@ export class UserOrganizationComponent implements OnInit {
    */
   deleteOrganization() {}
 
-  openInviteUser(bStatus: boolean) {
-    this.m_bInviteUser = bStatus;
+  openInviteUser(oEvent: any) {
+    console.log(oEvent);
+    this.m_oDialog
+      .open(InviteUserComponent, {})
+      .afterClosed()
+      .subscribe((oResult) => {
+        this.getOrgUsers();
+      });
+    // this.m_bInviteUser = bStatus;
   }
 }

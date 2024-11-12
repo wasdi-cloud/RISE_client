@@ -1,11 +1,11 @@
-import { NgClass } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'rise-button',
   standalone: true,
-  imports: [NgClass, TranslateModule],
+  imports: [NgClass, TranslateModule, NgIf],
   templateUrl: './rise-button.component.html',
   styleUrl: './rise-button.component.css',
 })
@@ -18,12 +18,8 @@ export class RiseButtonComponent {
   /**
    * What is the role of the button? (Colour)
    */
-  @Input() m_sRole?:
-    | 'action'
-    | 'danger'
-    | 'muted'
-    | 'primary'
-    | 'regular' = 'regular';
+  @Input() m_sRole?: 'action' | 'danger' | 'muted' | 'primary' | 'regular' =
+    'regular';
 
   /**
    * The Icon that will appear on the left side of the button
