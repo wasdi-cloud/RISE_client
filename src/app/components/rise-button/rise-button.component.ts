@@ -21,6 +21,7 @@ export class RiseButtonComponent {
   @Input() m_sRole?: 'action' | 'danger' | 'muted' | 'primary' | 'regular' =
     'regular';
 
+  @Input() m_sSize?: 'small' | '' = '';
   /**
    * The Icon that will appear on the left side of the button
    */

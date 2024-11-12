@@ -1,14 +1,31 @@
 <div class="outlet">
   <div
     *ngIf="!m_bShowBuySub"
+    class="subscriptions-container d-flex flex-column justify-content-between px-4"
+  >
+    <div
+      class="account-header d-flex flex-row align-items-center justify-content-between mt-2 p-2"
+    >
+      {{ "SUBSCRIPTIONS.HEADER" | translate }}
+      <rise-button
+        [m_sSize]="'small'"
+        [m_sRole]="'action'"
+        [m_sLabel]="'SUBSCRIPTIONS.BUY_BUTTON'"
+        (click)="openBuyNewSub(true)"
+      ></rise-button>
+    </div>
+    <div class="body d-flex flex-fill flex-column gap-5 py-4 px-1"></div>
+  </div>
+  <buy-new-subscription
+    *ngIf="m_bShowBuySub"
+    (m_oEmitBack)="openBuyNewSub($event)"
+    [m_sOrganizationId]=""
+  ></buy-new-subscription>
+</div>
+<!-- <div
+   
     class="header d-flex flex-row justify-content-between align-items-center"
   >
-    <h4>{{ "SUBSCRIPTIONS.HEADER" | translate }}</h4>
-    <rise-button
-      [m_sLabel]="'SUBSCRIPTIONS.BUY_BUTTON'"
-      (click)="openBuyNewSub(true)"
-    ></rise-button>
-  </div>
   <div class="body" *ngIf="!m_bShowBuySub">
     <div class="button">
       <rise-crud-table
@@ -20,10 +37,4 @@
       ></rise-crud-table>
     </div>
   </div>
-  <buy-new-subscription
-    *ngIf="m_bShowBuySub"
-    (m_oEmitBack)="openBuyNewSub($event)"
-    [m_sOrganizationId]=""
-  ></buy-new-subscription>
-  
-</div>
+</div> -->
