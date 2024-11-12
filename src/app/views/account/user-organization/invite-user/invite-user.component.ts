@@ -9,12 +9,15 @@ import { RiseTextInputComponent } from '../../../../components/rise-text-input/r
 
 import { InviteViewModel } from '../../../../models/InviteViewModel';
 import { UserRole } from '../../../../models/UserRole';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'invite-user',
   standalone: true,
   imports: [
     CommonModule,
+    TranslateModule,
     RiseButtonComponent,
     RiseDropdownComponent,
     RiseTextInputComponent,
@@ -27,6 +30,8 @@ export class InviteUserComponent implements OnInit {
    * Organization Id (Received from User Organization Component)
    */
   @Input() m_sOrganizationId: string = '';
+
+  @Input() m_sOrganizationName: string = '';
 
   @Output() m_oBackEmitter: EventEmitter<boolean> = new EventEmitter<boolean>(
     false
@@ -65,7 +70,10 @@ export class InviteUserComponent implements OnInit {
    */
   m_bSuccess = false;
 
-  constructor(private m_oOrganizationsService: OrganizationsService) {}
+  constructor(
+    private m_oDialogRef: MatDialogRef<InviteUserComponent>,
+    private m_oOrganizationsService: OrganizationsService
+  ) {}
 
   ngOnInit() {
     this.initRoles();
@@ -161,5 +169,9 @@ export class InviteUserComponent implements OnInit {
    */
   backToOrgEdit() {
     this.m_oBackEmitter.emit(true);
+  }
+
+  onDismiss() {
+    this.m_oDialogRef.close();
   }
 }

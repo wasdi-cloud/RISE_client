@@ -393,3 +393,9 @@ a.leaflet-control-zoom-fullscreen {
 .account-sub-msg {
   color: var(--rise-text-dim);
 }
+
+.delete-area {
+  border: 1px solid var(--wasdiDanger);
+  background-color: rgba(255, 61, 0, 0.1);
+  border-radius: 8px;
+}

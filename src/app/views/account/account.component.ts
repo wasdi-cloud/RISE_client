@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
 import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
 import { TranslateModule } from '@ngx-translate/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AccountSidebarComponent } from './account-sidebar/account-sidebar.component';
 import { AccountBtns } from './account-sidebar/account-btns';
 import { UserAccountComponent } from './user-account/user-account.component';
@@ -29,16 +29,18 @@ import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
   styleUrl: './account.component.css',
 })
 export class AccountComponent implements OnInit {
-  @Input() m_sActiveOutlet: string = 'user';
+  @Input() m_sActiveOutlet: string = 'organization';
 
   m_aoAccountButtons: Array<any> = AccountBtns;
 
-  constructor(
-    private m_oRouter: Router,
-  ) {}
+  constructor(private m_oRouter: Router) {}
 
   ngOnInit(): void {
-    if (!FadeoutUtils.utilsIsObjectNullOrUndefined(history.state['m_sActiveOutlet'])) {
+    if (
+      !FadeoutUtils.utilsIsObjectNullOrUndefined(
+        history.state['m_sActiveOutlet']
+      )
+    ) {
       this.m_sActiveOutlet = history.state['m_sActiveOutlet'];
     }
   }

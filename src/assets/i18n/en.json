@@ -31,6 +31,11 @@
     "CANCEL": "Cancel",
     "ADD_FIELD_OPERATOR": "Add Field Operator"
   },
+  "COLLABORATORS": {
+    "ADD": "Invite a Collaborator to RISE",
+    "INVITE": "Add Users",
+    "NONE": "You haven't invited any collaborators yet"
+  },
   "DASHBOARD": {
     "SEARCH": "Search Map"
   },
@@ -64,7 +69,9 @@
   "ORGANIZATION": {
     "ADDRESS": "Organization Address",
     "DELETE": "Delete Organization",
+    "DELETE_MSG":"  Once you delete your organization, this cannot be undone. Please be certain.",
     "INVITE": "Invite New User",
+    "MEMBERS": "Collaboratos",
     "NAME": "Organization Name",
     "SAVE": "Save Changes",
     "TYPE": "Organization Type",

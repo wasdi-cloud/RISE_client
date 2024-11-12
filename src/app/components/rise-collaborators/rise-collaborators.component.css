@@ -1,0 +1,11 @@
+div.collaborators-container {
+  border: 1px solid var(--rise-text-dim);
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.material-symbols-outlined {
+    color: var(--rise-gold);
+    font-size: 60px;
+}

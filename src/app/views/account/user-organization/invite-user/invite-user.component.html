@@ -1,38 +1,41 @@
-<div class="d-flex flex-column justify-content-center align-items-center">
-  <rise-button
-    class="justify-self-start align-self-start"
-    [m_sLabel]="'Back'"
-    (click)="backToOrgEdit()"
-  ></rise-button>
+<div class="invite-container d-flex flex-column gap-2 p-3">
   <div
-    *ngIf="!m_bShowStatus"
-    class="invite-user-container d-flex flex-column gap-2"
+    class="header d-flex flex-row justify-content-between align-items-center" (click)="onDismiss()"
   >
-    <rise-text-input
-      [m_sLocalizationKey]="'INVITE_USER.EMAIL'"
-      [m_bIsValid]="validateEmail()"
-      [m_bIsValidatorInput]="true"
-      [(m_sInputText)]="m_oEmailInputs.email"
-    ></rise-text-input>
-    <rise-text-input
-      [m_sLocalizationKey]="'INVITE_USER.CONFIRM'"
-      [m_bIsValid]="validateEmail()"
-      [m_bIsValidatorInput]="true"
-      [(m_sInputText)]="m_oEmailInputs.confirmEmail"
-    ></rise-text-input>
-    <rise-dropdown
-      [m_sLabel]="'INVITE_USER.SELECT_ROLE'"
-      [m_aoDropdownItems]="m_asRoles"
-      (m_oSelectionChange)="handleRoleSelect($event)"
-    ></rise-dropdown>
-    <rise-button
-      [m_sLabel]="'ORGANIZATION.INVITE'"
-      (click)="executeInvite()"
-    ></rise-button>
+    <h3 class="invite-header">
+      {{ "COLLABORATORS.ADD" | translate }}
+    </h3>
+    <span class="close-btn material-symbols-outlined"> close </span>
   </div>
+  <rise-text-input
+    [m_sLocalizationKey]="'INVITE_USER.EMAIL'"
+    [m_bHasTitle]="true"
+    [m_bIsValid]="validateEmail()"
+    [m_bIsValidatorInput]="true"
+    [(m_sInputText)]="m_oEmailInputs.email"
+  ></rise-text-input>
+  <rise-text-input
+    [m_sLocalizationKey]="'INVITE_USER.CONFIRM'"
+    [m_bHasTitle]="true"
+    [m_bIsValid]="validateEmail()"
+    [m_bIsValidatorInput]="true"
+    [(m_sInputText)]="m_oEmailInputs.confirmEmail"
+  ></rise-text-input>
+  <rise-dropdown
+    [m_sLabel]="'INVITE_USER.SELECT_ROLE'"
+    [m_bHasTitle]="true"
+    [m_aoDropdownItems]="m_asRoles"
+    (m_oSelectionChange)="handleRoleSelect($event)"
+  ></rise-dropdown>
+  <rise-button
+    [m_sRole]="'primary'"
+    [m_sLabel]="'ORGANIZATION.INVITE'"
+    (click)="executeInvite()"
+  ></rise-button>
+</div>
 
-  <!-- Success Message -->
-  <div
+<!-- Success Message -->
+<!-- <div
     *ngIf="m_bShowStatus && m_bSuccess"
     class="alert alert-success"
     role="alert"
@@ -45,10 +48,10 @@
     </p>
     <p>Would you like to add another person to your organization?</p>
     <rise-button [m_sLabel]="'Add'" (click)="resetInputs()"></rise-button>
-  </div>
+  </div> -->
 
-  <!-- Failure Message -->
-  <div
+<!-- Failure Message -->
+<!-- <div
     *ngIf="m_bShowStatus && !m_bSuccess"
     class="alert alert-success"
     role="alert"
@@ -64,5 +67,4 @@
       [m_sLabel]="'Close'"
       (click)="m_bShowStatus = false"
     ></rise-button>
-  </div>
-</div>
+  </div> -->

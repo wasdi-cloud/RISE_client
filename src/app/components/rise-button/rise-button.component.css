@@ -31,6 +31,11 @@
   color: var(--text-inverse);
 }
 
+.primary:active {
+  background-color: var(--rise-text-dim);
+  color: var(--text-inverse);
+}
+
 /* Call to action button styling */
 .action {
   background-color: var(--rise-gold);
