@@ -1,5 +1,5 @@
-.area-outlet {
-  height: 100%;
+.create-outlet {
+  height: calc(100vh - 6rem);
 }
 .header {
   background-color: var(--surface-glass-interactive);

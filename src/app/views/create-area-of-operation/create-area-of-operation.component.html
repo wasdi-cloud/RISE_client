@@ -1,59 +1,63 @@
-<div class="area-outlet flex-fill d-flex flex-column">
+<div class="create-outlet">
   <div
-    class="account-header d-flex flex-row align-items-center justify-content-between mt-2 p-2"
+    class="create-container h-100 d-flex flex-column justify-content-between px-4f"
   >
-    {{ "AREA_OF_OPERATIONS.CREATE_NEW_AREA_OF_OPERATION" | translate }}
-  </div>
-  <div class="create-container flex-fill d-flex flex-row my-3">
-    <div class="create-sidebar d-flex flex-column justify-content-between">
-      <div class="d-flex flex-column gap-2">
-        <rise-text-input
-          [m_bHasTitle]="true"
-          [(m_sInputText)]="m_oAreaOfOperation.name"
-          [m_sLocalizationKey]="'CREATE_NEW_AREA_OF_OPERATION.NAME'"
-          [m_sErrorText]="m_sAreaOfOperationNameError"
-          [m_bIsValid]="m_bNameIsValid"
-          [m_bRequired]="true"
-          [m_bIsValidatorInput]="true"
-        ></rise-text-input>
-        <rise-textarea-input
-          [m_bHasTitle]="true"
-          [(m_sInputText)]="m_oAreaOfOperation.description"
-          [m_sLocalizationKey]="'CREATE_NEW_AREA_OF_OPERATION.DESCRIPTION'"
-          [m_bIsValid]="m_bDescriptionIsValid"
-          [m_sErrorText]="m_sAreaOfOperationDescriptionError"
-        ></rise-textarea-input>
-        <div>
-          Select Plugins:
-          <rise-checkbox
-            [m_aoOptions]="this.m_asPlugins"
-            (m_oSelectionChange)="onSelectionChange($event)"
-            [m_aoSelectedValues]="this.m_asPluginsSelected"
-          >
-          </rise-checkbox>
-          <div class="invalid-feedback" *ngIf="!m_bPluginsAreValid"></div>
-        </div>
-        <rise-button [m_sLabel]="'Manage Users'"></rise-button>
-      </div>
-      <div class="d-flex flex-column gap-2">
-        <rise-button
-          [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.SAVE'"
-          [m_bDisabled]="!enableAOISubmit()"
-          (click)="enableAOISubmit() ? SaveAreaOfOperation() : ''"
-        ></rise-button>
-        <rise-button
-          [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.CANCEL'"
-          [m_sRole]="'muted'"
-          [m_bDisabled]=""
-          (click)="exitCreatingAreaOfOperation()"
-        ></rise-button>
-      </div>
+    <div
+      class="account-header d-flex flex-row align-items-center justify-content-between mt-2 p-2"
+    >
+      {{ "AREA_OF_OPERATIONS.CREATE_NEW_AREA_OF_OPERATION" | translate }}
     </div>
-    <div class="map-container">
-      <rise-map
-        (m_oMapInputChange)="onMapInputChange($event)"
-        [m_bIsSelectingArea]="true"
-      ></rise-map>
+    <div class="body flex-fill d-flex flex-row my-3">
+      <div class="create-sidebar d-flex flex-column justify-content-between">
+        <div class="d-flex flex-column gap-2">
+          <rise-text-input
+            [m_bHasTitle]="true"
+            [(m_sInputText)]="m_oAreaOfOperation.name"
+            [m_sLocalizationKey]="'CREATE_NEW_AREA_OF_OPERATION.NAME'"
+            [m_sErrorText]="m_sAreaOfOperationNameError"
+            [m_bIsValid]="m_bNameIsValid"
+            [m_bRequired]="true"
+            [m_bIsValidatorInput]="true"
+          ></rise-text-input>
+          <rise-textarea-input
+            [m_bHasTitle]="true"
+            [(m_sInputText)]="m_oAreaOfOperation.description"
+            [m_sLocalizationKey]="'CREATE_NEW_AREA_OF_OPERATION.DESCRIPTION'"
+            [m_bIsValid]="m_bDescriptionIsValid"
+            [m_sErrorText]="m_sAreaOfOperationDescriptionError"
+          ></rise-textarea-input>
+          <div>
+            Select Plugins:
+            <rise-checkbox
+              [m_aoOptions]="this.m_asPlugins"
+              (m_oSelectionChange)="onSelectionChange($event)"
+              [m_aoSelectedValues]="this.m_asPluginsSelected"
+            >
+            </rise-checkbox>
+            <div class="invalid-feedback" *ngIf="!m_bPluginsAreValid"></div>
+          </div>
+          <rise-button [m_sLabel]="'Manage Users'"></rise-button>
+        </div>
+        <div class="d-flex flex-column gap-2">
+          <rise-button
+            [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.SAVE'"
+            [m_bDisabled]="!enableAOISubmit()"
+            (click)="enableAOISubmit() ? SaveAreaOfOperation() : ''"
+          ></rise-button>
+          <rise-button
+            [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.CANCEL'"
+            [m_sRole]="'muted'"
+            [m_bDisabled]=""
+            (click)="exitCreatingAreaOfOperation()"
+          ></rise-button>
+        </div>
+      </div>
+      <div class="map-container flex-fill">
+        <rise-map
+          (m_oMapInputChange)="onMapInputChange($event)"
+          [m_bIsSelectingArea]="true"
+        ></rise-map>
+      </div>
     </div>
   </div>
 </div>
