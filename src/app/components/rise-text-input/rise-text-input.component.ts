@@ -37,6 +37,8 @@ export class RiseTextInputComponent implements OnInit {
 
   @Input() m_bRequired?: boolean = false;
 
+  @Input() m_bReadonly?: boolean = false;
+
   @Output() m_sInputTextChange: EventEmitter<string> =
     new EventEmitter<string>();
 

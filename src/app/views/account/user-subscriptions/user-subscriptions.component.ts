@@ -14,6 +14,8 @@ import { ConstantsService } from '../../../services/constants.service';
 import { SubscriptionService } from '../../../services/api/subscription.service';
 
 import { SubscriptionViewModel } from '../../../models/SubscriptionViewModel';
+import { MatTooltip } from '@angular/material/tooltip';
+import { NotificationsDialogsService } from '../../../services/notifications-dialogs.service';
 
 @Component({
   selector: 'user-subscriptions',
@@ -23,19 +25,16 @@ import { SubscriptionViewModel } from '../../../models/SubscriptionViewModel';
     CommonModule,
     TranslateModule,
     RiseButtonComponent,
-    RiseCrudTableComponent,
-    RiseTextareaInputComponent,
     RiseTextInputComponent,
+    MatTooltip,
   ],
   templateUrl: './user-subscriptions.component.html',
   styleUrl: './user-subscriptions.component.css',
 })
 export class UserSubscriptionsComponent implements OnInit {
-  @Input() m_oOrganizationId: string = '';
+  @Input() m_sOrganizationId: string = '';
 
   m_bShowBuySub: boolean = false;
-
-  m_asTableHeadings: Array<string> = [];
 
   // For each line RISE show:
   // Subscription Name
@@ -57,6 +56,7 @@ export class UserSubscriptionsComponent implements OnInit {
   constructor(
     private m_oConstantsService: ConstantsService,
     private m_oDialog: MatDialog,
+    private m_oNotificationService: NotificationsDialogsService,
     private m_oSubscriptionService: SubscriptionService
   ) {}
 
@@ -74,7 +74,7 @@ export class UserSubscriptionsComponent implements OnInit {
           return;
         } else {
           this.m_aoSubscriptions = oResponse;
-          this.m_asTableHeadings = Object.keys(this.m_aoSubscriptions[0]);
+          console.log(this.m_aoSubscriptions);
         }
       },
       error: (oError) => {},
@@ -96,7 +96,6 @@ export class UserSubscriptionsComponent implements OnInit {
     console.log(oEvent);
     let oDialog = this.m_oDialog.open(SubscriptionEditorComponent, {
       data: { subscription: oEvent, isEditing: false },
-      width: '500px',
     });
     oDialog.afterClosed().subscribe((bResult) => {
       if (bResult === true) {
@@ -121,6 +120,30 @@ export class UserSubscriptionsComponent implements OnInit {
    * HQ Operator can click the Buy New Subscription button
    */
   openBuyNewSub(bInput: boolean) {
-    this.m_bShowBuySub = bInput;
+    // this.m_bShowBuySub = bInput;
+    this.m_oDialog
+      .open(BuyNewSubscriptionComponent, {
+        data: {
+          organizationId: this.m_sOrganizationId,
+        },
+      })
+      .afterClosed()
+      .subscribe(() => {
+        this.getSubscriptions();
+      });
+  }
+
+  deleteSubscription(oSubscription: SubscriptionViewModel) {
+    this.m_oNotificationService
+      .openConfirmationDialog(
+        'Are you sure you want to delete this subscription?',
+        'alert'
+      )
+      .subscribe((bResult) => {
+        if (!bResult) {
+          return;
+        }
+        // TODO: Add delete subscription function
+      });
   }
 }

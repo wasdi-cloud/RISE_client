@@ -1,94 +1,117 @@
-<div class="header d-flex flex-row justify-content-between">
-  <rise-button
-    [m_sLabel]="'SUBSCRIPTIONS.BACK'"
-    (click)="openBuyNewSub(false)"
-  ></rise-button>
-</div>
-<div class="body d-flex flex-row gap-3">
-  <div class="col-6 d-flex flex-column gap-2">
-    <rise-text-input
-      [m_sLocalizationKey]="'SUBSCRIPTIONS.NAME'"
-      [(m_sInputText)]="m_oSubInput.name"
-    ></rise-text-input>
-    <rise-textarea-input
-      [m_sLocalizationKey]="'SUBSCRIPTIONS.DESCRIPTION'"
-      [(m_sInputText)]="m_oSubInput.description"
-    ></rise-textarea-input>
-    <div class="">
-      {{ "SUBSCRIPTIONS.AREA_TYPE" | translate }}
-      <div class="radio-options d-flex flex-column">
-        <label for="long-term" class="d-flex flex-row gap-2">
-          <input
-            class="rise-radio"
-            type="radio"
-            name="area_type"
-            id="long-term"
-            (change)="m_oSubInput.supportsArchive = true"
-          />
-          {{ "SUBSCRIPTIONS.LONG_TERM" | translate }}</label
-        >
-
-        <label class="d-flex flex-row gap-2" for="emergency">
-          <input
-            type="radio"
-            name="area_type"
-            id="emergency"
-            (change)="m_oSubInput.supportsArchive = false"
-          />
-          {{ "SUBSCRIPTIONS.EMERGENCY" | translate }}</label
-        >
-      </div>
-    </div>
-    <div class="d-flex flex-row">
-      <!-- TODO: Checkout value = hook up when payment system implemented -->
-      <div class="">
-        {{ "SUBSCRIPTIONS.PAYMENT" | translate }}
+<div class="dialog-container d-flex flex-column gap-2 p-3">
+  <div
+    class="header d-flex flex-row justify-content-between align-items-center"
+  >
+    <h3>
+      {{ "SUBSCRIPTIONS.BUY_BUTTON" | translate }}
+    </h3>
+    <span class="close-btn material-symbols-outlined" (click)="onDismiss()">
+      close
+    </span>
+  </div>
+  <div class="body flex-fill d-flex flex-column gap-3">
+    <div class="d-flex flex-row gap-3 flex-fill">
+      <div class="d-flex flex-column gap-2 col-6">
+        <rise-text-input
+          [m_bHasTitle]="true"
+          [m_sLocalizationKey]="'SUBSCRIPTIONS.NAME'"
+          [(m_sInputText)]="m_oSubInput.name"
+        ></rise-text-input>
+        <rise-textarea-input
+          [m_bHasTitle]="true"
+          [m_sLocalizationKey]="'SUBSCRIPTIONS.DESCRIPTION'"
+          [(m_sInputText)]="m_oSubInput.description"
+        ></rise-textarea-input>
         <div class="radio-options d-flex flex-column">
-          <label for="credit" class="d-flex flex-row gap-2">
-            <input type="radio" name="payment" id="credit" />
-            {{ "SUBSCRIPTIONS.CREDIT" | translate }}</label
+          {{ "SUBSCRIPTIONS.AREA_TYPE" | translate }}
+          <label for="long-term" class="d-flex flex-row gap-2">
+            <input
+              class="rise-radio"
+              type="radio"
+              name="area_type"
+              id="long-term"
+              (change)="m_oSubInput.supportsArchive = true"
+            />
+            {{ "SUBSCRIPTIONS.LONG_TERM" | translate }}</label
           >
-          <label class="d-flex flex-row gap-2" for="wire">
-            <input type="radio" name="payment" id="wire" />
-            {{ "SUBSCRIPTIONS.WIRE" | translate }}</label
-          >
-          <label class="d-flex flex-row gap-2" for="wire">
-            <input type="radio" name="payment" id="wire" />
-            {{ "SUBSCRIPTIONS.WIRE" | translate }}</label
+          <label class="d-flex flex-row gap-2" for="emergency">
+            <input
+              type="radio"
+              name="area_type"
+              id="emergency"
+              (change)="m_oSubInput.supportsArchive = false"
+            />
+            {{ "SUBSCRIPTIONS.EMERGENCY" | translate }}</label
           >
         </div>
+        <div class="">
+          {{ "SUBSCRIPTIONS.PAYMENT" | translate }}
+          <div class="radio-options d-flex flex-column">
+            <label for="credit" class="d-flex flex-row gap-2">
+              <input type="radio" name="payment" id="credit" />
+              {{ "SUBSCRIPTIONS.CREDIT" | translate }}</label
+            >
+            <label class="d-flex flex-row gap-2" for="wire">
+              <input type="radio" name="payment" id="wire" />
+              {{ "SUBSCRIPTIONS.WIRE" | translate }}</label
+            >
+            <label class="d-flex flex-row gap-2" for="wire">
+              <input type="radio" name="payment" id="wire" />
+              {{ "SUBSCRIPTIONS.WIRE" | translate }}</label
+            >
+          </div>
+        </div>
+      </div>
+      <div class="d-flex flex-column gap-2 col-6 pe-3">
+        <rise-dropdown
+          [m_bHasTitle]="true"
+          [m_sLabel]="'SUBSCRIPTIONS.TYPE'"
+          [m_aoDropdownItems]="m_asSubTypeNames"
+          (m_oSelectionChange)="handleSubTypeSelect($event)"
+        ></rise-dropdown>
+        <rise-dropdown
+          [m_bHasTitle]="true"
+          [m_sLabel]="'SUBSCRIPTIONS.PAYMENT_TYPE'"
+          [m_aoDropdownItems]="m_asPaymentTypeNames"
+          (m_oSelectionChange)="handlePaymentTypeSelect($event)"
+        ></rise-dropdown>
+        <rise-dropdown
+          [m_bHasTitle]="true"
+          [m_sLabel]="'SUBSCRIPTIONS.PLUGINS'"
+          [m_aoDropdownItems]="m_aoPluginNames"
+          [m_bIsMultiSelect]="true"
+          (m_oSelectionChange)="handlePluginSelect($event)"
+        ></rise-dropdown>
       </div>
     </div>
-  </div>
-  <div class="col-6 d-flex flex-column gap-2">
-    <rise-dropdown
-      [m_sLabel]="'SUBSCRIPTIONS.TYPE'"
-      [m_aoDropdownItems]="m_asSubTypeNames"
-      (m_oSelectionChange)="handleSubTypeSelect($event)"
-    ></rise-dropdown>
-    <rise-dropdown
-      [m_sLabel]="'SUBSCRIPTIONS.PAYMENT_TYPE'"
-      [m_aoDropdownItems]="m_asPaymentTypeNames"
-      (m_oSelectionChange)="handlePaymentTypeSelect($event)"
-    ></rise-dropdown>
-    <rise-dropdown
-      [m_sLabel]="'SUBSCRIPTIONS.PLUGINS'"
-      [m_aoDropdownItems]="m_aoPluginNames"
-      [m_bIsMultiSelect]="true"
-      (m_oSelectionChange)="handlePluginSelect($event)"
-    ></rise-dropdown>
-    <div class="d-flex flex-row">
+    <div
+      class="total-container d-flex flex-row justify-content-between align-items-center gap-3"
+    >
+      <div>Total</div>
+      <div class="divider flex-fill"></div>
+      @if (m_iComputedPrice) {
+      {{ m_iComputedPrice | currency : "EUR" }}
       <rise-button
+        [m_sSize]="'small'"
+        [m_sRole]="'action'"
+        [m_sLabel]="'SUBSCRIPTIONS.COMPUTE_SECOND'"
+        (click)="getComputedPrice()"
+      ></rise-button>
+      } @else {
+      <rise-button
+        [m_sSize]="'small'"
+        [m_sRole]="'action'"
         [m_sLabel]="'SUBSCRIPTIONS.COMPUTE_PRICE'"
         (click)="getComputedPrice()"
       ></rise-button>
-      <div *ngIf="m_iComputedPrice" class="computed_price">
-        {{ m_iComputedPrice | currency : "EUR" }}
-      </div>
+      }
     </div>
     <rise-button
+      class="align-self-end"
+      [m_bDisabled]="!enablePurchaseBtn()"
+      [m_sRole]="'action'"
       [m_sLabel]="'SUBSCRIPTIONS.PURCHASE'"
-      (click)="executePurchase()"
+      (click)="enablePurchaseBtn() ? executePurchase() : ''"
     ></rise-button>
   </div>
 </div>

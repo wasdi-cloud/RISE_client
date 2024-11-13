@@ -1,1 +1,15 @@
-<p>rise-date-input works!</p>
+<label *ngIf="m_bHasTitle" class="form-label" for="{{ m_sName }}"
+  >{{ m_sLocalizationKey | translate }}
+</label>
+<div class="input-group">
+  <input
+    class="form-control"
+    type="date"
+    name="{{ m_sName }}"
+    [readOnly]="m_bReadonly"
+    [(ngModel)]="m_sInputDate"
+    (change)="onInputChange()"
+    [placeholder]="!m_bHasTitle ? (m_sLocalizationKey | translate) : ''"
+    [required]="m_bRequired"
+  />
+</div>

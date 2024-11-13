@@ -5,20 +5,23 @@ import { SubscriptionViewModel } from '../../../../models/SubscriptionViewModel'
 import { RiseButtonComponent } from '../../../../components/rise-button/rise-button.component';
 import { RiseTextInputComponent } from '../../../../components/rise-text-input/rise-text-input.component';
 import { RiseTextareaInputComponent } from '../../../../components/rise-textarea-input/rise-textarea-input.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { SubscriptionTypeViewModel } from '../../../../models/SubscriptionTypeViewModel';
 import { NotificationsDialogsService } from '../../../../services/notifications-dialogs.service';
 import FadeoutUtils from '../../../../shared/utilities/FadeoutUtils';
+import { RiseDateInputComponent } from '../../../../components/rise-date-input/rise-date-input.component';
 
 @Component({
   selector: 'app-subscription-editor',
   standalone: true,
   imports: [
     RiseButtonComponent,
+    RiseDateInputComponent,
     RiseTextInputComponent,
     RiseTextareaInputComponent,
     CommonModule,
+    CurrencyPipe,
     TranslateModule,
   ],
   templateUrl: './subscription-editor.component.html',
@@ -28,6 +31,7 @@ export class SubscriptionEditorComponent implements OnInit {
   m_bIsEditing: boolean = false;
   m_sSubscriptionHeader: string = '';
   m_aoSubTypes: Array<SubscriptionTypeViewModel> = [];
+  m_sPrice: string = '';
 
   m_oSubscription: SubscriptionViewModel = {} as SubscriptionViewModel;
 
@@ -66,6 +70,7 @@ export class SubscriptionEditorComponent implements OnInit {
         if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           console.log(oResponse);
           this.m_oSubscription = oResponse;
+          this.m_sPrice = this.m_oSubscription.price.toString();
         }
       },
       error: (oError) => {},

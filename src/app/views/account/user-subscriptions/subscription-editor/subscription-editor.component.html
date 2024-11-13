@@ -1,31 +1,60 @@
-<div class="m-2 d-flex flex-column gap-3">
+<div class="editor-container d-flex flex-column gap-2 p-3">
   <div
     class="header d-flex flex-row justify-content-between align-items-center"
   >
-    {{ m_oSubscription.name }}
-    <rise-button
+    <h3>Edit {{ m_oSubscription.name }}</h3>
+    <span
+      class="close-btn material-symbols-outlined"
       (click)="onDismiss(false)"
-      [m_sLabel]="'X'"
-    ></rise-button>
+    >
+      close
+    </span>
   </div>
-  <div class="body flex-fill">
+  <div class="body flex-fill d-flex flex-column gap-2">
     <rise-text-input
+      [m_bHasTitle]="true"
       [(m_sInputText)]="m_oSubscription.name"
       [m_sLocalizationKey]="'SUBSCRIPTIONS.NAME'"
     ></rise-text-input>
     <rise-textarea-input
+      [m_bHasTitle]="true"
       [(m_sInputText)]="m_oSubscription.description"
       [m_sLocalizationKey]="'SUBSCRIPTIONS.DESCRIPTION'"
     ></rise-textarea-input>
-    <!-- <rise-text-input [(m_sInputText)]=""></rise-text-input> -->
-    <!-- <rise-text-input [(m_sInputText)]="m_oSubscription."></rise-text-input> -->
     <rise-text-input
+      [m_bHasTitle]="true"
+      [m_bReadonly]="true"
       [(m_sInputText)]="m_oSubscription.paymentType"
       [m_sLocalizationKey]="'SUBSCRIPTIONS.TYPE'"
     ></rise-text-input>
-    <!-- <rise-text-input [(m_sInputText)]="m_oSubscription.price"></rise-text-input> -->
+    <rise-date-input
+      [m_bReadonly]="true"
+      [m_bHasTitle]="true"
+      [m_sLocalizationKey]="'SUBSCRIPTIONS.START_DATE'"
+      [m_sInputDate]="m_oSubscription.buyDate | date : 'yyyy-MM-dd'"
+    ></rise-date-input>
+    <rise-date-input
+      [m_bReadonly]="true"
+      [m_bHasTitle]="true"
+      [m_sLocalizationKey]="'SUBSCRIPTIONS.EXPIRY'"
+      [m_sInputDate]="m_oSubscription.expireDate | date : 'yyyy-MM-dd'"
+    ></rise-date-input>
+    <rise-text-input
+      [m_bHasTitle]="true"
+      [m_bReadonly]="true"
+      [m_sLocalizationKey]="'SUBSCRIPTIONS.PRICE'"
+      [m_sInputText]="m_sPrice | currency : 'EUR'"
+    ></rise-text-input>
   </div>
-  <div class="footer">
-    <rise-button [m_sLabel]="'SUBSCRIPTIONS.UPDATE'" (click)="updateSubscription()"></rise-button>
+  <div class="footer d-flex flex-row justify-content-between">
+    <rise-button
+      [m_sLabel]="'SUBSCRIPTIONS.UPDATE'"
+      (click)="updateSubscription()"
+    ></rise-button>
+    <rise-button
+      [m_sRole]="'muted'"
+      [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.CANCEL'"
+      (click)="updateSubscription()"
+    ></rise-button>
   </div>
 </div>

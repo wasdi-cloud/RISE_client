@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { SubscriptionService } from '../../../../services/api/subscription.service';
 import { SubscriptionTypeViewModel } from '../../../../models/SubscriptionTypeViewModel';
 import { RiseDropdownComponent } from '../../../../components/rise-dropdown/rise-dropdown.component';
@@ -13,6 +20,8 @@ import { NotificationsDialogsService } from '../../../../services/notifications-
 import { SubscriptionViewModel } from '../../../../models/SubscriptionViewModel';
 import { ConstantsService } from '../../../../services/constants.service';
 import { PaymentType } from '../../../../models/PaymentType';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import FadeoutUtils from '../../../../shared/utilities/FadeoutUtils';
 
 @Component({
   selector: 'buy-new-subscription',
@@ -57,7 +66,9 @@ export class BuyNewSubscriptionComponent implements OnInit {
   m_oSelectedPaymentType = null;
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) private m_oData: any,
     private m_oConstantsService: ConstantsService,
+    private m_oDialogRef: MatDialogRef<BuyNewSubscriptionComponent>,
     private m_oNotificationService: NotificationsDialogsService,
     private m_oPluginService: PluginService,
     private m_oSubscriptionService: SubscriptionService
@@ -67,7 +78,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
     this.getSubTypes();
     this.getPlugins();
     this.getPaymentTypes();
-    this.m_sOrganizationId = this.m_oConstantsService.getOrganization().id;
+    this.m_sOrganizationId = this.m_oData.organizationId;
   }
 
   getSubTypes() {
@@ -125,6 +136,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
           this.m_asSelectedPlugins.push(oPlugin.id);
         }
       });
+      this.m_oSubInput.plugins = this.m_asSelectedPlugins;
     });
   }
 
@@ -132,9 +144,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
     this.initSubscriptionInput();
 
     this.m_oSubscriptionService.buySubscription(this.m_oSubInput).subscribe({
-      next: (oResponse) => {
-       
-      },
+      next: (oResponse) => {},
       error: (oError) => {
         console.log(oError);
       },
@@ -186,8 +196,6 @@ export class BuyNewSubscriptionComponent implements OnInit {
     this.m_oSelectedPaymentType = this.m_aoPaymentTypes.find(
       (oType) => oType.name === sTypeName
     );
-
-    console.log(this.m_oSelectedPaymentType);
   }
 
   getPaymentTypes() {
@@ -199,5 +207,28 @@ export class BuyNewSubscriptionComponent implements OnInit {
     this.m_asPaymentTypeNames = this.m_aoPaymentTypes.map(
       (oType) => oType.name
     );
+  }
+
+  enablePurchaseBtn(): boolean {
+    if (!this.m_oSubInput.name) {
+      return false;
+    }
+    if (
+      !this.m_oSelectedType ||
+      !this.m_asSelectedPlugins ||
+      !this.m_oSelectedPaymentType
+    ) {
+      return false;
+    }
+
+    if (!this.m_iComputedPrice) {
+      return false;
+    }
+
+    return true;
+  }
+
+  onDismiss() {
+    this.m_oDialogRef.close();
   }
 }
