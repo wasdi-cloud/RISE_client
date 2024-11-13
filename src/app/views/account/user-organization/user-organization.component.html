@@ -18,10 +18,13 @@
             [(m_sInputText)]="m_oOrganization.name"
           ></rise-text-input>
           <rise-dropdown
+            *ngIf="m_aoOrgTypes"
             [m_bHasTitle]="true"
             [m_sLabel]="'ORGANIZATION.TYPE'"
-            [m_sPlaceholder]="m_oOrganization.type"
-            [m_aoSelectedItems]="m_oOrganization.type"
+            [m_sPlaceholder]="m_oOrganization.type ? m_oOrganization.type : ''"
+            [m_aoSelectedItems]="
+              m_oOrganization.type ? m_oOrganization.type : ''
+            "
             [m_aoDropdownItems]="m_aoOrgTypes"
           ></rise-dropdown>
           <rise-button
