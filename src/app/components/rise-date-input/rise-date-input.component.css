@@ -1,0 +1,20 @@
+input,
+span.input-group-text,
+input:focus {
+  background-color: var(--surface-glass-interactive);
+  border: 1px solid var(--rise-text-dim);
+  color: var(--rise-text-bright);
+}
+
+.form-label {
+  color: var(--rise-text-dim);
+  line-height: 12px;
+}
+
+::placeholder {
+  color: var(--rise-text-dim);
+}
+
+:-ms-input-placeholder {
+  color: var(--rise-text-dim);
+}

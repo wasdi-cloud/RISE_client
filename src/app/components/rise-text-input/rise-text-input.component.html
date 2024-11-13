@@ -12,6 +12,7 @@
     class="form-control"
     type="{{ m_sType }}"
     name="{{ m_sName }}"
+    [readOnly]="m_bReadonly"
     [class.no-left-border]="m_bHasIcon"
     [class.no-right-border]="m_bSetPassword"
     [class.invalid]="!m_bIsValid"
