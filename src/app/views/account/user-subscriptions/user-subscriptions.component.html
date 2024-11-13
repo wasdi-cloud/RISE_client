@@ -14,7 +14,43 @@
         (click)="openBuyNewSub(true)"
       ></rise-button>
     </div>
-    <div class="body d-flex flex-fill flex-column gap-5 py-4 px-1"></div>
+    <div class="body d-flex flex-fill flex-column gap-5 py-4 px-1">
+      <table class="w-100">
+        <thead>
+          <tr>
+            <td>Name</td>
+            <td>Type</td>
+            <td>Purchase Date</td>
+            <td>Expiry Date</td>
+            <td></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let oSubscription of m_aoSubscriptions">
+            <td>{{ oSubscription.name }}</td>
+            <td>{{ oSubscription.type }}</td>
+            <td>{{ oSubscription.buyDate | date }}</td>
+            <td>{{ oSubscription.expireDate | date }}</td>
+            <td class="d-flex flex-row justify-content-end gap-2">
+              <span
+                class="material-symbols-outlined edit"
+                [matTooltip]="'Edit Subscription'"
+                (click)="openEditor(oSubscription)"
+              >
+                edit
+              </span>
+              <span
+                class="material-symbols-outlined remove"
+                [matTooltip]="'Remove Subscription'"
+                (click)="deleteSubscription(oSubscription)"
+              >
+                delete
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
   <buy-new-subscription
     *ngIf="m_bShowBuySub"
@@ -22,19 +58,3 @@
     [m_sOrganizationId]=""
   ></buy-new-subscription>
 </div>
-<!-- <div
-   
-    class="header d-flex flex-row justify-content-between align-items-center"
-  >
-  <div class="body" *ngIf="!m_bShowBuySub">
-    <div class="button">
-      <rise-crud-table
-        [m_aoDataSource]="m_aoSubscriptions"
-        [m_asDisplayedColumns]="m_asTableHeadings"
-        [m_bEmitClick]="true"
-        [m_bAddUserBtn]="false"
-        (m_oEditRow)="openEditor($event)"
-      ></rise-crud-table>
-    </div>
-  </div>
-</div> -->

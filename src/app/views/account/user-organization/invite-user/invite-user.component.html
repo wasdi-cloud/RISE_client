@@ -1,11 +1,11 @@
 <div class="invite-container d-flex flex-column gap-2 p-3">
   <div
-    class="header d-flex flex-row justify-content-between align-items-center" (click)="onDismiss()"
+    class="header d-flex flex-row justify-content-between align-items-center" 
   >
     <h3 class="invite-header">
       {{ "COLLABORATORS.ADD" | translate }}
     </h3>
-    <span class="close-btn material-symbols-outlined"> close </span>
+    <span class="close-btn material-symbols-outlined" (click)="onDismiss()"> close </span>
   </div>
   <rise-text-input
     [m_sLocalizationKey]="'INVITE_USER.EMAIL'"
