@@ -29,7 +29,7 @@ import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
   styleUrl: './account.component.css',
 })
 export class AccountComponent implements OnInit {
-  @Input() m_sActiveOutlet: string = 'subscriptions';
+  @Input() m_sActiveOutlet: string = 'user';
 
   m_aoAccountButtons: Array<any> = AccountBtns;
 
