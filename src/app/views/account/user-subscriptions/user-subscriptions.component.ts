@@ -32,7 +32,7 @@ import { NotificationsDialogsService } from '../../../services/notifications-dia
   styleUrl: './user-subscriptions.component.css',
 })
 export class UserSubscriptionsComponent implements OnInit {
-  @Input() m_oOrganizationId: string = '';
+  @Input() m_sOrganizationId: string = '';
 
   m_bShowBuySub: boolean = false;
 
@@ -120,7 +120,17 @@ export class UserSubscriptionsComponent implements OnInit {
    * HQ Operator can click the Buy New Subscription button
    */
   openBuyNewSub(bInput: boolean) {
-    this.m_bShowBuySub = bInput;
+    // this.m_bShowBuySub = bInput;
+    this.m_oDialog
+      .open(BuyNewSubscriptionComponent, {
+        data: {
+          organizationId: this.m_sOrganizationId,
+        },
+      })
+      .afterClosed()
+      .subscribe(() => {
+        this.getSubscriptions();
+      });
   }
 
   deleteSubscription(oSubscription: SubscriptionViewModel) {
