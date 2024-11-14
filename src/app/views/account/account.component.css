@@ -4,7 +4,7 @@
   z-index: 1;
 }
 .outlet-container {
-  padding: 32px;
+  padding-top: 32px;
   overflow-y: auto;
   height: calc(100vh - 4rem);
 }
@@ -12,4 +12,5 @@
 .outlet-content-wrapper {
   margin: 0 auto;
   max-width: 1200px;
+  height: 100%;
 }
