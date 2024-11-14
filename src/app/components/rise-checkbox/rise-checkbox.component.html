@@ -1,6 +1,7 @@
 <div class="rise-checkbox-container" *ngFor="let option of m_aoOptions">
   <label class="d-flex flex-row align-items-center gap-2">
     <input
+      [readOnly]="m_bReadonly"
       class="rise-checkbox"
       type="checkbox"
       [value]="option.value"

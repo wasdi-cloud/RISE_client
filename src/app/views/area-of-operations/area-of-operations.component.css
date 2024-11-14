@@ -1,33 +1,30 @@
-/* Left and Right column ratio */
-.d-flex.flex-row {
-  display: flex;
+.area-sidebar {
+  background-color: rgba(0, 31, 40, 0.8);
+  border-right: 1px solid var(--rise-border-default);
+  backdrop-filter: blur(10px);
+  height: 100%;
+  padding-right: 1rem;
+  width: 35%;
+  z-index: 999;
 }
 
-.d-flex.flex-fill {
-  flex: 1; /* Left column: 1/3 width */
+h3 {
+  font-size: 20px;
+  font-weight: 700;
 }
 
-.d-flex.flex-column {
-  flex: 2; /* Right column: 2/3 width */
+.area-card-container {
+  overflow-y: auto;
 }
 
-/* Map and Card heights */
-.map-container {
-  height: 50vh;
-}
-.card-container {
-  height: 80vh; /* 2/3 of right column height */
-  border: 1px solid #ccc; /* Card styling */
-  padding: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.area-card {
+  border: 1px solid var(--rise-text-dim);
+  border-radius: 8px;
+  padding: 8px;
 }
 
-.empty-card {
-  height: 70vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #888;
-  font-size: 18px;
-  border: 1px dashed #ccc;
+.material-symbols-outlined {
+  color: var(--rise-text-dim);
+  cursor: pointer;
+  font-size: 20px;
 }

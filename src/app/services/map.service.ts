@@ -512,7 +512,7 @@ export class MapService {
    * @param sBbox
    */
   flyToMonitorBounds(sBbox: string): void {
-    let boundingBox: any = wktToGeoJSON(sBbox.slice(0, -1));
+    let boundingBox: any = wktToGeoJSON(sBbox);
     boundingBox = geoJSON(boundingBox).getBounds();
     this.m_oRiseMap.fitBounds(boundingBox);
   }

@@ -41,6 +41,7 @@ export class RiseTextareaInputComponent {
    */
   @Input() m_bHasTitle: boolean = false;
 
+  @Input() m_bReadonly?: boolean = false;
 
   @Output() m_sInputTextChange: EventEmitter<string> =
     new EventEmitter<string>();
