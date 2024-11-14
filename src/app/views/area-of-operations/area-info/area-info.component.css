@@ -1,0 +1,14 @@
+div.dialog-container {
+  background-color: rgba(0, 31, 40, 0.4);
+  backdrop-filter: blur(20px);
+  height: 400px;
+  width: 700px;
+}
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
+  background-color: transparent !important;
+}
+
+h3 {
+  font-size: 20px;
+  font-weight: 700;
+}

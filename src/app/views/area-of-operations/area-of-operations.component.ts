@@ -20,6 +20,7 @@ import { NotificationsDialogsService } from '../../services/notifications-dialog
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 import { RiseCollaboratorsComponent } from '../../components/rise-collaborators/rise-collaborators.component';
 import { RiseCollaboratorsDialogComponent } from '../../components/rise-collaborators-dialog/rise-collaborators-dialog.component';
+import { AreaInfoComponent } from './area-info/area-info.component';
 
 @Component({
   selector: 'app-area-of-operations',
@@ -99,7 +100,11 @@ export class AreaOfOperationsComponent implements OnInit {
   }
 
   openEditArea(oArea) {
-    console.log('editing');
+   this.m_oDialog.open(AreaInfoComponent, {
+    data: {
+      area: oArea
+    }
+   })
   }
 
   deleteArea(oArea) {
