@@ -1,0 +1,191 @@
+{
+  "ACCOUNT": {
+    "AREA_OF_OPERATIONS": "Áreas de Operaciones",
+    "MY_ORGANIZATION": "Mi organización",
+    "MY_USER": "Mi usuario",
+    "NOT_ACTIVITIES": "Actividades",
+    "NOT_MAINTENANCE": "Mantenimiento",
+    "NOT_NEWSLETTER": "Boletín",
+    "SUSCRIPCIONES": "Suscripciones",
+    "ORGANIZACIÓN": "Organización",
+    "USER": "Usuario"
+  },
+  "AREA_OF_OPERATIONS": {
+    "ACTIVE_AREAS": "Áreas Activas de Operaciones",
+    "AREA_HEADER": "¡Área demasiado grande!",
+    "CREATE_NEW_AREA_OF_OPERATION": "Crear Nueva Área de Operaciones",
+    "CONFIRM_DELETE": "¿Estás seguro de que deseas eliminar esta área?",
+    "CONFIRM_SAME_AREA": "El área que has seleccionado se superpone con otra área.",
+    "CONFIRM_SAME_NAME": "El área que has seleccionado comparte nombre con un área ya existente",
+    "CONFIRM": "<bt>¿Continuar de todos modos?",
+    "CONFIRM_AREA_TOO_BIG": "El área que has seleccionado es demasiado grande. Haz clic en 'confirmar' para que RISE la ajuste automáticamente.",
+    "CONFIRM_CREATE_NEW_AREA": "El área que has seleccionado es demasiado grande. Ajusta las dimensiones.",
+    "CREATION_DATE": "Fecha de creación",
+    "DIALOG_HEADER": "Área de Operaciones"
+  },
+  "BANNER": {
+    "LIVE_SIT": "Situación en vivo",
+    "BACK": "Volver a vivir"
+  },
+  "CREATE_NEW_AREA_OF_OPERATION": {
+    "NAME": "Nombre",
+    "DESCRIPTION": "Descripción",
+    "MAP_TITLE": "Define tu Área",
+    "SAVE": "Guardar",
+    "CANCEL": "Cancelar",
+    "ADD_FIELD_OPERATOR": "Agregar operador de campo"
+  },
+  "COLLABORATORS": {
+    "ADD": "Invitar a un colaborador a RISE",
+    "INVITE": "Agregar Usuarios",
+    "NONE": "Aún no has invitado a ningún colaborador",
+    "HEADER": "Administrar colaboradores"
+  },
+  "DASHBOARD": {
+    "SEARCH": "Buscar mapa"
+  },
+  "ERROR_MSG": {
+    "ERROR_API_ORG_ALREADY_EXISTS": "Ya existe una organización con esta información.",
+    "ERROR_API_USER_ALREADY_EXISTS": "Ya existe un usuario con este ID.",
+    "ERROR_API_MAIL_ALREADY_EXISTS": "Este correo electrónico ya está en uso",
+    "ERROR_API_MISSING_ACCEPT_TERMS_AND_PRIVACY": "Acepte los Términos y condiciones, así como la Política de privacidad de RISE",
+    "ERROR_API_WRONG_USER_OR_PASSWORD": "El nombre de usuario o la contraseña ingresados ​​son incorrectos",
+    "ERROR_API_WRONG_OTP": "Esta contraseña única no coincide con la enviada al correo electrónico anterior.",
+    "ERROR_API_NO_VALID_SUBSCRIPTION": "No tienes una suscripción válida en este momento.",
+    "ERROR_LAYER_FAILURE": "No se pudieron cargar capas para este complemento"
+  },
+  "INVITE_USER": {
+    "EMAIL": "Ingrese el correo electrónico de la persona a invitar",
+    "CONFIRM": "Confirma el correo electrónico de tu invitado",
+    "SELECT_ROLE": "Asignar un rol"
+  },
+  "LAYER_TYPES": {
+    "FLOOD": "Inundación",
+    "DROUGHT": "Sequía",
+    "BUILDINGS": "Edificios",
+    "IMPACTS": "Impactos",
+    "MORE": "Más"
+  },
+  "LOGIN": {
+    "USER_ID": "Identificación de usuario",
+    "PASSWORD": "Contraseña",
+    "FORGOT_PASSWORD": "¿Olvidaste tu contraseña? Haz clic <a class='inner-html-link'>aquí</a>"
+  },
+  "ORGANIZATION": {
+    "ADDRESS": "Dirección de la organización",
+    "DELETE": "Eliminar organización",
+    "DELETE_MSG": "Una vez que elimines tu organización, esto no se puede deshacer. Asegúrate.",
+    "INVITE": "Invitar a un nuevo usuario",
+    "MEMBERS": "Colaboradores",
+    "NAME": "Nombre de la organización",
+    "SAVE": "Guardar cambios",
+    "TYPE": "Tipo de organización",
+    "USERS": "Usuarios de la organización"
+  },
+  "OTP_DIALOG": {
+    "SUBMIT": "Enviar",
+    "ENTER_PW": "Ingrese su código de acceso único"
+  },
+  "REGISTER": {
+    "HEADER": "Registrarse en RISE",
+    "USER_ID": "Identificación de usuario",
+    "PASSWORD": "Contraseña",
+    "CONFIRM_PW": "Confirmar contraseña",
+    "NAME": "Nombre",
+    "SURNAME": "Apellido",
+    "MOBILE": "Dirección de correo electrónico del usuario",
+    "EMAIL": "Dirección de correo electrónico del usuario",
+    "CONFIRM_EMAIL": "Confirmar dirección de correo electrónico del usuario",
+    "ORG_NAME": "Nombre de la organización",
+    "ORG_TYPE": "Tipo de organización",
+    "ORG_ADDRESS": "Dirección de la organización",
+    "STREET": "Calle",
+    "NUMBER": "Número",
+    "POST_CODE": "Código postal",
+    "CITY": "Ciudad",
+    "PHONE": "Teléfono",
+    "COUNTRY": "País",
+    "TERMS_CONDITIONS": " He leído y acepto los <a class='inner-html-link' href=''>Términos y condiciones</a>",
+    "PRIVACY_POLICY": "He leído y acepto la <a class='inner-html-link' href=''>Política de Privacidad</a>"
+  },
+  "RISE_CRUD_TABLE": {
+    "ADD_FIELD_USER": "Agregar usuario de campo"
+  },
+  "RISE_SELECT_AREA": {
+    "UPLOAD_SHAPE_FILE": "Upload Shape File"
+  },
+  "SUBSCRIPTIONS": {
+    "AREA_TYPE": "Tipo de Área",
+    "BACK": "Volver a Suscripciones",
+    "BILLING": "Facturación",
+    "BUY_BUTTON": "Comprar nueva suscripción",
+    "COMPUTE_PRICE": "Obtener precio calculado",
+    "COMPUTE_SECOND": "Calcular de nuevo",
+    "COMPUTED_PRICE": "Precio Calculado",
+    "CONTACT": "Contáctenos",
+    "CREDIT": "Tarjeta de Crédito",
+    "DESCRIPTION": "Descripción",
+    "EMERGENCY": "Área Sólo Emergencias",
+    "EXPIRY": "Fecha de Vencimiento",
+    "HEADER": "Mis suscripciones",
+    "LONG_TERM": "Área de Largo Plazo",
+    "MONTHLY": "Mensual",
+    "NAME": "Nombre",
+    "PAYMENT": "Método de Pago",
+    "PLUGINS": "Complementos",
+    "PURCHASE": "Compra",
+    "PRICE": "Precio",
+    "START_DATE": "Fecha de inicio",
+    "TYPE": "Tipo",
+    "PAYMENT_TYPE": "Tipo de pago",
+    "UPDATE": "Actualizar suscripción",
+    "WIRE": "Transferencia bancaria",
+    "YEAR": "Un año"
+  },
+  "TOOLBAR": {
+    "ACCOUNT": "Cuenta",
+    "LOGIN": "Iniciar sesión",
+    "LOGOUT": "Cerrar sesión",
+    "SETTINGS": "Configuración",
+    "SIGN_UP": "Registrarse"
+  },
+  "USER": {
+    "ACCOUNT_HEADER": "Detalles de la cuenta",
+    "CHANGE_EMAIL": "Cambiar correo electrónico",
+    "CHANGE_PW": "Cambiar contraseña",
+    "CONNECT_EMAIL": "Dirección de correo electrónico de conexión",
+    "CONFIRM_EMAIL": "Confirmar nuevo correo electrónico",
+    "CONFIRM_PW": "Confirmar contraseña",
+    "DELETE_ACCOUNT": "Eliminar cuenta",
+    "DELETE_MSG": "Una vez que elimines tu cuenta, esto no se puede deshacer. Asegúrate.",
+    "EMAIL": "Correo electrónico",
+    "LANGUAGE": "Seleccione un idioma",
+    "MOBILE_NUMBER": "Número de móvil",
+    "MY_ACCOUNT": "Mi cuenta",
+    "NEW_EMAIL": "Nuevo correo electrónico",
+    "NEW_PW": "Nueva Contraseña",
+    "NOTIFICATIONS": "Notificaciones",
+    "NOTIFICATIONS_MSG": "Selecciona las notificaciones que deseas recibir de <strong>RISE</strong>.",
+    "OLD_PW": "Contraseña actual",
+    "PW_MSG": "Cambie la contraseña utilizada para acceder a su cuenta <strong>RISE</strong>. Si tiene alguna dificultad, <a>Contáctenos</a>",
+    "PW_SECURITY": "Contraseña y Seguridad",
+    "SELECT_LANG": "Seleccionar idioma",
+    "SELECT_LANG_MSG": "Selecciona el idioma del sistema que deseas usar para RISE."
+  },
+  "USER_MENU": {
+    "ACCOUNT": "Cuenta",
+    "DASHBOARD": "Panel de control",
+    "HELP": "Ayuda",
+    "LANGUAGE": "Idioma",
+    "LOGOUT": "Cerrar sesión",
+    "SUBSCRIPTIONS": "Suscripciones"
+  },
+  "WIDGET": {
+   "AFFECTED_PPL": "Personas Afectadas",
+    "ALERTS": "Alertas",
+    "NO_AFFECTED": "Ninguna gente afectada",
+    "NO_ALERTS": "Sin alertas",
+    "NO_EVENTS":"No hay eventos en curso",
+    "ONGOING_EVENTS":"Eventos en curso"
+  }
+}
