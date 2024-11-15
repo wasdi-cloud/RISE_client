@@ -1,0 +1,191 @@
+{
+  "ACCOUNT": {
+    "AREA_OF_OPERATIONS": "Zones d'opérations",
+    "MY_ORGANIZATION": "Mon organisation",
+    "MY_USER": "Mon utilisateur",
+    "NOT_ACTIVITIES": "Activités",
+    "NOT_MAINTENANCE": "Maintenance",
+    "NOT_NEWSLETTER": "Newsletter",
+    "SUBSCRIPTIONS": "Abonnements",
+    "ORGANIZATION": "Organisation",
+    "USER": "Utilisateur"
+  },
+  "AREA_OF_OPERATIONS": {
+    "ACTIVE_AREAS": "Zones d'opérations actives",
+    "AREA_HEADER": "Zone trop grande !",
+    "CREATE_NEW_AREA_OF_OPERATION": "Créer une nouvelle zone d'opérations",
+    "CONFIRM_DELETE": "Etes-vous sûr de vouloir supprimer cette zone ?",
+    "CONFIRM_SAME_AREA": "La zone que vous avez sélectionnée chevauche une autre zone.",
+    "CONFIRM_SAME_NAME": "La zone que vous avez sélectionnée partage un nom avec une zone déjà existante",
+    "CONFIRM": "<bt>Continuer quand même ?",
+    "CONFIRM_AREA_TOO_BIG": "La zone que vous avez sélectionnée est trop grande. Cliquez sur 'confirmer' pour que RISE l'ajuste automatiquement.",
+    "CONFIRM_CREATE_NEW_AREA": "La zone que vous avez sélectionnée est trop grande. Veuillez ajuster les dimensions.",
+    "CREATION_DATE": "Date de création",
+    "DIALOG_HEADER": "Zone d'opérations"
+  },
+  "BANNER": {
+    "LIVE_SIT": "Situation en direct",
+    "BACK": "Retour au Live"
+  },
+  "CREATE_NEW_AREA_OF_OPERATION": {
+    "NAME": "Nom",
+    "DESCRIPTION": "Description",
+    "MAP_TITLE": "Définissez votre zone",
+    "SAVE": "Enregistrer",
+    "CANCEL": "Annuler",
+    "ADD_FIELD_OPERATOR": "Ajouter un opérateur de terrain"
+  },
+  "COLLABORATORS": {
+    "ADD": "Inviter un collaborateur à RISE",
+    "INVITE": "Ajouter des utilisateurs",
+    "NONE": "Vous n'avez pas encore invité de collaborateurs",
+    "HEADER": "Gérer les collaborateurs"
+  },
+  "DASHBOARD": {
+    "SEARCH": "Rechercher une carte"
+  },
+  "ERROR_MSG": {
+    "ERROR_API_ORG_ALREADY_EXISTS": "Une organisation avec ces informations existe déjà.",
+    "ERROR_API_USER_ALREADY_EXISTS": "Un utilisateur avec cet ID existe déjà.",
+    "ERROR_API_MAIL_ALREADY_EXISTS": "Cet email est déjà utilisé",
+    "ERROR_API_MISSING_ACCEPT_TERMS_AND_PRIVACY": "Veuillez accepter les termes et conditions ainsi que la politique de confidentialité de RISE",
+    "ERROR_API_WRONG_USER_OR_PASSWORD": "Soit le nom d'utilisateur soit le mot de passe saisi est incorrect",
+    "ERROR_API_WRONG_OTP": "Ce mot de passe à usage unique ne correspond pas à celui envoyé à l'e-mail ci-dessus.",
+    "ERROR_API_NO_VALID_SUBSCRIPTION": "Vous n'avez pas d'abonnement valide pour le moment.",
+    "ERROR_LAYER_FAILURE": "Impossible de charger les calques pour ce plugin"
+  },
+  "INVITE_USER": {
+    "EMAIL": "Entrez l'email de la personne à inviter",
+    "CONFIRM": "Confirmez l'email de votre invité",
+    "SELECT_ROLE": "Attribuer un rôle"
+  },
+  "LAYER_TYPES": {
+    "FLOOD": "Inondation",
+    "DROUGHT": "Sécheresse",
+    "BUILDINGS": "Bâtiments",
+    "IMPACTS": "Impacts",
+    "MORE": "Plus"
+  },
+  "LOGIN": {
+    "USER_ID": "Identifiant utilisateur",
+    "PASSWORD": "Mot de passe",
+    "FORGOT_PASSWORD": "Mot de passe oublié ? Cliquez <a class='inner-html-link'>ici</a>"
+  },
+  "ORGANIZATION": {
+    "ADDRESS": "Adresse de l'organisation",
+    "DELETE": "Supprimer l'organisation",
+    "DELETE_MSG": " Une fois votre organisation supprimée, cette opération est irréversible. Soyez-en sûr. ",
+    "INVITE": "Inviter un nouvel utilisateur",
+    "MEMBERS": "Collaborateurs",
+    "NAME": "Nom de l'organisation",
+    "SAVE": "Enregistrer les modifications",
+    "TYPE": "Type d'organisation",
+    "USERS": "Utilisateurs de l'organisation"
+  },
+  "OTP_DIALOG": {
+    "SUBMIT": "Soumettre",
+    "ENTER_PW": "Veuillez entrer votre code One Time Pass"
+  },
+  "REGISTER": {
+    "HEADER": "S'inscrire dans RISE",
+    "USER_ID": "Identifiant utilisateur",
+    "PASSWORD": "Mot de passe",
+    "CONFIRM_PW": "Confirmer le mot de passe",
+    "NAME": "Prenom",
+    "SURNAME": "Nom",
+    "MOBILE": "Numéro de portable",
+    "EMAIL": "Adresse email de l'utilisateur",
+    "CONFIRM_EMAIL": "Confirmer l'adresse email de l'utilisateur",
+    "ORG_NAME": "Nom de l'organisation",
+    "ORG_TYPE": "Type d'organisation",
+    "ORG_ADDRESS": "Adresse de l'organisation",
+    "STREET": "Rue",
+    "NUMBER": "Numéro",
+    "POST_CODE": "Code Postal",
+    "CITY": "Ville",
+    "PHONE": "Téléphone",
+    "COUNTRY": "Pays",
+    "TERMS_CONDITIONS": " J'ai lu et accepté les <a class='inner-html-link' href=''>Conditions générales</a>",
+    "PRIVACY_POLICY": "J'ai lu et accepté la <a class='inner-html-link' href=''>Politique de confidentialité</a>"
+  },
+  "RISE_CRUD_TABLE": {
+    "ADD_FIELD_USER": "Ajouter un utilisateur de terrain"
+  },
+  "RISE_SELECT_AREA": {
+    "UPLOAD_SHAPE_FILE": "Télécharger le fichier de forme"
+  },
+  "SUBSCRIPTIONS": {
+    "AREA_TYPE": "Type de zone",
+    "BACK": "Retour aux abonnements",
+    "BILLING": "Facturation",
+    "BUY_BUTTON": "Acheter un nouvel abonnement",
+    "COMPUTE_PRICE": "Obtenir le prix calculé",
+    "COMPUTE_SECOND": "Recalculer",
+    "COMPUTED_PRICE": "Prix calculé",
+    "CONTACT": "Contactez-nous",
+    "CREDIT": "Carte de crédit",
+    "DESCRIPTION": "Description",
+    "EMERGENCY": "Zone d'urgence uniquement",
+    "EXPIRY": "Date d'expiration",
+    "HEADER": "Mes abonnements",
+    "LONG_TERM": "Zone à long terme",
+    "MONTHLY": "Mensuel",
+    "NAME": "Nom",
+    "PAYMENT": "Mode de paiement",
+    "PLUGINS": "Plugins",
+    "PURCHASE": "Achat",
+    "PRICE": "Prix",
+    "START_DATE": "Date de début",
+    "TYPE": "Type",
+    "PAYMENT_TYPE": "Type de paiement",
+    "UPDATE": "Mettre à jour l'abonnement",
+    "WIRE": "Transfert bancaire",
+    "YEAR": "Un an"
+  },
+  "TOOLBAR": {
+    "ACCOUNT": "Compte",
+    "LOGIN": "Connexion",
+    "LOGOUT": "Déconnexion",
+    "SETTINGS": "Paramètres",
+    "SIGN_UP": "Inscrivez-vous"
+  },
+  "USER": {
+    "ACCOUNT_HEADER": "Détails du compte",
+    "CHANGE_EMAIL": "Changer l'adresse e-mail",
+    "CHANGE_PW": "Changer le mot de passe",
+    "CONNECT_EMAIL": "Adresse email de connexion",
+    "CONFIRM_EMAIL": "Confirmer le nouvel e-mail",
+    "CONFIRM_PW": "Confirmer le mot de passe",
+    "DELETE_ACCOUNT": "Supprimer le compte",
+    "DELETE_MSG": " Une fois votre compte supprimé, cela ne peut plus être annulé. Soyez-en sûr. ",
+    "EMAIL": "E-mail",
+    "LANGUAGE": "Sélectionnez une langue",
+    "MOBILE_NUMBER": "Numéro de portable",
+    "MY_ACCOUNT": "Mon compte",
+    "NEW_EMAIL": "Nouvel e-mail",
+    "NEW_PW": "Nouveau mot de passe",
+    "NOTIFICATIONS": "Notifications",
+    "NOTIFICATIONS_MSG": "Sélectionnez les notifications que vous souhaitez recevoir de <strong>RISE</strong>.",
+    "OLD_PW": "Mot de passe actuel",
+    "PW_MSG": "Modifiez le mot de passe utilisé pour accéder à votre compte <strong>RISE</strong>. Si vous rencontrez des difficultés, <a>Contactez-nous</a>",
+    "PW_SECURITY": "Mot de passe et sécurité",
+    "SELECT_LANG": "Sélectionner la langue",
+    "SELECT_LANG_MSG": "Sélectionnez la langue système que vous souhaitez utiliser pour RISE."
+  },
+  "USER_MENU": {
+    "ACCOUNT": "Compte",
+    "DASHBOARD": "Tableau de bord",
+    "HELP": "Aide",
+    "LANGUAGE": "Langue",
+    "LOGOUT": "Déconnexion",
+    "SUBSCRIPTIONS": "Abonnements"
+  },
+  "WIDGET": {
+   "AFFECTED_PPL": "Personnes concernées",
+    "ALERTS": "Alertes",
+    "NO_AFFECTED": "Aucune personne concernée",
+    "NO_ALERTS": "Aucune alerte",
+    "NO_EVENTS": "Aucun événement en cours",
+    "ONGOING_EVENTS": "Événements en cours"
+  }
+}
