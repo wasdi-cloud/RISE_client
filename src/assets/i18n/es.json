@@ -6,9 +6,10 @@
     "NOT_ACTIVITIES": "Actividades",
     "NOT_MAINTENANCE": "Mantenimiento",
     "NOT_NEWSLETTER": "Boletín",
-    "SUSCRIPCIONES": "Suscripciones",
-    "ORGANIZACIÓN": "Organización",
-    "USER": "Usuario"
+    "SUBSCRIPTIONS": "Suscripciones",
+    "ORGANIZATION": "Organización",
+    "USER": "Usuario",
+    "USER_ACCOUNT": "Cuenta de usuario"
   },
   "AREA_OF_OPERATIONS": {
     "ACTIVE_AREAS": "Áreas Activas de Operaciones",
@@ -181,11 +182,11 @@
     "SUBSCRIPTIONS": "Suscripciones"
   },
   "WIDGET": {
-   "AFFECTED_PPL": "Personas Afectadas",
+    "AFFECTED_PPL": "Personas Afectadas",
     "ALERTS": "Alertas",
     "NO_AFFECTED": "Ninguna gente afectada",
     "NO_ALERTS": "Sin alertas",
-    "NO_EVENTS":"No hay eventos en curso",
-    "ONGOING_EVENTS":"Eventos en curso"
+    "NO_EVENTS": "No hay eventos en curso",
+    "ONGOING_EVENTS": "Eventos en curso"
   }
 }

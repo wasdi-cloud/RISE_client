@@ -8,7 +8,8 @@
     "NOT_NEWSLETTER": "Newsletter",
     "SUBSCRIPTIONS": "Abonnements",
     "ORGANIZATION": "Organisation",
-    "USER": "Utilisateur"
+    "USER": "Utilisateur",
+    "USER_ACCOUNT": "Compte utilisateur"
   },
   "AREA_OF_OPERATIONS": {
     "ACTIVE_AREAS": "Zones d'opérations actives",
@@ -181,7 +182,7 @@
     "SUBSCRIPTIONS": "Abonnements"
   },
   "WIDGET": {
-   "AFFECTED_PPL": "Personnes concernées",
+    "AFFECTED_PPL": "Personnes concernées",
     "ALERTS": "Alertes",
     "NO_AFFECTED": "Aucune personne concernée",
     "NO_ALERTS": "Aucune alerte",

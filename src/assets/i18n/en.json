@@ -8,7 +8,8 @@
     "NOT_NEWSLETTER": "Newsletter",
     "SUBSCRIPTIONS": "Subscriptions",
     "ORGANIZATION": "Organization",
-    "USER": "User"
+    "USER": "User",
+    "USER_ACCOUNT": "User Account"
   },
   "AREA_OF_OPERATIONS": {
     "ACTIVE_AREAS": "Active Areas of Operations",

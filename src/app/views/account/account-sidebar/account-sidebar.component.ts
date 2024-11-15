@@ -1,17 +1,18 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RiseMenuButtonComponent } from '../../../components/rise-menu-button/rise-menu-button.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'account-sidebar',
   standalone: true,
-  imports: [CommonModule, RiseMenuButtonComponent],
+  imports: [CommonModule, TranslateModule, RiseMenuButtonComponent],
   templateUrl: './account-sidebar.component.html',
   styleUrl: './account-sidebar.component.css',
 })
 export class AccountSidebarComponent {
   @Input() m_aoAccountButtons = [];
-  @Input() m_sActiveBtn: string = 'user'
+  @Input() m_sActiveBtn: string = 'user';
   @Output() m_sSelectedButton: EventEmitter<any> = new EventEmitter<any>(null);
 
   constructor() {}
