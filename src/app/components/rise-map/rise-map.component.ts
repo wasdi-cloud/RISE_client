@@ -1,36 +1,30 @@
-import {
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges,} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
-import { MapService } from '../../services/map.service';
-import { RiseTimebarComponent } from '../rise-timebar/rise-timebar.component';
+import {MapService} from '../../services/map.service';
+import {RiseTimebarComponent} from '../rise-timebar/rise-timebar.component';
 import 'leaflet-draw';
-import { LeafletModule } from '@bluehalo/ngx-leaflet';
-import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
-import { AreaViewModel } from '../../models/AreaViewModel';
-import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
-import { RiseButtonComponent } from '../rise-button/rise-button.component';
-import { TranslateService } from '@ngx-translate/core';
+import {LeafletModule} from '@bluehalo/ngx-leaflet';
+import {LeafletDrawModule} from '@asymmetrik/ngx-leaflet-draw';
+import {AreaViewModel} from '../../models/AreaViewModel';
+import {NotificationsDialogsService} from '../../services/notifications-dialogs.service';
+import {RiseButtonComponent} from '../rise-button/rise-button.component';
+import {TranslateService} from '@ngx-translate/core';
 import 'leaflet.fullscreen'
 
 // import * as L from 'leaflet';
 declare const L: any;
-const MIN_AREA_CIRCLE = 10000 * 1000 * 1000; // 10,000 square kilometers in square meters
-const MAX_AREA_CIRCLE = 1000000 * 1000 * 1000; // 1,000,000 square kilometers in square meters
-const MAX_WIDTH = 1000; // 1,500 kilometers in meters
-const MAX_HEIGHT = 1000; // 1,500 kilometers in meters
-const MIN_WIDTH = 100; // 100 kilometers in meters
-const MIN_HEIGHT = 100; // 100 kilometers in meters
-const MIN_AREA_POLYGON = 10000 * 1000; // Define minimum area (e.g., 10,000 square meters)
-const MAX_AREA_POLYGON = 1000000 * 1000; // Define maximum area (e.g., 1,000,000 square meters)
+const MIN_AREA_CIRCLE = 12_321_000_000; // Minimum 1x1 degree in square meters
+const MAX_AREA_CIRCLE = 49_284_000_000; // Maximum 2x2 degree in square meters
+
+const MIN_WIDTH = 111_000; // Minimum width 1 degree in meters
+const MIN_HEIGHT = 111_000; // Minimum height 1 degree in meters
+const MAX_WIDTH = 222_000; // Maximum width 2 degrees in meters
+const MAX_HEIGHT = 222_000; // Maximum height 2 degrees in meters
+
+const MIN_AREA_POLYGON = 12_321_000_000; // Minimum 1x1 degree in square meters
+const MAX_AREA_POLYGON = 49_284_000_000; // Maximum 2x2 degree in square meters
+
 
 @Component({
   selector: 'rise-map',
@@ -95,13 +89,15 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     this.m_oDrawOptions.edit.featureGroup = this.m_oDrawnItems;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void {
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (!this.m_bIsSelectingArea) {
-      if(this.m_aoAreas.length > 0) {
+      if (this.m_aoAreas.length > 0) {
         for (let oArea of this.m_aoAreas) {
           this.m_oMapService.addMarker(oArea, this.m_oMap);
         }
@@ -151,7 +147,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   addCircleButton(oMap: L.Map): void {
     this.m_oMapService.addCircleButton(oMap).subscribe((circleData) => {
       this.m_bIsAutoDrawCreated = true;
-      const { center, radius } = circleData;
+      const {center, radius} = circleData;
       this.emitInsertedArea(null, radius, center.lat, center.lng);
     });
   }
@@ -168,28 +164,36 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   // Different ways to draw an area
   //Using leaflet drawings
   onDrawCreated(oEvent) {
-    const { layerType, layer } = oEvent;
-    const sErrorMsg: string = this.m_oTranslate.instant(
+    const {layerType, layer} = oEvent;
+    const sErrorMsgToBig: string = this.m_oTranslate.instant(
       'AREA_OF_OPERATIONS.CONFIRM_AREA_TOO_BIG'
+    );
+    const sErrorMsgToSmall: string = this.m_oTranslate.instant(
+      'AREA_OF_OPERATIONS.CONFIRM_AREA_TOO_SMALL'
     );
     const sErrorMsgAdjust: string = this.m_oTranslate.instant(
       'AREA_OF_OPERATIONS.CONFIRM_CREATE_NEW_AREA'
     );
-    const sErrorHeader: string = this.m_oTranslate.instant(
-      'AREA_OF_OPERATIONS.AREA_HEADER'
+    const sErrorHeaderForTooBig: string = this.m_oTranslate.instant(
+      'AREA_OF_OPERATIONS.AREA_HEADER_TOO_BIG'
+    );
+    const sErrorHeaderForTooSmall: string = this.m_oTranslate.instant(
+      'AREA_OF_OPERATIONS.AREA_HEADER_TOO_SMALL'
     );
     if (layerType === 'rectangle') {
       const bounds = layer.getBounds(); // Get the bounds of the rectangle
       const southWest = bounds.getSouthWest();
       const northEast = bounds.getNorthEast();
-      const width = this.m_oMapService.calculateDistance([
-        southWest,
-        { lat: southWest.lat, lng: northEast.lng },
-      ]);
-      const height = this.m_oMapService.calculateDistance([
-        southWest,
-        { lat: northEast.lat, lng: southWest.lng },
-      ]);
+
+      // Accurate distance calculation using Leaflet's distanceTo
+      const width = L.latLng(southWest.lat, southWest.lng).distanceTo(
+        L.latLng(southWest.lat, northEast.lng)
+      );
+      const height = L.latLng(southWest.lat, southWest.lng).distanceTo(
+        L.latLng(northEast.lat, southWest.lng)
+      );
+
+      console.log("Calculated width:", width, "Calculated height:", height);
 
       // Adjust if width or height are out of bounds
       if (
@@ -198,16 +202,19 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
         width < MIN_WIDTH ||
         height < MIN_HEIGHT
       ) {
+        let sErrorMsg = "";
+        if (width > MAX_WIDTH || height > MAX_HEIGHT) {
+          sErrorMsg = sErrorHeaderForTooBig
+        } else if (width < MIN_WIDTH || height < MIN_HEIGHT) {
+          sErrorMsg = sErrorHeaderForTooSmall
+        }
         this.m_oNotificationService
           .openConfirmationDialog(sErrorMsg, 'danger')
           .subscribe({
             next: (oResponse) => {
               if (oResponse) {
-                this.m_oMapService.adjustRectangleDimensions(
-                  layer,
-                  width,
-                  height
-                );
+                // Adjust dimensions dynamically
+                this.m_oMapService.adjustRectangleDimensions(layer, width, height);
                 this.m_oMapService.onDrawCreated(oEvent, this.m_oMap);
                 this.m_bIsDrawCreated = true;
                 this.emitInsertedArea(oEvent);
@@ -222,36 +229,52 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
         this.emitInsertedArea(oEvent);
       }
     }
+
     if (layerType === 'polygon') {
       const latlngs = layer.getLatLngs()[0]; // Use the first array of latlngs
       const area = this.m_oMapService.calculatePolygonArea(latlngs); // Area in square meters
-      if (area < MIN_AREA_POLYGON || area > MAX_AREA_POLYGON) {
+      const bounds = layer.getBounds();
+      const center = bounds.getCenter();
+      const latitudeFactor = Math.cos(center.lat * (Math.PI / 180)); // Scale for latitude
+
+      const adjustedMinArea = MIN_AREA_POLYGON * latitudeFactor;
+      const adjustedMaxArea = MAX_AREA_POLYGON * latitudeFactor;
+
+      if (area < adjustedMinArea || area > adjustedMaxArea) {
+        let sErrorHeader = "";
+        if (area < adjustedMinArea) {
+          sErrorHeader = sErrorHeaderForTooSmall
+        } else if (area > adjustedMaxArea) {
+          sErrorHeader = sErrorHeaderForTooBig
+        }
         this.m_oNotificationService.openInfoDialog(
           sErrorMsgAdjust,
           'danger',
           sErrorHeader
         );
       } else {
-        this.m_oMapService.onDrawCreated(oEvent, this.m_oMap);
-        this.m_bIsDrawCreated = true;
-        this.emitInsertedArea(oEvent);
+        this.handleValidArea(oEvent);
       }
     }
     if (layerType === 'circle') {
       const radius = layer.getRadius(); // Radius in meters
-      const area = this.m_oMapService.calculateCircleArea(radius); // Area of the circle (πr²)
+      const area = Math.PI * radius * radius; // Circle area
       if (area < MIN_AREA_CIRCLE || area > MAX_AREA_CIRCLE) {
+        let sErrorMsg = "";
+        if (area > MAX_AREA_CIRCLE) {
+          sErrorMsg = sErrorMsgToBig;
+        } else if (area < MIN_AREA_CIRCLE) {
+          sErrorMsg = sErrorMsgToSmall;
+        }
         this.m_oNotificationService
           .openConfirmationDialog(sErrorMsg, 'danger')
           .subscribe({
             next: (oResponse) => {
               if (oResponse) {
-                this.m_oMapService.adjustCircleArea(layer, area);
+                this.m_oMapService.adjustCircleArea(layer, radius);
                 this.m_oMapService.onDrawCreated(oEvent, this.m_oMap);
                 this.m_bIsDrawCreated = true;
                 this.emitInsertedArea(oEvent);
-              } else {
-                return;
               }
             },
           });
@@ -263,7 +286,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-  //Emit inserted area
+//Emit inserted area
   emitInsertedArea(
     oEvent?: any,
     fRadius?: number,
@@ -309,6 +332,12 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     };
   }
 
+  private handleValidArea(oEvent) {
+    this.m_oMapService.onDrawCreated(oEvent, this.m_oMap);
+    this.m_bIsDrawCreated = true;
+    this.emitInsertedArea(oEvent);
+  }
+
   //Emitting the area to the parent component
   private emitDrawnAreaEvent(oEvent) {
     let iSelectedArea = 0;
@@ -338,7 +367,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
 
       // Collect all points (vertices) of the polygon
       const points = latLngs.map((point: L.LatLng) => {
-        return { lat: point.lat, lng: point.lng };
+        return {lat: point.lat, lng: point.lng};
       });
       // Calculate the centroid (center) of the polygon
       const centroid = this.calculateCentroid(points);
@@ -360,7 +389,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     // Emit the circle info (center, radius, and area)
     const oShapeInfo = {
       type: 'circle',
-      center: { lat: fLat, lng: fLng },
+      center: {lat: fLat, lng: fLng},
       radius: fRadius,
       area: fArea, // Add area to the emitted shape info
     };
@@ -385,7 +414,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
 
       // Prepare the points data
       const points = latLngs.map((point: L.LatLng) => {
-        return { lat: point.lat, lng: point.lng };
+        return {lat: point.lat, lng: point.lng};
       });
       // Calculate the centroid (center) of the polygon
       const centroid = this.calculateCentroid(points);

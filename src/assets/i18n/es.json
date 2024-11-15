@@ -13,13 +13,15 @@
   },
   "AREA_OF_OPERATIONS": {
     "ACTIVE_AREAS": "Áreas Activas de Operaciones",
-    "AREA_HEADER": "¡Área demasiado grande!",
+    "AREA_HEADER_TOO_BIG": "¡Área demasiado grande!",
+    "AREA_HEADER_TOO_SMALL": "¡Área demasiado pequeña!",
     "CREATE_NEW_AREA_OF_OPERATION": "Crear Nueva Área de Operaciones",
     "CONFIRM_DELETE": "¿Estás seguro de que deseas eliminar esta área?",
     "CONFIRM_SAME_AREA": "El área que has seleccionado se superpone con otra área.",
     "CONFIRM_SAME_NAME": "El área que has seleccionado comparte nombre con un área ya existente",
     "CONFIRM": "<bt>¿Continuar de todos modos?",
     "CONFIRM_AREA_TOO_BIG": "El área que has seleccionado es demasiado grande. Haz clic en 'confirmar' para que RISE la ajuste automáticamente.",
+    "CONFIRM_AREA_TOO_SMALL": "El área que ha seleccionado es demasiado pequeña. Haz clic en 'confirmar' para que RISE la ajuste automáticamente.",
     "CONFIRM_CREATE_NEW_AREA": "El área que has seleccionado es demasiado grande. Ajusta las dimensiones.",
     "CREATION_DATE": "Fecha de creación",
     "DIALOG_HEADER": "Área de Operaciones"

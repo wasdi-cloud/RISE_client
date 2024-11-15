@@ -36,12 +36,14 @@ export interface TileLayer {}
 const MAX_STORAGE_SIZE = 2 * 1024 * 1024; // 2MB for testing
 const MIN_ZOOM = 3;
 const MAX_ZOOM = 18;
-const MIN_AREA_CIRCLE = 10000 * 1000 * 1000; // 10,000 square kilometers in square meters
-const MAX_AREA_CIRCLE = 1000000 * 1000 * 1000; // 1,000,000 square kilometers in square meters
-const MAX_WIDTH = 1000; // 1,500 kilometers in meters
-const MAX_HEIGHT = 1000; // 1,500 kilometers in meters
-const MIN_WIDTH = 100; // 100 kilometers in meters
-const MIN_HEIGHT = 100; // 100 kilometers in meters
+const MIN_AREA_CIRCLE = 12_321_000_000; // Minimum 1x1 degree in square meters
+const MAX_AREA_CIRCLE = 49_284_000_000; // Maximum 2x2 degree in square meters
+
+const MIN_WIDTH = 111_000; // Minimum width 1 degree in meters
+const MIN_HEIGHT = 111_000; // Minimum height 1 degree in meters
+const MAX_WIDTH = 222_000; // Maximum width 2 degrees in meters
+const MAX_HEIGHT = 222_000; // Maximum height 2 degrees in meters
+
 
 @Injectable({
   providedIn: 'root',
@@ -848,17 +850,19 @@ export class MapService {
   }
 
   //Auto adjusting the area if it is too big or too small
-  adjustCircleArea(layer, area) {
+  adjustCircleArea(layer, radius) {
     let newRadius;
+    const area = Math.PI * radius * radius;
     if (area > MAX_AREA_CIRCLE) {
       newRadius = Math.sqrt(MAX_AREA_CIRCLE / Math.PI);
     } else if (area < MIN_AREA_CIRCLE) {
       newRadius = Math.sqrt(MIN_AREA_CIRCLE / Math.PI);
     }
-    if (newRadius) {
+    if (newRadius && newRadius !== radius) {
       layer.setRadius(newRadius);
     }
   }
+
 
   calculatePolygonArea(latlngs: any) {
     return L.GeometryUtil.geodesicArea(latlngs);
@@ -872,26 +876,37 @@ export class MapService {
     const bounds = layer.getBounds();
     const center = bounds.getCenter();
 
-    // Adjust dimensions to max or min constraints
-    // Use max or min dimensions as needed
+    // Log current width and height for debugging
+    console.log("Original width:", width, "Original height:", height);
+
+    // Adjust dimensions to fit within min/max constraints
     const adjustedWidth = Math.max(MIN_WIDTH, Math.min(width, MAX_WIDTH));
     const adjustedHeight = Math.max(MIN_HEIGHT, Math.min(height, MAX_HEIGHT));
+    console.log("Adjusted width:", adjustedWidth, "Adjusted height:", adjustedHeight);
 
-    const metersToDegrees = 0.000009; // Approximately for 1,000 meters scale
+    // Dynamic conversion factors
+    const metersToLatitudeDegrees = (meters) => meters / 111_000;
+    const metersToLongitudeDegrees = (meters, latitude) => meters / (111_000 * Math.cos(latitude * Math.PI / 180));
 
-    // Calculate new bounds based on the adjusted width and height
+    // Convert adjusted dimensions to degrees
+    const adjustedHeightDegrees = metersToLatitudeDegrees(adjustedHeight);
+    const adjustedWidthDegrees = metersToLongitudeDegrees(adjustedWidth, center.lat);
+
+    // Calculate new bounds based on the adjusted width and height in degrees
     const newBounds = [
       [
-        center.lat - (adjustedHeight / 2) * metersToDegrees,
-        center.lng - (adjustedWidth / 2) * metersToDegrees,
+        center.lat - adjustedHeightDegrees / 2,
+        center.lng - adjustedWidthDegrees / 2,
       ],
       [
-        center.lat + (adjustedHeight / 2) * metersToDegrees,
-        center.lng + (adjustedWidth / 2) * metersToDegrees,
+        center.lat + adjustedHeightDegrees / 2,
+        center.lng + adjustedWidthDegrees / 2,
       ],
     ];
-    layer.setBounds(newBounds); // Apply the new bounds to the rectangle
+    // Apply the new bounds to the rectangle
+    layer.setBounds(newBounds);
   }
+
 
   calculateCentroid(points: Array<{ lat: number; lng: number }>): {
     lat: number;

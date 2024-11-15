@@ -1,0 +1,189 @@
+{
+  "ACCOUNT": {
+    "AREA_OF_OPERATIONS": "مناطق العمليات",
+    "MY_ORGANIZATION": "منظمتي",
+    "MY_USER": "مستخدمي",
+    "NOT_ACTIVITIES": "الأنشطة",
+    "NOT_MAINTENANCE": "الصيانة",
+    "NOT_NEWSLETTER": "النشرة الإخبارية",
+    "SUBSCRIPTIONS": "الاشتراكات",
+    "ORGANIZATION": "المنظمة",
+    "USER": "المستخدم",
+    "USER_ACCOUNT": "حساب المستخدم"
+  },
+  "AREA_OF_OPERATIONS": {
+    "ACTIVE_AREAS": "مناطق العمليات النشطة",
+    "AREA_HEADER_TOO_BIG": "المنطقة كبيرة جدًا!",
+    "AREA_HEADER_TOO_SMALL": "المنطقة صغيرة جدًا!",
+    "CREATE_NEW_AREA_OF_OPERATION": "إنشاء منطقة عمليات جديدة",
+    "CONFIRM_DELETE": "هل أنت متأكد أنك تريد حذف هذه المنطقة؟",
+    "CONFIRM_SAME_AREA": "المنطقة التي اخترتها تتداخل مع منطقة أخرى.",
+    "CONFIRM_SAME_NAME": "المنطقة التي اخترتها تشترك في نفس الاسم مع منطقة موجودة بالفعل",
+    "CONFIRM": "<br>هل ترغب في المتابعة على أي حال؟",
+    "CONFIRM_AREA_TOO_BIG": "المنطقة التي اخترتها كبيرة جدًا. اضغط على 'تأكيد' ليقوم RISE بضبطها تلقائيًا.",
+    "CONFIRM_AREA_TOO_SMALL": "المنطقة التي اخترتها صغيرة جدًا. اضغط على 'تأكيد' ليقوم RISE بضبطها تلقائيًا.",
+    "CONFIRM_CREATE_NEW_AREA": "المنطقة التي اخترتها كبيرة جدًا. يرجى تعديل الأبعاد.",
+    "CREATION_DATE": "تاريخ الإنشاء",
+    "DIALOG_HEADER": "منطقة العمليات"
+  },
+  "BANNER": {
+    "LIVE_SIT": "الوضع المباشر",
+    "BACK": "العودة إلى الوضع المباشر"
+  },
+  "CREATE_NEW_AREA_OF_OPERATION": {
+    "NAME": "الاسم",
+    "DESCRIPTION": "الوصف",
+    "MAP_TITLE": "حدد منطقتك",
+    "SAVE": "حفظ",
+    "CANCEL": "إلغاء",
+    "ADD_FIELD_OPERATOR": "إضافة مشغل ميداني"
+  },
+  "COLLABORATORS": {
+    "ADD": "دعوة متعاون إلى RISE",
+    "INVITE": "إضافة مستخدمين",
+    "NONE": "لم تقم بدعوة أي متعاونين بعد",
+    "HEADER": "إدارة المتعاونين"
+  },
+  "DASHBOARD": {
+    "SEARCH": "بحث الخريطة"
+  },
+  "ERROR_MSG": {
+    "ERROR_API_ORG_ALREADY_EXISTS": "هناك منظمة بهذه المعلومات موجودة بالفعل.",
+    "ERROR_API_USER_ALREADY_EXISTS": "هناك مستخدم بهذا المعرف موجود بالفعل.",
+    "ERROR_API_MAIL_ALREADY_EXISTS": "تم استخدام هذا البريد الإلكتروني بالفعل",
+    "ERROR_API_MISSING_ACCEPT_TERMS_AND_PRIVACY": "يرجى قبول شروط الاستخدام وسياسة الخصوصية الخاصة بـ RISE",
+    "ERROR_API_WRONG_USER_OR_PASSWORD": "إما اسم المستخدم أو كلمة المرور  غير صحيحة",
+    "ERROR_API_WRONG_OTP": "كلمة المرور لمرة واحدة لا تتطابق مع الكود المرسل إلى البريد الإلكتروني المذكور.",
+    "ERROR_API_NO_VALID_SUBSCRIPTION": "ليس لديك اشتراك صالح في الوقت الحالي.",
+    "ERROR_LAYER_FAILURE": "تعذر تحميل الطبقات لهذا الإضافة"
+  },
+  "INVITE_USER": {
+    "EMAIL": "أدخل بريد الشخص المدعو",
+    "CONFIRM": "تأكيد بريد المدعو",
+    "SELECT_ROLE": "تحديد الدور"
+  },
+  "LAYER_TYPES": {
+    "FLOOD": "فيضان",
+    "DROUGHT": "جفاف",
+    "BUILDINGS": "مباني",
+    "IMPACTS": "الآثار",
+    "MORE": "المزيد"
+  },
+  "LOGIN": {
+    "USER_ID": "معرف المستخدم",
+    "PASSWORD": "كلمة المرور",
+    "FORGOT_PASSWORD": "نسيت كلمة المرور؟ اضغط <a class='inner-html-link'>هنا</a>"
+  },
+  "ORGANIZATION": {
+    "ADDRESS": "عنوان المنظمة",
+    "DELETE": "حذف المنظمة",
+    "DELETE_MSG": "بمجرد حذف المنظمة، لا يمكن التراجع عن ذلك. يرجى التأكد.",
+    "INVITE": "دعوة مستخدم جديد",
+    "MEMBERS": "المتعاونون",
+    "NAME": "اسم المنظمة",
+    "SAVE": "حفظ التغييرات",
+    "TYPE": "نوع المنظمة",
+    "USERS": "مستخدمو المنظمة"
+  },
+  "OTP_DIALOG": {
+    "SUBMIT": "إرسال",
+    "ENTER_PW": "يرجى إدخال رمز كلمة المرور لمرة واحدة"
+  },
+  "REGISTER": {
+    "HEADER": "التسجيل في RISE",
+    "USER_ID": "معرف المستخدم",
+    "PASSWORD": "كلمة المرور",
+    "CONFIRM_PW": "تأكيد كلمة المرور",
+    "NAME": "الاسم",
+    "SURNAME": "الكنية",
+    "MOBILE": "رقم الجوال",
+    "EMAIL": "عنوان البريد الإلكتروني للمستخدم",
+    "CONFIRM_EMAIL": "تأكيد عنوان البريد الإلكتروني للمستخدم",
+    "ORG_NAME": "اسم المنظمة",
+    "ORG_TYPE": "نوع المنظمة",
+    "ORG_ADDRESS": "عنوان المنظمة",
+    "STREET": "الشارع",
+    "NUMBER": "الرقم",
+    "POST_CODE": "الرمز البريدي",
+    "CITY": "المدينة",
+    "PHONE": "الهاتف",
+    "COUNTRY": "الدولة",
+    "TERMS_CONDITIONS": "لقد قرأت وأوافق على <a class='inner-html-link' href=''>الشروط والأحكام</a>",
+    "PRIVACY_POLICY": "لقد قرأت وأوافق على <a class='inner-html-link' href=''>سياسة الخصوصية</a>"
+  },
+  "RISE_CRUD_TABLE": {
+    "ADD_FIELD_USER": "إضافة مستخدم ميداني"
+  },
+  "RISE_SELECT_AREA": {
+    "UPLOAD_SHAPE_FILE": "تحميل ملف الشكل"
+  },
+  "SUBSCRIPTIONS": {
+    "AREA_TYPE": "نوع المنطقة",
+    "BACK": "العودة إلى الاشتراكات",
+    "BILLING": "الفوترة",
+    "BUY_BUTTON": "اشتر اشتراك جديد",
+    "COMPUTE_PRICE": "احصل على السعر المحسوب",
+    "COMPUTE_SECOND": "إعادة الحساب",
+    "COMPUTED_PRICE": "السعر المحسوب",
+    "CONTACT": "اتصل بنا",
+    "CREDIT": "بطاقة ائتمان",
+    "DESCRIPTION": "الوصف",
+    "EMERGENCY": "منطقة الطوارئ فقط",
+    "EXPIRY": "تاريخ الانتهاء",
+    "HEADER": "اشتراكاتي",
+    "LONG_TERM": "منطقة طويلة الأجل",
+    "MONTHLY": "شهريًا",
+    "NAME": "الاسم",
+    "PAYMENT": "طريقة الدفع",
+    "PLUGINS": "الإضافات",
+    "PURCHASE": "شراء",
+    "PRICE": "السعر",
+    "START_DATE": "تاريخ البدء",
+    "TYPE": "النوع",
+    "PAYMENT_TYPE": "نوع الدفع",
+    "UPDATE": "تحديث الاشتراك",
+    "WIRE": "تحويل مصرفي",
+    "YEAR": "سنة واحدة"
+  },
+  "TOOLBAR": {
+    "ACCOUNT": "الحساب",
+    "LOGIN": "تسجيل الدخول",
+    "LOGOUT": "تسجيل الخروج",
+    "SETTINGS": "الإعدادات",
+    "SIGN_UP": "التسجيل"
+  },
+  "USER": {
+    "ACCOUNT_HEADER": "تفاصيل الحساب",
+    "CHANGE_EMAIL": "تغيير البريد الإلكتروني",
+    "CHANGE_PW": "تغيير كلمة المرور",
+    "CONNECT_EMAIL": "عنوان البريد الإلكتروني للاتصال",
+    "CONFIRM_EMAIL": "تأكيد البريد الإلكتروني الجديد",
+    "CONFIRM_PW": "تأكيد كلمة المرور",
+    "DELETE_ACCOUNT": "حذف الحساب",
+    "DELETE_MSG": "بمجرد حذف حسابك، لا يمكن التراجع عن ذلك. يرجى التأكد.",
+    "EMAIL": "البريد الإلكتروني",
+    "LANGUAGE": "اختيار اللغة",
+    "MOBILE_NUMBER": "رقم الجوال",
+    "MY_ACCOUNT": "حسابي",
+    "NEW_EMAIL": "البريد الإلكتروني الجديد",
+    "NEW_PW": "كلمة المرور الجديدة",
+    "NOTIFICATIONS": "الإشعارات",
+    "NOTIFICATIONS_MSG": "حدد الإشعارات التي ترغب في تلقيها من <strong>RISE</strong>.",
+    "OLD_PW": "كلمة المرور الحالية",
+    "PW_MSG": "تغيير كلمة المرور المستخدمة للوصول إلى حسابك في <strong>RISE</strong>. إذا واجهت أي صعوبة، <a>اتصل بنا</a>",
+    "PW_SECURITY": "كلمة المرور والأمان",
+    "SELECT_LANG": "اختيار اللغة",
+    "SELECT_LANG_MSG": "حدد اللغة التي ترغب في استخدامها في RISE."
+  },
+  "USER_MENU": {
+    "ACCOUNT": "الحساب",
+    "DASHBOARD": "لوحة القيادة",
+    "LOGOUT": "تسجيل الخروج"
+  },
+  "USER_PROFILE": {
+    "ASSIGNED_PLUGINS": "الإضافات المعينة",
+    "NAME": "الاسم",
+    "ROLE": "الدور",
+    "UNASSIGNED_PLUGINS": "الإضافات غير المعينة"
+  }
+}
