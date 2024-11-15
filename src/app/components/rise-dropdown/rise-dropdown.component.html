@@ -28,11 +28,14 @@
         *ngFor="let oItem; in: m_aoDropdownItems | filter : m_sSearchString"
         [value]="oItem"
       >
+        {{ oItem.name ? oItem.name : oItem }}
       </mat-option>
     </div>
     <div *ngIf="!m_bHasSearch">
-      <mat-option *ngFor="let oItem of m_aoDropdownItems" [value]="oItem"
-        >{{ oItem }}
+      <mat-option
+        *ngFor="let oItem of m_aoDropdownItems"
+        [value]="oItem"
+        >{{ oItem.name ? oItem.name : oItem }}
       </mat-option>
     </div>
   </mat-select>

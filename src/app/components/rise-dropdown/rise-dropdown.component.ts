@@ -68,7 +68,6 @@ export class RiseDropdownComponent {
    * Emit selection change to listening parent component
    */
   emitSelectionChange(oEvent) {
-    console.log(oEvent);
     this.m_oSelectionChange.emit(oEvent);
   }
 
@@ -90,6 +89,8 @@ export class RiseDropdownComponent {
           ? oValues.workspaceName
           : oValues;
       }
+    } else {
+      oValues.name ? (aoNewValues = oValues.name) : (aoNewValues = oValues);
     }
     return aoNewValues;
   }
