@@ -13,6 +13,7 @@ import { OrganizationViewModel } from '../../../models/OrganizationViewModel';
 import { ConstantsService } from '../../../services/constants.service';
 import { NotificationOptions } from '../../../shared/notification-options/notification-options';
 import FadeoutUtils from '../../../shared/utilities/FadeoutUtils';
+import { UserService } from '../../../services/api/user.service';
 
 @Component({
   selector: 'user-account',
@@ -32,12 +33,36 @@ export class UserAccountComponent implements OnInit {
   m_oUser: UserViewModel = {} as UserViewModel;
   m_oOrganization: OrganizationViewModel = {} as OrganizationViewModel;
   m_aoNotificationOptions = NotificationOptions;
+  m_aoSelectedNotifications = [];
+
+  m_aoLanguages = [
+    {
+      name: 'English',
+      value: 'en',
+    },
+    {
+      name: 'Español',
+      value: 'es',
+    },
+    {
+      name: 'Français',
+      value: 'fr',
+    },
+    {
+      name: 'عربي',
+      value: 'ar',
+    },
+  ];
   //TODO : UPDATE USER INFORMATION
   constructor(
     private m_oConstantsService: ConstantsService,
     private m_oOrganizationService: OrganizationsService,
-    private m_oTranslate: TranslateService
-  ) {}
+    private m_oTranslate: TranslateService,
+    private m_oUserService: UserService
+  ) {
+    m_oTranslate.addLangs(['en', 'es', 'fr', 'ar']);
+    m_oTranslate.setDefaultLang('en');
+  }
 
   ngOnInit(): void {
     this.getUserInfo();
@@ -48,6 +73,16 @@ export class UserAccountComponent implements OnInit {
    * Get user information from the server and set the user object
    */
   getUserInfo() {
+    this.m_oUserService.getUser().subscribe({
+      next: (oResponse) => {
+        if (FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
+          return;
+        }
+        this.m_oUser = oResponse;
+        console.log(this.m_oUser);
+        this.initCheckboxOptions();
+      },
+    });
     this.m_oOrganizationService.getByUser().subscribe({
       next: (oResponse) => {
         if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
@@ -62,6 +97,26 @@ export class UserAccountComponent implements OnInit {
   }
 
   /**
+   * Save changes to the user id, name, surname, number, language, and notification settings
+   */
+  saveInformation() {
+    let oBody = {
+      name: this.m_oUser.name,
+      surname: this.m_oUser.surname,
+      mobile: this.m_oUser.mobile,
+    };
+    this.m_oUserService.updateUser(oBody).subscribe({
+      next: (oResponse) => {
+        console.log(oResponse);
+      },
+    });
+  }
+
+  translateLanguageTo(lang: any) {
+    this.m_oTranslate.use(lang.value.value);
+  }
+
+  /**
    * Delete user account
    */
   deleteUser() {}
@@ -69,11 +124,6 @@ export class UserAccountComponent implements OnInit {
   changeEmail() {}
 
   changePassword() {}
-
-  /**
-   * Save changes to the user id, name, surname, number, language, and notification settings
-   */
-  saveInformation() {}
 
   /**
    * Use case: The user can select the default language to use in RISE: English, French, Spanish, Arabic
@@ -92,13 +142,40 @@ export class UserAccountComponent implements OnInit {
   }
 
   handleCheckboxChange(aoEvent: Array<string>) {
-    console.log(aoEvent);
+    aoEvent.includes('notifyActivities')
+      ? (this.m_oUser.notifyActivities = true)
+      : (this.m_oUser.notifyActivities = false);
+    aoEvent.includes('notifyMaintenance')
+      ? (this.m_oUser.notifyMaintenance = true)
+      : (this.m_oUser.notifyMaintenance = false);
+    aoEvent.includes('notifyNewsletter')
+      ? (this.m_oUser.notifyNewsletter = true)
+      : (this.m_oUser.notifyNewsletter = false);
+  }
+
+  initCheckboxOptions() {
+    Object.entries(this.m_oUser).forEach((oEntry) => {
+      if (oEntry[0].includes('notify') && oEntry[1] === true) {
+        this.m_aoSelectedNotifications.push(oEntry[0]);
+      }
+    });
+  }
+
+  initNotificationsVM() {
+    let oNotificationsVM = {};
   }
 
   // The user can activate or deactivate the RISE mail notification:
   // Newsletter
   // Maintenance
   // Activities (added to organization, added to an area…)
+  saveNotifications() {
+    this.m_oUserService.updateNotifications(this.m_oUser).subscribe({
+      next: (oResponse) => {
+        console.log(oResponse);
+      },
+    });
+  }
 
   // The user can change the email
   // The user must confirm the new email
