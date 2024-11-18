@@ -67,6 +67,7 @@ export class AreaOfOperationsComponent implements OnInit {
 
   toggleShowNew(bShowNew: boolean) {
     this.m_bShowNewArea = bShowNew;
+    if(!this.m_bShowNewArea){this.getAreas()}
   }
 
   flyToArea(oArea: AreaViewModel) {
