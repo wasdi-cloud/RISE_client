@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environments';
 import { AreaViewModel } from '../models/AreaViewModel';
 import { OrganizationViewModel } from '../models/OrganizationViewModel';
+import { UserViewModel } from '../models/UserViewModel';
 
 @Injectable({
   providedIn: 'root',
@@ -15,10 +16,20 @@ export class ConstantsService {
 
   m_oOrganization: OrganizationViewModel = null;
 
+  m_oUser: UserViewModel = null;
+
   constructor() {}
 
   getSessionId() {
     return '';
+  }
+
+  getUser(): UserViewModel {
+    return this.m_oUser;
+  }
+
+  setUser(oUser: UserViewModel) {
+    this.m_oUser = oUser;
   }
 
   /**

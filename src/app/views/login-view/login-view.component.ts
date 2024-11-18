@@ -15,6 +15,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { RiseUtils } from '../../shared/utilities/RiseUtils';
 import { NgIf } from '@angular/common';
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
+import { UserService } from '../../services/api/user.service';
+import { ConstantsService } from '../../services/constants.service';
 
 @Component({
   selector: 'app-login-view',
@@ -46,10 +48,12 @@ export class LoginViewComponent {
 
   constructor(
     private m_oAuthService: AuthService,
+    private m_oConstantsService: ConstantsService,
     private m_oDialog: MatDialog,
     private m_oRouter: Router,
     private m_oRiseUtils: RiseUtils,
-    private m_oTranslate: TranslateService
+    private m_oTranslate: TranslateService,
+    private m_oUserService: UserService
   ) {}
 
   executeLogin() {
@@ -98,7 +102,16 @@ export class LoginViewComponent {
         if (oResponse.token) {
           //Set user Token and login
           this.m_oAuthService.saveToken(oResponse.token);
-          this.m_oRouter.navigateByUrl('/dashboard');
+          this.m_oUserService.getUser().subscribe({
+            next: oResponse => {
+              if(FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
+                console.log("error")
+              } else {
+                this.m_oConstantsService.setUser(oResponse);
+                this.m_oRouter.navigateByUrl('/dashboard');
+              }
+            }
+          })
         }
       },
       error: (oError) => {
