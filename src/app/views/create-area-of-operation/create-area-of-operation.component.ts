@@ -225,10 +225,7 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
               'success',
               'Success'
             );
-            // this.m_oRouter.navigateByUrl('/account');
             this.exitCreatingAreaOfOperation();
-
-            // this.m_oAreaOfOperationService.addUserToArea(oResponse.id,)
           },
           error: (e) => {
             // Here handle no valid subscription
@@ -260,8 +257,14 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
     // Once is closed...
     oDialog.afterClosed().subscribe((oResult) => {
       if (oResult) {
-        //todo go to subscription page
-        this.m_oRouter.navigateByUrl('/buy-new-subscription');
+        //go to subscription page
+        //todo this is a bad solution
+        this.m_oRouter.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+          this.m_oRouter.navigateByUrl('/account', {
+            state: { m_sActiveOutlet: 'subscriptions' },
+          });
+        });
+
       }
     });
   }

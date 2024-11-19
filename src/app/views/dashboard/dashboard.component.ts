@@ -71,7 +71,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.m_oActiveAOI.unsubscribe();
+    this.m_oActiveAOI?.unsubscribe();
   }
   /**
    * Navigates to the selected Routes (Account, Monitor, etc.)

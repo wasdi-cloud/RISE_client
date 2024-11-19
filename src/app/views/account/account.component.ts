@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
 import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {ActivatedRoute, NavigationEnd, NavigationStart, Router} from '@angular/router';
 import { AccountSidebarComponent } from './account-sidebar/account-sidebar.component';
 import { AccountBtns } from './account-sidebar/account-btns';
 import { UserAccountComponent } from './user-account/user-account.component';
@@ -36,6 +36,19 @@ export class AccountComponent implements OnInit {
   constructor(private m_oRouter: Router) {}
 
   ngOnInit(): void {
+    // Update on component initialization
+    this.updateActiveOutletFromState();
+
+    // Listen for navigation events to handle state updates dynamically
+    this.m_oRouter.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.updateActiveOutletFromState();
+      }
+    });
+  }
+
+  private updateActiveOutletFromState() {
+    console.log('Navigation state:', history.state);
     if (
       !FadeoutUtils.utilsIsObjectNullOrUndefined(
         history.state['m_sActiveOutlet']
@@ -43,6 +56,7 @@ export class AccountComponent implements OnInit {
     ) {
       this.m_sActiveOutlet = history.state['m_sActiveOutlet'];
     }
+    console.log('current active outlet' + this.m_sActiveOutlet)
   }
 
   public navigateRoute(sLocation: string) {
