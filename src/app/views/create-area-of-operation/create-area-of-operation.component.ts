@@ -224,10 +224,7 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
               'success',
               'Success'
             );
-            // this.m_oRouter.navigateByUrl('/account');
             this.exitCreatingAreaOfOperation();
-
-            // this.m_oAreaOfOperationService.addUserToArea(oResponse.id,)
           },
           error: (e) => {
             // Here handle no valid subscription
