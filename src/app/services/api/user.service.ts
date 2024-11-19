@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
-import { ConstantsService } from '../constants.service';
-import { HttpClient } from '@angular/common/http';
-import { UserViewModel } from '../../models/UserViewModel';
+import {Injectable} from '@angular/core';
+import {ConstantsService} from '../constants.service';
+import {HttpClient} from '@angular/common/http';
+import {UserViewModel} from '../../models/UserViewModel';
+import {OTPVerifyViewModel} from "../../models/OTPVerifyViewModel";
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,8 @@ export class UserService {
   constructor(
     private m_oConstantsService: ConstantsService,
     private m_oHttp: HttpClient
-  ) {}
+  ) {
+  }
 
   getUser() {
     return this.m_oHttp.get<UserViewModel>(this.APIURL + '/usr');
@@ -39,6 +41,7 @@ export class UserService {
       oBody
     );
   }
+
   updatePassword(oUpdatePasswordVM) {
     return this.m_oHttp.post<any>(this.APIURL + '/usr/change_password', oUpdatePasswordVM);
   }
@@ -47,5 +50,30 @@ export class UserService {
     return this.m_oHttp.post<any>(this.APIURL + '/usr/change_password_verify', oBody);
   }
 
-  deleteAccount() {}
+  deleteAccount() {
+    return this.m_oHttp.delete<any>(this.APIURL + '/usr/delete_user');
+  }
+
+  verifyDeleteAccount(oOTPVerifyViewModel: OTPVerifyViewModel) {
+    const options = {
+      body: oOTPVerifyViewModel, // Add the payload to the body
+      headers: {
+        // Include headers if needed (like session tokens)
+        'Content-Type': 'application/json'
+      }
+    };
+    return this.m_oHttp.delete<any>(
+      this.APIURL + '/org/verify_delete_user',
+      options
+    );
+  }
+
+  changeUserRole(oUserViewModel: UserViewModel) {
+    return this.m_oHttp.post<any>(this.APIURL + '/usr/change-role', oUserViewModel);
+  }
+
+  changeUserLanguageSetting(oUserViewModel: UserViewModel) {
+    return this.m_oHttp.post<any>(this.APIURL + '/usr/change-language', oUserViewModel);
+  }
+
 }

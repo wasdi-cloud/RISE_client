@@ -30,8 +30,8 @@ export const routes: Routes = [
   },
   { path: 'sign-up', component: SignUpComponent, canActivate: [isLoggedGuard] },
   {
-    path: 'confirm-registration',
+    path: '/user/confirm',
     component: ConfirmRegistrationComponent,
-    canActivate: [authGuard],
+    canActivate: [isLoggedGuard],
   },
 ];
