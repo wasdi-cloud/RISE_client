@@ -186,7 +186,7 @@
   "WIDGET": {
     "AFFECTED_PPL": "Affected People",
     "ALERTS": "Alerts",
-    "NO_AFFECTED": "No people affected",
+    "NO_AFFECTED": "None",
     "NO_ALERTS": "No alerts",
     "NO_EVENTS": "No ongoing events",
     "ONGOING_EVENTS": "Ongoing Events"
