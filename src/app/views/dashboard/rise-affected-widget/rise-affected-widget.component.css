@@ -1,0 +1,8 @@
+.body-icon {
+  font-size: 40px;
+}
+
+.affected-total {
+  color: var(--rise-gold);
+  font-size: 36px;
+}

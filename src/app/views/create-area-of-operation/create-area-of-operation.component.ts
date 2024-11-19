@@ -13,7 +13,6 @@ import { geojsonToWKT } from '@terraformer/wkt';
 
 import { MatDialog } from '@angular/material/dialog';
 
-import { BuyNewSubscriptionDialogComponent } from '../../dialogs/buy-new-subscription-dialog/buy-new-subscription-dialog.component';
 import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
 import { RiseCheckboxComponent } from '../../components/rise-checkbox/rise-checkbox.component';
 import { RiseCrudTableComponent } from '../../components/rise-crud-table/rise-crud-table.component';
@@ -250,23 +249,16 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
   }
 
   private inviteUserToBuyNewSubscription() {
-    let oDialog = this.m_oDialog.open(BuyNewSubscriptionDialogComponent, {
-      height: '420px',
-      width: '600px',
-    });
-    // Once is closed...
-    oDialog.afterClosed().subscribe((oResult) => {
-      if (oResult) {
-        //go to subscription page
-        //todo this is a bad solution
-        this.m_oRouter.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-          this.m_oRouter.navigateByUrl('/account', {
-            state: { m_sActiveOutlet: 'subscriptions' },
-          });
-        });
-
-      }
-    });
+    let sMessage =
+      'Your subscription is invalid.<br> Would you like to purchase a new one?';
+    this.m_oNotificationService
+      .openConfirmationDialog(sMessage, 'alert')
+      .subscribe((oResult) => {
+        if (oResult) {
+          //todo go to subscription page
+          this.m_oRouter.navigateByUrl('/buy-new-subscription');
+        }
+      });
   }
 
   private checkOverlappingAreas(m_oAreaOfOperation: AreaViewModel) {
@@ -429,7 +421,6 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
   }
 
   validateAOIDescription() {
-
     if (
       FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oAreaOfOperation.description)
     ) {
@@ -446,8 +437,8 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
   private validateAOIPlugins(): boolean {
     if (
       !this.m_oAreaOfOperation.plugins ||
-      this.m_oAreaOfOperation.plugins.length < 1)
-    {
+      this.m_oAreaOfOperation.plugins.length < 1
+    ) {
       this.m_sPluginError = 'Please select at least one plugin from the list.';
       return false;
     }
