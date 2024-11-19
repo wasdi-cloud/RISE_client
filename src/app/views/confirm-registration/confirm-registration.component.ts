@@ -22,8 +22,6 @@ import {RiseUtils} from "../../shared/utilities/RiseUtils";
   styleUrl: './confirm-registration.component.css'
 })
 export class ConfirmRegistrationComponent implements OnInit {
-  m_sEmail: string;
-  m_sCode: string;
   m_oPasswordInputs = {
     password: '',
     confirmPw: '',
