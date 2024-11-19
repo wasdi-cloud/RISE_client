@@ -5,9 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { BuyNewSubscriptionComponent } from './buy-new-subscription/buy-new-subscription.component';
 import { MatDialog } from '@angular/material/dialog';
 import { RiseButtonComponent } from '../../../components/rise-button/rise-button.component';
-import { RiseCrudTableComponent } from '../../../components/rise-crud-table/rise-crud-table.component';
 import { RiseTextInputComponent } from '../../../components/rise-text-input/rise-text-input.component';
-import { RiseTextareaInputComponent } from '../../../components/rise-textarea-input/rise-textarea-input.component';
 import { SubscriptionEditorComponent } from './subscription-editor/subscription-editor.component';
 
 import { ConstantsService } from '../../../services/constants.service';
@@ -121,13 +119,10 @@ export class UserSubscriptionsComponent implements OnInit {
    */
   openBuyNewSub(bInput: boolean) {
     // this.m_bShowBuySub = bInput;
-    this.m_oDialog
-      .open(BuyNewSubscriptionComponent, {
-        data: {
-          organizationId: this.m_sOrganizationId,
-        },
-      })
-      .afterClosed()
+    let sMessage =
+      'Your subscription is invalid.<br> Would you like to purchase a new one?';
+    this.m_oNotificationService
+      .openConfirmationDialog(sMessage, 'alert')
       .subscribe(() => {
         this.getSubscriptions();
       });
