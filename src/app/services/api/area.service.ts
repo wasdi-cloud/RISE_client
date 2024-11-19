@@ -115,6 +115,17 @@ export class AreaService {
     return this.m_oHttp.post<any>(this.APIURL + '/area/check_area' + urlParams, oArea);
   }
   // deleteAreaOfOperation(sAreaId:string){
+  //   const options = {
+  //     body: oOTPVerifyViewModel, // Add the payload to the body
+  //     headers: {
+  //       // Include headers if needed (like session tokens)
+  //       'Content-Type': 'application/json'
+  //     }
+  //   };
+  //   return this.m_oHttp.delete<any>(
+  //     this.APIURL + '/org/verify_delete_user',
+  //     options
+  //   );
   //   return this.m_oHttp.delete<any>(this.APIURL+'/area/delete-area',sAreaId)
   // }
 }
