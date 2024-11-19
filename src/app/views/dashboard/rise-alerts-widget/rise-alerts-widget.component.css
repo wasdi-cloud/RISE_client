@@ -1,0 +1,12 @@
+.event-item {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    color: var(--rise-text-bright);
+    padding: 8px 16px;
+  }
+  .event-type {
+    font-weight: 700;
+  }
+  .event-date {
+    font-size: 14px;
+  }

@@ -16,12 +16,21 @@
   </div>
   <div *ngIf="m_bShowContent" class="affected-ppl">
     @if (m_aoAlerts.length > 0) {
-    <div *ngFor="let oAlert of m_aoAlerts">
-      {{ oAlert.name }}
-      {{ oAlert.startDate }}
+    <div
+      class="event-item d-flex flex-column gap-1 mt-2"
+      *ngFor="let oAlert of m_aoAlerts"
+    >
+      <div class="d-flex flex-row justify-content-between">
+        <div class="event-type">{{ oAlert.type }}</div>
+        <div>{{ oAlert.name }}</div>
+      </div>
+
+      <div class="event-date">
+        {{ oAlert.startDate | date : "dd/MM/yyyy hh:mm:ss" }}
+      </div>
     </div>
     } @else {
-    <div>
+    <div class="event-item mt-2">
       {{ "WIDGET.NO_ALERTS" | translate }}
     </div>
     }
