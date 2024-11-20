@@ -5,7 +5,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { BuyNewSubscriptionComponent } from './buy-new-subscription/buy-new-subscription.component';
 import { MatDialog } from '@angular/material/dialog';
 import { RiseButtonComponent } from '../../../components/rise-button/rise-button.component';
-import { RiseTextInputComponent } from '../../../components/rise-text-input/rise-text-input.component';
 import { SubscriptionEditorComponent } from './subscription-editor/subscription-editor.component';
 
 import { ConstantsService } from '../../../services/constants.service';
@@ -14,6 +13,8 @@ import { SubscriptionService } from '../../../services/api/subscription.service'
 import { SubscriptionViewModel } from '../../../models/SubscriptionViewModel';
 import { MatTooltip } from '@angular/material/tooltip';
 import { NotificationsDialogsService } from '../../../services/notifications-dialogs.service';
+import { SubscriptionTypeViewModel } from '../../../models/SubscriptionTypeViewModel';
+import FadeoutUtils from '../../../shared/utilities/FadeoutUtils';
 
 @Component({
   selector: 'user-subscriptions',
@@ -23,7 +24,6 @@ import { NotificationsDialogsService } from '../../../services/notifications-dia
     CommonModule,
     TranslateModule,
     RiseButtonComponent,
-    RiseTextInputComponent,
     MatTooltip,
   ],
   templateUrl: './user-subscriptions.component.html',
@@ -34,23 +34,11 @@ export class UserSubscriptionsComponent implements OnInit {
 
   m_bShowBuySub: boolean = false;
 
-  // For each line RISE show:
-  // Subscription Name
-  // Subscription Type
-  // Buy Date
-  // Expiry Date
-  // HQ Operator can view the details of a Subscription
-  // RISE shows the details of the subscription:
-  // Subscription Name
-  // Subscription Type
-  // Buy Date
-  // Expiry Date
-  // Payment type (year/month)
-  // Price
-  // HQ Operator can click the Buy New Subscription button
-  // See UC_095
+
 
   m_aoSubscriptions: Array<SubscriptionViewModel> = [];
+
+  m_aoSubtypes: Array<SubscriptionTypeViewModel> = [];
   constructor(
     private m_oConstantsService: ConstantsService,
     private m_oDialog: MatDialog,
@@ -72,7 +60,7 @@ export class UserSubscriptionsComponent implements OnInit {
           return;
         } else {
           this.m_aoSubscriptions = oResponse;
-          console.log(this.m_aoSubscriptions);
+          this.getSubTypes();
         }
       },
       error: (oError) => {},
@@ -90,8 +78,20 @@ export class UserSubscriptionsComponent implements OnInit {
     return aoSubscriptions;
   }
 
+  getSubTypes() {
+    this.m_oSubscriptionService.getSubscriptionTypes().subscribe({
+      next: (oResponse) => {
+        if (FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
+          return;
+        }
+        this.m_aoSubtypes = oResponse;
+        this.initSubTypeNames();
+      },
+      error: (oError) => {},
+    });
+  }
+
   openEditor(oEvent) {
-    console.log(oEvent);
     let oDialog = this.m_oDialog.open(SubscriptionEditorComponent, {
       data: { subscription: oEvent, isEditing: false },
     });
@@ -140,5 +140,15 @@ export class UserSubscriptionsComponent implements OnInit {
         }
         // TODO: Add delete subscription function
       });
+  }
+
+  initSubTypeNames() {
+    this.m_aoSubscriptions.map((oSubscription) => {
+      this.m_aoSubtypes.forEach((oType) => {
+        oSubscription.type === oType.stringCode
+          ? (oSubscription.type = oType.stringCode.slice(8) + ' Location(s)')
+          : '';
+      });
+    });
   }
 }
