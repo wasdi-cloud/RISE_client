@@ -103,7 +103,11 @@ export class UserOrganizationComponent implements OnInit {
   openInviteUser(oEvent: any) {
     console.log(oEvent);
     this.m_oDialog
-      .open(InviteUserComponent, {})
+      .open(InviteUserComponent, {
+        data: {
+          organizationId: this.m_oOrganization.id
+        }
+      })
       .afterClosed()
       .subscribe((oResult) => {
         this.getOrgUsers();
