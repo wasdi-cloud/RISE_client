@@ -14,9 +14,6 @@ export const SessionInjectorInterceptor: HttpInterceptorFn = (req, next) => {
     if (m_oAuthService.getTokenObject()) {
       sToken = m_oAuthService.getTokenObject().access_token;
     }
-    if (!sToken) {
-      m_oRouter.navigateByUrl('login');
-    }
   }
 
   req = req.clone({
