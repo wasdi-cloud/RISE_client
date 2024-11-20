@@ -172,7 +172,7 @@ export class UserAccountComponent implements OnInit {
                           .verifyDeleteAccount(oOtpVm)
                           .subscribe({
                             next: (oResponse) => {
-                              console.log(oResponse);
+                              this.m_oAuthService.logout();
                             },
                             error: (oError) => {
                               console.log(oResponse);
@@ -181,23 +181,12 @@ export class UserAccountComponent implements OnInit {
                       }
                     },
                   });
-                  // this.verifyOtp()
                 });
             },
             error: (oError) => {},
           });
         }
       });
-  }
-
-  verifyOtp(oOTPViewModel) {
-    this.m_oAuthService.verifyOTP(oOTPViewModel).subscribe({
-      next: (oResponse) => {
-        console.log(oResponse);
-        if (oResponse.status === 200) {
-        }
-      },
-    });
   }
 
   changeEmail() {
