@@ -55,4 +55,8 @@ export class ConstantsService {
   getOrganization() {
     return this.m_oOrganization;
   }
+
+  resetUser() {
+    this.m_oUser = null;
+  }
 }

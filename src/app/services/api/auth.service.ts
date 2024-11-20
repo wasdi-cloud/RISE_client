@@ -6,6 +6,7 @@ import { UserCredentialsViewModel } from '../../models/UserCredentialsViewModel'
 import { ConstantsService } from '../constants.service';
 import { ConfirmInviteViewModel } from '../../models/ConfirmInviteViewModel';
 import { OTPViewModel } from '../../models/OTPViewModel';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,8 @@ export class AuthService {
 
   constructor(
     private m_oConstantsService: ConstantsService,
-    private m_oHttp: HttpClient
+    private m_oHttp: HttpClient,
+    private m_oRouter: Router
   ) {}
 
   saveToken(sToken: string) {
@@ -106,5 +108,12 @@ export class AuthService {
       this.APIURL + '/auth/confirm_usr',
       oConfirmationVM
     );
+  }
+
+  logout() {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    this.m_oConstantsService.resetUser();
+    this.m_oRouter.navigateByUrl('login');
   }
 }

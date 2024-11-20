@@ -8,6 +8,7 @@ import { NgFor, NgIf } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { MapService } from '../../services/map.service';
+import { AuthService } from '../../services/api/auth.service';
 @Component({
   selector: 'rise-user-menu',
   standalone: true,
@@ -22,6 +23,7 @@ export class RiseUserMenuComponent implements OnInit {
 
   constructor(
     private m_oActivatedRoute: ActivatedRoute,
+    private m_oAuthService: AuthService,
     private m_oMapService: MapService,
     private m_oRouter: Router
   ) {
@@ -52,8 +54,9 @@ export class RiseUserMenuComponent implements OnInit {
         window.open('https://discord.gg/FkRu2GypSg', '_blank');
         break;
       case 'logout':
+        this.m_oAuthService.logout();
         // TODO: Execute actual logout here
-        this.m_oRouter.navigateByUrl('login');
+       
         break;
       case 'dashboard':
         this.m_oMapService.closeWorkspace();
