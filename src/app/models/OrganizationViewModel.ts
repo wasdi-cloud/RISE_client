@@ -1,4 +1,4 @@
-import { RiseViewModel } from './RiseViewModel';
+import {RiseViewModel} from './RiseViewModel';
 
 export class OrganizationViewModel extends RiseViewModel {
   /**

@@ -1,0 +1,14 @@
+div.change-role-container {
+  background-color: var(--surface-glass);
+  backdrop-filter: blur(20px);
+  height: 200px;
+  width: 450px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
+  background-color: transparent !important;
+}
