@@ -93,20 +93,28 @@
           <rise-text-input
             [m_sLocalizationKey]="'USER.EMAIL'"
             [m_bHasTitle]="true"
-            [m_sInputText]="m_oUser.email"
+            [(m_sInputText)]="m_oEmailInputs.currentEmail"
           ></rise-text-input>
           <rise-text-input
             [m_sLocalizationKey]="'USER.NEW_EMAIL'"
             [m_bHasTitle]="true"
+            [(m_sInputText)]="m_oEmailInputs.newEmail"
+            [m_bIsValidatorInput]="true"
+            [m_bIsValid]="m_bValidEmail"
           ></rise-text-input>
           <rise-text-input
             [m_sLocalizationKey]="'USER.CONFIRM_EMAIL'"
             [m_bHasTitle]="true"
+            [(m_sInputText)]="m_oEmailInputs.verifyNewEmail"
+            [m_bIsValidatorInput]="true"
+            [m_bIsValid]="m_bValidEmail"
           ></rise-text-input>
           <rise-button
             class="align-self-start mt-2"
             [m_sRole]="'primary'"
             [m_sLabel]="'USER.CHANGE_EMAIL'"
+            [m_bDisabled]="!enableChangeEmail()"
+            (click)="changeEmail()"
           ></rise-button>
         </div>
         <div class="d-flex flex-column gap-1 col-6">
@@ -150,6 +158,7 @@
         <rise-button
           [m_sLabel]="'USER.DELETE_ACCOUNT'"
           [m_sRole]="'danger'"
+          (click)="deleteUser()"
         ></rise-button>
       </div>
     </div>

@@ -19,7 +19,6 @@ import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
     AccountSidebarComponent,
     CommonModule,
     RiseToolbarComponent,
-    RiseButtonComponent,
     TranslateModule,
     UserAccountComponent,
     UserOrganizationComponent,

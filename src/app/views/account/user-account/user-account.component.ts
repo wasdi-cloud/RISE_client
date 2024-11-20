@@ -14,6 +14,13 @@ import { ConstantsService } from '../../../services/constants.service';
 import { NotificationOptions } from '../../../shared/notification-options/notification-options';
 import FadeoutUtils from '../../../shared/utilities/FadeoutUtils';
 import { UserService } from '../../../services/api/user.service';
+import { ChangeEmailViewModel } from '../../../models/ChangeEmailViewModel';
+import { NotificationsDialogsService } from '../../../services/notifications-dialogs.service';
+import { MatDialog } from '@angular/material/dialog';
+import { OtpDialogComponent } from '../../../dialogs/otp-dialog/otp-dialog.component';
+import { OTPVerifyViewModel } from '../../../models/OTPVerifyViewModel';
+import { OTPViewModel } from '../../../models/OTPViewModel';
+import { AuthService } from '../../../services/api/auth.service';
 
 @Component({
   selector: 'user-account',
@@ -35,6 +42,8 @@ export class UserAccountComponent implements OnInit {
   m_aoNotificationOptions = NotificationOptions;
   m_aoSelectedNotifications = [];
 
+  m_bValidEmail: boolean = true;
+
   m_aoLanguages = [
     {
       name: 'English',
@@ -53,9 +62,20 @@ export class UserAccountComponent implements OnInit {
       value: 'ar',
     },
   ];
+
+  m_oEmailInputs = {
+    currentEmail: '',
+    newEmail: '',
+    verifyNewEmail: '',
+  };
+
+  m_oEmail;
   //TODO : UPDATE USER INFORMATION
   constructor(
+    private m_oAuthService: AuthService,
     private m_oConstantsService: ConstantsService,
+    private m_oDialog: MatDialog,
+    private m_oNotificationDialogService: NotificationsDialogsService,
     private m_oOrganizationService: OrganizationsService,
     private m_oTranslate: TranslateService,
     private m_oUserService: UserService
@@ -79,6 +99,7 @@ export class UserAccountComponent implements OnInit {
           return;
         }
         this.m_oUser = oResponse;
+        this.m_oEmailInputs.currentEmail = this.m_oUser.email;
         console.log(this.m_oUser);
         this.initCheckboxOptions();
       },
@@ -117,11 +138,80 @@ export class UserAccountComponent implements OnInit {
   }
 
   /**
-   * Delete user account
+   * Delete user account (initial call)
    */
-  deleteUser() {}
+  deleteUser() {
+    let oOtpVm: OTPVerifyViewModel = {} as OTPVerifyViewModel;
+    this.m_oNotificationDialogService
+      .openConfirmationDialog(
+        'Are you sure you want to delete your RISE account? This is a destructive action and cannot be undone.',
+        'danger'
+      )
+      .subscribe((bResult) => {
+        if (bResult) {
+          this.m_oUserService.deleteAccount().subscribe({
+            next: (oResponse) => {
+              let oOTPVerifyVM = oResponse;
+              this.m_oDialog
+                .open(OtpDialogComponent, {
+                  data: {
+                    userId: this.m_oUser.userId,
+                  },
+                })
+                .afterClosed()
+                .subscribe((sDialogResult) => {
+                  oOTPVerifyVM.userProvidedCode = sDialogResult;
+                  this.m_oAuthService.verifyOTP(oOTPVerifyVM).subscribe({
+                    next: (oResponse) => {
+                      let oOtpVm = {
+                        id: oOTPVerifyVM.id,
+                        userId: oOTPVerifyVM.userId,
+                      };
+                      if (oResponse.status === 200) {
+                        this.m_oUserService
+                          .verifyDeleteAccount(oOtpVm)
+                          .subscribe({
+                            next: (oResponse) => {
+                              console.log(oResponse);
+                            },
+                            error: (oError) => {
+                              console.log(oResponse);
+                            },
+                          });
+                      }
+                    },
+                  });
+                  // this.verifyOtp()
+                });
+            },
+            error: (oError) => {},
+          });
+        }
+      });
+  }
 
-  changeEmail() {}
+  verifyOtp(oOTPViewModel) {
+    this.m_oAuthService.verifyOTP(oOTPViewModel).subscribe({
+      next: (oResponse) => {
+        console.log(oResponse);
+        if (oResponse.status === 200) {
+        }
+      },
+    });
+  }
+
+  changeEmail() {
+    let oEmailVM: ChangeEmailViewModel = {
+      oldEmail: this.m_oUser.email,
+      newEmail: this.m_oEmailInputs.newEmail,
+    };
+    this.m_oUserService.updateEmail(oEmailVM).subscribe({
+      next: (oResponse) => {
+        console.log(oResponse);
+      },
+      error: (oError) => {},
+    });
+  }
 
   changePassword() {}
 
@@ -172,9 +262,55 @@ export class UserAccountComponent implements OnInit {
   saveNotifications() {
     this.m_oUserService.updateNotifications(this.m_oUser).subscribe({
       next: (oResponse) => {
-        console.log(oResponse);
+        this.m_oNotificationDialogService.openSnackBar(
+          'Notification Settings Saved',
+          'Success',
+          'success'
+        );
+      },
+      error: (oError) => {
+        console.log(oError);
       },
     });
+  }
+
+  /**
+   * Handle user inputs to enable the button to execute changing their email
+   */
+  enableChangeEmail(): boolean {
+    if (!this.m_oEmailInputs.currentEmail) {
+      return false;
+    } else if (
+      !this.m_oEmailInputs.newEmail ||
+      !this.m_oEmailInputs.verifyNewEmail
+    ) {
+      return false;
+    } else if (!this.validateEmail()) {
+      return false;
+    }
+    return true;
+  }
+
+  validateEmail(): boolean {
+    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (
+      !emailRegex.test(this.m_oEmailInputs.newEmail) ||
+      !emailRegex.test(this.m_oEmailInputs.verifyNewEmail)
+    ) {
+      return false;
+    } else if (
+      this.m_oEmailInputs.newEmail !== this.m_oEmailInputs.verifyNewEmail
+    ) {
+      return false;
+    } else if (
+      this.m_oEmailInputs.currentEmail === this.m_oEmailInputs.newEmail ||
+      this.m_oEmailInputs.currentEmail === this.m_oEmailInputs.verifyNewEmail
+    ) {
+      return false;
+    } else if (this.m_oEmailInputs.currentEmail !== this.m_oUser.email) {
+      return false;
+    }
+    return true;
   }
 
   // The user can change the email

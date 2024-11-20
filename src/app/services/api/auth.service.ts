@@ -4,7 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { RegisterViewModel } from '../../models/RegisterViewModel';
 import { UserCredentialsViewModel } from '../../models/UserCredentialsViewModel';
 import { ConstantsService } from '../constants.service';
-import {ConfirmInviteViewModel} from "../../models/ConfirmInviteViewModel";
+import { ConfirmInviteViewModel } from '../../models/ConfirmInviteViewModel';
+import { OTPViewModel } from '../../models/OTPViewModel';
 
 @Injectable({
   providedIn: 'root',
@@ -53,7 +54,7 @@ export class AuthService {
    * @param oOTPViewModel
    * @returns
    */
-  verifyOTP(oOTPViewModel) {
+  verifyOTP(oOTPViewModel: OTPViewModel) {
     return this.m_oHttp.post<any>(this.APIURL + '/auth/otp', oOTPViewModel, {
       observe: 'response',
     });
