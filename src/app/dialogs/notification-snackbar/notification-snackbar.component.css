@@ -1,0 +1,13 @@
+:host {
+  align-items: center;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  justify-content: space-between;
+  padding: 16px;
+}
+
+.snackbar-header {
+  font-weight: 700;
+}

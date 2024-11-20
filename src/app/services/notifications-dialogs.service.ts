@@ -4,11 +4,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { NotificationDialogComponent } from '../dialogs/notification-dialog/notification-dialog.component';
 import { ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { Observable } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificationSnackbarComponent } from '../dialogs/notification-snackbar/notification-snackbar.component';
 @Injectable({
   providedIn: 'root',
 })
 export class NotificationsDialogsService {
-  constructor(private m_oMatDialog: MatDialog) {}
+  constructor(private m_oMatDialog: MatDialog, private m_oMatSnackbar: MatSnackBar) {}
 
   /**
    * Handle open of confirmation dialog
@@ -53,12 +55,25 @@ export class NotificationsDialogsService {
         className: sClassName ? sClassName : 'generic',
       },
     });
+  }
 
-    //Set Automatic timeout for dialog
-    // oDialogRef.afterOpened().subscribe((oResponse) => {
-    //   setTimeout(() => {
-    //     oDialogRef.close();
-    //   }, iTimeout);
-    // });
+  /**
+   * Handler to open the snackbar in the bottom right corner
+   * @param sMessage
+   * @param sTitle
+   * @param className
+   */
+  openSnackBar(sMessage: string, sTitle?: string, className?: string) {
+    this.m_oMatSnackbar.openFromComponent(NotificationSnackbarComponent, {
+      duration: 4000,
+      horizontalPosition: 'right',
+      verticalPosition: 'bottom',
+      panelClass: [className ? className : 'info-snackbar'],
+      data: {
+        message: sMessage,
+        title: sTitle ? sTitle : 'Update',
+        class: className ? className : 'info-snackbar',
+      },
+    });
   }
 }

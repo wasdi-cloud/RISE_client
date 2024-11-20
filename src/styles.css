@@ -410,3 +410,43 @@ a.leaflet-control-zoom-fullscreen {
   cursor: pointer;
   font-size: 20px;
 }
+
+.mdc-snackbar__label,
+.mdc-snackbar__surface {
+  padding: 0px !important;
+}
+
+.mat-mdc-snack-bar-container .mdc-snackbar__surface {
+  border-radius: 8px !important;
+  color: var(--rise-black);
+  font-family: Satoshi Variable, sans-serif !important;
+}
+
+.mat-mdc-snack-bar-container .mdc-snackbar__label {
+  color: var(--neutral80) !important;
+}
+
+.generic.mat-mdc-snack-bar-container .mdc-snackbar__surface {
+  border: 1px solid var(--neutral20) !important;
+  background-color: #ffffff !important;
+}
+
+.success.mat-mdc-snack-bar-container .mdc-snackbar__surface {
+  border: 1px solid var(--wasdiGreen) !important;
+  background-color: var(--wasdiGreenLight) !important;
+}
+
+.alert.mat-mdc-snack-bar-container .mdc-snackbar__surface {
+  border: 1px solid var(--wasdiWarn) !important;
+  background-color: var(--wasdiWarnLight) !important;
+}
+
+.danger.mat-mdc-snack-bar-container .mdc-snackbar__surface {
+  border: 1px solid var(--wasdiDanger) !important;
+  background-color: var(--wasdiDangerLight) !important;
+}
+
+.info.mat-mdc-snack-bar-container .mdc-snackbar__surface {
+  border: 1px solid var(--neutral50Brand) !important;
+  background-color: var(--wasdiBluelight) !important;
+}

@@ -1,0 +1,9 @@
+<div class="w-100">
+  <div class="snackbar-header d-flex flex-row justify-content-between w-100 font-bold">
+    {{ m_oData.title
+    }}<span class="close-btn material-symbols-outlined" (click)="onDismiss()">
+      close</span
+    >
+  </div>
+  <div matSnackbarLabel [innerHTML]="m_oData.message"></div>
+</div>
