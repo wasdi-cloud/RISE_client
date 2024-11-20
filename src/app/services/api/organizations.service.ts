@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { ConstantsService } from '../constants.service';
 import {UserViewModel} from "../../models/UserViewModel";
 import {OTPVerifyViewModel} from "../../models/OTPVerifyViewModel";
+import {OrganizationViewModel} from "../../models/OrganizationViewModel";
 
 @Injectable({
   providedIn: 'root',
@@ -37,7 +38,7 @@ export class OrganizationsService {
   }
   getOrganizationUsers() {
     return this.m_oHttp.get<any>(
-      this.APIURL + '/org/list-users',
+      this.APIURL + '/org/list_users',
     );
 
   }
@@ -66,5 +67,9 @@ export class OrganizationsService {
       this.APIURL + '/org/verify-delete-org',
       options
     );
+  }
+
+  updateOrganization(oOrganizationViewModel: OrganizationViewModel) {
+    return this.m_oHttp.put<any>(this.APIURL+'/org',oOrganizationViewModel);
   }
 }
