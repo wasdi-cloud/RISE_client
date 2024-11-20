@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -11,10 +11,19 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './otp-dialog.component.html',
   styleUrl: './otp-dialog.component.css',
 })
-export class OtpDialogComponent {
+export class OtpDialogComponent implements OnInit {
   m_sOneTimePW: string = '';
 
-  constructor(private m_oDialogRef: MatDialogRef<OtpDialogComponent>) {}
+  m_sUserId: string = '';
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) private m_oData: any,
+    private m_oDialogRef: MatDialogRef<OtpDialogComponent>
+  ) {}
+
+  ngOnInit(): void {
+    this.m_sUserId = this.m_oData.userId;
+  }
 
   submitOTP() {
     this.m_oDialogRef.close(this.m_sOneTimePW);
