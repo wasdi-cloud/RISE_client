@@ -1,0 +1,56 @@
+<div class="change-role-container d-flex flex-column gap-2 p-3">
+  <div
+    class="header d-flex flex-row justify-content-between align-items-center"
+  >
+    <h3 class="invite-header">
+      {{ "COLLABORATORS.CHANGE_ROLE" | translate }}
+    </h3>
+    <span class="close-btn material-symbols-outlined" (click)="onDismiss()"> close </span>
+  </div>
+  <rise-dropdown
+    [m_sLabel]="'INVITE_USER.SELECT_ROLE'"
+    [m_bHasTitle]="true"
+    [m_aoDropdownItems]="m_asRoles"
+    (m_oSelectionChange)="handleRoleSelect($event)"
+  ></rise-dropdown>
+  <rise-button
+    [m_sRole]="'primary'"
+    [m_sLabel]="'COLLABORATORS.CHANGE_ROLE'"
+    (click)="changeUserRole()"
+  ></rise-button>
+</div>
+
+<!-- Success Message -->
+<!-- <div
+    *ngIf="m_bShowStatus && m_bSuccess"
+    class="alert alert-success"
+    role="alert"
+  >
+    <h4>Email Sent!</h4>
+    <p>
+      A confirmation email was sent to {{ m_oEmailInputs.email }}. This
+      confirmation will expire in 48 hours. Please remind this person to follow
+      the steps outlined in the email.
+    </p>
+    <p>Would you like to add another person to your organization?</p>
+    <rise-button [m_sLabel]="'Add'" (click)="resetInputs()"></rise-button>
+  </div> -->
+
+<!-- Failure Message -->
+<!-- <div
+    *ngIf="m_bShowStatus && !m_bSuccess"
+    class="alert alert-success"
+    role="alert"
+  >
+    <h4>Could not invite user.</h4>
+    <p>
+      An error occurred while trying to invite {{ m_oEmailInputs.email }}.
+      Please ensure the inputted email is correct and is not already used in
+      another RISE context.
+    </p>
+    <p>Would you like to add another person to your organization?</p>
+    <rise-button
+      [m_sLabel]="'Close'"
+      (click)="m_bShowStatus = false"
+    ></rise-button>
+  </div> -->

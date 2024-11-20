@@ -23,6 +23,22 @@ export class UserRoleHelper {
 
     return user.getRole() === UserRole.RISE_ADMIN;
   }
+
+  static getRoleFromName(name: string) {
+    if (name == "RISE_ADMIN") {
+      return UserRole.RISE_ADMIN
+    }
+    if (name == "ADMIN") {
+      return UserRole.ADMIN
+    }
+    if (name == "FIELD") {
+      return UserRole.FIELD
+    }
+    if (name == "HQ") {
+      return UserRole.HQ
+    }
+    return null;
+  }
 }
 
 export class User {

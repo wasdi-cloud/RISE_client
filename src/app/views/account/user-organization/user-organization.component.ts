@@ -14,6 +14,8 @@ import {RiseCollaboratorsComponent} from '../../../components/rise-collaborators
 import {MatDialog} from '@angular/material/dialog';
 import {RiseCrudTableComponent} from "../../../components/rise-crud-table/rise-crud-table.component";
 import {MatTooltip} from "@angular/material/tooltip";
+import {UserViewModel} from "../../../models/UserViewModel";
+import {ChangeUserRoleComponent} from "../../../dialogs/change-user-role/change-user-role.component";
 
 @Component({
   selector: 'user-organization',
@@ -96,15 +98,24 @@ export class UserOrganizationComponent implements OnInit {
    * Use Case: Admin can remove users from the Organization
    * Remove one User from the Organization via table
    */
-  removeOrgUser() {
+  removeOrgUser(oUser:UserViewModel) {
+    let aoUsersToDelete:UserViewModel[]=[];
+    aoUsersToDelete.push(oUser);
+    if(oUser.userId){
+      this.m_oOrganizationsService.deleteUsersFromOrganization(aoUsersToDelete).subscribe(
+        {
+          next:(oResponse)=>{
+            this.getOrgUsers();
+          },error:(oError)=>{
+            //todo notif user
+            console.error(oError)
+          }
+        }
+      )
+    }
   }
 
-  /**
-   * User Case: Admin can change the role (Admin, HQ Operator, Field Operator) of a user of the Organization
-   * Change User Role via table
-   */
-  changeUserRole() {
-  }
+
 
   /**
    * Use Case: Admin can edit the basic information of the Organization inserted at the time of the registration (UC_010)
@@ -143,15 +154,30 @@ export class UserOrganizationComponent implements OnInit {
   openInviteUser(oEvent: any) {
     console.log(oEvent);
     this.m_oDialog
-      .open(InviteUserComponent, {})
+      .open(InviteUserComponent, {
+        data: { m_sOrganizationId: this.m_oOrganization.id} // Pass the orgId here
+      })
       .afterClosed()
       .subscribe((oResult) => {
         this.getOrgUsers();
       });
     // this.m_bInviteUser = bStatus;
   }
+  /**
+   * User Case: Admin can change the role (Admin, HQ Operator, Field Operator) of a user of the Organization
+   * Change User Role via table
+   */
+  changeUserRole(oUser:UserViewModel) {
+    this.m_oDialog
+      .open(ChangeUserRoleComponent, {
+        data: { m_oUser: oUser}
+      })
+      .afterClosed()
+      .subscribe((oResult) => {
+        this.getOrgUsers();
 
-  deleteUserFromOrg(oUser: any) {
-    
+      });
+    // this.m_bInviteUser = bStatus;
   }
+
 }

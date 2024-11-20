@@ -42,7 +42,8 @@
     "ADD": "Inviter un collaborateur à RISE",
     "INVITE": "Ajouter des utilisateurs",
     "NONE": "Vous n'avez pas encore invité de collaborateurs",
-    "HEADER": "Gérer les collaborateurs"
+    "HEADER": "Gérer les collaborateurs",
+    "CHANGE_ROLE":"Changer le rôle de l'utilisateur"
   },
   "DASHBOARD": {
     "SEARCH": "Rechercher une carte"

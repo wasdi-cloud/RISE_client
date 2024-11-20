@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter, Inject} from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { OrganizationsService } from '../../../../services/api/organizations.service';
@@ -10,7 +10,7 @@ import { RiseTextInputComponent } from '../../../../components/rise-text-input/r
 import { InviteViewModel } from '../../../../models/InviteViewModel';
 import { UserRole } from '../../../../models/UserRole';
 import { TranslateModule } from '@ngx-translate/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'invite-user',
@@ -72,10 +72,12 @@ export class InviteUserComponent implements OnInit {
 
   constructor(
     private m_oDialogRef: MatDialogRef<InviteUserComponent>,
-    private m_oOrganizationsService: OrganizationsService
+    private m_oOrganizationsService: OrganizationsService,
+    @Inject(MAT_DIALOG_DATA) private data: any
   ) {}
 
   ngOnInit() {
+    this.m_sOrganizationId = this.data.m_sOrganizationId;
     this.initRoles();
   }
 

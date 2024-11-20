@@ -42,7 +42,8 @@
     "ADD": "Invite a Collaborator to RISE",
     "INVITE": "Add Users",
     "NONE": "You haven't invited any collaborators yet",
-    "HEADER": "Manage Collaborators"
+    "HEADER": "Manage Collaborators",
+    "CHANGE_ROLE":"Change User Role"
   },
   "DASHBOARD": {
     "SEARCH": "Search Map"

@@ -32,6 +32,6 @@ export const routes: Routes = [
   {
     path: 'user/confirm',
     component: ConfirmRegistrationComponent,
-    canActivate: [isLoggedGuard],
+
   },
 ];

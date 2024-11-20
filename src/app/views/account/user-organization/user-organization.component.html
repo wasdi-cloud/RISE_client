@@ -95,13 +95,14 @@
             {{ "ORGANIZATION.MEMBERS" | translate }}
           </div>
           <rise-button *ngIf="m_aoOrgUsers && m_aoOrgUsers.length>0"
-            class="align-self-center"
-            [m_sLabel]="'COLLABORATORS.INVITE'"
-            [m_sRole]="'primary'"
+                       class="align-self-center"
+                       [m_sLabel]="'COLLABORATORS.INVITE'"
+                       [m_sRole]="'primary'"
+                       (click)="openInviteUser($event)"
           ></rise-button>
         </div>
         <rise-collaborators *ngIf="!m_aoOrgUsers || m_aoOrgUsers.length==0"
-          (m_oInviteClick)="openInviteUser($event)"
+                            (m_oInviteClick)="openInviteUser($event)"
         ></rise-collaborators>
         <div class="body d-flex flex-fill flex-column gap-5 py-4 px-1" *ngIf="m_aoOrgUsers && m_aoOrgUsers.length>0">
           <table class="w-100">
@@ -118,13 +119,20 @@
             <tr *ngFor="let oUser of m_aoOrgUsers">
               <td>{{ oUser.userId }}</td>
               <td>{{ oUser.role }}</td>
-              <td>{{ oUser.email}}</td>
+              <td>{{ oUser.email }}</td>
 
               <td class="d-flex flex-row justify-content-end gap-2">
               <span
+                class="material-symbols-outlined edit"
+
+                [matTooltip]="'Change User Role'"
+                (click)="changeUserRole(oUser)"
+              >
+                delete
+              </span> <span
                 class="material-symbols-outlined remove"
                 [matTooltip]="'Remove User'"
-                (click)="deleteUserFromOrg(oUser)"
+                (click)="removeOrgUser(oUser)"
               >
                 delete
               </span>
