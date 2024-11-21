@@ -11,8 +11,8 @@
 
   <div *ngIf="m_bShowDropdown" class="dropdown-list d-flex flex-column gap-1">
     <!-- TODO: Add user's information -->
-    <div class="name">Jane Doe</div>
-    <div class="email">jane.doe&#64;wasdi.cloud</div>
+    <div class="name">{{m_oUser.name}}</div>
+    <div class="email">{{m_oUser.email}}</div>
     <ul class="d-flex flex-column gap-2 pt-2">
       <li
         *ngFor="let oItem of m_aoMenuItems"
