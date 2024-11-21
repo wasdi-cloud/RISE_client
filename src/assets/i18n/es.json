@@ -43,7 +43,10 @@
     "INVITE": "Agregar Usuarios",
     "NONE": "Aún no has invitado a ningún colaborador",
     "HEADER": "Administrar colaboradores",
-    "CHANGE_ROLE":"cambiar el rol del usuario"
+    "CHANGE_ROLE": "Cambiar rol de usuario",
+    "ROL": "Rol",
+    "ROLE_CHANGE_ERROR": "No se pudo cambiar el rol del usuario. Inténtelo de nuevo o comuníquese con RISE",
+    "ROLE_CHANGE_SUCCESS": "Rol de usuario cambiado exitosamente"
   },
   "DASHBOARD": {
     "SEARCH": "Buscar mapa"
@@ -77,14 +80,21 @@
   },
   "ORGANIZATION": {
     "ADDRESS": "Dirección de la organización",
+    "CONFIRM_DELETE_USER": "¿Está seguro de que desea eliminar a este usuario de su organización?",
+    "CHANGES_SAVED": "Tus cambios han sido guardados",
+    "CHANGES_ERROR": "Hubo un error al intentar guardar los cambios. Vuelve a intentarlo más tarde",
     "DELETE": "Eliminar organización",
     "DELETE_MSG": "Una vez que elimines tu organización, esto no se puede deshacer. Asegúrate.",
+    "ERROR_MSG": "No se pudo recuperar la información de la organización",
+    "ERROR_DELETE_USER": "No se pudo eliminar al usuario de esta organización. Inténtelo de nuevo",
     "INVITE": "Invitar a un nuevo usuario",
     "MEMBERS": "Colaboradores",
     "NAME": "Nombre de la organización",
     "SAVE": "Guardar cambios",
+    "SUCCESS_DELETE_USER": "El usuario fue eliminado exitosamente de esta organización",
     "TYPE": "Tipo de organización",
-    "USERS": "Usuarios de la organización"
+    "USERS": "Usuarios de la organización",
+    "USERS_ERROR": "No se pudieron recuperar los colaboradores de esta organización"
   },
   "OTP_DIALOG": {
     "SUBMIT": "Enviar",

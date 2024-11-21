@@ -15,11 +15,11 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
 import { RiseCheckboxComponent } from '../../components/rise-checkbox/rise-checkbox.component';
-import { RiseCrudTableComponent } from '../../components/rise-crud-table/rise-crud-table.component';
+// import { RiseCrudTableComponent } from '../../components/rise-crud-table/rise-crud-table.component';
 import { RiseMapComponent } from '../../components/rise-map/rise-map.component';
 import { RiseTextareaInputComponent } from '../../components/rise-textarea-input/rise-textarea-input.component';
 import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
-import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
+// import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
 
 import { AreaService } from '../../services/api/area.service';
 import { MapService } from '../../services/map.service';
@@ -37,12 +37,10 @@ import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
   providers: [],
   imports: [
     RiseButtonComponent,
-    RiseCrudTableComponent,
     RiseCheckboxComponent,
     RiseMapComponent,
     RiseTextareaInputComponent,
     RiseTextInputComponent,
-    RiseToolbarComponent,
     TranslateModule,
     NgIf,
   ],

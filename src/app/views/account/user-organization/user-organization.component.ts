@@ -1,22 +1,29 @@
-import {Component, OnInit} from '@angular/core';
-import {OrganizationViewModel} from '../../../models/OrganizationViewModel';
-import {OrganizationsService} from '../../../services/api/organizations.service';
-import {FormsModule} from '@angular/forms';
-import {RiseTextInputComponent} from '../../../components/rise-text-input/rise-text-input.component';
-import {RiseButtonComponent} from '../../../components/rise-button/rise-button.component';
-import {CommonModule} from '@angular/common';
-import {InviteUserComponent} from './invite-user/invite-user.component';
-import {OrganizationTypes} from '../../../shared/organization-types';
-import {RiseDropdownComponent} from '../../../components/rise-dropdown/rise-dropdown.component';
-import {TranslateModule} from '@ngx-translate/core';
-import FadeoutUtils from '../../../shared/utilities/FadeoutUtils';
-import {RiseCollaboratorsComponent} from '../../../components/rise-collaborators/rise-collaborators.component';
-import {MatDialog} from '@angular/material/dialog';
-import {RiseCrudTableComponent} from "../../../components/rise-crud-table/rise-crud-table.component";
-import {MatTooltip} from "@angular/material/tooltip";
-import {UserViewModel} from "../../../models/UserViewModel";
-import {ChangeUserRoleComponent} from "../../../dialogs/change-user-role/change-user-role.component";
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
+import { NotificationsDialogsService } from '../../../services/notifications-dialogs.service';
+import { OrganizationsService } from '../../../services/api/organizations.service';
+import { UserService } from '../../../services/api/user.service';
+
+import { MatDialog } from '@angular/material/dialog';
+
+import { InviteUserComponent } from './invite-user/invite-user.component';
+import { RiseButtonComponent } from '../../../components/rise-button/rise-button.component';
+import {
+  EditableUser,
+  RiseCollaboratorsComponent,
+} from '../../../components/rise-collaborators/rise-collaborators.component';
+import { RiseDropdownComponent } from '../../../components/rise-dropdown/rise-dropdown.component';
+import { RiseTextInputComponent } from '../../../components/rise-text-input/rise-text-input.component';
+
+import { OrganizationViewModel } from '../../../models/OrganizationViewModel';
+import { UserViewModel } from '../../../models/UserViewModel';
+
+import { OrganizationTypes } from '../../../shared/organization-types';
+
+import FadeoutUtils from '../../../shared/utilities/FadeoutUtils';
 @Component({
   selector: 'user-organization',
   standalone: true,
@@ -24,13 +31,10 @@ import {ChangeUserRoleComponent} from "../../../dialogs/change-user-role/change-
     CommonModule,
     FormsModule,
     TranslateModule,
-    InviteUserComponent,
     RiseButtonComponent,
     RiseCollaboratorsComponent,
     RiseDropdownComponent,
     RiseTextInputComponent,
-    RiseCrudTableComponent,
-    MatTooltip,
   ],
   templateUrl: './user-organization.component.html',
   styleUrl: './user-organization.component.css',
@@ -46,35 +50,34 @@ export class UserOrganizationComponent implements OnInit {
 
   constructor(
     private m_oDialog: MatDialog,
-    private m_oOrganizationsService: OrganizationsService
-  ) {
-  }
+    private m_oNotificationDialogService: NotificationsDialogsService,
+    private m_oOrganizationsService: OrganizationsService,
+    private m_oTranslate: TranslateService,
+    private m_oUserService: UserService
+  ) {}
 
   ngOnInit(): void {
     this.getOrganization();
     this.getOrgUsers();
   }
 
+  /**
+   * Fetch organization information from the server
+   */
   getOrganization(): void {
+    let sErrorMsg = this.m_oTranslate.instant('ORGANIZATION.ERROR_MSG');
     this.m_oOrganizationsService.getByUser().subscribe({
       next: (oResponse) => {
         if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           this.m_oOrganization = oResponse;
-          this.getOrgVM(this.m_oOrganization.id);
         }
       },
       error: (oError) => {
-        console.log(oError);
-      },
-    });
-  }
-
-  getOrgVM(sOrgId: string): void {
-    this.m_oOrganizationsService.getOrg(sOrgId).subscribe({
-      next: (oResponse) => {
-        console.log(oResponse);
-      },
-      error: (oError) => {
+        this.m_oNotificationDialogService.openInfoDialog(
+          sErrorMsg,
+          'danger',
+          'Error'
+        );
       },
     });
   }
@@ -83,103 +86,162 @@ export class UserOrganizationComponent implements OnInit {
    * Use Case: Admin can see the list of users of the Organization
    * Set the m_aoOrgUsers array after call
    */
-  getOrgUsers() {
+  getOrgUsers(): void {
+    let sErrorMsg = this.m_oTranslate.instant('ORGANIZATION.USERS_ERROR');
     this.m_oOrganizationsService.getOrganizationUsers().subscribe({
       next: (oResponse) => {
-        console.log("user of this org are" + oResponse);
         this.m_aoOrgUsers = oResponse;
-      }, error: (oError) => {
-        //todo handle it
-      }
-    })
+      },
+      error: (oError) => {
+        this.m_oNotificationDialogService.openInfoDialog(
+          sErrorMsg,
+          'danger',
+          'Error'
+        );
+      },
+    });
   }
 
   /**
    * Use Case: Admin can remove users from the Organization
    * Remove one User from the Organization via table
    */
-  removeOrgUser(oUser:UserViewModel) {
-    let aoUsersToDelete:UserViewModel[]=[];
-    aoUsersToDelete.push(oUser);
-    if(oUser.userId){
-      this.m_oOrganizationsService.deleteUsersFromOrganization(aoUsersToDelete).subscribe(
-        {
-          next:(oResponse)=>{
-            this.getOrgUsers();
-          },error:(oError)=>{
-            //todo notif user
-            console.error(oError)
+  removeOrgUser(oUser: EditableUser): void {
+    let sConfirmMsg = this.m_oTranslate.instant(
+      'ORGANIZATION.CONFIRM_DELETE_USER'
+    );
+    sConfirmMsg += `<li>${oUser.userId}</li>`;
+    let sErrorMsg = this.m_oTranslate.instant('ORGANIZATION.ERROR_DELETE_USER');
+    let sSuccessMsg = this.m_oTranslate.instant(
+      'ORGANIZATION.SUCCESS_DELETE_USER'
+    );
+    this.m_oNotificationDialogService
+      .openConfirmationDialog(sConfirmMsg, 'alert')
+      .subscribe((bDialogResult) => {
+        if (bDialogResult) {
+          delete oUser.isEditing;
+          let aoUsersToDelete: UserViewModel[] = [];
+          aoUsersToDelete.push(oUser);
+          if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oUser.userId)) {
+            this.m_oOrganizationsService
+              .deleteUsersFromOrganization(aoUsersToDelete)
+              .subscribe({
+                next: (oResponse) => {
+                  this.getOrgUsers();
+                  this.m_oNotificationDialogService.openSnackBar(
+                    sSuccessMsg,
+                    'Success',
+                    'success'
+                  );
+                },
+                error: (oError) => {
+                  this.m_oNotificationDialogService.openSnackBar(
+                    sErrorMsg,
+                    'Error',
+                    'danger'
+                  );
+                },
+              });
           }
         }
-      )
-    }
+      });
   }
-
-
 
   /**
    * Use Case: Admin can edit the basic information of the Organization inserted at the time of the registration (UC_010)
    * Open confirmation dialog and then save the user's changes (if yes)
    */
-  saveChanges() {
-    if(this.isOrgValid()){
-      this.m_oOrganizationsService.updateOrganization(this.m_oOrganization).subscribe({
-        next: (oResponse) => {
-          console.log(oResponse)
-        }, error: (oError) => {
-          console.error(oError)
-        }
-      })
-    }else{
-      //add validation
-    }
+  saveChanges(): void {
+    let sErrorMsg = this.m_oTranslate.instant('ORGANIZATION.CHANGES_ERROR');
+    let sSuccessMsg = this.m_oTranslate.instant('ORGANIZATION.CHANGES_SAVED');
 
+    if (this.isOrgValid()) {
+      this.m_oOrganizationsService
+        .updateOrganization(this.m_oOrganization)
+        .subscribe({
+          next: (oResponse) => {
+            this.m_oNotificationDialogService.openSnackBar(
+              sSuccessMsg,
+              'Success',
+              'success'
+            );
+          },
+          error: (oError) => {
+            this.m_oNotificationDialogService.openInfoDialog(
+              sErrorMsg,
+              'danger',
+              'error'
+            );
+          },
+        });
+    }
   }
 
-   isOrgValid() {
-    if(FadeoutUtils.utilsIsObjectNullOrUndefined(this.m_oOrganization)){
+  /**
+   * Check if the organization is valid
+   * TODO: Add more validators
+   * @returns boolean
+   */
+  isOrgValid(): boolean {
+    if (FadeoutUtils.utilsIsObjectNullOrUndefined(this.m_oOrganization)) {
       return false;
     }
-    return  true;
+    return true;
+  }
 
+  /**
+   * Open dialog to invite new user to the organization
+   * @param oEvent
+   */
+  openInviteUser(oEvent: any): void {
+    this.m_oDialog
+      .open(InviteUserComponent, {
+        data: {
+          organizationId: this.m_oOrganization.id,
+        },
+      })
+      .afterClosed()
+      .subscribe((oResult) => {
+        this.getOrgUsers();
+      });
+  }
+
+  /**
+   * User Case: Admin can change the role (Admin, HQ Operator, Field Operator) of a user of the Organization
+   * Change User Role via table
+   */
+  changeUserRole(oUser: EditableUser): void {
+    let sSuccessMsg = this.m_oTranslate.instant(
+      'COLLABORATORS.ROLE_CHANGE_SUCCESS'
+    );
+    let sErrorMsg = this.m_oTranslate.instant(
+      'COLLABORATORS.ROLE_CHANGE_ERROR'
+    );
+    //Remove property special to 'Editable User' view model
+    delete oUser.isEditing;
+    if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oUser)) {
+      this.m_oUserService.changeUserRole(oUser).subscribe({
+        next: (oResponse) => {
+          this.m_oNotificationDialogService.openSnackBar(
+            sSuccessMsg,
+            'Success',
+            'success'
+          );
+        },
+        error: (oError) => {
+          this.m_oNotificationDialogService.openSnackBar(
+            sErrorMsg,
+            'Error',
+            'danger'
+          );
+        },
+      });
+    }
   }
 
   /**
    * Use Case: Admin can delete the organization
    * Execute beginning of Delete Org Call and open Confirmation + OTP dialog
    */
-  deleteOrganization() {
-  }
-
-  openInviteUser(oEvent: any) {
-    console.log(oEvent);
-    this.m_oDialog
-      .open(InviteUserComponent, {
-        data: {
-          organizationId: this.m_oOrganization.id
-        }
-      })
-      .afterClosed()
-      .subscribe((oResult) => {
-        this.getOrgUsers();
-      });
-    // this.m_bInviteUser = bStatus;
-  }
-  /**
-   * User Case: Admin can change the role (Admin, HQ Operator, Field Operator) of a user of the Organization
-   * Change User Role via table
-   */
-  changeUserRole(oUser:UserViewModel) {
-    this.m_oDialog
-      .open(ChangeUserRoleComponent, {
-        data: { m_oUser: oUser}
-      })
-      .afterClosed()
-      .subscribe((oResult) => {
-        this.getOrgUsers();
-
-      });
-    // this.m_bInviteUser = bStatus;
-  }
-
+  deleteOrganization(): void {}
 }

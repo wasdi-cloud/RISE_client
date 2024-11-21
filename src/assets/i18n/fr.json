@@ -43,7 +43,10 @@
     "INVITE": "Ajouter des utilisateurs",
     "NONE": "Vous n'avez pas encore invité de collaborateurs",
     "HEADER": "Gérer les collaborateurs",
-    "CHANGE_ROLE":"Changer le rôle de l'utilisateur"
+    "CHANGE_ROLE": "Changer le rôle de l'utilisateur",
+    "ROLE": "Rôle",
+    "ROLE_CHANGE_ERROR": "Le rôle de l'utilisateur n'a pas pu être modifié. Veuillez réessayer ou contacter RISE",
+    "ROLE_CHANGE_SUCCESS": "Le rôle de l'utilisateur a été modifié avec succès"
   },
   "DASHBOARD": {
     "SEARCH": "Rechercher une carte"
@@ -77,14 +80,21 @@
   },
   "ORGANIZATION": {
     "ADDRESS": "Adresse de l'organisation",
+    "CONFIRM_DELETE_USER": "Êtes-vous sûr de vouloir supprimer cet utilisateur de votre organisation ?",
+    "CHANGES_SAVED": "Vos modifications ont été enregistrées",
+    "CHANGES_ERROR": "Une erreur s'est produite lors de la tentative d'enregistrement de vos modifications. Veuillez réessayer plus tard",
     "DELETE": "Supprimer l'organisation",
     "DELETE_MSG": " Une fois votre organisation supprimée, cette opération est irréversible. Soyez-en sûr. ",
+    "ERROR_MSG": "Impossible de récupérer les informations sur l'organisation",
+    "ERROR_DELETE_USER": "Impossible de supprimer l'utilisateur de cette organisation. Veuillez réessayer",
     "INVITE": "Inviter un nouvel utilisateur",
     "MEMBERS": "Collaborateurs",
     "NAME": "Nom de l'organisation",
     "SAVE": "Enregistrer les modifications",
+    "SUCCESS_DELETE_USER": "L'utilisateur a été supprimé avec succès de cette organisation",
     "TYPE": "Type d'organisation",
-    "USERS": "Utilisateurs de l'organisation"
+    "USERS": "Utilisateurs de l'organisation",
+    "USERS_ERROR": "Impossible de récupérer les collaborateurs de cette organisation"
   },
   "OTP_DIALOG": {
     "SUBMIT": "Soumettre",

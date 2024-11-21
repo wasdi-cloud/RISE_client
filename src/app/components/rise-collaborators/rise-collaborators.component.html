@@ -14,4 +14,74 @@
 </div>
 
 <!-- With Collaborators already -->
-<div></div>
+
+<div class="table-wrapper w-100">
+  <table class="w-100">
+    <thead class="table-heading-container">
+      <tr>
+        <td class="font-bold">{{ "LOGIN.USER_ID" | translate }}</td>
+        <td class="font-bold">{{ "USER.EMAIL" | translate }}</td>
+        <td class="font-bold">{{ "COLLABORATORS.ROLE" | translate }}</td>
+        <td></td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let oUser of m_aoUsers">
+        <td>{{ oUser.userId }}</td>
+        <td>{{ oUser.email }}</td>
+        <td *ngIf="!oUser.isEditing">{{ oUser.role }}</td>
+        <td *ngIf="oUser.isEditing">
+          <rise-dropdown
+            [m_aoSelectedItems]="oUser.role"
+            [m_aoDropdownItems]="m_asRoles"
+            (m_oSelectionChange)="handleSelection($event, oUser)"
+          ></rise-dropdown>
+        </td>
+        <td
+          class="d-flex flex-row justify-content-end align-items-center gap-2"
+        >
+          <span
+            *ngIf="!oUser.isEditing"
+            class="option material-symbols-outlined edit"
+            [matTooltip]="'Change User Role'"
+            (click)="toggleUserEditing(oUser)"
+          >
+            edit
+          </span>
+          <span
+            *ngIf="oUser.isEditing"
+            class="option material-symbols-outlined edit"
+            [matTooltip]="'Save changes'"
+            (click)="emitEditClick(oUser)"
+          >
+            save
+          </span>
+          <span
+            *ngIf="oUser.isEditing"
+            class="option material-symbols-outlined edit"
+            [matTooltip]="'Cancel Editing'"
+            (click)="toggleUserEditing(oUser)"
+          >
+            close
+          </span>
+          <span
+            class="option delete material-symbols-outlined remove"
+            [matTooltip]="'Remove User'"
+            (click)="emitRemoveClick(oUser)"
+          >
+            delete
+          </span>
+        </td>
+      </tr>
+      <tr class="mt-1">
+        <td class="d-flex flex-row justify-content-start">
+          <rise-button
+            [m_sLabel]="'COLLABORATORS.ADD'"
+            [m_sRole]="'primary'"
+            (click)="emitInviteClick()"
+          ></rise-button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

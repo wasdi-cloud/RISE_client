@@ -33,10 +33,6 @@ export class InviteUserComponent implements OnInit {
 
   @Input() m_sOrganizationName: string = '';
 
-  @Output() m_oBackEmitter: EventEmitter<boolean> = new EventEmitter<boolean>(
-    false
-  );
-
   /**
    * Email Inputs - evaluated by email validator
    */
@@ -165,13 +161,6 @@ export class InviteUserComponent implements OnInit {
     this.m_sUserRole = '';
     this.m_bShowStatus = false;
     this.m_bSuccess = false;
-  }
-
-  /**
-   * Emitter for when user has clicked the back button
-   */
-  backToOrgEdit() {
-    this.m_oBackEmitter.emit(true);
   }
 
   onDismiss() {

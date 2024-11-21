@@ -4,8 +4,22 @@ div.collaborators-container {
   font-size: 20px;
   font-weight: 700;
 }
-
+td {
+  height: 40px;
+}
 .material-symbols-outlined {
-    color: var(--rise-gold);
-    font-size: 60px;
+  color: var(--rise-gold);
+  font-size: 60px;
+}
+
+.option.material-symbols-outlined {
+  color: var(--rise-text-bright);
+  cursor: pointer;
+  font-size: 20px;
+}
+.delete.material-symbols-outlined {
+  color: var(--wasdiDanger);
+}
+.font-bold {
+  font-weight: 700;
 }

@@ -43,7 +43,10 @@
     "INVITE": "Add Users",
     "NONE": "You haven't invited any collaborators yet",
     "HEADER": "Manage Collaborators",
-    "CHANGE_ROLE":"Change User Role"
+    "CHANGE_ROLE": "Change User Role",
+    "ROLE": "Role",
+    "ROLE_CHANGE_ERROR": "User role could not be changed. Please try again or contact RISE",
+    "ROLE_CHANGE_SUCCESS": "User Role successfully changed"
   },
   "DASHBOARD": {
     "SEARCH": "Search Map"
@@ -77,14 +80,21 @@
   },
   "ORGANIZATION": {
     "ADDRESS": "Organization Address",
+    "CONFIRM_DELETE_USER": "Are you sure you wish to remove this user from your organization?",
+    "CHANGES_SAVED": "Your changes have been saved",
+    "CHANGES_ERROR": "There was an error while trying to save your changes. Please try again later",
     "DELETE": "Delete Organization",
     "DELETE_MSG": "  Once you delete your organization, this cannot be undone. Please be certain.",
+    "ERROR_MSG": "Could not fetch organization information",
+    "ERROR_DELETE_USER": "Could not remove user from this organization. Please try again",
     "INVITE": "Invite New User",
     "MEMBERS": "Collaborators",
     "NAME": "Organization Name",
     "SAVE": "Save Changes",
+    "SUCCESS_DELETE_USER": "User was successfully removed from this organization",
     "TYPE": "Organization Type",
-    "USERS": "Organization Users"
+    "USERS": "Organization Users",
+    "USERS_ERROR": "Could not retrieve the collaborators on this organization"
   },
   "OTP_DIALOG": {
     "SUBMIT": "Submit",
