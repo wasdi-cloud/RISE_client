@@ -1,29 +1,32 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
 
-import { NotificationsDialogsService } from '../../../services/notifications-dialogs.service';
-import { OrganizationsService } from '../../../services/api/organizations.service';
-import { UserService } from '../../../services/api/user.service';
+import {NotificationsDialogsService} from '../../../services/notifications-dialogs.service';
+import {OrganizationsService} from '../../../services/api/organizations.service';
+import {UserService} from '../../../services/api/user.service';
 
-import { MatDialog } from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 
-import { InviteUserComponent } from './invite-user/invite-user.component';
-import { RiseButtonComponent } from '../../../components/rise-button/rise-button.component';
+import {InviteUserComponent} from './invite-user/invite-user.component';
+import {RiseButtonComponent} from '../../../components/rise-button/rise-button.component';
 import {
   EditableUser,
   RiseCollaboratorsComponent,
 } from '../../../components/rise-collaborators/rise-collaborators.component';
-import { RiseDropdownComponent } from '../../../components/rise-dropdown/rise-dropdown.component';
-import { RiseTextInputComponent } from '../../../components/rise-text-input/rise-text-input.component';
+import {RiseDropdownComponent} from '../../../components/rise-dropdown/rise-dropdown.component';
+import {RiseTextInputComponent} from '../../../components/rise-text-input/rise-text-input.component';
 
-import { OrganizationViewModel } from '../../../models/OrganizationViewModel';
-import { UserViewModel } from '../../../models/UserViewModel';
+import {OrganizationViewModel} from '../../../models/OrganizationViewModel';
+import {UserViewModel} from '../../../models/UserViewModel';
 
-import { OrganizationTypes } from '../../../shared/organization-types';
+import {OrganizationTypes} from '../../../shared/organization-types';
 
 import FadeoutUtils from '../../../shared/utilities/FadeoutUtils';
+import {OtpDialogComponent} from "../../../dialogs/otp-dialog/otp-dialog.component";
+import {AuthService} from "../../../services/api/auth.service";
+
 @Component({
   selector: 'user-organization',
   standalone: true,
@@ -53,8 +56,10 @@ export class UserOrganizationComponent implements OnInit {
     private m_oNotificationDialogService: NotificationsDialogsService,
     private m_oOrganizationsService: OrganizationsService,
     private m_oTranslate: TranslateService,
-    private m_oUserService: UserService
-  ) {}
+    private m_oUserService: UserService,
+    private m_oAuthService: AuthService
+  ) {
+  }
 
   ngOnInit(): void {
     this.getOrganization();
@@ -243,5 +248,53 @@ export class UserOrganizationComponent implements OnInit {
    * Use Case: Admin can delete the organization
    * Execute beginning of Delete Org Call and open Confirmation + OTP dialog
    */
-  deleteOrganization(): void {}
+  deleteOrganization(): void {
+    //ask for confirmation
+    this.m_oNotificationDialogService
+      .openConfirmationDialog(
+        'Are you sure you want to delete your Organization? This is a destructive action and cannot be undone and it will automatically delete your account and the organisation users accounts.',
+        'danger'
+      )
+      .subscribe((bResult) => {
+        if (bResult) {
+          this.m_oOrganizationsService.deleteOrganization().subscribe({
+            next: (oResponse) => {
+              let oOTPVerifyVM = oResponse;
+              this.m_oDialog
+                .open(OtpDialogComponent, {
+                  data: {
+                    userId: oOTPVerifyVM.userId,
+                  },
+                })
+                .afterClosed()
+                .subscribe((sDialogResult) => {
+                  oOTPVerifyVM.userProvidedCode = sDialogResult;
+                  this.m_oAuthService.verifyOTP(oOTPVerifyVM).subscribe({
+                    next: (oResponse) => {
+                      let oOtpVm = {
+                        id: oOTPVerifyVM.id,
+                        userId: oOTPVerifyVM.userId,
+                      };
+                      if (oResponse.status === 200) {
+                        this.m_oOrganizationsService
+                          .verifyDeleteOrganization(oOtpVm)
+                          .subscribe({
+                            next: (oResponse) => {
+                              this.m_oAuthService.logout();
+                            },
+                            error: (oError) => {
+                              console.log(oResponse);
+                            },
+                          });
+                      }
+                    },
+                  });
+                });
+            },
+            error: (oError) => {
+            },
+          });
+        }
+      });
+  }
 }
