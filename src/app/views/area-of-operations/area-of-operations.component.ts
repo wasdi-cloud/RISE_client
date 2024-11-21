@@ -36,12 +36,6 @@ import {AreaInfoComponent} from './area-info/area-info.component';
 })
 export class AreaOfOperationsComponent implements OnInit {
   m_aoAreasOfOperations: AreaViewModel[] = [];
-  m_bIsAreaSelected: boolean = false;
-  m_sAreaOfOperationName: string = 'name';
-  m_sAreaOfOperationDescription: string = 'description';
-  m_asPlugins: { label: string; value: string }[] = [];
-  m_oSelectedArea: AreaViewModel = {};
-
   m_bShowNewArea: boolean = false;
 
   constructor(
@@ -50,7 +44,8 @@ export class AreaOfOperationsComponent implements OnInit {
     private m_oMapService: MapService,
     private m_oNotificationService: NotificationsDialogsService,
     private m_oTranslate: TranslateService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.getAreas();
@@ -67,7 +62,9 @@ export class AreaOfOperationsComponent implements OnInit {
 
   toggleShowNew(bShowNew: boolean) {
     this.m_bShowNewArea = bShowNew;
-    if(!this.m_bShowNewArea){this.getAreas()}
+    if (!this.m_bShowNewArea) {
+      this.getAreas()
+    }
   }
 
   flyToArea(oArea: AreaViewModel) {
@@ -99,17 +96,36 @@ export class AreaOfOperationsComponent implements OnInit {
   }
 
   openEditArea(oArea) {
-   this.m_oDialog.open(AreaInfoComponent, {
-    data: {
-      area: oArea
-    }
-   }).afterClosed()
-     .subscribe((oResponse)=>{
-       this.getAreas();
-     })
+    this.m_oDialog.open(AreaInfoComponent, {
+      data: {
+        area: oArea
+      }
+    }).afterClosed()
+      .subscribe((oResponse) => {
+        this.getAreas();
+      })
   }
 
   deleteArea(oArea) {
+    //ask user if he really wants ot delete it or update it
+    let sCheckWithUser: string = this.m_oTranslate.instant(
+      'AREA_OF_OPERATIONS.DELETE_OR_UPDATE'
+    );
+    sCheckWithUser += `<ul><li>${oArea.name}</li></ul>`;
+    this.m_oNotificationService.openConfirmationDialog(sCheckWithUser, 'danger').subscribe(
+      (bResult) => {
+        if (bResult) {
+          //user wants to delete , we ask for confirmation
+          this.confirmAreaDelete(oArea);
+        } else {
+          this.openEditArea(oArea);
+        }
+      }
+    )
+
+  }
+
+  private confirmAreaDelete(oArea) {
     let sConfirm: string = this.m_oTranslate.instant(
       'AREA_OF_OPERATIONS.CONFIRM_DELETE'
     );
@@ -118,7 +134,18 @@ export class AreaOfOperationsComponent implements OnInit {
       .openConfirmationDialog(sConfirm, 'danger')
       .subscribe((bResult) => {
         if (bResult) {
-          console.log(bResult);
+          this.m_oAreaService.deleteAreaOfOperation(oArea.id).subscribe(
+            {
+              next: (oResponse) => {
+                this.getAreas();
+              }, error: (oError) => {
+                console.error(oError)
+              }
+            }
+          )
+
+        } else {
+          //do nothing (here for readability)
         }
       });
   }

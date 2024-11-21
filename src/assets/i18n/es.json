@@ -24,7 +24,8 @@
     "CONFIRM_AREA_TOO_SMALL": "El área que ha seleccionado es demasiado pequeña. Haz clic en 'confirmar' para que RISE la ajuste automáticamente.",
     "CONFIRM_CREATE_NEW_AREA": "El área que has seleccionado es demasiado grande. Ajusta las dimensiones.",
     "CREATION_DATE": "Fecha de creación",
-    "DIALOG_HEADER": "Área de Operaciones"
+    "DIALOG_HEADER": "Área de Operaciones",
+    "DELETE_OR_UPDATE": "¿Realmente quieres borrar o actualizar?"
   },
   "BANNER": {
     "LIVE_SIT": "Situación en vivo",
