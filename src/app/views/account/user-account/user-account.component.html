@@ -128,19 +128,49 @@
           <rise-text-input
             [m_bHasTitle]="true"
             [m_sLocalizationKey]="'USER.OLD_PW'"
+            [(m_sInputText)]="m_oPasswordInputs.currentPW"
           ></rise-text-input>
+<!--          <rise-text-input-->
+<!--            [m_bHasTitle]="true"-->
+<!--            [m_sLocalizationKey]="'USER.NEW_PW'"-->
+<!--            [(m_sInputText)]="m_oPasswordInputs.newPw"-->
+<!--            [m_bIsValidatorInput]="true"-->
+<!--            [m_bIsValid]="m_bValidPw"-->
+<!--            [m_sErrorText]="m_sPasswordError"-->
+<!--            [m_bRequired]="true"-->
+<!--          ></rise-text-input>-->
+<!--          <rise-text-input-->
+<!--            [m_bHasTitle]="true"-->
+<!--            [m_sLocalizationKey]="'USER.CONFIRM_PW'"-->
+<!--            [m_bIsValidatorInput]="true"-->
+<!--            [m_bIsValid]="m_bValidPw"-->
+<!--            [(m_sInputText)]="m_oPasswordInputs.verifyNewPw"-->
+
+<!--          ></rise-text-input>-->
           <rise-text-input
-            [m_bHasTitle]="true"
             [m_sLocalizationKey]="'USER.NEW_PW'"
+            [m_bRequired]="true"
+            [m_bHasTitle]="true"
+            [m_sType]="'password'"
+            [(m_sInputText)]="m_oPasswordInputs.newPw"
+            [m_bIsValid]="validatePassword()"
           ></rise-text-input>
           <rise-text-input
-            [m_bHasTitle]="true"
             [m_sLocalizationKey]="'USER.CONFIRM_PW'"
+            [m_bRequired]="true"
+            [m_bHasTitle]="true"
+            [m_sType]="'password'"
+            [m_bIsValidatorInput]="true"
+            [m_sErrorText]="m_sPasswordError"
+            [(m_sInputText)]="m_oPasswordInputs.verifyNewPw"
+            [m_bIsValid]="validatePassword()"
           ></rise-text-input>
           <rise-button
             class="align-self-start mt-2"
             [m_sRole]="'primary'"
             [m_sLabel]="'USER.CHANGE_PW'"
+            [m_bDisabled]="!enableChangePassword()"
+            (click)="changePassword()"
           ></rise-button>
         </div>
       </div>

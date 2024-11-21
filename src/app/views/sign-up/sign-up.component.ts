@@ -62,7 +62,7 @@ export class SignUpComponent {
     confirmPw: '',
   };
 
-  m_sEmilError: string = '';
+  m_sEmailError: string = '';
   m_sPasswordError: string = '';
   m_sOrgError: string = '';
   m_sPersonalError: string = '';
@@ -127,7 +127,7 @@ export class SignUpComponent {
     if (sEmail && sConfirmEmail) {
       // if the first email doesn't pass Regex OR the emails don't match
       if (!emailRegex.test(sEmail) || sEmail !== sConfirmEmail) {
-        this.m_sEmilError =
+        this.m_sEmailError =
           'Please ensure the inputted emails are valid emails and match';
         return false;
       } else {
@@ -239,7 +239,7 @@ export class SignUpComponent {
         this.m_bOrgIsValid = false;
       }
       if (sCode.includes('MAIL')) {
-        this.m_sEmilError = 'ERROR_MSG.' + sCode;
+        this.m_sEmailError = 'ERROR_MSG.' + sCode;
         this.m_bEmailIsValid = false;
       }
       if (sCode.includes('USER')) {

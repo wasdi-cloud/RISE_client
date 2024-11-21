@@ -3,6 +3,7 @@ import { ConstantsService } from '../constants.service';
 import { HttpClient } from '@angular/common/http';
 import { UserViewModel } from '../../models/UserViewModel';
 import { OTPVerifyViewModel } from '../../models/OTPVerifyViewModel';
+import {ChangePasswordRequestViewModel} from "../../models/ChangePasswordRequestViewModel";
 
 @Injectable({
   providedIn: 'root',
@@ -44,10 +45,10 @@ export class UserService {
     );
   }
 
-  updatePassword(oUpdatePasswordVM) {
+  updatePassword(oChangePasswordRequestViewModel:ChangePasswordRequestViewModel) {
     return this.m_oHttp.post<any>(
       this.APIURL + '/usr/change_password',
-      oUpdatePasswordVM
+      oChangePasswordRequestViewModel
     );
   }
 

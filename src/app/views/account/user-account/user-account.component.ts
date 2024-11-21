@@ -1,26 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import { CommonModule } from '@angular/common';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import {CommonModule} from '@angular/common';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
 
-import { RiseButtonComponent } from '../../../components/rise-button/rise-button.component';
-import { RiseCheckboxComponent } from '../../../components/rise-checkbox/rise-checkbox.component';
-import { RiseDropdownComponent } from '../../../components/rise-dropdown/rise-dropdown.component';
-import { RiseTextInputComponent } from '../../../components/rise-text-input/rise-text-input.component';
-import { UserViewModel } from '../../../models/UserViewModel';
-import { OrganizationsService } from '../../../services/api/organizations.service';
-import { OrganizationViewModel } from '../../../models/OrganizationViewModel';
-import { ConstantsService } from '../../../services/constants.service';
-import { NotificationOptions } from '../../../shared/notification-options/notification-options';
+import {RiseButtonComponent} from '../../../components/rise-button/rise-button.component';
+import {RiseCheckboxComponent} from '../../../components/rise-checkbox/rise-checkbox.component';
+import {RiseDropdownComponent} from '../../../components/rise-dropdown/rise-dropdown.component';
+import {RiseTextInputComponent} from '../../../components/rise-text-input/rise-text-input.component';
+import {UserViewModel} from '../../../models/UserViewModel';
+import {OrganizationsService} from '../../../services/api/organizations.service';
+import {OrganizationViewModel} from '../../../models/OrganizationViewModel';
+import {ConstantsService} from '../../../services/constants.service';
+import {NotificationOptions} from '../../../shared/notification-options/notification-options';
 import FadeoutUtils from '../../../shared/utilities/FadeoutUtils';
-import { UserService } from '../../../services/api/user.service';
-import { ChangeEmailViewModel } from '../../../models/ChangeEmailViewModel';
-import { NotificationsDialogsService } from '../../../services/notifications-dialogs.service';
-import { MatDialog } from '@angular/material/dialog';
-import { OtpDialogComponent } from '../../../dialogs/otp-dialog/otp-dialog.component';
-import { OTPVerifyViewModel } from '../../../models/OTPVerifyViewModel';
-import { OTPViewModel } from '../../../models/OTPViewModel';
-import { AuthService } from '../../../services/api/auth.service';
+import {UserService} from '../../../services/api/user.service';
+import {ChangeEmailViewModel} from '../../../models/ChangeEmailViewModel';
+import {NotificationsDialogsService} from '../../../services/notifications-dialogs.service';
+import {MatDialog} from '@angular/material/dialog';
+import {OtpDialogComponent} from '../../../dialogs/otp-dialog/otp-dialog.component';
+import {OTPVerifyViewModel} from '../../../models/OTPVerifyViewModel';
+import {AuthService} from '../../../services/api/auth.service';
+import {ChangePasswordRequestViewModel} from "../../../models/ChangePasswordRequestViewModel";
+import {OTPViewModel} from "../../../models/OTPViewModel";
 
 @Component({
   selector: 'user-account',
@@ -43,6 +44,7 @@ export class UserAccountComponent implements OnInit {
   m_aoSelectedNotifications = [];
 
   m_bValidEmail: boolean = true;
+  m_bValidPw: boolean = true;
 
   m_aoLanguages = [
     {
@@ -68,9 +70,16 @@ export class UserAccountComponent implements OnInit {
     newEmail: '',
     verifyNewEmail: '',
   };
+  m_oPasswordInputs = {
+    currentPW: '',
+    newPw: '',
+    verifyNewPw: '',
+  };
 
   m_oEmail;
   //TODO : UPDATE USER INFORMATION
+  m_sPasswordError: string = '';
+
   constructor(
     private m_oAuthService: AuthService,
     private m_oConstantsService: ConstantsService,
@@ -78,7 +87,7 @@ export class UserAccountComponent implements OnInit {
     private m_oNotificationDialogService: NotificationsDialogsService,
     private m_oOrganizationService: OrganizationsService,
     private m_oTranslate: TranslateService,
-    private m_oUserService: UserService
+    private m_oUserService: UserService,
   ) {
     m_oTranslate.addLangs(['en', 'es', 'fr', 'ar']);
     m_oTranslate.setDefaultLang('en');
@@ -183,7 +192,8 @@ export class UserAccountComponent implements OnInit {
                   });
                 });
             },
-            error: (oError) => {},
+            error: (oError) => {
+            },
           });
         }
       });
@@ -198,16 +208,34 @@ export class UserAccountComponent implements OnInit {
       next: (oResponse) => {
         console.log(oResponse);
       },
-      error: (oError) => {},
+      error: (oError) => {
+      },
     });
   }
 
-  changePassword() {}
+  changePassword() {
+    let oChangePasswordRequest: ChangePasswordRequestViewModel = {
+      oldPassword: this.m_oPasswordInputs.currentPW,
+      newPassword: this.m_oPasswordInputs.newPw
+    }
+    this.m_oUserService.updatePassword(oChangePasswordRequest).subscribe({
+      next: (oResponse) => {
+        this.confirmChangePassword(oResponse)
+      }, error: (oError) => {
+        this.m_oNotificationDialogService.openSnackBar(
+          "Password did not change",
+          'Error',
+          'danger'
+        )
+      }
+    })
+  }
 
   /**
    * Use case: The user can select the default language to use in RISE: English, French, Spanish, Arabic
    */
-  changeLanguage() {}
+  changeLanguage() {
+  }
 
   translateNotifications() {
     this.m_aoNotificationOptions = this.m_aoNotificationOptions.map(
@@ -280,6 +308,31 @@ export class UserAccountComponent implements OnInit {
     return true;
   }
 
+  validatePassword(): boolean {
+    let sPassword = this.m_oPasswordInputs.newPw;
+    let sConfirmPw = this.m_oPasswordInputs.verifyNewPw;
+    // Minimum 8 Characters, at least one letter, one number, and one special character:
+    const passwordRegex =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&,])[A-Za-z\d@$!%*#?&,]{8,}/;
+    // If the user has modified both inputs
+    if (sPassword && sConfirmPw) {
+      //If the first password doesn't pass regex OR the pw's don't match
+      if (!passwordRegex.test(sPassword)) {
+        this.m_sPasswordError =
+          'A good password contains: <br><ul><li>Minimum 8 characters</li><li>At least 1 letter</li><li>At least 1 capital letter</li><li>At least one number</li><li>At least one special character</li></ul>';
+        return false;
+      } else if (sPassword !== sConfirmPw) {
+        this.m_sPasswordError = 'The passwords do not match';
+        return false;
+      } else {
+        return true;
+      }
+      // IF there are no inputs, do not show validation msg
+    } else {
+      return true;
+    }
+  }
+
   validateEmail(): boolean {
     let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (
@@ -302,19 +355,61 @@ export class UserAccountComponent implements OnInit {
     return true;
   }
 
-  // The user can change the email
-  // The user must confirm the new email
-  // RISE will send a verification email
-  // User must click on the confirmation link
-  // The user can change the password
-  // The user must insert the old password
-  // The user must insert the new password
-  // The user must confirm the new password
-  // The user submit the password change request
-  // RISE ask to the user the confirmation with OTP (UC_005)
-  // If the OTP is correct RISE updates the password of the User.
-  // The user can request to be deleted from RISE
-  // RISE ask confirmation for the deletion
-  // If the user confirms, RISE ask another confirmation with OTP (UC_005)
-  // If the OTP is correct RISE delete the User.
+
+  enableChangePassword() {
+    if (!this.m_oPasswordInputs.currentPW) {
+
+      return false;
+    } else if (
+      !this.m_oPasswordInputs.newPw ||
+      !this.m_oPasswordInputs.verifyNewPw
+    ) {
+
+      return false;
+    } else if (!this.validatePassword()) {
+
+      return false;
+    }
+    return true;
+  }
+
+  private confirmChangePassword(oOtpViewModel: OTPViewModel) {
+
+    this.m_oDialog
+      .open(OtpDialogComponent, {
+        data: {
+          userId: this.m_oUser.userId,
+        },
+      })
+      .afterClosed()
+      .subscribe((sDialogResult) => {
+        oOtpViewModel.userProvidedCode = sDialogResult;
+        this.m_oAuthService.verifyOTP(oOtpViewModel).subscribe({
+          next: (oResponse) => {
+
+            let oOtpVm = {
+              id: oOtpViewModel.id,
+              userId: oOtpViewModel.userId,
+            };
+            if (oResponse.status === 200) {
+              this.m_oUserService
+                .confirmNewPassword(oOtpVm)
+                .subscribe({
+                  next: (oResponse) => {
+                    this.getUserInfo();
+                    this.m_oNotificationDialogService.openSnackBar(
+                      "Password Changed Successfully",
+                      "Success",
+                      "success"
+                    )
+                  },
+                  error: (oError) => {
+                    console.log(oResponse);
+                  },
+                });
+            }
+          },
+        });
+      });
+  }
 }
