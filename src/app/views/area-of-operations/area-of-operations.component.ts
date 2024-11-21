@@ -103,7 +103,10 @@ export class AreaOfOperationsComponent implements OnInit {
     data: {
       area: oArea
     }
-   })
+   }).afterClosed()
+     .subscribe((oResponse)=>{
+       this.getAreas();
+     })
   }
 
   deleteArea(oArea) {

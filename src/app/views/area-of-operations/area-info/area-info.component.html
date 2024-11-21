@@ -11,14 +11,14 @@
     <rise-text-input
       [m_bHasTitle]="true"
       [m_sLocalizationKey]="'CREATE_NEW_AREA_OF_OPERATION.NAME'"
-      [m_bReadonly]="true"
-      [m_sInputText]="m_oArea.name"
+      [m_bReadonly]="false"
+      [(m_sInputText)]="m_oArea.name"
     ></rise-text-input>
     <rise-textarea-input
       [m_bHasTitle]="true"
       [m_sLocalizationKey]="'CREATE_NEW_AREA_OF_OPERATION.DESCRIPTION'"
-      [m_bReadonly]="true"
-      [m_sInputText]="m_oArea.description"
+      [m_bReadonly]="false"
+      [(m_sInputText)]="m_oArea.description"
     ></rise-textarea-input>
     <rise-date-input
       [m_bHasTitle]="true"
@@ -32,5 +32,9 @@
       [m_bReadonly]="true"
     >
     </rise-checkbox>
+    <rise-button
+      [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.SAVE'"
+      (click)="SaveAreaOfOperation()"
+    ></rise-button>
   </div>
 </div>

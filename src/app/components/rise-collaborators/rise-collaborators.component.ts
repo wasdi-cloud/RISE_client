@@ -1,20 +1,12 @@
-import { CommonModule } from '@angular/common';
-import {
-  Component,
-  EventEmitter,
-  Inject,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { UserViewModel } from '../../models/UserViewModel';
-import { TranslateModule } from '@ngx-translate/core';
-import { RiseButtonComponent } from '../rise-button/rise-button.component';
-import { MatTooltip } from '@angular/material/tooltip';
-import { RiseDropdownComponent } from '../rise-dropdown/rise-dropdown.component';
-import { Edit } from 'leaflet';
-import { UserRole } from '../../models/UserRole';
+import {CommonModule} from '@angular/common';
+import {Component, EventEmitter, Input, OnInit, Output,} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {UserViewModel} from '../../models/UserViewModel';
+import {TranslateModule} from '@ngx-translate/core';
+import {RiseButtonComponent} from '../rise-button/rise-button.component';
+import {MatTooltip} from '@angular/material/tooltip';
+import {RiseDropdownComponent} from '../rise-dropdown/rise-dropdown.component';
+import {UserRole} from '../../models/UserRole';
 
 export class EditableUser extends UserViewModel {
   isEditing: boolean;

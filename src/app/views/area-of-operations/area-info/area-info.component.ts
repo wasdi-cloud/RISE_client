@@ -12,6 +12,7 @@ import { RiseTextareaInputComponent } from '../../../components/rise-textarea-in
 import { DatePipe } from '@angular/common';
 import { PluginListViewModel } from '../../../models/PluginListViewModel';
 import { RiseCheckboxComponent } from '../../../components/rise-checkbox/rise-checkbox.component';
+import {RiseButtonComponent} from "../../../components/rise-button/rise-button.component";
 
 @Component({
   selector: 'app-area-info',
@@ -23,6 +24,7 @@ import { RiseCheckboxComponent } from '../../../components/rise-checkbox/rise-ch
     RiseDateInputComponent,
     RiseTextareaInputComponent,
     DatePipe,
+    RiseButtonComponent,
   ],
   templateUrl: './area-info.component.html',
   styleUrl: './area-info.component.css',
@@ -92,5 +94,15 @@ export class AreaInfoComponent implements OnInit {
 
   onDismiss() {
     this.m_oDialogRef.close();
+  }
+
+  SaveAreaOfOperation() {
+    this.m_oAreaService.updateArea(this.m_oArea).subscribe({
+      next:(oReponse)=>{
+        this.onDismiss();
+      },error:(oError)=>{
+        console.error(oError)
+      }
+    })
   }
 }
