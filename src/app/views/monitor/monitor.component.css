@@ -4,11 +4,11 @@
 }
 
 .timebar {
-  bottom: 1rem;
-  left: 27rem;
+  bottom: 0rem;
+  left: 25%;
   position: absolute;
-  /* width: 94%; */
-  z-index: 999;
+  z-index: 9999;
+  width: 75%;
 }
 
 .btn-select-container {

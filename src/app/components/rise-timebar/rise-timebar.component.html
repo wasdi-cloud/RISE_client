@@ -1,12 +1,37 @@
-<div class="timebar-container p-2 m-1">
-    <div class="timecontrol-slider d-flex flex-row justify-content-evenly" #dragZone>
-        <div class="d-flex flex-column align-items-center" *ngFor="let oDate of m_aoDates">
-            |
-            <div>
-                {{oDate | date: 'dd/MM/yyyy'}}
-            </div>
-        </div>
-        <div class="knob" #draggable cdkDrag cdkDragBoundary=".timecontrol-slider" (cdkDragMoved)="onDrop($event)">
-        </div>
+<div class="timebar-container d-flex flex-column">
+  <input
+    class="slider"
+    type="range"
+    name=""
+    id=""
+    [max]="m_asDates.length - 1"
+    [(value)]="m_iSliderValue"
+    (change)="dateSelected($event)"
+  />
+  <!-- <div
+    class="timecontrol-slider d-flex flex-row justify-content-evenly"
+    #dragZone
+  >
+    <div
+      class="knob"
+      #draggable
+      cdkDrag
+      cdkDragBoundary=".timecontrol-slider"
+      (cdkDragMoved)="onDrop($event)"
+    ></div>
+  </div> -->
+  <div
+    class="timebar-options flex-fill d-flex flex-row justify-content-between align-items-center px-4"
+  >
+    <div class="time-options d-flex flex-row align-items-center gap-4">
+      <span class="material-symbols-outlined"> play_arrow </span>
+      <span class="material-symbols-outlined"> history </span>
+      <span class="material-symbols-outlined"> update </span>
+      <rise-chip-menu
+        [m_sSelectedItem]="m_oSelectedDate"
+        [m_asItems]="m_asDates"
+        (m_oSelectedItem)="dateSelected($event)"
+      ></rise-chip-menu>
     </div>
+  </div>
 </div>

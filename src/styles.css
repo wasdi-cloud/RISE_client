@@ -366,7 +366,9 @@ a.leaflet-control-zoom-fullscreen {
   height: 36px !important;
   width: 36px !important;
 }
-
+.leaflet-control-attribution {
+  display: none;
+}
 .account-header {
   background-color: var(--surface-glass-interactive);
   border-radius: 10px;

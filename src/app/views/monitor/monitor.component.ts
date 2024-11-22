@@ -53,7 +53,7 @@ import { RiseTextInputComponent } from '../../components/rise-text-input/rise-te
 export class MonitorComponent implements OnInit {
   m_bShow2D: boolean = true;
 
-  m_oAreaOfOperation: AreaViewModel = null;
+  m_oAreaOfOperation: AreaViewModel = {} as AreaViewModel;
 
   m_sAreaId: string = null;
 
@@ -101,9 +101,11 @@ export class MonitorComponent implements OnInit {
   openAOI(sAreaId: string) {
     this.m_oAreaService.getAreaById(sAreaId).subscribe({
       next: (oResponse) => {
+        console.log(oResponse)
+        this.m_oAreaOfOperation = oResponse
         if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           this.getMapsByArea(oResponse.id, oResponse.startDate);
-          this.m_oMapService.flyToMonitorBounds(oResponse.bbox);
+          // this.m_oMapService.flyToMonitorBounds(oResponse.bbox);
         }
       },
       error: (oError) => {

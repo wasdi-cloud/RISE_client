@@ -1,25 +1,62 @@
 .timebar-container {
+  background-color: rgba(0, 31, 40, 0.8);
+  backdrop-filter: blur(20px);
+  height: 72px;
+}
+/* .timebar-container {
     height: 60px;
     background-color: rgba(0, 0, 0, 0.5);
     color: #FFFFFF;
     border-radius: 8px;
-}
+}*/
 .timecontrol-slider {
-    position: relative;
-    height: 22px;
-    margin: 6px;
-    border: 1px solid #a5a5a5;
-    cursor: pointer;
+  background-color: rgba(150, 215, 235, 0.6);
+  position: relative;
+  height: 4px;
+  cursor: pointer;
 }
 
 .knob {
-    position: absolute;
-    width: 8px;
-    height: 22px;
-    background-color: #ddd;
-    border-radius: 2px;
-    border: 1px solid #a5a5a5;
-    cursor: ew-resize;
-    cursor: -webkit-grab;
-    cursor: -moz-grab;
+  position: absolute;
+  width: 8px;
+  height: 4px;
+  background-color: var(--rise-gold);
+  border-radius: 2px;
+
+  cursor: ew-resize;
+  cursor: -webkit-grab;
+  cursor: -moz-grab;
+}
+.material-symbols-outlined {
+  cursor: pointer;
+  font-size: 30px;
+}
+
+/* The slider itself */
+.slider {
+  -webkit-appearance: none; /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 8px; /* Specified height */
+  background-color: rgba(150, 215, 235, 0.6);
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: 0.2s; /* 0.2 seconds transition on hover */
+  transition: opacity 0.2s;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 8px;
+  height: 8px; 
+  background: var(--rise-gold); 
+  cursor: pointer; 
+}
+
+.slider::-moz-range-thumb {
+  width: 8px;
+  height: 8px;
+  background: var(--rise-gold);
+  cursor: pointer;
 }
