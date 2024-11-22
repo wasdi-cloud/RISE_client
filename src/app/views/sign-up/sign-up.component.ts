@@ -1,21 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {Component} from '@angular/core';
+import {FormsModule} from '@angular/forms';
 
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
 
-import { AuthService } from '../../services/api/auth.service';
+import {AuthService} from '../../services/api/auth.service';
 
-import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
-import { RiseDropdownComponent } from '../../components/rise-dropdown/rise-dropdown.component';
-import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
-import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
+import {RiseButtonComponent} from '../../components/rise-button/rise-button.component';
+import {RiseDropdownComponent} from '../../components/rise-dropdown/rise-dropdown.component';
+import {RiseTextInputComponent} from '../../components/rise-text-input/rise-text-input.component';
+import {RiseToolbarComponent} from '../../components/rise-toolbar/rise-toolbar.component';
 
-import { OrganizationViewModel } from '../../models/OrganizationViewModel';
-import { RegisterViewModel } from '../../models/RegisterViewModel';
-import { UserViewModel } from '../../models/UserViewModel';
-import { OrganizationTypes } from '../../shared/organization-types';
-import { NgIf } from '@angular/common';
-import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
+import {OrganizationViewModel} from '../../models/OrganizationViewModel';
+import {RegisterViewModel} from '../../models/RegisterViewModel';
+import {UserViewModel} from '../../models/UserViewModel';
+import {OrganizationTypes} from '../../shared/organization-types';
+import {NgIf} from '@angular/common';
+import {NotificationsDialogsService} from '../../services/notifications-dialogs.service';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-sign-up',
@@ -79,8 +80,14 @@ export class SignUpComponent {
   constructor(
     private m_oAuthService: AuthService,
     private m_oNotificationService: NotificationsDialogsService,
-    private m_oTranslate: TranslateService
-  ) {}
+    private m_oTranslate: TranslateService,
+    private m_oRouter: Router
+  ) {
+  }
+
+  ngOnInit() {
+    this.resetFormVariables();
+  }
 
   /***********************
    * Custom Form Validators
@@ -168,6 +175,7 @@ export class SignUpComponent {
             'success',
             'User Registered'
           );
+          this.m_oRouter.navigateByUrl('/login')
         }
       },
       error: (oError) => {
@@ -256,6 +264,7 @@ export class SignUpComponent {
       !this.m_oEmailInputs.confirmEmail ||
       !this.validateEmail()
     ) {
+
       return false;
     }
     if (
@@ -263,6 +272,7 @@ export class SignUpComponent {
       !this.m_oPasswordInputs.confirmPw ||
       !this.validatePassword()
     ) {
+
       return false;
     }
 
@@ -270,6 +280,7 @@ export class SignUpComponent {
       !this.m_oUserInfoInput.acceptedPrivacy ||
       !this.m_oUserInfoInput.acceptedTermsAndConditions
     ) {
+
       return false;
     }
 
@@ -277,5 +288,45 @@ export class SignUpComponent {
       return false;
     }
     return true;
+  }
+
+  private resetFormVariables() {
+    console.log(this.m_oUserInfoInput)
+    this.m_oRegisterInput = {} as RegisterViewModel;
+
+    this.m_oUserInfoInput = {
+      userId: ""
+    } as UserViewModel;
+
+    this.m_oOrgInfoInput = {
+      city: '',
+      country: '',
+      name: '',
+      number: '',
+      phone: '',
+      postalCode: '',
+      street: '',
+      type: '',
+    };
+    this.m_sCurrentPg = 'username';
+    this.m_oEmailInputs = {
+      email: '',
+      confirmEmail: '',
+    };
+
+    this.m_oPasswordInputs = {
+      password: '',
+      confirmPw: '',
+    };
+
+    this.m_sEmailError = '';
+    this.m_sPasswordError = '';
+    this.m_sOrgError = '';
+    this.m_sPersonalError = '';
+    this.m_bPersonalValid = true;
+    this.m_bEmailIsValid = true;
+    this.m_bOrgIsValid = true;
+    this.m_bUsernameIsValid = true;
+    this.m_sUsernameError = '';
   }
 }
