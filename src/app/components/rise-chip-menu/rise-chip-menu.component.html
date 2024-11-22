@@ -1,0 +1,9 @@
+<div class="chip-container d-flex flex-row gap-2 align-items-center justify-content-between">
+  {{ m_sSelectedItem }}
+  <span class="material-symbols-outlined" (click)="toggleOptions()">
+    keyboard_arrow_up</span
+  >
+  <div class="chip-options d-flex flex-column gap-1" *ngIf="m_bShowOptions">
+    <div class="chip-option" *ngFor="let sItem of m_asItems" (click)="selectItem(sItem)">{{ sItem }}</div>
+  </div>
+</div>

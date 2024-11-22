@@ -1,0 +1,32 @@
+div {
+  color: var(--rise-text-dim);
+  min-width: 10rem;
+}
+.material-symbols-outlined {
+  color: var(--rise-text-dim);
+  cursor: pointer;
+}
+
+.chip-container {
+  position: relative;
+}
+
+.chip-options {
+  background-color: rgba(0, 31, 40, 0.8);
+  position: absolute;
+  border-radius: 8px;
+  height: 15rem;
+  top: -16rem;
+  width: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.chip-option {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.chip-option:hover {
+  background-color: var(--surface-glass-elevation);
+}
