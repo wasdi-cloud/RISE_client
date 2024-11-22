@@ -193,10 +193,35 @@ export class UserAccountComponent implements OnInit {
                 });
             },
             error: (oError) => {
+              //handle the case of the user is the only admin
+
+              let sMessage = "You are the only Admin of " + this.getOrganizationName() + " You should add another  admin or delete the org"
+              this.m_oNotificationDialogService.openInfoDialog(
+                sMessage,
+                "Error",
+                'danger'
+              )
             },
           });
         }
       });
+  }
+
+  getOrganizationName() {
+    let sOrganizationName = "";
+    let sErrorMsg = this.m_oTranslate.instant('ORGANIZATION.ERROR_MSG');
+    this.m_oOrganizationService.getByUser().subscribe({
+      next: (oResponse) => {
+        if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
+          sOrganizationName = oResponse.name;
+        }
+
+      },
+      error: (oError) => {
+
+      },
+    });
+    return sOrganizationName;
   }
 
   changeEmail() {

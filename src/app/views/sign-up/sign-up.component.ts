@@ -179,9 +179,14 @@ export class SignUpComponent {
         }
       },
       error: (oError) => {
-        let asErrorCodes = oError.error.errorStringCodes.map((sCode) => {
-          return `<li>${this.m_oTranslate.instant('ERROR_MSG.' + sCode)}</li>`;
-        });
+        // let asErrorCodes = oError.error.errorStringCodes.map((sCode) => {
+        //   return `<li>${this.m_oTranslate.instant('ERROR_MSG.' + sCode)}</li>`;
+        // });
+        let asErrorCodes = Array.isArray(oError?.error?.errorStringCodes)
+          ? oError.error.errorStringCodes.map((sCode) =>
+            `<li>${this.m_oTranslate.instant('ERROR_MSG.' + sCode)}</li>`)
+          : [];
+
 
         console.log(asErrorCodes);
         let sErrorMsg = `'There were some problems with your inputted information. Please review your entries'<ul>
@@ -291,7 +296,7 @@ export class SignUpComponent {
   }
 
   private resetFormVariables() {
-    console.log(this.m_oUserInfoInput)
+
     this.m_oRegisterInput = {} as RegisterViewModel;
 
     this.m_oUserInfoInput = {
