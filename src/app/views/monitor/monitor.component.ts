@@ -101,11 +101,10 @@ export class MonitorComponent implements OnInit {
   openAOI(sAreaId: string) {
     this.m_oAreaService.getAreaById(sAreaId).subscribe({
       next: (oResponse) => {
-        console.log(oResponse)
         this.m_oAreaOfOperation = oResponse
         if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           this.getMapsByArea(oResponse.id, oResponse.startDate);
-          // this.m_oMapService.flyToMonitorBounds(oResponse.bbox);
+          this.m_oMapService.flyToMonitorBounds(oResponse.bbox);
         }
       },
       error: (oError) => {

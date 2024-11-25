@@ -44,7 +44,6 @@ const MIN_HEIGHT = 111_000; // Minimum height 1 degree in meters
 const MAX_WIDTH = 222_000; // Maximum width 2 degrees in meters
 const MAX_HEIGHT = 222_000; // Maximum height 2 degrees in meters
 
-
 @Injectable({
   providedIn: 'root',
 })
@@ -514,6 +513,10 @@ export class MapService {
    * @param sBbox
    */
   flyToMonitorBounds(sBbox: string): void {
+    // Some sBbox-es return extra bracket, if true, trim the last bracket to avoid error
+    if (sBbox.includes(')))')) {
+      sBbox = sBbox.slice(0, -1);
+    }
     let boundingBox: any = wktToGeoJSON(sBbox);
     boundingBox = geoJSON(boundingBox).getBounds();
     this.m_oRiseMap.fitBounds(boundingBox);
@@ -863,7 +866,6 @@ export class MapService {
     }
   }
 
-
   calculatePolygonArea(latlngs: any) {
     return L.GeometryUtil.geodesicArea(latlngs);
   }
@@ -877,20 +879,29 @@ export class MapService {
     const center = bounds.getCenter();
 
     // Log current width and height for debugging
-    console.log("Original width:", width, "Original height:", height);
+    console.log('Original width:', width, 'Original height:', height);
 
     // Adjust dimensions to fit within min/max constraints
     const adjustedWidth = Math.max(MIN_WIDTH, Math.min(width, MAX_WIDTH));
     const adjustedHeight = Math.max(MIN_HEIGHT, Math.min(height, MAX_HEIGHT));
-    console.log("Adjusted width:", adjustedWidth, "Adjusted height:", adjustedHeight);
+    console.log(
+      'Adjusted width:',
+      adjustedWidth,
+      'Adjusted height:',
+      adjustedHeight
+    );
 
     // Dynamic conversion factors
     const metersToLatitudeDegrees = (meters) => meters / 111_000;
-    const metersToLongitudeDegrees = (meters, latitude) => meters / (111_000 * Math.cos(latitude * Math.PI / 180));
+    const metersToLongitudeDegrees = (meters, latitude) =>
+      meters / (111_000 * Math.cos((latitude * Math.PI) / 180));
 
     // Convert adjusted dimensions to degrees
     const adjustedHeightDegrees = metersToLatitudeDegrees(adjustedHeight);
-    const adjustedWidthDegrees = metersToLongitudeDegrees(adjustedWidth, center.lat);
+    const adjustedWidthDegrees = metersToLongitudeDegrees(
+      adjustedWidth,
+      center.lat
+    );
 
     // Calculate new bounds based on the adjusted width and height in degrees
     const newBounds = [
@@ -906,7 +917,6 @@ export class MapService {
     // Apply the new bounds to the rectangle
     layer.setBounds(newBounds);
   }
-
 
   calculateCentroid(points: Array<{ lat: number; lng: number }>): {
     lat: number;
