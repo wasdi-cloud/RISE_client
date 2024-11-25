@@ -1,22 +1,24 @@
-import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, NgZone, OnDestroy, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
-import { RiseAffectedWidgetComponent } from './rise-affected-widget/rise-affected-widget.component';
-import { RiseAlertsWidgetComponent } from './rise-alerts-widget/rise-alerts-widget.component';
-import { RiseBannerComponent } from '../../components/rise-banner/rise-banner.component';
-import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
-import { RiseMapComponent } from '../../components/rise-map/rise-map.component';
-import { RiseOngoingWidgetComponent } from './rise-ongoing-widget/rise-ongoing-widget.component';
-import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
-import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
-import { RiseUserMenuComponent } from '../../components/rise-user-menu/rise-user-menu.component';
+import {RiseAffectedWidgetComponent} from './rise-affected-widget/rise-affected-widget.component';
+import {RiseAlertsWidgetComponent} from './rise-alerts-widget/rise-alerts-widget.component';
+import {RiseBannerComponent} from '../../components/rise-banner/rise-banner.component';
+import {RiseButtonComponent} from '../../components/rise-button/rise-button.component';
+import {RiseMapComponent} from '../../components/rise-map/rise-map.component';
+import {RiseOngoingWidgetComponent} from './rise-ongoing-widget/rise-ongoing-widget.component';
+import {RiseTextInputComponent} from '../../components/rise-text-input/rise-text-input.component';
+import {RiseToolbarComponent} from '../../components/rise-toolbar/rise-toolbar.component';
+import {RiseUserMenuComponent} from '../../components/rise-user-menu/rise-user-menu.component';
 
-import { EventViewModel } from '../../models/EventViewModel';
-import { AreaViewModel } from '../../models/AreaViewModel';
-import { AreaService } from '../../services/api/area.service';
-import { MapService } from '../../services/map.service';
-import { Subscription } from 'rxjs';
+import {EventViewModel} from '../../models/EventViewModel';
+import {AreaViewModel} from '../../models/AreaViewModel';
+import {AreaService} from '../../services/api/area.service';
+import {MapService} from '../../services/map.service';
+import {Subscription} from 'rxjs';
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
+import {UserService} from "../../services/api/user.service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-dashboard',
@@ -56,8 +58,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private m_oAreaService: AreaService,
     private m_oMapService: MapService,
     private m_oRouter: Router,
-    private ngZone: NgZone
-  ) {}
+    private ngZone: NgZone,
+    private m_oUserService: UserService,
+    private m_oTranslate: TranslateService
+  ) {
+  }
 
   ngOnInit(): void {
     this.getUsersAOI();
@@ -68,11 +73,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }
       }
     );
+
   }
+
+
 
   ngOnDestroy(): void {
     this.m_oActiveAOI?.unsubscribe();
   }
+
   /**
    * Navigates to the selected Routes (Account, Monitor, etc.)
    * @param sRoute
@@ -80,6 +89,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public navigateRoute(sRoute: string): void {
     this.m_oRouter.navigateByUrl(sRoute);
   }
+
   /*
    * Settings Button
    * My Account
@@ -113,7 +123,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   /**
    * TODO: Add the Areas of interest to the map
    */
-  addAOIToMap(oArea) {}
+  addAOIToMap(oArea) {
+  }
 
   /**
    * TODO: Open the Monitor view with selected area of interest
@@ -125,20 +136,24 @@ export class DashboardComponent implements OnInit, OnDestroy {
   /**
    * TODO: A widget showing the estimation of people affected in the different area of operations if there is any event ongoing
    */
-  getAffectedPeople() {}
+  getAffectedPeople() {
+  }
 
   /**
    * TODO: A widget showing the list of “on-going events”
    */
-  getOngoingEvents() {}
+  getOngoingEvents() {
+  }
 
   /**
    * TODO: A widget showing the alerts received from the configured CAP sources
    */
-  getAlerts() {}
+  getAlerts() {
+  }
 
   /**
    * TODO: User can click on an Area of Operation to access it
    */
-  handleAreaSelected() {}
+  handleAreaSelected() {
+  }
 }

@@ -1,22 +1,21 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import {Component} from '@angular/core';
+import {Router} from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
 
-import { AuthService } from '../../services/api/auth.service';
+import {AuthService} from '../../services/api/auth.service';
 
-import { OtpDialogComponent } from '../../dialogs/otp-dialog/otp-dialog.component';
-import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
-import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
+import {OtpDialogComponent} from '../../dialogs/otp-dialog/otp-dialog.component';
+import {RiseButtonComponent} from '../../components/rise-button/rise-button.component';
+import {RiseTextInputComponent} from '../../components/rise-text-input/rise-text-input.component';
 
-import { UserCredentialsViewModel } from '../../models/UserCredentialsViewModel';
-import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
-import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { RiseUtils } from '../../shared/utilities/RiseUtils';
-import { NgIf } from '@angular/common';
+import {UserCredentialsViewModel} from '../../models/UserCredentialsViewModel';
+import {RiseToolbarComponent} from '../../components/rise-toolbar/rise-toolbar.component';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
+import {RiseUtils} from '../../shared/utilities/RiseUtils';
+import {NgIf} from '@angular/common';
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
-import { UserService } from '../../services/api/user.service';
-import { ConstantsService } from '../../services/constants.service';
+import {UserService} from '../../services/api/user.service';
+import {ConstantsService} from '../../services/constants.service';
 
 @Component({
   selector: 'app-login-view',
