@@ -118,14 +118,9 @@ export class UserSubscriptionsComponent implements OnInit {
    * HQ Operator can click the Buy New Subscription button
    */
   openBuyNewSub(bInput: boolean) {
-    // this.m_bShowBuySub = bInput;
-    let sMessage =
-      'Your subscription is invalid.<br> Would you like to purchase a new one?';
-    this.m_oNotificationService
-      .openConfirmationDialog(sMessage, 'alert')
-      .subscribe(() => {
+    this.m_oDialog.open(BuyNewSubscriptionComponent).afterClosed().subscribe(() => {
         this.getSubscriptions();
-      });
+      });  
   }
 
   deleteSubscription(oSubscription: SubscriptionViewModel) {

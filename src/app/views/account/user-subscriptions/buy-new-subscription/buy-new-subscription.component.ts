@@ -144,7 +144,10 @@ export class BuyNewSubscriptionComponent implements OnInit {
     this.initSubscriptionInput();
 
     this.m_oSubscriptionService.buySubscription(this.m_oSubInput).subscribe({
-      next: (oResponse) => {},
+      next: (oResponse) => {
+        this.m_oNotificationService.openSnackBar('Subscription purchase successful', 'Success', 'success');
+        this.onDismiss();
+      },
       error: (oError) => {
         console.log(oError);
       },

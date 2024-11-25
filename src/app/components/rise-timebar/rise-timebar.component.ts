@@ -9,7 +9,6 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
-import { start } from 'repl';
 import { RiseChipMenuComponent } from '../rise-chip-menu/rise-chip-menu.component';
 
 @Component({
