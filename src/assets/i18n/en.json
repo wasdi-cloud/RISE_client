@@ -79,6 +79,9 @@
     "PASSWORD": "Password",
     "FORGOT_PASSWORD": "Forgot password? Click <a class='inner-html-link'>here</a>"
   },
+  "MONITOR": {
+    "ADD_EVENT": "Add event"
+  },
   "ORGANIZATION": {
     "ADDRESS": "Organization Address",
     "CONFIRM_DELETE_USER": "Are you sure you wish to remove this user from your organization?",
