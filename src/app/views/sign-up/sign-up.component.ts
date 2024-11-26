@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
@@ -17,6 +17,7 @@ import {OrganizationTypes} from '../../shared/organization-types';
 import {NgIf} from '@angular/common';
 import {NotificationsDialogsService} from '../../services/notifications-dialogs.service';
 import {Router} from "@angular/router";
+import FadeoutUtils from "../../shared/utilities/FadeoutUtils";
 
 @Component({
   selector: 'app-sign-up',
@@ -33,7 +34,7 @@ import {Router} from "@angular/router";
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.css',
 })
-export class SignUpComponent {
+export class SignUpComponent implements OnInit{
   m_oRegisterInput: RegisterViewModel = {} as RegisterViewModel;
 
   m_oUserInfoInput: UserViewModel = {} as UserViewModel;
@@ -289,7 +290,7 @@ export class SignUpComponent {
       return false;
     }
 
-    if (!this.m_oUserInfoInput.userId) {
+    if (!this.validateUserName()) {
       return false;
     }
     return true;
@@ -333,5 +334,18 @@ export class SignUpComponent {
     this.m_bOrgIsValid = true;
     this.m_bUsernameIsValid = true;
     this.m_sUsernameError = '';
+  }
+
+  validateUserName() {
+    let sUserId = this.m_oUserInfoInput.userId;
+    if(sUserId){
+      if(sUserId.length<8) {
+        this.m_sUsernameError =
+          'Please ensure that user id is longer than 8 characters';
+        return false;
+
+      }
+    }
+    return true;
   }
 }

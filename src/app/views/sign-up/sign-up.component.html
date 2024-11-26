@@ -16,7 +16,7 @@
         [m_sErrorText]="m_sUsernameError"
         [m_bHasTitle]="true"
         [(m_sInputText)]="m_oUserInfoInput.userId"
-        [m_bIsValid]="m_bUsernameIsValid"
+        [m_bIsValid]="validateUserName() && m_bUsernameIsValid"
       ></rise-text-input>
         <rise-text-input
           [m_sLocalizationKey]="'REGISTER.EMAIL'"
