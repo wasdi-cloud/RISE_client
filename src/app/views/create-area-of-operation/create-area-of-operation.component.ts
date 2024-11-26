@@ -109,7 +109,7 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     // Optional: Ensure the component reference is available
 
-    //todo get users that belong to current user org eithr by direct call or get all users and match with current user org id
+    //todo get users that belong to current user org either by direct call or get all users and match with current user org id
     this.m_oPluginService.getPluginsList().subscribe({
       next: (aoResponse) => {
         for (const aoResponseElement of aoResponse) {
@@ -253,8 +253,13 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
       .openConfirmationDialog(sMessage, 'alert')
       .subscribe((oResult) => {
         if (oResult) {
-          //todo go to subscription page
-          this.m_oRouter.navigateByUrl('/buy-new-subscription');
+          //go to subscription page
+          //todo this is a bad solution
+          this.m_oRouter.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.m_oRouter.navigateByUrl('/account', {
+              state: { m_sActiveOutlet: 'subscriptions' },
+            });
+          });
         }
       });
   }

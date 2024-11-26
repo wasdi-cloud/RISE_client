@@ -1,18 +1,19 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import {Injectable} from '@angular/core';
 
-import { AreaViewModel } from '../models/AreaViewModel';
+import {AreaViewModel} from '../models/AreaViewModel';
 
-import { MatDialog } from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 
 import Geocoder from 'leaflet-control-geocoder';
-import { Coords, geoJSON, Map, Marker } from 'leaflet';
+import {geoJSON, Map, Marker} from 'leaflet';
 import 'leaflet-draw';
 import 'leaflet-mouse-position';
-import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
-import { wktToGeoJSON } from '@terraformer/wkt';
-import { ManualBoundingBoxComponent } from '../dialogs/manual-bounding-box-dialog/manual-bounding-box.component';
-import { ImportShapeFileStationDialogComponent } from '../dialogs/import-shape-file-station-dialog/import-shape-file-station-dialog.component';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import {wktToGeoJSON} from '@terraformer/wkt';
+import {ManualBoundingBoxComponent} from '../dialogs/manual-bounding-box-dialog/manual-bounding-box.component';
+import {
+  ImportShapeFileStationDialogComponent
+} from '../dialogs/import-shape-file-station-dialog/import-shape-file-station-dialog.component';
 // import L from 'leaflet';
 declare const L: any;
 
@@ -31,7 +32,7 @@ const iconDefault = L.icon({
 });
 L.Marker.prototype.options.icon = iconDefault;
 
-export interface TileLayer {}
+
 
 const MAX_STORAGE_SIZE = 2 * 1024 * 1024; // 2MB for testing
 const MIN_ZOOM = 3;
@@ -144,7 +145,7 @@ export class MapService {
     radius: number;
   }>();
 
-  constructor(private m_oDialog: MatDialog, private m_oRouter: Router) {}
+  constructor(private m_oDialog: MatDialog) {}
 
   setMapOptions() {
     this.m_oOptions = {
@@ -176,9 +177,7 @@ export class MapService {
     return this.m_oRiseMap;
   }
 
-  getOSMBasicLayer() {
-    return this.m_oOSMBasic;
-  }
+
 
   /**
    * Initialize base layers
@@ -192,7 +191,7 @@ export class MapService {
           '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
         maxZoom: MAX_ZOOM,
         minZoom: MIN_ZOOM,
-        // this option disables loading tiles outside of the world bounds.
+        // this option disables loading tiles outside the world bounds.
         noWrap: true,
       }
     );
@@ -273,9 +272,10 @@ export class MapService {
 
     activeLayer.off('tileloadstart'); // Remove any existing listener on this layer
 
+
     activeLayer.on(
       'tileloadstart',
-      async (event: { tile: { src: string } }) => {
+      async (event: { tile: { src: string ,style:any} }) => {
         let oMap = this.getMap();
         const zoomLevel = oMap?.getZoom();
         if (zoomLevel && zoomLevel >= 3 && zoomLevel <= 13) {
@@ -302,8 +302,7 @@ export class MapService {
               // Cache the tile
               await this.cacheTiles(url, blob);
 
-              const blobUrl = URL.createObjectURL(blob);
-              event.tile.src = blobUrl;
+              event.tile.src = URL.createObjectURL(blob);
             }
           } catch (error) {
             console.error('Error during tile load:', error);
@@ -317,75 +316,7 @@ export class MapService {
     );
   }
 
-  // async loadTilesInitially(oMap, oMapLayer: L.TileLayer) {
-  //   const zoomLevel = oMap.getZoom();
-  //
-  //   // Check if the zoom level is within the allowed range
-  //   if (zoomLevel < 3 || zoomLevel > 13) {
-  //     console.log("Zoom level needs to be between 3 and 13 for cache to work");
-  //     return;
-  //   }
-  //
-  //   const tileBounds = oMap.getPixelBounds(); // Get bounds of the current map view in pixels
-  //   const tileSize = oMapLayer.options.tileSize as number; // Default tile size is 256px
-  //   const tilesInView = {
-  //     xMin: Math.floor(tileBounds.min.x / tileSize),
-  //     yMin: Math.floor(tileBounds.min.y / tileSize),
-  //     xMax: Math.ceil(tileBounds.max.x / tileSize),
-  //     yMax: Math.ceil(tileBounds.max.y / tileSize),
-  //   };
-  //
-  //
-  //   // Loop through each tile in the visible range
-  //   for (let x = tilesInView.xMin; x <= tilesInView.xMax; x++) {
-  //     for (let y = tilesInView.yMin; y <= tilesInView.yMax; y++) {
-  //
-  //       const tileUrl =oMapLayer.getTileUrl(<Coords>{x:x,y:y,z:zoomLevel as number})
-  //
-  //       try {
-  //         const cachedTile = await this.getTileFromCache(tileUrl);
-  //
-  //         if (cachedTile) {
-  //
-  //           console.log("Initial Tile loaded from cache:", tileUrl);
-  //           const blobUrl = URL.createObjectURL(cachedTile);
-  //           // Instead of directly changing tile's src, you can listen to the 'tileload' event
-  //           oMapLayer.on('tileload', (event) => {
-  //             if (event.tile.src === tileUrl) {
-  //               event.tile.src = blobUrl; // Set the tile's source to the cached Blob URL
-  //             }
-  //           });
-  //         } else {
-  //           // Tile was not found in cache, fetch it from the network
-  //           console.log("Initially Tile not found in cache, fetching from network:", tileUrl);
-  //
-  //           // Fetch the tile from the network
-  //           const response = await fetch(tileUrl);
-  //           if (!response.ok) {
-  //             throw new Error('Network response was not ok');
-  //           }
-  //           const blob = await response.blob();
-  //
-  //           // Cache the tile
-  //           await this.cacheEsriTile(tileUrl, blob);
-  //
-  //           // Create a Blob URL for the fetched tile
-  //           const blobUrl = URL.createObjectURL(blob);
-  //           // Do something with blobUrl here if needed for the initial load
-  //           // Set the tile's source to the cached blob;
-  //           // Listen to 'tileload' for setting the source as before
-  //           oMapLayer.on('tileload', (event) => {
-  //             if (event.tile.src === tileUrl) {
-  //               event.tile.src = blobUrl; // Set the tile's source
-  //             }
-  //           });
-  //         }
-  //       } catch (error) {
-  //         console.error("Error loading tile initially:", error);
-  //       }
-  //     }
-  //   }
-  // }
+
 
   getActiveLayer() {
     return this.m_oActiveBaseLayer;
@@ -460,8 +391,8 @@ export class MapService {
     const height = southWest.distanceTo(
       new L.LatLng(northEast.lat, southWest.lng)
     );
-    const area = (width * height) / 1000000; // Convert area from square meters to square kilometers
-    return area;
+     // Convert area from square meters to square kilometers
+    return (width * height) / 1000000;
   }
 
   /**
@@ -658,7 +589,7 @@ export class MapService {
   }
 
   /**
-   * Handler function for drawing rectangles/polygons/etc on map - Creates bounding box to string
+   * Handler function for drawing rectangles/polygons/etc. on map - Creates bounding box to string
    * @param oEvent
    * @param oMap
    */
@@ -686,7 +617,6 @@ export class MapService {
     if (layerType === 'circle') {
       const radius = layer.getRadius(); // Radius in meters
       const center = oEvent.layer.getLatLng();
-      const area = this.calculateCircleArea(radius); // Area of the circle (πr²)
       if (this.m_oDrawMarker) {
         oMap.removeLayer(this.m_oDrawMarker);
       }
@@ -722,7 +652,7 @@ export class MapService {
         timestamp: Date.now(),
       };
 
-      // If the total size exceeds the limit, evict oldest tiles
+      // If the total size exceeds the limit, evict the oldest tiles
       if (totalSize > MAX_STORAGE_SIZE) {
         console.log('Max storage limit exceeded. Evicting oldest tiles...');
         await this.evictOldestTiles(store); // Pass the store to avoid transaction issues

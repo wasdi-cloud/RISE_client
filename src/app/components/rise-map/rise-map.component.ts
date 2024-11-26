@@ -90,6 +90,13 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngOnInit(): void {
+    if (!this.m_bIsSelectingArea) {
+      if (this.m_aoAreas.length > 0) {
+        for (let oArea of this.m_aoAreas) {
+          this.m_oMapService.addMarker(oArea, this.m_oMap);
+        }
+      }
+    }
   }
 
   ngAfterViewInit(): void {
@@ -108,7 +115,6 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   onMapReady(oMap) {
     this.m_oMap = oMap;
     this.m_oMapService.setMap(this.m_oMap);
-
     if (this.m_bIsSelectingArea) {
       this.m_oMapService.clearPreviousDrawings(oMap);
     }
@@ -142,6 +148,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       console.log('base layer changed');
       this.m_oMapService.setActiveLayer(oMap, e.layer);
     });
+
   }
 
   addCircleButton(oMap: L.Map): void {

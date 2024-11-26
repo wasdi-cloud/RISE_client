@@ -1,3 +1,4 @@
+<!--Manage area of operations-->
 <div *ngIf="!m_bShowNewArea" class="area-outlet h-100">
   <div
     class="area-container h-100 d-flex flex-column justify-content-between px-4"
@@ -50,10 +51,12 @@
     </div>
   </div>
 </div>
+<!--create area of operations-->
 <app-create-area-of-operation
   *ngIf="m_bShowNewArea"
   (m_oExitPage)="toggleShowNew(false)"
 ></app-create-area-of-operation>
+
 <!-- Left column (1/3 width) -->
 <!-- <div class="d-flex flex-column flex-fill gap-5" style="flex: 1">
     <rise-crud-table

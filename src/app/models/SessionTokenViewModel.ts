@@ -1,3 +1,3 @@
-export class SessionTokenViewModel extends RiseViewModel {
+export class SessionTokenViewModel {
   token: string;
 }

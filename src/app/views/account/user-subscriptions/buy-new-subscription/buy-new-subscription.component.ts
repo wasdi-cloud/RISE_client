@@ -19,9 +19,10 @@ import { PluginViewModel } from '../../../../models/PluginViewModel';
 import { NotificationsDialogsService } from '../../../../services/notifications-dialogs.service';
 import { SubscriptionViewModel } from '../../../../models/SubscriptionViewModel';
 import { ConstantsService } from '../../../../services/constants.service';
-import { PaymentType } from '../../../../models/PaymentType';
+
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import FadeoutUtils from '../../../../shared/utilities/FadeoutUtils';
+import {UserService} from "../../../../services/api/user.service";
 
 @Component({
   selector: 'buy-new-subscription',
@@ -71,14 +72,15 @@ export class BuyNewSubscriptionComponent implements OnInit {
     private m_oDialogRef: MatDialogRef<BuyNewSubscriptionComponent>,
     private m_oNotificationService: NotificationsDialogsService,
     private m_oPluginService: PluginService,
-    private m_oSubscriptionService: SubscriptionService
+    private m_oSubscriptionService: SubscriptionService,
+    private m_oUserService:UserService
   ) {}
 
   ngOnInit(): void {
     this.getSubTypes();
     this.getPlugins();
     this.getPaymentTypes();
-    this.m_sOrganizationId = this.m_oData.organizationId;
+    this.m_sOrganizationId = this.getOrganizationId();
   }
 
   getSubTypes() {
@@ -87,7 +89,9 @@ export class BuyNewSubscriptionComponent implements OnInit {
         this.m_aoSubTypes = oResponse;
         this.initSubTypeNames();
       },
-      error: (oError) => {},
+      error: (oError) => {
+        console.error(oError)
+      },
     });
   }
 
@@ -105,7 +109,9 @@ export class BuyNewSubscriptionComponent implements OnInit {
           this.initPluginNames();
         }
       },
-      error: (oError) => {},
+      error: (oError) => {
+        console.error(oError)
+      },
     });
   }
 
@@ -180,6 +186,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
           }
         },
         error: (oError) => {
+          console.error(oError)
           this.m_oNotificationService.openInfoDialog(
             'Could not get the computed price for these inputs.',
             'error',
@@ -234,4 +241,23 @@ export class BuyNewSubscriptionComponent implements OnInit {
   onDismiss() {
     this.m_oDialogRef.close();
   }
+
+  private getOrganizationId() {
+    let sOrganizationId:string="";
+    if(this.m_oData?.organizationId){
+      sOrganizationId= this.m_oData.organizationId;
+    }else{
+      this.m_oUserService.getUser().subscribe({
+        next: (oResponse) => {
+          if (FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
+            return;
+          }
+          sOrganizationId = oResponse.organizationId;
+        },
+      });
+    }
+    return sOrganizationId;
+
+  }
+
 }
