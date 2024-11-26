@@ -13,7 +13,7 @@ export class RiseButtonComponent {
   /**
    * The label that will appear on interior of the button
    */
-  @Input() m_sLabel: string = 'default';
+  @Input() m_sLabel: string = '';
 
   /**
    * What is the role of the button? (Colour)
