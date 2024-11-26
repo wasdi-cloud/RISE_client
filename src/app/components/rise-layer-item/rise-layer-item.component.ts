@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RiseButtonComponent } from '../rise-button/rise-button.component';
+import { LayerViewModel } from '../../models/LayerViewModel';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'rise-layer-item',
   standalone: true,
-  imports: [CommonModule, FormsModule, RiseButtonComponent],
+  imports: [CommonModule, FormsModule, MatTooltip],
   templateUrl: './rise-layer-item.component.html',
   styleUrl: './rise-layer-item.component.css',
 })
@@ -24,6 +25,11 @@ export class RiseLayerItemComponent {
     null
   );
 
+  @Output() m_oEmitAction: EventEmitter<{
+    layer: LayerViewModel;
+    action: string;
+  }> = new EventEmitter<{ layer: LayerViewModel; action: string }>(null);
+
   toggleExpandedContent() {
     this.m_bShowExpanded = !this.m_bShowExpanded;
   }
@@ -36,4 +42,14 @@ export class RiseLayerItemComponent {
   emitOpacity() {
     this.m_oLayerOpacity.emit(this.m_iOpacity);
   }
+
+  emitAction(sAction) {
+    let oEmitObject = {
+      layer: this.m_oLayer, 
+      action: sAction
+    }
+
+    this.m_oEmitAction.emit(oEmitObject);
+  }
+
 }

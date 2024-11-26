@@ -9,7 +9,7 @@
           {{ m_oLayer.mapId }}
         </div>
         <div class="ref-date">
-          {{ m_oLayer.referenceDate  * 1000 | date : "dd/MM/YYYY hh:mm:ss a" }}
+          {{ m_oLayer.referenceDate * 1000 | date : "dd/MM/YYYY hh:mm:ss a" }}
         </div>
       </div>
     </div>
@@ -46,13 +46,40 @@
     </div>
     <div
       *ngIf="m_bShowExpanded"
-      class="expanded-content d-flex flex-column gap-2"
+      class="expanded-content d-flex flex-row justify-content-between"
     >
-      <rise-button [m_sLabel]="'Show Legend'"></rise-button>
-      <rise-button
-        [m_sLabel]="'Remove Layer'"
-        [m_sRole]="'danger'"
-      ></rise-button>
+      <div class="d-flex flex-row gap-2">
+        <span
+          class="material-symbols-outlined"
+          [matTooltip]="'Toggle legend visibility'"
+          (click)="emitAction('toggleLegend')"
+        >
+          legend_toggle
+        </span>
+        <span
+          class="material-symbols-outlined"
+          [matTooltip]="'Focus on layer'"
+          (click)="emitAction('zoomTo')"
+        >
+          crop_free
+        </span>
+        <span
+          class="material-symbols-outlined"
+          [matTooltip]="'Download file'"
+          (click)="emitAction('download')"
+        >
+          download
+        </span>
+      </div>
+      <div class="">
+        <span
+          class="material-symbols-outlined delete justify-self-end align-self-end"
+          (click)="emitAction('remove')"
+          [matTooltip]="'Remove layer'"
+        >
+          delete
+        </span>
+      </div>
     </div>
   </div>
 </div>
