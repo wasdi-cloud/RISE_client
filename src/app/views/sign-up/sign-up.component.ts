@@ -101,7 +101,7 @@ export class SignUpComponent {
     let sConfirmPw = this.m_oPasswordInputs.confirmPw;
     // Minimum 8 Characters, at least one letter, one number, and one special character:
     const passwordRegex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&,])[A-Za-z\d@$!%*#?&,]{8,}/;
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&,.])[A-Za-z\d@$!%*#?&,.]{8,}/
     // If the user has modified both inputs
     if (sPassword && sConfirmPw) {
       //If the first password doesn't pass regex OR the pw's don't match

@@ -26,14 +26,7 @@ import {OTPViewModel} from "../../../models/OTPViewModel";
 @Component({
   selector: 'user-account',
   standalone: true,
-  imports: [
-    CommonModule,
-    TranslateModule,
-    RiseButtonComponent,
-    RiseCheckboxComponent,
-    RiseDropdownComponent,
-    RiseTextInputComponent,
-  ],
+  imports: [CommonModule, TranslateModule, RiseButtonComponent, RiseCheckboxComponent, RiseDropdownComponent, RiseTextInputComponent,],
   templateUrl: './user-account.component.html',
   styleUrl: './user-account.component.css',
 })
@@ -46,49 +39,28 @@ export class UserAccountComponent implements OnInit {
   m_bValidEmail: boolean = true;
   m_bValidPw: boolean = true;
 
-  m_aoLanguages = [
-    {
-      name: 'English',
-      value: 'en',
-    },
-    {
-      name: 'Español',
-      value: 'es',
-    },
-    {
-      name: 'Français',
-      value: 'fr',
-    },
-    {
-      name: 'عربي',
-      value: 'ar',
-    },
-  ];
+  m_aoLanguages = [{
+    name: 'English', value: 'en',
+  }, {
+    name: 'Español', value: 'es',
+  }, {
+    name: 'Français', value: 'fr',
+  }, {
+    name: 'عربي', value: 'ar',
+  },];
 
   m_oEmailInputs = {
-    currentEmail: '',
-    newEmail: '',
-    verifyNewEmail: '',
+    currentEmail: '', newEmail: '', verifyNewEmail: '',
   };
   m_oPasswordInputs = {
-    currentPW: '',
-    newPw: '',
-    verifyNewPw: '',
+    currentPW: '', newPw: '', verifyNewPw: '',
   };
 
   m_oEmail;
   //TODO : UPDATE USER INFORMATION
   m_sPasswordError: string = '';
 
-  constructor(
-    private m_oAuthService: AuthService,
-    private m_oConstantsService: ConstantsService,
-    private m_oDialog: MatDialog,
-    private m_oNotificationDialogService: NotificationsDialogsService,
-    private m_oOrganizationService: OrganizationsService,
-    private m_oTranslate: TranslateService,
-    private m_oUserService: UserService,
-  ) {
+  constructor(private m_oAuthService: AuthService, private m_oConstantsService: ConstantsService, private m_oDialog: MatDialog, private m_oNotificationDialogService: NotificationsDialogsService, private m_oOrganizationService: OrganizationsService, private m_oTranslate: TranslateService, private m_oUserService: UserService,) {
     m_oTranslate.addLangs(['en', 'es', 'fr', 'ar']);
     m_oTranslate.setDefaultLang('en');
   }
@@ -96,6 +68,7 @@ export class UserAccountComponent implements OnInit {
   ngOnInit(): void {
     this.getUserInfo();
     this.translateNotifications();
+
   }
 
   /**
@@ -109,8 +82,8 @@ export class UserAccountComponent implements OnInit {
         }
         this.m_oUser = oResponse;
         this.m_oEmailInputs.currentEmail = this.m_oUser.email;
-        console.log(this.m_oUser);
         this.initCheckboxOptions();
+
       },
     });
     this.m_oOrganizationService.getByUser().subscribe({
@@ -119,21 +92,18 @@ export class UserAccountComponent implements OnInit {
           this.m_oOrganization = oResponse;
           this.m_oConstantsService.setOrganization(this.m_oOrganization);
         }
-      },
-      error: (oError) => {
+      }, error: (oError) => {
         console.log(oError);
       },
     });
   }
 
   /**
-   * Save changes to the user id, name, surname, number, language, and notification settings
+   * Save changes to the user id, name, surname, number
    */
-  saveInformation() {
+  saveUserPersonalInformation() {
     let oBody = {
-      name: this.m_oUser.name,
-      surname: this.m_oUser.surname,
-      mobile: this.m_oUser.mobile,
+      name: this.m_oUser.name, surname: this.m_oUser.surname, mobile: this.m_oUser.mobile,
     };
     this.m_oUserService.updateUser(oBody).subscribe({
       next: (oResponse) => {
@@ -143,6 +113,7 @@ export class UserAccountComponent implements OnInit {
   }
 
   translateLanguageTo(lang: any) {
+    this.m_oUser.defaultLanguage = lang.value.value;
     this.m_oTranslate.use(lang.value.value);
   }
 
@@ -152,10 +123,7 @@ export class UserAccountComponent implements OnInit {
   deleteUser() {
     let oOtpVm: OTPVerifyViewModel = {} as OTPVerifyViewModel;
     this.m_oNotificationDialogService
-      .openConfirmationDialog(
-        'Are you sure you want to delete your RISE account? This is a destructive action and cannot be undone.',
-        'danger'
-      )
+      .openConfirmationDialog('Are you sure you want to delete your RISE account? This is a destructive action and cannot be undone.', 'danger')
       .subscribe((bResult) => {
         if (bResult) {
           this.m_oUserService.deleteAccount().subscribe({
@@ -173,8 +141,7 @@ export class UserAccountComponent implements OnInit {
                   this.m_oAuthService.verifyOTP(oOTPVerifyVM).subscribe({
                     next: (oResponse) => {
                       let oOtpVm = {
-                        id: oOTPVerifyVM.id,
-                        userId: oOTPVerifyVM.userId,
+                        id: oOTPVerifyVM.id, userId: oOTPVerifyVM.userId,
                       };
                       if (oResponse.status === 200) {
                         this.m_oUserService
@@ -182,8 +149,7 @@ export class UserAccountComponent implements OnInit {
                           .subscribe({
                             next: (oResponse) => {
                               this.m_oAuthService.logout();
-                            },
-                            error: (oError) => {
+                            }, error: (oError) => {
                               console.log(oResponse);
                             },
                           });
@@ -191,16 +157,11 @@ export class UserAccountComponent implements OnInit {
                     },
                   });
                 });
-            },
-            error: (oError) => {
+            }, error: (oError) => {
               //handle the case of the user is the only admin
 
               let sMessage = "You are the only Admin of " + this.getOrganizationName() + " You should add another  admin or delete the org"
-              this.m_oNotificationDialogService.openInfoDialog(
-                sMessage,
-                "Error",
-                'danger'
-              )
+              this.m_oNotificationDialogService.openInfoDialog(sMessage, "Error", 'danger')
             },
           });
         }
@@ -216,8 +177,7 @@ export class UserAccountComponent implements OnInit {
           sOrganizationName = oResponse.name;
         }
 
-      },
-      error: (oError) => {
+      }, error: (oError) => {
 
       },
     });
@@ -226,32 +186,25 @@ export class UserAccountComponent implements OnInit {
 
   changeEmail() {
     let oEmailVM: ChangeEmailViewModel = {
-      oldEmail: this.m_oUser.email,
-      newEmail: this.m_oEmailInputs.newEmail,
+      oldEmail: this.m_oUser.email, newEmail: this.m_oEmailInputs.newEmail,
     };
     this.m_oUserService.updateEmail(oEmailVM).subscribe({
       next: (oResponse) => {
         console.log(oResponse);
-      },
-      error: (oError) => {
+      }, error: (oError) => {
       },
     });
   }
 
   changePassword() {
     let oChangePasswordRequest: ChangePasswordRequestViewModel = {
-      oldPassword: this.m_oPasswordInputs.currentPW,
-      newPassword: this.m_oPasswordInputs.newPw
+      oldPassword: this.m_oPasswordInputs.currentPW, newPassword: this.m_oPasswordInputs.newPw
     }
     this.m_oUserService.updatePassword(oChangePasswordRequest).subscribe({
       next: (oResponse) => {
         this.confirmChangePassword(oResponse)
       }, error: (oError) => {
-        this.m_oNotificationDialogService.openSnackBar(
-          "Password did not change",
-          'Error',
-          'danger'
-        )
+        this.m_oNotificationDialogService.openSnackBar("Password did not change", 'Error', 'danger')
       }
     })
   }
@@ -263,26 +216,17 @@ export class UserAccountComponent implements OnInit {
   }
 
   translateNotifications() {
-    this.m_aoNotificationOptions = this.m_aoNotificationOptions.map(
-      (oOption) => {
-        return {
-          label: this.m_oTranslate.instant(oOption.label),
-          value: oOption.value,
-        };
-      }
-    );
+    this.m_aoNotificationOptions = this.m_aoNotificationOptions.map((oOption) => {
+      return {
+        label: this.m_oTranslate.instant(oOption.label), value: oOption.value,
+      };
+    });
   }
 
   handleCheckboxChange(aoEvent: Array<string>) {
-    aoEvent.includes('notifyActivities')
-      ? (this.m_oUser.notifyActivities = true)
-      : (this.m_oUser.notifyActivities = false);
-    aoEvent.includes('notifyMaintenance')
-      ? (this.m_oUser.notifyMaintenance = true)
-      : (this.m_oUser.notifyMaintenance = false);
-    aoEvent.includes('notifyNewsletter')
-      ? (this.m_oUser.notifyNewsletter = true)
-      : (this.m_oUser.notifyNewsletter = false);
+    aoEvent.includes('notifyActivities') ? (this.m_oUser.notifyActivities = true) : (this.m_oUser.notifyActivities = false);
+    aoEvent.includes('notifyMaintenance') ? (this.m_oUser.notifyMaintenance = true) : (this.m_oUser.notifyMaintenance = false);
+    aoEvent.includes('notifyNewsletter') ? (this.m_oUser.notifyNewsletter = true) : (this.m_oUser.notifyNewsletter = false);
   }
 
   initCheckboxOptions() {
@@ -304,13 +248,8 @@ export class UserAccountComponent implements OnInit {
   saveNotifications() {
     this.m_oUserService.updateNotifications(this.m_oUser).subscribe({
       next: (oResponse) => {
-        this.m_oNotificationDialogService.openSnackBar(
-          'Notification Settings Saved',
-          'Success',
-          'success'
-        );
-      },
-      error: (oError) => {
+        this.m_oNotificationDialogService.openSnackBar('Notification Settings Saved', 'Success', 'success');
+      }, error: (oError) => {
         console.log(oError);
       },
     });
@@ -322,10 +261,7 @@ export class UserAccountComponent implements OnInit {
   enableChangeEmail(): boolean {
     if (!this.m_oEmailInputs.currentEmail) {
       return false;
-    } else if (
-      !this.m_oEmailInputs.newEmail ||
-      !this.m_oEmailInputs.verifyNewEmail
-    ) {
+    } else if (!this.m_oEmailInputs.newEmail || !this.m_oEmailInputs.verifyNewEmail) {
       return false;
     } else if (!this.validateEmail()) {
       return false;
@@ -337,14 +273,12 @@ export class UserAccountComponent implements OnInit {
     let sPassword = this.m_oPasswordInputs.newPw;
     let sConfirmPw = this.m_oPasswordInputs.verifyNewPw;
     // Minimum 8 Characters, at least one letter, one number, and one special character:
-    const passwordRegex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&,])[A-Za-z\d@$!%*#?&,]{8,}/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&,.])[A-Za-z\d@$!%*#?&,]{8,}/;
     // If the user has modified both inputs
     if (sPassword && sConfirmPw) {
       //If the first password doesn't pass regex OR the pw's don't match
       if (!passwordRegex.test(sPassword)) {
-        this.m_sPasswordError =
-          'A good password contains: <br><ul><li>Minimum 8 characters</li><li>At least 1 letter</li><li>At least 1 capital letter</li><li>At least one number</li><li>At least one special character</li></ul>';
+        this.m_sPasswordError = 'A good password contains: <br><ul><li>Minimum 8 characters</li><li>At least 1 letter</li><li>At least 1 capital letter</li><li>At least one number</li><li>At least one special character</li></ul>';
         return false;
       } else if (sPassword !== sConfirmPw) {
         this.m_sPasswordError = 'The passwords do not match';
@@ -360,19 +294,11 @@ export class UserAccountComponent implements OnInit {
 
   validateEmail(): boolean {
     let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (
-      !emailRegex.test(this.m_oEmailInputs.newEmail) ||
-      !emailRegex.test(this.m_oEmailInputs.verifyNewEmail)
-    ) {
+    if (!emailRegex.test(this.m_oEmailInputs.newEmail) || !emailRegex.test(this.m_oEmailInputs.verifyNewEmail)) {
       return false;
-    } else if (
-      this.m_oEmailInputs.newEmail !== this.m_oEmailInputs.verifyNewEmail
-    ) {
+    } else if (this.m_oEmailInputs.newEmail !== this.m_oEmailInputs.verifyNewEmail) {
       return false;
-    } else if (
-      this.m_oEmailInputs.currentEmail === this.m_oEmailInputs.newEmail ||
-      this.m_oEmailInputs.currentEmail === this.m_oEmailInputs.verifyNewEmail
-    ) {
+    } else if (this.m_oEmailInputs.currentEmail === this.m_oEmailInputs.newEmail || this.m_oEmailInputs.currentEmail === this.m_oEmailInputs.verifyNewEmail) {
       return false;
     } else if (this.m_oEmailInputs.currentEmail !== this.m_oUser.email) {
       return false;
@@ -385,10 +311,7 @@ export class UserAccountComponent implements OnInit {
     if (!this.m_oPasswordInputs.currentPW) {
 
       return false;
-    } else if (
-      !this.m_oPasswordInputs.newPw ||
-      !this.m_oPasswordInputs.verifyNewPw
-    ) {
+    } else if (!this.m_oPasswordInputs.newPw || !this.m_oPasswordInputs.verifyNewPw) {
 
       return false;
     } else if (!this.validatePassword()) {
@@ -396,6 +319,18 @@ export class UserAccountComponent implements OnInit {
       return false;
     }
     return true;
+  }
+
+  saveUserLanguagesSetting() {
+    if (this.m_oUser.defaultLanguage) {
+      this.m_oUserService.changeUserLanguageSetting(this.m_oUser).subscribe({
+        next: (oResponse) => {
+          this.getUserInfo();
+        }, error: (oError) => {
+          console.error(oError)
+        }
+      })
+    }
   }
 
   private confirmChangePassword(oOtpViewModel: OTPViewModel) {
@@ -413,8 +348,7 @@ export class UserAccountComponent implements OnInit {
           next: (oResponse) => {
 
             let oOtpVm = {
-              id: oOtpViewModel.id,
-              userId: oOtpViewModel.userId,
+              id: oOtpViewModel.id, userId: oOtpViewModel.userId,
             };
             if (oResponse.status === 200) {
               this.m_oUserService
@@ -422,13 +356,8 @@ export class UserAccountComponent implements OnInit {
                 .subscribe({
                   next: (oResponse) => {
                     this.getUserInfo();
-                    this.m_oNotificationDialogService.openSnackBar(
-                      "Password Changed Successfully",
-                      "Success",
-                      "success"
-                    )
-                  },
-                  error: (oError) => {
+                    this.m_oNotificationDialogService.openSnackBar("Password Changed Successfully", "Success", "success")
+                  }, error: (oError) => {
                     console.log(oResponse);
                   },
                 });
@@ -437,4 +366,5 @@ export class UserAccountComponent implements OnInit {
         });
       });
   }
+
 }

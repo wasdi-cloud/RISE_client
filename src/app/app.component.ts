@@ -1,6 +1,10 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
+import FadeoutUtils from "./shared/utilities/FadeoutUtils";
+import {UserService} from "./services/api/user.service";
+import {TranslateService} from "@ngx-translate/core";
+
 
 @Component({
   selector: 'app-root',
@@ -9,6 +13,30 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'rise-client';
+
+  constructor(
+    private m_oUserService:UserService,
+    private m_oTranslate:TranslateService
+  ) {
+
+  }
+
+  ngOnInit(){
+    this.getUserInfo();
+  }
+  getUserInfo() {
+    this.m_oUserService.getUser().subscribe({
+      next: (oResponse) => {
+        if (FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
+          return;
+        }
+        if (oResponse.defaultLanguage) {
+          this.m_oTranslate.use(oResponse.defaultLanguage);
+        }
+      },
+    });
+
+  }
 }
