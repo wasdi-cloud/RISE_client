@@ -14,6 +14,7 @@ import {ManualBoundingBoxComponent} from '../dialogs/manual-bounding-box-dialog/
 import {
   ImportShapeFileStationDialogComponent
 } from '../dialogs/import-shape-file-station-dialog/import-shape-file-station-dialog.component';
+import FadeoutUtils from '../shared/utilities/FadeoutUtils';
 // import L from 'leaflet';
 declare const L: any;
 
@@ -705,6 +706,7 @@ export class MapService {
       };
     });
   }
+
   /**
    * Evict the oldest tiles to free the storage
    * @param store
@@ -730,6 +732,7 @@ export class MapService {
       };
     });
   }
+
   /**
    * Evict the oldest tiles to free the storage
    * @param url
@@ -1071,5 +1074,30 @@ export class MapService {
   addZoom() {
     let oMap = this.m_oRiseMap;
     L.control.zoom({ position: 'bottomright' }).addTo(oMap);
+  }
+
+  getLegendUrl(oLayer) {
+    if (FadeoutUtils.utilsIsObjectNullOrUndefined(oLayer)) {
+      return '';
+    }
+
+    let sGeoserverUrl: string = oLayer.geoserverUrl;
+
+    // if (!sGeoserverUrl) {
+    //   sGeoserverUrl = this.m_oConstantsService.getWmsUrlGeoserver();
+    // }
+
+    if (sGeoserverUrl.endsWith('?')) {
+      sGeoserverUrl = sGeoserverUrl.replace('ows?', 'wms?');
+    } else {
+      sGeoserverUrl = sGeoserverUrl.replace('ows', 'wms?');
+    }
+
+    sGeoserverUrl =
+      sGeoserverUrl +
+      'request=GetLegendGraphic&format=image/png&WIDTH=12&HEIGHT=12&legend_options=fontAntiAliasing:true;fontSize:10&LEGEND_OPTIONS=forceRule:True&LAYER=';
+    sGeoserverUrl = sGeoserverUrl + oLayer.layerId;
+
+    return sGeoserverUrl;
   }
 }

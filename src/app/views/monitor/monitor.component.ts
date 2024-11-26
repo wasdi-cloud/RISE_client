@@ -40,8 +40,6 @@ import { RiseTextInputComponent } from '../../components/rise-text-input/rise-te
     RiseMapChipComponent,
     RiseMapComponent,
     RiseTextInputComponent,
-    RiseToolbarComponent,
-    RiseGlobeComponent,
     RiseTimebarComponent,
     RiseUserMenuComponent,
     RiseLayerItemComponent,
@@ -65,6 +63,8 @@ export class MonitorComponent implements OnInit {
   m_sEndDate: Date = null;
   m_iTestDate: number = 172767150000;
 
+  m_aoLegendUrls: Array<{ url: string; plugin: string; visible: boolean }> = [];
+
   /**
    * Available plugins for the workspace
    */
@@ -72,6 +72,7 @@ export class MonitorComponent implements OnInit {
 
   m_oActivePlugin: any = null;
 
+  m_bShowLegends: boolean = false;
   constructor(
     private m_oActivatedRoute: ActivatedRoute,
     private m_oAreaService: AreaService,
@@ -101,7 +102,7 @@ export class MonitorComponent implements OnInit {
   openAOI(sAreaId: string) {
     this.m_oAreaService.getAreaById(sAreaId).subscribe({
       next: (oResponse) => {
-        this.m_oAreaOfOperation = oResponse
+        this.m_oAreaOfOperation = oResponse;
         if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           this.getMapsByArea(oResponse.id, oResponse.startDate);
           this.m_oMapService.flyToMonitorBounds(oResponse.bbox);
@@ -121,7 +122,6 @@ export class MonitorComponent implements OnInit {
       next: (oResponse) => {
         if (oResponse.length > 0) {
           this.m_aoPlugins = oResponse;
-          console.log(oResponse);
           this.m_aoPlugins.forEach((oPlugin) => {
             if (this.m_aoPlugins[0].name === oPlugin.name) {
               this.m_oActivePlugin = this.m_aoPlugins[0];
@@ -243,5 +243,93 @@ export class MonitorComponent implements OnInit {
         oLayer.geoserverUrl
       );
     });
+  }
+
+  removeLayer(oEvent) {
+    let oMap = this.m_oMapService.getMap();
+
+    // Remove from general
+    let iIndex = this.m_aoLayers.findIndex(
+      (oLayer) => oLayer.layerId === oEvent.layerId
+    );
+
+    console.log(oEvent);
+    this.togglePlugin(oEvent.mapId);
+
+    this.m_aoLayers.splice(iIndex, 1);
+
+    oMap.eachLayer((oLayer) => {
+      let sLayer = oLayer.options.layers;
+      if (sLayer === oEvent.layerId) {
+        oMap.removeLayer(oLayer);
+      }
+    });
+  }
+  zoomToLayer(oEvent) {
+    //TODO: Add Geoserver bounding box to response (?)
+    // this.m_oMapService.zoomBandImageOnGeoserverBoundingBox()
+
+    let oMap = this.m_oMapService.getMap();
+
+    this.m_oMapService.flyToMonitorBounds(this.m_oAreaOfOperation.bbox);
+  }
+
+  togglePlugin(sPluginId: string) {
+    console.log(sPluginId);
+    this.m_aoPlugins.forEach((oPlugin) => {
+      oPlugin.id === sPluginId ? (oPlugin.loaded = !oPlugin.loaded) : '';
+    });
+  }
+
+  showLegend(oLayer) {
+    console.log(oLayer);
+    let sLayerUrl = this.m_oMapService.getLegendUrl(oLayer);
+
+    console.log(sLayerUrl);
+    // If there are no legends - add right away
+    if (this.m_aoLegendUrls.length === 0) {
+      this.m_aoLegendUrls.push({
+        url: sLayerUrl,
+        plugin: oLayer.mapId,
+        visible: true,
+      });
+    }
+
+    //Is the legend already in the array?
+    let iIndex = this.m_aoLegendUrls.findIndex(
+      (layer) => layer.url === sLayerUrl
+    );
+    console.log(iIndex);
+    if (iIndex === -1) {
+      this.m_aoLegendUrls.push({
+        url: sLayerUrl,
+        plugin: oLayer.mapId,
+        visible: true,
+      });
+    }
+    this.toggleLegend(true);
+  }
+
+  toggleLegend(bShowLegend: boolean) {
+    this.m_bShowLegends = bShowLegend;
+  }
+
+  handleLayerAction(oEvent) {
+    console.log(oEvent.action);
+    switch (oEvent.action) {
+      case 'remove':
+        this.removeLayer(oEvent.layer);
+        break;
+      case 'zoomTo':
+        this.zoomToLayer(oEvent.layer);
+        break;
+      case 'toggleLegend':
+        this.showLegend(oEvent.layer);
+        break;
+    }
+  }
+
+  toggleIconVis(oLegend) {
+    oLegend.visible = !oLegend.visible;
   }
 }

@@ -24,3 +24,11 @@ div.options-container {
 .expand {
   cursor: pointer;
 }
+
+.material-symbols-outlined {
+  cursor: pointer;
+}
+
+.delete {
+  color: #992500;
+}
