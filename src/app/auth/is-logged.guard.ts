@@ -16,7 +16,6 @@ export const isLoggedGuard: CanActivateFn = (route, state) => {
   } else if (m_oAuthService.getTokenObject()?.access_token) {
     m_oUserService.getUser().subscribe({
       next: (oResponse) => {
-        console.log(oResponse)
         m_oConstantsService.setUser(oResponse);
         m_oRouter.navigate(['dashboard']);
         return false;

@@ -47,7 +47,6 @@ export class AccountComponent implements OnInit {
   }
 
   private updateActiveOutletFromState() {
-    console.log('Navigation state:', history.state);
     if (
       !FadeoutUtils.utilsIsObjectNullOrUndefined(
         history.state['m_sActiveOutlet']
@@ -55,7 +54,6 @@ export class AccountComponent implements OnInit {
     ) {
       this.m_sActiveOutlet = history.state['m_sActiveOutlet'];
     }
-    console.log('current active outlet' + this.m_sActiveOutlet)
   }
 
   public navigateRoute(sLocation: string) {
