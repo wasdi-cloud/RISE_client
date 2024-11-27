@@ -1,14 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import {RiseTextInputComponent} from "../../components/rise-text-input/rise-text-input.component";
-import {UserViewModel} from "../../models/UserViewModel";
-import {RiseButtonComponent} from "../../components/rise-button/rise-button.component";
-import {RiseCheckboxComponent} from "../../components/rise-checkbox/rise-checkbox.component";
-import {ActivatedRoute, Router} from "@angular/router";
-import {ConfirmInviteViewModel} from "../../models/ConfirmInviteViewModel";
-import {AuthService} from "../../services/api/auth.service";
-import FadeoutUtils from "../../shared/utilities/FadeoutUtils";
-import {NotificationsDialogsService} from "../../services/notifications-dialogs.service";
-import {RiseUtils} from "../../shared/utilities/RiseUtils";
+import { Component, OnInit } from '@angular/core';
+import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
+import { UserViewModel } from '../../models/UserViewModel';
+import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
+import { RiseCheckboxComponent } from '../../components/rise-checkbox/rise-checkbox.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ConfirmInviteViewModel } from '../../models/ConfirmInviteViewModel';
+import { AuthService } from '../../services/api/auth.service';
+import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
+import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
+import { RiseUtils } from '../../shared/utilities/RiseUtils';
+import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
 
 @Component({
   selector: 'app-confirm-registration',
@@ -16,10 +17,11 @@ import {RiseUtils} from "../../shared/utilities/RiseUtils";
   imports: [
     RiseTextInputComponent,
     RiseButtonComponent,
-    RiseCheckboxComponent
+    RiseCheckboxComponent,
+    RiseToolbarComponent,
   ],
   templateUrl: './confirm-registration.component.html',
-  styleUrl: './confirm-registration.component.css'
+  styleUrl: './confirm-registration.component.css',
 })
 export class ConfirmRegistrationComponent implements OnInit {
   m_oPasswordInputs = {
@@ -32,27 +34,32 @@ export class ConfirmRegistrationComponent implements OnInit {
   m_sPasswordError: string = '';
   m_sUsernameError: string = '';
   m_sPersonalError: string = '';
-  m_oConfirmInviteModel: ConfirmInviteViewModel = {}
+  m_oConfirmInviteModel: ConfirmInviteViewModel = {};
   m_asTermsAndConditions: { label: string; value: string }[] = [
-    {label: "I have read and accept the RISE terms and conditions ", value: "RISE terms and conditions"},
-    {label: "I have read and accept the RISE Privacy policy", value: "RISE Privacy policy"}
+    {
+      label: 'I have read and accept the RISE terms and conditions ',
+      value: 'RISE terms and conditions',
+    },
+    {
+      label: 'I have read and accept the RISE Privacy policy',
+      value: 'RISE Privacy policy',
+    },
   ];
   m_asTermsAndConditionSelected: string[] = [];
 
-  constructor(private m_oActiveRoute: ActivatedRoute,
-              private m_oAuthService: AuthService,
-              private m_oNotificationService: NotificationsDialogsService,
-              private m_oRouter: Router,
-              private m_oRiseUtils: RiseUtils,
-  ) {
-  }
+  constructor(
+    private m_oActiveRoute: ActivatedRoute,
+    private m_oAuthService: AuthService,
+    private m_oNotificationService: NotificationsDialogsService,
+    private m_oRouter: Router,
+    private m_oRiseUtils: RiseUtils
+  ) {}
 
   ngOnInit(): void {
-    this.m_oActiveRoute.queryParams.subscribe(params => {
+    this.m_oActiveRoute.queryParams.subscribe((params) => {
       this.m_oConfirmInviteModel.email = params['mail'];
       this.m_oConfirmInviteModel.confirmationCode = params['code'];
     });
-
   }
 
   validatePassword(): boolean {
@@ -92,7 +99,7 @@ export class ConfirmRegistrationComponent implements OnInit {
       this.m_oAuthService.confirmUser(this.m_oConfirmInviteModel).subscribe({
         next: (oResponse) => {
           this.m_oNotificationService.openInfoDialog(
-            "You are successfully registered",
+            'You are successfully registered',
             'success',
             'User Registered'
           );
@@ -105,26 +112,28 @@ export class ConfirmRegistrationComponent implements OnInit {
             'Error'
           );
           if (oError.error.errorStringCodes) {
-            this.m_oRiseUtils.handleNotificationError(oError.error.errorStringCodes);
+            this.m_oRiseUtils.handleNotificationError(
+              oError.error.errorStringCodes
+            );
           }
-        }
-      })
+        },
+      });
     } else {
       this.m_oNotificationService.openInfoDialog(
-        "Please Verify Your Inputs",
+        'Please Verify Your Inputs',
         'danger',
         'Invalid Input'
-      )
+      );
     }
-
-
   }
 
   private verifyInputs() {
-    if (FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oUserInfoInput.userId)
-      || FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oUserInfoInput.name)
-      || FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oUserInfoInput.surname)
-      || FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oUserInfoInput.mobile)) {
+    if (
+      FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oUserInfoInput.userId) ||
+      FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oUserInfoInput.name) ||
+      FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oUserInfoInput.surname) ||
+      FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oUserInfoInput.mobile)
+    ) {
       return false;
     }
     if (this.m_asTermsAndConditionSelected.length != 2) {

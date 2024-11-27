@@ -1,64 +1,74 @@
-<div
-  class="outlet-container flex-fill d-flex flex-column align-items-center justify-content-center"
->
-<h2 class="space-mono-regular">Confirm your registration</h2>
-<div class="d-flex flex-column gap-1">
-  <rise-text-input
-    [m_sLocalizationKey]="'REGISTER.USER_ID'"
-    [(m_sInputText)]="m_oUserInfoInput.userId"
-    [m_bIsValid]="m_bUsernameIsValid"
-    [m_sErrorText]="m_sUsernameError"
-    [m_bIsValidatorInput]="true"
-    [m_bHasTitle]="true"
-  ></rise-text-input>
-  <rise-text-input
-    [m_sLocalizationKey]="'REGISTER.PASSWORD'"
-    [m_bRequired]="true"
-    [m_bHasTitle]="true"
-    [m_sType]="'password'"
-    [(m_sInputText)]="m_oPasswordInputs.password"
-    [m_bIsValid]="validatePassword()"
-  ></rise-text-input>
-  <rise-text-input
-    [m_sLocalizationKey]="'REGISTER.CONFIRM_PW'"
-    [m_bRequired]="true"
-    [m_bHasTitle]="true"
-    [m_sType]="'password'"
-    [m_bIsValidatorInput]="true"
-    [m_sErrorText]="m_sPasswordError"
-    [(m_sInputText)]="m_oPasswordInputs.confirmPw"
-    [m_bIsValid]="validatePassword()"
-  ></rise-text-input>
-  <rise-text-input
-    [m_sLocalizationKey]="'REGISTER.NAME'"
-    [m_bHasTitle]="true"
-    [(m_sInputText)]="m_oUserInfoInput.name"
-    [m_bIsValid]="m_bPersonalValid"
-  ></rise-text-input>
-  <rise-text-input
-    [m_sLocalizationKey]="'REGISTER.SURNAME'"
-    [m_bHasTitle]="true"
-    [(m_sInputText)]="m_oUserInfoInput.surname"
-    [m_bIsValid]="m_bPersonalValid"
-  ></rise-text-input>
-  <rise-text-input
-    [m_sLocalizationKey]="'REGISTER.MOBILE'"
-    [m_bHasTitle]="true"
-    [(m_sInputText)]="m_oUserInfoInput.mobile"
-    [m_bIsValid]="m_bPersonalValid"
-    [m_bIsValidatorInput]="true"
-    [m_sErrorText]="m_sPersonalError"
-  ></rise-text-input>
-  <rise-checkbox
-    [m_aoOptions]="this.m_asTermsAndConditions"
-    (m_oSelectionChange)="onSelectionChange($event)"
-    [m_aoSelectedValues]="this.m_asTermsAndConditionSelected"
+<main class="d-flex flex-column">
+  <rise-toolbar [m_bUserIsSigned]="false"></rise-toolbar>
+  <div
+    class="outlet-container d-flex flex-fill flex-column align-items-center justify-content-center"
   >
-  </rise-checkbox>
-  <rise-button
-    [m_sLabel]="'Submit'"
-    [m_sRole]="'primary'"
-    (click)="register()"
-  ></rise-button>
-</div>
-</div>
+    <div class="hero-img"></div>
+    <div class="login-container d-flex flex-column">
+      <div
+        class="slider-content flex-fill d-flex flex-column justify-content-between gap-4 my-2"
+      >
+        <h2 class="space-mono-regular">Confirm registration</h2>
+        <div class="inputs-container d-flex flex-column flex-fill gap-2">
+          <rise-text-input
+            [m_sLocalizationKey]="'REGISTER.USER_ID'"
+            [(m_sInputText)]="m_oUserInfoInput.userId"
+            [m_bIsValid]="m_bUsernameIsValid"
+            [m_sErrorText]="m_sUsernameError"
+            [m_bIsValidatorInput]="true"
+            [m_bHasTitle]="true"
+          ></rise-text-input>
+          <rise-text-input
+            [m_sLocalizationKey]="'REGISTER.PASSWORD'"
+            [m_bRequired]="true"
+            [m_bHasTitle]="true"
+            [m_sType]="'password'"
+            [(m_sInputText)]="m_oPasswordInputs.password"
+            [m_bIsValid]="validatePassword()"
+          ></rise-text-input>
+          <rise-text-input
+            [m_sLocalizationKey]="'REGISTER.CONFIRM_PW'"
+            [m_bRequired]="true"
+            [m_bHasTitle]="true"
+            [m_sType]="'password'"
+            [m_bIsValidatorInput]="true"
+            [m_sErrorText]="m_sPasswordError"
+            [(m_sInputText)]="m_oPasswordInputs.confirmPw"
+            [m_bIsValid]="validatePassword()"
+          ></rise-text-input>
+          <rise-text-input
+            [m_sLocalizationKey]="'REGISTER.NAME'"
+            [m_bHasTitle]="true"
+            [(m_sInputText)]="m_oUserInfoInput.name"
+            [m_bIsValid]="m_bPersonalValid"
+          ></rise-text-input>
+          <rise-text-input
+            [m_sLocalizationKey]="'REGISTER.SURNAME'"
+            [m_bHasTitle]="true"
+            [(m_sInputText)]="m_oUserInfoInput.surname"
+            [m_bIsValid]="m_bPersonalValid"
+          ></rise-text-input>
+          <rise-text-input
+            [m_sLocalizationKey]="'REGISTER.MOBILE'"
+            [m_bHasTitle]="true"
+            [(m_sInputText)]="m_oUserInfoInput.mobile"
+            [m_bIsValid]="m_bPersonalValid"
+            [m_bIsValidatorInput]="true"
+            [m_sErrorText]="m_sPersonalError"
+          ></rise-text-input>
+          <rise-checkbox
+            [m_aoOptions]="this.m_asTermsAndConditions"
+            (m_oSelectionChange)="onSelectionChange($event)"
+            [m_aoSelectedValues]="this.m_asTermsAndConditionSelected"
+          >
+          </rise-checkbox>
+          <rise-button
+            [m_sLabel]="'Submit'"
+            [m_sRole]="'primary'"
+            (click)="register()"
+          ></rise-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
