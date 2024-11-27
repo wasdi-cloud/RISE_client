@@ -49,11 +49,12 @@ span.cta-text {
   background-color: rgba(0, 31, 40, 0.8);
   backdrop-filter: blur(20px);
   border-left: 1px solid rgba(255, 255, 255, 0.1);
+  box-sizing: border-box;
   position: absolute;
   padding: 16px;
   right: 0;
   height: 100%;
-  min-width: 240px;
+  min-width: 250px;
   max-width: 25%;
   z-index: 9999;
 }

@@ -253,7 +253,6 @@ export class MonitorComponent implements OnInit {
       (oLayer) => oLayer.layerId === oEvent.layerId
     );
 
-    console.log(oEvent);
     this.togglePlugin(oEvent.mapId);
 
     this.m_aoLayers.splice(iIndex, 1);
@@ -264,6 +263,16 @@ export class MonitorComponent implements OnInit {
         oMap.removeLayer(oLayer);
       }
     });
+
+    let iLegendIndex = this.m_aoLegendUrls.findIndex(
+      (oLayer) => oLayer.plugin === oEvent.mapId
+    );
+
+    this.m_aoLegendUrls.splice(iLegendIndex, 1);
+
+    if (this.m_aoLegendUrls.length === 0) {
+      this.toggleLegend(false);
+    }
   }
   zoomToLayer(oEvent) {
     //TODO: Add Geoserver bounding box to response (?)
@@ -275,17 +284,13 @@ export class MonitorComponent implements OnInit {
   }
 
   togglePlugin(sPluginId: string) {
-    console.log(sPluginId);
     this.m_aoPlugins.forEach((oPlugin) => {
       oPlugin.id === sPluginId ? (oPlugin.loaded = !oPlugin.loaded) : '';
     });
   }
 
   showLegend(oLayer) {
-    console.log(oLayer);
     let sLayerUrl = this.m_oMapService.getLegendUrl(oLayer);
-
-    console.log(sLayerUrl);
     // If there are no legends - add right away
     if (this.m_aoLegendUrls.length === 0) {
       this.m_aoLegendUrls.push({
@@ -299,7 +304,6 @@ export class MonitorComponent implements OnInit {
     let iIndex = this.m_aoLegendUrls.findIndex(
       (layer) => layer.url === sLayerUrl
     );
-    console.log(iIndex);
     if (iIndex === -1) {
       this.m_aoLegendUrls.push({
         url: sLayerUrl,
@@ -315,7 +319,6 @@ export class MonitorComponent implements OnInit {
   }
 
   handleLayerAction(oEvent) {
-    console.log(oEvent.action);
     switch (oEvent.action) {
       case 'remove':
         this.removeLayer(oEvent.layer);
