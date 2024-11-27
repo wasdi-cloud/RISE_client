@@ -140,7 +140,9 @@ export class InviteUserComponent implements OnInit {
           if (oResponse.status === 200) {
             this.m_bShowStatus = true;
             this.m_bSuccess = true;
+
           }
+          this.onDismiss();
         },
         error: (oError) => {
           this.m_bShowStatus = true;
