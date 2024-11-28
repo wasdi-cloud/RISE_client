@@ -147,16 +147,7 @@ export class SignUpComponent implements OnInit{
     }
   }
 
-  /**
-   * TODO: Add phone number validation
-   * @returns boolean
-   */
-  validatePhone(sPhone: string): boolean {
-    if(FadeoutUtils.utilsIsStrNullOrEmpty(sPhone)) return false;
-    const sPhoneRegex = /^[+]?[0-9]{6,15}$/;
-    return sPhoneRegex.test(sPhone);
 
-  }
 
   register() {
     //Check validations
@@ -240,22 +231,41 @@ export class SignUpComponent implements OnInit{
       this.validatePhone(this.m_oUserInfoInput.mobile)
     ) {
       bIsValid = true;
+      this.m_bPersonalValid=true;
     } else if(FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oUserInfoInput.name) ||
       FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oUserInfoInput.surname) ){
-      this.m_sPersonalError =
-        "Please ensure you've entered a name, surname";
       bIsTouched ? (bIsValid = false) : '';
-    } else if(this.validatePhone(this.m_oUserInfoInput.mobile)){
-      this.m_sPersonalError =
-        "Invalid phone number format. It must be a number between 6 and 15 digits.";
+      if(bIsTouched){
+        this.m_sPersonalError =
+          "Please ensure you've entered a name, surname";
+        this.m_bPersonalValid=false;
+      }
+
+    } else if(!this.validatePhone(this.m_oUserInfoInput.mobile)){
       bIsTouched ? (bIsValid = false) : '';
-    } else {
-      this.m_sPersonalError =
-        "Please ensure you've entered a name, surname, and mobile number";
-      bIsTouched ? (bIsValid = false) : '';
+      if(bIsTouched){
+        this.m_sPersonalError =
+          "Invalid phone number format. It must be a number between 6 and 15 digits.";
+        this.m_bPersonalValid=false;
+      }
     }
 
     return bIsValid;
+  }
+  /**
+   * TODO: Add phone number validation
+   * @returns boolean
+   */
+  validatePhone(sPhone: string): boolean {
+    if(FadeoutUtils.utilsIsStrNullOrEmpty(sPhone)){
+      return false;
+    }
+    const sPhoneRegex = /^[+]?[0-9]{6,15}$/;
+    if(!sPhoneRegex.test(sPhone)){
+      return false;
+    }
+    return true;
+
   }
 
   handleAPIErrors(asStringCodes) {
