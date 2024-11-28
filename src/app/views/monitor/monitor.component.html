@@ -61,7 +61,7 @@
         ></rise-map-chip>
       </div>
       <rise-user-menu class="user-menu"></rise-user-menu>
-      <rise-map [m_bDashboardMap]="true"></rise-map>
+      <rise-map [m_bMonitorMap]="true" [m_bDashboardMap]="true"></rise-map>
       <rise-timebar
         class="timebar"
         [m_iStartDate]="m_oAreaOfOperation.archiveStartDate"
@@ -91,7 +91,10 @@
           class="align-self-start w-100 d-flex flex-row justify-content-between align-items-center"
         >
           {{ oLegend.plugin }}
-          <span class="material-symbols-outlined button" (click)="toggleIconVis(oLegend)">
+          <span
+            class="material-symbols-outlined button"
+            (click)="toggleIconVis(oLegend)"
+          >
             keyboard_arrow_up
           </span>
         </div>

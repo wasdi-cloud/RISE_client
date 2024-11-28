@@ -1,16 +1,25 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges,} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
 
-import {MapService} from '../../services/map.service';
-import {RiseTimebarComponent} from '../rise-timebar/rise-timebar.component';
+import { MapService } from '../../services/map.service';
+import { RiseTimebarComponent } from '../rise-timebar/rise-timebar.component';
 import 'leaflet-draw';
-import {LeafletModule} from '@bluehalo/ngx-leaflet';
-import {LeafletDrawModule} from '@asymmetrik/ngx-leaflet-draw';
-import {AreaViewModel} from '../../models/AreaViewModel';
-import {NotificationsDialogsService} from '../../services/notifications-dialogs.service';
-import {RiseButtonComponent} from '../rise-button/rise-button.component';
-import {TranslateService} from '@ngx-translate/core';
-import 'leaflet.fullscreen'
+import { LeafletModule } from '@bluehalo/ngx-leaflet';
+import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
+import { AreaViewModel } from '../../models/AreaViewModel';
+import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
+import { RiseButtonComponent } from '../rise-button/rise-button.component';
+import { TranslateService } from '@ngx-translate/core';
+import 'leaflet.fullscreen';
 
 // import * as L from 'leaflet';
 declare const L: any;
@@ -25,17 +34,10 @@ const MAX_HEIGHT = 222_000; // Maximum height 2 degrees in meters
 const MIN_AREA_POLYGON = 12_321_000_000; // Minimum 1x1 degree in square meters
 const MAX_AREA_POLYGON = 49_284_000_000; // Maximum 2x2 degree in square meters
 
-
 @Component({
   selector: 'rise-map',
   standalone: true,
-  imports: [
-    CommonModule,
-    RiseTimebarComponent,
-    LeafletModule,
-    LeafletDrawModule,
-    RiseButtonComponent,
-  ],
+  imports: [CommonModule, LeafletModule, LeafletDrawModule],
   templateUrl: './rise-map.component.html',
   styleUrl: './rise-map.component.css',
 })
@@ -59,6 +61,11 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
    * Is the map appearing on the user dashboard area?
    */
   @Input() m_bDashboardMap: boolean = false;
+
+  /**
+   * Is the map appearing on the user's monitor area?
+   */
+  @Input() m_bMonitorMap: boolean = false;
 
   @Output() m_oMapInputChange = new EventEmitter();
 
@@ -99,8 +106,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-  ngAfterViewInit(): void {
-  }
+  ngAfterViewInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (!this.m_bIsSelectingArea) {
@@ -142,19 +148,23 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       this.addCircleButton(oMap);
     }
 
-    oMap.fullscreenControl.link.innerHTML = "<span class='material-symbols-outlined'>fullscreen</span>"
+    oMap.fullscreenControl.link.innerHTML =
+      "<span class='material-symbols-outlined'>fullscreen</span>";
     this.m_oMapService.addZoom();
     oMap.on('baselayerchange', (e) => {
       console.log('base layer changed');
       this.m_oMapService.setActiveLayer(oMap, e.layer);
     });
 
+    if (this.m_bMonitorMap) {
+      this.m_oMapService.addPixelInfoToggle(oMap);
+    }
   }
 
   addCircleButton(oMap: L.Map): void {
     this.m_oMapService.addCircleButton(oMap).subscribe((circleData) => {
       this.m_bIsAutoDrawCreated = true;
-      const {center, radius} = circleData;
+      const { center, radius } = circleData;
       this.emitInsertedArea(null, radius, center.lat, center.lng);
     });
   }
@@ -171,7 +181,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   // Different ways to draw an area
   //Using leaflet drawings
   onDrawCreated(oEvent) {
-    const {layerType, layer} = oEvent;
+    const { layerType, layer } = oEvent;
     const sErrorMsgToBig: string = this.m_oTranslate.instant(
       'AREA_OF_OPERATIONS.CONFIRM_AREA_TOO_BIG'
     );
@@ -200,7 +210,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
         L.latLng(northEast.lat, southWest.lng)
       );
 
-      console.log("Calculated width:", width, "Calculated height:", height);
+      console.log('Calculated width:', width, 'Calculated height:', height);
 
       // Adjust if width or height are out of bounds
       if (
@@ -209,11 +219,11 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
         width < MIN_WIDTH ||
         height < MIN_HEIGHT
       ) {
-        let sErrorMsg = "";
+        let sErrorMsg = '';
         if (width > MAX_WIDTH || height > MAX_HEIGHT) {
-          sErrorMsg = sErrorHeaderForTooBig
+          sErrorMsg = sErrorHeaderForTooBig;
         } else if (width < MIN_WIDTH || height < MIN_HEIGHT) {
-          sErrorMsg = sErrorHeaderForTooSmall
+          sErrorMsg = sErrorHeaderForTooSmall;
         }
         this.m_oNotificationService
           .openConfirmationDialog(sErrorMsg, 'danger')
@@ -221,7 +231,11 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
             next: (oResponse) => {
               if (oResponse) {
                 // Adjust dimensions dynamically
-                this.m_oMapService.adjustRectangleDimensions(layer, width, height);
+                this.m_oMapService.adjustRectangleDimensions(
+                  layer,
+                  width,
+                  height
+                );
                 this.m_oMapService.onDrawCreated(oEvent, this.m_oMap);
                 this.m_bIsDrawCreated = true;
                 this.emitInsertedArea(oEvent);
@@ -248,11 +262,11 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       const adjustedMaxArea = MAX_AREA_POLYGON * latitudeFactor;
 
       if (area < adjustedMinArea || area > adjustedMaxArea) {
-        let sErrorHeader = "";
+        let sErrorHeader = '';
         if (area < adjustedMinArea) {
-          sErrorHeader = sErrorHeaderForTooSmall
+          sErrorHeader = sErrorHeaderForTooSmall;
         } else if (area > adjustedMaxArea) {
-          sErrorHeader = sErrorHeaderForTooBig
+          sErrorHeader = sErrorHeaderForTooBig;
         }
         this.m_oNotificationService.openInfoDialog(
           sErrorMsgAdjust,
@@ -267,7 +281,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       const radius = layer.getRadius(); // Radius in meters
       const area = Math.PI * radius * radius; // Circle area
       if (area < MIN_AREA_CIRCLE || area > MAX_AREA_CIRCLE) {
-        let sErrorMsg = "";
+        let sErrorMsg = '';
         if (area > MAX_AREA_CIRCLE) {
           sErrorMsg = sErrorMsgToBig;
         } else if (area < MIN_AREA_CIRCLE) {
@@ -293,7 +307,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-//Emit inserted area
+  //Emit inserted area
   emitInsertedArea(
     oEvent?: any,
     fRadius?: number,
@@ -374,7 +388,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
 
       // Collect all points (vertices) of the polygon
       const points = latLngs.map((point: L.LatLng) => {
-        return {lat: point.lat, lng: point.lng};
+        return { lat: point.lat, lng: point.lng };
       });
       // Calculate the centroid (center) of the polygon
       const centroid = this.calculateCentroid(points);
@@ -396,7 +410,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     // Emit the circle info (center, radius, and area)
     const oShapeInfo = {
       type: 'circle',
-      center: {lat: fLat, lng: fLng},
+      center: { lat: fLat, lng: fLng },
       radius: fRadius,
       area: fArea, // Add area to the emitted shape info
     };
@@ -421,7 +435,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
 
       // Prepare the points data
       const points = latLngs.map((point: L.LatLng) => {
-        return {lat: point.lat, lng: point.lng};
+        return { lat: point.lat, lng: point.lng };
       });
       // Calculate the centroid (center) of the polygon
       const centroid = this.calculateCentroid(points);

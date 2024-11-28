@@ -18,6 +18,8 @@ export class ConstantsService {
 
   m_oUser: UserViewModel = null;
 
+  WMSURL: string = environment.wmsUrl;
+
   constructor() {}
 
   getSessionId() {
@@ -58,5 +60,9 @@ export class ConstantsService {
 
   resetUser() {
     this.m_oUser = null;
+  }
+
+  getWmsUrlGeoserver() {
+    return this.WMSURL;
   }
 }
