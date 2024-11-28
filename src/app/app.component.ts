@@ -18,7 +18,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     private m_oTranslate: TranslateService,
-    private m_oConstantService: ConstantsService
+    private m_oConstantService: ConstantsService,
+    private m_oUserService: UserService
   ) {
   }
 
@@ -27,9 +28,15 @@ export class AppComponent implements OnInit {
   }
 
   getUserInfo() {
-    let oUser = this.m_oConstantService.getUser();
-    if (oUser.defaultLanguage) {
-      this.m_oTranslate.use(oUser.defaultLanguage.toLowerCase());
-    }
+    this.m_oUserService.getUser().subscribe({
+      next: (oResponse) => {
+        if (oResponse.defaultLanguage) {
+          this.m_oTranslate.use(oResponse.defaultLanguage.toLowerCase());
+        }
+      },
+      error: (oError) => {
+        return;
+      }
+    })
   }
 }
