@@ -247,14 +247,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
     if(this.m_oData?.organizationId){
       sOrganizationId= this.m_oData.organizationId;
     }else{
-      this.m_oUserService.getUser().subscribe({
-        next: (oResponse) => {
-          if (FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
-            return;
-          }
-          sOrganizationId = oResponse.organizationId;
-        },
-      });
+      sOrganizationId=this.m_oConstantsService.getUser()?.organizationId
     }
     return sOrganizationId;
 
