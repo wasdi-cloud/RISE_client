@@ -1,16 +1,17 @@
-import {Component, Input, OnInit, Output, EventEmitter, Inject} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {Component, Inject, Input, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
-import { OrganizationsService } from '../../../../services/api/organizations.service';
+import {OrganizationsService} from '../../../../services/api/organizations.service';
 
-import { RiseButtonComponent } from '../../../../components/rise-button/rise-button.component';
-import { RiseDropdownComponent } from '../../../../components/rise-dropdown/rise-dropdown.component';
-import { RiseTextInputComponent } from '../../../../components/rise-text-input/rise-text-input.component';
+import {RiseButtonComponent} from '../../../../components/rise-button/rise-button.component';
+import {RiseDropdownComponent} from '../../../../components/rise-dropdown/rise-dropdown.component';
+import {RiseTextInputComponent} from '../../../../components/rise-text-input/rise-text-input.component';
 
-import { InviteViewModel } from '../../../../models/InviteViewModel';
-import { UserRole } from '../../../../models/UserRole';
-import { TranslateModule } from '@ngx-translate/core';
+import {InviteViewModel} from '../../../../models/InviteViewModel';
+import {UserRole} from '../../../../models/UserRole';
+import {TranslateModule} from '@ngx-translate/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {NotificationsDialogsService} from "../../../../services/notifications-dialogs.service";
 
 @Component({
   selector: 'invite-user',
@@ -70,8 +71,9 @@ export class InviteUserComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) private m_oData: any,
     private m_oDialogRef: MatDialogRef<InviteUserComponent>,
     private m_oOrganizationsService: OrganizationsService,
-
-  ) {}
+    private m_oNotificationsDialogsService: NotificationsDialogsService
+  ) {
+  }
 
   ngOnInit() {
 
@@ -140,13 +142,23 @@ export class InviteUserComponent implements OnInit {
           if (oResponse.status === 200) {
             this.m_bShowStatus = true;
             this.m_bSuccess = true;
-
+            this.m_oNotificationsDialogsService.openSnackBar(
+              "Invitation was send successfully",
+              "Success",
+              "success"
+            )
           }
           this.onDismiss();
         },
         error: (oError) => {
           this.m_bShowStatus = true;
           this.m_bSuccess = false;
+          this.onDismiss();
+          this.m_oNotificationsDialogsService.openSnackBar(
+            "Invitation was not sent",
+            "Error",
+            "danger"
+          )
         },
       });
     }
