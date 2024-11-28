@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {RouterOutlet} from '@angular/router';
 
-import { TranslateService } from '@ngx-translate/core';
-import { UserService } from './services/api/user.service';
-
-import FadeoutUtils from './shared/utilities/FadeoutUtils';
+import {TranslateService} from '@ngx-translate/core';
+import {UserService} from './services/api/user.service';
+import {ConstantsService} from "./services/constants.service";
 
 @Component({
   selector: 'app-root',
@@ -18,23 +17,19 @@ export class AppComponent implements OnInit {
   title = 'rise-client';
 
   constructor(
-    private m_oUserService: UserService,
-    private m_oTranslate: TranslateService
-  ) {}
+    private m_oTranslate: TranslateService,
+    private m_oConstantService: ConstantsService
+  ) {
+  }
 
   ngOnInit() {
     this.getUserInfo();
   }
+
   getUserInfo() {
-    this.m_oUserService.getUser().subscribe({
-      next: (oResponse) => {
-        if (FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
-          return;
-        }
-        if (oResponse.defaultLanguage) {
-          this.m_oTranslate.use(oResponse.defaultLanguage.toLowerCase());
-        }
-      },
-    });
+    let oUser = this.m_oConstantService.getUser();
+    if (oUser.defaultLanguage) {
+      this.m_oTranslate.use(oUser.defaultLanguage.toLowerCase());
+    }
   }
 }
