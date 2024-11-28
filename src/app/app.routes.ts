@@ -6,9 +6,12 @@ import { LoginViewComponent } from './views/login-view/login-view.component';
 import { MonitorComponent } from './views/monitor/monitor.component';
 import { PublicHomeComponent } from './views/public-home/public-home.component';
 import { SignUpComponent } from './views/sign-up/sign-up.component';
-import { ConfirmRegistrationComponent } from './views/confirm-registration/confirm-registration.component';
+import { ConfirmInvitedUserRegistrationComponent } from './views/confirm-invited-user-registration/confirm-invited-user-registration.component';
 import { authGuard } from './auth/auth.guard';
 import { isLoggedGuard } from './auth/is-logged.guard';
+import {
+  ConfirmAdminRegistrationComponent
+} from "./views/confirm-admin-registration/confirm-admin-registration.component";
 
 export const routes: Routes = [
   { path: '', component: PublicHomeComponent, canActivate: [isLoggedGuard] },
@@ -31,7 +34,12 @@ export const routes: Routes = [
   { path: 'sign-up', component: SignUpComponent, canActivate: [isLoggedGuard] },
   {
     path: 'user/confirm',
-    component: ConfirmRegistrationComponent,
+    component: ConfirmInvitedUserRegistrationComponent,
+
+  },
+  {
+    path: 'auth/confirm_adm',
+    component: ConfirmAdminRegistrationComponent,
 
   },
 ];

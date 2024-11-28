@@ -20,10 +20,10 @@ import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar
     RiseCheckboxComponent,
     RiseToolbarComponent,
   ],
-  templateUrl: './confirm-registration.component.html',
-  styleUrl: './confirm-registration.component.css',
+  templateUrl: './confirm-invited-user-registration.component.html',
+  styleUrl: './confirm-invited-user-registration.component.css',
 })
-export class ConfirmRegistrationComponent implements OnInit {
+export class ConfirmInvitedUserRegistrationComponent implements OnInit {
   m_oPasswordInputs = {
     password: '',
     confirmPw: '',
