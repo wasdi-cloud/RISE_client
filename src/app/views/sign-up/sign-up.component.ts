@@ -1,23 +1,23 @@
-import {Component, OnInit} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import {TranslateModule, TranslateService} from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-import {AuthService} from '../../services/api/auth.service';
+import { AuthService } from '../../services/api/auth.service';
 
-import {RiseButtonComponent} from '../../components/rise-button/rise-button.component';
-import {RiseDropdownComponent} from '../../components/rise-dropdown/rise-dropdown.component';
-import {RiseTextInputComponent} from '../../components/rise-text-input/rise-text-input.component';
-import {RiseToolbarComponent} from '../../components/rise-toolbar/rise-toolbar.component';
+import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
+import { RiseDropdownComponent } from '../../components/rise-dropdown/rise-dropdown.component';
+import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
+import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
 
-import {OrganizationViewModel} from '../../models/OrganizationViewModel';
-import {RegisterViewModel} from '../../models/RegisterViewModel';
-import {UserViewModel} from '../../models/UserViewModel';
-import {OrganizationTypes} from '../../shared/organization-types';
-import {NgIf} from '@angular/common';
-import {NotificationsDialogsService} from '../../services/notifications-dialogs.service';
-import {Router} from "@angular/router";
-import FadeoutUtils from "../../shared/utilities/FadeoutUtils";
+import { OrganizationViewModel } from '../../models/OrganizationViewModel';
+import { RegisterViewModel } from '../../models/RegisterViewModel';
+import { UserViewModel } from '../../models/UserViewModel';
+import { OrganizationTypes } from '../../shared/organization-types';
+import { NgIf } from '@angular/common';
+import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
+import { Router } from '@angular/router';
+import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 
 @Component({
   selector: 'app-sign-up',
@@ -34,7 +34,7 @@ import FadeoutUtils from "../../shared/utilities/FadeoutUtils";
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.css',
 })
-export class SignUpComponent implements OnInit{
+export class SignUpComponent implements OnInit {
   m_oRegisterInput: RegisterViewModel = {} as RegisterViewModel;
 
   m_oUserInfoInput: UserViewModel = {} as UserViewModel;
@@ -78,13 +78,14 @@ export class SignUpComponent implements OnInit{
 
   m_sUsernameError: string = '';
 
+  m_bMobileIsValid: boolean = true;
+
   constructor(
     private m_oAuthService: AuthService,
     private m_oNotificationService: NotificationsDialogsService,
     private m_oTranslate: TranslateService,
     private m_oRouter: Router
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.resetFormVariables();
@@ -102,7 +103,7 @@ export class SignUpComponent implements OnInit{
     let sConfirmPw = this.m_oPasswordInputs.confirmPw;
     // Minimum 8 Characters, at least one letter, one number, and one special character:
     const passwordRegex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&,.])[A-Za-z\d@$!%*#?&,.]{8,}/
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&,.])[A-Za-z\d@$!%*#?&,.]{8,}/;
     // If the user has modified both inputs
     if (sPassword && sConfirmPw) {
       //If the first password doesn't pass regex OR the pw's don't match
@@ -141,13 +142,10 @@ export class SignUpComponent implements OnInit{
       } else {
         return true;
       }
-      // If there is no input, do not show validation message
     } else {
       return true;
     }
   }
-
-
 
   register() {
     //Check validations
@@ -170,7 +168,7 @@ export class SignUpComponent implements OnInit{
             'success',
             'User Registered'
           );
-          this.m_oRouter.navigateByUrl('/login')
+          this.m_oRouter.navigateByUrl('/login');
         }
       },
       error: (oError) => {
@@ -178,10 +176,11 @@ export class SignUpComponent implements OnInit{
         //   return `<li>${this.m_oTranslate.instant('ERROR_MSG.' + sCode)}</li>`;
         // });
         let asErrorCodes = Array.isArray(oError?.error?.errorStringCodes)
-          ? oError.error.errorStringCodes.map((sCode) =>
-            `<li>${this.m_oTranslate.instant('ERROR_MSG.' + sCode)}</li>`)
+          ? oError.error.errorStringCodes.map(
+              (sCode) =>
+                `<li>${this.m_oTranslate.instant('ERROR_MSG.' + sCode)}</li>`
+            )
           : [];
-
 
         console.log(asErrorCodes);
         let sErrorMsg = `'There were some problems with your inputted information. Please review your entries'<ul>
@@ -189,7 +188,6 @@ export class SignUpComponent implements OnInit{
         </ul>`;
         this.m_oNotificationService.openInfoDialog(sErrorMsg, 'alert', 'Error');
         if (oError.error.errorStringCodes) {
-          console.log(oError.error);
           this.handleAPIErrors(oError.error.errorStringCodes);
         }
       },
@@ -223,49 +221,36 @@ export class SignUpComponent implements OnInit{
     return this.m_bOrgIsValid;
   }
 
-  checkPersonalInfo(bIsTouched) {
-    let bIsValid = false;
+  checkPersonalInfo() {
     if (
-      this.m_oUserInfoInput.name &&
-      this.m_oUserInfoInput.surname &&
-      this.validatePhone(this.m_oUserInfoInput.mobile)
+      !this.m_oUserInfoInput.name ||
+      !this.m_oUserInfoInput.surname ||
+      !this.m_oUserInfoInput.mobile
     ) {
-      bIsValid = true;
-      this.m_bPersonalValid=true;
-    } else if(FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oUserInfoInput.name) ||
-      FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oUserInfoInput.surname) ){
-      bIsTouched ? (bIsValid = false) : '';
-      if(bIsTouched){
-        this.m_sPersonalError =
-          "Please ensure you've entered a name, surname";
-        this.m_bPersonalValid=false;
-      }
-
-    } else if(!this.validatePhone(this.m_oUserInfoInput.mobile)){
-      bIsTouched ? (bIsValid = false) : '';
-      if(bIsTouched){
-        this.m_sPersonalError =
-          "Invalid phone number format. It must be a number between 6 and 15 digits.";
-        this.m_bPersonalValid=false;
-      }
+      this.m_sPersonalError =
+        "Please ensure you've entered a name, surname, and mobile phone number";
+      return false;
     }
-
-    return bIsValid;
+    if (!this.validatePhone(this.m_oUserInfoInput.mobile)) {
+      this.m_sPersonalError =
+        "Please ensure the phone number you've entered is a valid format";
+      return false;
+    }
+    return true;
   }
   /**
    * TODO: Add phone number validation
    * @returns boolean
    */
   validatePhone(sPhone: string): boolean {
-    if(FadeoutUtils.utilsIsStrNullOrEmpty(sPhone)){
-      return false;
+    if (FadeoutUtils.utilsIsStrNullOrEmpty(sPhone)) {
+      return true;
     }
     const sPhoneRegex = /^[+]?[0-9]{6,15}$/;
-    if(!sPhoneRegex.test(sPhone)){
+    if (!sPhoneRegex.test(sPhone)) {
       return false;
     }
     return true;
-
   }
 
   handleAPIErrors(asStringCodes) {
@@ -292,7 +277,6 @@ export class SignUpComponent implements OnInit{
       !this.m_oEmailInputs.confirmEmail ||
       !this.validateEmail()
     ) {
-
       return false;
     }
     if (
@@ -300,7 +284,6 @@ export class SignUpComponent implements OnInit{
       !this.m_oPasswordInputs.confirmPw ||
       !this.validatePassword()
     ) {
-
       return false;
     }
 
@@ -308,7 +291,6 @@ export class SignUpComponent implements OnInit{
       !this.m_oUserInfoInput.acceptedPrivacy ||
       !this.m_oUserInfoInput.acceptedTermsAndConditions
     ) {
-
       return false;
     }
 
@@ -319,11 +301,10 @@ export class SignUpComponent implements OnInit{
   }
 
   private resetFormVariables() {
-
     this.m_oRegisterInput = {} as RegisterViewModel;
 
     this.m_oUserInfoInput = {
-      userId: ""
+      userId: '',
     } as UserViewModel;
 
     this.m_oOrgInfoInput = {
@@ -360,12 +341,11 @@ export class SignUpComponent implements OnInit{
 
   validateUserName() {
     let sUserId = this.m_oUserInfoInput.userId;
-    if(sUserId){
-      if(sUserId.length<8) {
+    if (sUserId) {
+      if (sUserId.length < 8) {
         this.m_sUsernameError =
           'Please ensure that user id is longer than 8 characters';
         return false;
-
       }
     }
     return true;

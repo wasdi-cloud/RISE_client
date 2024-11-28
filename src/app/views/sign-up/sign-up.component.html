@@ -11,13 +11,13 @@
       <h2 class="space-mono-regular">Create a RISE account</h2>
       <div class="d-flex flex-column gap-1">
         <rise-text-input
-        [m_sLocalizationKey]="'REGISTER.USER_ID'"
-        [m_bIsValidatorInput]="true"
-        [m_sErrorText]="m_sUsernameError"
-        [m_bHasTitle]="true"
-        [(m_sInputText)]="m_oUserInfoInput.userId"
-        [m_bIsValid]="validateUserName() && m_bUsernameIsValid"
-      ></rise-text-input>
+          [m_sLocalizationKey]="'REGISTER.USER_ID'"
+          [m_bIsValidatorInput]="true"
+          [m_sErrorText]="m_sUsernameError"
+          [m_bHasTitle]="true"
+          [(m_sInputText)]="m_oUserInfoInput.userId"
+          [m_bIsValid]="validateUserName() && m_bUsernameIsValid"
+        ></rise-text-input>
         <rise-text-input
           [m_sLocalizationKey]="'REGISTER.EMAIL'"
           [m_bRequired]="true"
@@ -111,15 +111,15 @@
           [(m_sInputText)]="m_oUserInfoInput.mobile"
           [m_bIsValidatorInput]="true"
           [m_sErrorText]="m_sPersonalError"
-          [m_bIsValid]="m_bPersonalValid"
+          [m_bIsValid]="validatePhone(m_oUserInfoInput.mobile) && m_bMobileIsValid"
         ></rise-text-input>
       </div>
       <div class="d-flex flex-column gap-1">
         <rise-button
           [m_sLabel]="'Next'"
           [m_sRole]="'primary'"
-          [m_bDisabled]="!checkPersonalInfo(true)"
-          (click)="checkPersonalInfo(true) ? setPage('organization') : ''"
+          [m_bDisabled]="!checkPersonalInfo()"
+          (click)="checkPersonalInfo() ? setPage('organization') : ''"
         ></rise-button>
         <rise-button
           [m_sLabel]="'Previous'"
