@@ -152,7 +152,10 @@ export class SignUpComponent implements OnInit{
    * @returns boolean
    */
   validatePhone(sPhone: string): boolean {
-    return true;
+    if(FadeoutUtils.utilsIsStrNullOrEmpty(sPhone)) return false;
+    const sPhoneRegex = /^[+]?[0-9]{6,15}$/;
+    return sPhoneRegex.test(sPhone);
+
   }
 
   register() {
@@ -234,9 +237,18 @@ export class SignUpComponent implements OnInit{
     if (
       this.m_oUserInfoInput.name &&
       this.m_oUserInfoInput.surname &&
-      this.m_oUserInfoInput.mobile
+      this.validatePhone(this.m_oUserInfoInput.mobile)
     ) {
       bIsValid = true;
+    } else if(FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oUserInfoInput.name) ||
+      FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oUserInfoInput.surname) ){
+      this.m_sPersonalError =
+        "Please ensure you've entered a name, surname";
+      bIsTouched ? (bIsValid = false) : '';
+    } else if(this.validatePhone(this.m_oUserInfoInput.mobile)){
+      this.m_sPersonalError =
+        "Invalid phone number format. It must be a number between 6 and 15 digits.";
+      bIsTouched ? (bIsValid = false) : '';
     } else {
       this.m_sPersonalError =
         "Please ensure you've entered a name, surname, and mobile number";
