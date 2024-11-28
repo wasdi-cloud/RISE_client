@@ -9,8 +9,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { MapService } from '../../services/map.service';
 import { AuthService } from '../../services/api/auth.service';
-import {UserService} from "../../services/api/user.service";
-import {UserViewModel} from "../../models/UserViewModel";
+import { UserService } from '../../services/api/user.service';
+import { UserViewModel } from '../../models/UserViewModel';
+import { ConstantsService } from '../../services/constants.service';
 @Component({
   selector: 'rise-user-menu',
   standalone: true,
@@ -22,27 +23,32 @@ export class RiseUserMenuComponent implements OnInit {
   m_aoMenuItems: Array<any> = [];
 
   m_bShowDropdown: boolean = false;
-  m_oUser:UserViewModel
+  m_oUser: UserViewModel;
   constructor(
     private m_oActivatedRoute: ActivatedRoute,
     private m_oAuthService: AuthService,
+    private m_oConstantsService: ConstantsService,
     private m_oMapService: MapService,
     private m_oRouter: Router,
-    private m_oUserService:UserService
+    private m_oUserService: UserService
   ) {
     this.m_aoMenuItems = DefaultMenuItems;
   }
 
   ngOnInit(): void {
-    this.m_oUserService.getUser().subscribe(
-      {
-        next:(oResponse)=>{
-          this.m_oUser=oResponse;
-        },error:(oError)=>{
-          console.error(oError)
-        }
-      }
-    )
+    this.m_oUser = this.m_oConstantsService.getUser();
+
+    if (!this.m_oUser) {
+      this.m_oUserService.getUser().subscribe({
+        next: (oResponse) => {
+          this.m_oUser = oResponse;
+          this.m_oConstantsService.setUser(this.m_oUser);
+        },
+        error: (oError) => {
+          console.error(oError);
+        },
+      });
+    }
     this.m_oActivatedRoute.url.subscribe((params) => {
       if (params.toString().includes('account')) {
         this.m_aoMenuItems = ReducedMenuItems;
