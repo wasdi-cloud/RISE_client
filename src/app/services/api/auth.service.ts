@@ -87,14 +87,14 @@ export class AuthService {
 
   /**
    * Confirm an admin user
-   * @param iConfirmationCode
+   * @param sConfirmationCode
    * @param sUser
    * @returns
    */
-  confirmAdm(iConfirmationCode: number, sUser: any) {
+  confirmAdm(sConfirmationCode: string, sUser: any) {
     return this.m_oHttp.get<any>(
       this.APIURL +
-        `/auth/confirm_adm?code="${iConfirmationCode}"&usr="${sUser}"`
+        `/auth/confirm_adm?code="${sConfirmationCode}"&usr="${sUser}"`
     );
   }
 
