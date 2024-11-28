@@ -452,3 +452,21 @@ a.leaflet-control-zoom-fullscreen {
   border: 1px solid var(--neutral50Brand) !important;
   background-color: var(--wasdiBluelight) !important;
 }
+
+/* Styles for Leaflet Popup Content */
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  backdrop-filter: blur(20px);
+  background-color: rgba(0, 31, 40, 0.4) !important;
+  border: none !important;
+  color: #ffffff !important;
+  font-family: "Poppins", sans-serif !important;
+}
+
+.leaflet-popup-content ul {
+  padding-left: 1rem !important;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  color: #ffffff !important;
+}

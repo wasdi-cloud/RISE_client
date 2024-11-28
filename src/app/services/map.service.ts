@@ -1,20 +1,22 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {AreaViewModel} from '../models/AreaViewModel';
+import { AreaViewModel } from '../models/AreaViewModel';
 
-import {MatDialog} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 import Geocoder from 'leaflet-control-geocoder';
-import {geoJSON, Map, Marker} from 'leaflet';
+import { geoJSON, Map, Marker } from 'leaflet';
 import 'leaflet-draw';
 import 'leaflet-mouse-position';
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
-import {wktToGeoJSON} from '@terraformer/wkt';
-import {ManualBoundingBoxComponent} from '../dialogs/manual-bounding-box-dialog/manual-bounding-box.component';
-import {
-  ImportShapeFileStationDialogComponent
-} from '../dialogs/import-shape-file-station-dialog/import-shape-file-station-dialog.component';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { wktToGeoJSON } from '@terraformer/wkt';
+import { ManualBoundingBoxComponent } from '../dialogs/manual-bounding-box-dialog/manual-bounding-box.component';
+import { ImportShapeFileStationDialogComponent } from '../dialogs/import-shape-file-station-dialog/import-shape-file-station-dialog.component';
 import FadeoutUtils from '../shared/utilities/FadeoutUtils';
+import { NotificationsDialogsService } from './notifications-dialogs.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ConstantsService } from './constants.service';
+import { TranslateService } from '@ngx-translate/core';
 // import L from 'leaflet';
 declare const L: any;
 
@@ -32,8 +34,6 @@ const iconDefault = L.icon({
   shadowSize: [41, 41],
 });
 L.Marker.prototype.options.icon = iconDefault;
-
-
 
 const MAX_STORAGE_SIZE = 2 * 1024 * 1024; // 2MB for testing
 const MIN_ZOOM = 3;
@@ -146,7 +146,20 @@ export class MapService {
     radius: number;
   }>();
 
-  constructor(private m_oDialog: MatDialog) {}
+  m_oFeatureInfoMarker = null;
+
+  /**
+   * Flag to know if the pixel info tool should be enabled
+   */
+  m_bPixelInfoOn: boolean = false;
+
+  constructor(
+    private m_oConstantsService: ConstantsService,
+    private m_oDialog: MatDialog,
+    private m_oHttp: HttpClient,
+    private m_oNotificationService: NotificationsDialogsService,
+    private m_oTranslate: TranslateService
+  ) {}
 
   setMapOptions() {
     this.m_oOptions = {
@@ -177,8 +190,6 @@ export class MapService {
   getMap() {
     return this.m_oRiseMap;
   }
-
-
 
   /**
    * Initialize base layers
@@ -273,10 +284,9 @@ export class MapService {
 
     activeLayer.off('tileloadstart'); // Remove any existing listener on this layer
 
-
     activeLayer.on(
       'tileloadstart',
-      async (event: { tile: { src: string ,style:any} }) => {
+      async (event: { tile: { src: string; style: any } }) => {
         let oMap = this.getMap();
         const zoomLevel = oMap?.getZoom();
         if (zoomLevel && zoomLevel >= 3 && zoomLevel <= 13) {
@@ -316,8 +326,6 @@ export class MapService {
       }
     );
   }
-
-
 
   getActiveLayer() {
     return this.m_oActiveBaseLayer;
@@ -392,7 +400,7 @@ export class MapService {
     const height = southWest.distanceTo(
       new L.LatLng(northEast.lat, southWest.lng)
     );
-     // Convert area from square meters to square kilometers
+    // Convert area from square meters to square kilometers
     return (width * height) / 1000000;
   }
 
@@ -489,14 +497,12 @@ export class MapService {
     //   sServer = sServer.replace('ows', 'wms?');
     // }
 
-    // console.log(sServer);
     let oWmsLayer = L.tileLayer.wms(sServer, {
       layers: sLayerId,
       format: 'image/png',
       transparent: true,
       noWrap: true,
     });
-    // console.log(oWmsLayer);
     oWmsLayer.setZIndex(1000);
     oWmsLayer.addTo(oMap);
 
@@ -932,6 +938,7 @@ export class MapService {
     });
     oMap.addControl(new oImportButton());
   }
+
   /**
    * Go to a position by inserting coords
    * @param oMap
@@ -1000,6 +1007,49 @@ export class MapService {
       onRemove: function (map) {},
     });
     oMap.addControl(new m_oManualBoxingButton());
+  }
+
+  addPixelInfoToggle(oMap: any) {
+    let oController = this;
+
+    const oPixelButton = L.Control.extend({
+      options: {
+        position: 'topright',
+      },
+      onAdd: function (oMap) {
+        // Create the container for the dialog
+        let oContainer = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+        // Create the button to add to leaflet
+        let oButton = L.DomUtil.create(
+          'a',
+          'leaflet-control-button',
+          oContainer
+        );
+
+        // Click stops on our button
+        L.DomEvent.disableClickPropagation(oButton);
+
+        // And here we decide what to do with our button
+
+        L.DomEvent.on(oButton, 'click', function () {
+          oController.m_bPixelInfoOn = !oController.m_bPixelInfoOn;
+
+          if (oController.m_bPixelInfoOn) {
+            oController.getPixelInfo();
+          }
+        });
+
+        // This is the "icon" of the button added to Leaflet
+        oButton.innerHTML =
+          '<span class="material-symbols-outlined">chat_info</span>';
+
+        oContainer.title = 'Toggle Pixel Info';
+
+        return oContainer;
+      },
+      onRemove: function (map) {},
+    });
+    oMap.addControl(new oPixelButton());
   }
 
   /**
@@ -1076,7 +1126,12 @@ export class MapService {
     L.control.zoom({ position: 'bottomright' }).addTo(oMap);
   }
 
-  getLegendUrl(oLayer) {
+  /**
+   * Get the Legend image link of a given layer
+   * @param oLayer
+   * @returns string
+   */
+  getLegendUrl(oLayer): string {
     if (FadeoutUtils.utilsIsObjectNullOrUndefined(oLayer)) {
       return '';
     }
@@ -1100,4 +1155,162 @@ export class MapService {
 
     return sGeoserverUrl;
   }
+
+  getWMSLayerInfoUrl(
+    sWmsUrl: string,
+    oPoint: L.LatLng,
+    sLayerIdList: string
+  ): string {
+    const oLat = oPoint.lat;
+    const oLng = oPoint.lng;
+
+    const aoBounds: L.LatLngBounds = L.latLngBounds(
+      L.latLng(oLat - 0.0001, oLng - 0.0001),
+      L.latLng(oLat + 0.0001, oLng + 0.0001)
+    );
+    const sVersion = '1.3.0';
+    //set BBox
+    const sBoundsString = [
+      aoBounds.getSouth(),
+      aoBounds.getWest(),
+      aoBounds.getNorth(),
+      aoBounds.getEast(),
+    ].join(',');
+    const sBbox =
+      sVersion === '1.3.0' ? sBoundsString : aoBounds.toBBoxString();
+
+    const oWmsParams = {
+      request: 'GetFeatureInfo',
+      service: 'WMS',
+      info_format: 'application/json',
+      query_layers: sLayerIdList,
+      feature_count: 10,
+      version: sVersion,
+      bbox: sBbox,
+      layers: sLayerIdList,
+      height: 101,
+      width: 101,
+    };
+
+    //set x/y or i/j
+    oWmsParams[sVersion === '1.3.0' ? 'i' : 'x'] = 50;
+    oWmsParams[sVersion === '1.3.0' ? 'j' : 'y'] = 50;
+
+    //Set param version
+    oWmsParams[sVersion === '1.3.0' ? 'crs' : 'srs'] = 'EPSG:4326';
+
+    //build url with url and params
+    const sUrl = sWmsUrl + L.Util.getParamString(oWmsParams, sWmsUrl);
+
+    //load data from server
+    return sUrl;
+  }
+
+  getPixelInfo() {
+    let sErrorMsg: string = this.m_oTranslate.instant('MAP.ERROR_LAYER');
+    this.m_oRiseMap.on('click', (oClickEvent) => {
+      if (this.m_bPixelInfoOn) {
+        let i = 0;
+        this.m_oRiseMap.eachLayer(function () {
+          i += 1;
+        });
+        if (i > 1) {
+          let sWmsUrl = '';
+          let sLayerIdList = '';
+
+          this.m_oRiseMap.eachLayer((oLayer) => {
+            if (oLayer.options.layers) {
+              if (FadeoutUtils.utilsIsStrNullOrEmpty(oLayer._url)) {
+                sWmsUrl = oLayer.url.replace('ows', 'wms');
+              }
+
+              sLayerIdList += oLayer.options.layers;
+              // sLayerIdList += ',';
+
+              let sFeatureInfoUrl = this.getWMSLayerInfoUrl(
+                sWmsUrl,
+                oClickEvent.latlng,
+                sLayerIdList
+              );
+
+              if (sFeatureInfoUrl) {
+                if (this.m_oFeatureInfoMarker != null) {
+                  this.m_oFeatureInfoMarker.remove();
+                }
+                this.getFeatureInfo(sFeatureInfoUrl).subscribe({
+                  next: (oResponse) => {
+                    if (oResponse !== null && oResponse !== undefined) {
+                      try {
+                        let sPrettyPrint = JSON.stringify(oResponse, null, 2);
+                        let sContentString = this.formatFeatureJSON(oResponse);
+                        //let sJson = `<div>{"type":"FeatureCollection","features":[{"type":"Feature","id":"","geometry":null,"properties":{"GRAY_INDEX":0.1479392647743225}}],"totalFeatures":"unknown","numberReturned":1,"timeStamp":"2024-03-29T12:04:31.867Z","crs":null}</div>`;
+                        this.m_oFeatureInfoMarker = L.popup()
+                          .setLatLng([
+                            oClickEvent.latlng.lat,
+                            oClickEvent.latlng.lng,
+                          ])
+                          .setContent(sContentString)
+                          .openOn(this.m_oRiseMap);
+                      } catch (error) {
+                        this.m_oNotificationService.openSnackBar(
+                          sErrorMsg,
+                          '',
+                          'danger-snackbar'
+                        );
+                      }
+                    }
+                  },
+                  error: (oError) => {
+                    this.m_oNotificationService.openSnackBar(
+                      sErrorMsg,
+                      '',
+                      'danger-snackbar'
+                    );
+                  },
+                });
+              }
+            }
+          });
+        }
+      }
+    });
+  }
+
+  /**
+   * Return the content for an 'innerHTML' element to be read by the popup -> setContent()
+   * example:
+   * Type: string
+   * - Gray Index: X.XXX
+   */
+  formatFeatureJSON(oJSON: any) {
+    let asFeatureContent = oJSON.features.map((oFeature) => {
+      return `<li>Type: ${oFeature.type} <ul>${
+        oFeature.properties instanceof Array
+          ? oFeature.properties.forEach((oProperty) => {
+              return `<li> Gray Index: ${oProperty.GRAY_INDEX}</li>`;
+            })
+          : `<li>Gray Index: ${oFeature.properties.GRAY_INDEX}</li>`
+      }</ul> </li>`;
+    });
+
+    let sReturnString = '<ul>' + asFeatureContent.toString() + '</ul>';
+    return sReturnString;
+  }
+
+  getFeatureInfo(sUrl: string) {
+    const aoHeaders = new HttpHeaders()
+      .set('Accept', 'text/html,application/xhtml+xml,application/xml')
+      .set('Cache-Control', 'max-age=0');
+    sUrl = this.m_oConstantsService.getWmsUrlGeoserver() + sUrl;
+    return this.m_oHttp.get(sUrl, { headers: aoHeaders });
+  }
+
+  // setFeatureInfoMode(bEnabled: boolean) {
+  //   if (this.m_bPixelInfoOn === false) {
+  //     console.log(this.m_oFeatureInfoMarker);
+  //     if (this.m_oFeatureInfoMarker != null) {
+  //       this.m_oFeatureInfoMarker.remove();
+  //     }
+  //   }
+  // }
 }
