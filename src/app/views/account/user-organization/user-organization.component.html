@@ -97,6 +97,7 @@
         </div>
         <rise-collaborators
           [m_aoUsers]="m_aoOrgUsers"
+          [m_sResourceType]="'organization'"
           (m_oInviteClick)="openInviteUser($event)"
           (m_oEditClick)="changeUserRole($event)"
           (m_oRemoveClick)="removeOrgUser($event)"

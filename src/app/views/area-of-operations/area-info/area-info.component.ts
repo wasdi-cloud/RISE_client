@@ -96,7 +96,7 @@ export class AreaInfoComponent implements OnInit {
     this.m_oDialogRef.close();
   }
 
-  SaveAreaOfOperation() {
+  saveAreaOfOperation() {
     this.m_oAreaService.updateArea(this.m_oArea).subscribe({
       next:(oReponse)=>{
         this.onDismiss();
