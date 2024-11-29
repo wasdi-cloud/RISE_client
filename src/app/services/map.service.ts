@@ -475,6 +475,31 @@ export class MapService {
     return null;
   }
 
+  convertCircleToWKT(
+    center: { lat: number; lng: number },
+    radius: number
+  ): string {
+    const numPoints = 64; // Number of points to approximate the circle
+    const points = [];
+    const earthRadius = 6371000; // Radius of the Earth in meters
+
+    for (let i = 0; i < numPoints; i++) {
+      const angle = (((i * 360) / numPoints) * Math.PI) / 180; // Convert to radians
+      const latOffset =
+        ((radius * Math.cos(angle)) / earthRadius) * (180 / Math.PI);
+      const lngOffset =
+        ((radius * Math.sin(angle)) /
+          (earthRadius * Math.cos((center.lat * Math.PI) / 180))) *
+        (180 / Math.PI);
+      const lat = center.lat + latOffset;
+      const lng = center.lng + lngOffset;
+      points.push([lng, lat]);
+    }
+    // Close the polygon by repeating the first point at the end
+    points.push([points[0][0], points[0][1]]);
+    return `POLYGON((${points.map((p) => `${p[0]} ${p[1]}`).join(', ')}))`;
+  }
+
   /**
    * Add Layer Map 2D By Server
    * @param sLayerId

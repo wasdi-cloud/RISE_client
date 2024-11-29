@@ -48,13 +48,18 @@ import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
   styleUrl: './create-area-of-operation.component.css',
 })
 export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
+  /**
+   * UC_40 - Add Area of Operations
+   */
   @Output() m_oExitPage: EventEmitter<boolean> = new EventEmitter<boolean>(
     null
   );
 
   m_asPlugins: { label: string; value: string }[] = [];
 
-  //todo get users from org
+  /**
+   * Users selected to add to the area of interest
+   */
   m_aoUserData = [];
 
   /**
@@ -78,7 +83,7 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
   m_asPluginsSelected: string[] = [];
 
   /**
-   * ?
+   * Area of interest map input
    */
   m_oAreaInfo = {};
 
@@ -108,7 +113,6 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     // Optional: Ensure the component reference is available
-
     //todo get users that belong to current user org either by direct call or get all users and match with current user org id
     this.m_oPluginService.getPluginsList().subscribe({
       next: (aoResponse) => {
@@ -133,15 +137,20 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
     });
   }
 
-  onRowDelete(row: any) {
-    this.m_aoUserData = this.m_aoUserData.filter((item) => item !== row); // Remove the deleted row
-  }
-
   onSelectionChange(selectedValues: any[]) {
     this.m_asPluginsSelected = selectedValues;
     this.m_oAreaOfOperation.plugins = this.m_asPluginsSelected;
   }
 
+  /**
+   * Handles input changes to RISE map
+   * UC: HQ Operator can insert the Area of interest using:
+   *  - manually insert the lat lon coordinates (North East South West) of the area
+   *  - draw a rectangle directly on the map
+   *  - upload a shape file to define/filter the area of operations
+   *  - click on a point on the map and RISE will draw around the minimum area
+   * @param shapeInfo
+   */
   onMapInputChange(shapeInfo: any) {
     if (shapeInfo) {
       if (shapeInfo.type === 'circle') {
@@ -158,7 +167,7 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
         this.m_oAreaOfOperation.markerCoordinates =
           'POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')';
         // Convert circle to WKT (approximated as a polygon with 64 points)
-        this.m_oAreaOfOperation.bbox = this.convertCircleToWKT(
+        this.m_oAreaOfOperation.bbox = this.m_oMapService.convertCircleToWKT(
           shapeInfo.center,
           shapeInfo.radius
         );
@@ -171,9 +180,7 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
           geoJson: shapeInfo.geoJson,
           center: shapeInfo.center,
         };
-
         // Convert polygon to WKT
-
         this.m_oAreaOfOperation.bbox = geojsonToWKT(shapeInfo.geoJson);
         this.m_oAreaOfOperation.markerCoordinates =
           'POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')';
@@ -181,35 +188,7 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
     }
   }
 
-  //todo moving this to map service
-  // Convert circle to WKT (approximated as a polygon)
-
-  convertCircleToWKT(
-    center: { lat: number; lng: number },
-    radius: number
-  ): string {
-    const numPoints = 64; // Number of points to approximate the circle
-    const points = [];
-    const earthRadius = 6371000; // Radius of the Earth in meters
-
-    for (let i = 0; i < numPoints; i++) {
-      const angle = (((i * 360) / numPoints) * Math.PI) / 180; // Convert to radians
-      const latOffset =
-        ((radius * Math.cos(angle)) / earthRadius) * (180 / Math.PI);
-      const lngOffset =
-        ((radius * Math.sin(angle)) /
-          (earthRadius * Math.cos((center.lat * Math.PI) / 180))) *
-        (180 / Math.PI);
-      const lat = center.lat + latOffset;
-      const lng = center.lng + lngOffset;
-      points.push([lng, lat]);
-    }
-    // Close the polygon by repeating the first point at the end
-    points.push([points[0][0], points[0][1]]);
-    return `POLYGON((${points.map((p) => `${p[0]} ${p[1]}`).join(', ')}))`;
-  }
-
-  SaveAreaOfOperation() {
+  saveAreaOfOperation() {
     this.m_bValidationActive = true;
     if (this.validateAOI()) {
       this.m_oAreaOfOperationService
@@ -217,10 +196,10 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
         .subscribe({
           next: (oResponse) => {
             //todo send confirmation to HQ operator
-            this.m_oNotificationService.openInfoDialog(
-              'New Area have been added successfully',
-              'success',
-              'Success'
+            this.m_oNotificationService.openSnackBar(
+              'Your are has been added successfully',
+              'Success',
+              'success'
             );
             this.exitCreatingAreaOfOperation();
           },
@@ -242,11 +221,12 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
     this.m_oExitPage.emit(false);
   }
 
-  handleTableData(tableData: any[]) {
-    this.m_aoFieldUsers = tableData;
-  }
-
-  private inviteUserToBuyNewSubscription() {
+  /**
+   * UC: RISE verifies the subscription status of the organization
+   * If the Organization does not have a valid subscription:
+   * RISE invites the user to buy a New Subscription (UC_095)
+   */
+  private inviteUserToBuyNewSubscription(): void {
     let sMessage =
       'Your subscription is invalid.<br> Would you like to purchase a new one?';
     this.m_oNotificationService
@@ -255,16 +235,154 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
         if (oResult) {
           //go to subscription page
           //todo this is a bad solution
-          this.m_oRouter.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-            this.m_oRouter.navigateByUrl('/account', {
-              state: { m_sActiveOutlet: 'subscriptions' },
+          this.m_oRouter
+            .navigateByUrl('/', { skipLocationChange: true })
+            .then(() => {
+              this.m_oRouter.navigateByUrl('/account', {
+                state: { m_sActiveOutlet: 'subscriptions' },
+              });
             });
-          });
         }
       });
   }
 
+  /********* Input form validations and handlers *********/
+  /**
+   * Enable the area of interest submission button
+   * @returns boolean
+   */
+  enableAOISubmit(): boolean {
+    if (!this.m_oAreaOfOperation.name) {
+      return false;
+    }
+    if (this.m_asPluginsSelected.length < 1) {
+      return false;
+    }
+    if (!this.m_oAreaOfOperation.bbox) {
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * Ensure all the inputs are valid
+   * @returns boolean
+   */
+  private validateAOI(): boolean {
+    let bIsValid = true;
+    // this.checkOverlappingAreasAndSameName(this.m_oAreaOfOperation);
+
+    if (
+      !this.validateAOIName() ||
+      !this.validateAOIDescription() ||
+      !this.validateAOIPlugins() ||
+      !this.validateAreaInfo()
+    ) {
+      bIsValid = false;
+    }
+    return bIsValid;
+  }
+  /**
+   * Ensure the user has entered a valid name for their area
+   * @returns boolean
+   */
+  validateAOIName(): boolean {
+    if (!this.m_bValidationActive) return true;
+
+    if (
+      FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oAreaOfOperation.name) ||
+      this.m_oAreaOfOperation.name.length < 6
+    ) {
+      this.m_sAreaOfOperationNameError =
+        'Please enter a valid name of at least 6 characters.';
+      this.m_bNameIsValid = false;
+      return false;
+    }
+
+    this.m_sAreaOfOperationNameError = ''; // Clear error when valid
+    this.m_bNameIsValid = true;
+    return true;
+  }
+
+  /**
+   * Ensure the user has entered a valid description for their area
+   * @returns boolean
+   */
+  validateAOIDescription(): boolean {
+    if (
+      FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oAreaOfOperation.description)
+    ) {
+      this.m_sAreaOfOperationDescriptionError =
+        'Please provide a description for your area of operations';
+      this.m_bDescriptionIsValid = false;
+      return false;
+    }
+    this.m_sAreaOfOperationDescriptionError = ''; // Clear error when valid
+    this.m_bDescriptionIsValid = true;
+    return true;
+  }
+
+  /**
+   * Ensure the user has selected at least one plugin
+   * @returns boolean
+   */
+  private validateAOIPlugins(): boolean {
+    if (
+      !this.m_oAreaOfOperation.plugins ||
+      this.m_oAreaOfOperation.plugins.length < 1
+    ) {
+      this.m_sPluginError = 'Please select at least one plugin from the list.';
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * Ensure the user has inputted Area information (i.e., Bbox)
+   * @returns boolean
+   */
+  private validateAreaInfo(): boolean {
+    return this.m_oAreaInfo !== null;
+  }
+
+  /**
+   * Reset form inputs
+   * @returns
+   */
+  private resetAreaOfOperationForm(): void {
+    // Reset the name and description
+    this.m_oAreaOfOperation = {
+      bbox: '',
+      description: '',
+      name: '',
+      plugins: [],
+      markerCoordinates: '',
+    };
+
+    // Reset the map area
+    this.m_oAreaInfo = {};
+
+    // Reset the selected events (checkboxes)
+    this.m_asPluginsSelected = [];
+
+    // Reset the users in the table
+    this.m_aoFieldUsers = [];
+    this.m_aoUserData = [];
+    this.m_oMapService.clearPreviousDrawings(null);
+    // this.m_oRiseSelectAreaComponent.clearPreviousDrawings();
+  }
+
+  /********** Area of Interest - MAP INPUT VALIDATIONS **********/
+  /**
+   * Check if the proposed area overlaps with an existing area of the user
+   * UC: If the selected area overlaps or have the same name of an existing one
+   * @param m_oAreaOfOperation
+   * @returns
+   */
   private checkOverlappingAreas(m_oAreaOfOperation: AreaViewModel) {
+    // RISE communicates to the HQ Operator that there is already an overlapping area that is up and running
+    // RISE ask confirmation to the HQ Operator if we really wants to proceed;
+    // If the user cancels the operation, RISE clears the form and comes back to Step 1, otherwise proceed to step 7.
     //TODO the service is not implemented yet in the backend
     return false;
   }
@@ -279,7 +397,6 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
   }
 
   private checkOverlappingAreasAndSameName(m_oAreaOfOperation: AreaViewModel) {
-    // TODO: Switch out Confirm dialog for Confirmation Dialog Service + add localization
     if (
       this.checkOverlappingAreas(m_oAreaOfOperation) &&
       this.checkSameNameAreas(m_oAreaOfOperation)
@@ -330,7 +447,6 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
                 },
               });
           } else {
-            //todo clear everything
             this.resetAreaOfOperationForm();
           }
         });
@@ -349,106 +465,5 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
         });
     }
     return false;
-  }
-
-  private resetAreaOfOperationForm() {
-    // Reset the name and description
-    this.m_oAreaOfOperation = {
-      bbox: '',
-      description: '',
-      name: '',
-      plugins: [],
-      markerCoordinates: '',
-    };
-
-    // Reset the map area
-    this.m_oAreaInfo = {};
-
-    // Reset the selected events (checkboxes)
-    this.m_asPluginsSelected = [];
-
-    // Reset the users in the table
-    this.m_aoFieldUsers = [];
-    this.m_aoUserData = [];
-    this.m_oMapService.clearPreviousDrawings(null);
-    // this.m_oRiseSelectAreaComponent.clearPreviousDrawings();
-  }
-
-  /**
-   * enable the area of interest submission button
-   */
-  enableAOISubmit(): boolean {
-    if (!this.m_oAreaOfOperation.name) {
-      return false;
-    }
-    if (this.m_asPluginsSelected.length < 1) {
-      return false;
-    }
-    if (!this.m_oAreaOfOperation.bbox) {
-      return false;
-    }
-    return true;
-  }
-
-  private validateAOI(): boolean {
-    let bIsValid = true;
-    // this.checkOverlappingAreasAndSameName(this.m_oAreaOfOperation);
-
-    if (
-      !this.validateAOIName() ||
-      !this.validateAOIDescription() ||
-      !this.validateAOIPlugins() ||
-      !this.validateAreaInfo()
-    ) {
-      bIsValid = false;
-    }
-    return bIsValid;
-  }
-
-  validateAOIName() {
-    if (!this.m_bValidationActive) return true;
-
-    if (
-      FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oAreaOfOperation.name) ||
-      this.m_oAreaOfOperation.name.length < 6
-    ) {
-      this.m_sAreaOfOperationNameError =
-        'Please enter a valid name of at least 6 characters.';
-      this.m_bNameIsValid = false;
-      return false;
-    }
-
-    this.m_sAreaOfOperationNameError = ''; // Clear error when valid
-    this.m_bNameIsValid = true;
-    return true;
-  }
-
-  validateAOIDescription() {
-    if (
-      FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oAreaOfOperation.description)
-    ) {
-      this.m_sAreaOfOperationDescriptionError =
-        'Please provide a description for your area of operations';
-      this.m_bDescriptionIsValid = false;
-      return false;
-    }
-    this.m_sAreaOfOperationDescriptionError = ''; // Clear error when valid
-    this.m_bDescriptionIsValid = true;
-    return true;
-  }
-
-  private validateAOIPlugins(): boolean {
-    if (
-      !this.m_oAreaOfOperation.plugins ||
-      this.m_oAreaOfOperation.plugins.length < 1
-    ) {
-      this.m_sPluginError = 'Please select at least one plugin from the list.';
-      return false;
-    }
-    return true;
-  }
-
-  private validateAreaInfo() {
-    return this.m_oAreaInfo !== null;
   }
 }
