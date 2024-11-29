@@ -13,6 +13,8 @@ import { RiseCollaboratorsComponent } from '../rise-collaborators/rise-collabora
 })
 export class RiseCollaboratorsDialogComponent implements OnInit {
   m_aoUsers: Array<UserViewModel> = [];
+  m_sResourceId: string = '';
+  m_sResourceType: string = '';
   constructor(
     @Inject(MAT_DIALOG_DATA) public m_oData: any,
     private m_oDialogRef: MatDialogRef<RiseCollaboratorsDialogComponent>
@@ -21,6 +23,8 @@ export class RiseCollaboratorsDialogComponent implements OnInit {
   ngOnInit(): void {
     if (this.m_oData) {
       this.m_aoUsers = this.m_oData.users;
+      this.m_sResourceId = this.m_oData.id;
+      this.m_sResourceType = this.m_oData.resourceType;
     }
   }
 

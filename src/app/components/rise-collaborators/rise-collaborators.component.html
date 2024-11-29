@@ -1,7 +1,7 @@
 <!-- No Collaborators -->
 <div
   class="collaborators-container text-center px-4 py-5 d-flex flex-column gap-4"
-  *ngIf="m_aoUsers.length === 0"
+  *ngIf="m_aoUsers.length === 0 && !m_bShowTable"
 >
   <span class="material-symbols-outlined"> diversity_3 </span>
   {{ "COLLABORATORS.NONE" | translate }}
@@ -15,7 +15,7 @@
 
 <!-- With Collaborators already -->
 
-<div class="table-wrapper w-100" *ngIf="m_aoUsers.length > 0">
+<div class="table-wrapper w-100" *ngIf="m_aoUsers.length > 0 || m_bShowTable">
   <table class="w-100">
     <thead class="table-heading-container">
       <tr>
@@ -73,12 +73,35 @@
           </span>
         </td>
       </tr>
+      <tr *ngIf="m_bAddingUser">
+        <td>
+          <rise-text-input></rise-text-input>
+        </td>
+        <td><rise-text-input></rise-text-input></td>
+        <td></td>
+        <td>
+          <span
+            class="option material-symbols-outlined edit"
+            [matTooltip]="'Cancel Editing'"
+            (click)="m_bAddingUser = false"
+          >
+            close
+          </span>
+        </td>
+      </tr>
       <tr class="mt-1">
         <td class="d-flex flex-row justify-content-start">
           <rise-button
+            *ngIf="m_sResourceType === 'organization'"
             [m_sLabel]="'COLLABORATORS.ADD'"
             [m_sRole]="'primary'"
             (click)="emitInviteClick()"
+          ></rise-button>
+          <rise-button
+            *ngIf="m_sResourceType !== 'organization'"
+            [m_sLabel]="'COLLABORATORS.ADD'"
+            [m_sRole]="'primary'"
+            (click)="m_bAddingUser = true"
           ></rise-button>
         </td>
       </tr>
