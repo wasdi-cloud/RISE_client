@@ -12,36 +12,43 @@
         src="/assets/rise-assets/logo-white-horizontal.svg"
         alt=""
       />
-      <rise-text-input></rise-text-input>
+      <rise-text-input
+        [m_bHasIcon]="true"
+        [m_sIcon]="'search'"
+        [m_bHasTitle]="false"
+        [m_sLocalizationKey]="'Search Layers by name'"
+        [(m_sInputText)]="m_sSearchString"
+      ></rise-text-input>
       <!-- Layer List output -->
-      <div class="flex-fill">
-        <div class="d-flex flex-column gap-2 layer-list-container p-3">
-          <div
-            class="layers-header d-flex flex-row justify-content-between gap-2"
-          >
-            <span class="material-symbols-outlined"> map </span>
-            <div class="flex-fill d-flex flex-column">
-              Map Layers
-              <span *ngIf="m_aoLayers.length > 0" class="cta-text"
-                >Drag to rearrange</span
-              >
-            </div>
-            <span class="material-symbols-outlined"> keyboard_arrow_up </span>
+      <div class="flex-fill d-flex flex-column gap-2 layer-list-container p-3">
+        <div
+          class="layers-header d-flex flex-row justify-content-between gap-2"
+        >
+          <span class="material-symbols-outlined"> map </span>
+          <div class="flex-fill d-flex flex-column">
+            Map Layers
+            <span *ngIf="m_aoLayers.length > 0" class="cta-text"
+              >Drag to rearrange</span
+            >
           </div>
-          @if(m_aoLayers.length > 0) {
-          <div class="layer-outlet d-flex flex-column gap-2">
-            <!-- Reverse the layers list to show the correct order -->
-            <rise-layer-item
-              *ngFor="let oLayer of m_aoLayers.reverse()"
-              cdkDrag
-              [m_oLayer]="oLayer"
-              (m_oLayerVisibility)="getLayerVisibility($event, oLayer)"
-              (m_oLayerOpacity)="setOpacity($event, oLayer.layerId)"
-              (m_oEmitAction)="handleLayerAction($event)"
-            ></rise-layer-item>
-          </div>
-          } @else { No layers to show }
+          <span class="material-symbols-outlined"> keyboard_arrow_up </span>
         </div>
+        @if(m_aoLayers.length > 0) {
+        <div class="layer-outlet flex-fill d-flex flex-column gap-2">
+          <!-- Reverse the layers list to show the correct order - when passing to the filter, if empty string pass null! -->
+          <rise-layer-item
+            *ngFor="
+              let oLayer of m_aoLayers.reverse()
+                | filter : (m_sSearchString ? m_sSearchString : null)
+            "
+            cdkDrag
+            [m_oLayer]="oLayer"
+            (m_oLayerVisibility)="getLayerVisibility($event, oLayer)"
+            (m_oLayerOpacity)="setOpacity($event, oLayer.layerId)"
+            (m_oEmitAction)="handleLayerAction($event)"
+          ></rise-layer-item>
+        </div>
+        } @else { No layers to show }
       </div>
       <rise-button
         [m_sLabel]="'MONITOR.ADD_EVENT'"
@@ -66,6 +73,7 @@
         class="timebar"
         [m_iStartDate]="m_oAreaOfOperation.archiveStartDate"
         [m_iEndDate]="m_oAreaOfOperation.archiveEndDate"
+        (m_sSelectedDate)="getReferenceTime($event)"
       ></rise-timebar>
     </div>
     <div *ngIf="m_bShowLegends" class="legends-container">
