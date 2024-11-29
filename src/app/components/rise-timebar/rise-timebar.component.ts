@@ -19,22 +19,50 @@ import { RiseChipMenuComponent } from '../rise-chip-menu/rise-chip-menu.componen
   styleUrl: './rise-timebar.component.css',
 })
 export class RiseTimebarComponent implements OnInit, OnChanges {
+  /**
+   * UC_190 Browse Time
+   */
+  
+  /**
+   * Timebar start date
+   */
   @Input() m_iStartDate: any = null;
+
+  /**
+   * Timebar end date
+   */
   @Input() m_iEndDate: any = null;
-  @Input() m_iFrames: number = 5;
+
+  /**
+   * Date selected by the user
+   */
   @Output() m_sSelectedDate: EventEmitter<number> = new EventEmitter<number>(
     null
   );
 
+  /**
+   * Array of total dates to be displayed by the timebar
+   */
   m_asDates = [];
 
-  m_iShownFrame: number = 1;
-
+  /**
+   * Array of DATE OBJECTS
+   */
   m_aoDates: Array<Date> = [];
 
+  /**
+   * Value that the slider currently sits at
+   */
   m_iSliderValue: number = 0;
 
+  /**
+   * Selected day corresponding to index of the slider value in Dates arrays - i.e., m_oSelectedDate = m_aoDates[m_iSliderValue]
+   */
   m_oSelectedDate: string = '';
+
+  /**
+   * Timestamp corresponding to the selected date
+   */
   m_sSelectedDateTimestamp: number = null;
 
   constructor() {}
@@ -69,14 +97,9 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     }
     this.m_asDates = asDates;
 
-    this.m_oSelectedDate = asDates[0];
-    this.m_iSliderValue = 0;
+    this.m_oSelectedDate = asDates[asDates.length - 1];
+    this.m_iSliderValue = asDates.length - 1;
   }
-
-  // User clicks on the time bar
-
-  // RISE shows on the time bar markers where there are registered events (both automatically detected or inserted by the user)
-  // User can zoom in and out the time bar
 
   /**
    * Get the selected tick on the timebar and match it to the corresponding date in the dates array and find the timestamp
@@ -92,8 +115,8 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
       this.m_iSliderValue = this.m_asDates.indexOf(this.m_oSelectedDate);
     }
     this.m_sSelectedDateTimestamp = new Date(this.m_oSelectedDate).valueOf();
+    this.emitSelectedDate();
   }
-  setTimeframe() {}
 
   /**
    * Emit the selected date to the parent which will align the monitor page with new info
@@ -103,4 +126,18 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   emitSelectedDate(): void {
     this.m_sSelectedDate.emit(this.m_sSelectedDateTimestamp);
   }
+
+  /**
+   * TODO: Initialize the registered events on the timebar - make them clickable and associated to date/time
+   * UC: RISE shows on the time bar markers where there are registered events (both automatically detected or inserted by the user)
+   * @returns void
+   */
+  initRegisteredEvents(): void {}
+
+  /**
+   * TODO: Ability to zoom in and out of the timebar
+   * UC: User can zoom in and out the time bar
+   * @returns void
+   */
+  zoomToTime(): void {}
 }
