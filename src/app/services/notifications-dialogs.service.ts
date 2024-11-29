@@ -41,7 +41,7 @@ export class NotificationsDialogsService {
    * @param sClassName
    * @param sTitle
    */
-  openInfoDialog(sMessage: string, sClassName: string, sTitle: string): void {
+  openInfoDialog(sMessage: string, sClassName: string, sTitle?: string): void {
     //Set default 4 second timeout to close alert dialog
     let iTimeout = 4000;
 
