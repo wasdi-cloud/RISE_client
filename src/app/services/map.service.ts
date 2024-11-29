@@ -152,6 +152,7 @@ export class MapService {
    * Flag to know if the pixel info tool should be enabled
    */
   m_bPixelInfoOn: boolean = false;
+  m_aoMarkers: L.Marker[]=[];
 
   constructor(
     private m_oConstantsService: ConstantsService,
@@ -423,7 +424,7 @@ export class MapService {
    */
   addMarker(oArea: AreaViewModel, oMap: Map): Marker {
     let asCoordinates = this.convertPointLatLng(oArea)._northEast;
-    if (asCoordinates) {
+    if (asCoordinates && oMap) {
       let lat = parseFloat(asCoordinates.lat);
       let lon = parseFloat(asCoordinates.lng);
       let oMarker = L.marker([lat, lon])
@@ -432,20 +433,21 @@ export class MapService {
           // this.m_oMarkerClicked.emit(oArea);
           // this.m_oRouter.navigateByUrl('/monitor');
         })
-        .addTo(oMap);
+        if(oMarker){
+          oMarker.addTo(oMap);
+          this.m_aoMarkers.push(oMarker); // Store the marker in the array
+          return oMarker;
+        }
+        return null;
 
-      // .on('click', () => {
-      //   console.log(oArea)
-      //   this.m_oDialog.open(AreaInfoComponent, {
-      //     data: {
-      //       selectedArea: oArea
-      //     }
-      //   })
-      // }).addTo(oMap)
-
-      return oMarker;
     }
     return null;
+  }
+  clearMarkers(): void {
+    this.m_aoMarkers.forEach((marker) => {
+      marker.remove(); // Remove the marker from the map
+    });
+    this.m_aoMarkers = []; // Clear the marker array
   }
 
   /**

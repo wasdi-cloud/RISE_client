@@ -54,8 +54,9 @@ export class AreaOfOperationsComponent implements OnInit {
   getAreas() {
     this.m_oAreaService.getAreaList().subscribe({
       next: (aoResponse) => {
-        this.m_aoAreasOfOperations = aoResponse;
-        console.log(this.m_aoAreasOfOperations);
+        this.m_aoAreasOfOperations = [...aoResponse]; // Creates a new array reference
+
+
       },
     });
   }
@@ -138,6 +139,7 @@ export class AreaOfOperationsComponent implements OnInit {
             {
               next: (oResponse) => {
                 this.getAreas();
+
               }, error: (oError) => {
                 console.error(oError)
               }
