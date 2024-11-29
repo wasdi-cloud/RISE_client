@@ -1,20 +1,21 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {TranslateModule} from '@ngx-translate/core';
 
-import { BuyNewSubscriptionComponent } from './buy-new-subscription/buy-new-subscription.component';
-import { MatDialog } from '@angular/material/dialog';
-import { RiseButtonComponent } from '../../../components/rise-button/rise-button.component';
-import { SubscriptionEditorComponent } from './subscription-editor/subscription-editor.component';
+import {BuyNewSubscriptionComponent} from './buy-new-subscription/buy-new-subscription.component';
+import {MatDialog} from '@angular/material/dialog';
+import {RiseButtonComponent} from '../../../components/rise-button/rise-button.component';
+import {SubscriptionEditorComponent} from './subscription-editor/subscription-editor.component';
 
-import { ConstantsService } from '../../../services/constants.service';
-import { SubscriptionService } from '../../../services/api/subscription.service';
+import {ConstantsService} from '../../../services/constants.service';
+import {SubscriptionService} from '../../../services/api/subscription.service';
 
-import { SubscriptionViewModel } from '../../../models/SubscriptionViewModel';
-import { MatTooltip } from '@angular/material/tooltip';
-import { NotificationsDialogsService } from '../../../services/notifications-dialogs.service';
-import { SubscriptionTypeViewModel } from '../../../models/SubscriptionTypeViewModel';
+import {SubscriptionViewModel} from '../../../models/SubscriptionViewModel';
+import {MatTooltip} from '@angular/material/tooltip';
+import {NotificationsDialogsService} from '../../../services/notifications-dialogs.service';
+import {SubscriptionTypeViewModel} from '../../../models/SubscriptionTypeViewModel';
 import FadeoutUtils from '../../../shared/utilities/FadeoutUtils';
+import {RiseDropdownComponent} from "../../../components/rise-dropdown/rise-dropdown.component";
 
 @Component({
   selector: 'user-subscriptions',
@@ -25,6 +26,7 @@ import FadeoutUtils from '../../../shared/utilities/FadeoutUtils';
     TranslateModule,
     RiseButtonComponent,
     MatTooltip,
+    RiseDropdownComponent,
   ],
   templateUrl: './user-subscriptions.component.html',
   styleUrl: './user-subscriptions.component.css',
@@ -35,16 +37,19 @@ export class UserSubscriptionsComponent implements OnInit {
   m_bShowBuySub: boolean = false;
 
 
-
   m_aoSubscriptions: Array<SubscriptionViewModel> = [];
 
   m_aoSubtypes: Array<SubscriptionTypeViewModel> = [];
+  m_asSubAvailabilities: Array<any> = [
+    {name: 'All', value: 'all'}, {name: 'Expired', value: 'expired'}, {name: 'Valid', value: 'valid'}]
+
   constructor(
     private m_oConstantsService: ConstantsService,
     private m_oDialog: MatDialog,
     private m_oNotificationService: NotificationsDialogsService,
     private m_oSubscriptionService: SubscriptionService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.getSubscriptions();
@@ -63,7 +68,8 @@ export class UserSubscriptionsComponent implements OnInit {
           this.getSubTypes();
         }
       },
-      error: (oError) => {},
+      error: (oError) => {
+      },
     });
   }
 
@@ -87,13 +93,14 @@ export class UserSubscriptionsComponent implements OnInit {
         this.m_aoSubtypes = oResponse;
         this.initSubTypeNames();
       },
-      error: (oError) => {},
+      error: (oError) => {
+      },
     });
   }
 
   openEditor(oEvent) {
     let oDialog = this.m_oDialog.open(SubscriptionEditorComponent, {
-      data: { subscription: oEvent, isEditing: false },
+      data: {subscription: oEvent, isEditing: false},
     });
     oDialog.afterClosed().subscribe((bResult) => {
       if (bResult === true) {
@@ -102,25 +109,40 @@ export class UserSubscriptionsComponent implements OnInit {
     });
   }
 
-  getOrganization() {}
+  getOrganization() {
+  }
 
   /**
    * HQ Operator can change the filter of Subscriptions adding also expired subscriptions
    */
-  filterSubscriptions() {}
+  filterSubscriptions(event) {
+    let sAvailability = event.value.value;
+    if(sAvailability==='all'){
+      this.getSubscriptions();
+    }else if(sAvailability==='expired'){
+      let iDateNow=Date.now();
+
+      this.m_aoSubscriptions=this.m_aoSubscriptions.filter(s=>s.expireDate<iDateNow);
+    }else if(sAvailability==='valid'){
+      let iDateNow=Date.now();
+
+      this.m_aoSubscriptions=this.m_aoSubscriptions.filter(s=>s.expireDate>=iDateNow);
+    }
+  }
 
   /**
    * HQ Operator can view the details of a Subscription
    */
-  openSubscriptionInfo() {}
+  openSubscriptionInfo() {
+  }
 
   /**
    * HQ Operator can click the Buy New Subscription button
    */
   openBuyNewSub(bInput: boolean) {
     this.m_oDialog.open(BuyNewSubscriptionComponent).afterClosed().subscribe(() => {
-        this.getSubscriptions();
-      });  
+      this.getSubscriptions();
+    });
   }
 
   deleteSubscription(oSubscription: SubscriptionViewModel) {
