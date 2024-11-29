@@ -13,3 +13,13 @@ td {
 .material-symbols-outlined.remove {
   color: var(--rise-danger-text);
 }
+.dropdown-container {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0;
+}
+
+rise-dropdown {
+  width: auto;
+  font-size: 0.9rem;
+}

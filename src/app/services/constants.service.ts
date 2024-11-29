@@ -3,6 +3,7 @@ import { environment } from '../../environments/environments';
 import { AreaViewModel } from '../models/AreaViewModel';
 import { OrganizationViewModel } from '../models/OrganizationViewModel';
 import { UserViewModel } from '../models/UserViewModel';
+import {UserRole} from "../models/UserRole";
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +29,9 @@ export class ConstantsService {
 
   getUser(): UserViewModel {
     return this.m_oUser;
+  }
+  getUserRole(): UserRole {
+    return this.m_oUser.role;
   }
 
   setUser(oUser: UserViewModel) {

@@ -1,24 +1,13 @@
-import {
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges,} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
-import { MapService } from '../../services/map.service';
-import { RiseTimebarComponent } from '../rise-timebar/rise-timebar.component';
+import {MapService} from '../../services/map.service';
 import 'leaflet-draw';
-import { LeafletModule } from '@bluehalo/ngx-leaflet';
-import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
-import { AreaViewModel } from '../../models/AreaViewModel';
-import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
-import { RiseButtonComponent } from '../rise-button/rise-button.component';
-import { TranslateService } from '@ngx-translate/core';
+import {LeafletModule} from '@bluehalo/ngx-leaflet';
+import {LeafletDrawModule} from '@asymmetrik/ngx-leaflet-draw';
+import {AreaViewModel} from '../../models/AreaViewModel';
+import {NotificationsDialogsService} from '../../services/notifications-dialogs.service';
+import {TranslateService} from '@ngx-translate/core';
 import 'leaflet.fullscreen';
 
 // import * as L from 'leaflet';
@@ -106,11 +95,14 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void {
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!this.m_bIsSelectingArea) {
+    if (!this.m_bIsSelectingArea || changes['m_aoAreas']) {
       if (this.m_aoAreas.length > 0) {
+        //clear the pins
+        this.m_oMapService.clearMarkers();
         for (let oArea of this.m_aoAreas) {
           this.m_oMapService.addMarker(oArea, this.m_oMap);
         }
@@ -164,7 +156,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   addCircleButton(oMap: L.Map): void {
     this.m_oMapService.addCircleButton(oMap).subscribe((circleData) => {
       this.m_bIsAutoDrawCreated = true;
-      const { center, radius } = circleData;
+      const {center, radius} = circleData;
       this.emitInsertedArea(null, radius, center.lat, center.lng);
     });
   }
@@ -181,7 +173,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   // Different ways to draw an area
   //Using leaflet drawings
   onDrawCreated(oEvent) {
-    const { layerType, layer } = oEvent;
+    const {layerType, layer} = oEvent;
     const sErrorMsgToBig: string = this.m_oTranslate.instant(
       'AREA_OF_OPERATIONS.CONFIRM_AREA_TOO_BIG'
     );
@@ -388,7 +380,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
 
       // Collect all points (vertices) of the polygon
       const points = latLngs.map((point: L.LatLng) => {
-        return { lat: point.lat, lng: point.lng };
+        return {lat: point.lat, lng: point.lng};
       });
       // Calculate the centroid (center) of the polygon
       const centroid = this.calculateCentroid(points);
@@ -410,7 +402,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     // Emit the circle info (center, radius, and area)
     const oShapeInfo = {
       type: 'circle',
-      center: { lat: fLat, lng: fLng },
+      center: {lat: fLat, lng: fLng},
       radius: fRadius,
       area: fArea, // Add area to the emitted shape info
     };
@@ -435,7 +427,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
 
       // Prepare the points data
       const points = latLngs.map((point: L.LatLng) => {
-        return { lat: point.lat, lng: point.lng };
+        return {lat: point.lat, lng: point.lng};
       });
       // Calculate the centroid (center) of the polygon
       const centroid = this.calculateCentroid(points);
