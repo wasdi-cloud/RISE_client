@@ -31,7 +31,11 @@ export class ConstantsService {
     return this.m_oUser;
   }
   getUserRole(): UserRole {
-    return this.m_oUser.role;
+    if(this.m_oUser){
+      return this.m_oUser.role;
+    }
+    return null;
+
   }
 
   setUser(oUser: UserViewModel) {

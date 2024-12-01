@@ -1,17 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import {
-  DefaultMenuItems,
-  FullMenuItems,
-  ReducedMenuItems,
-} from './menu-items';
-import { NgFor, NgIf } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
-import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { MapService } from '../../services/map.service';
-import { AuthService } from '../../services/api/auth.service';
-import { UserService } from '../../services/api/user.service';
-import { UserViewModel } from '../../models/UserViewModel';
-import { ConstantsService } from '../../services/constants.service';
+import {Component, OnInit} from '@angular/core';
+import {DefaultMenuItems, FullMenuItems, ReducedMenuItems,} from './menu-items';
+import {NgFor, NgIf} from '@angular/common';
+import {TranslateModule} from '@ngx-translate/core';
+import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
+import {MapService} from '../../services/map.service';
+import {AuthService} from '../../services/api/auth.service';
+import {UserService} from '../../services/api/user.service';
+import {UserViewModel} from '../../models/UserViewModel';
+import {ConstantsService} from '../../services/constants.service';
+import {UserRole} from "../../models/UserRole";
+
 @Component({
   selector: 'rise-user-menu',
   standalone: true,
@@ -24,6 +22,7 @@ export class RiseUserMenuComponent implements OnInit {
 
   m_bShowDropdown: boolean = false;
   m_oUser: UserViewModel;
+
   constructor(
     private m_oActivatedRoute: ActivatedRoute,
     private m_oAuthService: AuthService,
@@ -36,35 +35,15 @@ export class RiseUserMenuComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.m_oUser = this.m_oConstantsService.getUser();
-
-    if (!this.m_oUser) {
-      this.m_oUserService.getUser().subscribe({
-        next: (oResponse) => {
-          this.m_oUser = oResponse;
-          this.m_oConstantsService.setUser(this.m_oUser);
-        },
-        error: (oError) => {
-          console.error(oError);
-        },
-      });
-    }
-    this.m_oActivatedRoute.url.subscribe((params) => {
-      if (params.toString().includes('account')) {
-        this.m_aoMenuItems = ReducedMenuItems;
-      } else if (params.toString().includes('monitor')) {
-        this.m_aoMenuItems = FullMenuItems;
-      } else {
-        this.m_aoMenuItems = DefaultMenuItems;
-      }
-    });
+    this.initUserMenu();
+    this.getUserMenu();
   }
 
   handleClick(sName) {
     switch (sName) {
       case 'subscriptions':
         let oNavExtra: NavigationExtras = {
-          state: { m_sActiveOutlet: sName },
+          state: {m_sActiveOutlet: sName},
         };
         this.m_oRouter.navigate(['account'], oNavExtra);
         break;
@@ -87,5 +66,80 @@ export class RiseUserMenuComponent implements OnInit {
 
   toggleDropdown() {
     this.m_bShowDropdown = !this.m_bShowDropdown;
+  }
+
+  private initUserMenu() {
+    if (!this.m_oUser?.role) {
+      this.m_oUserService.getUser().subscribe({
+        next: (oResponse) => {
+          this.m_oUser = oResponse;
+          this.m_oConstantsService.setUser(this.m_oUser);
+          if (this.m_oUser.role == UserRole.FIELD) {
+            this.m_aoMenuItems = DefaultMenuItems.filter(item => item.name != 'subscriptions');
+
+          } else {
+            this.m_aoMenuItems = DefaultMenuItems;
+          }
+
+        },
+        error: (oError) => {
+          console.error(oError);
+        },
+      });
+    }
+
+  }
+
+  private getUserMenu() {
+    this.m_oUser = this.m_oConstantsService.getUser();
+
+    if (!this.m_oUser) {
+      this.m_oUserService.getUser().subscribe({
+        next: (oResponse) => {
+          this.m_oUser = oResponse;
+          this.m_oConstantsService.setUser(this.m_oUser);
+        },
+        error: (oError) => {
+          console.error(oError);
+        },
+      });
+    }
+
+    this.m_oActivatedRoute.url.subscribe((params) => {
+      if (params.toString().includes('account')) {
+        this.m_aoMenuItems = ReducedMenuItems
+      } else if (params.toString().includes('monitor')) {
+        let oUserRole = this.m_oConstantsService.getUserRole();
+        if (!oUserRole) {
+          this.m_oUserService.getUser().subscribe({
+            next: (oResponse) => {
+              oUserRole = oResponse.role;
+            }
+          })
+        }
+        if (oUserRole == UserRole.FIELD) {
+          this.m_aoMenuItems = FullMenuItems.filter(item => item.name != 'subscriptions');
+        } else {
+          this.m_aoMenuItems = FullMenuItems
+        }
+
+      } else {
+        let oUserRole = this.m_oConstantsService.getUserRole();
+        if (!oUserRole) {
+          this.m_oUserService.getUser().subscribe({
+            next: (oResponse) => {
+              oUserRole = oResponse.role;
+            }
+          })
+        }
+        if (oUserRole == UserRole.FIELD) {
+          this.m_aoMenuItems = DefaultMenuItems.filter(item => item.name != 'subscriptions');
+
+        } else {
+          this.m_aoMenuItems = DefaultMenuItems;
+        }
+
+      }
+    });
   }
 }

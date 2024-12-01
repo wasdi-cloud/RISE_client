@@ -11,6 +11,9 @@ import { UserOrganizationComponent } from './user-organization/user-organization
 import { AreaOfOperationsComponent } from '../area-of-operations/area-of-operations.component';
 import { UserSubscriptionsComponent } from './user-subscriptions/user-subscriptions.component';
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
+import {ConstantsService} from "../../services/constants.service";
+import {UserRole, UserRoleHelper} from "../../models/UserRole";
+import {UserService} from "../../services/api/user.service";
 @Component({
   selector: 'app-account',
   standalone: true,
@@ -30,14 +33,19 @@ import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 export class AccountComponent implements OnInit {
   @Input() m_sActiveOutlet: string = 'user';
 
-  m_aoAccountButtons: Array<any> = AccountBtns;
+  m_aoAccountButtons: Array<any> ;
 
-  constructor(private m_oRouter: Router) {}
+  constructor(
+    private m_oRouter: Router,
+    private m_oConstantService: ConstantsService,
+    private m_oUserService: UserService,
+
+  ) {}
 
   ngOnInit(): void {
     // Update on component initialization
     this.updateActiveOutletFromState();
-
+    this.getActiveButtonsBasedOnUserRole();
     // Listen for navigation events to handle state updates dynamically
     this.m_oRouter.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -45,7 +53,28 @@ export class AccountComponent implements OnInit {
       }
     });
   }
+  getActiveButtonsBasedOnUserRole(){
+    let oUserRole=this.m_oConstantService.getUserRole();
 
+    if(oUserRole===null){
+      //try to get user
+      this.m_oUserService.getUser().subscribe({
+        next:(oResponse)=>{
+          this.m_oConstantService.setUser(oResponse)
+          this.m_aoAccountButtons = AccountBtns.filter(button =>
+            button.role.includes(oResponse.role)
+          );
+        },
+        error:()=>{
+          this.m_aoAccountButtons=AccountBtns;
+        }
+      })
+    }else {
+      this.m_aoAccountButtons = AccountBtns.filter(button =>
+        button.role.includes(oUserRole)
+      );
+    }
+  }
   private updateActiveOutletFromState() {
     if (
       !FadeoutUtils.utilsIsObjectNullOrUndefined(

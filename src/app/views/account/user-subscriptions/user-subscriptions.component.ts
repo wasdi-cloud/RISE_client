@@ -16,6 +16,7 @@ import {NotificationsDialogsService} from '../../../services/notifications-dialo
 import {SubscriptionTypeViewModel} from '../../../models/SubscriptionTypeViewModel';
 import FadeoutUtils from '../../../shared/utilities/FadeoutUtils';
 import {RiseDropdownComponent} from "../../../components/rise-dropdown/rise-dropdown.component";
+import {UserRole, UserRoleHelper} from "../../../models/UserRole";
 
 @Component({
   selector: 'user-subscriptions',
@@ -167,5 +168,18 @@ export class UserSubscriptionsComponent implements OnInit {
           : '';
       });
     });
+  }
+
+  protected readonly UserRoleHelper = UserRoleHelper;
+
+  isUserAbleToBuy() {
+    let oUser=this.m_oConstantsService.getUser()
+    if(FadeoutUtils.utilsIsObjectNullOrUndefined(oUser)){
+      return false;
+    }
+    if(this.m_oConstantsService.getUserRole()==UserRole.FIELD){
+      return false;
+    }
+    return true;
   }
 }

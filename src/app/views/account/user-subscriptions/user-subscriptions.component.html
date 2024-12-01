@@ -8,6 +8,7 @@
     >
       {{ "SUBSCRIPTIONS.HEADER" | translate }}
       <rise-button
+        *ngIf="isUserAbleToBuy()"
         [m_sSize]="'small'"
         [m_sRole]="'action'"
         [m_sLabel]="'SUBSCRIPTIONS.BUY_BUTTON'"
