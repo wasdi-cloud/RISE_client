@@ -100,12 +100,15 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (!this.m_bIsSelectingArea || changes['m_aoAreas']) {
+
       if (this.m_aoAreas.length > 0) {
         //clear the pins
         this.m_oMapService.clearMarkers();
         for (let oArea of this.m_aoAreas) {
           this.m_oMapService.addMarker(oArea, this.m_oMap);
         }
+      }else{
+        this.m_oMapService.clearMarkers();
       }
     }
   }
