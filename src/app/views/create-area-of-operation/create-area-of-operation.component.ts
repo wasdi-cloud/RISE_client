@@ -406,8 +406,6 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
               , if it is empty, we are good to go but if it has one or more , we have to tell the user and then he decides ,
               if he cancels we clear form if he accepts we add it
              */
-
-            console.log(oResponse.length)
             if(oResponse.length<1){
               this.saveAreaOfOperation();
             }else{
