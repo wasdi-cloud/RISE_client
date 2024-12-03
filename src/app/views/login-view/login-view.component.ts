@@ -1,21 +1,23 @@
-import {Component} from '@angular/core';
-import {Router} from '@angular/router';
-import {MatDialog} from '@angular/material/dialog';
+import { Component } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { Router } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-import {AuthService} from '../../services/api/auth.service';
+import { MatDialog } from '@angular/material/dialog';
 
-import {OtpDialogComponent} from '../../dialogs/otp-dialog/otp-dialog.component';
-import {RiseButtonComponent} from '../../components/rise-button/rise-button.component';
-import {RiseTextInputComponent} from '../../components/rise-text-input/rise-text-input.component';
+import { AuthService } from '../../services/api/auth.service';
+import { ConstantsService } from '../../services/constants.service';
+import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
+import { UserService } from '../../services/api/user.service';
 
-import {UserCredentialsViewModel} from '../../models/UserCredentialsViewModel';
-import {RiseToolbarComponent} from '../../components/rise-toolbar/rise-toolbar.component';
-import {TranslateModule, TranslateService} from '@ngx-translate/core';
-import {RiseUtils} from '../../shared/utilities/RiseUtils';
-import {NgIf} from '@angular/common';
+import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
+import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
+import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
+
+import { UserCredentialsViewModel } from '../../models/UserCredentialsViewModel';
+
+import { RiseUtils } from '../../shared/utilities/RiseUtils';
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
-import {UserService} from '../../services/api/user.service';
-import {ConstantsService} from '../../services/constants.service';
 
 @Component({
   selector: 'app-login-view',
@@ -26,12 +28,14 @@ import {ConstantsService} from '../../services/constants.service';
     RiseTextInputComponent,
     TranslateModule,
     NgIf,
-    OtpDialogComponent,
   ],
   templateUrl: './login-view.component.html',
   styleUrl: './login-view.component.css',
 })
 export class LoginViewComponent {
+  /**
+   * UC_020 - Login
+   */
   public m_oUserInput: UserCredentialsViewModel = {
     userId: '',
     password: '',
@@ -49,13 +53,19 @@ export class LoginViewComponent {
     private m_oAuthService: AuthService,
     private m_oConstantsService: ConstantsService,
     private m_oDialog: MatDialog,
+    private m_oNotificationService: NotificationsDialogsService,
     private m_oRouter: Router,
     private m_oRiseUtils: RiseUtils,
     private m_oTranslate: TranslateService,
     private m_oUserService: UserService
   ) {}
 
-  executeLogin() {
+  /**
+   * Execute initial login action - check credentials against DB and request OTP
+   * UC: User inserts the User Id; User inserts the password; User submit the credentials info
+   * If credentials are not valid, RISE gives to the User a message that Credentials are not valid and invites the Operator to try again.
+   */
+  executeLogin(): void {
     this.m_oAuthService.loginUser(this.m_oUserInput).subscribe({
       next: (oResponse) => {
         if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
@@ -71,11 +81,11 @@ export class LoginViewComponent {
     });
   }
 
-  backToLogin() {
-    this.m_bShowOtp = false;
-  }
-
-  verifyOtp() {
+  /**
+   * Verifies the OTP entered by the User
+   * UC: If credentials are valid, RISE ask to validate the login with OTP (UC_005)
+   */
+  verifyOtp(): void {
     this.m_oAuthService.verifyOTP(this.m_oOTPVerifyVM).subscribe({
       next: (oResponse) => {
         if (oResponse.status === 200) {
@@ -90,7 +100,12 @@ export class LoginViewComponent {
     });
   }
 
-  verifyLogin() {
+  /**
+   * Final login action - if OTP is valid, user is re-routed to RISE + Tokens saved
+   * UC: If also the OTP is valid, RISE grants the access to the User.
+   */
+  verifyLogin(): void {
+    let sError = this.m_oTranslate.instant('LOGIN.ERROR');
     let oOtpVerify = {
       id: this.m_oOTPVerifyVM.id,
       userId: this.m_oOTPVerifyVM.userId,
@@ -102,20 +117,27 @@ export class LoginViewComponent {
           //Set user Token and login
           this.m_oAuthService.saveToken(oResponse.token);
           this.m_oUserService.getUser().subscribe({
-            next: oResponse => {
-              if(FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
-                console.log("error")
+            next: (oResponse) => {
+              if (FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
+                this.m_oNotificationService.openInfoDialog(sError, 'danger');
               } else {
                 this.m_oConstantsService.setUser(oResponse);
                 this.m_oRouter.navigateByUrl('/dashboard');
               }
-            }
-          })
+            },
+          });
         }
       },
       error: (oError) => {
-        console.log(oError);
+        this.m_oNotificationService.openInfoDialog(sError, 'danger');
       },
     });
+  }
+
+  /**
+   * Navigate the user back to the Login View
+   */
+  backToLogin(): void {
+    this.m_bShowOtp = false;
   }
 }
