@@ -44,7 +44,7 @@
           <rise-button
             [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.SAVE'"
             [m_bDisabled]="!enableAOISubmit()"
-            (click)="enableAOISubmit() ? saveAreaOfOperation() : ''"
+            (click)="enableAOISubmit() ? executeAreaOfOperationSaving() : ''"
           ></rise-button>
           <rise-button
             [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.CANCEL'"

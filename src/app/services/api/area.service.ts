@@ -107,7 +107,7 @@ export class AreaService {
    */
 
   getOverlappingAreas(sId: string, oArea: any) {
-    let urlParams = '&' + 'id=' + sId;
+    let urlParams = '?' + 'id=' + sId;
     return this.m_oHttp.post<any>(
       this.APIURL + '/area/check_area' + urlParams,
       oArea
