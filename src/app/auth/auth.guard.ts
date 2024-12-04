@@ -9,7 +9,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   const m_oConstantsService = inject(ConstantsService);
   const m_oRouter = inject(Router);
   const m_oUserService = inject(UserService);
-
+  //when we cant get the token
   if (!m_oAuthService.getTokenObject()?.access_token) {
     m_oRouter.navigate(['login']);
     return false;
