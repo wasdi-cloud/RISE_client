@@ -25,7 +25,9 @@
     "CONFIRM_CREATE_NEW_AREA": "The area you've selected is too large. Please adjust the dimensions.",
     "CREATION_DATE": "Date Created",
     "DIALOG_HEADER": "Area of Operations",
-    "DELETE_OR_UPDATE": "Do you really want to delete or update?"
+    "DELETE_OR_UPDATE": "Do you really want to delete or update?",
+    "ERROR_DELETE": "An error occurred while attempting to delete this Area of Operations",
+    "ERROR_GET_USERS": "Could not retrieve users for this Area of Operations"
   },
   "BANNER": {
     "LIVE_SIT": "Live Situation",
@@ -77,7 +79,11 @@
   "LOGIN": {
     "USER_ID": "User Id",
     "PASSWORD": "Password",
-    "FORGOT_PASSWORD": "Forgot password? Click <a class='inner-html-link'>here</a>"
+    "FORGOT_PASSWORD": "Forgot password? Click <a class='inner-html-link'>here</a>",
+    "ERROR": "RISE could not execute login. Please try again or contact us."
+  },
+  "MAP": {
+    "ERROR_LAYER": "An error occurred while trying to fetch pixel information."
   },
   "MONITOR": {
     "ADD_EVENT": "Add event"
@@ -152,8 +158,10 @@
     "PAYMENT": "Payment Method",
     "PLUGINS": "Plugins",
     "PURCHASE": "Purchase",
+    "PURCHASE_ERROR": "An error occurred while executing your purchase. Please try again or contact RISE staff",
     "PRICE": "Price",
     "START_DATE": "Start Date",
+    "SUCCESS": "Subscription purchase successful!",
     "TYPE": "Type",
     "PAYMENT_TYPE": "Payment Type",
     "UPDATE": "Update Subscription",
@@ -177,6 +185,7 @@
     "DELETE_ACCOUNT": "Delete Account",
     "DELETE_MSG": "  Once you delete your account, this cannot be undone. Please be certain.",
     "EMAIL": "Email",
+    "ERROR": "Could not retrieve user's information",
     "LANGUAGE": "Select a Language",
     "MOBILE_NUMBER": "Mobile Number",
     "MY_ACCOUNT": "My Account",
@@ -184,6 +193,7 @@
     "NEW_PW": "New Password",
     "NOTIFICATIONS": "Notifications",
     "NOTIFICATIONS_MSG": "Select the notifications you wish to receive from <strong>RISE</strong>.",
+    "NOTIFICATIONS_ERROR": "Could not save notifications settings",
     "OLD_PW": "Current Password",
     "PW_MSG": "Change the password used to access your <strong>RISE</strong> account. If you have any difficulties, <a>Contact Us</a>",
     "PW_SECURITY": "Password and Security",
@@ -193,6 +203,7 @@
   "USER_MENU": {
     "ACCOUNT": "Account",
     "DASHBOARD": "Dashboard",
+    "ERROR": "Could not retrieve user information",
     "HELP": "Help",
     "LANGUAGE": "Language",
     "LOGOUT": "Logout",
