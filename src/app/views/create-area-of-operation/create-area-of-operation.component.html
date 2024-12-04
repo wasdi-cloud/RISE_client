@@ -29,7 +29,7 @@
 
           ></rise-textarea-input>
           <div>
-            Select Plugins:
+            {{ 'CREATE_NEW_AREA_OF_OPERATION.PLUGINS' | translate }}
             <rise-checkbox
               [m_aoOptions]="this.m_asPlugins"
               (m_oSelectionChange)="onSelectionChange($event)"
@@ -38,7 +38,7 @@
             </rise-checkbox>
             <div class="invalid-feedback" *ngIf="!m_bPluginsAreValid"></div>
           </div>
-          <rise-button [m_sLabel]="'Manage Users'"></rise-button>
+          <rise-button [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.MANAGE_USERS'"></rise-button>
         </div>
         <div class="d-flex flex-column gap-2">
           <rise-button

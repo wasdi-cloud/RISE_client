@@ -11,6 +11,13 @@
     "USER": "Utilisateur",
     "USER_ACCOUNT": "Compte utilisateur"
   },
+  "MONITOR": {
+    "ADD_EVENT": "Ajouter un événement",
+    "SEARCH_LAYERS_BY_NAME": "Rechercher des couches par nom",
+    "MAP_LAYERS": "Couches de la carte",
+    "NO_LAYERS_TO_SHOW": "Aucune couche à afficher"
+  },
+
   "AREA_OF_OPERATIONS": {
     "ACTIVE_AREAS": "Zones d'opérations actives",
     "AREA_HEADER_TOO_BIG": "Zone trop grande !",
@@ -25,7 +32,8 @@
     "CONFIRM_CREATE_NEW_AREA": "La zone que vous avez sélectionnée est trop grande. Veuillez ajuster les dimensions.",
     "CREATION_DATE": "Date de création",
     "DIALOG_HEADER": "Zone d'opérations",
-    "DELETE_OR_UPDATE": "Voulez-vous vraiment supprimer ou mettre à jour ?"
+    "DELETE_OR_UPDATE": "Voulez-vous vraiment supprimer ou mettre à jour ?",
+    "ERROR_GET_USERS": "Quelque chose ne va pas avec l'obtention d'utilisateurs pour cette zone d'opérations"
   },
   "BANNER": {
     "LIVE_SIT": "Situation en direct",
@@ -37,7 +45,10 @@
     "MAP_TITLE": "Définissez votre zone",
     "SAVE": "Enregistrer",
     "CANCEL": "Annuler",
-    "ADD_FIELD_OPERATOR": "Ajouter un opérateur de terrain"
+    "ADD_FIELD_OPERATOR": "Ajouter un opérateur de terrain",
+    "PLUGINS": "Sélectionner les plugins",
+    "MANAGE_USERS": "Gérer les utilisateurs"
+
   },
   "COLLABORATORS": {
     "ADD": "Inviter un collaborateur à RISE",
@@ -95,7 +106,8 @@
     "SUCCESS_DELETE_USER": "L'utilisateur a été supprimé avec succès de cette organisation",
     "TYPE": "Type d'organisation",
     "USERS": "Utilisateurs de l'organisation",
-    "USERS_ERROR": "Impossible de récupérer les collaborateurs de cette organisation"
+    "USERS_ERROR": "Impossible de récupérer les collaborateurs de cette organisation",
+    "INFO": "Informations sur l'organisation"
   },
   "OTP_DIALOG": {
     "SUBMIT": "Soumettre",
@@ -202,5 +214,12 @@
     "NO_ALERTS": "Aucune alerte",
     "NO_EVENTS": "Aucun événement en cours",
     "ONGOING_EVENTS": "Événements en cours"
+  },
+  "SUBSCRIPTION_ARRAY": {
+    "NAME": "Nom",
+    "TYPE": "Type",
+    "PURCHASE_DATE": "Date d'achat",
+    "EXPIRY_DATE": "Date d'expiration"
   }
+
 }

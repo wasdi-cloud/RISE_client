@@ -38,11 +38,12 @@ export class UserSubscriptionsComponent implements OnInit {
   m_bShowBuySub: boolean = false;
 
 
-  m_aoSubscriptions: Array<SubscriptionViewModel> = [];
-
+  m_aoSubscriptionsToShow: Array<SubscriptionViewModel> = [];
+  m_aoAllSubscriptions: Array<SubscriptionViewModel> = [];
   m_aoSubtypes: Array<SubscriptionTypeViewModel> = [];
   m_asSubAvailabilities: Array<any> = [
     {name: 'All', value: 'all'}, {name: 'Expired', value: 'expired'}, {name: 'Valid', value: 'valid'}]
+
 
   constructor(
     private m_oConstantsService: ConstantsService,
@@ -65,7 +66,8 @@ export class UserSubscriptionsComponent implements OnInit {
         if (!oResponse) {
           return;
         } else {
-          this.m_aoSubscriptions = oResponse;
+          this.m_aoSubscriptionsToShow = oResponse;
+          this.m_aoAllSubscriptions=this.m_aoSubscriptionsToShow;
           this.getSubTypes();
         }
       },
@@ -110,8 +112,6 @@ export class UserSubscriptionsComponent implements OnInit {
     });
   }
 
-  getOrganization() {
-  }
 
   /**
    * HQ Operator can change the filter of Subscriptions adding also expired subscriptions
@@ -123,19 +123,14 @@ export class UserSubscriptionsComponent implements OnInit {
     }else if(sAvailability==='expired'){
       let iDateNow=Date.now();
 
-      this.m_aoSubscriptions=this.m_aoSubscriptions.filter(s=>s.expireDate<iDateNow);
+      this.m_aoSubscriptionsToShow=this.m_aoAllSubscriptions.filter(s=>s.expireDate<iDateNow);
     }else if(sAvailability==='valid'){
       let iDateNow=Date.now();
-
-      this.m_aoSubscriptions=this.m_aoSubscriptions.filter(s=>s.expireDate>=iDateNow);
+      this.m_aoSubscriptionsToShow=this.m_aoAllSubscriptions.filter(s=>s.expireDate>=iDateNow);
     }
   }
 
-  /**
-   * HQ Operator can view the details of a Subscription
-   */
-  openSubscriptionInfo() {
-  }
+
 
   /**
    * HQ Operator can click the Buy New Subscription button
@@ -161,7 +156,7 @@ export class UserSubscriptionsComponent implements OnInit {
   }
 
   initSubTypeNames() {
-    this.m_aoSubscriptions.map((oSubscription) => {
+    this.m_aoSubscriptionsToShow.map((oSubscription) => {
       this.m_aoSubtypes.forEach((oType) => {
         oSubscription.type === oType.stringCode
           ? (oSubscription.type = oType.stringCode.slice(8) + ' Location(s)')
@@ -169,9 +164,6 @@ export class UserSubscriptionsComponent implements OnInit {
       });
     });
   }
-
-  protected readonly UserRoleHelper = UserRoleHelper;
-
   isUserAbleToBuy() {
     let oUser=this.m_oConstantsService.getUser()
     if(FadeoutUtils.utilsIsObjectNullOrUndefined(oUser)){

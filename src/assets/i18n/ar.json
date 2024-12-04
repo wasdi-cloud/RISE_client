@@ -25,7 +25,8 @@
     "CONFIRM_CREATE_NEW_AREA": "المنطقة التي اخترتها كبيرة جدًا. يرجى تعديل الأبعاد.",
     "CREATION_DATE": "تاريخ الإنشاء",
     "DIALOG_HEADER": "منطقة العمليات",
-    "DELETE_OR_UPDATE": "هل تريد حقًا الحذف أم التحديث؟"
+    "DELETE_OR_UPDATE": "هل تريد حقًا الحذف أم التحديث؟",
+    "ERROR_GET_USERS": "هناك خطأ ما في الحصول على مستخدمين لهذه المنطقة"
   },
   "BANNER": {
     "LIVE_SIT": "الوضع المباشر",
@@ -37,7 +38,10 @@
     "MAP_TITLE": "حدد منطقتك",
     "SAVE": "حفظ",
     "CANCEL": "إلغاء",
-    "ADD_FIELD_OPERATOR": "إضافة مشغل ميداني"
+    "ADD_FIELD_OPERATOR": "إضافة مشغل ميداني",
+    "PLUGINS": "اختر الإضافات",
+    "MANAGE_USERS": "إدارة المستخدمين"
+
   },
   "COLLABORATORS": {
     "ADD": "دعوة متعاون إلى RISE",
@@ -85,7 +89,8 @@
     "NAME": "اسم المنظمة",
     "SAVE": "حفظ التغييرات",
     "TYPE": "نوع المنظمة",
-    "USERS": "مستخدمو المنظمة"
+    "USERS": "مستخدمو المنظمة",
+    "INFO": "معلومات المنظمة"
   },
   "OTP_DIALOG": {
     "SUBMIT": "إرسال",
@@ -154,6 +159,13 @@
     "SETTINGS": "الإعدادات",
     "SIGN_UP": "التسجيل"
   },
+  "MONITOR": {
+    "ADD_EVENT": "إضافة حدث",
+    "SEARCH_LAYERS_BY_NAME": "بحث عن الطبقات بالاسم",
+    "MAP_LAYERS": "طبقات الخريطة",
+    "NO_LAYERS_TO_SHOW": "لا توجد طبقات لعرضها"
+  },
+
   "USER": {
     "ACCOUNT_HEADER": "تفاصيل الحساب",
     "CHANGE_EMAIL": "تغيير البريد الإلكتروني",
@@ -179,13 +191,32 @@
   },
   "USER_MENU": {
     "ACCOUNT": "الحساب",
-    "DASHBOARD": "لوحة القيادة",
-    "LOGOUT": "تسجيل الخروج"
+    "DASHBOARD": "اللوحة الرئيسية",
+    "HELP": "مساعدة",
+    "LANGUAGE": "اللغة",
+    "LOGOUT": "تسجيل الخروج",
+    "SUBSCRIPTIONS": "الاشتراكات"
   },
+
   "USER_PROFILE": {
     "ASSIGNED_PLUGINS": "الإضافات المعينة",
     "NAME": "الاسم",
     "ROLE": "الدور",
     "UNASSIGNED_PLUGINS": "الإضافات غير المعينة"
+  },
+  "SUBSCRIPTION_ARRAY": {
+    "NAME": "الاسم",
+    "TYPE": "النوع",
+    "PURCHASE_DATE": "تاريخ الشراء",
+    "EXPIRY_DATE": "تاريخ الانتهاء"
+  },
+  "WIDGET": {
+    "AFFECTED_PPL": "الأشخاص المتأثرين",
+    "ALERTS": "التنبيهات",
+    "NO_AFFECTED": "لا يوجد",
+    "NO_ALERTS": "لا توجد تنبيهات",
+    "NO_EVENTS": "لا توجد أحداث جارية",
+    "ONGOING_EVENTS": "الأحداث الجارية"
   }
+
 }

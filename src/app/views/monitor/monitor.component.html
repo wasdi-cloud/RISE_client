@@ -16,7 +16,7 @@
         [m_bHasIcon]="true"
         [m_sIcon]="'search'"
         [m_bHasTitle]="false"
-        [m_sLocalizationKey]="'Search Layers by name'"
+        [m_sLocalizationKey]="'MONITOR.SEARCH_LAYERS_BY_NAME'"
         [(m_sInputText)]="m_sSearchString"
       ></rise-text-input>
       <!-- Layer List output -->
@@ -26,7 +26,7 @@
         >
           <span class="material-symbols-outlined"> map </span>
           <div class="flex-fill d-flex flex-column">
-            Map Layers
+            {{"MONITOR.MAP_LAYERS"|translate}}
             <span *ngIf="m_aoLayers.length > 0" class="cta-text"
               >Drag to rearrange</span
             >
@@ -48,7 +48,7 @@
             (m_oEmitAction)="handleLayerAction($event)"
           ></rise-layer-item>
         </div>
-        } @else { No layers to show }
+        } @else {  {{"MONITOR.NO_LAYERS_TO_SHOW"|translate}} }
       </div>
       <rise-button
         [m_sLabel]="'MONITOR.ADD_EVENT'"
