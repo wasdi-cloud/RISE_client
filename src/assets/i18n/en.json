@@ -17,8 +17,8 @@
     "AREA_HEADER_TOO_SMALL": "Area too Small!",
     "CREATE_NEW_AREA_OF_OPERATION": "Create New Area of Operations",
     "CONFIRM_DELETE": "Are you sure you want to delete this area?",
-    "CONFIRM_SAME_AREA": "The area that you have selected overlaps with another area.",
-    "CONFIRM_SAME_NAME": "The area that you have selected shares a name with an already existing area",
+    "CONFIRM_SAME_AREA": "The area that you have selected overlaps with another area.Do you want to proceed?",
+    "CONFIRM_SAME_NAME": "The area that you have selected shares a name with an already existing area.Do you want to proceed?",
     "CONFIRM": "<bt>Proceed anyways?",
     "CONFIRM_AREA_TOO_BIG": "The area you've selected is too large. Click 'confirm' to have RISE automatically adjust it.",
     "CONFIRM_AREA_TOO_SMALL": "The area you've selected is too small. Click 'confirm' to have RISE automatically adjust it.",
@@ -26,6 +26,7 @@
     "CREATION_DATE": "Date Created",
     "DIALOG_HEADER": "Area of Operations",
     "DELETE_OR_UPDATE": "Do you really want to delete or update?",
+    "AREA_NAME_ALREADY_EXISTS": "Area name already exists",
     "ERROR_DELETE": "An error occurred while attempting to delete this Area of Operations",
     "ERROR_GET_USERS": "Could not retrieve users for this Area of Operations"
   },

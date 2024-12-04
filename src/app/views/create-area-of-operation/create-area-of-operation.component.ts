@@ -1,35 +1,29 @@
-import {
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  OnInit,
-  Output,
-  ViewChild,
-} from '@angular/core';
-import { NgIf } from '@angular/common';
-import { Router } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { geojsonToWKT } from '@terraformer/wkt';
+import {AfterViewInit, Component, EventEmitter, OnInit, Output,} from '@angular/core';
+import {NgIf} from '@angular/common';
+import {Router} from '@angular/router';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
+import {geojsonToWKT} from '@terraformer/wkt';
 
-import { MatDialog } from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 
-import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
-import { RiseCheckboxComponent } from '../../components/rise-checkbox/rise-checkbox.component';
+import {RiseButtonComponent} from '../../components/rise-button/rise-button.component';
+import {RiseCheckboxComponent} from '../../components/rise-checkbox/rise-checkbox.component';
 // import { RiseCrudTableComponent } from '../../components/rise-crud-table/rise-crud-table.component';
-import { RiseMapComponent } from '../../components/rise-map/rise-map.component';
-import { RiseTextareaInputComponent } from '../../components/rise-textarea-input/rise-textarea-input.component';
-import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
+import {RiseMapComponent} from '../../components/rise-map/rise-map.component';
+import {RiseTextareaInputComponent} from '../../components/rise-textarea-input/rise-textarea-input.component';
+import {RiseTextInputComponent} from '../../components/rise-text-input/rise-text-input.component';
 // import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
+import {AreaService} from '../../services/api/area.service';
+import {MapService} from '../../services/map.service';
+import {NotificationsDialogsService} from '../../services/notifications-dialogs.service';
+import {PluginService} from '../../services/api/plugin.service';
 
-import { AreaService } from '../../services/api/area.service';
-import { MapService } from '../../services/map.service';
-import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
-import { PluginService } from '../../services/api/plugin.service';
-
-import { AreaViewModel } from '../../models/AreaViewModel';
-import { UserOfAreaViewModel } from '../../models/UserOfAreaViewModel';
+import {AreaViewModel} from '../../models/AreaViewModel';
+import {UserOfAreaViewModel} from '../../models/UserOfAreaViewModel';
 
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
+import {ConstantsService} from "../../services/constants.service";
+import {UserService} from "../../services/api/user.service";
 
 @Component({
   selector: 'app-create-area-of-operation',
@@ -98,6 +92,7 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
   m_bDescriptionIsValid: boolean = true;
   m_bNameIsValid: boolean = true;
   m_bPluginsAreValid: boolean = true;
+  m_sOrganizationId: string;
 
   constructor(
     private m_oAreaOfOperationService: AreaService,
@@ -106,12 +101,18 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
     private m_oPluginService: PluginService,
     private m_oRouter: Router,
     private m_oTranslate: TranslateService,
-    private m_oMapService: MapService
-  ) {}
+    private m_oMapService: MapService,
+    private m_oConstantService: ConstantsService,
+    private m_oUserService: UserService
+  ) {
+  }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+  }
 
   ngOnInit() {
+    //used for checking overlapping area
+    this.getOrganizationId();
     // Optional: Ensure the component reference is available
     //todo get users that belong to current user org either by direct call or get all users and match with current user org id
     this.m_oPluginService.getPluginsList().subscribe({
@@ -140,6 +141,20 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
   onSelectionChange(selectedValues: any[]) {
     this.m_asPluginsSelected = selectedValues;
     this.m_oAreaOfOperation.plugins = this.m_asPluginsSelected;
+  }
+
+  getOrganizationId() {
+    let oUser = this.m_oConstantService.getUser();
+    if (!oUser) {
+      this.m_oUserService.getUser().subscribe({
+        next: (oResponse) => {
+          this.m_sOrganizationId = oResponse.organizationId;
+        }
+      })
+    } else {
+      this.m_sOrganizationId = oUser.organizationId;
+    }
+    return null;
   }
 
   /**
@@ -188,62 +203,17 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
     }
   }
 
-  saveAreaOfOperation() {
+  executeAreaOfOperationSaving() {
     this.m_bValidationActive = true;
     if (this.validateAOI()) {
-      this.m_oAreaOfOperationService
-        .addArea(this.m_oAreaOfOperation)
-        .subscribe({
-          next: (oResponse) => {
-            //todo send confirmation to HQ operator
-            this.m_oNotificationService.openSnackBar(
-              'Your are has been added successfully',
-              'Success',
-              'success'
-            );
-            this.exitCreatingAreaOfOperation();
-          },
-          error: (e) => {
-            // Here handle no valid subscription
-            if (
-              e.error.errorStringCodes[0] === 'ERROR_API_NO_VALID_SUBSCRIPTION'
-            ) {
-              //open dialog to invite user to buy new subscription
-              this.inviteUserToBuyNewSubscription();
-            }
-          },
-        });
+      this.checkOverlappingAreas(this.m_oAreaOfOperation)
+
     }
   }
 
   exitCreatingAreaOfOperation() {
     this.resetAreaOfOperationForm();
     this.m_oExitPage.emit(false);
-  }
-
-  /**
-   * UC: RISE verifies the subscription status of the organization
-   * If the Organization does not have a valid subscription:
-   * RISE invites the user to buy a New Subscription (UC_095)
-   */
-  private inviteUserToBuyNewSubscription(): void {
-    let sMessage =
-      'Your subscription is invalid.<br> Would you like to purchase a new one?';
-    this.m_oNotificationService
-      .openConfirmationDialog(sMessage, 'alert')
-      .subscribe((oResult) => {
-        if (oResult) {
-          //go to subscription page
-          //todo this is a bad solution
-          this.m_oRouter
-            .navigateByUrl('/', { skipLocationChange: true })
-            .then(() => {
-              this.m_oRouter.navigateByUrl('/account', {
-                state: { m_sActiveOutlet: 'subscriptions' },
-              });
-            });
-        }
-      });
   }
 
   /********* Input form validations and handlers *********/
@@ -264,24 +234,6 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
     return true;
   }
 
-  /**
-   * Ensure all the inputs are valid
-   * @returns boolean
-   */
-  private validateAOI(): boolean {
-    let bIsValid = true;
-    // this.checkOverlappingAreasAndSameName(this.m_oAreaOfOperation);
-
-    if (
-      !this.validateAOIName() ||
-      !this.validateAOIDescription() ||
-      !this.validateAOIPlugins() ||
-      !this.validateAreaInfo()
-    ) {
-      bIsValid = false;
-    }
-    return bIsValid;
-  }
   /**
    * Ensure the user has entered a valid name for their area
    * @returns boolean
@@ -320,6 +272,67 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
     this.m_sAreaOfOperationDescriptionError = ''; // Clear error when valid
     this.m_bDescriptionIsValid = true;
     return true;
+  }
+
+  private saveAreaOfOperation() {
+    this.m_oAreaOfOperationService
+      .addArea(this.m_oAreaOfOperation)
+      .subscribe({
+        next: (oResponse) => {
+          //todo send confirmation to HQ operator
+          this.m_oNotificationService.openSnackBar(
+            'Your are has been added successfully',
+            'Success',
+            'success'
+          );
+          this.exitCreatingAreaOfOperation();
+        },
+        error: (oError) => {
+          // Here handle no valid subscription
+          if (
+            oError.error.errorStringCodes[0] === 'ERROR_API_NO_VALID_SUBSCRIPTION'
+          ) {
+            //open dialog to invite user to buy new subscription
+            this.inviteUserToBuyNewSubscription();
+          }
+        },
+      });
+  }
+
+  /**
+   * UC: RISE verifies the subscription status of the organization
+   * If the Organization does not have a valid subscription:
+   * RISE invites the user to buy a New Subscription (UC_095)
+   */
+  private inviteUserToBuyNewSubscription(): void {
+    let sMessage =
+      'Your subscription is invalid.<br> Would you like to purchase a new one?';
+    this.m_oNotificationService
+      .openConfirmationDialog(sMessage, 'alert')
+      .subscribe((oResult) => {
+        if (oResult) {
+          //go to subscription page
+          //todo this is a bad solution
+          this.m_oRouter
+            .navigateByUrl('/', {skipLocationChange: true})
+            .then(() => {
+              this.m_oRouter.navigateByUrl('/account', {
+                state: {m_sActiveOutlet: 'subscriptions'},
+              });
+            });
+        }
+      });
+  }
+
+  /**
+   * Ensure all the inputs are valid && check for overlapping area or if the name of the area exists already
+   * @returns boolean
+   */
+  private validateAOI(): boolean {
+    return !(!this.validateAOIName() ||
+      !this.validateAOIDescription() ||
+      !this.validateAOIPlugins() ||
+      !this.validateAreaInfo());
   }
 
   /**
@@ -380,90 +393,59 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
    * @returns
    */
   private checkOverlappingAreas(m_oAreaOfOperation: AreaViewModel) {
+
     // RISE communicates to the HQ Operator that there is already an overlapping area that is up and running
     // RISE ask confirmation to the HQ Operator if we really wants to proceed;
-    // If the user cancels the operation, RISE clears the form and comes back to Step 1, otherwise proceed to step 7.
-    //TODO the service is not implemented yet in the backend
-    return false;
-  }
+    // If the user cancels the operation, RISE clears the form .
+    if (this.m_sOrganizationId) {
+      this.m_oAreaOfOperationService.getOverlappingAreas(this.m_sOrganizationId, m_oAreaOfOperation).subscribe(
+        {
+          next: (oResponse) => {
 
-  private checkSameNameAreas(m_oAreaOfOperation: AreaViewModel) {
-    for (const area of this.m_aoAreasOfOperations) {
-      if (area.name === m_oAreaOfOperation.name) {
-        return true;
-      }
-    }
-    return false;
-  }
+            /*here we have to check for list of the over lapping area
+              , if it is empty, we are good to go but if it has one or more , we have to tell the user and then he decides ,
+              if he cancels we clear form if he accepts we add it
+             */
+            if(oResponse.length<1){
+              this.saveAreaOfOperation();
+            }else{
+              let sErrorMsg: string = this.m_oTranslate.instant(
+              'AREA_OF_OPERATIONS.CONFIRM_SAME_AREA'
+            );
+            this.m_oNotificationService.openConfirmationDialog(
+              sErrorMsg, 'danger'
+            ).subscribe((bResult=>{
+              if(bResult){
+                this.saveAreaOfOperation();
+              }
+            }))
+            }
 
-  private checkOverlappingAreasAndSameName(m_oAreaOfOperation: AreaViewModel) {
-    if (
-      this.checkOverlappingAreas(m_oAreaOfOperation) &&
-      this.checkSameNameAreas(m_oAreaOfOperation)
-    ) {
-      let sConfirmMsg = `<ul>
-      <li>${this.m_oTranslate.instant(
-        'AREA_OF_OPERATIONS.CONFIRM_SAME_AREA'
-      )}</li>
-      <li>${this.m_oTranslate.instant(
-        'AREA_OF_OPERATIONS.CONFIRM_SAME_NAME'
-      )}</li>
-      </ul>${this.m_oTranslate.instant('AREA_OF_OPERATIONS.CONFIRM')}`;
+          }, error: (oError) => {
+            //here it either an error or there is an area with the same name
+            if (
+              oError?.error?.errorStringCodes[0] === 'ERROR_API_AREA_NAME_ALREADY_EXISTS'
+            ) {
+              let sErrorMsg: string = this.m_oTranslate.instant(
+                'AREA_OF_OPERATIONS.CONFIRM_SAME_NAME'
+              );
+              this.m_oNotificationService.openConfirmationDialog(
+                sErrorMsg, 'danger'
+              ).subscribe((bResult => {
+                if (bResult) {
+                  this.saveAreaOfOperation();
+                }
+              }))
 
-      //ask user to confirm
-      this.m_oNotificationService
-        .openConfirmationDialog(sConfirmMsg, 'alert')
-        .subscribe((bResult) => {
-          return bResult;
-        });
-    } else if (this.checkSameNameAreas(m_oAreaOfOperation)) {
-      //ask user to confirm
-      let sConfirmMsg = `<ul>
-      <li>${this.m_oTranslate.instant(
-        'AREA_OF_OPERATIONS.CONFIRM_SAME_NAME'
-      )}</li>
-      </ul>${this.m_oTranslate.instant('AREA_OF_OPERATIONS.CONFIRM')}`;
 
-      //ask user to confirm
-      this.m_oNotificationService
-        .openConfirmationDialog(sConfirmMsg, 'alert')
-        .subscribe((bResult) => {
-          if (bResult) {
-            this.m_oAreaOfOperationService
-              .addArea(this.m_oAreaOfOperation)
-              .subscribe({
-                next: () => {
-                  console.log('Success');
-                },
-                error: (e) => {
-                  // here handle no valid subscription
-                  if (
-                    e.error.errorStringCodes[0] ===
-                    'ERROR_API_NO_VALID_SUBSCRIPTION'
-                  ) {
-                    //open dialog to invite user to buy new subscription
-                    this.inviteUserToBuyNewSubscription();
-                  }
-                },
-              });
-          } else {
-            this.resetAreaOfOperationForm();
+            } else {
+              console.error(oError)
+            }
           }
-        });
-    } else if (this.checkOverlappingAreas(m_oAreaOfOperation)) {
-      let sConfirmMsg = `<ul>
-      <li>${this.m_oTranslate.instant(
-        'AREA_OF_OPERATIONS.CONFIRM_SAME_AREA'
-      )}</li>
-      </ul>${this.m_oTranslate.instant('AREA_OF_OPERATIONS.CONFIRM')}`;
-
-      //ask user to confirm
-      this.m_oNotificationService
-        .openConfirmationDialog(sConfirmMsg, 'alert')
-        .subscribe((bResult) => {
-          return bResult;
-        });
+        }
+      )
     }
-    return false;
+
   }
+
 }

@@ -52,9 +52,7 @@ export class AreaOfOperationsComponent implements OnInit {
   getAreas() {
     this.m_oAreaService.getAreaList().subscribe({
       next: (aoResponse) => {
-        this.m_aoAreasOfOperations = [...aoResponse]; // Creates a new array reference
-
-
+        this.m_aoAreasOfOperations = [...aoResponse];
       },
     });
   }
@@ -107,24 +105,8 @@ export class AreaOfOperationsComponent implements OnInit {
       });
   }
 
-  deleteArea(oArea) {
-    //ask user if he really wants ot delete it or update it
-    let sConfirmMsg: string = this.m_oTranslate.instant(
-      'AREA_OF_OPERATIONS.DELETE_OR_UPDATE'
-    );
-    sConfirmMsg += `<ul><li>${oArea.name}</li></ul>`;
-    this.m_oNotificationService
-      .openConfirmationDialog(sConfirmMsg, 'danger')
-      .subscribe((bResult) => {
-        if (bResult) {
-          this.confirmAreaDelete(oArea);
-        } else {
-          this.openEditArea(oArea);
-        }
-      });
-  }
 
-  private confirmAreaDelete(oArea) {
+  deleteArea(oArea) {
     let sConfirm: string = this.m_oTranslate.instant(
       'AREA_OF_OPERATIONS.CONFIRM_DELETE'
     );
