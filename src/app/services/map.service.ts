@@ -1116,7 +1116,7 @@ export class MapService {
 
             const fLat = e.latlng.lat;
             const fLng = e.latlng.lng;
-            const fRadius = 500000; // Set the radius of the circle (in meters)
+            const fRadius = 62600; // Set the radius of the circle (in meters)
 
             this.m_oLastCircle = L.circle([fLat, fLng], {
               radius: fRadius,
