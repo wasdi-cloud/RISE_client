@@ -26,21 +26,21 @@
     <div class="body d-flex flex-fill flex-column gap-5 py-4 px-1">
       <table class="w-100">
         <thead>
-          <tr>
-            <td>Name</td>
-            <td>Type</td>
-            <td>Purchase Date</td>
-            <td>Expiry Date</td>
-            <td></td>
-          </tr>
+         <tr>
+          <td>{{ "SUBSCRIPTION_ARRAY.NAME" | translate }}</td>
+          <td>{{ "SUBSCRIPTION_ARRAY.TYPE" | translate }}</td>
+          <td>{{ "SUBSCRIPTION_ARRAY.PURCHASE_DATE" | translate }}</td>
+          <td>{{ "SUBSCRIPTION_ARRAY.EXPIRY_DATE" | translate }}</td>
+          <td></td>
+        </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let oSubscription of m_aoSubscriptions">
-            <td>{{ oSubscription.name }}</td>
-            <td>{{ oSubscription.type }}</td>
-            <td>{{ oSubscription.buyDate | date }}</td>
-            <td>{{ oSubscription.expireDate | date }}</td>
-            <td class="d-flex flex-row justify-content-end gap-2">
+        <tr *ngFor="let oSubscription of m_aoSubscriptionsToShow">
+          <td>{{ oSubscription.name }}</td>
+          <td>{{ oSubscription.type }}</td>
+          <td>{{ oSubscription.buyDate | date }}</td>
+          <td>{{ oSubscription.expireDate | date }}</td>
+          <td class="d-flex flex-row justify-content-end gap-2">
               <span
                 class="material-symbols-outlined edit"
                 [matTooltip]="'Edit Subscription'"
@@ -48,15 +48,15 @@
               >
                 edit
               </span>
-              <span
-                class="material-symbols-outlined remove"
-                [matTooltip]="'Remove Subscription'"
-                (click)="deleteSubscription(oSubscription)"
-              >
+            <span
+              class="material-symbols-outlined remove"
+              [matTooltip]="'Remove Subscription'"
+              (click)="deleteSubscription(oSubscription)"
+            >
                 delete
               </span>
-            </td>
-          </tr>
+          </td>
+        </tr>
         </tbody>
       </table>
     </div>

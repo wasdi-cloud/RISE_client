@@ -40,7 +40,9 @@
     "MAP_TITLE": "Define your Area",
     "SAVE": "Save",
     "CANCEL": "Cancel",
-    "ADD_FIELD_OPERATOR": "Add Field Operator"
+    "ADD_FIELD_OPERATOR": "Add Field Operator",
+    "PLUGINS": "Select Plugins",
+    "MANAGE_USERS": "Manage Users"
   },
   "COLLABORATORS": {
     "ADD": "Invite a Collaborator to RISE",
@@ -87,7 +89,10 @@
     "ERROR_LAYER": "An error occurred while trying to fetch pixel information."
   },
   "MONITOR": {
-    "ADD_EVENT": "Add event"
+    "ADD_EVENT": "Add event",
+    "SEARCH_LAYERS_BY_NAME": "Search Layers By Name",
+    "MAP_LAYERS": "Map Layers",
+    "NO_LAYERS_TO_SHOW": "No layers to show"
   },
   "ORGANIZATION": {
     "ADDRESS": "Organization Address",
@@ -105,7 +110,8 @@
     "SUCCESS_DELETE_USER": "User was successfully removed from this organization",
     "TYPE": "Organization Type",
     "USERS": "Organization Users",
-    "USERS_ERROR": "Could not retrieve the collaborators on this organization"
+    "USERS_ERROR": "Could not retrieve the collaborators on this organization",
+    "INFO": "Organization Information"
   },
   "OTP_DIALOG": {
     "SUBMIT": "Submit",
@@ -217,5 +223,11 @@
     "NO_ALERTS": "No alerts",
     "NO_EVENTS": "No ongoing events",
     "ONGOING_EVENTS": "Ongoing Events"
+  },
+  "SUBSCRIPTION_ARRAY": {
+    "NAME": "Name",
+    "TYPE":"Type",
+    "PURCHASE_DATE":"Purchase date",
+    "EXPIRY_DATE":"Expiry date"
   }
 }

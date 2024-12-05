@@ -160,6 +160,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     this.m_oMapService.addCircleButton(oMap).subscribe((circleData) => {
       this.m_bIsAutoDrawCreated = true;
       const {center, radius} = circleData;
+
       this.emitInsertedArea(null, radius, center.lat, center.lng);
     });
   }

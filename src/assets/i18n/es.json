@@ -25,7 +25,8 @@
     "CONFIRM_CREATE_NEW_AREA": "El área que has seleccionado es demasiado grande. Ajusta las dimensiones.",
     "CREATION_DATE": "Fecha de creación",
     "DIALOG_HEADER": "Área de Operaciones",
-    "DELETE_OR_UPDATE": "¿Realmente quieres borrar o actualizar?"
+    "DELETE_OR_UPDATE": "¿Realmente quieres borrar o actualizar?",
+    "ERROR_GET_USERS": "Algo va mal a la hora de conseguir usuarios para esta zona"
   },
   "BANNER": {
     "LIVE_SIT": "Situación en vivo",
@@ -37,8 +38,12 @@
     "MAP_TITLE": "Define tu Área",
     "SAVE": "Guardar",
     "CANCEL": "Cancelar",
-    "ADD_FIELD_OPERATOR": "Agregar operador de campo"
+    "ADD_FIELD_OPERATOR": "Agregar operador de campo",
+    "PLUGINS": "Seleccionar complementos",
+    "MANAGE_USERS": "Gestionar usuarios"
+
   },
+
   "COLLABORATORS": {
     "ADD": "Invitar a un colaborador a RISE",
     "INVITE": "Agregar Usuarios",
@@ -95,7 +100,8 @@
     "SUCCESS_DELETE_USER": "El usuario fue eliminado exitosamente de esta organización",
     "TYPE": "Tipo de organización",
     "USERS": "Usuarios de la organización",
-    "USERS_ERROR": "No se pudieron recuperar los colaboradores de esta organización"
+    "USERS_ERROR": "No se pudieron recuperar los colaboradores de esta organización",
+    "INFO": "Información sobre la organización"
   },
   "OTP_DIALOG": {
     "SUBMIT": "Enviar",
@@ -157,6 +163,13 @@
     "WIRE": "Transferencia bancaria",
     "YEAR": "Un año"
   },
+  "MONITOR": {
+    "ADD_EVENT": "Añadir evento",
+    "SEARCH_LAYERS_BY_NAME": "Buscar capas por nombre",
+    "MAP_LAYERS": "Capas del mapa",
+    "NO_LAYERS_TO_SHOW": "No hay capas para mostrar"
+  },
+
   "TOOLBAR": {
     "ACCOUNT": "Cuenta",
     "LOGIN": "Iniciar sesión",
@@ -202,5 +215,12 @@
     "NO_ALERTS": "Sin alertas",
     "NO_EVENTS": "No hay eventos en curso",
     "ONGOING_EVENTS": "Eventos en curso"
+  },
+  "SUBSCRIPTION_ARRAY": {
+    "NAME": "Nombre",
+    "TYPE": "Tipo",
+    "PURCHASE_DATE": "Fecha de compra",
+    "EXPIRY_DATE": "Fecha de caducidad"
   }
+
 }
