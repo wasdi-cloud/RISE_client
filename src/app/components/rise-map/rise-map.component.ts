@@ -107,7 +107,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
         for (let oArea of this.m_aoAreas) {
           this.m_oMapService.addMarker(oArea, this.m_oMap);
         }
-      }else{
+      } else {
         this.m_oMapService.clearMarkers();
       }
     }
@@ -136,7 +136,9 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     if (!this.m_bIsSelectingArea) {
       for (let oArea of this.m_aoAreas) {
         this.m_oMapService.addMarker(oArea, oMap);
+
       }
+      this.m_oMapService.addMeasurementTools(oMap);
     } else {
       this.addImportBtn(oMap);
       this.addManualBbox(oMap);
