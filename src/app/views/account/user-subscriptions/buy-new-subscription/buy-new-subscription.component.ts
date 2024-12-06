@@ -12,7 +12,7 @@ import { RiseDropdownComponent } from '../../../../components/rise-dropdown/rise
 import { RiseButtonComponent } from '../../../../components/rise-button/rise-button.component';
 import { RiseTextInputComponent } from '../../../../components/rise-text-input/rise-text-input.component';
 import { RiseTextareaInputComponent } from '../../../../components/rise-textarea-input/rise-textarea-input.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { PluginService } from '../../../../services/api/plugin.service';
 import { PluginViewModel } from '../../../../models/PluginViewModel';
@@ -22,7 +22,7 @@ import { ConstantsService } from '../../../../services/constants.service';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import FadeoutUtils from '../../../../shared/utilities/FadeoutUtils';
-import {UserService} from "../../../../services/api/user.service";
+import { UserService } from '../../../../services/api/user.service';
 
 @Component({
   selector: 'buy-new-subscription',
@@ -73,7 +73,8 @@ export class BuyNewSubscriptionComponent implements OnInit {
     private m_oNotificationService: NotificationsDialogsService,
     private m_oPluginService: PluginService,
     private m_oSubscriptionService: SubscriptionService,
-    private m_oUserService:UserService
+    private m_oTranslateService: TranslateService,
+    private m_oUserService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -90,7 +91,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
         this.initSubTypeNames();
       },
       error: (oError) => {
-        console.error(oError)
+        console.error(oError);
       },
     });
   }
@@ -110,7 +111,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
         }
       },
       error: (oError) => {
-        console.error(oError)
+        console.error(oError);
       },
     });
   }
@@ -147,15 +148,26 @@ export class BuyNewSubscriptionComponent implements OnInit {
   }
 
   executePurchase() {
+    let sSuccess: string = this.m_oTranslateService.instant(
+      'SUBSCRIPTIONS.SUCCESS'
+    );
+
+    let sError: string = this.m_oTranslateService.instant(
+      'SUBSCRIPTIONS.ERROR'
+    );
     this.initSubscriptionInput();
 
     this.m_oSubscriptionService.buySubscription(this.m_oSubInput).subscribe({
       next: (oResponse) => {
-        this.m_oNotificationService.openSnackBar('Subscription purchase successful', 'Success', 'success');
+        this.m_oNotificationService.openSnackBar(
+          sSuccess,
+          'Success',
+          'success'
+        );
         this.onDismiss();
       },
       error: (oError) => {
-        console.log(oError);
+        this.m_oNotificationService.openInfoDialog(sError, 'danger');
       },
     });
   }
@@ -186,7 +198,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
           }
         },
         error: (oError) => {
-          console.error(oError)
+          console.error(oError);
           this.m_oNotificationService.openInfoDialog(
             'Could not get the computed price for these inputs.',
             'error',
@@ -243,14 +255,12 @@ export class BuyNewSubscriptionComponent implements OnInit {
   }
 
   private getOrganizationId() {
-    let sOrganizationId:string="";
-    if(this.m_oData?.organizationId){
-      sOrganizationId= this.m_oData.organizationId;
-    }else{
-      sOrganizationId=this.m_oConstantsService.getUser()?.organizationId
+    let sOrganizationId: string = '';
+    if (this.m_oData?.organizationId) {
+      sOrganizationId = this.m_oData.organizationId;
+    } else {
+      sOrganizationId = this.m_oConstantsService.getUser()?.organizationId;
     }
     return sOrganizationId;
-
   }
-
 }

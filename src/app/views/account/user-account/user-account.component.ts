@@ -117,7 +117,6 @@ export class UserAccountComponent implements OnInit {
     verifyNewPw: '',
   };
 
-
   //TODO : UPDATE USER INFORMATION
   m_sPasswordError: string = '';
 
@@ -143,6 +142,7 @@ export class UserAccountComponent implements OnInit {
    * Get user information from the server and set the user object
    */
   getUserInfo() {
+    let sError = this.m_oTranslate.instant('ACCOUNT.ERROR_INFO');
     this.m_oUserService.getUser().subscribe({
       next: (oResponse) => {
         if (FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
@@ -161,7 +161,7 @@ export class UserAccountComponent implements OnInit {
         }
       },
       error: (oError) => {
-        console.log(oError);
+        this.m_oNotificationDialogService.openInfoDialog(sError, 'danger');
       },
     });
   }
@@ -342,6 +342,7 @@ export class UserAccountComponent implements OnInit {
   // Maintenance
   // Activities (added to organization, added to an area…)
   saveNotifications() {
+    let sError: string = this.m_oTranslate.instant('USER.NOTIFICATIONS_ERROR');
     this.m_oUserService.updateNotifications(this.m_oUser).subscribe({
       next: (oResponse) => {
         this.m_oNotificationDialogService.openSnackBar(
@@ -351,7 +352,7 @@ export class UserAccountComponent implements OnInit {
         );
       },
       error: (oError) => {
-        console.log(oError);
+        this.m_oNotificationDialogService.openInfoDialog(sError, 'danger');
       },
     });
   }

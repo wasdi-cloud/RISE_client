@@ -1,6 +1,7 @@
 {
   "ACCOUNT": {
     "AREA_OF_OPERATIONS": "Zones d'opérations",
+    "ERROR_INFO": "Impossible d'obtenir les informations du compte",
     "MY_ORGANIZATION": "Mon organisation",
     "MY_USER": "Mon utilisateur",
     "NOT_ACTIVITIES": "Activités",
@@ -48,7 +49,6 @@
     "ADD_FIELD_OPERATOR": "Ajouter un opérateur de terrain",
     "PLUGINS": "Sélectionner les plugins",
     "MANAGE_USERS": "Gérer les utilisateurs"
-
   },
   "COLLABORATORS": {
     "ADD": "Inviter un collaborateur à RISE",
@@ -153,6 +153,7 @@
     "CREDIT": "Carte de crédit",
     "DESCRIPTION": "Description",
     "EMERGENCY": "Zone d'urgence uniquement",
+    "ERROR": "Une erreur s'est produite lors de l'exécution de votre achat",
     "EXPIRY": "Date d'expiration",
     "HEADER": "Mes abonnements",
     "LONG_TERM": "Zone à long terme",
@@ -221,5 +222,4 @@
     "PURCHASE_DATE": "Date d'achat",
     "EXPIRY_DATE": "Date d'expiration"
   }
-
 }

@@ -9,6 +9,7 @@ import { RiseDropdownComponent } from '../rise-dropdown/rise-dropdown.component'
 import { UserRole } from '../../models/UserRole';
 import { RiseTextInputComponent } from '../rise-text-input/rise-text-input.component';
 import { AreaService } from '../../services/api/area.service';
+import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
 
 export class EditableUser extends UserViewModel {
   isEditing: boolean;
@@ -50,7 +51,10 @@ export class RiseCollaboratorsComponent implements OnInit {
 
   m_asRoles: Array<string> = [];
 
-  constructor(private m_oAreaService: AreaService) {}
+  constructor(
+    private m_oAreaService: AreaService,
+    private m_oNotificationsService: NotificationsDialogsService
+  ) {}
 
   ngOnInit(): void {
     this.initRoles();
@@ -93,9 +97,14 @@ export class RiseCollaboratorsComponent implements OnInit {
       this.m_oAreaService.getUsersFromArea(this.m_sResourceId).subscribe({
         next: (oResponse) => {
           console.log(oResponse);
+          this.m_aoUsers = oResponse;
         },
         error: (oError) => {
-          console.log(oError);
+          this.m_oNotificationsService.openInfoDialog(
+            'Could not refresh users list. Please try again',
+            'danger',
+            'Error'
+          );
         },
       });
     }

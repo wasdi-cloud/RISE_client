@@ -1,6 +1,7 @@
 {
   "ACCOUNT": {
     "AREA_OF_OPERATIONS": "Areas of Operations",
+    "ERROR_INFO": "Could not get account information",
     "MY_ORGANIZATION": "My Organization",
     "MY_USER": "My User",
     "NOT_ACTIVITIES": "Activities",
@@ -158,6 +159,7 @@
     "DESCRIPTION": "Description",
     "EMERGENCY": "Emergency Only Area",
     "EXPIRY": "Expiration Date",
+    "ERROR": "An error occurred while executing your purchase",
     "HEADER": "My Subscriptions",
     "LONG_TERM": "Long Term Area",
     "MONTHLY": "Monthly",

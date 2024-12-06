@@ -1,6 +1,7 @@
 {
   "ACCOUNT": {
     "AREA_OF_OPERATIONS": "Áreas de Operaciones",
+    "ERROR_INFO": "No se pudo obtener la información de la cuenta",
     "MY_ORGANIZATION": "Mi organización",
     "MY_USER": "Mi usuario",
     "NOT_ACTIVITIES": "Actividades",
@@ -147,6 +148,7 @@
     "CREDIT": "Tarjeta de Crédito",
     "DESCRIPTION": "Descripción",
     "EMERGENCY": "Área Sólo Emergencias",
+    "ERROR": "Ocurrió un error al ejecutar tu compra",
     "EXPIRY": "Fecha de Vencimiento",
     "HEADER": "Mis suscripciones",
     "LONG_TERM": "Área de Largo Plazo",
