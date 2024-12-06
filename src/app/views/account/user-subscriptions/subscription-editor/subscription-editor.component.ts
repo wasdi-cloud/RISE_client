@@ -6,7 +6,7 @@ import { RiseButtonComponent } from '../../../../components/rise-button/rise-but
 import { RiseTextInputComponent } from '../../../../components/rise-text-input/rise-text-input.component';
 import { RiseTextareaInputComponent } from '../../../../components/rise-textarea-input/rise-textarea-input.component';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SubscriptionTypeViewModel } from '../../../../models/SubscriptionTypeViewModel';
 import { NotificationsDialogsService } from '../../../../services/notifications-dialogs.service';
 import FadeoutUtils from '../../../../shared/utilities/FadeoutUtils';
@@ -39,7 +39,8 @@ export class SubscriptionEditorComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) private m_oData: any,
     private m_oDialogRef: MatDialogRef<SubscriptionEditorComponent>,
     private m_oNotificationService: NotificationsDialogsService,
-    private m_oSubscriptionService: SubscriptionService
+    private m_oSubscriptionService: SubscriptionService,
+    private m_oTranslate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -54,26 +55,31 @@ export class SubscriptionEditorComponent implements OnInit {
   }
 
   getSubscriptionTypes() {
+    let sError = this.m_oTranslate.instant('SUBSCRIPTIONS.TYPE_ERROR');
     this.m_oSubscriptionService.getSubscriptionTypes().subscribe({
       next: (oResponse) => {
         if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           this.m_aoSubTypes = oResponse;
         }
       },
-      error: (oError) => {},
+      error: (oError) => {
+        this.m_oNotificationService.openInfoDialog(sError, 'danger');
+      },
     });
   }
 
   getSubscriptionVM(sSubscriptionId: string) {
+    let sError = this.m_oTranslate.instant('SUBSCRIPTIONS.ERROR_INFO');
     this.m_oSubscriptionService.getSubscriptionById(sSubscriptionId).subscribe({
       next: (oResponse) => {
         if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
-          console.log(oResponse);
           this.m_oSubscription = oResponse;
           this.m_sPrice = this.m_oSubscription.price.toString();
         }
       },
-      error: (oError) => {},
+      error: (oError) => {
+        this.m_oNotificationService.openInfoDialog(sError, 'danger');
+      },
     });
   }
 

@@ -260,25 +260,36 @@ export class UserAccountComponent implements OnInit {
           sOrganizationName = oResponse.name;
         }
       },
-      error: (oError) => {},
+      error: (oError) => {
+        this.m_oNotificationDialogService.openInfoDialog(sErrorMsg, 'danger');
+      },
     });
     return sOrganizationName;
   }
 
   changeEmail() {
+    let sErrorMsg = this.m_oTranslate.instant('USER.EMAIL_ERROR');
+    let sSuccessMsg = this.m_oTranslate.instant('USER.EMAIL_SUCCESS');
     let oEmailVM: ChangeEmailViewModel = {
       oldEmail: this.m_oUser.email,
       newEmail: this.m_oEmailInputs.newEmail,
     };
     this.m_oUserService.updateEmail(oEmailVM).subscribe({
       next: (oResponse) => {
-        console.log(oResponse);
+        this.m_oNotificationDialogService.openSnackBar(
+          sSuccessMsg,
+          'Success',
+          'success'
+        );
       },
-      error: (oError) => {},
+      error: (oError) => {
+        this.m_oNotificationDialogService.openInfoDialog(sErrorMsg, 'danger');
+      },
     });
   }
 
   changePassword() {
+    let sError = this.m_oTranslate.instant('USER.PW_ERROR');
     let oChangePasswordRequest: ChangePasswordRequestViewModel = {
       oldPassword: this.m_oPasswordInputs.currentPW,
       newPassword: this.m_oPasswordInputs.newPw,
@@ -289,7 +300,7 @@ export class UserAccountComponent implements OnInit {
       },
       error: (oError) => {
         this.m_oNotificationDialogService.openSnackBar(
-          'Password did not change',
+          sError,
           'Error',
           'danger'
         );

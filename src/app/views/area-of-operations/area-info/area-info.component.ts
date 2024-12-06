@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AreaViewModel } from '../../../models/AreaViewModel';
 import { AreaService } from '../../../services/api/area.service';
 import FadeoutUtils from '../../../shared/utilities/FadeoutUtils';
@@ -12,7 +12,7 @@ import { RiseTextareaInputComponent } from '../../../components/rise-textarea-in
 import { DatePipe } from '@angular/common';
 import { PluginListViewModel } from '../../../models/PluginListViewModel';
 import { RiseCheckboxComponent } from '../../../components/rise-checkbox/rise-checkbox.component';
-import {RiseButtonComponent} from "../../../components/rise-button/rise-button.component";
+import { RiseButtonComponent } from '../../../components/rise-button/rise-button.component';
 
 @Component({
   selector: 'app-area-info',
@@ -38,7 +38,8 @@ export class AreaInfoComponent implements OnInit {
     private m_oDialogRef: MatDialogRef<AreaInfoComponent>,
     private m_oAreaService: AreaService,
     private m_oNotificationService: NotificationsDialogsService,
-    private m_oPluginService: PluginService
+    private m_oPluginService: PluginService,
+    private m_oTranslate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -52,27 +53,30 @@ export class AreaInfoComponent implements OnInit {
   }
 
   getAreaInfo() {
+    let sError: string = this.m_oTranslate.instant(
+      'AREA_OF_OPERATIONS.ERROR_GET_INFO'
+    );
     this.m_oAreaService.getAreaById(this.m_sAreaId).subscribe({
       next: (oResponse) => {
         if (FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
-          this.m_oNotificationService.openInfoDialog(
-            'Could not get area information',
-            'alert',
-            'Error'
-          );
+          this.m_oNotificationService.openInfoDialog(sError, 'alert', 'Error');
           return;
         }
 
         this.m_oArea = oResponse;
-        console.log(this.m_oArea);
       },
-      error: (oError) => {},
+      error: (oError) => {
+        this.m_oNotificationService.openInfoDialog(sError, 'alert', 'Error');
+      },
     });
   }
 
   onSelectionChange(oEvent) {}
 
   getPlugins() {
+    let sError: string = this.m_oTranslate.instant(
+      'AREA_OF_OPERATIONS.ERROR_PLUGINS'
+    );
     this.m_oPluginService.getPluginsList().subscribe({
       next: (aoResponse) => {
         for (const aoResponseElement of aoResponse) {
@@ -88,7 +92,9 @@ export class AreaInfoComponent implements OnInit {
           }
         }
       },
-      error: (oError) => {},
+      error: (oError) => {
+        this.m_oNotificationService.openInfoDialog(sError, 'danger');
+      },
     });
   }
 
@@ -97,12 +103,24 @@ export class AreaInfoComponent implements OnInit {
   }
 
   saveAreaOfOperation() {
+    let sError: string = this.m_oTranslate.instant(
+      'AREA_OF_OPERATIONS.ERROR_SAVE'
+    );
+    let sSuccess: string = this.m_oTranslate.instant(
+      'AREA_OF_OPERATIONS.SUCCESS_SAVE'
+    );
     this.m_oAreaService.updateArea(this.m_oArea).subscribe({
-      next:(oReponse)=>{
+      next: (oResponse) => {
+        this.m_oNotificationService.openSnackBar(
+          sSuccess,
+          'Success',
+          'success'
+        );
         this.onDismiss();
-      },error:(oError)=>{
-        console.error(oError)
-      }
-    })
+      },
+      error: (oError) => {
+        this.m_oNotificationService.openInfoDialog(sError, 'danger');
+      },
+    });
   }
 }
