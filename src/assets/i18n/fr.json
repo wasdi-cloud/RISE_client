@@ -34,7 +34,11 @@
     "CREATION_DATE": "Date de création",
     "DIALOG_HEADER": "Zone d'opérations",
     "DELETE_OR_UPDATE": "Voulez-vous vraiment supprimer ou mettre à jour ?",
-    "ERROR_GET_USERS": "Quelque chose ne va pas avec l'obtention d'utilisateurs pour cette zone d'opérations"
+    "ERROR_GET_INFO": "Impossible de récupérer les informations sur cette zone",
+    "ERROR_GET_USERS": "Impossible de récupérer les utilisateurs pour cette zone d'opérations",
+    "ERROR_PLUGINS": "Impossible de récupérer les informations du plugin",
+    "ERROR_SAVE": "Impossible d'enregistrer les modifications dans cette zone",
+    "SUCCESS_SAVE": "Modifications de zone enregistrées"
   },
   "BANNER": {
     "LIVE_SIT": "Situation en direct",
@@ -154,6 +158,7 @@
     "DESCRIPTION": "Description",
     "EMERGENCY": "Zone d'urgence uniquement",
     "ERROR": "Une erreur s'est produite lors de l'exécution de votre achat",
+    "ERROR_INFO": "Impossible d'obtenir les informations d'abonnement",
     "EXPIRY": "Date d'expiration",
     "HEADER": "Mes abonnements",
     "LONG_TERM": "Zone à long terme",
@@ -165,6 +170,7 @@
     "PRICE": "Prix",
     "START_DATE": "Date de début",
     "TYPE": "Type",
+    "TYPE_ERROR": "Impossible de récupérer les types d'abonnement",
     "PAYMENT_TYPE": "Type de paiement",
     "UPDATE": "Mettre à jour l'abonnement",
     "WIRE": "Transfert bancaire",
@@ -187,6 +193,9 @@
     "DELETE_ACCOUNT": "Supprimer le compte",
     "DELETE_MSG": " Une fois votre compte supprimé, cela ne peut plus être annulé. Soyez-en sûr. ",
     "EMAIL": "E-mail",
+    "ERROR": "Impossible de récupérer les informations de l'utilisateur",
+    "EMAIL_ERROR": "Impossible d'enregistrer les nouvelles informations de courrier électronique",
+    "EMAIL_SUCCESS": "Informations email mises à jour",
     "LANGUAGE": "Sélectionnez une langue",
     "MOBILE_NUMBER": "Numéro de portable",
     "MY_ACCOUNT": "Mon compte",
@@ -197,6 +206,7 @@
     "OLD_PW": "Mot de passe actuel",
     "PW_MSG": "Modifiez le mot de passe utilisé pour accéder à votre compte <strong>RISE</strong>. Si vous rencontrez des difficultés, <a>Contactez-nous</a>",
     "PW_SECURITY": "Mot de passe et sécurité",
+    "PW_ERROR": "Impossible d'enregistrer les informations du mot de passe",
     "SELECT_LANG": "Sélectionner la langue",
     "SELECT_LANG_MSG": "Sélectionnez la langue système que vous souhaitez utiliser pour RISE."
   },

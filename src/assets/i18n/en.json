@@ -29,7 +29,11 @@
     "DELETE_OR_UPDATE": "Do you really want to delete or update?",
     "AREA_NAME_ALREADY_EXISTS": "Area name already exists",
     "ERROR_DELETE": "An error occurred while attempting to delete this Area of Operations",
-    "ERROR_GET_USERS": "Could not retrieve users for this Area of Operations"
+    "ERROR_GET_INFO": "Could not retrieve information on this area",
+    "ERROR_GET_USERS": "Could not retrieve users for this Area of Operations",
+    "ERROR_PLUGINS": "Could not retrieve plugin information",
+    "ERROR_SAVE": "Could not save changes to this area",
+    "SUCCESS_SAVE": "Area changes saved"
   },
   "BANNER": {
     "LIVE_SIT": "Live Situation",
@@ -160,6 +164,7 @@
     "EMERGENCY": "Emergency Only Area",
     "EXPIRY": "Expiration Date",
     "ERROR": "An error occurred while executing your purchase",
+    "ERROR_INFO": "Could not get subscription information",
     "HEADER": "My Subscriptions",
     "LONG_TERM": "Long Term Area",
     "MONTHLY": "Monthly",
@@ -172,6 +177,7 @@
     "START_DATE": "Start Date",
     "SUCCESS": "Subscription purchase successful!",
     "TYPE": "Type",
+    "TYPE_ERROR": "Could not retrieve subscription types",
     "PAYMENT_TYPE": "Payment Type",
     "UPDATE": "Update Subscription",
     "WIRE": "Wire Transfer",
@@ -195,6 +201,8 @@
     "DELETE_MSG": "  Once you delete your account, this cannot be undone. Please be certain.",
     "EMAIL": "Email",
     "ERROR": "Could not retrieve user's information",
+    "EMAIL_ERROR": "Could not save new email information",
+    "EMAIL_SUCCESS": "Email information updated",
     "LANGUAGE": "Select a Language",
     "MOBILE_NUMBER": "Mobile Number",
     "MY_ACCOUNT": "My Account",
@@ -206,6 +214,7 @@
     "OLD_PW": "Current Password",
     "PW_MSG": "Change the password used to access your <strong>RISE</strong> account. If you have any difficulties, <a>Contact Us</a>",
     "PW_SECURITY": "Password and Security",
+    "PW_ERROR": "Could not save password information",
     "SELECT_LANG": "Select Language",
     "SELECT_LANG_MSG": "Select the system language you want to use for RISE."
   },
@@ -228,8 +237,8 @@
   },
   "SUBSCRIPTION_ARRAY": {
     "NAME": "Name",
-    "TYPE":"Type",
-    "PURCHASE_DATE":"Purchase date",
-    "EXPIRY_DATE":"Expiry date"
+    "TYPE": "Type",
+    "PURCHASE_DATE": "Purchase date",
+    "EXPIRY_DATE": "Expiry date"
   }
 }

@@ -27,7 +27,11 @@
     "CREATION_DATE": "Fecha de creación",
     "DIALOG_HEADER": "Área de Operaciones",
     "DELETE_OR_UPDATE": "¿Realmente quieres borrar o actualizar?",
-    "ERROR_GET_USERS": "Algo va mal a la hora de conseguir usuarios para esta zona"
+    "ERROR_GET_INFO": "No se pudo recuperar información sobre esta área",
+    "ERROR_GET_USERS": "No se pudieron recuperar usuarios para esta Área de Operaciones",
+    "ERROR_PLUGINS": "No se pudo recuperar la información del complemento",
+    "ERROR_SAVE": "No se pudieron guardar los cambios en esta área",
+    "SUCCESS_SAVE": "Cambios de área guardados"
   },
   "BANNER": {
     "LIVE_SIT": "Situación en vivo",
@@ -42,7 +46,6 @@
     "ADD_FIELD_OPERATOR": "Agregar operador de campo",
     "PLUGINS": "Seleccionar complementos",
     "MANAGE_USERS": "Gestionar usuarios"
-
   },
 
   "COLLABORATORS": {
@@ -149,6 +152,7 @@
     "DESCRIPTION": "Descripción",
     "EMERGENCY": "Área Sólo Emergencias",
     "ERROR": "Ocurrió un error al ejecutar tu compra",
+    "ERROR_INFO": "No se pudo obtener información de suscripción",
     "EXPIRY": "Fecha de Vencimiento",
     "HEADER": "Mis suscripciones",
     "LONG_TERM": "Área de Largo Plazo",
@@ -160,6 +164,7 @@
     "PRICE": "Precio",
     "START_DATE": "Fecha de inicio",
     "TYPE": "Tipo",
+    "TYPE_ERROR": "No se pudieron recuperar los tipos de suscripción",
     "PAYMENT_TYPE": "Tipo de pago",
     "UPDATE": "Actualizar suscripción",
     "WIRE": "Transferencia bancaria",
@@ -189,6 +194,9 @@
     "DELETE_ACCOUNT": "Eliminar cuenta",
     "DELETE_MSG": "Una vez que elimines tu cuenta, esto no se puede deshacer. Asegúrate.",
     "EMAIL": "Correo electrónico",
+    "ERROR": "No se pudo recuperar la información del usuario",
+    "EMAIL_ERROR": "No se pudo guardar la nueva información del correo electrónico",
+    "EMAIL_SUCCESS": "Información de correo electrónico actualizada",
     "LANGUAGE": "Seleccione un idioma",
     "MOBILE_NUMBER": "Número de móvil",
     "MY_ACCOUNT": "Mi cuenta",
@@ -199,6 +207,7 @@
     "OLD_PW": "Contraseña actual",
     "PW_MSG": "Cambie la contraseña utilizada para acceder a su cuenta <strong>RISE</strong>. Si tiene alguna dificultad, <a>Contáctenos</a>",
     "PW_SECURITY": "Contraseña y Seguridad",
+    "PW_ERROR": "No se pudo guardar la información de la contraseña",
     "SELECT_LANG": "Seleccionar idioma",
     "SELECT_LANG_MSG": "Selecciona el idioma del sistema que deseas usar para RISE."
   },
@@ -224,5 +233,4 @@
     "PURCHASE_DATE": "Fecha de compra",
     "EXPIRY_DATE": "Fecha de caducidad"
   }
-
 }
