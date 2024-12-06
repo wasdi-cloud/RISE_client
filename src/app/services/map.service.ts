@@ -147,6 +147,7 @@ export class MapService {
   m_bPixelInfoOn: boolean = false;
   m_aoMarkers: L.Marker[] = [];
   private m_oMarkerSubject = new BehaviorSubject<AreaViewModel>(null);
+  oMeasurementResultSubject = new Subject<string>();
   m_oMarkerSubject$ = this.m_oMarkerSubject.asObservable();
   // Declare a Subject at the class level
   private circleDrawnSubject = new Subject<{
@@ -652,7 +653,8 @@ export class MapService {
   }
 
 
-  addMeasurementTools(oMap: L.Map): void {
+  addMeasurementTools(oMap: L.Map): Observable<string> {
+
     let bMeasurementMode = false;
     let oActiveShape: L.Layer | null = null; // Track the currently drawn shape
 
@@ -672,9 +674,7 @@ export class MapService {
         L.DomEvent.disableClickPropagation(oMeasurementButton);
 
         L.DomEvent.on(oMeasurementButton, 'click', () => {
-          if (bMeasurementMode) {
-            return;
-          }
+          if (bMeasurementMode) return;
           bMeasurementMode = true;
           oContainer.innerHTML = '';
 
@@ -696,7 +696,7 @@ export class MapService {
             oToolButton.title = tool.title;
 
             L.DomEvent.on(oToolButton, 'click', () => {
-              let oDrawControl;
+              let oDrawControl: any;
               switch (tool.type) {
                 case 'rectangle':
                   oDrawControl = new L.Draw.Rectangle(
@@ -725,7 +725,6 @@ export class MapService {
               }
               if (oDrawControl) {
                 this.startDrawing(oMap, oDrawControl, (layer) => {
-                  // Remove the previous shape if it exists
                   if (oActiveShape) {
                     oMap.removeLayer(oActiveShape);
                     oActiveShape = null;
@@ -733,12 +732,16 @@ export class MapService {
 
                   // Set the new shape as active
                   oActiveShape = layer;
+
+
                 });
+                // Emit the result
+
               }
             });
           });
 
-          // Add a Cancel button to return to the initial state
+          // Add a Cancel button
           const oCancelButton = L.DomUtil.create(
             'a',
             'leaflet-control-button',
@@ -761,6 +764,9 @@ export class MapService {
               oMap.removeLayer(oActiveShape);
               oActiveShape = null; // Reset active shape
             }
+
+            // Emit cancel event
+            this.oMeasurementResultSubject.next('Measurement cancelled.');
           });
         });
 
@@ -769,36 +775,43 @@ export class MapService {
     });
 
     oMap.addControl(new oMeasurementControl());
+
+    // Return the observable
+    return this.oMeasurementResultSubject.asObservable();
   }
 
-  startDrawing(oMap: L.Map, oDrawControl: any, onShapeCreated: (layer: L.Layer) => void) {
-    oDrawControl.enable();
 
+  startDrawing(
+    oMap: L.Map,
+    oDrawControl: any,
+    onShapeCreated: (layer: L.Layer) => void
+  ) {
+    oDrawControl.enable();
     oMap.once('draw:created', (e: any) => {
       const {layerType: sLayerType, layer} = e;
-
+      onShapeCreated(layer)
       // Temporary layer for measurement
       oMap.addLayer(layer);
-      // Call the callback with the new layer
-      onShapeCreated(layer);
-      // Perform calculations using MapService
+
+      // Calculate and create a notification message
+      let message = '';
       if (sLayerType === 'polyline') {
-        const iDistance = this.calculateDistance(layer.getLatLngs());
-        console.log(iDistance)
-        //this.m_oNotificationService.showInfo(`Distance: ${distance.toFixed(2)} meters`);
+        const distance = this.calculateDistance(layer.getLatLngs());
+        message= `Distance: ${(distance).toFixed(2)} kilometers`;
       } else if (sLayerType === 'circle') {
         const iRadius = layer.getRadius();
-        const iArea = this.calculateCircleArea(iRadius);
-        console.log(iArea)
-        //this.m_oNotificationService.showInfo(`Circle Area: ${iArea.toFixed(2)} m²`);
+        const area = this.calculateCircleArea(iRadius);
+        message= `Circle Area: ${(area/1000).toFixed(2)} Km²`;
       } else {
         const aiLatLngs = layer.getLatLngs()[0];
-        const iArea = this.calculatePolygonArea(aiLatLngs);
-        console.log(iArea)
-        //this.m_oNotificationService.showInfo(`Area: ${iArea.toFixed(2)} m²`);
+        const area = this.calculatePolygonArea(aiLatLngs);
+        message= `Area: ${(area/1000).toFixed(2)} Km²`;
       }
+      // Call the callback with the new layer and message
+      this.oMeasurementResultSubject.next(message);
     });
   }
+
 
   /**
    * Add Marker

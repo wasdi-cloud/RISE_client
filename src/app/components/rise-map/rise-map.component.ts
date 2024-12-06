@@ -138,7 +138,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
         this.m_oMapService.addMarker(oArea, oMap);
 
       }
-      this.m_oMapService.addMeasurementTools(oMap);
+      this.addMeasurementTools(oMap);
     } else {
       this.addImportBtn(oMap);
       this.addManualBbox(oMap);
@@ -450,5 +450,19 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
 
     // Emit the shape information to the parent component
     this.m_oMapInputChange.emit(oShapeInfo);
+  }
+
+  addMeasurementTools(oMap) {
+    this.m_oMapService.addMeasurementTools(oMap).subscribe({
+      next: (sMessage) => {
+        console.log(sMessage)
+        this.m_oNotificationService.openSnackBar(sMessage, 'Measurement', 'success');
+        //this.m_oNotificationService.openInfoDialog(sMessage, 'Measurement', 'success');
+      },
+      error: (err) => {
+        console.error('Error in Measurement:', err);
+      },
+    });
+
   }
 }
