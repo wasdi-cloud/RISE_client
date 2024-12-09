@@ -64,7 +64,6 @@ export class NotificationsDialogsService {
    * @param className
    */
   openSnackBar(sMessage: string, sTitle?: string, className?: string) {
-    console.log('Snackbar initialized with message:', sMessage);
     this.m_oMatSnackbar.openFromComponent(NotificationSnackbarComponent, {
       duration: 4000,
       horizontalPosition: 'right',

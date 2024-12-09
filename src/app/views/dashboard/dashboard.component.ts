@@ -19,6 +19,7 @@ import { MapService } from '../../services/map.service';
 import { UserService } from '../../services/api/user.service';
 
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
+import {NotificationsDialogsService} from "../../services/notifications-dialogs.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -57,8 +58,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private m_oMapService: MapService,
     private m_oRouter: Router,
     private ngZone: NgZone,
-    private m_oUserService: UserService,
-    private m_oTranslate: TranslateService
   ) {}
 
   ngOnInit(): void {

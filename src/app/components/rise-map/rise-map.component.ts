@@ -9,6 +9,7 @@ import {AreaViewModel} from '../../models/AreaViewModel';
 import {NotificationsDialogsService} from '../../services/notifications-dialogs.service';
 import {TranslateService} from '@ngx-translate/core';
 import 'leaflet.fullscreen';
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 // import * as L from 'leaflet';
 declare const L: any;
@@ -74,7 +75,8 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   constructor(
     private m_oMapService: MapService,
     private m_oNotificationService: NotificationsDialogsService,
-    private m_oTranslate: TranslateService
+    private m_oTranslate: TranslateService,
+    private snackBar: MatSnackBar
   ) {
     this.m_oMapService.initTilelayer();
     this.m_oMapService.setMapOptions();
@@ -351,6 +353,20 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     };
   }
 
+  addMeasurementTools(oMap) {
+    this.m_oMapService.addMeasurementTools(oMap).subscribe({
+      next: (sMessage) => {
+        this.m_oNotificationService.openSnackBar(sMessage, 'Measurement', 'success');
+        // this.m_oNotificationService.openInfoDialog(sMessage, 'Measurement', 'success');
+        window.dispatchEvent(new Event("resize"))
+      },
+      error: (err) => {
+        console.error('Error in Measurement:', err);
+      },
+    });
+
+  }
+
   private handleValidArea(oEvent) {
     this.m_oMapService.onDrawCreated(oEvent, this.m_oMap);
     this.m_bIsDrawCreated = true;
@@ -450,19 +466,5 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
 
     // Emit the shape information to the parent component
     this.m_oMapInputChange.emit(oShapeInfo);
-  }
-
-  addMeasurementTools(oMap) {
-    this.m_oMapService.addMeasurementTools(oMap).subscribe({
-      next: (sMessage) => {
-        console.log(sMessage)
-        this.m_oNotificationService.openSnackBar(sMessage, 'Measurement', 'success');
-        //this.m_oNotificationService.openInfoDialog(sMessage, 'Measurement', 'success');
-      },
-      error: (err) => {
-        console.error('Error in Measurement:', err);
-      },
-    });
-
   }
 }
