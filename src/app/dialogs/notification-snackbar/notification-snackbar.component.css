@@ -6,6 +6,7 @@
   gap: 16px;
   justify-content: space-between;
   padding: 16px;
+  z-index: 99999;
 }
 
 .snackbar-header {
