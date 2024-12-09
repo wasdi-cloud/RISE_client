@@ -21,7 +21,7 @@ export const isLoggedGuard: CanActivateFn = (route, state) => {
         return false;
       },
       error: (oError) => {
-        m_oRouter.navigate(['']);
+        //m_oRouter.navigate(['']);
         return true;
       },
     });
