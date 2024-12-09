@@ -304,7 +304,6 @@ export class MapService {
               event.tile.src = URL.createObjectURL(cachedTile); // Set the tile's source to the cached blob
             } else {
               // Tile was not found in cache, fetch it from the network
-              // console.log('Tile not found in cache, fetching from network:', url);
 
               // Fetch the tile from the network
               const response = await fetch(url);
@@ -322,9 +321,9 @@ export class MapService {
             console.error('Error during tile load:', error);
           }
         } else {
-          console.log(
-            'Zoom Levels needs to be between 10 and 13 for cache to work'
-          );
+          // console.log(
+          //   'Zoom Levels needs to be between 10 and 13 for cache to work'
+          // );
         }
       }
     );
@@ -563,17 +562,17 @@ export class MapService {
     const center = bounds.getCenter();
 
     // Log current width and height for debugging
-    console.log('Original width:', width, 'Original height:', height);
+    // console.log('Original width:', width, 'Original height:', height);
 
     // Adjust dimensions to fit within min/max constraints
     const adjustedWidth = Math.max(MIN_WIDTH, Math.min(width, MAX_WIDTH));
     const adjustedHeight = Math.max(MIN_HEIGHT, Math.min(height, MAX_HEIGHT));
-    console.log(
-      'Adjusted width:',
-      adjustedWidth,
-      'Adjusted height:',
-      adjustedHeight
-    );
+    // console.log(
+    //   'Adjusted width:',
+    //   adjustedWidth,
+    //   'Adjusted height:',
+    //   adjustedHeight
+    // );
 
     // Dynamic conversion factors
     const metersToLatitudeDegrees = (meters) => meters / 111_000;
@@ -1314,9 +1313,9 @@ export class MapService {
 
       // Calculate total storage size within the transaction
       let totalSize = await this.calculateTotalStorageSize(store);
-      console.log(
-        `Current total size: ${(totalSize / (1024 * 1024)).toFixed(2)} MB`
-      );
+      // console.log(
+      //   `Current total size: ${(totalSize / (1024 * 1024)).toFixed(2)} MB`
+      // );
 
       const tileData = {
         url: tileUrl,
@@ -1415,7 +1414,6 @@ export class MapService {
     return new Promise((resolve, reject) => {
       const transaction = db.transaction('tileStore', 'readonly');
       const store = transaction.objectStore('tileStore');
-      // console.log(url);
       const request = store.get(url); // Use 'url' as the key
 
       request.onsuccess = (event) => {
