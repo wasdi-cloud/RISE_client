@@ -1,35 +1,31 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {ActivatedRoute, Router} from '@angular/router';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
 
-import {
-  CdkDrag,
-  CdkDragDrop,
-  CdkDropList,
-  moveItemInArray,
-} from '@angular/cdk/drag-drop';
+import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray,} from '@angular/cdk/drag-drop';
 
-import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
-import { RiseLayerItemComponent } from '../../components/rise-layer-item/rise-layer-item.component';
-import { RiseMapChipComponent } from '../../components/rise-map-chip/rise-map-chip.component';
-import { RiseMapComponent } from '../../components/rise-map/rise-map.component';
-import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
-import { RiseTimebarComponent } from '../../components/rise-timebar/rise-timebar.component';
-import { RiseUserMenuComponent } from '../../components/rise-user-menu/rise-user-menu.component';
+import {RiseButtonComponent} from '../../components/rise-button/rise-button.component';
+import {RiseLayerItemComponent} from '../../components/rise-layer-item/rise-layer-item.component';
+import {RiseMapChipComponent} from '../../components/rise-map-chip/rise-map-chip.component';
+import {RiseMapComponent} from '../../components/rise-map/rise-map.component';
+import {RiseTextInputComponent} from '../../components/rise-text-input/rise-text-input.component';
+import {RiseTimebarComponent} from '../../components/rise-timebar/rise-timebar.component';
+import {RiseUserMenuComponent} from '../../components/rise-user-menu/rise-user-menu.component';
 
-import { AreaService } from '../../services/api/area.service';
-import { AreaViewModel } from '../../models/AreaViewModel';
-import { ConstantsService } from '../../services/constants.service';
-import { LayerService } from '../../services/api/layer.service';
-import { MapAPIService } from '../../services/api/map.service';
-import { MapService } from '../../services/map.service';
-import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
+import {AreaService} from '../../services/api/area.service';
+import {AreaViewModel} from '../../models/AreaViewModel';
+import {ConstantsService} from '../../services/constants.service';
+import {LayerService} from '../../services/api/layer.service';
+import {MapAPIService} from '../../services/api/map.service';
+import {MapService} from '../../services/map.service';
+import {NotificationsDialogsService} from '../../services/notifications-dialogs.service';
 
-import { LayerTypes } from './layer-types';
-import { FilterPipe } from '../../shared/pipes/filter.pipe';
+import {LayerTypes} from './layer-types';
+import {FilterPipe} from '../../shared/pipes/filter.pipe';
 
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
+
 @Component({
   selector: 'app-monitor',
   standalone: true,
@@ -118,6 +114,7 @@ export class MonitorComponent implements OnInit {
    * Search string for users to search for Layer items based on their MAP ID
    */
   m_sSearchString: string = null;
+
   constructor(
     private m_oActivatedRoute: ActivatedRoute,
     private m_oAreaService: AreaService,
@@ -128,7 +125,8 @@ export class MonitorComponent implements OnInit {
     private m_oNotificationService: NotificationsDialogsService,
     private m_oRouter: Router,
     private m_oTranslate: TranslateService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.getActiveAOI();
@@ -273,12 +271,14 @@ export class MonitorComponent implements OnInit {
    * TODO: open dialog to add event
    * UC: Add new Geolocalized Events (and show the layer on the map)
    */
-  addNewGeolocalizedEvent() {}
+  addNewGeolocalizedEvent() {
+  }
 
   /**
    * TODO: Open Cross-section tool
    */
-  openCrossSectionTool() {}
+  openCrossSectionTool() {
+  }
 
   setActivePlugin(oPlugin) {
     this.m_oActivePlugin = oPlugin;
@@ -298,6 +298,7 @@ export class MonitorComponent implements OnInit {
     moveItemInArray(this.m_aoLayers, event.previousIndex, event.currentIndex);
     this.handleLayerOrder();
   }
+
   /**
    * When the layer order changes, manually remove and then re-add the layers
    */
@@ -330,6 +331,9 @@ export class MonitorComponent implements OnInit {
 
   handleLayerAction(oEvent) {
     switch (oEvent.action) {
+      case 'download':
+        this.downloadLayer(oEvent.layer.id, "geotiff");
+        break;
       case 'remove':
         this.removeLayer(oEvent.layer);
         break;
@@ -439,5 +443,22 @@ export class MonitorComponent implements OnInit {
 
   toggleIconVis(oLegend) {
     oLegend.visible = !oLegend.visible;
+  }
+
+  private downloadLayer(sLayerId, sFormat: string) {
+    this.m_oLayerService.downloadLayer(sLayerId, sFormat).subscribe({
+      next: (oResponse: Blob) => {
+        const blob = new Blob([oResponse], {type: oResponse.type});
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${sLayerId}.${sFormat}`; // Set the filename dynamically
+        a.click();
+        window.URL.revokeObjectURL(url); // Clean up the URL object
+      },
+      error: (err) => {
+        console.error('Error downloading layer:', err);
+      }
+    });
   }
 }
