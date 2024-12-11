@@ -171,11 +171,19 @@
     "YEAR": "Un año"
   },
   "MONITOR": {
-    "ADD_EVENT": "Añadir evento",
+    "ADD_EVENT": "Agregar evento",
     "SEARCH_LAYERS_BY_NAME": "Buscar capas por nombre",
     "MAP_LAYERS": "Capas del mapa",
-    "NO_LAYERS_TO_SHOW": "No hay capas para mostrar"
+    "NO_LAYERS_TO_SHOW": "No hay capas para mostrar",
+    "LAYER_PROPERTIES": "Propiedades de la capa",
+    "DATA_SOURCE": "Fuente de datos",
+    "RESOLUTION": "Resolución",
+    "CREATED_DATE": "Fecha de creación",
+    "REFERENCE_DATE": "Fecha de referencia",
+    "INPUT_DATA": "Datos de entrada",
+    "FORCE_UPDATE": "Forzar actualización de la capa"
   },
+
 
   "TOOLBAR": {
     "ACCOUNT": "Cuenta",

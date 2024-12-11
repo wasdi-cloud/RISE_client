@@ -25,6 +25,11 @@ import {LayerTypes} from './layer-types';
 import {FilterPipe} from '../../shared/pipes/filter.pipe';
 
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
+import {
+  BuyNewSubscriptionComponent
+} from "../account/user-subscriptions/buy-new-subscription/buy-new-subscription.component";
+import {MatDialog} from "@angular/material/dialog";
+import {LayerPropertiesComponent} from "./layer-properties/layer-properties.component";
 
 @Component({
   selector: 'app-monitor',
@@ -124,7 +129,8 @@ export class MonitorComponent implements OnInit {
     private m_oMapService: MapService,
     private m_oNotificationService: NotificationsDialogsService,
     private m_oRouter: Router,
-    private m_oTranslate: TranslateService
+    private m_oTranslate: TranslateService,
+    private m_oDialog: MatDialog,
   ) {
   }
 
@@ -340,6 +346,9 @@ export class MonitorComponent implements OnInit {
       case 'zoomTo':
         this.zoomToLayer(oEvent.layer);
         break;
+      case 'properties':
+        this.openPropertiesLayer(oEvent.layer);
+        break;
       case 'toggleLegend':
         this.showLegend(oEvent.layer);
         break;
@@ -460,5 +469,15 @@ export class MonitorComponent implements OnInit {
         console.error('Error downloading layer:', err);
       }
     });
+  }
+
+  private openPropertiesLayer(layer) {
+
+    this.m_oDialog.open(LayerPropertiesComponent,{
+      data:layer
+    }).afterClosed().subscribe(() => {
+      //don't know what will we do
+    });
+
   }
 }

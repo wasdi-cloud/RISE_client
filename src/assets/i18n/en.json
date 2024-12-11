@@ -97,7 +97,14 @@
     "ADD_EVENT": "Add event",
     "SEARCH_LAYERS_BY_NAME": "Search Layers By Name",
     "MAP_LAYERS": "Map Layers",
-    "NO_LAYERS_TO_SHOW": "No layers to show"
+    "NO_LAYERS_TO_SHOW": "No layers to show",
+    "LAYER_PROPERTIES": "Layer Properties",
+    "DATA_SOURCE": "Data source",
+    "RESOLUTION": "Resolution",
+    "CREATED_DATE": "Created date",
+    "REFERENCE_DATE": "Reference date",
+    "INPUT_DATA": "Input data",
+    "FORCE_UPDATE": "Force Layer Update"
   },
   "ORGANIZATION": {
     "ADDRESS": "Organization Address",

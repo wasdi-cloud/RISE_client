@@ -161,9 +161,16 @@
   },
   "MONITOR": {
     "ADD_EVENT": "إضافة حدث",
-    "SEARCH_LAYERS_BY_NAME": "بحث عن الطبقات بالاسم",
+    "SEARCH_LAYERS_BY_NAME": "بحث عن الطبقات حسب الاسم",
     "MAP_LAYERS": "طبقات الخريطة",
-    "NO_LAYERS_TO_SHOW": "لا توجد طبقات لعرضها"
+    "NO_LAYERS_TO_SHOW": "لا توجد طبقات للعرض",
+    "LAYER_PROPERTIES": "خصائص الطبقة",
+    "DATA_SOURCE": "مصدر البيانات",
+    "RESOLUTION": "الدقة",
+    "CREATED_DATE": "تاريخ الإنشاء",
+    "REFERENCE_DATE": "تاريخ المرجع",
+    "INPUT_DATA": "بيانات الإدخال",
+    "FORCE_UPDATE": "تحديث الطبقة بالقوة"
   },
 
   "USER": {
