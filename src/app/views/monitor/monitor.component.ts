@@ -25,9 +25,6 @@ import {LayerTypes} from './layer-types';
 import {FilterPipe} from '../../shared/pipes/filter.pipe';
 
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
-import {
-  BuyNewSubscriptionComponent
-} from "../account/user-subscriptions/buy-new-subscription/buy-new-subscription.component";
 import {MatDialog} from "@angular/material/dialog";
 import {LayerPropertiesComponent} from "./layer-properties/layer-properties.component";
 
@@ -249,6 +246,8 @@ export class MonitorComponent implements OnInit {
               oResponse.layerId,
               oResponse.geoserverUrl
             );
+            // Update the selected layers
+            this.m_oMapService.setSelectedLayers(this.m_aoLayers)
           }
         },
         error: (oError) => {
@@ -387,7 +386,6 @@ export class MonitorComponent implements OnInit {
     this.togglePlugin(oEvent.mapId);
 
     this.m_aoLayers.splice(iIndex, 1);
-
     oMap.eachLayer((oLayer) => {
       let sLayer = oLayer.options.layers;
       if (sLayer === oEvent.layerId) {
@@ -404,6 +402,8 @@ export class MonitorComponent implements OnInit {
     if (this.m_aoLegendUrls.length === 0) {
       this.toggleLegend(false);
     }
+    // Update the selected layers
+    this.m_oMapService.setSelectedLayers(this.m_aoLayers);
   }
 
   zoomToLayer(oEvent) {
@@ -473,8 +473,8 @@ export class MonitorComponent implements OnInit {
 
   private openPropertiesLayer(layer) {
 
-    this.m_oDialog.open(LayerPropertiesComponent,{
-      data:layer
+    this.m_oDialog.open(LayerPropertiesComponent, {
+      data: layer
     }).afterClosed().subscribe(() => {
       //don't know what will we do
     });

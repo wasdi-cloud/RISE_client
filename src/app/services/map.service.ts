@@ -141,13 +141,14 @@ export class MapService {
   m_oImportShapeMarker: L.Marker | null = null;
   m_oDrawMarker: L.Marker | null = null;
   m_oFeatureInfoMarker = null;
+  m_aoSelectedLayers = []
   /**
    * Flag to know if the pixel info tool should be enabled
    */
   m_bPixelInfoOn: boolean = false;
   m_aoMarkers: L.Marker[] = [];
-  private m_oMarkerSubject = new BehaviorSubject<AreaViewModel>(null);
   oMeasurementResultSubject = new Subject<string>();
+  private m_oMarkerSubject = new BehaviorSubject<AreaViewModel>(null);
   m_oMarkerSubject$ = this.m_oMarkerSubject.asObservable();
   // Declare a Subject at the class level
   private circleDrawnSubject = new Subject<{
@@ -796,15 +797,15 @@ export class MapService {
       let message = '';
       if (sLayerType === 'polyline') {
         const distance = this.calculateDistance(layer.getLatLngs());
-        message= `Distance: ${(distance).toFixed(2)} kilometers`;
+        message = `Distance: ${(distance).toFixed(2)} kilometers`;
       } else if (sLayerType === 'circle') {
         const iRadius = layer.getRadius();
         const area = this.calculateCircleArea(iRadius);
-        message= `Circle Area: ${(area/1000).toFixed(2)} Km²`;
+        message = `Circle Area: ${(area / 1000).toFixed(2)} Km²`;
       } else {
         const aiLatLngs = layer.getLatLngs()[0];
         const area = this.calculatePolygonArea(aiLatLngs);
-        message= `Area: ${(area/1000).toFixed(2)} Km²`;
+        message = `Area: ${(area / 1000).toFixed(2)} Km²`;
       }
       // Call the callback with the new layer and message
       this.oMeasurementResultSubject.next(message);
@@ -1102,6 +1103,144 @@ export class MapService {
 
     // Return the Subject as an Observable to subscribe in the component
     return this.circleDrawnSubject.asObservable();
+  }
+
+  addMagicTool(oMap: L.Map): void {
+    const oMagicToolButton = L.Control.extend({
+      options: { position: 'topright' },
+      onAdd: () => {
+        const oContainer = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+
+        this.initializeDrawButton(oContainer, oMap);
+
+        return oContainer;
+      },
+    });
+
+    oMap.addControl(new oMagicToolButton());
+  }
+
+  /**
+   * Initializes the Draw button in the container.
+   */
+  private initializeDrawButton(oContainer: HTMLElement, oMap: L.Map): void {
+    oContainer.innerHTML = ''; // Clear the container
+
+    const oDrawButton = L.DomUtil.create(
+      'a',
+      'leaflet-control-button',
+      oContainer
+    );
+    oDrawButton.innerHTML =
+      '<span class="material-symbols-outlined">graph_5</span>';
+    oDrawButton.title = 'Layer Analyzer';
+
+    L.DomEvent.on(oDrawButton, 'click', () => {
+      this.handleDrawButtonClick(oContainer, oMap);
+    });
+  }
+
+  /**
+   * Handles the click event for the Draw button.
+   */
+  private handleDrawButtonClick(oContainer: HTMLElement, oMap: L.Map): void {
+    const aoSelectedLayers = this.getSelectedLayers();
+    if (aoSelectedLayers.length > 0) {
+      this.populateToolButtons(oContainer, oMap);
+    } else {
+      console.log('No layers selected.');
+    }
+  }
+
+  /**
+   * Populates the container with tool buttons and a Cancel button.
+   */
+  private populateToolButtons(oContainer: HTMLElement, oMap: L.Map): void {
+    oContainer.innerHTML = ''; // Clear for tool buttons
+
+    const aoTools = [
+      { icon: 'timeline', title: 'Draw Polyline', type: 'polyline' },
+      { icon: 'hexagon', title: 'Draw Polygon', type: 'polygon' },
+      { icon: 'circle', title: 'Draw Circle', type: 'circle' },
+      { icon: 'rectangle', title: 'Draw Rectangle', type: 'rectangle' },
+    ];
+
+    aoTools.forEach((tool) => {
+      this.createToolButton(oContainer, oMap, tool);
+    });
+
+    this.createCancelButton(oContainer, oMap);
+  }
+
+  /**
+   * Creates a single tool button for a specific drawing type.
+   */
+  private createToolButton(
+    oContainer: HTMLElement,
+    oMap: L.Map,
+    tool: { icon: string; title: string; type: string }
+  ): void {
+    const oToolButton = L.DomUtil.create('a', 'leaflet-control-button', oContainer);
+    oToolButton.innerHTML = `<span class="material-symbols-outlined">${tool.icon}</span>`;
+    oToolButton.title = tool.title;
+
+    L.DomEvent.on(oToolButton, 'click', () => {
+      this.handleToolClick(oMap, tool.type);
+    });
+  }
+
+  /**
+   * Handles the click event for a specific tool button.
+   */
+  private handleToolClick(oMap: L.Map, toolType: string): void {
+    let oDrawControl: any;
+
+    switch (toolType) {
+      case 'rectangle':
+        oDrawControl = new L.Draw.Rectangle(oMap, this.m_oDrawOptions.draw.rectangle);
+        break;
+      case 'circle':
+        oDrawControl = new L.Draw.Circle(oMap, this.m_oDrawOptions.draw.circle);
+        break;
+      case 'polygon':
+        oDrawControl = new L.Draw.Polygon(oMap, this.m_oDrawOptions.draw.polygon);
+        break;
+      case 'polyline':
+        oDrawControl = new L.Draw.Polyline(oMap, this.m_oDrawOptions.draw.polyline);
+        break;
+    }
+
+    if (oDrawControl) {
+      // Implement your drawing start logic here
+    }
+  }
+
+  /**
+   * Creates a Cancel button to reset the container.
+   */
+  private createCancelButton(oContainer: HTMLElement, oMap: L.Map): void {
+    const oCancelButton = L.DomUtil.create(
+      'a',
+      'leaflet-control-button',
+      oContainer
+    );
+    oCancelButton.innerHTML =
+      '<span class="material-symbols-outlined">close</span>';
+    oCancelButton.title = 'Cancel';
+
+    L.DomEvent.on(oCancelButton, 'click', () => {
+      this.initializeDrawButton(oContainer, oMap); // Reset the Draw button
+    });
+  }
+
+
+
+  getSelectedLayers() {
+    return this.m_aoSelectedLayers
+  }
+
+  setSelectedLayers(aoSelectedLayers: any) {
+    this.m_aoSelectedLayers = aoSelectedLayers;
   }
 
   addZoom() {

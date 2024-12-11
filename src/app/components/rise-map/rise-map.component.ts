@@ -157,6 +157,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
 
     if (this.m_bMonitorMap) {
       this.m_oMapService.addPixelInfoToggle(oMap);
+      this.m_oMapService.addMagicTool(oMap);
     }
   }
 
