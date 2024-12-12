@@ -156,6 +156,9 @@ export class MapService {
     radius: number;
   }>();
   oActiveShapeForMagicTool: L.Layer | null = null; // Track the currently drawn shape
+  private m_oLayerMap: { [key: string]: L.TileLayer.WMS } = {};
+
+
   constructor(
     private m_oConstantsService: ConstantsService,
     private m_oDialog: MatDialog,
@@ -410,7 +413,8 @@ export class MapService {
     });
     oWmsLayer.setZIndex(1000);
     oWmsLayer.addTo(oMap);
-
+    // Store the layer in the map for later reference
+    this.m_oLayerMap[sLayerId] = oWmsLayer;
     return true;
   }
 
@@ -819,28 +823,87 @@ export class MapService {
   ) {
     oDrawControl.enable();
     oMap.once('draw:created', (e: any) => {
-      const {layerType: sLayerType, layer} = e;
-      onShapeCreated(layer)
-      // Temporary layer for measurement
-      oMap.addLayer(layer);
+      const {layerType: sLayerType, layer: oLayer} = e;
+      onShapeCreated(oLayer)
 
-      // Calculate and create a notification message
-      // let message = '';
-      // if (sLayerType === 'polyline') {
-      //   const distance = this.calculateDistance(layer.getLatLngs());
-      //   message = `Distance: ${(distance).toFixed(2)} kilometers`;
-      // } else if (sLayerType === 'circle') {
-      //   const iRadius = layer.getRadius();
-      //   const area = this.calculateCircleArea(iRadius);
-      //   message = `Circle Area: ${(area / 1000).toFixed(2)} Km²`;
-      // } else {
-      //   const aiLatLngs = layer.getLatLngs()[0];
-      //   const area = this.calculatePolygonArea(aiLatLngs);
-      //   message = `Area: ${(area / 1000).toFixed(2)} Km²`;
-      // }
-      // // Call the callback with the new layer and message
-      // this.oMeasurementResultSubject.next(message);
+      const aoSelectedLayers = this.getSelectedLayers(); // Retrieve selected layers
+
+      // Check if the drawn shape covers or intersects any selected layer
+      aoSelectedLayers.forEach((oLayerData) => {
+        const { layerId } = oLayerData;
+
+        if (this.isShapeCoveringServerLayer(oLayer, layerId)) {
+          console.log(`The drawn shape covers or intersects layer ${layerId}.`);
+        }
+      });
+      oMap.addLayer(oLayer);
+
     });
+  }
+
+  private isShapeCoveringServerLayer(oDrawnShape: L.Layer, sLayerId: string): boolean {
+    const oLayer = this.m_oLayerMap[sLayerId];
+
+    if (!oLayer) {
+      console.warn(`Layer with ID ${sLayerId} not found on the map.`);
+      return false;
+    }
+    // Get the bounding box of the WMS layer
+    const oLayerBounds = this.getLayerBounds(oLayer);
+
+    if (!oLayerBounds) {
+      console.warn(`Could not retrieve bounds for layer ${sLayerId}`);
+      return false;
+    }
+
+    // Check if the drawn shape is a Circle
+    if (oDrawnShape instanceof L.Circle) {
+      const oCircle = oDrawnShape as L.Circle;
+      const circleCenter = oCircle.getLatLng();
+      const circleRadius = oCircle.getRadius();
+
+      // Calculate the bounds of the circle manually
+      const latLngBounds = this.getCircleBounds(circleCenter, circleRadius);
+      // Check if the circle's bounds intersect with the layer's bounds
+      return oLayerBounds.intersects(latLngBounds)
+    }
+
+    if (oDrawnShape instanceof L.Rectangle || oDrawnShape instanceof L.Polygon) {
+      // Check if the drawn shape's bounds intersect with the layer bounds
+      const oDrawnBounds = (oDrawnShape as L.Rectangle | L.Polygon).getBounds();
+      return oDrawnBounds.intersects(oLayerBounds)
+
+    }
+    console.warn(`Unsupported shape type: ${oDrawnShape.constructor.name}`);
+    return false;
+
+  }
+// Function to calculate bounds of a circle manually
+  private getCircleBounds(center: L.LatLng, radius: number): L.LatLngBounds {
+    const lat = center.lat;
+    const lng = center.lng;
+
+    const earthRadius = 6371000; // Earth radius in meters
+
+    // Calculate bounds of the circle based on center and radius
+    const latDelta = radius / earthRadius * (180 / Math.PI); // Latitude in degrees
+    const lngDelta = radius / (earthRadius * Math.cos(Math.PI * lat / 180)) * (180 / Math.PI); // Longitude in degrees
+
+    const north = lat + latDelta;
+    const south = lat - latDelta;
+    const east = lng + lngDelta;
+    const west = lng - lngDelta;
+
+    return L.latLngBounds(L.latLng(south, west), L.latLng(north, east));
+  }
+  private getLayerBounds(oLayer: L.TileLayer.WMS): L.LatLngBounds | null {
+    const minx = 1.4998625311991;  // Longitude (West)
+    const miny = 13.000169158400022;  // Latitude (South)
+    const maxx = 3.4998716797628027;  // Longitude (East)
+    const maxy = 15.000178306963724;  // Latitude (North)
+
+    // Adjust the order to [latitude, longitude] as expected by Leaflet
+    return L.latLngBounds([L.latLng(miny, minx), L.latLng(maxy, maxx)]);
   }
 
 
