@@ -155,7 +155,7 @@ export class MapService {
     center: { lat: number; lng: number };
     radius: number;
   }>();
-
+  oActiveShapeForMagicTool: L.Layer | null = null; // Track the currently drawn shape
   constructor(
     private m_oConstantsService: ConstantsService,
     private m_oDialog: MatDialog,
@@ -811,6 +811,37 @@ export class MapService {
       this.oMeasurementResultSubject.next(message);
     });
   }
+  //todo find a better way to write only one drawing method
+  startDrawingForMagicTool(
+    oMap: L.Map,
+    oDrawControl: any,
+    onShapeCreated: (layer: L.Layer) => void
+  ) {
+    oDrawControl.enable();
+    oMap.once('draw:created', (e: any) => {
+      const {layerType: sLayerType, layer} = e;
+      onShapeCreated(layer)
+      // Temporary layer for measurement
+      oMap.addLayer(layer);
+
+      // Calculate and create a notification message
+      // let message = '';
+      // if (sLayerType === 'polyline') {
+      //   const distance = this.calculateDistance(layer.getLatLngs());
+      //   message = `Distance: ${(distance).toFixed(2)} kilometers`;
+      // } else if (sLayerType === 'circle') {
+      //   const iRadius = layer.getRadius();
+      //   const area = this.calculateCircleArea(iRadius);
+      //   message = `Circle Area: ${(area / 1000).toFixed(2)} Km²`;
+      // } else {
+      //   const aiLatLngs = layer.getLatLngs()[0];
+      //   const area = this.calculatePolygonArea(aiLatLngs);
+      //   message = `Area: ${(area / 1000).toFixed(2)} Km²`;
+      // }
+      // // Call the callback with the new layer and message
+      // this.oMeasurementResultSubject.next(message);
+    });
+  }
 
 
   /**
@@ -1212,6 +1243,17 @@ export class MapService {
 
     if (oDrawControl) {
       // Implement your drawing start logic here
+      this.startDrawingForMagicTool(oMap,oDrawControl,(layer) => {
+        if (this.oActiveShapeForMagicTool) {
+          oMap.removeLayer(this.oActiveShapeForMagicTool);
+          this.oActiveShapeForMagicTool = null;
+        }
+
+        // Set the new shape as active
+        this.oActiveShapeForMagicTool = layer;
+
+
+      });
     }
   }
 
@@ -1230,7 +1272,12 @@ export class MapService {
 
     L.DomEvent.on(oCancelButton, 'click', () => {
       this.initializeDrawButton(oContainer, oMap); // Reset the Draw button
+      if (this.oActiveShapeForMagicTool) {
+        oMap.removeLayer(this.oActiveShapeForMagicTool);
+        this.oActiveShapeForMagicTool = null; // Reset active shape
+      }
     });
+
   }
 
 
