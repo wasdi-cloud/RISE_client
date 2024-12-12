@@ -696,7 +696,7 @@ export class MapService {
               'leaflet-control-button',
               oContainer
             );
-            oToolButton.innerHTML = `<span class="material-symbols-outlined">${tool.icon}</span>`;
+            oToolButton.innerHTML = `<span class="material-symbols-outlined" style="color: var(--rise-gold);">${tool.icon}</span>`; // Set icon color to yellow
             oToolButton.title = tool.title;
 
             L.DomEvent.on(oToolButton, 'click', () => {
@@ -897,6 +897,7 @@ export class MapService {
     return L.latLngBounds(L.latLng(south, west), L.latLng(north, east));
   }
   private getLayerBounds(oLayer: L.TileLayer.WMS): L.LatLngBounds | null {
+    //TODO layer should have bounding box in entity
     const minx = 1.4998625311991;  // Longitude (West)
     const miny = 13.000169158400022;  // Latitude (South)
     const maxx = 3.4998716797628027;  // Longitude (East)
@@ -1275,7 +1276,7 @@ export class MapService {
     tool: { icon: string; title: string; type: string }
   ): void {
     const oToolButton = L.DomUtil.create('a', 'leaflet-control-button', oContainer);
-    oToolButton.innerHTML = `<span class="material-symbols-outlined">${tool.icon}</span>`;
+    oToolButton.innerHTML = `<span class="material-symbols-outlined" style="color: var(--rise-gold);">${tool.icon}</span>`; // Set icon color to yellow
     oToolButton.title = tool.title;
 
     L.DomEvent.on(oToolButton, 'click', () => {
