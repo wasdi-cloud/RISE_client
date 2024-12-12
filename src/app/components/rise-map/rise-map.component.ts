@@ -10,6 +10,7 @@ import {NotificationsDialogsService} from '../../services/notifications-dialogs.
 import {TranslateService} from '@ngx-translate/core';
 import 'leaflet.fullscreen';
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {Subject} from "rxjs";
 
 // import * as L from 'leaflet';
 declare const L: any;
@@ -157,7 +158,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
 
     if (this.m_bMonitorMap) {
       this.m_oMapService.addPixelInfoToggle(oMap);
-      this.m_oMapService.addMagicTool(oMap);
+      this.addMagicTool(oMap);
     }
   }
 
@@ -467,5 +468,25 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
 
     // Emit the shape information to the parent component
     this.m_oMapInputChange.emit(oShapeInfo);
+  }
+
+  private addMagicTool(oMap) {
+    this.m_oMapService.addMagicTool(oMap).subscribe({
+      next: (sMessage) => {
+        if (sMessage === 'No layers selected.') {
+          this.m_oNotificationService.openSnackBar(sMessage, 'Magic Tool', 'danger');
+        } else if (sMessage === 'Shape intersects with a selected layer.') {
+          this.m_oNotificationService.openSnackBar(sMessage, 'Magic Tool', 'success');
+        } else if (sMessage === 'Shape does not intersect with any selected layer.') {
+          this.m_oNotificationService.openSnackBar(sMessage, 'Magic Tool', 'danger');
+        }
+        window.dispatchEvent(new Event("resize"))
+      },
+      error: (err) => {
+        console.error('Error in Magic Tool:', err);
+      },
+    });
+
+
   }
 }

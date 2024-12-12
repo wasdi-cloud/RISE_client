@@ -130,7 +130,7 @@ export class MapService {
       },
     },
   };
-
+  oMagicToolResultSubject= new Subject<string>()
   m_aoDrawnItems: L.FeatureGroup;
   m_oLastCircle: L.Circle | null = null;
   m_oLastMarker: L.Marker | null = null;
@@ -148,10 +148,9 @@ export class MapService {
   m_bPixelInfoOn: boolean = false;
   m_aoMarkers: L.Marker[] = [];
   oMeasurementResultSubject = new Subject<string>();
-  private m_oMarkerSubject = new BehaviorSubject<AreaViewModel>(null);
+  m_oMarkerSubject = new BehaviorSubject<AreaViewModel>(null);
   m_oMarkerSubject$ = this.m_oMarkerSubject.asObservable();
-  // Declare a Subject at the class level
-  private circleDrawnSubject = new Subject<{
+  circleDrawnSubject = new Subject<{
     center: { lat: number; lng: number };
     radius: number;
   }>();
@@ -833,7 +832,10 @@ export class MapService {
         const { layerId } = oLayerData;
 
         if (this.isShapeCoveringServerLayer(oLayer, layerId)) {
-          console.log(`The drawn shape covers or intersects layer ${layerId}.`);
+          this.oMagicToolResultSubject.next('Shape intersects with a selected layer.');
+
+        }else{
+          this.oMagicToolResultSubject.next('Shape does not intersect with any selected layer.');
         }
       });
       oMap.addLayer(oLayer);
@@ -1200,7 +1202,7 @@ export class MapService {
     return this.circleDrawnSubject.asObservable();
   }
 
-  addMagicTool(oMap: L.Map): void {
+  addMagicTool(oMap: L.Map):  Observable<string> {
     const oMagicToolButton = L.Control.extend({
       options: { position: 'topright' },
       onAdd: () => {
@@ -1213,6 +1215,7 @@ export class MapService {
     });
 
     oMap.addControl(new oMagicToolButton());
+    return this.oMagicToolResultSubject.asObservable();
   }
 
   /**
@@ -1243,7 +1246,8 @@ export class MapService {
     if (aoSelectedLayers.length > 0) {
       this.populateToolButtons(oContainer, oMap);
     } else {
-      console.log('No layers selected.');
+      this.oMagicToolResultSubject.next('No layers selected.');
+
     }
   }
 
