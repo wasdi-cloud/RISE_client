@@ -5,7 +5,7 @@ import {AreaViewModel} from '../models/AreaViewModel';
 import {MatDialog} from '@angular/material/dialog';
 
 import Geocoder from 'leaflet-control-geocoder';
-import {geoJSON, Map, Marker} from 'leaflet';
+import {geoJSON, Map as LeafletMap, Marker} from 'leaflet';
 import 'leaflet-draw';
 import 'leaflet-mouse-position';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
@@ -150,6 +150,7 @@ export class MapService {
   oMeasurementResultSubject = new Subject<string>();
   m_oMarkerSubject = new BehaviorSubject<AreaViewModel>(null);
   m_oMarkerSubject$ = this.m_oMarkerSubject.asObservable();
+  objectUrlCache = new Map<string,string>; // Map to store ObjectURLs for cached tiles
   circleDrawnSubject = new Subject<{
     center: { lat: number; lng: number };
     radius: number;
@@ -280,56 +281,67 @@ export class MapService {
     );
   }
 
-  setActiveLayer(oMap, oMapLayer: L.TileLayer) {
-    // this.loadTilesInitially(oMap,oMapLayer);
+
+  setActiveLayer(oMap: L.Map, oMapLayer: L.TileLayer) {
     if (this.m_oActiveBaseLayer !== oMapLayer) {
       this.m_oActiveBaseLayer = oMapLayer;
       oMap.addLayer(oMapLayer);
     }
+
     const activeLayer = this.getActiveLayer();
 
-    activeLayer.off('tileloadstart'); // Remove any existing listener on this layer
+    // Clear existing tileloadstart listeners
+    activeLayer.off('tileloadstart');
+    activeLayer.off('tileload');
 
-    activeLayer.on(
-      'tileloadstart',
-      async (event: { tile: { src: string; style: any } }) => {
-        let oMap = this.getMap();
-        const zoomLevel = oMap?.getZoom();
-        if (zoomLevel && zoomLevel >= 3 && zoomLevel <= 13) {
-          const url = event.tile.src; // URL of the tile being loaded
-          try {
-            // Try to get the tile from the cache
-            const cachedTile = await this.getTileFromCache(url);
+    // Handle tile loading
+    activeLayer.on('tileloadstart', async (event: { tile: any }) => {
+      const url = event.tile.src;
+      const cachedObjectUrl = this.objectUrlCache.get(url);
 
-            if (cachedTile) {
-              // Use the cached tile
-
-              event.tile.src = URL.createObjectURL(cachedTile); // Set the tile's source to the cached blob
-            } else {
-              // Tile was not found in cache, fetch it from the network
-
-              // Fetch the tile from the network
-              const response = await fetch(url);
-              if (!response.ok) {
-                throw new Error('Network response was not ok');
-              }
-              const blob = await response.blob();
-
-              // Cache the tile
-              await this.cacheTiles(url, blob);
-
-              event.tile.src = URL.createObjectURL(blob);
-            }
-          } catch (error) {
-            console.error('Error during tile load:', error);
-          }
-        } else {
-          // console.log(
-          //   'Zoom Levels needs to be between 10 and 13 for cache to work'
-          // );
-        }
+      if (cachedObjectUrl) {
+        // Use the cached ObjectURL
+        event.tile.src = cachedObjectUrl;
+        return;
       }
-    );
+
+      try {
+        const cachedTile = await this.getTileFromCache(url);
+        if (cachedTile) {
+          const objectUrl = URL.createObjectURL(cachedTile);
+          this.objectUrlCache.set(url, objectUrl); // Cache the ObjectURL
+          event.tile.src = objectUrl;
+        }else {
+          // Tile is not in the cache, fetch it from the network
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error(`Failed to fetch tile from network: ${response.statusText}`);
+          }
+
+          const blob = await response.blob();
+
+          // Cache the fetched tile
+          await this.cacheTiles(url, blob);
+
+          // Update the tile's source
+          const objectUrl = URL.createObjectURL(blob);
+          this.objectUrlCache.set(url, objectUrl); // Cache the ObjectURL
+          event.tile.src = objectUrl;
+        }
+      } catch (error) {
+        console.error('Error during tile load:', error);
+      }
+    });
+
+    // Cleanup ObjectURLs when tiles are removed
+    activeLayer.on('tileunload', (event: { tile: any }) => {
+      const url = event.tile.src;
+      const objectUrl = this.objectUrlCache.get(url);
+      if (objectUrl) {
+        URL.revokeObjectURL(objectUrl); // Revoke the ObjectURL
+        this.objectUrlCache.delete(url); // Remove it from the cache
+      }
+    });
   }
 
   getActiveLayer() {
@@ -917,7 +929,7 @@ export class MapService {
    * @param oArea
    * @param oMap
    */
-  addMarker(oArea: AreaViewModel, oMap: Map): Marker {
+  addMarker(oArea: AreaViewModel, oMap: LeafletMap): Marker {
     let asCoordinates = this.convertPointLatLng(oArea)._northEast;
     if (asCoordinates && oMap) {
       let lat = parseFloat(asCoordinates.lat);
@@ -1562,41 +1574,22 @@ export class MapService {
    */
   async cacheTiles(tileUrl: string, blob: Blob) {
     try {
-      // Open the IndexedDB and store the tile
       const db = await this.openIndexedDb();
       const transaction = db.transaction('tileStore', 'readwrite');
       const store = transaction.objectStore('tileStore');
 
-      // Calculate total storage size within the transaction
+      const tileData = { url: tileUrl, blob, timestamp: Date.now() };
+
+      // Calculate total storage size and evict oldest tiles if needed
       let totalSize = await this.calculateTotalStorageSize(store);
-      // console.log(
-      //   `Current total size: ${(totalSize / (1024 * 1024)).toFixed(2)} MB`
-      // );
-
-      const tileData = {
-        url: tileUrl,
-        blob: blob,
-        timestamp: Date.now(),
-      };
-
-      // If the total size exceeds the limit, evict the oldest tiles
       if (totalSize > MAX_STORAGE_SIZE) {
         console.log('Max storage limit exceeded. Evicting oldest tiles...');
-        await this.evictOldestTiles(store); // Pass the store to avoid transaction issues
+        await this.evictOldestTiles(store);
       }
 
-      // After eviction (if needed), put the new tile in the same transaction
-      const request = store.put(tileData); // Use 'put' to add or update the tile
+      store.put(tileData); // Add or update the tile in the store
 
-      request.onsuccess = () => {
-        // console.log('Tile cached:', tileUrl);
-      };
-
-      request.onerror = () => {
-        // console.error('Error caching tile:', tileUrl);
-      };
-
-      // Ensure the transaction is complete
+      // Ensure transaction completion
       await new Promise((resolve, reject) => {
         transaction.oncomplete = () => resolve(null);
         transaction.onerror = () => reject('Transaction failed');
@@ -1604,6 +1597,18 @@ export class MapService {
     } catch (error) {
       console.error('Error caching tile:', error);
     }
+  }
+
+  async getTileFromCache(url: string): Promise<Blob | null> {
+    const db = await this.openIndexedDb();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction('tileStore', 'readonly');
+      const store = transaction.objectStore('tileStore');
+      const request = store.get(url);
+
+      request.onsuccess = () => resolve(request.result?.blob || null);
+      request.onerror = () => reject('Error retrieving tile from cache');
+    });
   }
 
   /**
@@ -1664,28 +1669,28 @@ export class MapService {
    * Evict the oldest tiles to free the storage
    * @param url
    */
-  async getTileFromCache(url: string): Promise<Blob | null> {
-    const db = await this.openIndexedDb();
-
-    return new Promise((resolve, reject) => {
-      const transaction = db.transaction('tileStore', 'readonly');
-      const store = transaction.objectStore('tileStore');
-      const request = store.get(url); // Use 'url' as the key
-
-      request.onsuccess = (event) => {
-        const result = request.result;
-        if (result) {
-          resolve(result.blob); // Return the tile's blob data
-        } else {
-          resolve(null); // Tile not found in cache
-        }
-      };
-
-      request.onerror = () => {
-        reject('Error retrieving tile from cache');
-      };
-    });
-  }
+  // async getTileFromCache(url: string): Promise<Blob | null> {
+  //   const db = await this.openIndexedDb();
+  //
+  //   return new Promise((resolve, reject) => {
+  //     const transaction = db.transaction('tileStore', 'readonly');
+  //     const store = transaction.objectStore('tileStore');
+  //     const request = store.get(url); // Use 'url' as the key
+  //
+  //     request.onsuccess = (event) => {
+  //       const result = request.result;
+  //       if (result) {
+  //         resolve(result.blob); // Return the tile's blob data
+  //       } else {
+  //         resolve(null); // Tile not found in cache
+  //       }
+  //     };
+  //
+  //     request.onerror = () => {
+  //       reject('Error retrieving tile from cache');
+  //     };
+  //   });
+  // }
 
   async openIndexedDb(): Promise<IDBDatabase> {
     return new Promise((resolve, reject) => {
