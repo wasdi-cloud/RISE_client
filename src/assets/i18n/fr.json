@@ -25,6 +25,16 @@
     "INPUT_DATA": "Données d'entrée",
     "FORCE_UPDATE": "Forcer la mise à jour de la couche"
   },
+  "LAYER_ANALYZER": {
+    "FILTER": "Filtrer les valeurs des pixels",
+    "TOT_AREA_PIXEL": "Total des pixels dans la zone",
+    "PER_AREA_AFFECTED_PIXEL": "Pourcentage de pixels affectés dans la zone",
+    "ESTIMATED_AREA": "Zone estimée",
+    "PER_TOT_AREA_AFFECTED_PIXEL": "Pourcentage du total des pixels affectés dans la zone",
+    "REFRESH": "Rafraîchir",
+    "DOWNLOAD": "Télécharger",
+    "EXPORT": "Exporter"
+  },
 
 
   "AREA_OF_OPERATIONS": {

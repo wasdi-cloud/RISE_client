@@ -1,0 +1,91 @@
+<div class="dialog-container d-flex flex-column gap-2 p-3">
+  <!-- Header Section -->
+  <div class="header d-flex flex-row justify-content-between align-items-center">
+    <h3>{{ "MONITOR.LAYER_ANALYZER" | translate }}</h3>
+    <span class="close-btn material-symbols-outlined" (click)="onDismiss()">close</span>
+  </div>
+
+  <!-- Body Section -->
+  <div class="body flex-fill d-flex flex-column gap-3">
+    <!-- First Row: Text Input + Button -->
+    <div class="d-flex flex-row gap-3 align-items-end">
+      <div class="flex-grow-1 d-flex flex-column justify-content-center">
+        <rise-text-input
+          [m_bHasTitle]="true"
+          [m_sLocalizationKey]="'LAYER_ANALYZER.FILTER'"
+          [(m_sInputText)]="m_sOrganizationId"
+        ></rise-text-input>
+      </div>
+      <div style="margin:1px">
+        <rise-button
+          [m_sRole]="'action'"
+          [m_sLabel]="'LAYER_ANALYZER.REFRESH'"
+          (click)="onRefreshLayer()"
+        ></rise-button>
+      </div>
+    </div>
+
+
+    <!-- 5 Text Inputs (A A, A A, A) -->
+    <div class="d-flex flex-column gap-2">
+      <div class="d-flex flex-row gap-3">
+        <rise-text-input
+          class="flex-grow-1"
+          [m_bHasTitle]="true"
+          [m_sLocalizationKey]="'LAYER_ANALYZER.TOT_AREA_PIXEL'"
+          [(m_sInputText)]="m_oLayerProperties.dataSource"
+        ></rise-text-input>
+        <rise-text-input
+          class="flex-grow-1"
+          [m_bHasTitle]="true"
+          [m_sLocalizationKey]="'LAYER_ANALYZER.ESTIMATED_AREA'"
+          [(m_sInputText)]="m_oLayerProperties.resolution"
+        ></rise-text-input>
+      </div>
+      <div class="d-flex flex-row gap-3">
+        <rise-text-input
+          class="flex-grow-1"
+          [m_bHasTitle]="true"
+          [m_sLocalizationKey]="'LAYER_ANALYZER.PER_TOT_AREA_AFFECTED_PIXEL'"
+          [(m_sInputText)]="m_oLayerProperties.createdDate"
+        ></rise-text-input>
+        <rise-text-input
+          class="flex-grow-1"
+          [m_bHasTitle]="true"
+          [m_sLocalizationKey]="'LAYER_ANALYZER.PER_AREA_AFFECTED_PIXEL'"
+          [(m_sInputText)]="m_oLayerProperties.referenceDate"
+        ></rise-text-input>
+      </div>
+      <div class="col-6">
+        <rise-text-input
+          class="flex-grow-1"
+          [m_bHasTitle]="true"
+          [m_sLocalizationKey]="'LAYER_ANALYZER.ESTIMATED_AREA_PIXEL_AFFECTED'"
+          [(m_sInputText)]="m_oLayerProperties.inputData"
+        ></rise-text-input>
+      </div>
+    </div>
+
+    <!-- Textarea Section -->
+    <div>
+      <div>
+        <rise-histogram [aiPixelValues]="[10, 20, 30, 40]" sUnit="Jy bm^-1"></rise-histogram>
+      </div>
+
+    </div>
+
+    <div class="align-self-end d-flex gap-2 align-items-center">
+      <rise-button
+        [m_sRole]="'action'"
+        [m_sLabel]="'LAYER_ANALYZER.DOWNLOAD'"
+        (click)="forceUpdateLayer()"
+      ></rise-button>
+      <rise-button
+        [m_sRole]="'action'"
+        [m_sLabel]="'LAYER_ANALYZER.EXPORT'"
+        (click)="forceUpdateLayer()"
+      ></rise-button>
+    </div>
+
+  </div>
+</div>

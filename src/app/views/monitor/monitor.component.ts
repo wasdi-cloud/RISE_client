@@ -27,6 +27,7 @@ import {FilterPipe} from '../../shared/pipes/filter.pipe';
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 import {MatDialog} from "@angular/material/dialog";
 import {LayerPropertiesComponent} from "./layer-properties/layer-properties.component";
+import {LayerAnalyzerComponent} from "./layer-analyzer/layer-analyzer.component";
 
 @Component({
   selector: 'app-monitor',
@@ -133,6 +134,13 @@ export class MonitorComponent implements OnInit {
 
   ngOnInit(): void {
     this.getActiveAOI();
+    this.m_oMapService.m_oLayerAnalyzerDialogEventEmitter.subscribe((shouldOpenDialog: boolean) => {
+      console.log("here")
+      if (shouldOpenDialog) {
+        console.log("here 2")
+        this.openLayerAnalyzerDialog(); // Your dialog opening method
+      }
+    });
   }
 
   //   RISE shows the Monitor Section containing:
@@ -479,5 +487,11 @@ export class MonitorComponent implements OnInit {
       //don't know what will we do
     });
 
+  }
+
+  private openLayerAnalyzerDialog() {
+    this.m_oDialog.open(LayerAnalyzerComponent).afterClosed().subscribe(()=>{
+      console.log("layer analyzer is working")
+    })
   }
 }

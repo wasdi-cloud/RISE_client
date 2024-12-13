@@ -104,7 +104,19 @@
     "CREATED_DATE": "Created date",
     "REFERENCE_DATE": "Reference date",
     "INPUT_DATA": "Input data",
-    "FORCE_UPDATE": "Force Layer Update"
+    "FORCE_UPDATE": "Force Layer Update",
+    "LAYER_ANALYZER": "Layer Analyzer"
+  },
+  "LAYER_ANALYZER": {
+    "FILTER": "Filter Pixel Values",
+    "TOT_AREA_PIXEL": "Total Pixel in Area",
+    "PER_AREA_AFFECTED_PIXEL": "Percentage of Affected Pixel in Area",
+    "ESTIMATED_AREA": "Estimated Area",
+    "ESTIMATED_AREA_PIXEL_AFFECTED": "Estimated Area Pixel Affected",
+    "PER_TOT_AREA_AFFECTED_PIXEL": "Percentage of total Affected Pixel in Area",
+    "REFRESH": "Refresh",
+    "DOWNLOAD": "Download",
+    "EXPORT": "Export"
   },
   "ORGANIZATION": {
     "ADDRESS": "Organization Address",

@@ -172,6 +172,16 @@
     "INPUT_DATA": "بيانات الإدخال",
     "FORCE_UPDATE": "تحديث الطبقة بالقوة"
   },
+  "LAYER_ANALYZER": {
+    "FILTER": "تصفية قيم البكسل",
+    "TOT_AREA_PIXEL": "إجمالي البكسل في المنطقة",
+    "PER_AREA_AFFECTED_PIXEL": "نسبة البكسل المتأثر في المنطقة",
+    "ESTIMATED_AREA": "المنطقة المقدرة",
+    "PER_TOT_AREA_AFFECTED_PIXEL": "النسبة المئوية لإجمالي البكسل المتأثر في المنطقة",
+    "REFRESH": "تحديث",
+    "DOWNLOAD": "تنزيل",
+    "EXPORT": "تصدير"
+  },
 
   "USER": {
     "ACCOUNT_HEADER": "تفاصيل الحساب",

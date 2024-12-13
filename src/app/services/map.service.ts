@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 
 import {AreaViewModel} from '../models/AreaViewModel';
 
@@ -156,7 +156,7 @@ export class MapService {
   }>();
   oActiveShapeForMagicTool: L.Layer | null = null; // Track the currently drawn shape
   private m_oLayerMap: { [key: string]: L.TileLayer.WMS } = {};
-
+  public m_oLayerAnalyzerDialogEventEmitter = new EventEmitter<boolean>();
 
   constructor(
     private m_oConstantsService: ConstantsService,
@@ -833,9 +833,11 @@ export class MapService {
 
         if (this.isShapeCoveringServerLayer(oLayer, layerId)) {
           this.oMagicToolResultSubject.next('Shape intersects with a selected layer.');
+          this.m_oLayerAnalyzerDialogEventEmitter.emit(true);
 
         }else{
           this.oMagicToolResultSubject.next('Shape does not intersect with any selected layer.');
+          this.m_oLayerAnalyzerDialogEventEmitter.emit(false);
         }
       });
       oMap.addLayer(oLayer);
@@ -1247,7 +1249,7 @@ export class MapService {
       this.populateToolButtons(oContainer, oMap);
     } else {
       this.oMagicToolResultSubject.next('No layers selected.');
-
+      this.m_oLayerAnalyzerDialogEventEmitter.emit(false);
     }
   }
 

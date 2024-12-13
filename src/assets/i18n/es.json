@@ -183,6 +183,16 @@
     "INPUT_DATA": "Datos de entrada",
     "FORCE_UPDATE": "Forzar actualización de la capa"
   },
+  "LAYER_ANALYZER": {
+    "FILTER": "Filtrar valores de píxeles",
+    "TOT_AREA_PIXEL": "Total de píxeles en el área",
+    "PER_AREA_AFFECTED_PIXEL": "Porcentaje de píxeles afectados en el área",
+    "ESTIMATED_AREA": "Área estimada",
+    "PER_TOT_AREA_AFFECTED_PIXEL": "Porcentaje del total de píxeles afectados en el área",
+    "REFRESH": "Actualizar",
+    "DOWNLOAD": "Descargar",
+    "EXPORT": "Exportar"
+  },
 
 
   "TOOLBAR": {
