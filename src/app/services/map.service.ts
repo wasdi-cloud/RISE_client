@@ -669,7 +669,6 @@ export class MapService {
 
 
   addMeasurementTools(oMap: L.Map): Observable<string> {
-
     let bMeasurementMode = false;
     let oActiveShape: L.Layer | null = null; // Track the currently drawn shape
 
@@ -1104,13 +1103,11 @@ export class MapService {
   }
 
   addPixelInfoToggle(oMap: any) {
-    let oController = this;
-
-    const oPixelButton = L.Control.extend({
+    let oPixelButton = L.Control.extend({
       options: {
         position: 'topright',
       },
-      onAdd: function (oMap) {
+      onAdd: () => {
         // Create the container for the dialog
         let oContainer = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
 
@@ -1128,10 +1125,11 @@ export class MapService {
         L.DomEvent.disableClickPropagation(oButton);
 
         // Configure the toggle button behavior
-        L.DomEvent.on(oButton, 'click', function () {
-          oController.m_bPixelInfoOn = true;
+        L.DomEvent.on(oButton, 'click', () => {
 
-          if (oController.m_bPixelInfoOn) {
+          this.m_bPixelInfoOn = true;
+
+          if (this.m_bPixelInfoOn) {
             // Add the cancel button dynamically
             if (!oCancelButton) {
               oCancelButton = L.DomUtil.create(
@@ -1144,18 +1142,18 @@ export class MapService {
               oCancelButton.title = 'Cancel Pixel Info';
 
               // Attach cancel button click behavior
-              L.DomEvent.on(oCancelButton, 'click', function () {
-                oController.m_bPixelInfoOn = false;
+              L.DomEvent.on(oCancelButton, 'click',  ()=> {
+                this.m_bPixelInfoOn = false;
                 oContainer.removeChild(oCancelButton!); // Remove cancel button
                 oCancelButton = null; // Reset reference
-                oController.m_oNotificationService.openSnackBar(
+                this.m_oNotificationService.openSnackBar(
                   'Pixel Info operation canceled.',
                   'Pixel Info',
                   'danger'
                 );
               });
             }
-            oController.getPixelInfo();
+            this.getPixelInfo();
           } else {
             // Remove the cancel button if it exists
             if (oCancelButton) {
@@ -1329,6 +1327,7 @@ export class MapService {
   }
 
   addMagicTool(oMap: L.Map):  Observable<string> {
+
     const oMagicToolButton = L.Control.extend({
       options: { position: 'topright' },
       onAdd: () => {
@@ -1343,7 +1342,11 @@ export class MapService {
     oMap.addControl(new oMagicToolButton());
     return this.oMagicToolResultSubject.asObservable();
   }
+  cleanupPixelInfo() {
+    // Disable pixel info functionality
+    this.m_bPixelInfoOn = false;
 
+  }
   /**
    * Initializes the Draw button in the container.
    */
@@ -1360,6 +1363,7 @@ export class MapService {
     oDrawButton.title = 'Layer Analyzer';
 
     L.DomEvent.on(oDrawButton, 'click', () => {
+      this.cleanupPixelInfo()
       this.handleDrawButtonClick(oContainer, oMap);
     });
   }
@@ -1563,10 +1567,8 @@ export class MapService {
     oWmsParams[sVersion === '1.3.0' ? 'crs' : 'srs'] = 'EPSG:4326';
 
     //build url with url and params
-    const sUrl = sWmsUrl + L.Util.getParamString(oWmsParams, sWmsUrl);
-
     //load data from server
-    return sUrl;
+    return sWmsUrl + L.Util.getParamString(oWmsParams, sWmsUrl);
   }
 
 
@@ -1588,8 +1590,7 @@ export class MapService {
       }</ul> </li>`;
     });
 
-    let sReturnString = '<ul>' + asFeatureContent.toString() + '</ul>';
-    return sReturnString;
+    return '<ul>' + asFeatureContent.toString() + '</ul>';
   }
 
   getFeatureInfo(sUrl: string) {
