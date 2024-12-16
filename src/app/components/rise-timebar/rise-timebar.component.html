@@ -25,8 +25,8 @@
   >
     <div class="time-options d-flex flex-row align-items-center gap-4">
       <span class="material-symbols-outlined"> play_arrow </span>
-      <span class="material-symbols-outlined"> history </span>
-      <span class="material-symbols-outlined"> update </span>
+      <span class="material-symbols-outlined" (click)="minusOneDayFromDate()">history </span>
+      <span class="material-symbols-outlined" (click)="addOneDayToDate()"> update </span>
       <rise-chip-menu
         [m_sSelectedItem]="m_oSelectedDate"
         [m_asItems]="m_asDates"

@@ -22,7 +22,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   /**
    * UC_190 Browse Time
    */
-  
+
   /**
    * Timebar start date
    */
@@ -140,4 +140,23 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    * @returns void
    */
   zoomToTime(): void {}
+
+  addOneDayToDate() {
+    if(this.m_oSelectedDate){
+      let oDate=new Date(this.m_oSelectedDate)
+      oDate.setDate(oDate.getDate()+1)
+      this.m_oSelectedDate=oDate.toDateString();
+      this.m_sSelectedDateTimestamp = new Date(this.m_oSelectedDate).valueOf();
+      this.emitSelectedDate();
+    }
+  }
+  minusOneDayFromDate() {
+    if(this.m_oSelectedDate){
+      let oDate=new Date(this.m_oSelectedDate)
+      oDate.setDate(oDate.getDate()-1)
+      this.m_oSelectedDate=oDate.toDateString();
+      this.m_sSelectedDateTimestamp = new Date(this.m_oSelectedDate).valueOf();
+      this.emitSelectedDate();
+    }
+  }
 }
