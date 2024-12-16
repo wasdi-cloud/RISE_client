@@ -239,7 +239,9 @@ export class MonitorComponent implements OnInit {
   /**
    * Get the layers for the selected type from the button execution
    * UC: RISE shows the Monitor Section containing options to show/hide the available layers
-   * @param sLayerType
+   * @param oPlugin
+   * @param sAreaId
+   * @param iDate
    */
   getLayers(oPlugin: any, sAreaId: string, iDate: string | number) {
     this.m_oLayerService
