@@ -135,9 +135,7 @@ export class MonitorComponent implements OnInit {
   ngOnInit(): void {
     this.getActiveAOI();
     this.m_oMapService.m_oLayerAnalyzerDialogEventEmitter.subscribe((shouldOpenDialog: boolean) => {
-      console.log("here")
       if (shouldOpenDialog) {
-        console.log("here 2")
         this.openLayerAnalyzerDialog(); // Your dialog opening method
       }
     });

@@ -1113,40 +1113,152 @@ export class MapService {
       onAdd: function (oMap) {
         // Create the container for the dialog
         let oContainer = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
-        // Create the button to add to leaflet
+
+        // Create the toggle button
         let oButton = L.DomUtil.create(
           'a',
           'leaflet-control-button',
           oContainer
         );
 
-        // Click stops on our button
+        // Create the cancel button (initially not added to the DOM)
+        let oCancelButton: HTMLElement | null = null;
+
+        // Click stops on our buttons
         L.DomEvent.disableClickPropagation(oButton);
 
-        // And here we decide what to do with our button
-
+        // Configure the toggle button behavior
         L.DomEvent.on(oButton, 'click', function () {
-          oController.m_bPixelInfoOn = !oController.m_bPixelInfoOn;
+          oController.m_bPixelInfoOn = true;
 
           if (oController.m_bPixelInfoOn) {
+            // Add the cancel button dynamically
+            if (!oCancelButton) {
+              oCancelButton = L.DomUtil.create(
+                'a',
+                'leaflet-control-cancel',
+                oContainer
+              );
+              oCancelButton.innerHTML =
+                '<span class="material-symbols-outlined">cancel</span>';
+              oCancelButton.title = 'Cancel Pixel Info';
+
+              // Attach cancel button click behavior
+              L.DomEvent.on(oCancelButton, 'click', function () {
+                oController.m_bPixelInfoOn = false;
+                oContainer.removeChild(oCancelButton!); // Remove cancel button
+                oCancelButton = null; // Reset reference
+                oController.m_oNotificationService.openSnackBar(
+                  'Pixel Info operation canceled.',
+                  'Pixel Info',
+                  'danger'
+                );
+              });
+            }
             oController.getPixelInfo();
+          } else {
+            // Remove the cancel button if it exists
+            if (oCancelButton) {
+              oContainer.removeChild(oCancelButton);
+              oCancelButton = null;
+            }
           }
         });
 
-        // This is the "icon" of the button added to Leaflet
+        // Set up the toggle button icon and tooltip
         oButton.innerHTML =
           '<span class="material-symbols-outlined">chat_info</span>';
-
-        oContainer.title = 'Toggle Pixel Info';
+        oButton.title = 'Toggle Pixel Info';
 
         return oContainer;
       },
       onRemove: function (map) {
+        // Clean-up if necessary
       },
     });
+
     oMap.addControl(new oPixelButton());
   }
 
+  getPixelInfo() {
+    let sErrorMsg: string = this.m_oTranslate.instant('MAP.ERROR_LAYER');
+    this.m_oRiseMap.on('click', (oClickEvent) => {
+
+      if (this.m_bPixelInfoOn) {
+        let i = 0;
+        this.m_oRiseMap.eachLayer(function () {
+          i += 1;
+        });
+        if (i > 1) {
+          let sWmsUrl = '';
+          let sLayerIdList = '';
+
+          this.m_oRiseMap.eachLayer((oLayer) => {
+            if (oLayer.options.layers) {
+              if (FadeoutUtils.utilsIsStrNullOrEmpty(oLayer._url)) {
+                sWmsUrl = oLayer.url.replace('ows', 'wms');
+              }
+
+              sLayerIdList += oLayer.options.layers;
+              // sLayerIdList += ',';
+
+              let sFeatureInfoUrl = this.getWMSLayerInfoUrl(
+                sWmsUrl,
+                oClickEvent.latlng,
+                sLayerIdList
+              );
+
+              if (sFeatureInfoUrl) {
+                if (this.m_oFeatureInfoMarker != null) {
+                  this.m_oFeatureInfoMarker.remove();
+                }
+                this.getFeatureInfo(sFeatureInfoUrl).subscribe({
+                  next: (oResponse) => {
+                    if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
+                      try {
+                        let sContentString = this.formatFeatureJSON(oResponse);
+                        //handle the case when there are no info
+                        if(sContentString==='<ul></ul>'){
+                          sContentString='<ul>No Information Found</ul>'
+                        }
+                        this.m_oFeatureInfoMarker = L.popup()
+                          .setLatLng([
+                            oClickEvent.latlng.lat,
+                            oClickEvent.latlng.lng,
+                          ])
+                          .setContent(sContentString)
+                          .openOn(this.m_oRiseMap);
+                      } catch (error) {
+                        this.m_oNotificationService.openSnackBar(
+                          sErrorMsg,
+                          '',
+                          'danger-snackbar'
+                        );
+                      }
+                    }
+                  },
+                  error: (oError) => {
+                    this.m_oNotificationService.openSnackBar(
+                      sErrorMsg,
+                      '',
+                      'danger-snackbar'
+                    );
+                  },
+                });
+              }
+            }
+          });
+        }else{
+          this.m_oNotificationService.openSnackBar(
+            "No layer selected,Please select one ",
+            'Pixel Info',
+            'danger'
+          );
+          window.dispatchEvent(new Event("resize"))
+        }
+      }
+    });
+  }
   /**
    * Select a point in map and rise draw a circle with minimum radius
    * @param oMap
@@ -1457,75 +1569,7 @@ export class MapService {
     return sUrl;
   }
 
-  getPixelInfo() {
-    let sErrorMsg: string = this.m_oTranslate.instant('MAP.ERROR_LAYER');
-    this.m_oRiseMap.on('click', (oClickEvent) => {
-      if (this.m_bPixelInfoOn) {
-        let i = 0;
-        this.m_oRiseMap.eachLayer(function () {
-          i += 1;
-        });
-        if (i > 1) {
-          let sWmsUrl = '';
-          let sLayerIdList = '';
 
-          this.m_oRiseMap.eachLayer((oLayer) => {
-            if (oLayer.options.layers) {
-              if (FadeoutUtils.utilsIsStrNullOrEmpty(oLayer._url)) {
-                sWmsUrl = oLayer.url.replace('ows', 'wms');
-              }
-
-              sLayerIdList += oLayer.options.layers;
-              // sLayerIdList += ',';
-
-              let sFeatureInfoUrl = this.getWMSLayerInfoUrl(
-                sWmsUrl,
-                oClickEvent.latlng,
-                sLayerIdList
-              );
-
-              if (sFeatureInfoUrl) {
-                if (this.m_oFeatureInfoMarker != null) {
-                  this.m_oFeatureInfoMarker.remove();
-                }
-                this.getFeatureInfo(sFeatureInfoUrl).subscribe({
-                  next: (oResponse) => {
-                    if (oResponse !== null && oResponse !== undefined) {
-                      try {
-                        let sPrettyPrint = JSON.stringify(oResponse, null, 2);
-                        let sContentString = this.formatFeatureJSON(oResponse);
-                        //let sJson = `<div>{"type":"FeatureCollection","features":[{"type":"Feature","id":"","geometry":null,"properties":{"GRAY_INDEX":0.1479392647743225}}],"totalFeatures":"unknown","numberReturned":1,"timeStamp":"2024-03-29T12:04:31.867Z","crs":null}</div>`;
-                        this.m_oFeatureInfoMarker = L.popup()
-                          .setLatLng([
-                            oClickEvent.latlng.lat,
-                            oClickEvent.latlng.lng,
-                          ])
-                          .setContent(sContentString)
-                          .openOn(this.m_oRiseMap);
-                      } catch (error) {
-                        this.m_oNotificationService.openSnackBar(
-                          sErrorMsg,
-                          '',
-                          'danger-snackbar'
-                        );
-                      }
-                    }
-                  },
-                  error: (oError) => {
-                    this.m_oNotificationService.openSnackBar(
-                      sErrorMsg,
-                      '',
-                      'danger-snackbar'
-                    );
-                  },
-                });
-              }
-            }
-          });
-        }
-      }
-    });
-  }
 
   /**
    * Return the content for an 'innerHTML' element to be read by the popup -> setContent()
