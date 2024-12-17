@@ -627,7 +627,9 @@ export class MapService {
     }
 
     if (!this.m_oGeocoderControl) {
-      this.m_oGeocoderControl = L.geocoder();
+      this.m_oGeocoderControl = L.Control.geocoder({
+        defaultMarkGeocode: false
+      });
     }
 
     const oGeocoderControl = this.m_oGeocoderControl;
