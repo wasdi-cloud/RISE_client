@@ -32,6 +32,13 @@
         [m_asItems]="m_asDates"
         (m_oSelectedItem)="dateSelected($event)"
       ></rise-chip-menu>
+      <rise-button
+      [m_sLabel]="'Live'"
+      [m_sIconLeft]="'radio_button_checked'"
+      [m_sIconColor]="m_bIsLive?m_sIconColor:''"
+      (click)="setDateToLive()"
+      >
+      </rise-button>
     </div>
   </div>
 </div>

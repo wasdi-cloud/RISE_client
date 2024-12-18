@@ -31,6 +31,10 @@ export class RiseButtonComponent {
    * The Icon that will appear on the right side of the button
    */
   @Input() m_sIconRight: string = '';
+  /**
+   * The Icon that will appear on the right side of the button
+   */
+  @Input() m_sIconColor: string = '';
 
   /**
    * Is the button disabled?

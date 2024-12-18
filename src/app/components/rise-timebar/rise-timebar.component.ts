@@ -1,20 +1,13 @@
-import { CommonModule } from '@angular/common';
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges,} from '@angular/core';
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
-import { RiseChipMenuComponent } from '../rise-chip-menu/rise-chip-menu.component';
+import {RiseChipMenuComponent} from '../rise-chip-menu/rise-chip-menu.component';
+import {RiseButtonComponent} from "../rise-button/rise-button.component";
 
 @Component({
   selector: 'rise-timebar',
   standalone: true,
-  imports: [CommonModule, RiseChipMenuComponent],
+  imports: [CommonModule, RiseChipMenuComponent, RiseButtonComponent],
   templateUrl: './rise-timebar.component.html',
   styleUrl: './rise-timebar.component.css',
 })
@@ -39,6 +32,10 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   @Output() m_sSelectedDate: EventEmitter<number> = new EventEmitter<number>(
     null
   );
+  /**
+   * Event of live button pressed
+   */
+  @Output() m_bLiveButtonPressed = new EventEmitter<boolean>();
 
   /**
    * Array of total dates to be displayed by the timebar
@@ -64,8 +61,11 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    * Timestamp corresponding to the selected date
    */
   m_sSelectedDateTimestamp: number = null;
+  m_sIconColor: string = 'red';
+  m_bIsLive: boolean = true;
 
-  constructor() {}
+  constructor() {
+  }
 
   ngOnInit(): void {
     this.initDates();
@@ -114,8 +114,23 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
       this.m_oSelectedDate = oEvent;
       this.m_iSliderValue = this.m_asDates.indexOf(this.m_oSelectedDate);
     }
+    this.m_bIsLive = this.m_oSelectedDate === this.m_asDates[this.m_asDates.length - 1];
     this.m_sSelectedDateTimestamp = new Date(this.m_oSelectedDate).valueOf();
     this.emitSelectedDate();
+  }
+
+  setDateToLive() {
+    if (this.m_asDates) {
+      this.m_oSelectedDate = this.m_asDates[this.m_asDates.length - 1];
+      this.m_iSliderValue = this.m_asDates.indexOf(this.m_oSelectedDate);
+      this.m_bIsLive = true;
+      this.emitSelectedDate();
+      this.onLiveButtonClick();
+    }
+  }
+
+  onLiveButtonClick() {
+    this.m_bLiveButtonPressed.emit(true);
   }
 
   /**
@@ -132,29 +147,32 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    * UC: RISE shows on the time bar markers where there are registered events (both automatically detected or inserted by the user)
    * @returns void
    */
-  initRegisteredEvents(): void {}
+  initRegisteredEvents(): void {
+  }
 
   /**
    * TODO: Ability to zoom in and out of the timebar
    * UC: User can zoom in and out the time bar
    * @returns void
    */
-  zoomToTime(): void {}
+  zoomToTime(): void {
+  }
 
   addOneDayToDate() {
-    if(this.m_oSelectedDate){
-      let oDate=new Date(this.m_oSelectedDate)
-      oDate.setDate(oDate.getDate()+1)
-      this.m_oSelectedDate=oDate.toDateString();
+    if (this.m_oSelectedDate) {
+      let oDate = new Date(this.m_oSelectedDate)
+      oDate.setDate(oDate.getDate() + 1)
+      this.m_oSelectedDate = oDate.toDateString();
       this.m_sSelectedDateTimestamp = new Date(this.m_oSelectedDate).valueOf();
       this.emitSelectedDate();
     }
   }
+
   minusOneDayFromDate() {
-    if(this.m_oSelectedDate){
-      let oDate=new Date(this.m_oSelectedDate)
-      oDate.setDate(oDate.getDate()-1)
-      this.m_oSelectedDate=oDate.toDateString();
+    if (this.m_oSelectedDate) {
+      let oDate = new Date(this.m_oSelectedDate)
+      oDate.setDate(oDate.getDate() - 1)
+      this.m_oSelectedDate = oDate.toDateString();
       this.m_sSelectedDateTimestamp = new Date(this.m_oSelectedDate).valueOf();
       this.emitSelectedDate();
     }

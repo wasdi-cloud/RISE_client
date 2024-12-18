@@ -74,6 +74,7 @@
         [m_iStartDate]="m_oAreaOfOperation.archiveStartDate"
         [m_iEndDate]="m_oAreaOfOperation.archiveEndDate"
         (m_sSelectedDate)="getReferenceTime($event)"
+        (m_bLiveButtonPressed)="handleLiveButtonPressed()"
       ></rise-timebar>
     </div>
     <div *ngIf="m_bShowLegends" class="legends-container">

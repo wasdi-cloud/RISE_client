@@ -335,12 +335,6 @@ export class MonitorComponent implements OnInit {
 
   /********** LAYER LIST ITEM HANDLERS **********/
 
-  addLayerToMap(oLayer) {
-    this.m_oMapService.addLayerMap2DByServer(
-      oLayer.layerId,
-      oLayer.geoserverUrl
-    );
-  }
 
   handleLayerAction(oEvent) {
     switch (oEvent.action) {
@@ -462,6 +456,22 @@ export class MonitorComponent implements OnInit {
     oLegend.visible = !oLegend.visible;
   }
 
+  handleLiveButtonPressed() {
+    //todo show closet layer to the live button
+    //sort the layer based on difference between date and closest date
+    if(this.m_aoLayers && this.m_aoLayers.length>0){
+      let oTargetDate = this.m_sEndDate;
+      const aoSortedLayers = this.m_aoLayers.sort((a, b) =>
+        Math.abs(a.date.referenceDate - oTargetDate.referenceDate) -
+        Math.abs(b.date.referenceDate - oTargetDate.referenceDate)
+      );
+      this.setOpacity(100, aoSortedLayers[0].id)
+      for (let i = 1; i < this.m_aoLayers.length; i++) {
+        this.setOpacity(0, aoSortedLayers[i].id)
+      }
+    }
+  }
+
   private downloadLayer(sLayerId, sFormat: string) {
     this.m_oLayerService.downloadLayer(sLayerId, sFormat).subscribe({
       next: (oResponse: Blob) => {
@@ -490,7 +500,7 @@ export class MonitorComponent implements OnInit {
   }
 
   private openLayerAnalyzerDialog() {
-    this.m_oDialog.open(LayerAnalyzerComponent).afterClosed().subscribe(()=>{
+    this.m_oDialog.open(LayerAnalyzerComponent).afterClosed().subscribe(() => {
       console.log("layer analyzer is working")
     })
   }
