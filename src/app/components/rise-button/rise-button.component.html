@@ -5,7 +5,9 @@
   [class.active]="m_bActive"
   [disabled]="m_bDisabled"
 >
-  <span class="material-symbols-outlined" *ngIf="m_sIconLeft">{{
+  <span class="material-symbols-outlined"
+        [style.color]="m_sIconColor?m_sIconColor:''"
+        *ngIf="m_sIconLeft">{{
     m_sIconLeft
   }}</span>
   {{ m_sLabel | translate }}
