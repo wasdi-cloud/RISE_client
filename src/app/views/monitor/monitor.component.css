@@ -2,6 +2,9 @@
   transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth effect */
   cursor: pointer; /* Indicate it's clickable */
 }
+.temp-fix {
+  height: 870px;
+}
 
 .logo-img:hover {
   transform: scale(1.1); /* Slightly enlarge the image */
@@ -93,3 +96,4 @@ span.cta-text {
 .button {
   cursor: pointer;
 }
+

@@ -56,7 +56,7 @@
         [m_sRole]="'primary'"
       ></rise-button>
     </div>
-    <div class="map-container flex-fill">
+    <div class="map-container flex-fill temp-fix">
       <div
         *ngIf="m_aoPlugins.length > 0"
         class="btn-select-container d-flex flex-row gap-2"
@@ -79,6 +79,7 @@
         (m_sPlayButtonPressed)="handlePlayButtonPressed($event)"
       ></rise-timebar>
     </div>
+
     <div *ngIf="m_bShowLegends" class="legends-container">
       <div
         class="legends-header px-1 d-flex flex-row justify-content-between align-items-center"
