@@ -98,7 +98,7 @@ export class UserAccountComponent implements OnInit {
       value: 'ar',
     },
   ];
-
+  m_sUserDefaultLanguage: string;
   /**
    * Inputs to change user's email
    */
@@ -149,6 +149,7 @@ export class UserAccountComponent implements OnInit {
           return;
         }
         this.m_oUser = oResponse;
+        this.setUserLanguage();
         this.m_oEmailInputs.currentEmail = this.m_oUser.email;
         this.initCheckboxOptions();
       },
@@ -166,6 +167,20 @@ export class UserAccountComponent implements OnInit {
     });
   }
 
+  private setUserLanguage() {
+    if (this.m_oUser.defaultLanguage) {
+      if(this.m_oUser.defaultLanguage==='en'){
+        this.m_sUserDefaultLanguage='English';
+      }else if(this.m_oUser.defaultLanguage==='ar'){
+        this.m_sUserDefaultLanguage='Arabic';
+      }else if(this.m_oUser.defaultLanguage==='es'){
+        this.m_sUserDefaultLanguage='Spanish';
+      }else if(this.m_oUser.defaultLanguage==='fr'){
+        this.m_sUserDefaultLanguage='French';
+      }
+    }
+  }
+
   /**
    * Save changes to the user id, name, surname, number
    */
@@ -177,8 +192,18 @@ export class UserAccountComponent implements OnInit {
     };
     this.m_oUserService.updateUser(oBody).subscribe({
       next: (oResponse) => {
-        console.log(oResponse);
-      },
+        this.m_oNotificationDialogService.openSnackBar(
+          "Information Saved",
+          "Account",
+          'success'
+        )
+      },error:(oError)=>{
+        this.m_oNotificationDialogService.openSnackBar(
+          oError,
+          "Account",
+          'danger'
+        )
+      }
     });
   }
 
@@ -352,6 +377,7 @@ export class UserAccountComponent implements OnInit {
   // Newsletter
   // Maintenance
   // Activities (added to organization, added to an area…)
+
   saveNotifications() {
     let sError: string = this.m_oTranslate.instant('USER.NOTIFICATIONS_ERROR');
     this.m_oUserService.updateNotifications(this.m_oUser).subscribe({
@@ -451,6 +477,11 @@ export class UserAccountComponent implements OnInit {
       this.m_oUserService.changeUserLanguageSetting(this.m_oUser).subscribe({
         next: (oResponse) => {
           this.getUserInfo();
+          this.m_oNotificationDialogService.openSnackBar(
+            "Information Saved",
+            "Account",
+            'success'
+          )
         },
         error: (oError) => {
           console.error(oError);
