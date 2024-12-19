@@ -24,7 +24,7 @@
     class="timebar-options flex-fill d-flex flex-row justify-content-between align-items-center px-4"
   >
     <div class="time-options d-flex flex-row align-items-center gap-4">
-      <span class="material-symbols-outlined"> play_arrow </span>
+      <span class="material-symbols-outlined" (click)="onPlayButtonClick()"> play_arrow </span>
       <span class="material-symbols-outlined" (click)="minusOneDayFromDate()">history </span>
       <span class="material-symbols-outlined" (click)="addOneDayToDate()"> update </span>
       <rise-chip-menu

@@ -28,6 +28,7 @@ import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 import {MatDialog} from "@angular/material/dialog";
 import {LayerPropertiesComponent} from "./layer-properties/layer-properties.component";
 import {LayerAnalyzerComponent} from "./layer-analyzer/layer-analyzer.component";
+import {LayerViewModel} from "../../models/LayerViewModel";
 
 @Component({
   selector: 'app-monitor',
@@ -76,7 +77,7 @@ export class MonitorComponent implements OnInit {
   /**
    * List of Layers published on the map
    */
-  m_aoLayers: Array<any> = [];
+  m_aoLayers: Array<LayerViewModel> = [];
 
   /**
    * Button objects corresponding to possible plugin layers
@@ -460,14 +461,29 @@ export class MonitorComponent implements OnInit {
     //todo show closet layer to the live button
     //sort the layer based on difference between date and closest date
     if(this.m_aoLayers && this.m_aoLayers.length>0){
-      let oTargetDate = this.m_sEndDate;
+      let oTargetDate = new Date(this.m_sEndDate).getTime();
       const aoSortedLayers = this.m_aoLayers.sort((a, b) =>
-        Math.abs(a.date.referenceDate - oTargetDate.referenceDate) -
-        Math.abs(b.date.referenceDate - oTargetDate.referenceDate)
+        Math.abs(a.referenceDate - oTargetDate) -
+        Math.abs(b.referenceDate - oTargetDate)
       );
-      this.setOpacity(100, aoSortedLayers[0].id)
+      this.setOpacity(100, aoSortedLayers[0].layerId)
       for (let i = 1; i < this.m_aoLayers.length; i++) {
-        this.setOpacity(0, aoSortedLayers[i].id)
+        this.setOpacity(0, aoSortedLayers[i].layerId)
+      }
+    }
+  }
+  async handlePlayButtonPressed(sSelectedDate) {
+    //todo show  layer gradually from selected date to newest date
+    if (this.m_aoLayers && this.m_aoLayers.length > 0) {
+      const aoSortedLayers = this.m_aoLayers.sort((a, b) => a.referenceDate - b.referenceDate);
+      console.log(aoSortedLayers)
+      for (const aoSortedLayer of aoSortedLayers) {
+        // Show the current aoSortedLayer
+        this.setOpacity(1, aoSortedLayer.layerId);
+        // Wait for 2 seconds
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        // Hide the current aoSortedLayer
+        this.setOpacity(0,aoSortedLayer.layerId);
       }
     }
   }

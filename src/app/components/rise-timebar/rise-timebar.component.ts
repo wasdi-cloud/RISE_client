@@ -36,6 +36,10 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    * Event of live button pressed
    */
   @Output() m_bLiveButtonPressed = new EventEmitter<boolean>();
+  /**
+   * Event of live button pressed
+   */
+  @Output() m_sPlayButtonPressed = new EventEmitter<string>();
 
   /**
    * Array of total dates to be displayed by the timebar
@@ -132,7 +136,9 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   onLiveButtonClick() {
     this.m_bLiveButtonPressed.emit(true);
   }
-
+  onPlayButtonClick() {
+    this.m_sPlayButtonPressed.emit(this.m_oSelectedDate);
+  }
   /**
    * Emit the selected date to the parent which will align the monitor page with new info
    * UC: RISE re-align all the maps and layers according to the selected date
