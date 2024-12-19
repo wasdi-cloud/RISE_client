@@ -1,3 +1,14 @@
+.logo-img {
+  transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth effect */
+  cursor: pointer; /* Indicate it's clickable */
+}
+
+.logo-img:hover {
+  transform: scale(1.1); /* Slightly enlarge the image */
+  opacity: 0.8; /* Reduce opacity */
+}
+
+
 .map-output-container {
   position: relative;
   z-index: -5;

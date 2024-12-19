@@ -476,7 +476,6 @@ export class MonitorComponent implements OnInit {
     //todo show  layer gradually from selected date to newest date
     if (this.m_aoLayers && this.m_aoLayers.length > 0) {
       const aoSortedLayers = this.m_aoLayers.sort((a, b) => a.referenceDate - b.referenceDate);
-      console.log(aoSortedLayers)
       for (const aoSortedLayer of aoSortedLayers) {
         // Show the current aoSortedLayer
         this.setOpacity(1, aoSortedLayer.layerId);
@@ -519,5 +518,15 @@ export class MonitorComponent implements OnInit {
     this.m_oDialog.open(LayerAnalyzerComponent).afterClosed().subscribe(() => {
       console.log("layer analyzer is working")
     })
+  }
+
+  /**
+   * Handle routing on clicks of visible buttons
+   */
+  public navigateRoute(sLocation: string) {
+    if (sLocation === 'dashboard') {
+      this.m_oMapService.closeWorkspace();
+    }
+    this.m_oRouter.navigateByUrl(`/${sLocation}`);
   }
 }

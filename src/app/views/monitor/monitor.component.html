@@ -8,9 +8,10 @@
       (cdkDropListDropped)="drop($event)"
     >
       <img
-        class="align-self-start"
+        class="align-self-start logo-img"
         src="/assets/rise-assets/logo-white-horizontal.svg"
         alt=""
+        (click)="navigateRoute('dashboard')"
       />
       <rise-text-input
         [m_bHasIcon]="true"
