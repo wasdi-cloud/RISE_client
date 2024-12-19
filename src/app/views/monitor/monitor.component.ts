@@ -118,6 +118,10 @@ export class MonitorComponent implements OnInit {
    * Search string for users to search for Layer items based on their MAP ID
    */
   m_sSearchString: string = null;
+  /**
+   * Current date
+   */
+  m_iCurrentDate: number = null;
 
   constructor(
     private m_oActivatedRoute: ActivatedRoute,
@@ -134,6 +138,7 @@ export class MonitorComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.m_iCurrentDate=this.getCurrentDate();
     this.getActiveAOI();
     this.m_oMapService.m_oLayerAnalyzerDialogEventEmitter.subscribe((shouldOpenDialog: boolean) => {
       if (shouldOpenDialog) {
@@ -177,7 +182,11 @@ export class MonitorComponent implements OnInit {
       this.m_oRouter.navigateByUrl('dashboard');
     }
   }
-
+  getCurrentDate(){
+      const oToday = new Date(); // Get the current date and time
+      const oStaticDate = new Date(oToday.getFullYear(), oToday.getMonth(), oToday.getDate());
+      return Math.floor(oStaticDate.getTime() / 1000); // Return as UNIX timestamp (seconds)
+  }
   /**
    * Retrieve area of operations info from the server
    * UC: RISE shows the Monitor Section containing a browsable map (including a geocoding search tool)

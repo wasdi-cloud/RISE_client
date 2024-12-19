@@ -85,6 +85,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    * @returns void
    */
   initDates(): void {
+    console.log(this.m_iEndDate)
     if (
       FadeoutUtils.utilsIsObjectNullOrUndefined(this.m_iStartDate) ||
       FadeoutUtils.utilsIsObjectNullOrUndefined(this.m_iEndDate)
@@ -94,11 +95,13 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     let date1 = new Date(this.m_iStartDate * 1000);
     let date2 = new Date(this.m_iEndDate * 1000);
     let asDates = [];
-
-    while (date1 <= date2) {
+    // asDates.push(date1)
+    // asDates.push(date2)
+    while (date1 < date2) {
       asDates.push(date1.toDateString());
       date1.setDate(date1.getDate() + 1);
     }
+    asDates.push(date2.toDateString());
     this.m_asDates = asDates;
 
     this.m_oSelectedDate = asDates[asDates.length - 1];

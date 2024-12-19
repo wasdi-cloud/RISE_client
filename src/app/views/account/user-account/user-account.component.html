@@ -57,6 +57,7 @@
             [m_sLabel]="'USER.LANGUAGE'"
             [m_aoDropdownItems]="m_aoLanguages"
             (m_oSelectionChange)="translateLanguageTo($event)"
+            [m_sPlaceholder]="m_oUser.defaultLanguage?m_oUser.defaultLanguage:''"
           ></rise-dropdown>
           <rise-button
             (click)="saveUserLanguagesSetting()"
