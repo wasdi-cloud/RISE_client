@@ -119,6 +119,7 @@ export class UserAccountComponent implements OnInit {
 
   //TODO : UPDATE USER INFORMATION
   m_sPasswordError: string = '';
+  m_oSelectedLanguageItem: any;
 
   constructor(
     private m_oAuthService: AuthService,
@@ -168,17 +169,12 @@ export class UserAccountComponent implements OnInit {
   }
 
   private setUserLanguage() {
-    if (this.m_oUser.defaultLanguage) {
-      if(this.m_oUser.defaultLanguage==='en'){
-        this.m_sUserDefaultLanguage='English';
-      }else if(this.m_oUser.defaultLanguage==='ar'){
-        this.m_sUserDefaultLanguage='Arabic';
-      }else if(this.m_oUser.defaultLanguage==='es'){
-        this.m_sUserDefaultLanguage='Spanish';
-      }else if(this.m_oUser.defaultLanguage==='fr'){
-        this.m_sUserDefaultLanguage='French';
-      }
-    }
+    const defaultLanguage = this.m_aoLanguages.find(
+      (lang) => lang.value === this.m_oUser.defaultLanguage
+    );
+    this.m_sUserDefaultLanguage = defaultLanguage ? defaultLanguage.name : 'Select Language';
+    this.m_oSelectedLanguageItem = defaultLanguage ? defaultLanguage : null;
+    console.log(this.m_oSelectedLanguageItem);
   }
 
   /**
