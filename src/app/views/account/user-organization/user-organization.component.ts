@@ -297,4 +297,10 @@ export class UserOrganizationComponent implements OnInit {
         }
       });
   }
+
+  setOrganizationType(sOrgType: any) {
+    if(sOrgType){
+      this.m_oOrganization.type=sOrgType.value
+    }
+  }
 }

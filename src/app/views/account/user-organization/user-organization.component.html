@@ -22,10 +22,9 @@
             [m_bHasTitle]="true"
             [m_sLabel]="'ORGANIZATION.TYPE'"
             [m_sPlaceholder]="m_oOrganization.type ? m_oOrganization.type : ''"
-            [m_aoSelectedItems]="
-              m_oOrganization.type ? m_oOrganization.type : ''
-            "
+            [m_aoSelectedItems]="m_oOrganization.type"
             [m_aoDropdownItems]="m_aoOrgTypes"
+            (m_oSelectionChange)="setOrganizationType($event)"
           ></rise-dropdown>
           <rise-button
             class="align-self-start"
