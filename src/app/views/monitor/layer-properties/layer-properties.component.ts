@@ -55,11 +55,11 @@ export class LayerPropertiesComponent implements OnInit {
 
   private initLayerProperties() {
     if (!FadeoutUtils.utilsIsObjectNullOrUndefined(this.m_oData)) {
-      this.m_oLayerProperties.dataSource = this.m_oData.source;
-      this.m_oLayerProperties.resolution = this.m_oData.source;
-      this.m_oLayerProperties.createdDate = this.m_oData.source;
-      this.m_oLayerProperties.referenceDate = (new Date(this.m_oData.referenceDate)).toISOString();
-      this.m_oLayerProperties.inputData = this.m_oData.source;
+      this.m_oLayerProperties.dataSource = this.m_oData.source ? this.m_oData.source : "";
+      this.m_oLayerProperties.resolution = this.m_oData.resolution ? this.m_oData.resolution : ""
+      this.m_oLayerProperties.createdDate = this.m_oData.createdDate ? new Date(this.m_oData.createdDate).toDateString() : ""
+      this.m_oLayerProperties.inputData = this.m_oData.inputData ? this.m_oData.inputData : ""
+      this.m_oLayerProperties.referenceDate = this.m_oData.referenceDate ? (new Date(this.m_oData.referenceDate)).toDateString() : "";
 
     }
   }
