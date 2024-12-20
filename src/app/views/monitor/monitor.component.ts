@@ -78,6 +78,10 @@ export class MonitorComponent implements OnInit {
    * List of Layers published on the map
    */
   m_aoLayers: Array<LayerViewModel> = [];
+  /**
+   * List of Layers published on the map in reverse order
+   */
+  m_aoReversedLayers: Array<LayerViewModel> = [];
 
   /**
    * Button objects corresponding to possible plugin layers
@@ -259,6 +263,7 @@ export class MonitorComponent implements OnInit {
           if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
             oPlugin.layers.push(oResponse);
             this.m_aoLayers.push(oResponse);
+            this.m_aoReversedLayers = [...this.m_aoLayers].reverse();
             oPlugin.loaded = true;
             this.m_oMapService.addLayerMap2DByServer(
               oResponse.layerId,
@@ -318,7 +323,7 @@ export class MonitorComponent implements OnInit {
    * @param event
    */
   drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.m_aoLayers, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.m_aoReversedLayers, event.previousIndex, event.currentIndex);
     this.handleLayerOrder();
   }
 
