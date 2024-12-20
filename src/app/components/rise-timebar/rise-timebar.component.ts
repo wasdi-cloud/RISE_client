@@ -85,7 +85,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    * @returns void
    */
   initDates(): void {
-    console.log(this.m_iEndDate)
+
     if (
       FadeoutUtils.utilsIsObjectNullOrUndefined(this.m_iStartDate) ||
       FadeoutUtils.utilsIsObjectNullOrUndefined(this.m_iEndDate)
@@ -115,8 +115,11 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    * @returns void
    */
   dateSelected(oEvent): void {
+
     if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oEvent.target)) {
+
       this.m_oSelectedDate = this.m_asDates[oEvent.target.value];
+      this.m_iSliderValue = this.m_asDates.indexOf(this.m_oSelectedDate);
     } else {
       this.m_oSelectedDate = oEvent;
       this.m_iSliderValue = this.m_asDates.indexOf(this.m_oSelectedDate);
@@ -129,7 +132,8 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   setDateToLive() {
     if (this.m_asDates) {
       this.m_oSelectedDate = this.m_asDates[this.m_asDates.length - 1];
-      this.m_iSliderValue = this.m_asDates.indexOf(this.m_oSelectedDate);
+      this.m_iSliderValue = this.m_asDates.length - 1;
+      this.m_sSelectedDateTimestamp = new Date(this.m_oSelectedDate).valueOf();
       this.m_bIsLive = true;
       this.emitSelectedDate();
       this.onLiveButtonClick();
@@ -139,9 +143,11 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   onLiveButtonClick() {
     this.m_bLiveButtonPressed.emit(true);
   }
+
   onPlayButtonClick() {
     this.m_sPlayButtonPressed.emit(this.m_oSelectedDate);
   }
+
   /**
    * Emit the selected date to the parent which will align the monitor page with new info
    * UC: RISE re-align all the maps and layers according to the selected date
