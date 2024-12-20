@@ -1,23 +1,26 @@
-import { Component, OnInit } from '@angular/core';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import {Component, OnInit} from '@angular/core';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
 
-import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
+import {RiseButtonComponent} from '../../components/rise-button/rise-button.component';
 
-import { AreaViewModel } from '../../models/AreaViewModel';
-import { AreaService } from '../../services/api/area.service';
+import {AreaViewModel} from '../../models/AreaViewModel';
+import {AreaService} from '../../services/api/area.service';
 
-import { RiseMapComponent } from '../../components/rise-map/rise-map.component';
-import { NgFor, NgIf } from '@angular/common';
+import {RiseMapComponent} from '../../components/rise-map/rise-map.component';
+import {NgFor, NgIf} from '@angular/common';
 
-import { MatDialog } from '@angular/material/dialog';
-import { CreateAreaOfOperationComponent } from '../create-area-of-operation/create-area-of-operation.component';
+import {MatDialog} from '@angular/material/dialog';
+import {CreateAreaOfOperationComponent} from '../create-area-of-operation/create-area-of-operation.component';
 
-import { MapService } from '../../services/map.service';
+import {MapService} from '../../services/map.service';
 
-import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
-import { RiseCollaboratorsDialogComponent } from '../../components/rise-collaborators-dialog/rise-collaborators-dialog.component';
-import { AreaInfoComponent } from './area-info/area-info.component';
+import {NotificationsDialogsService} from '../../services/notifications-dialogs.service';
+import {
+  RiseCollaboratorsDialogComponent
+} from '../../components/rise-collaborators-dialog/rise-collaborators-dialog.component';
+import {AreaInfoComponent} from './area-info/area-info.component';
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
+import {environment} from "../../../environments/environments";
 
 @Component({
   selector: 'app-area-of-operations',
@@ -43,7 +46,8 @@ export class AreaOfOperationsComponent implements OnInit {
     private m_oMapService: MapService,
     private m_oNotificationService: NotificationsDialogsService,
     private m_oTranslate: TranslateService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.getAreas();
@@ -58,9 +62,11 @@ export class AreaOfOperationsComponent implements OnInit {
   }
 
   toggleShowNew(bShowNew: boolean) {
-    this.m_bShowNewArea = bShowNew;
-    if (!this.m_bShowNewArea) {
-      this.getAreas();
+    if(this.canCreateArea()){
+      this.m_bShowNewArea = bShowNew;
+      if (!this.m_bShowNewArea) {
+        this.getAreas();
+      }
     }
   }
 
@@ -129,5 +135,21 @@ export class AreaOfOperationsComponent implements OnInit {
           },
         });
       });
+  }
+
+  canCreateArea() {
+    //this is to limit user for creating more than one area for a limited edition of rise
+    //if it is test env and area is 0 , return true
+    if (environment.isTestEnvironment) {
+      if(this.m_aoAreasOfOperations.length < 1){
+        return true;
+      }else{
+        this.m_oNotificationService.openSnackBar("For RISE Limited edition , you can only create one area",'Create Area of Operation','danger');
+        return false;
+      }
+    } else {
+      return true;
+    }
+
   }
 }

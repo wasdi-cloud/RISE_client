@@ -16,7 +16,8 @@ import {NotificationsDialogsService} from '../../../services/notifications-dialo
 import {SubscriptionTypeViewModel} from '../../../models/SubscriptionTypeViewModel';
 import FadeoutUtils from '../../../shared/utilities/FadeoutUtils';
 import {RiseDropdownComponent} from "../../../components/rise-dropdown/rise-dropdown.component";
-import {UserRole, UserRoleHelper} from "../../../models/UserRole";
+import {UserRole} from "../../../models/UserRole";
+import {environment} from "../../../../environments/environments";
 
 @Component({
   selector: 'user-subscriptions',
@@ -67,7 +68,7 @@ export class UserSubscriptionsComponent implements OnInit {
           return;
         } else {
           this.m_aoSubscriptionsToShow = oResponse;
-          this.m_aoAllSubscriptions=this.m_aoSubscriptionsToShow;
+          this.m_aoAllSubscriptions = this.m_aoSubscriptionsToShow;
           this.getSubTypes();
         }
       },
@@ -118,29 +119,41 @@ export class UserSubscriptionsComponent implements OnInit {
    */
   filterSubscriptions(event) {
     let sAvailability = event.value.value;
-    if(sAvailability==='all'){
+    if (sAvailability === 'all') {
       this.getSubscriptions();
-    }else if(sAvailability==='expired'){
-      let iDateNow=Date.now();
+    } else if (sAvailability === 'expired') {
+      let iDateNow = Date.now();
 
-      this.m_aoSubscriptionsToShow=this.m_aoAllSubscriptions.filter(s=>s.expireDate<iDateNow);
-    }else if(sAvailability==='valid'){
-      let iDateNow=Date.now();
-      this.m_aoSubscriptionsToShow=this.m_aoAllSubscriptions.filter(s=>s.expireDate>=iDateNow);
+      this.m_aoSubscriptionsToShow = this.m_aoAllSubscriptions.filter(s => s.expireDate < iDateNow);
+    } else if (sAvailability === 'valid') {
+      let iDateNow = Date.now();
+      this.m_aoSubscriptionsToShow = this.m_aoAllSubscriptions.filter(s => s.expireDate >= iDateNow);
     }
   }
-
 
 
   /**
    * HQ Operator can click the Buy New Subscription button
    */
   openBuyNewSub(bInput: boolean) {
-    this.m_oDialog.open(BuyNewSubscriptionComponent).afterClosed().subscribe(() => {
-      this.getSubscriptions();
-    });
+    if(this.canBuyNewSub()){
+      this.m_oDialog.open(BuyNewSubscriptionComponent).afterClosed().subscribe(() => {
+        this.getSubscriptions();
+      });
+    }
   }
-
+  canBuyNewSub(){
+    if (environment.isTestEnvironment) {
+      if (this.m_aoAllSubscriptions.length < 1) {
+        return true;
+      } else {
+        this.m_oNotificationService.openSnackBar("For RISE Limited edition , you can only buy one subscription", 'Buy New Subscription', 'danger');
+        return false;
+      }
+    } else {
+      return true;
+    }
+  }
   deleteSubscription(oSubscription: SubscriptionViewModel) {
     this.m_oNotificationService
       .openConfirmationDialog(
@@ -164,12 +177,15 @@ export class UserSubscriptionsComponent implements OnInit {
       });
     });
   }
+
   isUserAbleToBuy() {
-    let oUser=this.m_oConstantsService.getUser()
-    if(FadeoutUtils.utilsIsObjectNullOrUndefined(oUser)){
+    //todo add translation
+    let oUser = this.m_oConstantsService.getUser()
+    if (FadeoutUtils.utilsIsObjectNullOrUndefined(oUser)) {
+      console.error("user is null")
       return false;
     }
-    if(this.m_oConstantsService.getUserRole()==UserRole.FIELD){
+    if (this.m_oConstantsService.getUserRole() == UserRole.FIELD) {
       return false;
     }
     return true;
