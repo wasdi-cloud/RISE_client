@@ -40,7 +40,7 @@ export class LayerPropertiesComponent implements OnInit {
   ) {
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.initLayerProperties();
 
   }

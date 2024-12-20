@@ -8,6 +8,15 @@
     [(value)]="m_iSliderValue"
     (change)="dateSelected($event)"
   />
+  <div class="ticks-container">
+    <div
+      *ngFor="let tick of yearTicks; let i = index"
+      class="tick"
+      [style.left]="getTickPosition(i)"
+    >
+      {{ tick.year }}
+    </div>
+  </div>
   <!-- <div
     class="timecontrol-slider d-flex flex-row justify-content-evenly"
     #dragZone

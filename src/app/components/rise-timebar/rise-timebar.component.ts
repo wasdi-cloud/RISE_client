@@ -67,6 +67,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   m_sSelectedDateTimestamp: number = null;
   m_sIconColor: string = 'red';
   m_bIsLive: boolean = true;
+  yearTicks: { year: number }[] = [];
 
   constructor() {
   }
@@ -77,6 +78,19 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.initDates();
+    this.generateYearTicks();
+  }
+  generateYearTicks() {
+    const startYear =2000;
+    const endYear = new Date(this.m_iEndDate * 1000).getFullYear();
+    for (let year = startYear; year <= endYear; year++) {
+      this.yearTicks.push({ year });
+    }
+  }
+
+  getTickPosition(index: number): string {
+    const percentage = (index / (this.yearTicks.length - 1)) * 100;
+    return `${percentage}%`;
   }
 
   /**
@@ -85,7 +99,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    * @returns void
    */
   initDates(): void {
-    console.log(this.m_iEndDate)
+
     if (
       FadeoutUtils.utilsIsObjectNullOrUndefined(this.m_iStartDate) ||
       FadeoutUtils.utilsIsObjectNullOrUndefined(this.m_iEndDate)
@@ -97,11 +111,11 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     let asDates = [];
     // asDates.push(date1)
     // asDates.push(date2)
-    while (date1 < date2) {
+    while (date1 <= date2) {
       asDates.push(date1.toDateString());
       date1.setDate(date1.getDate() + 1);
     }
-    asDates.push(date2.toDateString());
+    // asDates.push(date2.toDateString());
     this.m_asDates = asDates;
 
     this.m_oSelectedDate = asDates[asDates.length - 1];
