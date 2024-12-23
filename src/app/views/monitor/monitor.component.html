@@ -65,7 +65,7 @@
           *ngFor="let oPlugin of m_aoPlugins"
           [m_sTitle]="oPlugin.name"
           [m_bIsActive]="oPlugin.loaded"
-          (click)="setActivePlugin(oPlugin)"
+          (click)="switchPluginButton(oPlugin)"
         ></rise-map-chip>
       </div>
       <rise-user-menu class="user-menu"></rise-user-menu>

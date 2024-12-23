@@ -29,6 +29,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {LayerPropertiesComponent} from "./layer-properties/layer-properties.component";
 import {LayerAnalyzerComponent} from "./layer-analyzer/layer-analyzer.component";
 import {LayerViewModel} from "../../models/LayerViewModel";
+import {PluginViewModel} from "../../models/PluginViewModel";
 
 @Component({
   selector: 'app-monitor',
@@ -313,13 +314,35 @@ export class MonitorComponent implements OnInit {
   openCrossSectionTool() {
   }
 
-  setActivePlugin(oPlugin) {
-    this.m_oActivePlugin = oPlugin;
-    oPlugin.loaded = true;
-    if (!oPlugin.layers || oPlugin.layers.length < 1) {
-      oPlugin.layers = []; //Init layers array in plugin to hold it after loading
-      this.getLayers(oPlugin, this.m_sAreaId, '');
+  switchPluginButton(oPlugin:any) {
+    //was active
+    if(oPlugin.loaded){
+      oPlugin.loaded = false;
+      let oMap=this.m_oMapService.getMap();
+      for (let i=0;i<oPlugin.layers.length;i++) {
+        oMap.eachLayer((oMapLayer) => {
+          let sLayerId = oPlugin.layers[i].layerId;
+          if (sLayerId === oMapLayer.options.layers) {
+            oMap.removeLayer(oMapLayer);
+            let iIndex = this.m_aoLayers.findIndex(
+              (oLayer) => oLayer.layerId === sLayerId
+            );
+            this.m_aoLayers.splice(iIndex, 1);
+            this.m_aoReversedLayers=this.m_aoLayers;
+          }
+        });
+      }
+
+    }else{
+      //was inactive
+      this.m_oActivePlugin = oPlugin;
+      oPlugin.loaded = true;
+      if (!oPlugin.layers || oPlugin.layers.length < 1) {
+        oPlugin.layers = []; //Init layers array in plugin to hold it after loading
+        this.getLayers(oPlugin, this.m_sAreaId, '');
+      }
     }
+
   }
 
   /********** DRAG AND DROP CAPABILITIES **********/
@@ -399,12 +422,12 @@ export class MonitorComponent implements OnInit {
 
   removeLayer(oEvent) {
     let oMap = this.m_oMapService.getMap();
-
+    console.log(oEvent)
     // Remove from general
     let iIndex = this.m_aoLayers.findIndex(
       (oLayer) => oLayer.layerId === oEvent.layerId
     );
-
+    console.log(iIndex)
     this.emptyPluginLayers(oEvent.mapId);
 
     this.m_aoLayers.splice(iIndex, 1);
@@ -414,7 +437,7 @@ export class MonitorComponent implements OnInit {
         oMap.removeLayer(oLayer);
       }
     });
-
+    this.m_aoReversedLayers=this.m_aoLayers.reverse();
     let iLegendIndex = this.m_aoLegendUrls.findIndex(
       (oLayer) => oLayer.plugin === oEvent.mapId
     );
@@ -443,8 +466,8 @@ export class MonitorComponent implements OnInit {
       if(oPlugin.id === sPluginId ){
         if(oPlugin.loaded){
           oPlugin.loaded = false;
-          oPlugin.layers=[];
         }
+        oPlugin.layers=[];
       }
     });
   }
