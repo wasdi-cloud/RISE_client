@@ -264,13 +264,18 @@ export class MonitorComponent implements OnInit {
             oPlugin.layers.push(oResponse);
             this.m_aoLayers.push(oResponse);
             this.m_aoReversedLayers = [...this.m_aoLayers].reverse();
-            oPlugin.loaded = true;
+
             this.m_oMapService.addLayerMap2DByServer(
               oResponse.layerId,
               oResponse.geoserverUrl
             );
             // Update the selected layers
             this.m_oMapService.setSelectedLayers(this.m_aoLayers)
+          }else{
+            let sError: string = this.m_oTranslate.instant(
+              'ERROR_MSG.ERROR_LAYER_FAILURE'
+            );
+            this.m_oNotificationService.openInfoDialog(sError, 'error', 'Error');
           }
         },
         error: (oError) => {
@@ -310,7 +315,7 @@ export class MonitorComponent implements OnInit {
 
   setActivePlugin(oPlugin) {
     this.m_oActivePlugin = oPlugin;
-
+    oPlugin.loaded = true;
     if (!oPlugin.layers || oPlugin.layers.length < 1) {
       oPlugin.layers = []; //Init layers array in plugin to hold it after loading
       this.getLayers(oPlugin, this.m_sAreaId, '');
@@ -400,7 +405,7 @@ export class MonitorComponent implements OnInit {
       (oLayer) => oLayer.layerId === oEvent.layerId
     );
 
-    this.togglePlugin(oEvent.mapId);
+    this.emptyPluginLayers(oEvent.mapId);
 
     this.m_aoLayers.splice(iIndex, 1);
     oMap.eachLayer((oLayer) => {
@@ -420,6 +425,7 @@ export class MonitorComponent implements OnInit {
       this.toggleLegend(false);
     }
     // Update the selected layers
+
     this.m_oMapService.setSelectedLayers(this.m_aoLayers);
   }
 
@@ -432,9 +438,14 @@ export class MonitorComponent implements OnInit {
     this.m_oMapService.flyToMonitorBounds(this.m_oAreaOfOperation.bbox);
   }
 
-  togglePlugin(sPluginId: string) {
+  emptyPluginLayers(sPluginId: string) {
     this.m_aoPlugins.forEach((oPlugin) => {
-      oPlugin.id === sPluginId ? (oPlugin.loaded = !oPlugin.loaded) : '';
+      if(oPlugin.id === sPluginId ){
+        if(oPlugin.loaded){
+          oPlugin.loaded = false;
+          oPlugin.layers=[];
+        }
+      }
     });
   }
 
