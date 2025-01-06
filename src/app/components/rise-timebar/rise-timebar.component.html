@@ -1,20 +1,22 @@
 <div class="timebar-container d-flex flex-column">
-  <input
-    class="slider"
-    type="range"
-    name=""
-    id=""
-    [max]="m_asDates.length - 1"
-    [(value)]="m_iSliderValue"
-    (change)="dateSelected($event)"
-  />
-  <div class="ticks-container">
-    <div
-      *ngFor="let tick of yearTicks; let i = index"
-      class="tick"
-      [style.left]="getTickPosition(i)"
-    >
-      {{ tick.year }}
+  <div class="slider-container position-relative">
+    <input
+      class="slider"
+      type="range"
+      name=""
+      id=""
+      [max]="m_asDates.length - 1"
+      [(value)]="m_iSliderValue"
+      (change)="dateSelected($event)"
+    />
+    <div class="ticks-container position-absolute w-100">
+      <div
+        *ngFor="let tick of aiTicks; let i = index"
+        class="tick"
+        [style.left]="getTickPosition(i)"
+      >
+        {{ tick.value }}
+      </div>
     </div>
   </div>
   <!-- <div

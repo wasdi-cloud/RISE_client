@@ -1,7 +1,7 @@
 .timebar-container {
   background-color: rgba(0, 31, 40, 0.8);
   backdrop-filter: blur(20px);
-  height: 72px;
+  height: 75px;
 }
 
 .timecontrol-slider {
@@ -38,6 +38,9 @@
   opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
   -webkit-transition: 0.2s; /* 0.2 seconds transition on hover */
   transition: opacity 0.2s;
+  margin: 0;
+  position: relative;
+  z-index: 1;
 }
 
 .slider::-webkit-slider-thumb {
@@ -55,15 +58,25 @@
   background: var(--rise-gold);
   cursor: pointer;
 }
-.ticks-container {
-  position: relative;
-  height: 20px;
-}
 
+.ticks-container {
+  position: absolute;
+  top: -20px; /* Adjust this to position ticks above the slider */
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  pointer-events: none; /* Prevent ticks from interfering with slider interaction */
+}
 .tick {
   position: absolute;
-  bottom: 0;
-  /*transform: translateX(-50%);*/
-  font-size: 12px;
-  color: white;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+.tick:first-child {
+  transform: translateX(0); /* Align first tick to the start */
+}
+
+.tick:last-child {
+  transform: translateX(-100%); /* Align last tick to the end */
 }

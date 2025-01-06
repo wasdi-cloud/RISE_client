@@ -3,7 +3,7 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 import {RiseChipMenuComponent} from '../rise-chip-menu/rise-chip-menu.component';
 import {RiseButtonComponent} from "../rise-button/rise-button.component";
-
+const MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
 @Component({
   selector: 'rise-timebar',
   standalone: true,
@@ -67,7 +67,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   m_sSelectedDateTimestamp: number = null;
   m_sIconColor: string = 'red';
   m_bIsLive: boolean = true;
-  yearTicks: { year: number }[] = [];
+  aiTicks: { value: any }[] = [];
 
   constructor() {
   }
@@ -81,15 +81,70 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     this.generateYearTicks();
   }
   generateYearTicks() {
-    const startYear =2000;
-    const endYear = new Date(this.m_iEndDate * 1000).getFullYear();
-    for (let year = startYear; year <= endYear; year++) {
-      this.yearTicks.push({ year });
+    //todo make zoom in from year to months to days
+    //todo make zoom out from days to months to years
+
+    // const iStartYear =2010
+    const iStartDate = new Date(this.m_iStartDate * 1000);
+    const iStartYear = iStartDate.getFullYear();
+    const iStartMonth = iStartDate.getMonth();
+    const iStartDay = iStartDate.getDay();
+
+    const iEndDate = new Date(this.m_iEndDate * 1000);
+    const iEndYear = iEndDate.getFullYear();
+    const iEndMonth = iEndDate.getMonth();
+    const iEndDay = iEndDate.getDay();
+
+    //Depending on the difference we show months or days
+    // if it is more than one year ,we show years
+    if(iEndYear-iStartYear>1){
+      for (let year = iStartYear; year <= iEndYear; year++) {
+        this.aiTicks.push({ value: year });
+      }
+    }else{
+      //same year
+      if(iEndYear-iStartYear==0){
+        if(iEndMonth-iStartMonth>1){
+          for (let month = iStartMonth; month <= iEndMonth; month++) {
+            this.aiTicks.push({ value: MONTHS[month] });
+          }
+        }else{
+          for (let day = iStartDay; day <= iEndDay; day++) {
+            this.aiTicks.push({ value: day });
+          }
+        }
+      }
+      //different  year
+      else{
+        if(Math.abs(iEndMonth-iStartMonth)>1){
+          for (let month = iStartMonth; month < 12; month++) {
+            this.aiTicks.push({ value:  MONTHS[month] });
+          }
+          for (let month = 0; month <= iEndMonth; month++) {
+            this.aiTicks.push({ value:  MONTHS[month] });
+          }
+        }else{
+          for (let day = iStartDay; day <= iEndDay; day++) {
+            this.aiTicks.push({ value: day });
+          }
+        }
+      }
     }
+
   }
 
   getTickPosition(index: number): string {
-    const percentage = (index / (this.yearTicks.length - 1)) * 100;
+    const totalTicks = this.aiTicks.length;
+
+    if (index === 0) {
+      return `0%`; // Align the first tick to the start
+    }
+    if (index === totalTicks - 1) {
+      return `100%`; // Align the last tick to the end
+    }
+
+    // For other ticks, calculate the percentage
+    const percentage = (index / (totalTicks - 1)) * 100;
     return `${percentage}%`;
   }
 
