@@ -250,28 +250,19 @@ export class MonitorComponent implements OnInit {
   }
 
   /**
-   * Get the layers for the selected type from the button execution
+   * Get the layer for the selected type from the button execution
    * UC: RISE shows the Monitor Section containing options to show/hide the available layers
    * @param oPlugin
    * @param sAreaId
    * @param iDate
    */
-  getLayers(oPlugin: any, sAreaId: string, iDate: string | number) {
+  getLayer(oPlugin: any, sAreaId: string, iDate: string | number) {
     this.m_oLayerService
       .findLayer(oPlugin.id, sAreaId, this.m_oSelectedDate)
       .subscribe({
-        next: (oResponse) => {
+        next: (oResponse:LayerViewModel) => {
           if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
-            oPlugin.layers.push(oResponse);
-            this.m_aoLayers.push(oResponse);
-            this.m_aoReversedLayers = [...this.m_aoLayers].reverse();
-
-            this.m_oMapService.addLayerMap2DByServer(
-              oResponse.layerId,
-              oResponse.geoserverUrl
-            );
-            // Update the selected layers
-            this.m_oMapService.setSelectedLayers(this.m_aoLayers)
+            this.fillPluginsAndLayers(oPlugin, oResponse);
           }else{
             let sError: string = this.m_oTranslate.instant(
               'ERROR_MSG.ERROR_LAYER_FAILURE'
@@ -288,6 +279,24 @@ export class MonitorComponent implements OnInit {
       });
   }
 
+  private fillPluginsAndLayers(oPlugin: any, aoLayer:LayerViewModel) {
+    if (!this.m_aoLayers.some(layer => layer.layerId === aoLayer.layerId)) {
+      this.m_aoLayers.push(aoLayer);
+    }
+    // Check if oPlugin.layers already contains the object
+    if (!oPlugin.layers.some(layer => layer.layerId === aoLayer.layerId)) {
+      oPlugin.layers.push(aoLayer);
+    }
+    this.m_aoReversedLayers = [...this.m_aoLayers].reverse();
+
+    this.m_oMapService.addLayerMap2DByServer(
+      aoLayer.layerId,
+      aoLayer.geoserverUrl
+    );
+    // Update the selected layers
+    this.m_oMapService.setSelectedLayers(this.m_aoLayers)
+  }
+
   /**
    * Handle Changes to the Reference Time from the Timebar Component
    *  UC: RISE shows the Monitor Section containing a timeline to change the reference time of the viewer
@@ -296,7 +305,7 @@ export class MonitorComponent implements OnInit {
     this.m_oSelectedDate = oEvent;
     this.m_aoPlugins.forEach((oPlugin) => {
       if (oPlugin.loaded) {
-        this.getLayers(oPlugin, this.m_sAreaId, this.m_oSelectedDate);
+        this.getLayer(oPlugin, this.m_sAreaId, this.m_oSelectedDate);
       }
     });
   }
@@ -332,6 +341,7 @@ export class MonitorComponent implements OnInit {
           }
         });
       }
+      oPlugin.layers=[]
 
     }else{
       //was inactive
@@ -339,7 +349,7 @@ export class MonitorComponent implements OnInit {
       oPlugin.loaded = true;
       if (!oPlugin.layers || oPlugin.layers.length < 1) {
         oPlugin.layers = []; //Init layers array in plugin to hold it after loading
-        this.getLayers(oPlugin, this.m_sAreaId, '');
+        this.getLayer(oPlugin, this.m_sAreaId, '');
       }
     }
 
