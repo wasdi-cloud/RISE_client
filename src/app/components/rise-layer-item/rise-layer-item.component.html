@@ -34,6 +34,8 @@
           id=""
           [(ngModel)]="m_iOpacity"
           (change)="emitOpacity()"
+          (mousedown)="$event.stopPropagation()"
+          (touchstart)="$event.stopPropagation()"
         />
         {{ m_iOpacity }}%
       </div>

@@ -24,6 +24,7 @@ import {UserOfAreaViewModel} from '../../models/UserOfAreaViewModel';
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 import {ConstantsService} from "../../services/constants.service";
 import {UserService} from "../../services/api/user.service";
+import {environment} from "../../../environments/environments";
 
 @Component({
   selector: 'app-create-area-of-operation',
@@ -275,6 +276,10 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
   }
 
   private saveAreaOfOperation() {
+    //TODO until the daemon is ready
+    if(environment.isTestEnvironment){
+      this.m_oAreaOfOperation.plugins=[]
+    }
     this.m_oAreaOfOperationService
       .addArea(this.m_oAreaOfOperation)
       .subscribe({

@@ -122,6 +122,9 @@ export class LoginViewComponent {
                 this.m_oNotificationService.openInfoDialog(sError, 'danger');
               } else {
                 this.m_oConstantsService.setUser(oResponse);
+                if(oResponse.defaultLanguage){
+                  this.m_oTranslate.use(oResponse.defaultLanguage.toLowerCase());
+                }
                 this.m_oRouter.navigateByUrl('/dashboard');
               }
             },

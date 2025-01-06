@@ -29,6 +29,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {LayerPropertiesComponent} from "./layer-properties/layer-properties.component";
 import {LayerAnalyzerComponent} from "./layer-analyzer/layer-analyzer.component";
 import {LayerViewModel} from "../../models/LayerViewModel";
+import {PluginViewModel} from "../../models/PluginViewModel";
 
 @Component({
   selector: 'app-monitor',
@@ -78,6 +79,10 @@ export class MonitorComponent implements OnInit {
    * List of Layers published on the map
    */
   m_aoLayers: Array<LayerViewModel> = [];
+  /**
+   * List of Layers published on the map in reverse order
+   */
+  m_aoReversedLayers: Array<LayerViewModel> = [];
 
   /**
    * Button objects corresponding to possible plugin layers
@@ -245,27 +250,24 @@ export class MonitorComponent implements OnInit {
   }
 
   /**
-   * Get the layers for the selected type from the button execution
+   * Get the layer for the selected type from the button execution
    * UC: RISE shows the Monitor Section containing options to show/hide the available layers
    * @param oPlugin
    * @param sAreaId
    * @param iDate
    */
-  getLayers(oPlugin: any, sAreaId: string, iDate: string | number) {
+  getLayer(oPlugin: any, sAreaId: string, iDate: string | number) {
     this.m_oLayerService
       .findLayer(oPlugin.id, sAreaId, this.m_oSelectedDate)
       .subscribe({
-        next: (oResponse) => {
+        next: (oResponse:LayerViewModel) => {
           if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
-            oPlugin.layers.push(oResponse);
-            this.m_aoLayers.push(oResponse);
-            oPlugin.loaded = true;
-            this.m_oMapService.addLayerMap2DByServer(
-              oResponse.layerId,
-              oResponse.geoserverUrl
+            this.fillPluginsAndLayers(oPlugin, oResponse);
+          }else{
+            let sError: string = this.m_oTranslate.instant(
+              'ERROR_MSG.ERROR_LAYER_FAILURE'
             );
-            // Update the selected layers
-            this.m_oMapService.setSelectedLayers(this.m_aoLayers)
+            this.m_oNotificationService.openInfoDialog(sError, 'error', 'Error');
           }
         },
         error: (oError) => {
@@ -277,6 +279,24 @@ export class MonitorComponent implements OnInit {
       });
   }
 
+  private fillPluginsAndLayers(oPlugin: any, aoLayer:LayerViewModel) {
+    if (!this.m_aoLayers.some(layer => layer.layerId === aoLayer.layerId)) {
+      this.m_aoLayers.push(aoLayer);
+    }
+    // Check if oPlugin.layers already contains the object
+    if (!oPlugin.layers.some(layer => layer.layerId === aoLayer.layerId)) {
+      oPlugin.layers.push(aoLayer);
+    }
+    this.m_aoReversedLayers = [...this.m_aoLayers].reverse();
+
+    this.m_oMapService.addLayerMap2DByServer(
+      aoLayer.layerId,
+      aoLayer.geoserverUrl
+    );
+    // Update the selected layers
+    this.m_oMapService.setSelectedLayers(this.m_aoLayers)
+  }
+
   /**
    * Handle Changes to the Reference Time from the Timebar Component
    *  UC: RISE shows the Monitor Section containing a timeline to change the reference time of the viewer
@@ -285,7 +305,7 @@ export class MonitorComponent implements OnInit {
     this.m_oSelectedDate = oEvent;
     this.m_aoPlugins.forEach((oPlugin) => {
       if (oPlugin.loaded) {
-        this.getLayers(oPlugin, this.m_sAreaId, this.m_oSelectedDate);
+        this.getLayer(oPlugin, this.m_sAreaId, this.m_oSelectedDate);
       }
     });
   }
@@ -303,13 +323,36 @@ export class MonitorComponent implements OnInit {
   openCrossSectionTool() {
   }
 
-  setActivePlugin(oPlugin) {
-    this.m_oActivePlugin = oPlugin;
+  switchPluginButton(oPlugin:any) {
+    //was active
+    if(oPlugin.loaded){
+      oPlugin.loaded = false;
+      let oMap=this.m_oMapService.getMap();
+      for (let i=0;i<oPlugin.layers.length;i++) {
+        oMap.eachLayer((oMapLayer) => {
+          let sLayerId = oPlugin.layers[i].layerId;
+          if (sLayerId === oMapLayer.options.layers) {
+            oMap.removeLayer(oMapLayer);
+            let iIndex = this.m_aoLayers.findIndex(
+              (oLayer) => oLayer.layerId === sLayerId
+            );
+            this.m_aoLayers.splice(iIndex, 1);
+            this.m_aoReversedLayers=this.m_aoLayers;
+          }
+        });
+      }
+      oPlugin.layers=[]
 
-    if (!oPlugin.layers || oPlugin.layers.length < 1) {
-      oPlugin.layers = []; //Init layers array in plugin to hold it after loading
-      this.getLayers(oPlugin, this.m_sAreaId, '');
+    }else{
+      //was inactive
+      this.m_oActivePlugin = oPlugin;
+      oPlugin.loaded = true;
+      if (!oPlugin.layers || oPlugin.layers.length < 1) {
+        oPlugin.layers = []; //Init layers array in plugin to hold it after loading
+        this.getLayer(oPlugin, this.m_sAreaId, '');
+      }
     }
+
   }
 
   /********** DRAG AND DROP CAPABILITIES **********/
@@ -318,7 +361,7 @@ export class MonitorComponent implements OnInit {
    * @param event
    */
   drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.m_aoLayers, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.m_aoReversedLayers, event.previousIndex, event.currentIndex);
     this.handleLayerOrder();
   }
 
@@ -389,13 +432,13 @@ export class MonitorComponent implements OnInit {
 
   removeLayer(oEvent) {
     let oMap = this.m_oMapService.getMap();
-
+    console.log(oEvent)
     // Remove from general
     let iIndex = this.m_aoLayers.findIndex(
       (oLayer) => oLayer.layerId === oEvent.layerId
     );
-
-    this.togglePlugin(oEvent.mapId);
+    console.log(iIndex)
+    this.emptyPluginLayers(oEvent.mapId);
 
     this.m_aoLayers.splice(iIndex, 1);
     oMap.eachLayer((oLayer) => {
@@ -404,7 +447,7 @@ export class MonitorComponent implements OnInit {
         oMap.removeLayer(oLayer);
       }
     });
-
+    this.m_aoReversedLayers=this.m_aoLayers.reverse();
     let iLegendIndex = this.m_aoLegendUrls.findIndex(
       (oLayer) => oLayer.plugin === oEvent.mapId
     );
@@ -415,6 +458,7 @@ export class MonitorComponent implements OnInit {
       this.toggleLegend(false);
     }
     // Update the selected layers
+
     this.m_oMapService.setSelectedLayers(this.m_aoLayers);
   }
 
@@ -427,9 +471,14 @@ export class MonitorComponent implements OnInit {
     this.m_oMapService.flyToMonitorBounds(this.m_oAreaOfOperation.bbox);
   }
 
-  togglePlugin(sPluginId: string) {
+  emptyPluginLayers(sPluginId: string) {
     this.m_aoPlugins.forEach((oPlugin) => {
-      oPlugin.id === sPluginId ? (oPlugin.loaded = !oPlugin.loaded) : '';
+      if(oPlugin.id === sPluginId ){
+        if(oPlugin.loaded){
+          oPlugin.loaded = false;
+        }
+        oPlugin.layers=[];
+      }
     });
   }
 
