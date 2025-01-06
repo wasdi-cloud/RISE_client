@@ -34,22 +34,26 @@
   <div
     class="timebar-options flex-fill d-flex flex-row justify-content-between align-items-center px-4"
   >
+    <!-- Left-aligned options -->
     <div class="time-options d-flex flex-row align-items-center gap-4">
       <span class="material-symbols-outlined" (click)="onPlayButtonClick()"> play_arrow </span>
       <span class="material-symbols-outlined" (click)="minusOneDayFromDate()">history </span>
       <span class="material-symbols-outlined" (click)="addOneDayToDate()"> update </span>
-      <rise-chip-menu
-        [m_sSelectedItem]="m_oSelectedDate"
-        [m_asItems]="m_asDates"
-        (m_oSelectedItem)="dateSelected($event)"
-      ></rise-chip-menu>
       <rise-button
-      [m_sLabel]="'Live'"
-      [m_sIconLeft]="'radio_button_checked'"
-      [m_sIconColor]="m_bIsLive?m_sIconColor:''"
-      (click)="setDateToLive()"
+        [m_sLabel]="'Live'"
+        [m_sIconLeft]="'radio_button_checked'"
+        [m_sIconColor]="m_bIsLive ? m_sIconColor : ''"
+        (click)="setDateToLive()"
       >
       </rise-button>
     </div>
+
+    <!-- Right-aligned chip menu -->
+    <rise-chip-menu
+      [m_sSelectedItem]="m_oSelectedDate"
+      [m_asItems]="m_asDates"
+      (m_oSelectedItem)="dateSelected($event)"
+    ></rise-chip-menu>
   </div>
+
 </div>
