@@ -4,6 +4,33 @@
   height: 69px;
 }
 
+.ticks-container {
+  position: absolute;
+  top: -20px; /* Adjust this to position ticks above the slider */
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  pointer-events: none; /* Prevent ticks from interfering with slider interaction */
+}
+.event-marker {
+  position: absolute;
+  height: 20px;
+  width: 8px;
+  background-color: red;
+  transform: translateX(-50%);
+  cursor: pointer;
+  z-index: 100;
+}
+.events-markers-container {
+  position: absolute;
+  top: -1px; /* Adjust this to position ticks above the slider */
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  pointer-events: none; /* Prevent ticks from interfering with slider interaction */
+}
+
+
 .timecontrol-slider {
   background-color: rgba(150, 215, 235, 0.6);
   position: relative;
@@ -14,7 +41,7 @@
 .knob {
   position: absolute;
   width: 8px;
-  height: 4px;
+  height: 2px;
   background-color: var(--rise-gold);
   border-radius: 2px;
 
@@ -42,6 +69,10 @@
   position: relative;
   z-index: 1;
 }
+.slider-container {
+  position: relative;
+  width: 100%;
+}
 
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
@@ -59,14 +90,7 @@
   cursor: pointer;
 }
 
-.ticks-container {
-  position: absolute;
-  top: -20px; /* Adjust this to position ticks above the slider */
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  pointer-events: none; /* Prevent ticks from interfering with slider interaction */
-}
+
 .tick {
   position: absolute;
   transform: translateX(-50%);

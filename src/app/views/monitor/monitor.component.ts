@@ -30,6 +30,7 @@ import {LayerPropertiesComponent} from "./layer-properties/layer-properties.comp
 import {LayerAnalyzerComponent} from "./layer-analyzer/layer-analyzer.component";
 import {LayerViewModel} from "../../models/LayerViewModel";
 import {PluginViewModel} from "../../models/PluginViewModel";
+import {EventService} from "../../services/api/event.service";
 
 @Component({
   selector: 'app-monitor',
@@ -139,6 +140,7 @@ export class MonitorComponent implements OnInit {
     private m_oRouter: Router,
     private m_oTranslate: TranslateService,
     private m_oDialog: MatDialog,
+    private m_oEventService: EventService,
   ) {
   }
 
@@ -150,6 +152,7 @@ export class MonitorComponent implements OnInit {
         this.openLayerAnalyzerDialog(); // Your dialog opening method
       }
     });
+    this.getEvents()
   }
 
   //   RISE shows the Monitor Section containing:
@@ -260,9 +263,9 @@ export class MonitorComponent implements OnInit {
     this.m_oLayerService
       .findLayer(oPlugin.id, sAreaId, this.m_oSelectedDate)
       .subscribe({
-        next: (oResponse:LayerViewModel) => {
-          if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
-            this.fillPluginsAndLayers(oPlugin, oResponse);
+        next: (oLayerVM:LayerViewModel) => {
+          if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oLayerVM)) {
+            this.fillPluginsAndLayers(oPlugin, oLayerVM);
           }else{
             let sError: string = this.m_oTranslate.instant(
               'ERROR_MSG.ERROR_LAYER_FAILURE'
@@ -324,7 +327,7 @@ export class MonitorComponent implements OnInit {
   }
 
   switchPluginButton(oPlugin:any) {
-    //was active
+    //was active,turn it to inactive
     if(oPlugin.loaded){
       oPlugin.loaded = false;
       let oMap=this.m_oMapService.getMap();
@@ -344,7 +347,7 @@ export class MonitorComponent implements OnInit {
       oPlugin.layers=[]
 
     }else{
-      //was inactive
+      //was inactive,turn it to active
       this.m_oActivePlugin = oPlugin;
       oPlugin.loaded = true;
       if (!oPlugin.layers || oPlugin.layers.length < 1) {
@@ -586,5 +589,23 @@ export class MonitorComponent implements OnInit {
       this.m_oMapService.closeWorkspace();
     }
     this.m_oRouter.navigateByUrl(`/${sLocation}`);
+  }
+
+  private addEventsToTimebar() {
+
+  }
+
+  private getEvents() {
+    if(this.m_sAreaId){
+      this.m_oEventService.getEvents(this.m_sAreaId).subscribe({
+        next:(oEventVM)=>{
+          console.log(oEventVM)
+        },
+        error:(oError)=>{
+          console.error(oError)
+        }
+      })
+    }
+
   }
 }

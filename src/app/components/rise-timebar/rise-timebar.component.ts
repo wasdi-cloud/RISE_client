@@ -3,11 +3,12 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 import {RiseChipMenuComponent} from '../rise-chip-menu/rise-chip-menu.component';
 import {RiseButtonComponent} from "../rise-button/rise-button.component";
+import {MatTooltip} from "@angular/material/tooltip";
 const MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
 @Component({
   selector: 'rise-timebar',
   standalone: true,
-  imports: [CommonModule, RiseChipMenuComponent, RiseButtonComponent],
+  imports: [CommonModule, RiseChipMenuComponent, RiseButtonComponent, MatTooltip],
   templateUrl: './rise-timebar.component.html',
   styleUrl: './rise-timebar.component.css',
 })
@@ -79,6 +80,24 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     this.initDates();
     this.generateYearTicks();
+  }
+  m_aoEvents = [
+    { date: 'Sat Oct 05 2024', description: 'New Year' },
+    { date: '"Thu Dec 12 2024"', description: 'Christmas' },
+  ];
+
+  getEventMarkerPosition(eventDate: string): string {
+    console.log(this.m_asDates)
+    const eventIndex = this.m_asDates.findIndex(
+      (date) => new Date(date).getTime() === new Date(eventDate).getTime()
+    );
+
+    if (eventIndex === -1) {
+      return '0%'; // Default to 0% if the event date isn't in the range
+    }
+
+    const percentage = (eventIndex / (this.m_asDates.length - 1)) * 100;
+    return `${percentage}%`;
   }
   generateYearTicks() {
     //todo make zoom in from year to months to days
