@@ -1,34 +1,26 @@
-/*mat-form-field {*/
-/*  width: 180px; !* Keep compact width *!*/
-/*  font-size: 0.8rem; !* Match smaller font size *!*/
-/*  margin: 0; !* Remove unnecessary margins *!*/
-/*  height: 50px; !* Let the height adjust naturally *!*/
-/*}*/
-/*input[matInput] {*/
-/*  height: 40px; !* Adjust to a reasonable height *!*/
-/*  padding: 0 8px; !* Add horizontal padding for clarity *!*/
-/*  font-size: 0.8rem; !* Match font size to the label *!*/
-/*  line-height: normal; !* Ensure text is vertically centered *!*/
-/*}*/
-/*.mat-datepicker-toggle {*/
-/*  height: 9px; !* Match input height *!*/
-/*  width: 28px; !* Keep it square *!*/
-/*  display: flex; !* Ensure proper centering *!*/
-/*  align-items: center;*/
-/*  justify-content: center;*/
-/*  font-size: 16px; !* Adjust to a smaller size *!*/
-/*}*/
+.custom-small {
+  --mat-form-field-padding: 0; /* Remove unnecessary padding */
+  /*font-size: 18px; !* Smaller font size *!*/
+  height: 30px; /* Ensure flexibility in height */
+  /*line-height: 1; !* Compact line height *!*/
+  background-color: transparent;
+  padding-bottom: 5px;
+  border-color: transparent;
+  ;
+}
 
+.custom-calendar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%; /* Ensure the container is full width */
+}
 
-/*.mat-datepicker-toggle button {*/
-/*  margin: 0; !* Remove extra margins *!*/
-/*  padding: 0; !* Keep compact *!*/
-/*}*/
-/*.mat-form-field-flex {*/
-/*  align-items: center; !* Ensure label, input, and icon align properly *!*/
-/*}*/
+.custom-calendar-container input.custom-small {
+  text-align: center; /* Centers the input text inside the field */
+  color:white;
+}
 
-/*.mat-form-field-label {*/
-/*  font-size: 0.8rem; !* Match the font size of input *!*/
-/*}*/
-
+.custom-calendar-container mat-datepicker-toggle {
+  margin-left: 8px; /* Space between the input and toggle button */
+}

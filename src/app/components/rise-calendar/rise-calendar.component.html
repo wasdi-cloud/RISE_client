@@ -1,7 +1,7 @@
-<mat-form-field class="example-full-width">
-  <input matInput [matDatepicker]="picker" disabled>
-  <mat-datepicker-toggle size="18px" matIconSuffix [for]="picker">
-    <mat-icon matDatepickerToggleIcon>keyboard_arrow_up</mat-icon>
+<div class="custom-calendar-container">
+  <input class="custom-small" matInput [matDatepicker]="picker" disabled>
+  <mat-datepicker-toggle [disableRipple]="true" style="color:#f0f0f0;" matIconSuffix [for]="picker">
+<!--    <mat-icon matDatepickerToggleIcon>keyboard_arrow_up</mat-icon>-->
   </mat-datepicker-toggle>
-  <mat-datepicker class="custom-datepicker"  disabled="false" #picker></mat-datepicker>
-</mat-form-field>
+  <mat-datepicker disabled="false" #picker></mat-datepicker>
+</div>

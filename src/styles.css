@@ -1,5 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 :root {
+  /*Calendar colors*/
+  --mat-datepicker-calendar-container-background-color: #0c303c;
+  --mat-datepicker-calendar-container-text-color: #efba35;
+  --mat-datepicker-calendar-date-selected-state-background-color: #efba35;
+  --mat-datepicker-calendar-date-text-color: #efba35;
+  --mat-datepicker-calendar-header-text-color:#efba35 ;
+  --mat-datepicker-calendar-body-label-text-color:#efba35 ;
+  --mat-datepicker-calendar-period-button-text-color: #efba35;
+  --mat-datepicker-calendar-period-button-icon-color: #efba35;
+  --mat-datepicker-calendar-header-divider-text-color: #efba35;
+  --mat-datepicker-calendar-navigation-button-icon-color: #efba35;
+  --mdc-filled-text-field-disabled-container-color: rgb(255, 0, 0);
+
   /* Primitive Colors */
   --rise-teal: #274d59;
   --rise-teal-600: #0c303c;
