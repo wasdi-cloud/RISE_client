@@ -4,11 +4,12 @@ import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 import {RiseChipMenuComponent} from '../rise-chip-menu/rise-chip-menu.component';
 import {RiseButtonComponent} from "../rise-button/rise-button.component";
 import {MatTooltip} from "@angular/material/tooltip";
+import {RiseCalendarComponent} from "../rise-calendar/rise-calendar.component";
 const MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
 @Component({
   selector: 'rise-timebar',
   standalone: true,
-  imports: [CommonModule, RiseChipMenuComponent, RiseButtonComponent, MatTooltip],
+  imports: [CommonModule, RiseChipMenuComponent, RiseButtonComponent, MatTooltip, RiseCalendarComponent],
   templateUrl: './rise-timebar.component.html',
   styleUrl: './rise-timebar.component.css',
 })
@@ -87,7 +88,6 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   ];
 
   getEventMarkerPosition(eventDate: string): string {
-    console.log(this.m_asDates)
     const eventIndex = this.m_asDates.findIndex(
       (date) => new Date(date).getTime() === new Date(eventDate).getTime()
     );

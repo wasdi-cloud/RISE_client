@@ -1,0 +1,34 @@
+/*mat-form-field {*/
+/*  width: 180px; !* Keep compact width *!*/
+/*  font-size: 0.8rem; !* Match smaller font size *!*/
+/*  margin: 0; !* Remove unnecessary margins *!*/
+/*  height: 50px; !* Let the height adjust naturally *!*/
+/*}*/
+/*input[matInput] {*/
+/*  height: 40px; !* Adjust to a reasonable height *!*/
+/*  padding: 0 8px; !* Add horizontal padding for clarity *!*/
+/*  font-size: 0.8rem; !* Match font size to the label *!*/
+/*  line-height: normal; !* Ensure text is vertically centered *!*/
+/*}*/
+/*.mat-datepicker-toggle {*/
+/*  height: 9px; !* Match input height *!*/
+/*  width: 28px; !* Keep it square *!*/
+/*  display: flex; !* Ensure proper centering *!*/
+/*  align-items: center;*/
+/*  justify-content: center;*/
+/*  font-size: 16px; !* Adjust to a smaller size *!*/
+/*}*/
+
+
+/*.mat-datepicker-toggle button {*/
+/*  margin: 0; !* Remove extra margins *!*/
+/*  padding: 0; !* Keep compact *!*/
+/*}*/
+/*.mat-form-field-flex {*/
+/*  align-items: center; !* Ensure label, input, and icon align properly *!*/
+/*}*/
+
+/*.mat-form-field-label {*/
+/*  font-size: 0.8rem; !* Match the font size of input *!*/
+/*}*/
+
