@@ -54,13 +54,23 @@ export class RiseCalendarComponent implements OnInit{
 
   oSelectedDate: Date = new Date(); // Keep as Date for compatibility
   aoHighlightDates: Date[] = [
-    new Date(2025, 0, 9), // January 9, 2025
     new Date(2025, 0, 15), // January 15, 2025
     new Date(2025, 1, 14), // February 14, 2025
   ];
+  startDate: moment.Moment = moment('2024-11-01'); // Replace with your desired start date
 
   ngOnInit() {
   }
+
+
+
+  dateFilter = (date: moment.Moment | null): boolean => {
+    const currentDate = date || moment();
+    const now = moment(); // Today's date
+
+    // Enable only dates from startDate to today
+    return currentDate.isSameOrAfter(this.startDate, 'day') && currentDate.isSameOrBefore(now, 'day');
+  };
   dateClass: MatCalendarCellClassFunction<moment.Moment> = (cellDate, view) => {
     if (view === 'month') {
       // Get the year, month, and date from the Moment object
