@@ -11,7 +11,7 @@
   --mat-datepicker-calendar-period-button-icon-color: #efba35;
   --mat-datepicker-calendar-header-divider-text-color: #efba35;
   --mat-datepicker-calendar-navigation-button-icon-color: #efba35;
-  --mdc-filled-text-field-disabled-container-color: rgb(255, 0, 0);
+
 
   /* Primitive Colors */
   --rise-teal: #274d59;
@@ -482,4 +482,11 @@ a.leaflet-control-zoom-fullscreen {
 
 .leaflet-container a.leaflet-popup-close-button {
   color: #ffffff !important;
+}
+/*material calendar*/
+
+.mat-calendar-body-cell.highlight-date {
+  background-color: #e60222 !important;
+  border-radius: 50%;
+  color: white;
 }

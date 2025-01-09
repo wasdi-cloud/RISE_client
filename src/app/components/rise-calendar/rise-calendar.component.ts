@@ -2,6 +2,7 @@ import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
 import {MatInput, MatInputModule} from "@angular/material/input";
 import {
+  MatCalendarCellClassFunction,
   MatDatepicker,
   MatDatepickerInput,
   MatDatepickerModule,
@@ -12,6 +13,7 @@ import {MatIcon} from "@angular/material/icon";
 import {FormsModule} from "@angular/forms";
 import {DatePipe} from "@angular/common";
 import {MomentDateAdapter} from "@angular/material-moment-adapter";
+import moment from "moment";
 
 export const CUSTOM_DATE_FORMATS = {
   parse: { dateInput: 'ddd MMM DD YYYY' }, // Parsing format
@@ -51,10 +53,32 @@ export const CUSTOM_DATE_FORMATS = {
 export class RiseCalendarComponent implements OnInit{
 
   oSelectedDate: Date = new Date(); // Keep as Date for compatibility
-
+  aoHighlightDates: Date[] = [
+    new Date(2025, 0, 9), // January 9, 2025
+    new Date(2025, 0, 15), // January 15, 2025
+    new Date(2025, 1, 14), // February 14, 2025
+  ];
 
   ngOnInit() {
   }
+  dateClass: MatCalendarCellClassFunction<moment.Moment> = (cellDate, view) => {
+    if (view === 'month') {
+      // Get the year, month, and date from the Moment object
+      const year = cellDate.year();
+      const month = cellDate.month(); // January is 0, February is 1, etc.
+      const date = cellDate.date();
+
+      // Check if the current date matches any of the highlighted dates
+      const highlight = this.aoHighlightDates.some((d) =>
+        d.getFullYear() === year &&
+        d.getMonth() === month &&
+        d.getDate() === date
+      );
+
+      return highlight ? 'highlight-date' : ''; // 'highlight-date' class applied if date matches
+    }
+    return '';
+  };
   emitDate(event: any): void {
     console.log(this.oSelectedDate)
     this.oSelectedDate = event.value; // Update selected date as Date
