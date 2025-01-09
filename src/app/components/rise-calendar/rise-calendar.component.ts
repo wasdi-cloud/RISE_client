@@ -55,12 +55,25 @@ export class RiseCalendarComponent implements OnInit{
 
 
 
+  /**
+   * Selected date to display
+   *
+   */
   @Input() m_oSelectedDate:Date ;
+
+  /**
+   * Highlighted / important dates to show in calendar
+   *
+   */
   m_aoHighlightDates: Date[] = [
     new Date(2025, 0, 15), // January 15, 2025
     new Date(2025, 1, 14), // February 14, 2025
   ];
-  // @Input() oStartDate: moment.Moment = moment('2024-11-01'); // Replace with your desired start date
+
+  /**
+   * start date var to control the time zone which the user select a date from
+   *
+   */
   @Input() m_oStartDate:moment.Moment;
 
 
@@ -70,6 +83,10 @@ export class RiseCalendarComponent implements OnInit{
 
 
 
+  /**
+   * set the clickable dates from start date to current date
+   *
+   */
   dateFilter = (date: moment.Moment | null): boolean => {
     const currentDate = date || moment();
     const now = moment(); // Today's date
@@ -80,6 +97,12 @@ export class RiseCalendarComponent implements OnInit{
     // Enable only dates from startDate to today
     return currentDate.isSameOrAfter(this.m_oStartDate, 'day') && currentDate.isSameOrBefore(now, 'day');
   };
+
+
+  /**
+   * highlight important dates
+   *
+   */
   dateClass: MatCalendarCellClassFunction<moment.Moment> = (cellDate, view) => {
     if (view === 'month') {
       // Get the year, month, and date from the Moment object
@@ -98,6 +121,12 @@ export class RiseCalendarComponent implements OnInit{
     }
     return '';
   };
+
+
+  /**
+   * emit selected date back to timebar
+   *
+   */
   emitDate(event: any): void {
     console.log(this.m_oSelectedDate)
     this.m_oSelectedDate = event.value; // Update selected date as Date

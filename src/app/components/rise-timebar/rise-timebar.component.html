@@ -46,8 +46,8 @@
       <rise-button
         [m_sLabel]="'Live'"
         [m_sIconLeft]="'radio_button_checked'"
-        [m_sIconColor]="m_bIsLive ? m_sIconColor : ''"
-        (click)="setDateToLive()"
+        [m_sIconColor]="m_bIsLive ? m_sLiveIconColor : ''"
+        (click)="onLiveButtonClick()"
       >
       </rise-button>
     </div>

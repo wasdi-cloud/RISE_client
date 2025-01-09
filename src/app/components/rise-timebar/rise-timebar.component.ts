@@ -6,7 +6,9 @@ import {RiseButtonComponent} from "../rise-button/rise-button.component";
 import {MatTooltip} from "@angular/material/tooltip";
 import {RiseCalendarComponent} from "../rise-calendar/rise-calendar.component";
 import moment from "moment";
-const MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
 @Component({
   selector: 'rise-timebar',
   standalone: true,
@@ -68,17 +70,34 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    * Timestamp corresponding to the selected date
    */
   m_sSelectedDateTimestamp: number = null;
-
-  m_oMomentStartDate: moment.Moment =  null;
-
-  m_oSelectedDate:Date;
-  m_sIconColor: string = 'red';
+  /**
+   * Start date in moment type for the rise calendar
+   */
+  m_oMomentStartDate: moment.Moment = null;
+  /**
+   * Selected Date as Date format
+   */
+  m_oSelectedDate: Date;
+  /**
+   * Live Button icon
+   */
+  m_sLiveIconColor: string = 'red';
+  /**
+   * Live flag
+   */
   m_bIsLive: boolean = true;
+  /**
+   * Ticks for the timebar
+   */
   aiTicks: { value: any }[] = [];
+  /**
+   * Events to mark in the timebar
+   */
   m_aoEvents = [
-    { date: 'Sat Oct 05 2024', description: 'New Year' },
-    { date: '"Thu Dec 12 2024"', description: 'Christmas' },
+    {date: 'Sat Oct 05 2024', description: 'New Year'},
+    {date: '"Thu Dec 12 2024"', description: 'Christmas'},
   ];
+
   constructor() {
   }
 
@@ -91,7 +110,9 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     this.generateYearTicks();
   }
 
-
+  /**
+   * Get Marker position to insert in its right position in the timebar
+   */
   getEventMarkerPosition(eventDate: string): string {
     const eventIndex = this.m_asDates.findIndex(
       (date) => new Date(date).getTime() === new Date(eventDate).getTime()
@@ -104,6 +125,10 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     const percentage = (eventIndex / (this.m_asDates.length - 1)) * 100;
     return `${percentage}%`;
   }
+
+  /**
+   * Based on difference between start date and  end date , generate the ticks for the timebar
+   */
   generateYearTicks() {
     //todo make zoom in from year to months to days
     //todo make zoom out from days to months to years
@@ -121,35 +146,35 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
 
     //Depending on the difference we show months or days
     // if it is more than one year ,we show years
-    if(iEndYear-iStartYear>1){
+    if (iEndYear - iStartYear > 1) {
       for (let year = iStartYear; year <= iEndYear; year++) {
-        this.aiTicks.push({ value: year });
+        this.aiTicks.push({value: year});
       }
-    }else{
+    } else {
       //same year
-      if(iEndYear-iStartYear==0){
-        if(iEndMonth-iStartMonth>1){
+      if (iEndYear - iStartYear == 0) {
+        if (iEndMonth - iStartMonth > 1) {
           for (let month = iStartMonth; month <= iEndMonth; month++) {
-            this.aiTicks.push({ value: MONTHS[month] });
+            this.aiTicks.push({value: MONTHS[month]});
           }
-        }else{
+        } else {
           for (let day = iStartDay; day <= iEndDay; day++) {
-            this.aiTicks.push({ value: day });
+            this.aiTicks.push({value: day});
           }
         }
       }
       //different  year
-      else{
-        if(Math.abs(iEndMonth-iStartMonth)>1){
+      else {
+        if (Math.abs(iEndMonth - iStartMonth) > 1) {
           for (let month = iStartMonth; month < 12; month++) {
-            this.aiTicks.push({ value:  MONTHS[month] });
+            this.aiTicks.push({value: MONTHS[month]});
           }
           for (let month = 0; month <= iEndMonth; month++) {
-            this.aiTicks.push({ value:  MONTHS[month] });
+            this.aiTicks.push({value: MONTHS[month]});
           }
-        }else{
+        } else {
           for (let day = iStartDay; day <= iEndDay; day++) {
-            this.aiTicks.push({ value: day });
+            this.aiTicks.push({value: day});
           }
         }
       }
@@ -157,6 +182,9 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
 
   }
 
+  /**
+   * Get Tick  position to insert in its right position in the timebar
+   */
   getTickPosition(index: number): string {
     const totalTicks = this.aiTicks.length;
 
@@ -185,7 +213,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     ) {
       return;
     }
-    this.m_oMomentStartDate=  moment(this.m_iStartDate * 1000);
+    this.m_oMomentStartDate = moment(this.m_iStartDate * 1000);
     let startDate = new Date(this.m_iStartDate * 1000);
     let endDate = new Date(this.m_iEndDate * 1000);
     let asDates = [];
@@ -200,7 +228,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
 
     this.m_sSelectedDate = asDates[asDates.length - 1];
     this.m_iSliderValue = asDates.length - 1;
-    this.m_oSelectedDate=endDate
+    this.m_oSelectedDate = endDate
   }
 
   /**
@@ -221,26 +249,35 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     }
     this.m_bIsLive = this.m_sSelectedDate === this.m_asDates[this.m_asDates.length - 1];
     this.m_sSelectedDateTimestamp = new Date(this.m_sSelectedDate).valueOf();
-    this.m_oSelectedDate=new Date(this.m_sSelectedDate);
+    this.m_oSelectedDate = new Date(this.m_sSelectedDate);
     this.emitSelectedDate();
   }
 
-  setDateToLive() {
+  /**
+   * Set Date to Live date
+   */
+  onLiveButtonClick() {
     if (this.m_asDates) {
       this.m_sSelectedDate = this.m_asDates[this.m_asDates.length - 1];
       this.m_iSliderValue = this.m_asDates.length - 1;
       this.m_sSelectedDateTimestamp = new Date(this.m_sSelectedDate).valueOf();
-      this.m_oSelectedDate=new Date(this.m_sSelectedDate);
+      this.m_oSelectedDate = new Date(this.m_sSelectedDate);
       this.m_bIsLive = true;
       this.emitSelectedDate();
-      this.onLiveButtonClick();
+      this.emitLiveButtonAction();
     }
   }
 
-  onLiveButtonClick() {
+  /**
+   * handle live button click
+   */
+  emitLiveButtonAction() {
     this.m_bLiveButtonPressed.emit(true);
   }
 
+  /**
+   * Handle play click
+   */
   onPlayButtonClick() {
     this.m_sPlayButtonPressed.emit(this.m_sSelectedDate);
   }
@@ -270,24 +307,32 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   zoomToTime(): void {
   }
 
+  /**
+   * add One day to the timebar / time
+   *
+   */
   addOneDayToDate() {
     if (this.m_sSelectedDate) {
       let oDate = new Date(this.m_sSelectedDate)
       oDate.setDate(oDate.getDate() + 1)
       this.m_sSelectedDate = oDate.toDateString();
       this.m_sSelectedDateTimestamp = new Date(this.m_sSelectedDate).valueOf();
-      this.m_oSelectedDate=new Date(this.m_sSelectedDate);
+      this.m_oSelectedDate = new Date(this.m_sSelectedDate);
       this.emitSelectedDate();
     }
   }
 
+  /**
+   * Minus One day to the timebar / time
+   *
+   */
   minusOneDayFromDate() {
     if (this.m_sSelectedDate) {
       let oDate = new Date(this.m_sSelectedDate)
       oDate.setDate(oDate.getDate() - 1)
       this.m_sSelectedDate = oDate.toDateString();
       this.m_sSelectedDateTimestamp = new Date(this.m_sSelectedDate).valueOf();
-      this.m_oSelectedDate=new Date(this.m_sSelectedDate);
+      this.m_oSelectedDate = new Date(this.m_sSelectedDate);
       this.emitSelectedDate();
     }
   }
