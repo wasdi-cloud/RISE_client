@@ -5,6 +5,7 @@ import {RiseChipMenuComponent} from '../rise-chip-menu/rise-chip-menu.component'
 import {RiseButtonComponent} from "../rise-button/rise-button.component";
 import {MatTooltip} from "@angular/material/tooltip";
 import {RiseCalendarComponent} from "../rise-calendar/rise-calendar.component";
+import moment from "moment";
 const MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
 @Component({
   selector: 'rise-timebar',
@@ -21,12 +22,12 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   /**
    * Timebar start date
    */
-  @Input() m_iStartDate: any = null;
+  @Input() m_iStartDate: number = null;
 
   /**
    * Timebar end date
    */
-  @Input() m_iEndDate: any = null;
+  @Input() m_iEndDate: number = null;
 
   /**
    * Date selected by the user
@@ -67,6 +68,8 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    * Timestamp corresponding to the selected date
    */
   m_sSelectedDateTimestamp: number = null;
+
+  m_oMomentStartDate: moment.Moment =  null;
 
   m_oSelectedDate:Date;
   m_sIconColor: string = 'red';
@@ -182,6 +185,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     ) {
       return;
     }
+    this.m_oMomentStartDate=  moment(this.m_iStartDate * 1000);
     let startDate = new Date(this.m_iStartDate * 1000);
     let endDate = new Date(this.m_iEndDate * 1000);
     let asDates = [];

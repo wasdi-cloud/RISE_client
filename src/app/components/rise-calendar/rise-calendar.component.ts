@@ -55,16 +55,17 @@ export class RiseCalendarComponent implements OnInit{
 
 
 
-  @Input() oSelectedDate:Date ;
-  aoHighlightDates: Date[] = [
+  @Input() m_oSelectedDate:Date ;
+  m_aoHighlightDates: Date[] = [
     new Date(2025, 0, 15), // January 15, 2025
     new Date(2025, 1, 14), // February 14, 2025
   ];
-  oStartDate: moment.Moment = moment('2024-11-01'); // Replace with your desired start date
+  // @Input() oStartDate: moment.Moment = moment('2024-11-01'); // Replace with your desired start date
+  @Input() m_oStartDate:moment.Moment;
 
 
   ngOnInit() {
-
+    console.log(this.m_oStartDate)
   }
 
 
@@ -72,9 +73,12 @@ export class RiseCalendarComponent implements OnInit{
   dateFilter = (date: moment.Moment | null): boolean => {
     const currentDate = date || moment();
     const now = moment(); // Today's date
+    if (!this.m_oStartDate) {
+      return currentDate.isSameOrBefore(now, 'day');
+    }
 
     // Enable only dates from startDate to today
-    return currentDate.isSameOrAfter(this.oStartDate, 'day') && currentDate.isSameOrBefore(now, 'day');
+    return currentDate.isSameOrAfter(this.m_oStartDate, 'day') && currentDate.isSameOrBefore(now, 'day');
   };
   dateClass: MatCalendarCellClassFunction<moment.Moment> = (cellDate, view) => {
     if (view === 'month') {
@@ -84,7 +88,7 @@ export class RiseCalendarComponent implements OnInit{
       const date = cellDate.date();
 
       // Check if the current date matches any of the highlighted dates
-      const highlight = this.aoHighlightDates.some((d) =>
+      const highlight = this.m_aoHighlightDates.some((d) =>
         d.getFullYear() === year &&
         d.getMonth() === month &&
         d.getDate() === date
@@ -95,8 +99,8 @@ export class RiseCalendarComponent implements OnInit{
     return '';
   };
   emitDate(event: any): void {
-    console.log(this.oSelectedDate)
-    this.oSelectedDate = event.value; // Update selected date as Date
+    console.log(this.m_oSelectedDate)
+    this.m_oSelectedDate = event.value; // Update selected date as Date
   }
 
 }
