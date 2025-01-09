@@ -74,7 +74,7 @@
         class="timebar"
         [m_iStartDate]="m_oAreaOfOperation.archiveStartDate"
         [m_iEndDate]="m_iCurrentDate"
-        (m_sSelectedDate)="getReferenceTime($event)"
+        (m_oSelectedDateEmitter)="getReferenceTime($event)"
         (m_bLiveButtonPressed)="handleLiveButtonPressed()"
         (m_sPlayButtonPressed)="handlePlayButtonPressed($event)"
       ></rise-timebar>

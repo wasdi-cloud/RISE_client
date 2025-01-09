@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
 import {MatInput, MatInputModule} from "@angular/material/input";
 import {
@@ -52,14 +52,19 @@ export const CUSTOM_DATE_FORMATS = {
 })
 export class RiseCalendarComponent implements OnInit{
 
-  oSelectedDate: Date = new Date(); // Keep as Date for compatibility
+
+
+
+  @Input() oSelectedDate:Date ;
   aoHighlightDates: Date[] = [
     new Date(2025, 0, 15), // January 15, 2025
     new Date(2025, 1, 14), // February 14, 2025
   ];
-  startDate: moment.Moment = moment('2024-11-01'); // Replace with your desired start date
+  oStartDate: moment.Moment = moment('2024-11-01'); // Replace with your desired start date
+
 
   ngOnInit() {
+
   }
 
 
@@ -69,7 +74,7 @@ export class RiseCalendarComponent implements OnInit{
     const now = moment(); // Today's date
 
     // Enable only dates from startDate to today
-    return currentDate.isSameOrAfter(this.startDate, 'day') && currentDate.isSameOrBefore(now, 'day');
+    return currentDate.isSameOrAfter(this.oStartDate, 'day') && currentDate.isSameOrBefore(now, 'day');
   };
   dateClass: MatCalendarCellClassFunction<moment.Moment> = (cellDate, view) => {
     if (view === 'month') {
@@ -93,6 +98,5 @@ export class RiseCalendarComponent implements OnInit{
     console.log(this.oSelectedDate)
     this.oSelectedDate = event.value; // Update selected date as Date
   }
-
 
 }

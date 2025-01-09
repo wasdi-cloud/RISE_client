@@ -31,7 +31,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   /**
    * Date selected by the user
    */
-  @Output() m_sSelectedDate: EventEmitter<number> = new EventEmitter<number>(
+  @Output() m_oSelectedDateEmitter: EventEmitter<number> = new EventEmitter<number>(
     null
   );
   /**
@@ -61,16 +61,21 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   /**
    * Selected day corresponding to index of the slider value in Dates arrays - i.e., m_oSelectedDate = m_aoDates[m_iSliderValue]
    */
-  m_oSelectedDate: string = '';
+  m_sSelectedDate: string = '';
 
   /**
    * Timestamp corresponding to the selected date
    */
   m_sSelectedDateTimestamp: number = null;
+
+  m_oSelectedDate:Date;
   m_sIconColor: string = 'red';
   m_bIsLive: boolean = true;
   aiTicks: { value: any }[] = [];
-
+  m_aoEvents = [
+    { date: 'Sat Oct 05 2024', description: 'New Year' },
+    { date: '"Thu Dec 12 2024"', description: 'Christmas' },
+  ];
   constructor() {
   }
 
@@ -82,10 +87,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     this.initDates();
     this.generateYearTicks();
   }
-  m_aoEvents = [
-    { date: 'Sat Oct 05 2024', description: 'New Year' },
-    { date: '"Thu Dec 12 2024"', description: 'Christmas' },
-  ];
+
 
   getEventMarkerPosition(eventDate: string): string {
     const eventIndex = this.m_asDates.findIndex(
@@ -180,20 +182,21 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     ) {
       return;
     }
-    let date1 = new Date(this.m_iStartDate * 1000);
-    let date2 = new Date(this.m_iEndDate * 1000);
+    let startDate = new Date(this.m_iStartDate * 1000);
+    let endDate = new Date(this.m_iEndDate * 1000);
     let asDates = [];
-    // asDates.push(date1)
-    // asDates.push(date2)
-    while (date1 <= date2) {
-      asDates.push(date1.toDateString());
-      date1.setDate(date1.getDate() + 1);
+    // asDates.push(startDate)
+    // asDates.push(endDate)
+    while (startDate <= endDate) {
+      asDates.push(startDate.toDateString());
+      startDate.setDate(startDate.getDate() + 1);
     }
-    // asDates.push(date2.toDateString());
+    // asDates.push(endDate.toDateString());
     this.m_asDates = asDates;
 
-    this.m_oSelectedDate = asDates[asDates.length - 1];
+    this.m_sSelectedDate = asDates[asDates.length - 1];
     this.m_iSliderValue = asDates.length - 1;
+    this.m_oSelectedDate=endDate
   }
 
   /**
@@ -206,22 +209,24 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
 
     if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oEvent.target)) {
 
-      this.m_oSelectedDate = this.m_asDates[oEvent.target.value];
-      this.m_iSliderValue = this.m_asDates.indexOf(this.m_oSelectedDate);
+      this.m_sSelectedDate = this.m_asDates[oEvent.target.value];
+      this.m_iSliderValue = this.m_asDates.indexOf(this.m_sSelectedDate);
     } else {
-      this.m_oSelectedDate = oEvent;
-      this.m_iSliderValue = this.m_asDates.indexOf(this.m_oSelectedDate);
+      this.m_sSelectedDate = oEvent;
+      this.m_iSliderValue = this.m_asDates.indexOf(this.m_sSelectedDate);
     }
-    this.m_bIsLive = this.m_oSelectedDate === this.m_asDates[this.m_asDates.length - 1];
-    this.m_sSelectedDateTimestamp = new Date(this.m_oSelectedDate).valueOf();
+    this.m_bIsLive = this.m_sSelectedDate === this.m_asDates[this.m_asDates.length - 1];
+    this.m_sSelectedDateTimestamp = new Date(this.m_sSelectedDate).valueOf();
+    this.m_oSelectedDate=new Date(this.m_sSelectedDate);
     this.emitSelectedDate();
   }
 
   setDateToLive() {
     if (this.m_asDates) {
-      this.m_oSelectedDate = this.m_asDates[this.m_asDates.length - 1];
+      this.m_sSelectedDate = this.m_asDates[this.m_asDates.length - 1];
       this.m_iSliderValue = this.m_asDates.length - 1;
-      this.m_sSelectedDateTimestamp = new Date(this.m_oSelectedDate).valueOf();
+      this.m_sSelectedDateTimestamp = new Date(this.m_sSelectedDate).valueOf();
+      this.m_oSelectedDate=new Date(this.m_sSelectedDate);
       this.m_bIsLive = true;
       this.emitSelectedDate();
       this.onLiveButtonClick();
@@ -233,7 +238,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   }
 
   onPlayButtonClick() {
-    this.m_sPlayButtonPressed.emit(this.m_oSelectedDate);
+    this.m_sPlayButtonPressed.emit(this.m_sSelectedDate);
   }
 
   /**
@@ -242,7 +247,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    * @returns void
    */
   emitSelectedDate(): void {
-    this.m_sSelectedDate.emit(this.m_sSelectedDateTimestamp);
+    this.m_oSelectedDateEmitter.emit(this.m_sSelectedDateTimestamp);
   }
 
   /**
@@ -262,21 +267,23 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   }
 
   addOneDayToDate() {
-    if (this.m_oSelectedDate) {
-      let oDate = new Date(this.m_oSelectedDate)
+    if (this.m_sSelectedDate) {
+      let oDate = new Date(this.m_sSelectedDate)
       oDate.setDate(oDate.getDate() + 1)
-      this.m_oSelectedDate = oDate.toDateString();
-      this.m_sSelectedDateTimestamp = new Date(this.m_oSelectedDate).valueOf();
+      this.m_sSelectedDate = oDate.toDateString();
+      this.m_sSelectedDateTimestamp = new Date(this.m_sSelectedDate).valueOf();
+      this.m_oSelectedDate=new Date(this.m_sSelectedDate);
       this.emitSelectedDate();
     }
   }
 
   minusOneDayFromDate() {
-    if (this.m_oSelectedDate) {
-      let oDate = new Date(this.m_oSelectedDate)
+    if (this.m_sSelectedDate) {
+      let oDate = new Date(this.m_sSelectedDate)
       oDate.setDate(oDate.getDate() - 1)
-      this.m_oSelectedDate = oDate.toDateString();
-      this.m_sSelectedDateTimestamp = new Date(this.m_oSelectedDate).valueOf();
+      this.m_sSelectedDate = oDate.toDateString();
+      this.m_sSelectedDateTimestamp = new Date(this.m_sSelectedDate).valueOf();
+      this.m_oSelectedDate=new Date(this.m_sSelectedDate);
       this.emitSelectedDate();
     }
   }
