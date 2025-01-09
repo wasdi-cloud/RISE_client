@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
 import {MatInput, MatInputModule} from "@angular/material/input";
 import {
@@ -75,10 +75,14 @@ export class RiseCalendarComponent implements OnInit{
    *
    */
   @Input() m_oStartDate:moment.Moment;
-
+  /**
+   * emitter for sending the date to timebar
+   *
+   */
+  @Output() m_oSelectedDateFromCalendar: EventEmitter<string> = new EventEmitter<string>();
 
   ngOnInit() {
-    console.log(this.m_oStartDate)
+
   }
 
 
@@ -128,8 +132,8 @@ export class RiseCalendarComponent implements OnInit{
    *
    */
   emitDate(event: any): void {
-    console.log(this.m_oSelectedDate)
-    this.m_oSelectedDate = event.value; // Update selected date as Date
+    this.m_oSelectedDate = event.value.toDate(); // Update selected date as Date
+    this.m_oSelectedDateFromCalendar.emit(this.m_oSelectedDate.toDateString());
   }
 
 }
