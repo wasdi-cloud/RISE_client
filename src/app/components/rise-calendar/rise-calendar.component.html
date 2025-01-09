@@ -1,5 +1,5 @@
 <div class="custom-calendar-container">
-  <input class="custom-small" matInput [matDatepicker]="picker" disabled>
+  <input (dateChange)="emitDate($event)"  [(ngModel)]="oSelectedDate"  class="custom-small" matInput [matDatepicker]="picker" disabled>
   <mat-datepicker-toggle [disableRipple]="true" style="color:#f0f0f0;" matIconSuffix [for]="picker">
 <!--    <mat-icon matDatepickerToggleIcon>keyboard_arrow_up</mat-icon>-->
   </mat-datepicker-toggle>
