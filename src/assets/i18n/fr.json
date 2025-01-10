@@ -14,6 +14,17 @@
     "MANAGE_EVENTS": "Gérer les événements"
 
   },
+  "MANAGE_EVENTS": {
+    "HEADER": "GÉRER LES ÉVÉNEMENTS",
+    "CREATE_EVENT": "Créer un nouvel événement"
+  },
+  "EVENT": {
+    "NAME": "Nom",
+    "TYPE": "Type",
+    "START_DATE": "Date de début",
+    "PEAK_DATE": "Date de pic",
+    "END_DATE": "Date de fin"
+  },
   "MONITOR": {
     "ADD_EVENT": "Ajouter un événement",
     "SEARCH_LAYERS_BY_NAME": "Rechercher des couches par nom",

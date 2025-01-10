@@ -19,5 +19,7 @@ export class EventViewModel extends RiseViewModel {
 
   peakDate: number;
 
+  description:string;
+
 
 }

@@ -22,6 +22,7 @@ export class RiseOngoingWidgetComponent implements OnInit {
     type: 'Flood',
     bbox: '',
     peakDate: 0,
+    description:""
   };
 
   m_bShowContent: boolean = true;

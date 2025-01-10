@@ -1,1 +1,65 @@
-<h1>Events here</h1>
+
+  <rise-toolbar class="toolbar" [m_bUserIsSigned]="true"></rise-toolbar>
+
+<div class="outlet">
+  <div
+    *ngIf="!m_bCreateNewEvent"
+    class="subscriptions-container d-flex flex-column justify-content-between px-4"
+  >
+    <div
+      class="account-header d-flex flex-row align-items-center justify-content-between mt-2 p-2"
+    >
+      {{ "MANAGE_EVENTS.HEADER" | translate }}
+      <rise-button
+        [m_sSize]="'small'"
+        [m_sRole]="'action'"
+        [m_sLabel]="'MANAGE_EVENTS.CREATE_EVENT'"
+        (click)="onCreateNewEvent()"
+      ></rise-button>
+    </div>
+    <div class="body d-flex flex-fill flex-column gap-5 py-4 px-1">
+      <table class="w-100">
+        <thead>
+        <tr>
+          <td>{{ "EVENT.NAME" | translate }}</td>
+          <td>{{ "EVENT.TYPE" | translate }}</td>
+          <td>{{ "EVENT.START_DATE" | translate }}</td>
+          <td>{{ "EVENT.PEAK_DATE" | translate }}</td>
+          <td>{{ "EVENT.END_DATE" | translate }}</td>
+          <td></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let oEvent of m_aoEvents">
+          <td>{{ oEvent.name }}</td>
+          <td>{{ oEvent.type }}</td>
+          <td>{{ oEvent.startDate| date }}</td>
+          <td>{{ oEvent.peakDate| date }}</td>
+          <td>{{ oEvent.endDate| date }}</td>
+          <td class="d-flex flex-row justify-content-end gap-2">
+              <span
+                class="material-symbols-outlined edit"
+                [matTooltip]="'Edit Event'"
+                (click)="editEvent(oEvent)"
+              >
+                edit
+              </span>
+            <span
+              class="material-symbols-outlined remove"
+              [matTooltip]="'Remove Event'"
+              (click)="deleteEvent(oEvent)"
+            >
+                delete
+              </span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<!--  <buy-new-subscription-->
+<!--    *ngIf="m_bShowBuySub"-->
+<!--    (m_oEmitBack)="openBuyNewSub($event)"-->
+<!--    [m_sOrganizationId]=""-->
+<!--  ></buy-new-subscription>-->
+</div>

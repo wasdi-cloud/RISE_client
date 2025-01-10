@@ -589,15 +589,16 @@ export class MonitorComponent implements OnInit {
       this.m_oMapService.closeWorkspace();
     }
     if(sLocation==='events'){
-      this.m_oRouter
-        .navigateByUrl('/', {skipLocationChange: true})
-        .then(() => {
-          this.m_oRouter.navigateByUrl('/account', {
-            state: {m_sActiveOutlet: 'events'},
-          });
-        });
+      if(this.m_sAreaId){
+        this.m_oRouter.navigateByUrl(`/events/${this.m_sAreaId}`)
+      }else{
+        console.log("Area id is missing")
+        //todo show notification
+      }
+    }else{
+      this.m_oRouter.navigateByUrl(`/${sLocation}`);
     }
-    this.m_oRouter.navigateByUrl(`/${sLocation}`);
+
   }
 
   private addEventsToTimebar() {

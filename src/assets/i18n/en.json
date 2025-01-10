@@ -13,6 +13,17 @@
     "USER_ACCOUNT": "User Account",
     "MANAGE_EVENTS": "Manage Events"
   },
+  "MANAGE_EVENTS": {
+    "HEADER": "MANAGE EVENTS",
+    "CREATE_EVENT": "Create new Event"
+  },
+  "EVENT": {
+    "NAME": "Name",
+    "TYPE":"Type",
+    "START_DATE": "Start date",
+    "PEAK_DATE": "Peak Date",
+    "END_DATE": "End date"
+  },
   "AREA_OF_OPERATIONS": {
     "ACTIVE_AREAS": "Active Areas of Operations",
     "AREA_HEADER_TOO_BIG": "Area too large!",

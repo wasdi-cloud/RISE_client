@@ -16,7 +16,7 @@ export class EventService {
     private m_oHttp: HttpClient
   ) {}
 
-  getEvents(sAreaId:string):Observable<EventViewModel>{
-    return this.m_oHttp.get<EventViewModel>(this.APIURL+'/event/list?areaId='+sAreaId)
+  getEvents(sAreaId:string):Observable<EventViewModel[]>{
+    return this.m_oHttp.get<EventViewModel[]>(this.APIURL+'/event/list?areaId='+sAreaId)
   }
 }

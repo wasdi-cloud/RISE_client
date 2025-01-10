@@ -14,7 +14,21 @@
     "MANAGE_EVENTS": "Gestionar eventos"
 
   },
-  "AREA_OF_OPERATIONS": {
+
+  "MANAGE_EVENTS": {
+    "HEADER": "GESTIONAR EVENTOS",
+    "CREATE_EVENT": "Crear nuevo Evento"
+  },
+  "EVENT": {
+    "NAME": "Nombre",
+    "TYPE": "Tipo",
+    "START_DATE": "Fecha de inicio",
+    "PEAK_DATE": "Fecha pico",
+    "END_DATE": "Fecha de finalización"
+  },
+
+
+"AREA_OF_OPERATIONS": {
     "ACTIVE_AREAS": "Áreas Activas de Operaciones",
     "AREA_HEADER_TOO_BIG": "¡Área demasiado grande!",
     "AREA_HEADER_TOO_SMALL": "¡Área demasiado pequeña!",

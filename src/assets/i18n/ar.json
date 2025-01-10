@@ -13,6 +13,17 @@
     "MANAGE_EVENTS": "إدارة الأحداث"
 
   },
+  "MANAGE_EVENTS": {
+    "HEADER": "إدارة الأحداث",
+    "CREATE_EVENT": "إنشاء حدث جديد"
+  },
+  "EVENT": {
+    "NAME": "الاسم",
+    "TYPE": "النوع",
+    "START_DATE": "تاريخ البدء",
+    "PEAK_DATE": "تاريخ الذروة",
+    "END_DATE": "تاريخ الانتهاء"
+  },
   "AREA_OF_OPERATIONS": {
     "ACTIVE_AREAS": "مناطق العمليات النشطة",
     "AREA_HEADER_TOO_BIG": "المنطقة كبيرة جدًا!",

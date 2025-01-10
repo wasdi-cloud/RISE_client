@@ -1,0 +1,25 @@
+thead {
+  font-weight: 700;
+}
+td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 8px;
+}
+
+.material-symbols-outlined {
+  cursor: pointer;
+}
+
+.material-symbols-outlined.remove {
+  color: var(--rise-danger-text);
+}
+.dropdown-container {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0;
+}
+
+rise-dropdown {
+  width: auto;
+  font-size: 0.9rem;
+}

@@ -17,7 +17,7 @@ import {EventsComponent} from "./views/events/events.component";
 export const routes: Routes = [
   { path: '', component: PublicHomeComponent, canActivate: [isLoggedGuard] },
   { path: 'account', component: AccountComponent, canActivate: [authGuard] },
-  { path: 'events', component: EventsComponent, canActivate: [authGuard] },
+  { path: 'events/:aoiId', component: EventsComponent, canActivate: [authGuard] },
   {
     path: 'dashboard',
     component: DashboardComponent,

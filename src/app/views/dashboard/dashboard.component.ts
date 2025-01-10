@@ -1,25 +1,22 @@
-import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
+import {Component, NgZone, OnDestroy, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {Subscription} from 'rxjs';
 
-import { RiseAffectedWidgetComponent } from './rise-affected-widget/rise-affected-widget.component';
-import { RiseAlertsWidgetComponent } from './rise-alerts-widget/rise-alerts-widget.component';
-import { RiseBannerComponent } from '../../components/rise-banner/rise-banner.component';
-import { RiseMapComponent } from '../../components/rise-map/rise-map.component';
-import { RiseOngoingWidgetComponent } from './rise-ongoing-widget/rise-ongoing-widget.component';
-import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
-import { RiseUserMenuComponent } from '../../components/rise-user-menu/rise-user-menu.component';
+import {RiseAffectedWidgetComponent} from './rise-affected-widget/rise-affected-widget.component';
+import {RiseAlertsWidgetComponent} from './rise-alerts-widget/rise-alerts-widget.component';
+import {RiseBannerComponent} from '../../components/rise-banner/rise-banner.component';
+import {RiseMapComponent} from '../../components/rise-map/rise-map.component';
+import {RiseOngoingWidgetComponent} from './rise-ongoing-widget/rise-ongoing-widget.component';
+import {RiseTextInputComponent} from '../../components/rise-text-input/rise-text-input.component';
+import {RiseUserMenuComponent} from '../../components/rise-user-menu/rise-user-menu.component';
 
-import { EventViewModel } from '../../models/EventViewModel';
-import { AreaViewModel } from '../../models/AreaViewModel';
+import {EventViewModel} from '../../models/EventViewModel';
+import {AreaViewModel} from '../../models/AreaViewModel';
 
-import { AreaService } from '../../services/api/area.service';
-import { MapService } from '../../services/map.service';
-import { UserService } from '../../services/api/user.service';
+import {AreaService} from '../../services/api/area.service';
+import {MapService} from '../../services/map.service';
 
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
-import {NotificationsDialogsService} from "../../services/notifications-dialogs.service";
 
 @Component({
   selector: 'app-dashboard',
