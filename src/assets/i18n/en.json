@@ -105,7 +105,8 @@
     "REFERENCE_DATE": "Reference date",
     "INPUT_DATA": "Input data",
     "FORCE_UPDATE": "Force Layer Update",
-    "LAYER_ANALYZER": "Layer Analyzer"
+    "LAYER_ANALYZER": "Layer Analyzer",
+    "MANAGE_EVENTS": "Manage Events"
   },
   "LAYER_ANALYZER": {
     "FILTER": "Filter Pixel Values",

@@ -170,7 +170,9 @@
     "CREATED_DATE": "تاريخ الإنشاء",
     "REFERENCE_DATE": "تاريخ المرجع",
     "INPUT_DATA": "بيانات الإدخال",
-    "FORCE_UPDATE": "تحديث الطبقة بالقوة"
+    "FORCE_UPDATE": "تحديث الطبقة بالقوة",
+    "MANAGE_EVENTS": "إدارة الأحداث"
+
   },
   "LAYER_ANALYZER": {
     "FILTER": "تصفية قيم البكسل",

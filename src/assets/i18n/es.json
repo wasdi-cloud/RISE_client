@@ -181,7 +181,9 @@
     "CREATED_DATE": "Fecha de creación",
     "REFERENCE_DATE": "Fecha de referencia",
     "INPUT_DATA": "Datos de entrada",
-    "FORCE_UPDATE": "Forzar actualización de la capa"
+    "FORCE_UPDATE": "Forzar actualización de la capa",
+    "MANAGE_EVENTS": "Gestionar Eventos"
+
   },
   "LAYER_ANALYZER": {
     "FILTER": "Filtrar valores de píxeles",
