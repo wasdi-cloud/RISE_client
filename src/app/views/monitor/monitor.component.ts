@@ -588,6 +588,15 @@ export class MonitorComponent implements OnInit {
     if (sLocation === 'dashboard') {
       this.m_oMapService.closeWorkspace();
     }
+    if(sLocation==='events'){
+      this.m_oRouter
+        .navigateByUrl('/', {skipLocationChange: true})
+        .then(() => {
+          this.m_oRouter.navigateByUrl('/account', {
+            state: {m_sActiveOutlet: 'events'},
+          });
+        });
+    }
     this.m_oRouter.navigateByUrl(`/${sLocation}`);
   }
 

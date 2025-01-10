@@ -23,7 +23,7 @@ import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 import {environment} from "../../../environments/environments";
 
 @Component({
-  selector: 'app-area-of-operations',
+  selector: 'area-of-operations',
   standalone: true,
   imports: [
     CreateAreaOfOperationComponent,

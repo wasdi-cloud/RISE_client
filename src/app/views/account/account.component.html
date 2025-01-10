@@ -16,9 +16,12 @@
           *ngIf="m_sActiveOutlet === 'subscriptions'"
           [m_sOrganizationId]=""
         ></user-subscriptions>
-        <app-area-of-operations
+        <area-of-operations
           *ngIf="m_sActiveOutlet === 'area-of-operations'"
-        ></app-area-of-operations>
+        ></area-of-operations>
+        <rise-events
+          *ngIf="m_sActiveOutlet === 'events'"
+        ></rise-events>
       </div>
     </div>
   </div>

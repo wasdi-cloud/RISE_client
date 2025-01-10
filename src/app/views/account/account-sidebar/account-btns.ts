@@ -17,4 +17,12 @@ export const AccountBtns = [
       , "ADMIN"
       , "HQ"]
   },
+  {
+    labelKey: 'ACCOUNT.MANAGE_EVENTS',
+    route: 'events',
+    icon: 'file_map_stack',
+    role:[ "RISE_ADMIN"
+      , "ADMIN"
+      , "HQ"]
+  },
 ];

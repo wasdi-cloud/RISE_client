@@ -9,7 +9,9 @@
     "SUBSCRIPTIONS": "الاشتراكات",
     "ORGANIZATION": "المنظمة",
     "USER": "المستخدم",
-    "USER_ACCOUNT": "حساب المستخدم"
+    "USER_ACCOUNT": "حساب المستخدم",
+    "MANAGE_EVENTS": "إدارة الأحداث"
+
   },
   "AREA_OF_OPERATIONS": {
     "ACTIVE_AREAS": "مناطق العمليات النشطة",

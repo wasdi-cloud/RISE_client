@@ -1,19 +1,19 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
-import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
-import { TranslateModule } from '@ngx-translate/core';
-import {ActivatedRoute, NavigationEnd, NavigationStart, Router} from '@angular/router';
-import { AccountSidebarComponent } from './account-sidebar/account-sidebar.component';
-import { AccountBtns } from './account-sidebar/account-btns';
-import { UserAccountComponent } from './user-account/user-account.component';
-import { CommonModule } from '@angular/common';
-import { UserOrganizationComponent } from './user-organization/user-organization.component';
-import { AreaOfOperationsComponent } from '../area-of-operations/area-of-operations.component';
-import { UserSubscriptionsComponent } from './user-subscriptions/user-subscriptions.component';
+import {Component, Input, OnInit} from '@angular/core';
+import {RiseToolbarComponent} from '../../components/rise-toolbar/rise-toolbar.component';
+import {TranslateModule} from '@ngx-translate/core';
+import {NavigationEnd, Router} from '@angular/router';
+import {AccountSidebarComponent} from './account-sidebar/account-sidebar.component';
+import {AccountBtns} from './account-sidebar/account-btns';
+import {UserAccountComponent} from './user-account/user-account.component';
+import {CommonModule} from '@angular/common';
+import {UserOrganizationComponent} from './user-organization/user-organization.component';
+import {AreaOfOperationsComponent} from '../area-of-operations/area-of-operations.component';
+import {UserSubscriptionsComponent} from './user-subscriptions/user-subscriptions.component';
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 import {ConstantsService} from "../../services/constants.service";
-import {UserRole, UserRoleHelper} from "../../models/UserRole";
 import {UserService} from "../../services/api/user.service";
+import {EventsComponent} from "../events/events.component";
+
 @Component({
   selector: 'app-account',
   standalone: true,
@@ -26,6 +26,7 @@ import {UserService} from "../../services/api/user.service";
     UserAccountComponent,
     UserOrganizationComponent,
     UserSubscriptionsComponent,
+    EventsComponent,
   ],
   templateUrl: './account.component.html',
   styleUrl: './account.component.css',

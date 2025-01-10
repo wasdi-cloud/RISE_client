@@ -12,10 +12,12 @@ import { isLoggedGuard } from './auth/is-logged.guard';
 import {
   ConfirmAdminRegistrationComponent
 } from "./views/confirm-admin-registration/confirm-admin-registration.component";
+import {EventsComponent} from "./views/events/events.component";
 
 export const routes: Routes = [
   { path: '', component: PublicHomeComponent, canActivate: [isLoggedGuard] },
   { path: 'account', component: AccountComponent, canActivate: [authGuard] },
+  { path: 'events', component: EventsComponent, canActivate: [authGuard] },
   {
     path: 'dashboard',
     component: DashboardComponent,

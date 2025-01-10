@@ -10,7 +10,9 @@
     "SUBSCRIPTIONS": "Abonnements",
     "ORGANIZATION": "Organisation",
     "USER": "Utilisateur",
-    "USER_ACCOUNT": "Compte utilisateur"
+    "USER_ACCOUNT": "Compte utilisateur",
+    "MANAGE_EVENTS": "Gérer les événements"
+
   },
   "MONITOR": {
     "ADD_EVENT": "Ajouter un événement",

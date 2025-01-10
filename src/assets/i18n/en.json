@@ -10,7 +10,8 @@
     "SUBSCRIPTIONS": "Subscriptions",
     "ORGANIZATION": "Organization",
     "USER": "User",
-    "USER_ACCOUNT": "User Account"
+    "USER_ACCOUNT": "User Account",
+    "MANAGE_EVENTS": "Manage Events"
   },
   "AREA_OF_OPERATIONS": {
     "ACTIVE_AREAS": "Active Areas of Operations",
