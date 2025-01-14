@@ -65,7 +65,7 @@ export class NotificationsDialogsService {
    */
   openSnackBar(sMessage: string, sTitle?: string, className?: string) {
     this.m_oMatSnackbar.openFromComponent(NotificationSnackbarComponent, {
-      duration: 4000,
+      duration: 10000,
       horizontalPosition: 'right',
       verticalPosition: 'bottom',
       panelClass: [className ? className : 'info-snackbar'],

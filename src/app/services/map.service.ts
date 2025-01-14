@@ -39,7 +39,7 @@ L.Marker.prototype.options.icon = iconDefault;
 
 const MAX_STORAGE_SIZE = 2 * 1024 * 1024; // 2MB for testing
 const MIN_ZOOM = 3;
-const MAX_ZOOM = 18;
+const MAX_ZOOM = 13;
 const MIN_AREA_CIRCLE = 12_321_000_000; // Minimum 1x1 degree in square meters
 const MAX_AREA_CIRCLE = 49_284_000_000; // Maximum 2x2 degree in square meters
 
@@ -230,6 +230,8 @@ export class MapService {
     this.m_oEsriWorldStreetMap = L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
       {
+        maxZoom: MAX_ZOOM,
+        minZoom: MIN_ZOOM,
         attribution:
           'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
       }
@@ -239,6 +241,8 @@ export class MapService {
     this.m_oEsriWorldImagery = L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
       {
+        maxZoom: MAX_ZOOM,
+        minZoom: MIN_ZOOM,
         attribution:
           'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
       }
