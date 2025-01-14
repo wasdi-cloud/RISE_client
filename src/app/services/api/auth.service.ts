@@ -94,7 +94,7 @@ export class AuthService {
   confirmAdm(sConfirmationCode: string, sUser: any) {
     return this.m_oHttp.get<any>(
       this.APIURL +
-        `/auth/confirm_adm?code="${sConfirmationCode}"&usr="${sUser}"`
+        `/auth/confirm_adm?code=${sConfirmationCode}&usr=${sUser}`
     );
   }
 

@@ -72,11 +72,11 @@ export class SignUpComponent implements OnInit {
   m_sEmailError: string = '';
 
   m_sPasswordError: string = '';
-  
+
   m_sOrgError: string = '';
-  
+
   m_sPersonalError: string = '';
-  
+
   m_bPersonalValid: boolean = true;
 
   m_bEmailIsValid: boolean = true;
@@ -257,15 +257,15 @@ export class SignUpComponent implements OnInit {
     asStringCodes.forEach((sCode) => {
       if (sCode.includes('ORG')) {
         this.m_sOrgError = 'ERROR_MSG.' + sCode;
-        this.m_bOrgIsValid = false;
+        // this.m_bOrgIsValid = false;
       }
       if (sCode.includes('MAIL')) {
         this.m_sEmailError = 'ERROR_MSG.' + sCode;
-        this.m_bEmailIsValid = false;
+        // this.m_bEmailIsValid = false;
       }
       if (sCode.includes('USER')) {
         this.m_sUsernameError = 'ERROR_MSG.' + sCode;
-        this.m_bUsernameIsValid = false;
+        // this.m_bUsernameIsValid = false;
       }
     });
     this.setPage('username');
