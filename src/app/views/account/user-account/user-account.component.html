@@ -93,9 +93,9 @@
           <div class="account-sub-header">
             {{ "USER.CONNECT_EMAIL" | translate }}
           </div>
-          <p class="account-sub-msg">
-            <strong>RISE</strong> will use this e-mail to connect and send
-            notifications. You can manage your notification settings above.
+          <p class="account-sub-msg"
+             [innerHTML]="'USER.SUB_MSG' | translate"
+          >
           </p>
           <rise-text-input
             [m_sLocalizationKey]="'USER.EMAIL'"

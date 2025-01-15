@@ -245,7 +245,8 @@
     "PW_SECURITY": "Contraseña y Seguridad",
     "PW_ERROR": "No se pudo guardar la información de la contraseña",
     "SELECT_LANG": "Seleccionar idioma",
-    "SELECT_LANG_MSG": "Selecciona el idioma del sistema que deseas usar para RISE."
+    "SELECT_LANG_MSG": "Selecciona el idioma del sistema que deseas usar para RISE.",
+    "SUB_MSG": "<strong>RISE</strong> usará este correo electrónico para conectarse y enviar notificaciones. Puedes gestionar tus configuraciones de notificación arriba."
   },
   "USER_MENU": {
     "ACCOUNT": "Cuenta",
