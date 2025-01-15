@@ -41,11 +41,11 @@ export class RiseUserMenuComponent implements OnInit {
     private m_oTranslate: TranslateService,
     private m_oUserService: UserService
   ) {
-    this.m_aoMenuItems = DefaultMenuItems;
+    // this.m_aoMenuItems = DefaultMenuItems;
   }
 
   ngOnInit(): void {
-    this.initUserMenu();
+    // this.initUserMenu();
     this.getUserMenu();
   }
 
@@ -94,9 +94,12 @@ export class RiseUserMenuComponent implements OnInit {
     }
 
     this.m_oActivatedRoute.url.subscribe((params) => {
+      console.log("active route changed")
       if (params.toString().includes('account')) {
+        console.log("this is account")
         this.m_aoMenuItems = ReducedMenuItems;
       } else if (params.toString().includes('monitor')) {
+        console.log("this is monitor")
         let oUserRole = this.m_oConstantsService.getUserRole();
         if (!oUserRole) {
           this.m_oUserService.getUser().subscribe({
