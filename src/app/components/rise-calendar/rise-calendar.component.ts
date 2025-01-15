@@ -66,8 +66,8 @@ export class RiseCalendarComponent implements OnInit{
    *
    */
   m_aoHighlightDates: Date[] = [
-    new Date(2025, 0, 15), // January 15, 2025
-    new Date(2025, 1, 14), // February 14, 2025
+    new Date(2010, 9, 5), // January 15, 2025
+    new Date(2005, 11, 12), // February 14, 2025
   ];
 
   /**
