@@ -94,8 +94,8 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    * Events to mark in the timebar
    */
   m_aoEvents = [
-    {date: 'Sat Oct 05 2024', description: 'New Year'},
-    {date: '"Thu Dec 12 2024"', description: 'Christmas'},
+    {date: 'Sat Oct 05 2010', description: 'New Year'},
+    {date: '"Thu Dec 12 2005"', description: 'Christmas'},
   ];
 
   constructor() {
@@ -144,15 +144,27 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     const iEndMonth = iEndDate.getMonth();
     const iEndDay = iEndDate.getDay();
 
-    //Depending on the difference we show months or days
-    // if it is more than one year ,we show years
-    if (iEndYear - iStartYear > 1) {
-      for (let year = iStartYear; year <= iEndYear; year++) {
-        this.aiTicks.push({value: year});
+    const iYearRange = iEndYear - iStartYear;
+    this.aiTicks=[];
+    // If the range is more than one year
+    if (iYearRange > 1) {
+      let interval = 1; // Default interval: one tick per year
+
+      // Adjust interval based on range
+      if (iYearRange > 50) {
+        interval = 10; // One tick every 10 years for ranges over 50 years
+      } else if (iYearRange > 20) {
+        interval = 5; // One tick every 5 years for ranges over 20 years
+      } else if (iYearRange > 10) {
+        interval = 2; // One tick every 2 years for ranges over 10 years
       }
-    } else {
+
+      for (let year = iStartYear; year <= iEndYear; year += interval) {
+        this.aiTicks.push({ value: year });
+      }
+    }else {
       //same year
-      if (iEndYear - iStartYear == 0) {
+      if (iYearRange == 0) {
         if (iEndMonth - iStartMonth > 1) {
           for (let month = iStartMonth; month <= iEndMonth; month++) {
             this.aiTicks.push({value: MONTHS[month]});

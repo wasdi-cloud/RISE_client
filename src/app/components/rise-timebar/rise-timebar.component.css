@@ -15,7 +15,7 @@
 .event-marker {
   position: absolute;
   height: 20px;
-  width: 8px;
+  width: 4px;
   background-color: red;
   transform: translateX(-50%);
   cursor: pointer;
