@@ -20,6 +20,7 @@ td {
 }
 
 rise-dropdown {
-  width: auto;
+  width: 200px;
   font-size: 0.9rem;
+  margin-top: 8px;
 }
