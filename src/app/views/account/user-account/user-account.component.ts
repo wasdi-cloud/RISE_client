@@ -174,7 +174,6 @@ export class UserAccountComponent implements OnInit {
     );
     this.m_sUserDefaultLanguage = defaultLanguage ? defaultLanguage.name : 'Select Language';
     this.m_oSelectedLanguageItem = defaultLanguage ? defaultLanguage : null;
-    console.log(this.m_oSelectedLanguageItem);
   }
 
   /**

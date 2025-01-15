@@ -9,7 +9,7 @@ import {RiseTextInputComponent} from '../../../../components/rise-text-input/ris
 
 import {InviteViewModel} from '../../../../models/InviteViewModel';
 import {UserRole} from '../../../../models/UserRole';
-import {TranslateModule} from '@ngx-translate/core';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {NotificationsDialogsService} from "../../../../services/notifications-dialogs.service";
 
@@ -71,7 +71,8 @@ export class InviteUserComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) private m_oData: any,
     private m_oDialogRef: MatDialogRef<InviteUserComponent>,
     private m_oOrganizationsService: OrganizationsService,
-    private m_oNotificationsDialogsService: NotificationsDialogsService
+    private m_oNotificationsDialogsService: NotificationsDialogsService,
+    private m_oTranslate:TranslateService
   ) {
   }
 
@@ -154,8 +155,17 @@ export class InviteUserComponent implements OnInit {
           this.m_bShowStatus = true;
           this.m_bSuccess = false;
           this.onDismiss();
+          let asErrorCodes = Array.isArray(oError?.error?.errorStringCodes)
+            ? oError.error.errorStringCodes.map(
+              (sCode: string) =>
+                `<li>${this.m_oTranslate.instant('ERROR_MSG.' + sCode)}</li>`
+            )
+            : [];
+          let sErrorMsg = `'There were some issues with your inputted information. Please review your entries'<ul>
+        ${asErrorCodes.toString().replaceAll(',', '')}
+        </ul>`;
           this.m_oNotificationsDialogsService.openSnackBar(
-            "Invitation was not sent",
+            sErrorMsg,
             "Error",
             "danger"
           )

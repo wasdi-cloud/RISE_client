@@ -24,7 +24,7 @@ export class ConfirmInviteViewModel extends RiseViewModel {
 
   notifyActivities?: boolean = true;
 
-  defaultLanguage?: string = "EN";
+  defaultLanguage?: string = "en";
 
   password?: string;
 
