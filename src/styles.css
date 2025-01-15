@@ -307,9 +307,17 @@ button.leaflet-control-geocoder-icon {
 }
 
 .leaflet-control-geocoder-alternatives > li > a {
-  background-color: transparent !important;
-  width: 250px !important;
-  line-height: 18px !important;
+  display: block !important;
+  color: #ffffff !important;
+  font-size: 14px;
+  background-color: rgba(0, 31, 40, 0.6) !important;
+  text-align: left;
+  padding: 4px 8px;
+  text-decoration: none;
+  overflow: hidden; /* Avoid text clipping */
+  white-space: nowrap; /* Prevent text wrapping */
+  text-overflow: ellipsis; /* Add ellipsis for long text */
+  width: 250px;
 }
 
 .leaflet-control-geocoder-alternatives > li:hover,

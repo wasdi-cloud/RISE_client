@@ -116,7 +116,7 @@ export class MapService {
       circle: true,
       circlemarker: false,
       marker: false,
-      polyline: true,
+      polyline: false,
       polygon: true,
       rectangle: {shapeOptions: {color: '#4AFF00'}, showArea: false},
     },
