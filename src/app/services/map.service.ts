@@ -1403,7 +1403,6 @@ export class MapService {
     oContainer.innerHTML = ''; // Clear for tool buttons
 
     const aoTools = [
-      { icon: 'timeline', title: 'Draw Polyline', type: 'polyline' },
       { icon: 'hexagon', title: 'Draw Polygon', type: 'polygon' },
       { icon: 'circle', title: 'Draw Circle', type: 'circle' },
       { icon: 'rectangle', title: 'Draw Rectangle', type: 'rectangle' },
