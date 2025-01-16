@@ -812,20 +812,29 @@ export class MapService {
       onShapeCreated(layer)
       // Temporary layer for measurement
       oMap.addLayer(layer);
-
+      const formatNumber = (num: number) => {
+        return new Intl.NumberFormat().format(num); // Adds commas as thousand separators
+      };
       // Calculate and create a notification message
       let message = '';
       if (sLayerType === 'polyline') {
         const distance = this.calculateDistance(layer.getLatLngs());
-        message = `Distance: ${(distance).toFixed(2)} kilometers`;
+        let distanceWithComas=formatNumber(distance)
+        // message = `Distance: ${(distance).toFixed(2)} kilometers`;
+        message = `Distance: ${distanceWithComas} kilometers`;
       } else if (sLayerType === 'circle') {
         const iRadius = layer.getRadius();
         const area = this.calculateCircleArea(iRadius);
-        message = `Circle Area: ${(area / 1000).toFixed(2)} Km²`;
+        let areaWithFormat = formatNumber(area);
+        // message = `Circle Area: ${(area / 1000).toFixed(2)} Km²`;
+        message = `Circle Area: ${areaWithFormat} Km²`;
       } else {
         const aiLatLngs = layer.getLatLngs()[0];
         const area = this.calculatePolygonArea(aiLatLngs);
-        message = `Area: ${(area / 1000).toFixed(2)} Km²`;
+        let areaWithFormat = formatNumber(area);
+        // message = `Circle Area: ${(area / 1000).toFixed(2)} Km²`;
+        message = `Area: ${areaWithFormat} Km²`;
+        // message = `Area: ${(area / 1000).toFixed(2)} Km²`;
       }
       // Call the callback with the new layer and message
       this.oMeasurementResultSubject.next(message);
