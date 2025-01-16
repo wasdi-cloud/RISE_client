@@ -295,6 +295,7 @@ button.leaflet-control-geocoder-icon {
 
 .leaflet-control-geocoder-expanded > .leaflet-control-geocoder-icon {
   background-color: transparent !important;
+
 }
 
 .leaflet-control-geocoder-form {
@@ -306,22 +307,16 @@ button.leaflet-control-geocoder-icon {
   color: #ffffff !important;
 }
 
-.leaflet-control-geocoder-alternatives > li > a {
-  display: block !important;
-  color: #ffffff !important;
-  font-size: 14px;
-  background-color: rgba(0, 31, 40, 0.6) !important;
-  text-align: left;
-  padding: 4px 8px;
-  text-decoration: none;
-  overflow: hidden; /* Avoid text clipping */
-  white-space: nowrap; /* Prevent text wrapping */
-  text-overflow: ellipsis; /* Add ellipsis for long text */
-  width: 250px;
-}
 
-.leaflet-control-geocoder-alternatives > li:hover,
-.leaflet-control-geocoder-alternatives > li > a:hover {
+
+.leaflet-control-geocoder .leaflet-control-geocoder-alternatives > li > a {
+  background-color: transparent !important;
+  width: 260px !important; /* Ensure this takes precedence */
+  line-height: 18px !important;
+  display: block !important;
+}
+.leaflet-control-geocoder-alternatives>li:hover,
+.leaflet-control-geocoder-alternatives>li>a:hover {
   background-color: rgba(13, 16, 21, 0.9) !important;
 }
 
