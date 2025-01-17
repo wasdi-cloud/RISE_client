@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { UserViewModel } from '../../models/UserViewModel';
 import { OTPVerifyViewModel } from '../../models/OTPVerifyViewModel';
 import {ChangePasswordRequestViewModel} from "../../models/ChangePasswordRequestViewModel";
+import {ConfirmEmailChangeViewModel} from "../../models/ConfirmEmailChangeViewModel";
 
 @Injectable({
   providedIn: 'root',
@@ -38,10 +39,10 @@ export class UserService {
     );
   }
 
-  confirmNewEmail(oBody) {
-    return this.m_oHttp.post<any>(
+  confirmNewEmail(oConfirmEmailChangeVM:ConfirmEmailChangeViewModel) {
+    return this.m_oHttp.post<ConfirmEmailChangeViewModel>(
       this.APIURL + '/usr/confirm-new-email',
-      oBody
+      oConfirmEmailChangeVM
     );
   }
 
