@@ -228,7 +228,7 @@
     "EMAIL": "E-mail",
     "ERROR": "Impossible de récupérer les informations de l'utilisateur",
     "EMAIL_ERROR": "Impossible d'enregistrer les nouvelles informations de courrier électronique",
-    "EMAIL_SUCCESS": "Informations email mises à jour",
+    "EMAIL_SUCCESS": "Veuillez vérifier votre email",
     "LANGUAGE": "Sélectionnez une langue",
     "MOBILE_NUMBER": "Numéro de portable",
     "MY_ACCOUNT": "Mon compte",

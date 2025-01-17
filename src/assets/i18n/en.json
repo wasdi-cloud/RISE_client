@@ -234,7 +234,7 @@
     "EMAIL": "Email",
     "ERROR": "Could not retrieve user's information",
     "EMAIL_ERROR": "Could not save new email information",
-    "EMAIL_SUCCESS": "Email information updated",
+    "EMAIL_SUCCESS": "Please check your email",
     "LANGUAGE": "Select a Language",
     "MOBILE_NUMBER": "Mobile Number",
     "MY_ACCOUNT": "My Account",

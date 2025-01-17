@@ -232,7 +232,7 @@
     "EMAIL": "Correo electrónico",
     "ERROR": "No se pudo recuperar la información del usuario",
     "EMAIL_ERROR": "No se pudo guardar la nueva información del correo electrónico",
-    "EMAIL_SUCCESS": "Información de correo electrónico actualizada",
+    "EMAIL_SUCCESS": "Por favor, revisa tu correo electrónico",
     "LANGUAGE": "Seleccione un idioma",
     "MOBILE_NUMBER": "Número de móvil",
     "MY_ACCOUNT": "Mi cuenta",
