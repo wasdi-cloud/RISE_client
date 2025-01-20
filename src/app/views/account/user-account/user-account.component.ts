@@ -202,9 +202,8 @@ export class UserAccountComponent implements OnInit {
     });
   }
 
-  translateLanguageTo(lang: any) {
+  setUserDefaultLanguage(lang: any) {
     this.m_oUser.defaultLanguage = lang.value.value;
-    this.m_oTranslate.use(lang.value.value);
   }
 
   /**
@@ -472,6 +471,7 @@ export class UserAccountComponent implements OnInit {
       this.m_oUserService.changeUserLanguageSetting(this.m_oUser).subscribe({
         next: (oResponse) => {
           this.getUserInfo();
+          this.m_oTranslate.use(this.m_oUser.defaultLanguage);
           this.m_oNotificationDialogService.openSnackBar(
             "Information Saved",
             "Account",
