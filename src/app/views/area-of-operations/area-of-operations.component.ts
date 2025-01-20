@@ -93,7 +93,7 @@ export class AreaOfOperationsComponent implements OnInit {
         });
       },
       error: (oError) => {
-        this.m_oNotificationService.openInfoDialog(sErrorMsg, 'danger');
+        this.m_oNotificationService.openSnackBar(sErrorMsg, 'Error','danger');
       },
     });
   }
