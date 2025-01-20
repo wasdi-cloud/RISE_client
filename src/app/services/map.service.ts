@@ -819,19 +819,20 @@ export class MapService {
       let message = '';
       if (sLayerType === 'polyline') {
         const distance = this.calculateDistance(layer.getLatLngs());
+        // from mm² to km²
         let distanceWithComas=formatNumber(distance)
         // message = `Distance: ${(distance).toFixed(2)} kilometers`;
         message = `Distance: ${distanceWithComas} kilometers`;
       } else if (sLayerType === 'circle') {
         const iRadius = layer.getRadius();
         const area = this.calculateCircleArea(iRadius);
-        let areaWithFormat = formatNumber(area);
+        let areaWithFormat = formatNumber(area/(Math.pow(10,6)));
         // message = `Circle Area: ${(area / 1000).toFixed(2)} Km²`;
         message = `Circle Area: ${areaWithFormat} Km²`;
       } else {
         const aiLatLngs = layer.getLatLngs()[0];
         const area = this.calculatePolygonArea(aiLatLngs);
-        let areaWithFormat = formatNumber(area);
+        let areaWithFormat = formatNumber(area/(Math.pow(10,6)));
         // message = `Circle Area: ${(area / 1000).toFixed(2)} Km²`;
         message = `Area: ${areaWithFormat} Km²`;
         // message = `Area: ${(area / 1000).toFixed(2)} Km²`;
