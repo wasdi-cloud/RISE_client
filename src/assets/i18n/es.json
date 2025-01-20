@@ -106,13 +106,13 @@
   },
   "ORGANIZATION": {
     "ADDRESS": "Dirección de la organización",
-    "CONFIRM_DELETE_USER": "¿Está seguro de que desea eliminar a este usuario de su organización?",
+    "CONFIRM_DELETE_USER": "¿Estás seguro de que deseas eliminar a este usuario de tu organización?",
     "CHANGES_SAVED": "Tus cambios han sido guardados",
-    "CHANGES_ERROR": "Hubo un error al intentar guardar los cambios. Vuelve a intentarlo más tarde",
+    "CHANGES_ERROR": "Hubo un error al intentar guardar tus cambios. Por favor, inténtalo más tarde",
     "DELETE": "Eliminar organización",
-    "DELETE_MSG": "Una vez que elimines tu organización, esto no se puede deshacer. Asegúrate.",
-    "ERROR_MSG": "No se pudo recuperar la información de la organización",
-    "ERROR_DELETE_USER": "No se pudo eliminar al usuario de esta organización. Inténtelo de nuevo",
+    "DELETE_MSG": "Una vez que elimines tu organización, no se podrá deshacer. Por favor, asegúrate.",
+    "ERROR_MSG": "No se pudo obtener la información de la organización",
+    "ERROR_DELETE_USER": "No se pudo eliminar al usuario de esta organización. Por favor, inténtalo de nuevo",
     "INVITE": "Invitar a un nuevo usuario",
     "MEMBERS": "Colaboradores",
     "NAME": "Nombre de la organización",
@@ -121,7 +121,13 @@
     "TYPE": "Tipo de organización",
     "USERS": "Usuarios de la organización",
     "USERS_ERROR": "No se pudieron recuperar los colaboradores de esta organización",
-    "INFO": "Información sobre la organización"
+    "INFO": "Información de la organización",
+    "STREET_ADDRESS": "Dirección",
+    "COUNTRY": "País",
+    "STREET_NUMBER": "Número de calle",
+    "POSTAL_CODE": "Código postal",
+    "CITY": "Ciudad",
+    "PHONE_NUMBER": "Número de teléfono"
   },
   "OTP_DIALOG": {
     "SUBMIT": "Enviar",
