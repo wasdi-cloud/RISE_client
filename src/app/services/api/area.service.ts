@@ -23,6 +23,9 @@ export class AreaService {
   getAreaList() {
     return this.m_oHttp.get<any>(this.APIURL + '/area/list');
   }
+  getAreaListByUser() {
+    return this.m_oHttp.get<any>(this.APIURL + '/area/list-by-user');
+  }
   getFieldOperators() {
     return this.m_oHttp.get<any>(this.APIURL + '/area/field');
   }

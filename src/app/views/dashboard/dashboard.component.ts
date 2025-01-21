@@ -96,7 +96,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * TODO fetch the user's areas of interest
    */
   getUsersAOI() {
-    this.m_oAreaService.getAreaList().subscribe({
+    this.m_oAreaService.getAreaListByUser().subscribe({
       next: (oResponse) => {
         if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           this.m_aoAreas = oResponse;
