@@ -132,6 +132,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     oMap.setZoom(3);
 
     this.m_oMapService.addMousePositionAndScale(oMap);
+    this.m_oMapService.addZoom();
     this.m_oMapService.m_oLayersControl.addTo(oMap);
     this.m_oMapService.initGeoSearchPluginForOpenStreetMap(oMap);
     if (!this.m_bIsSelectingArea) {
@@ -148,7 +149,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
 
     oMap.fullscreenControl.link.innerHTML =
       "<span class='material-symbols-outlined'>fullscreen</span>";
-    this.m_oMapService.addZoom();
+
     oMap.on('baselayerchange', (e) => {
       console.log('base layer changed');
       this.m_oMapService.setActiveLayer(oMap, e.layer);
