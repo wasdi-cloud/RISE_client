@@ -294,6 +294,10 @@ export class MonitorComponent implements OnInit {
       oPlugin.layers.push(aoLayer);
     }
     this.m_aoReversedLayers = [...this.m_aoLayers].reverse();
+    console.log("this is reverse" )
+    console.log(this.m_aoReversedLayers)
+    console.log("this is original")
+    console.log(this.m_aoLayers)
 
     this.m_oMapService.addLayerMap2DByServer(
       aoLayer.layerId,
@@ -375,7 +379,12 @@ export class MonitorComponent implements OnInit {
    * When the layer order changes, manually remove and then re-add the layers
    */
   handleLayerOrder(): void {
-    this.m_aoLayers.forEach((oLayer) => {
+    console.log("this is reverse" )
+    console.log(this.m_aoReversedLayers)
+    console.log("this is original")
+    console.log(this.m_aoLayers)
+    let aoOrderedLayers=this.m_aoReversedLayers.reverse();
+    aoOrderedLayers.forEach((oLayer) => {
       let oMap = this.m_oMapService.getMap();
       oMap.eachLayer((oMapLayer) => {
         if (oLayer.layerId === oMapLayer.options.layers) {
@@ -384,7 +393,7 @@ export class MonitorComponent implements OnInit {
       });
     });
 
-    this.m_aoLayers.forEach((oLayer) => {
+    aoOrderedLayers.forEach((oLayer) => {
       this.m_oMapService.addLayerMap2DByServer(
         oLayer.layerId,
         oLayer.geoserverUrl
