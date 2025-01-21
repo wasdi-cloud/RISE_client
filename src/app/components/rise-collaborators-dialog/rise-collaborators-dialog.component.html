@@ -7,10 +7,90 @@
       close
     </span>
   </div>
-  <rise-collaborators
-    class="flex-fill"
-    [m_aoUsers]="m_aoUsers"
-    [m_sResourceId]="m_sResourceId"
-    [m_sResourceType]="m_sResourceType"
-  ></rise-collaborators>
+  <!-- No Collaborators -->
+<!--  <div-->
+<!--    class="collaborators-container text-center px-4 py-5 d-flex flex-column gap-4"-->
+<!--    *ngIf="m_aoUsers.length === 0 "-->
+<!--  >-->
+<!--    <span class="material-symbols-outlined"> diversity_3 </span>-->
+<!--    {{ "COLLABORATORS.NONE" | translate }}-->
+<!--    <rise-button-->
+<!--      class="align-self-center"-->
+<!--      [m_sLabel]="'COLLABORATORS.INVITE'"-->
+<!--      [m_sRole]="'primary'"-->
+<!--      (click)="emitInviteClick()"-->
+<!--    ></rise-button>-->
+<!--  </div>-->
+
+  <!-- With Collaborators already -->
+
+  <div class="table-wrapper w-100" *ngIf="m_aoUsers.length > 0 ">
+    <table class="w-100">
+      <thead class="table-heading-container">
+      <tr>
+        <td class="font-bold">{{ "LOGIN.USER_ID" | translate }}</td>
+        <td class="font-bold">{{ "USER.EMAIL" | translate }}</td>
+        <td class="font-bold">{{ "COLLABORATORS.ROLE" | translate }}</td>
+        <td></td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let oUser of m_aoUsers">
+        <td>{{ oUser.userId }}</td>
+        <td>{{ oUser.email }}</td>
+        <td>{{ oUser.role }}</td>
+        <td
+          class="d-flex flex-row justify-content-end align-items-center gap-2"
+        >
+          <span
+            *ngIf="oUser.role==UserRole.FIELD"
+            class="option delete material-symbols-outlined remove"
+            [matTooltip]="'Remove User'"
+            (click)="removeFieldOperator(oUser)"
+          >
+            delete
+          </span>
+        </td>
+      </tr>
+      <tr *ngIf="m_bAddingUser">
+        <td>
+          <rise-dropdown
+          [m_aoDropdownItems]="getFieldOperatorKeys()"
+          [m_aoSelectedItems]="m_oFieldOperatorOfAreaUserId"
+          (m_oSelectionChange)="selectFieldOperator($event)"
+          ></rise-dropdown>
+        </td>
+        <td></td>
+        <td>
+          <span
+            class="option material-symbols-outlined edit"
+            [matTooltip]="'Save'"
+            (click)="addFieldUser()"
+          >
+            save
+          </span>
+          <span
+            class="option material-symbols-outlined edit"
+            [matTooltip]="'Cancel Editing'"
+            (click)="m_bAddingUser = false"
+          >
+            close
+          </span>
+
+        </td>
+      </tr>
+      <tr class="mt-1">
+        <td class="d-flex flex-row justify-content-start">
+          <rise-button
+            *ngIf="m_sResourceType !== 'organization'"
+            [m_sLabel]="'Add Field User'"
+            [m_sRole]="'primary'"
+            (click)="m_bAddingUser = true"
+          ></rise-button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
 </div>
