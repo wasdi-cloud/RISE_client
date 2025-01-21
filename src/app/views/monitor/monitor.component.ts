@@ -270,14 +270,17 @@ export class MonitorComponent implements OnInit {
             let sError: string = this.m_oTranslate.instant(
               'ERROR_MSG.ERROR_LAYER_FAILURE'
             );
-            this.m_oNotificationService.openInfoDialog(sError+oPlugin.name?oPlugin.name:"this plugin", 'error', 'Error');
+            let sErrorMessage=sError.concat(oPlugin.name?oPlugin.name:"this plugin");
+            this.m_oNotificationService.openInfoDialog(sErrorMessage, 'error', 'Error');
           }
         },
         error: (oError) => {
           let sError: string = this.m_oTranslate.instant(
             'ERROR_MSG.ERROR_LAYER_FAILURE'
           );
-          this.m_oNotificationService.openInfoDialog(sError+oPlugin.name?oPlugin.name:"this plugin", 'error', 'Error');
+          let sErrorMessage=sError.concat(oPlugin.name?oPlugin.name:"this plugin");
+
+          this.m_oNotificationService.openInfoDialog(sErrorMessage, 'error', 'Error');
         },
       });
   }
