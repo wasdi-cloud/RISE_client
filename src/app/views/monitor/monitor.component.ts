@@ -294,10 +294,7 @@ export class MonitorComponent implements OnInit {
       oPlugin.layers.push(aoLayer);
     }
     this.m_aoReversedLayers = [...this.m_aoLayers].reverse();
-    console.log("this is reverse" )
-    console.log(this.m_aoReversedLayers)
-    console.log("this is original")
-    console.log(this.m_aoLayers)
+
 
     this.m_oMapService.addLayerMap2DByServer(
       aoLayer.layerId,
@@ -379,10 +376,6 @@ export class MonitorComponent implements OnInit {
    * When the layer order changes, manually remove and then re-add the layers
    */
   handleLayerOrder(): void {
-    console.log("this is reverse" )
-    console.log(this.m_aoReversedLayers)
-    console.log("this is original")
-    console.log(this.m_aoLayers)
     let aoOrderedLayers=this.m_aoReversedLayers.reverse();
     aoOrderedLayers.forEach((oLayer) => {
       let oMap = this.m_oMapService.getMap();
@@ -447,12 +440,10 @@ export class MonitorComponent implements OnInit {
 
   removeLayer(oEvent) {
     let oMap = this.m_oMapService.getMap();
-    console.log(oEvent)
     // Remove from general
     let iIndex = this.m_aoLayers.findIndex(
       (oLayer) => oLayer.layerId === oEvent.layerId
     );
-    console.log(iIndex)
     this.emptyPluginLayers(oEvent.mapId);
 
     this.m_aoLayers.splice(iIndex, 1);
@@ -604,7 +595,7 @@ export class MonitorComponent implements OnInit {
       if(this.m_sAreaId){
         this.m_oRouter.navigateByUrl(`/events/${this.m_sAreaId}`)
       }else{
-        console.log("Area id is missing")
+        console.error("Area id is missing")
         //todo show notification
       }
     }else{
@@ -621,7 +612,7 @@ export class MonitorComponent implements OnInit {
     if(this.m_sAreaId){
       this.m_oEventService.getEvents(this.m_sAreaId).subscribe({
         next:(oEventVM)=>{
-          console.log(oEventVM)
+
         },
         error:(oError)=>{
           console.error(oError)
