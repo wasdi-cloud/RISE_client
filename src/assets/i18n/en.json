@@ -15,7 +15,15 @@
   },
   "MANAGE_EVENTS": {
     "HEADER": "MANAGE EVENTS",
-    "CREATE_EVENT": "Create new Event"
+    "CREATE_NEW_EVENT": "Create new Event"
+  },
+  "CREATE_NEW_EVENT": {
+    "NAME": "Name",
+    "DESCRIPTION": "Description",
+    "PLUGINS": "Plugins",
+    "SITUATION": "Situation",
+    "UPLOAD_IMAGES": "Upload images",
+    "UPLOAD_DOCUMENTS": "Upload Documents"
   },
   "EVENT": {
     "NAME": "Name",

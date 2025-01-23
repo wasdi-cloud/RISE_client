@@ -5,21 +5,21 @@ export class EventViewModel extends RiseViewModel {
   /**
    * Default Id
    */
-  id: string;
+  id?: string;
 
-  name: string;
+  name?: string;
 
-  type: string;
+  type?: string;
 
-  bbox: string;
+  bbox?: string;
 
-  startDate: number;
+  startDate?: number;
 
-  endDate: number;
+  endDate?: number;
 
-  peakDate: number;
+  peakDate?: number;
 
-  description:string;
+  description?:string;
 
 
 }

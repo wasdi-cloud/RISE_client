@@ -41,3 +41,52 @@ rise-dropdown {
   border-radius: 8px;
   padding: 8px;
 }
+.create-outlet {
+  height: calc(100vh - 6rem);
+}
+.header {
+  background-color: var(--surface-glass-interactive);
+  border-radius: 10px;
+  backdrop-filter: blur(20px);
+  color: var(--rise-text-bright);
+  font-size: 20px;
+  line-height: 30px;
+  font-weight: 900;
+}
+
+.create-container {
+  width: 100%;
+}
+
+.map-container-create {
+  height: 80%;
+  width: 100%;
+}
+
+.create-sidebar {
+  background-color: rgba(0, 31, 40, 0.8);
+  border-right: 1px solid var(--rise-border-default);
+  backdrop-filter: blur(10px);
+  height: 100%;
+  padding: 0rem 1rem;
+  width: 40%;
+  z-index: 999;
+}
+.drag-drop-container {
+  gap: 20px; /* Space between the zones */
+}
+
+.drag-drop-zone {
+  flex: 1; /* Equal width for both zones */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  border: 1px dashed #ccc;
+  border-radius: 5px;
+}
+
+.drag-drop-label {
+  font-weight: bold;
+  margin-bottom: 10px;
+}

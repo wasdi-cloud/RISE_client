@@ -15,6 +15,10 @@ import {ActivatedRoute} from "@angular/router";
 import {RiseMapComponent} from "../../components/rise-map/rise-map.component";
 import {AreaViewModel} from "../../models/AreaViewModel";
 import {NotificationsDialogsService} from "../../services/notifications-dialogs.service";
+import {RiseCheckboxComponent} from "../../components/rise-checkbox/rise-checkbox.component";
+import {RiseTextInputComponent} from "../../components/rise-text-input/rise-text-input.component";
+import {RiseTextareaInputComponent} from "../../components/rise-textarea-input/rise-textarea-input.component";
+import {RiseDragAndDropComponent} from "../../components/rise-drag-and-drop/rise-drag-and-drop.component";
 
 @Component({
   selector: 'rise-events',
@@ -29,7 +33,11 @@ import {NotificationsDialogsService} from "../../services/notifications-dialogs.
     RiseDropdownComponent,
     TranslateModule,
     MatTooltip,
-    RiseMapComponent
+    RiseMapComponent,
+    RiseCheckboxComponent,
+    RiseTextInputComponent,
+    RiseTextareaInputComponent,
+    RiseDragAndDropComponent
   ],
   templateUrl: './events.component.html',
   styleUrl: './events.component.css'
@@ -39,8 +47,12 @@ export class EventsComponent implements OnInit{
   m_bCreateNewEvent: boolean=false;
   m_aoEvents: EventViewModel[]=[];
   m_aoAreasOfOperations: Array<AreaViewModel>=[];
-
-
+  eventName: string ='';
+  eventDescription: string="";
+  m_bPluginsAreValid: boolean;
+  m_oEvent: EventViewModel={};
+  m_asEventPlugins: { label: string; value: string }[] = [];
+  m_asEventPluginsSelected: string[] = [];
 
   constructor(
     private m_oEventService:EventService,
@@ -68,13 +80,16 @@ export class EventsComponent implements OnInit{
     })
   }
   onCreateNewEvent() {
-
+    this.m_bCreateNewEvent=true;
   }
 
   editEvent(oEvent: EventViewModel) {
 
   }
   //todo we might want to add a confirmation
+
+
+
   deleteEvent(oEvent: EventViewModel) {
       if(oEvent){
         this.m_oEventService.deleteEvent(oEvent.id).subscribe({
@@ -98,5 +113,37 @@ export class EventsComponent implements OnInit{
 
   addNewEvent() {
 
+  }
+
+  exitCreatingNewEvent() {
+
+  }
+
+  enableEventSubmit() {
+    return false;
+  }
+
+  enableAOISubmit() {
+    return false;
+  }
+
+  executeEventSaving() {
+    return '';
+  }
+
+  onMapInputChange($event: any) {
+
+  }
+
+  onSelectionChange($event: Array<any>) {
+
+  }
+
+  uploadImage($event: any) {
+    
+  }
+
+  uploadDocument($event: any) {
+    
   }
 }
