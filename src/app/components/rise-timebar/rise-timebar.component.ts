@@ -132,8 +132,9 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   generateYearTicks() {
     //todo make zoom in from year to months to days
     //todo make zoom out from days to months to years
-
-    // const iStartYear =2010
+    //this is for alpha only
+    this.m_iStartDate=this.m_iStartDate==-1?1420130166:this.m_iStartDate
+    // const iStartYear =2015
     const iStartDate = new Date(this.m_iStartDate * 1000);
     const iStartYear = iStartDate.getFullYear();
     const iStartMonth = iStartDate.getMonth();

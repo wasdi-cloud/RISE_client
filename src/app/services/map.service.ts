@@ -1832,4 +1832,11 @@ export class MapService {
   calculateCircleArea(radius: any) {
     return Math.PI * Math.pow(radius, 2);
   }
+
+  clearMarkerSubject() {
+    //Important to complete the subject before creating a new one to prevent memory leaks
+    this.m_oMarkerSubject.complete();
+    this.m_oMarkerSubject = new BehaviorSubject<AreaViewModel | null>(null);
+    this.m_oMarkerSubject$ = this.m_oMarkerSubject.asObservable();
+  }
 }

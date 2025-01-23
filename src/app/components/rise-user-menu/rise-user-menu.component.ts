@@ -158,6 +158,7 @@ export class RiseUserMenuComponent implements OnInit {
         window.open('https://discord.gg/FkRu2GypSg', '_blank');
         break;
       case 'logout':
+        this.m_oMapService.clearMarkerSubject(); // Clear the subject
         this.m_oAuthService.logout();
         break;
       case 'dashboard':
