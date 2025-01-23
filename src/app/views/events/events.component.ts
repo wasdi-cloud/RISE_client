@@ -12,6 +12,8 @@ import {MatTooltip} from "@angular/material/tooltip";
 import {EventService} from "../../services/api/event.service";
 import FadeoutUtils from "../../shared/utilities/FadeoutUtils";
 import {ActivatedRoute} from "@angular/router";
+import {RiseMapComponent} from "../../components/rise-map/rise-map.component";
+import {AreaViewModel} from "../../models/AreaViewModel";
 
 @Component({
   selector: 'rise-events',
@@ -25,7 +27,8 @@ import {ActivatedRoute} from "@angular/router";
     RiseButtonComponent,
     RiseDropdownComponent,
     TranslateModule,
-    MatTooltip
+    MatTooltip,
+    RiseMapComponent
   ],
   templateUrl: './events.component.html',
   styleUrl: './events.component.css'
@@ -34,6 +37,7 @@ export class EventsComponent implements OnInit{
   m_sAreaId:string;
   m_bCreateNewEvent: boolean=false;
   m_aoEvents: EventViewModel[]=[];
+  m_aoAreasOfOperations: Array<AreaViewModel>=[];
 
 
 
@@ -78,5 +82,9 @@ export class EventsComponent implements OnInit{
       this.m_sAreaId= params.get('aoiId');
       this.getEventsList();
     });
+  }
+
+  addNewEvent() {
+    
   }
 }

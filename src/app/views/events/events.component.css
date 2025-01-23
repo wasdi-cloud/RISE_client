@@ -23,3 +23,21 @@ rise-dropdown {
   width: auto;
   font-size: 0.9rem;
 }
+.events-sidebar {
+  background-color: rgba(0, 31, 40, 0.8);
+  border-right: 1px solid var(--rise-border-default);
+  backdrop-filter: blur(10px);
+  height: 100%;
+  padding-right: 1rem;
+  width: 45%;
+  z-index: 999;
+}
+.events-card-container {
+  overflow-y: auto;
+}
+
+.events-card {
+  border: 1px solid var(--rise-text-dim);
+  border-radius: 8px;
+  padding: 8px;
+}
