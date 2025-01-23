@@ -148,7 +148,13 @@
     "TYPE": "Organization Type",
     "USERS": "Organization Users",
     "USERS_ERROR": "Could not retrieve the collaborators on this organization",
-    "INFO": "Organization Information"
+    "INFO": "Organization Information",
+    "STREET_ADDRESS": "Street Address",
+    "COUNTRY": "Country",
+    "STREET_NUMBER": "Street Number",
+    "POSTAL_CODE": "Postal code",
+    "CITY": "City",
+    "PHONE_NUMBER": "Phone number"
   },
   "OTP_DIALOG": {
     "SUBMIT": "Submit",
@@ -234,7 +240,7 @@
     "EMAIL": "Email",
     "ERROR": "Could not retrieve user's information",
     "EMAIL_ERROR": "Could not save new email information",
-    "EMAIL_SUCCESS": "Email information updated",
+    "EMAIL_SUCCESS": "Please check your email",
     "LANGUAGE": "Select a Language",
     "MOBILE_NUMBER": "Mobile Number",
     "MY_ACCOUNT": "My Account",

@@ -13,6 +13,7 @@ import {
   ConfirmAdminRegistrationComponent
 } from "./views/confirm-admin-registration/confirm-admin-registration.component";
 import {EventsComponent} from "./views/events/events.component";
+import {ConfirmChangeEmailComponent} from "./views/confirm-change-email/confirm-change-email.component";
 
 export const routes: Routes = [
   { path: '', component: PublicHomeComponent, canActivate: [isLoggedGuard] },
@@ -37,6 +38,11 @@ export const routes: Routes = [
   {
     path: 'user/confirm',
     component: ConfirmInvitedUserRegistrationComponent,
+
+  },
+  {
+    path: 'user/confirm-change-email',
+    component: ConfirmChangeEmailComponent,
 
   },
   {

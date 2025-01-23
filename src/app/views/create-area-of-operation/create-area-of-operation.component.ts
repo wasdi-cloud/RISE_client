@@ -277,9 +277,9 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
 
   private saveAreaOfOperation() {
     //TODO until the daemon is ready
-    if(environment.isTestEnvironment){
-      this.m_oAreaOfOperation.plugins=[]
-    }
+    // if(environment.isTestEnvironment){
+    //   this.m_oAreaOfOperation.plugins=[]
+    // }
     this.m_oAreaOfOperationService
       .addArea(this.m_oAreaOfOperation)
       .subscribe({

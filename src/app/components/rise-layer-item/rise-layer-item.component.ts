@@ -40,12 +40,13 @@ export class RiseLayerItemComponent {
   }
 
   emitOpacity() {
+    this.m_iOpacity==0?(this.m_bShowLayer=false):(this.m_bShowLayer=true)
     this.m_oLayerOpacity.emit(this.m_iOpacity);
   }
 
   emitAction(sAction) {
     let oEmitObject = {
-      layer: this.m_oLayer, 
+      layer: this.m_oLayer,
       action: sAction
     }
 

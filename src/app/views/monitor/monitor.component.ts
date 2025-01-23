@@ -270,14 +270,17 @@ export class MonitorComponent implements OnInit {
             let sError: string = this.m_oTranslate.instant(
               'ERROR_MSG.ERROR_LAYER_FAILURE'
             );
-            this.m_oNotificationService.openInfoDialog(sError+oPlugin.name?oPlugin.name:"this plugin", 'error', 'Error');
+            let sErrorMessage=sError.concat(oPlugin.name?oPlugin.name:"this plugin");
+            this.m_oNotificationService.openInfoDialog(sErrorMessage, 'error', 'Error');
           }
         },
         error: (oError) => {
           let sError: string = this.m_oTranslate.instant(
             'ERROR_MSG.ERROR_LAYER_FAILURE'
           );
-          this.m_oNotificationService.openInfoDialog(sError+oPlugin.name?oPlugin.name:"this plugin", 'error', 'Error');
+          let sErrorMessage=sError.concat(oPlugin.name?oPlugin.name:"this plugin");
+
+          this.m_oNotificationService.openInfoDialog(sErrorMessage, 'error', 'Error');
         },
       });
   }
@@ -291,6 +294,7 @@ export class MonitorComponent implements OnInit {
       oPlugin.layers.push(aoLayer);
     }
     this.m_aoReversedLayers = [...this.m_aoLayers].reverse();
+
 
     this.m_oMapService.addLayerMap2DByServer(
       aoLayer.layerId,
@@ -372,7 +376,8 @@ export class MonitorComponent implements OnInit {
    * When the layer order changes, manually remove and then re-add the layers
    */
   handleLayerOrder(): void {
-    this.m_aoLayers.forEach((oLayer) => {
+    let aoOrderedLayers=this.m_aoReversedLayers.reverse();
+    aoOrderedLayers.forEach((oLayer) => {
       let oMap = this.m_oMapService.getMap();
       oMap.eachLayer((oMapLayer) => {
         if (oLayer.layerId === oMapLayer.options.layers) {
@@ -381,7 +386,7 @@ export class MonitorComponent implements OnInit {
       });
     });
 
-    this.m_aoLayers.forEach((oLayer) => {
+    aoOrderedLayers.forEach((oLayer) => {
       this.m_oMapService.addLayerMap2DByServer(
         oLayer.layerId,
         oLayer.geoserverUrl
@@ -435,12 +440,10 @@ export class MonitorComponent implements OnInit {
 
   removeLayer(oEvent) {
     let oMap = this.m_oMapService.getMap();
-    console.log(oEvent)
     // Remove from general
     let iIndex = this.m_aoLayers.findIndex(
       (oLayer) => oLayer.layerId === oEvent.layerId
     );
-    console.log(iIndex)
     this.emptyPluginLayers(oEvent.mapId);
 
     this.m_aoLayers.splice(iIndex, 1);
@@ -592,7 +595,7 @@ export class MonitorComponent implements OnInit {
       if(this.m_sAreaId){
         this.m_oRouter.navigateByUrl(`/events/${this.m_sAreaId}`)
       }else{
-        console.log("Area id is missing")
+        console.error("Area id is missing")
         //todo show notification
       }
     }else{
@@ -609,7 +612,7 @@ export class MonitorComponent implements OnInit {
     if(this.m_sAreaId){
       this.m_oEventService.getEvents(this.m_sAreaId).subscribe({
         next:(oEventVM)=>{
-          console.log(oEventVM)
+
         },
         error:(oError)=>{
           console.error(oError)

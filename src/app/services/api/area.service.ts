@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ConstantsService } from '../constants.service';
 import { AreaViewModel } from '../../models/AreaViewModel';
+import {UserOfAreaViewModel} from "../../models/UserOfAreaViewModel";
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +22,12 @@ export class AreaService {
    */
   getAreaList() {
     return this.m_oHttp.get<any>(this.APIURL + '/area/list');
+  }
+  getAreaListByUser() {
+    return this.m_oHttp.get<any>(this.APIURL + '/area/list-by-user');
+  }
+  getFieldOperators() {
+    return this.m_oHttp.get<any>(this.APIURL + '/area/field');
   }
 
   /**
@@ -90,12 +97,11 @@ export class AreaService {
    * @return
    */
 
-  deleteUserFromArea(sId: string, oUserToDelete) {
-    let urlParams = '?id=' + sId;
-    return this.m_oHttp.delete<any>(
-      this.APIURL + '/area/users' + urlParams,
-      oUserToDelete
-    );
+  deleteUserFromArea(sId: string, oUserToDelete:UserOfAreaViewModel) {
+    return this.m_oHttp.delete<any>(this.APIURL + '/area/users', {
+      body: oUserToDelete,
+      params: { id: sId },
+    });
   }
 
   /**

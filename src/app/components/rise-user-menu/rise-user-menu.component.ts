@@ -119,16 +119,25 @@ export class RiseUserMenuComponent implements OnInit {
           this.m_oUserService.getUser().subscribe({
             next: (oResponse) => {
               oUserRole = oResponse.role;
+              if (oUserRole == UserRole.FIELD) {
+                this.m_aoMenuItems = DefaultMenuItems.filter(
+                  (item) => item.name != 'subscriptions'
+                );
+              } else {
+                this.m_aoMenuItems = DefaultMenuItems;
+              }
             },
           });
+        }else{
+          if (oUserRole == UserRole.FIELD) {
+            this.m_aoMenuItems = DefaultMenuItems.filter(
+              (item) => item.name != 'subscriptions'
+            );
+          } else {
+            this.m_aoMenuItems = DefaultMenuItems;
+          }
         }
-        if (oUserRole == UserRole.FIELD) {
-          this.m_aoMenuItems = DefaultMenuItems.filter(
-            (item) => item.name != 'subscriptions'
-          );
-        } else {
-          this.m_aoMenuItems = DefaultMenuItems;
-        }
+
       }
     });
   }
