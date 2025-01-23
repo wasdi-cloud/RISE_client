@@ -19,4 +19,13 @@ export class EventService {
   getEvents(sAreaId:string):Observable<EventViewModel[]>{
     return this.m_oHttp.get<EventViewModel[]>(this.APIURL+'/event/list?areaId='+sAreaId)
   }
+  deleteEvent(sEventId:string):Observable<any>{
+    return this.m_oHttp.delete<any>(this.APIURL+'/event/delete?eventId='+sEventId)
+  }
+  addEvent(sAreaId:string,oEvent:EventViewModel):Observable<EventViewModel>{
+    return this.m_oHttp.post<EventViewModel>(this.APIURL+'/event/add?areaId='+sAreaId,oEvent)
+  }
+  updateEvent(oEvent:EventViewModel):Observable<EventViewModel>{
+    return this.m_oHttp.put<EventViewModel>(this.APIURL+'/event/update',oEvent)
+  }
 }

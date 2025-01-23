@@ -14,6 +14,7 @@ import FadeoutUtils from "../../shared/utilities/FadeoutUtils";
 import {ActivatedRoute} from "@angular/router";
 import {RiseMapComponent} from "../../components/rise-map/rise-map.component";
 import {AreaViewModel} from "../../models/AreaViewModel";
+import {NotificationsDialogsService} from "../../services/notifications-dialogs.service";
 
 @Component({
   selector: 'rise-events',
@@ -44,6 +45,7 @@ export class EventsComponent implements OnInit{
   constructor(
     private m_oEventService:EventService,
     private m_oActiveRoute:ActivatedRoute,
+    private m_oNotificationServiceDialog:NotificationsDialogsService,
   ) {
   }
 
@@ -72,9 +74,19 @@ export class EventsComponent implements OnInit{
   editEvent(oEvent: EventViewModel) {
 
   }
-
+  //todo we might want to add a confirmation
   deleteEvent(oEvent: EventViewModel) {
-
+      if(oEvent){
+        this.m_oEventService.deleteEvent(oEvent.id).subscribe({
+          next:(oResponse)=>{
+            this.getEventsList();
+            this.m_oNotificationServiceDialog.openSnackBar("Event deleted successfully","Success","success")
+          },
+          error:(oError)=>{
+            this.m_oNotificationServiceDialog.openSnackBar("Error deleting the event","Error","danger")
+          }
+        })
+      }
   }
 
   private getActiveAOI() {
@@ -85,6 +97,6 @@ export class EventsComponent implements OnInit{
   }
 
   addNewEvent() {
-    
+
   }
 }
