@@ -89,22 +89,30 @@
             [m_sLocalizationKey]="'CREATE_NEW_EVENT.DESCRIPTION'"
             [m_bIsValidatorInput]="true"
           ></rise-textarea-input>
-          <rise-textarea-input
+          <rise-date-input
             [m_bHasTitle]="true"
-            [(m_sInputText)]="m_oEvent.description"
-            [m_sLocalizationKey]="'CREATE_NEW_EVENT.DESCRIPTION'"
-            [m_bIsValidatorInput]="true"
-          ></rise-textarea-input>
-<!--          todo add date range here with switch button for live or no-->
-          <label class="d-flex flex-row gap-2" for="situation">
-            <input
-              type="radio"
-              name="area_type"
-              id="situation"
-              (change)="true"
-            />
-            {{ "CREATE_NEW_EVENT.SITUATION" | translate }}</label
-          >
+            [m_sLocalizationKey]="'Start Date'"
+            [m_sInputDate]="m_oEvent.startDate | date : 'yyyy-MM-dd'"
+          ></rise-date-input>
+          <rise-date-input
+            [m_bHasTitle]="true"
+            [m_sLocalizationKey]="'Peak Date'"
+            [m_sInputDate]="m_oEvent.peakDate | date : 'yyyy-MM-dd'"
+          ></rise-date-input>
+          <rise-date-input
+            *ngIf="!m_bIsOngoingEvent"
+            [m_bHasTitle]="true"
+            [m_sLocalizationKey]="'End Date'"
+            [m_sInputDate]="m_oEvent.endDate | date : 'yyyy-MM-dd'"
+          ></rise-date-input>
+
+          <!--          todo add date range here with switch button for live or no-->
+          <div class="align-items-md-start d-flex">
+            <span class="toggle-label">On-going event</span>
+            <mat-slide-toggle labelPosition="before" (change)="onSwitchButton($event)" [(ngModel)]="m_bIsOngoingEvent" class="custom-toggle"></mat-slide-toggle>
+          </div>
+
+
           <div>
             {{ 'CREATE_NEW_EVENT.PLUGINS' | translate }}
             <rise-checkbox
@@ -119,8 +127,8 @@
         <div class="d-flex flex-column gap-2">
           <rise-button
             [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.SAVE'"
-            [m_bDisabled]="!enableEventSubmit()"
-            (click)="enableEventSubmit() ? executeEventSaving() : ''"
+            [m_bDisabled]="false"
+            (click)="executeEventSaving()"
           ></rise-button>
           <rise-button
             [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.CANCEL'"

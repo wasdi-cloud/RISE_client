@@ -19,6 +19,18 @@ import {RiseCheckboxComponent} from "../../components/rise-checkbox/rise-checkbo
 import {RiseTextInputComponent} from "../../components/rise-text-input/rise-text-input.component";
 import {RiseTextareaInputComponent} from "../../components/rise-textarea-input/rise-textarea-input.component";
 import {RiseDragAndDropComponent} from "../../components/rise-drag-and-drop/rise-drag-and-drop.component";
+import {MatFormFieldModule, MatHint, MatLabel, MatSuffix} from "@angular/material/form-field";
+import {
+  MatDatepickerModule,
+  MatDatepickerToggle,
+  MatDateRangeInput,
+  MatDateRangePicker
+} from "@angular/material/datepicker";
+import {provideNativeDateAdapter} from "@angular/material/core";
+import {MatInput, MatInputModule} from "@angular/material/input";
+import {RiseDateInputComponent} from "../../components/rise-date-input/rise-date-input.component";
+import {MatSlideToggle, MatSlideToggleChange, MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'rise-events',
@@ -37,18 +49,30 @@ import {RiseDragAndDropComponent} from "../../components/rise-drag-and-drop/rise
     RiseCheckboxComponent,
     RiseTextInputComponent,
     RiseTextareaInputComponent,
-    RiseDragAndDropComponent
+    RiseDragAndDropComponent,
+    MatLabel,
+    MatDateRangeInput,
+    MatHint,
+    MatDatepickerToggle,
+    MatDateRangePicker,
+    MatSuffix,
+    MatDatepickerModule,
+    MatInputModule,
+    MatFormFieldModule,
+    RiseDateInputComponent,
+    MatSlideToggleModule,
+    FormsModule
   ],
+  providers: [provideNativeDateAdapter()],
   templateUrl: './events.component.html',
   styleUrl: './events.component.css'
 })
 export class EventsComponent implements OnInit{
+  m_bIsOngoingEvent:boolean=false;
   m_sAreaId:string;
   m_bCreateNewEvent: boolean=false;
   m_aoEvents: EventViewModel[]=[];
   m_aoAreasOfOperations: Array<AreaViewModel>=[];
-  eventName: string ='';
-  eventDescription: string="";
   m_bPluginsAreValid: boolean;
   m_oEvent: EventViewModel={};
   m_asEventPlugins: { label: string; value: string }[] = [];
@@ -62,6 +86,7 @@ export class EventsComponent implements OnInit{
   }
 
   ngOnInit() {
+    this.initPlugins()
     this.getActiveAOI()
 
   }
@@ -128,6 +153,10 @@ export class EventsComponent implements OnInit{
   }
 
   executeEventSaving() {
+    console.log(this.m_oEvent)
+    if(this.validateInputs()){
+      console.log(this.m_oEvent)
+    }
     return '';
   }
 
@@ -140,10 +169,36 @@ export class EventsComponent implements OnInit{
   }
 
   uploadImage($event: any) {
-    
+
   }
 
   uploadDocument($event: any) {
-    
+
+  }
+
+  onSwitchButton(toggel:MatSlideToggleChange) {
+    this.m_bIsOngoingEvent=toggel.checked;
+  }
+
+  private initPlugins() {
+    this.m_asEventPlugins=[
+      {label:"Flood",value:"flood"},
+      {label:"Fire",value:"fire"},
+      {label:"Drought",value:"drought"},
+    ]
+  }
+
+  private validateInputs() {
+    if(!this.m_oEvent){
+      return false;
+    }
+    if(!this.m_oEvent.name)return false;
+    if(!this.m_oEvent.description)return false;
+    if(!this.m_oEvent.startDate)return false;
+    if(!this.m_oEvent.endDate)return false;
+    if(!this.m_oEvent.peakDate)return false;
+    if(!this.m_oEvent.type)return false;
+
+    return true;
   }
 }

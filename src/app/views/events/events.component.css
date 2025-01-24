@@ -62,6 +62,25 @@ rise-dropdown {
   height: 80%;
   width: 100%;
 }
+.align-items-md-start {
+  display: flex; /* Ensures items are aligned in a row */
+  align-items: center; /* Vertically align items in the same line */
+}
+
+.toggle-label {
+  margin-right: 8px; /* Adds spacing between the text and the toggle */
+  color: var(--rise-gold); /* Replace with your desired text color */
+  font-weight: bold; /* Optional: Make the text bold */
+}
+
+.custom-toggle .mat-slide-toggle-content {
+  color: inherit; /* Ensures toggle content inherits parent color, if needed */
+}
+
+
+.mat-form-field {
+  margin: 0; /* Remove any extra margins */
+}
 
 .create-sidebar {
   background-color: rgba(0, 31, 40, 0.8);
