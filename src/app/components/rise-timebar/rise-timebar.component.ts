@@ -133,18 +133,18 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     //todo make zoom in from year to months to days
     //todo make zoom out from days to months to years
     //this is for alpha only
+
     this.m_iStartDate=this.m_iStartDate==-1?1420130166:this.m_iStartDate
     // const iStartYear =2015
     const iStartDate = new Date(this.m_iStartDate * 1000);
     const iStartYear = iStartDate.getFullYear();
     const iStartMonth = iStartDate.getMonth();
-    const iStartDay = iStartDate.getDay();
+    const iStartDay = iStartDate.getDate();
 
     const iEndDate = new Date(this.m_iEndDate * 1000);
     const iEndYear = iEndDate.getFullYear();
     const iEndMonth = iEndDate.getMonth();
-    const iEndDay = iEndDate.getDay();
-
+    const iEndDay = iEndDate.getDate();
     const iYearRange = iEndYear - iStartYear;
     this.aiTicks=[];
     // If the range is more than one year
@@ -174,6 +174,8 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
           for (let day = iStartDay; day <= iEndDay; day++) {
             this.aiTicks.push({value: day});
           }
+
+
         }
       }
       //different  year
