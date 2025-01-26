@@ -20,7 +20,7 @@
   "CREATE_NEW_EVENT": {
     "NAME": "Name",
     "DESCRIPTION": "Description",
-    "PLUGINS": "Plugins",
+    "TYPE": "Type",
     "SITUATION": "Situation",
     "UPLOAD_IMAGES": "Upload images",
     "UPLOAD_DOCUMENTS": "Upload Documents"

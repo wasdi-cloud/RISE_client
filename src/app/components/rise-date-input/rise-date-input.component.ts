@@ -25,5 +25,7 @@ export class RiseDateInputComponent {
 
   @Output() m_sInputDateChange: EventEmitter<any> = new EventEmitter<any>();
 
-  onInputChange() {}
+  onInputChange() {
+    this.m_sInputDateChange.emit(this.m_sInputDate)
+  }
 }

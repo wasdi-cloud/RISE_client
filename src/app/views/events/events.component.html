@@ -1,6 +1,6 @@
 <rise-toolbar class="toolbar" [m_bUserIsSigned]="true"></rise-toolbar>
 
-<div class="body flex-fill d-flex flex-row mt-3" style="height: 90%;" *ngIf="!m_bCreateNewEvent">
+<div class="body flex-fill d-flex flex-row mt-3" style="height: 90%;" *ngIf="!m_bCreateNewEvent && !m_bUpdatingEvent">
   <div class="events-sidebar d-flex flex-column justify-content-between">
     <div class="events-card-container d-flex flex-column gap-2 flex-fill">
       <div
@@ -65,7 +65,7 @@
     <rise-map [m_aoAreas]="m_aoAreasOfOperations"></rise-map>
   </div>
 </div>
-<div class="create-outlet" *ngIf="m_bCreateNewEvent">
+<div class="create-outlet" *ngIf="m_bCreateNewEvent || m_bUpdatingEvent">
   <div
     class="create-container h-100 d-flex flex-column justify-content-between px-4"
   >
@@ -92,18 +92,21 @@
           <rise-date-input
             [m_bHasTitle]="true"
             [m_sLocalizationKey]="'Start Date'"
-            [m_sInputDate]="m_oEvent.startDate | date : 'yyyy-MM-dd'"
+            [(m_sInputDate)]="m_sStartDate"
+            (m_sInputDateChange)="onDateChange($event,'startDate')"
           ></rise-date-input>
           <rise-date-input
             [m_bHasTitle]="true"
             [m_sLocalizationKey]="'Peak Date'"
-            [m_sInputDate]="m_oEvent.peakDate | date : 'yyyy-MM-dd'"
+            [(m_sInputDate)]="m_sPeakDate"
+            (m_sInputDateChange)="onDateChange($event,'peakDate')"
           ></rise-date-input>
           <rise-date-input
             *ngIf="!m_bIsOngoingEvent"
             [m_bHasTitle]="true"
             [m_sLocalizationKey]="'End Date'"
-            [m_sInputDate]="m_oEvent.endDate | date : 'yyyy-MM-dd'"
+            [(m_sInputDate)]="m_sEndDate "
+            (m_sInputDateChange)="onDateChange($event,'endDate')"
           ></rise-date-input>
 
           <!--          todo add date range here with switch button for live or no-->
@@ -114,14 +117,40 @@
 
 
           <div>
-            {{ 'CREATE_NEW_EVENT.PLUGINS' | translate }}
-            <rise-checkbox
-              [m_aoOptions]="this.m_asEventPlugins"
-              (m_oSelectionChange)="onSelectionChange($event)"
-              [m_aoSelectedValues]="this.m_asEventPluginsSelected"
-            >
-            </rise-checkbox>
-            <div class="invalid-feedback" *ngIf="!m_bPluginsAreValid"></div>
+            {{ 'CREATE_NEW_EVENT.TYPE' | translate }}
+            <label class="d-flex flex-row gap-2" for="flood">
+              <input
+                type="radio"
+                name="area_type"
+                id="flood"
+                [(ngModel)]="m_oEvent.type"
+                value="flood"
+              />
+              Flood
+            </label>
+
+            <label class="d-flex flex-row gap-2" for="fire">
+              <input
+                type="radio"
+                name="area_type"
+                id="fire"
+                [(ngModel)]="m_oEvent.type"
+                value="fire"
+              />
+              Fire
+            </label>
+
+            <label class="d-flex flex-row gap-2" for="emergency">
+              <input
+                type="radio"
+                name="area_type"
+                id="emergency"
+                [(ngModel)]="m_oEvent.type"
+                value="drought"
+              />
+              Drought
+            </label>
+
           </div>
         </div>
         <div class="d-flex flex-column gap-2">
@@ -141,7 +170,7 @@
       <div class="map-container-create flex-fill">
         <rise-map
           (m_oMapInputChange)="onMapInputChange($event)"
-          [m_bIsSelectingArea]="true"
+          [m_bIsSelectingArea]="m_bCreateNewEvent"
         ></rise-map>
         <!-- Drag-and-Drop Zones -->
         <div class="drag-drop-container d-flex flex-row justify-content-between mt-3">

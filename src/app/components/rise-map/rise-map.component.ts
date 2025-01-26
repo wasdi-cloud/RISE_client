@@ -93,6 +93,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
           this.m_oMapService.addMarker(oArea, this.m_oMap);
         }
       }
+
     }
   }
 

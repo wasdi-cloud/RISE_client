@@ -27,10 +27,12 @@ import {
   MatDateRangePicker
 } from "@angular/material/datepicker";
 import {provideNativeDateAdapter} from "@angular/material/core";
-import {MatInput, MatInputModule} from "@angular/material/input";
+import {MatInputModule} from "@angular/material/input";
 import {RiseDateInputComponent} from "../../components/rise-date-input/rise-date-input.component";
-import {MatSlideToggle, MatSlideToggleChange, MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatSlideToggleChange, MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {FormsModule} from "@angular/forms";
+import {geojsonToWKT} from "@terraformer/wkt";
+import {MapService} from "../../services/map.service";
 
 @Component({
   selector: 'rise-events',
@@ -67,81 +69,109 @@ import {FormsModule} from "@angular/forms";
   templateUrl: './events.component.html',
   styleUrl: './events.component.css'
 })
-export class EventsComponent implements OnInit{
-  m_bIsOngoingEvent:boolean=false;
-  m_sAreaId:string;
-  m_bCreateNewEvent: boolean=false;
-  m_aoEvents: EventViewModel[]=[];
-  m_aoAreasOfOperations: Array<AreaViewModel>=[];
-  m_bPluginsAreValid: boolean;
-  m_oEvent: EventViewModel={};
-  m_asEventPlugins: { label: string; value: string }[] = [];
-  m_asEventPluginsSelected: string[] = [];
+export class EventsComponent implements OnInit {
+  m_bIsOngoingEvent: boolean = false;
+  m_sAreaId: string;
+  m_bCreateNewEvent: boolean = false;
+  m_bUpdatingEvent: boolean = false;
+  m_aoEvents: EventViewModel[] = [];
+  m_aoAreasOfOperations: Array<AreaViewModel> = [];
+  m_oEvent: EventViewModel = {};
+  m_sStartDate: any
+  m_sPeakDate: any
+  m_sEndDate: any
 
   constructor(
-    private m_oEventService:EventService,
-    private m_oActiveRoute:ActivatedRoute,
-    private m_oNotificationServiceDialog:NotificationsDialogsService,
+    private m_oEventService: EventService,
+    private m_oActiveRoute: ActivatedRoute,
+    private m_oMapService: MapService,
+    private m_oNotificationServiceDialog: NotificationsDialogsService,
   ) {
   }
 
   ngOnInit() {
-    this.initPlugins()
     this.getActiveAOI()
 
   }
 
-  private getEventsList() {
-    if(FadeoutUtils.utilsIsStrNullOrEmpty(this.m_sAreaId)){
-      return;
-    }
-    this.m_oEventService.getEvents(this.m_sAreaId).subscribe({
-      next:(aoEvents)=>{
-        this.m_aoEvents=aoEvents;
-      },
-      error:(oError)=>{
-        console.error(oError);
-      }
-    })
-  }
   onCreateNewEvent() {
-    this.m_bCreateNewEvent=true;
+    this.m_bCreateNewEvent = true;
   }
 
   editEvent(oEvent: EventViewModel) {
+    this.m_oEvent=oEvent;
+    this.m_sStartDate=this.formatEpochToDate(this.m_oEvent.startDate);
+    this.m_sPeakDate=this.formatEpochToDate(this.m_oEvent.peakDate);
+    this.m_sEndDate=this.formatEpochToDate(this.m_oEvent.endDate);
 
+    this.m_bUpdatingEvent=true;
   }
-  //todo we might want to add a confirmation
-
-
-
+//todo we might want to add a confirmation
   deleteEvent(oEvent: EventViewModel) {
-      if(oEvent){
-        this.m_oEventService.deleteEvent(oEvent.id).subscribe({
-          next:(oResponse)=>{
-            this.getEventsList();
-            this.m_oNotificationServiceDialog.openSnackBar("Event deleted successfully","Success","success")
-          },
-          error:(oError)=>{
-            this.m_oNotificationServiceDialog.openSnackBar("Error deleting the event","Error","danger")
-          }
-        })
+    if (oEvent) {
+      this.m_oEventService.deleteEvent(oEvent.id).subscribe({
+        next: (oResponse) => {
+          this.getEventsList();
+          this.m_oNotificationServiceDialog.openSnackBar("Event deleted successfully", "Success", "success")
+        },
+        error: (oError) => {
+          this.m_oNotificationServiceDialog.openSnackBar("Error deleting the event", "Error", "danger")
+        }
+      })
+    }
+  }
+
+
+  updateEvent(){
+    this.m_oEventService.updateEvent(this.m_oEvent).subscribe(
+      {
+        next: (oResponse) => {
+          this.m_oNotificationServiceDialog.openSnackBar(
+            "Event Updated Successfully",
+            "Success",
+            "success"
+          )
+          this.exitCreatingNewEvent();
+
+        },
+        error: (oError) => {
+          this.m_oNotificationServiceDialog.openSnackBar(
+            "Event was not updated",
+            "Error",
+            "danger"
+          )
+        }
       }
+    )
   }
-
-  private getActiveAOI() {
-    this.m_oActiveRoute.paramMap.subscribe(params => {
-      this.m_sAreaId= params.get('aoiId');
-      this.getEventsList();
-    });
-  }
-
   addNewEvent() {
+    this.m_oEventService.addEvent(this.m_sAreaId, this.m_oEvent).subscribe(
+      {
+        next: (oResponse) => {
+          this.m_oNotificationServiceDialog.openSnackBar(
+            "Event Added Successfully",
+            "Success",
+            "success"
+          )
+          this.exitCreatingNewEvent();
 
+        },
+        error: (oError) => {
+          this.m_oNotificationServiceDialog.openSnackBar(
+            "Event was not added",
+            "Error",
+            "danger"
+          )
+        }
+      }
+    )
   }
 
   exitCreatingNewEvent() {
-
+    this.m_oEvent = {};
+    this.m_bCreateNewEvent = false;
+    this.m_bUpdatingEvent = false;
+    this.getEventsList();
   }
 
   enableEventSubmit() {
@@ -153,20 +183,52 @@ export class EventsComponent implements OnInit{
   }
 
   executeEventSaving() {
-    console.log(this.m_oEvent)
-    if(this.validateInputs()){
-      console.log(this.m_oEvent)
+    if (this.validateInputs()) {
+      if(this.m_bCreateNewEvent){
+        this.addNewEvent()
+      }else if (this.m_bUpdatingEvent){
+        this.updateEvent();
+      }
+
     }
-    return '';
   }
 
-  onMapInputChange($event: any) {
-
+  onMapInputChange(shapeInfo: any) {
+    if (shapeInfo) {
+      if (shapeInfo.type === 'circle') {
+        // Store circle information as before
+        let areaInfo = {
+          type: 'circle',
+          center: {
+            lat: shapeInfo.center.lat,
+            lng: shapeInfo.center.lng,
+          },
+          radius: shapeInfo.radius,
+          area: shapeInfo.area,
+        };
+        let markerCoordinates =
+          'POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')';
+        // Convert circle to WKT (approximated as a polygon with 64 points)
+        this.m_oEvent.bbox = this.m_oMapService.convertCircleToWKT(
+          shapeInfo.center,
+          shapeInfo.radius
+        );
+      } else if (shapeInfo.type === 'polygon') {
+        // Store polygon information as before
+        let areaInfo = {
+          type: 'polygon',
+          points: shapeInfo.points,
+          area: shapeInfo.area,
+          geoJson: shapeInfo.geoJson,
+          center: shapeInfo.center,
+        };
+        // Convert polygon to WKT
+        this.m_oEvent.bbox = geojsonToWKT(shapeInfo.geoJson);
+      }
+    }
   }
 
-  onSelectionChange($event: Array<any>) {
 
-  }
 
   uploadImage($event: any) {
 
@@ -176,28 +238,91 @@ export class EventsComponent implements OnInit{
 
   }
 
-  onSwitchButton(toggel:MatSlideToggleChange) {
-    this.m_bIsOngoingEvent=toggel.checked;
+  onSwitchButton(toggel: MatSlideToggleChange) {
+    this.m_bIsOngoingEvent = toggel.checked;
   }
 
-  private initPlugins() {
-    this.m_asEventPlugins=[
-      {label:"Flood",value:"flood"},
-      {label:"Fire",value:"fire"},
-      {label:"Drought",value:"drought"},
-    ]
+  // Convert epoch time to 'mm/dd/yyyy' string
+  formatEpochToDate(epoch: number): string {
+    if (!epoch) return '';
+
+    const date = new Date(epoch); // Interpret the epoch timestamp
+
+    // Use UTC methods to ensure consistent output
+    const yyyy = date.getUTCFullYear();
+    const mm = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+    const dd = date.getUTCDate().toString().padStart(2, '0');
+
+    // return `${mm}-${dd}-${yyyy}`;
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
+  // Convert mm/dd/yyyy string to epoch timestamp
+  convertDateToEpoch(dateString: string): number | null {
+    const [yyyy, mm, dd] = dateString.split('-').map(Number);
+    if (!this.isValidDate(mm, dd, yyyy)) return null;
+    // Use UTC to avoid timezone shifts
+    const date = new Date(Date.UTC(yyyy, mm - 1, dd));
+
+    return date.getTime(); // Get the epoch in milliseconds
+  }
+
+  // Handle date input changes
+  onDateChange(dateString: string, property: 'startDate' | 'endDate' | 'peakDate'): void {
+    const epoch = this.convertDateToEpoch(dateString);
+
+    if (epoch !== null) {
+      this.m_oEvent[property] = epoch; // Dynamically update the specified property
+    } else {
+      console.warn(`Invalid date format for ${property}. Expected mm-dd-yyyy.`);
+    }
+  }
+
+  // Validate the date
+  isValidDate(mm: number, dd: number, yyyy: number): boolean {
+    if (!mm || !dd || !yyyy) return false;
+    const date = new Date(yyyy, mm - 1, dd);
+    return (
+      date.getFullYear() === yyyy &&
+      date.getMonth() === mm - 1 &&
+      date.getDate() === dd
+    );
+  }
+
+  // Handle user input: validate and convert to epoch
+
+  private getEventsList() {
+    if (FadeoutUtils.utilsIsStrNullOrEmpty(this.m_sAreaId)) {
+      return;
+    }
+    this.m_oEventService.getEvents(this.m_sAreaId).subscribe({
+      next: (aoEvents) => {
+        this.m_aoEvents = aoEvents;
+      },
+      error: (oError) => {
+        console.error(oError);
+      }
+    })
+  }
+
+  private getActiveAOI() {
+    this.m_oActiveRoute.paramMap.subscribe(params => {
+      this.m_sAreaId = params.get('aoiId');
+      this.getEventsList();
+    });
   }
 
   private validateInputs() {
-    if(!this.m_oEvent){
+    if (!this.m_oEvent) {
       return false;
     }
-    if(!this.m_oEvent.name)return false;
-    if(!this.m_oEvent.description)return false;
-    if(!this.m_oEvent.startDate)return false;
-    if(!this.m_oEvent.endDate)return false;
-    if(!this.m_oEvent.peakDate)return false;
-    if(!this.m_oEvent.type)return false;
+    if (!this.m_oEvent.name) return false;
+    if (!this.m_oEvent.description) return false;
+    if (!this.m_oEvent.bbox) return false;
+    if (!this.m_oEvent.startDate) return false;
+    if (!this.m_oEvent.endDate) return false;
+    if (!this.m_oEvent.peakDate) return false;
+    if (!this.m_oEvent.type) return false;
 
     return true;
   }
