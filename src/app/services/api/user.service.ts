@@ -1,10 +1,12 @@
-import { Injectable } from '@angular/core';
-import { ConstantsService } from '../constants.service';
-import { HttpClient } from '@angular/common/http';
-import { UserViewModel } from '../../models/UserViewModel';
-import { OTPVerifyViewModel } from '../../models/OTPVerifyViewModel';
+import {Injectable} from '@angular/core';
+import {ConstantsService} from '../constants.service';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {UserViewModel} from '../../models/UserViewModel';
+import {OTPVerifyViewModel} from '../../models/OTPVerifyViewModel';
 import {ChangePasswordRequestViewModel} from "../../models/ChangePasswordRequestViewModel";
 import {ConfirmEmailChangeViewModel} from "../../models/ConfirmEmailChangeViewModel";
+import {ChangeExpiredPasswordRequestViewModel} from "../../models/ChangeExpiredPasswordRequestViewModel";
+import {ConfirmForgetPasswordViewModel} from "../../models/ConfirmForgetPasswordViewModel";
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +17,8 @@ export class UserService {
   constructor(
     private m_oConstantsService: ConstantsService,
     private m_oHttp: HttpClient
-  ) {}
+  ) {
+  }
 
   getUser() {
     return this.m_oHttp.get<UserViewModel>(this.APIURL + '/usr');
@@ -39,14 +42,14 @@ export class UserService {
     );
   }
 
-  confirmNewEmail(oConfirmEmailChangeVM:ConfirmEmailChangeViewModel) {
+  confirmNewEmail(oConfirmEmailChangeVM: ConfirmEmailChangeViewModel) {
     return this.m_oHttp.post<ConfirmEmailChangeViewModel>(
       this.APIURL + '/usr/confirm-new-email',
       oConfirmEmailChangeVM
     );
   }
 
-  updatePassword(oChangePasswordRequestViewModel:ChangePasswordRequestViewModel) {
+  updatePassword(oChangePasswordRequestViewModel: ChangePasswordRequestViewModel) {
     return this.m_oHttp.post<any>(
       this.APIURL + '/usr/change_password',
       oChangePasswordRequestViewModel
@@ -90,5 +93,20 @@ export class UserService {
       this.APIURL + '/usr/change-language',
       oUserViewModel
     );
+  }
+
+  changeExpiredPassword(oRequest: ChangeExpiredPasswordRequestViewModel) {
+    return this.m_oHttp.post<any>(
+      this.APIURL + '/usr/change-expired-password', oRequest
+    )
+  }
+  forgetPassword(sUserId: string) {
+    const params = new HttpParams().set('userId', sUserId);
+    return this.m_oHttp.post<any>(`${this.APIURL}/usr/forget-password`, null, { params });
+  }
+  confirmForgetPassword(oConfirmVM: ConfirmForgetPasswordViewModel) {
+    return this.m_oHttp.post<any>(
+      this.APIURL + '/usr/confirm-forget-password', oConfirmVM
+    )
   }
 }

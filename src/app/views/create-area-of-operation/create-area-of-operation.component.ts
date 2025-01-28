@@ -286,7 +286,7 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
         next: (oResponse) => {
           //todo send confirmation to HQ operator
           this.m_oNotificationService.openSnackBar(
-            'Your area has been added successfully',
+            'Your area has been added successfully, The layers are being generated , you will receive a notification by email when they are ready',
             'Success',
             'success'
           );

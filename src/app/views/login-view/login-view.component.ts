@@ -132,15 +132,32 @@ export class LoginViewComponent {
         }
       },
       error: (oError) => {
-        this.m_oNotificationService.openInfoDialog(sError, 'danger');
+        if (oError.error.errorStringCodes) {
+          this.handleAPIErrors(sError,oError.error.errorStringCodes);
+        }
+
       },
     });
   }
+  handleAPIErrors(sError,asStringCodes): void {
+    asStringCodes.forEach((sCode) => {
+      if (sCode.includes('WARNING_API_PASSWORD_EXPIRED')) {
+        this.m_oRouter.navigate(['/password-expired', this.m_oUserInput.userId]);
+      }else{
+        this.m_oNotificationService.openInfoDialog(sError, 'danger');
+      }
 
+    });
+
+  }
   /**
    * Navigate the user back to the Login View
    */
   backToLogin(): void {
     this.m_bShowOtp = false;
+  }
+
+  toForgetPassword() {
+    this.m_oRouter.navigateByUrl('/forget-password')
   }
 }

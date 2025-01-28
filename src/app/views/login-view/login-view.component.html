@@ -25,6 +25,7 @@
           <div
             class="password-link"
             [innerHTML]="'LOGIN.FORGOT_PASSWORD' | translate"
+            (click)="toForgetPassword()"
           ></div>
           <div
             *ngIf="!m_bValidOtp && m_sErrorInput"
