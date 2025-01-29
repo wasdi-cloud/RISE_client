@@ -9,6 +9,7 @@ import {AreaViewModel} from '../../models/AreaViewModel';
 import {NotificationsDialogsService} from '../../services/notifications-dialogs.service';
 import {TranslateService} from '@ngx-translate/core';
 import 'leaflet.fullscreen';
+import {EventViewModel} from "../../models/EventViewModel";
 
 // import * as L from 'leaflet';
 declare const L: any;
@@ -35,6 +36,15 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
    * Array of Areas of Operations (Dashboard)
    */
   @Input() m_aoAreas: Array<AreaViewModel> = [];
+  /**
+   * Array of Events (Monitor)
+   */
+  @Input() m_aoEvents: Array<EventViewModel> = [];
+  /**
+   * Event (Monitor)
+   */
+  @Input() m_oEvent: EventViewModel = {}
+  ;
 
   /**
    * Map Title
@@ -89,10 +99,24 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   ngOnInit(): void {
     if (!this.m_bIsSelectingArea) {
       if (this.m_aoAreas.length > 0) {
+        this.m_oMapService.clearMarkers();
         for (let oArea of this.m_aoAreas) {
-          this.m_oMapService.addMarker(oArea, this.m_oMap);
+          this.m_oMapService.addAreaMarker(oArea, this.m_oMap);
         }
       }
+      if (this.m_aoEvents.length > 0) {
+        this.m_oMapService.clearEventMarkers();
+        for (let oEvent of this.m_aoEvents) {
+          this.m_oMapService.addEventMarker(oEvent, this.m_oMap);
+        }
+      }
+      // if(this.m_oEvent){
+      //   console.log(this.m_oMap)
+      //   this.m_oMapService.clearEventMarkers();
+      //   this.m_oMapService.addEventMarker(this.m_oEvent, this.m_oMap);
+      // }
+
+
 
     }
   }
@@ -101,17 +125,47 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!this.m_bIsSelectingArea || changes['m_aoAreas']) {
+    if (!this.m_bIsSelectingArea) {
+      if(changes['m_aoAreas']){
+        if (this.m_aoAreas.length > 0) {
+          //clear the pins
+          this.m_oMapService.clearMarkers();
+          for (let oArea of this.m_aoAreas) {
+            this.m_oMapService.addAreaMarker(oArea, this.m_oMap);
+          }
 
-      if (this.m_aoAreas.length > 0) {
-        //clear the pins
-        this.m_oMapService.clearMarkers();
-        for (let oArea of this.m_aoAreas) {
-          this.m_oMapService.addMarker(oArea, this.m_oMap);
+        } else {
+          this.m_oMapService.clearMarkers();
         }
-      } else {
-        this.m_oMapService.clearMarkers();
       }
+      if(changes['m_aoEvents']){
+        this.m_oMapService.clearMarkers();
+        if (this.m_aoEvents.length > 0) {
+          for (let oEvent of this.m_aoEvents) {
+            this.m_oMapService.addEventMarker(oEvent, this.m_oMap);
+          }
+        }
+      }
+      if(changes['m_oEvent']){
+        if (!this.m_oMap) {
+          console.warn("Map is not initialized yet. Retrying...");
+          setTimeout(() => {
+            if (this.m_oMap) {
+              this.m_oMapService.clearEventMarkers();
+              this.m_oMapService.addEventMarker(this.m_oEvent, this.m_oMap);
+            } else {
+              console.error("Map is still null after waiting.");
+            }
+          }, 100); // Delay to wait for initialization
+          return;
+        }
+
+      }
+
+
+
+
+
     }
   }
 
@@ -138,7 +192,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     this.m_oMapService.initGeoSearchPluginForOpenStreetMap(oMap);
     if (!this.m_bIsSelectingArea) {
       for (let oArea of this.m_aoAreas) {
-        this.m_oMapService.addMarker(oArea, oMap);
+        this.m_oMapService.addAreaMarker(oArea, oMap);
 
       }
       this.addMeasurementTools(oMap);

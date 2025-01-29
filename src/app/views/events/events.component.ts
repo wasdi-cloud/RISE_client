@@ -206,9 +206,8 @@ export class EventsComponent implements OnInit {
           radius: shapeInfo.radius,
           area: shapeInfo.area,
         };
-        let markerCoordinates =
-          'POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')';
         // Convert circle to WKT (approximated as a polygon with 64 points)
+        this.m_oEvent.markerCoordinates='POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')';
         this.m_oEvent.bbox = this.m_oMapService.convertCircleToWKT(
           shapeInfo.center,
           shapeInfo.radius
@@ -224,6 +223,8 @@ export class EventsComponent implements OnInit {
         };
         // Convert polygon to WKT
         this.m_oEvent.bbox = geojsonToWKT(shapeInfo.geoJson);
+        this.m_oEvent.markerCoordinates =
+          'POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')';
       }
     }
   }

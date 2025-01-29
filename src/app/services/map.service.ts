@@ -19,6 +19,7 @@ import {NotificationsDialogsService} from './notifications-dialogs.service';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ConstantsService} from './constants.service';
 import {TranslateService} from '@ngx-translate/core';
+import {EventViewModel} from "../models/EventViewModel";
 // import L from 'leaflet';
 declare const L: any;
 
@@ -147,6 +148,7 @@ export class MapService {
    */
   m_bPixelInfoOn: boolean = false;
   m_aoMarkers: L.Marker[] = [];
+  m_aoEventMarkers: L.Marker[] = [];
   oMeasurementResultSubject = new Subject<string>();
   m_oMarkerSubject = new BehaviorSubject<AreaViewModel>(null);
   m_oMarkerSubject$ = this.m_oMarkerSubject.asObservable();
@@ -362,16 +364,20 @@ export class MapService {
 
   /**
    * Convert Point from WKT to Lat,Lng
-   * @param oArea
+   * @param oPoint
    */
-  convertPointLatLng(oArea) {
-    if (oArea.markerCoordinates) {
-      let aoCoordinates: any = wktToGeoJSON(oArea.markerCoordinates);
+  convertPointLatLng(oPoint) {
+    if (oPoint.markerCoordinates) {
+
+      let aoCoordinates: any = wktToGeoJSON(oPoint.markerCoordinates);
+
       aoCoordinates = geoJSON(aoCoordinates).getBounds();
+
       return aoCoordinates;
     }
     return null;
   }
+
 
   convertCircleToWKT(
     center: { lat: number; lng: number },
@@ -940,11 +946,11 @@ export class MapService {
 
 
   /**
-   * Add Marker
+   * Add Area Marker
    * @param oArea
    * @param oMap
    */
-  addMarker(oArea: AreaViewModel, oMap: LeafletMap): Marker {
+  addAreaMarker(oArea: AreaViewModel, oMap: LeafletMap): Marker {
     let asCoordinates = this.convertPointLatLng(oArea)._northEast;
     if (asCoordinates && oMap) {
       let lat = parseFloat(asCoordinates.lat);
@@ -965,12 +971,51 @@ export class MapService {
     }
     return null;
   }
+  /**
+   * Add Event Marker
+   * @param oEvent
+   * @param oMap
+   */
+  addEventMarker(oEvent: EventViewModel, oMap: LeafletMap): Marker {
+    console.log(oEvent)
+    let asCoordinates = this.convertPointLatLng(oEvent);
+    if(asCoordinates){
+      asCoordinates=asCoordinates._northEast
+    }
+    console.log(asCoordinates)
+    if (asCoordinates && oMap) {
+      console.log("here")
+      let lat = parseFloat(asCoordinates.lat);
+      let lon = parseFloat(asCoordinates.lng);
+      let oMarker = L.marker([lat, lon])
+        .on('click', () => {
+          this.m_oMarkerSubject.next(oEvent);
+          // this.m_oMarkerClicked.emit(oArea);
+          // this.m_oRouter.navigateByUrl('/monitor');
+        })
+      if (oMarker) {
+        console.log("here")
+        oMarker.addTo(oMap);
+        this.m_aoEventMarkers.push(oMarker); // Store the marker in the array
+        return oMarker;
+      }
+      return null;
+
+    }
+    return null;
+  }
 
   clearMarkers(): void {
     this.m_aoMarkers.forEach((marker) => {
       marker.remove(); // Remove the marker from the map
     });
     this.m_aoMarkers = []; // Clear the marker array
+  }
+  clearEventMarkers(): void {
+    this.m_aoEventMarkers.forEach((marker) => {
+      marker.remove(); // Remove the marker from the map
+    });
+    this.m_aoEventMarkers = []; // Clear the marker array
   }
 
   /**

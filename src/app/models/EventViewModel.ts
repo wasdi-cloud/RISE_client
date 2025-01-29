@@ -21,5 +21,7 @@ export class EventViewModel extends RiseViewModel {
 
   description?:string;
 
+  markerCoordinates?:string
+
 
 }

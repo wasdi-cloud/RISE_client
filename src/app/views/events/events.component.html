@@ -62,7 +62,7 @@
     </div>
   </div>
   <div class="map-container flex-fill">
-    <rise-map [m_aoAreas]="m_aoAreasOfOperations"></rise-map>
+    <rise-map [m_aoEvents]="m_aoEvents"></rise-map>
   </div>
 </div>
 <div class="create-outlet" *ngIf="m_bCreateNewEvent || m_bUpdatingEvent">
@@ -171,6 +171,7 @@
         <rise-map
           (m_oMapInputChange)="onMapInputChange($event)"
           [m_bIsSelectingArea]="m_bCreateNewEvent"
+          [m_oEvent]="m_bUpdatingEvent?m_oEvent:{}"
         ></rise-map>
         <!-- Drag-and-Drop Zones -->
         <div class="drag-drop-container d-flex flex-row justify-content-between mt-3">
