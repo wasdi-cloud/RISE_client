@@ -42,11 +42,10 @@ export class ForgetPasswordRequestComponent {
           this.m_bRequestSent = true;
         },
         error: (oError) => {
-          this.m_oNotificationService.openSnackBar(
-            "Something went wrong",
-            "Error",
-            "danger"
-          )
+          if (oError.error.errorStringCodes) {
+            this.handleAPIErrors(oError.error.errorStringCodes);
+          }
+
         }
       })
     } else {
@@ -54,7 +53,20 @@ export class ForgetPasswordRequestComponent {
     }
 
   }
+  handleAPIErrors(asStringCodes): void {
+    asStringCodes.forEach((sCode) => {
+      if (sCode.includes('ERROR_API_USERID_NOT_FOUND')) {
+        this.m_oNotificationService.openInfoDialog("This user does not exist", 'danger',"Error");
+      }else{
+        this.m_oNotificationService.openSnackBar(
+          "Something went wrong",
+          "Error",
+          "danger"
+        )
+      }
+    });
 
+  }
   goBackToLogin() {
     this.m_oRouter.navigateByUrl('/')
   }
