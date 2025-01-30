@@ -31,6 +31,7 @@ import {LayerAnalyzerComponent} from "./layer-analyzer/layer-analyzer.component"
 import {LayerViewModel} from "../../models/LayerViewModel";
 import {PluginViewModel} from "../../models/PluginViewModel";
 import {EventService} from "../../services/api/event.service";
+import {EventViewModel} from "../../models/EventViewModel";
 
 @Component({
   selector: 'app-monitor',
@@ -129,6 +130,12 @@ export class MonitorComponent implements OnInit {
    */
   m_iCurrentDate: number = null;
 
+  /**
+   * List of Events
+   */
+  m_aoEvents:EventViewModel[]=[]
+
+
   constructor(
     private m_oActivatedRoute: ActivatedRoute,
     private m_oAreaService: AreaService,
@@ -207,6 +214,13 @@ export class MonitorComponent implements OnInit {
         if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           this.getMapsByArea(oResponse.id, oResponse.startDate);
           this.m_oMapService.flyToMonitorBounds(oResponse.bbox);
+          this.m_oEventService.getEvents(sAreaId).subscribe(
+            {
+              next:(oResponse)=>{
+                this.m_aoEvents=oResponse;
+              }
+            }
+          )
         }
       },
       error: (oError) => {

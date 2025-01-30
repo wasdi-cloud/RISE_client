@@ -6,6 +6,7 @@ import {RiseButtonComponent} from "../rise-button/rise-button.component";
 import {MatTooltip} from "@angular/material/tooltip";
 import {RiseCalendarComponent} from "../rise-calendar/rise-calendar.component";
 import moment from "moment";
+import {EventViewModel} from "../../models/EventViewModel";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
@@ -93,10 +94,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   /**
    * Events to mark in the timebar
    */
-  m_aoEvents = [
-    {date: 'Sat Oct 05 2010', description: 'New Year'},
-    {date: '"Thu Dec 12 2005"', description: 'Christmas'},
-  ];
+  @Input() m_aoEvents:EventViewModel[] = [];
 
   constructor() {
   }
@@ -113,13 +111,13 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   /**
    * Get Marker position to insert in its right position in the timebar
    */
-  getEventMarkerPosition(eventDate: string): string {
+  getEventMarkerPosition(eventDate: number): string {
+    let sDate=new Date(eventDate).toDateString()
     const eventIndex = this.m_asDates.findIndex(
-      (date) => new Date(date).getTime() === new Date(eventDate).getTime()
+      (date) => date === sDate
     );
-
     if (eventIndex === -1) {
-      return '0%'; // Default to 0% if the event date isn't in the range
+      return "" ; // Default to 0% if the event date isn't in the range
     }
 
     const percentage = (eventIndex / (this.m_asDates.length - 1)) * 100;
@@ -350,5 +348,16 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
       this.m_oSelectedDate = new Date(this.m_sSelectedDate);
       this.emitSelectedDate();
     }
+  }
+
+  convertEventToDates() {
+    if(this.m_aoEvents){
+      let oReturnList:Date[]=[];
+      for (let i = 0; i <this.m_aoEvents.length ; i++) {
+        oReturnList.push(new Date(this.m_aoEvents[i].peakDate));
+      }
+      return oReturnList;
+    }
+    return [];
   }
 }
