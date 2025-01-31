@@ -1,4 +1,5 @@
 import {RiseViewModel} from "./RiseViewModel";
+import {EventType} from "./EventType";
 
 export class EventViewModel extends RiseViewModel {
 
@@ -9,7 +10,7 @@ export class EventViewModel extends RiseViewModel {
 
   name?: string;
 
-  type?: string;
+  type?: EventType;
 
   bbox?: string;
 
@@ -21,7 +22,13 @@ export class EventViewModel extends RiseViewModel {
 
   description?:string;
 
-  markerCoordinates?:string
+  markerCoordinates?:string;
+
+  isOnGoing?:boolean=false;
+
+  isPublic?:boolean=true;
+
+
 
 
 }

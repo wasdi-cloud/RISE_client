@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { EventViewModel } from '../../../models/EventViewModel';
-import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
-import { RiseBadgeComponent } from '../../../components/rise-badge/rise-badge.component';
+import {Component, Input, OnInit} from '@angular/core';
+import {EventViewModel} from '../../../models/EventViewModel';
+import {CommonModule} from '@angular/common';
+import {TranslateModule} from '@ngx-translate/core';
+import {RiseBadgeComponent} from '../../../components/rise-badge/rise-badge.component';
+import {EventType} from "../../../models/EventType";
 
 @Component({
   selector: 'rise-ongoing-widget',
@@ -19,7 +20,7 @@ export class RiseOngoingWidgetComponent implements OnInit {
     id: '',
     startDate: Date.now(),
     endDate: 0,
-    type: 'Flood',
+    type: EventType.FLOOD,
     bbox: '',
     peakDate: 0,
     description:""

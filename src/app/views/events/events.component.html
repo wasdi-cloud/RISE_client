@@ -33,7 +33,7 @@
             <tbody>
             <tr *ngFor="let oEvent of m_aoEvents">
               <td>{{ oEvent.name }}</td>
-              <td>{{ oEvent.type }}</td>
+              <td>{{ getNameOfEventType(oEvent.type)}}</td>
               <td>{{ oEvent.startDate| date }}</td>
               <td>{{ oEvent.peakDate| date }}</td>
               <td>{{ oEvent.endDate| date }}</td>
@@ -83,6 +83,10 @@
             [m_sLocalizationKey]="'CREATE_NEW_EVENT.NAME'"
 
           ></rise-text-input>
+          <div class="align-items-md-start d-flex">
+            <span class="toggle-label">Public event</span>
+            <mat-slide-toggle labelPosition="before" (change)="onSwitchPublicButton($event)" [(ngModel)]="m_oEvent.isPublic" class="custom-toggle"></mat-slide-toggle>
+          </div>
           <rise-textarea-input
             [m_bHasTitle]="true"
             [(m_sInputText)]="m_oEvent.description"
@@ -102,7 +106,7 @@
             (m_sInputDateChange)="onDateChange($event,'peakDate')"
           ></rise-date-input>
           <rise-date-input
-            *ngIf="!m_bIsOngoingEvent"
+            *ngIf="!m_oEvent.isOnGoing"
             [m_bHasTitle]="true"
             [m_sLocalizationKey]="'End Date'"
             [(m_sInputDate)]="m_sEndDate "
@@ -112,46 +116,25 @@
           <!--          todo add date range here with switch button for live or no-->
           <div class="align-items-md-start d-flex">
             <span class="toggle-label">On-going event</span>
-            <mat-slide-toggle labelPosition="before" (change)="onSwitchButton($event)" [(ngModel)]="m_bIsOngoingEvent" class="custom-toggle"></mat-slide-toggle>
+            <mat-slide-toggle labelPosition="before" (change)="onSwitchOnGoingButton($event)" [(ngModel)]="m_oEvent.isOnGoing" class="custom-toggle"></mat-slide-toggle>
           </div>
 
 
           <div>
             {{ 'CREATE_NEW_EVENT.TYPE' | translate }}
-            <label class="d-flex flex-row gap-2" for="flood">
-              <input
-                type="radio"
-                name="area_type"
-                id="flood"
-                [(ngModel)]="m_oEvent.type"
-                value="flood"
-              />
-              Flood
-            </label>
-
-            <label class="d-flex flex-row gap-2" for="fire">
-              <input
-                type="radio"
-                name="area_type"
-                id="fire"
-                [(ngModel)]="m_oEvent.type"
-                value="fire"
-              />
-              Fire
-            </label>
-
-            <label class="d-flex flex-row gap-2" for="emergency">
-              <input
-                type="radio"
-                name="area_type"
-                id="emergency"
-                [(ngModel)]="m_oEvent.type"
-                value="drought"
-              />
-              Drought
-            </label>
-
+            <div class="event-grid">
+              <label *ngFor="let option of m_aoEventTypes" class="event-item">
+                <input
+                  type="radio"
+                  name="area_type"
+                  [(ngModel)]="m_oEvent.type"
+                  [value]="option.value"
+                />
+                {{ option.name | titlecase }}
+              </label>
+            </div>
           </div>
+
         </div>
         <div class="d-flex flex-column gap-2">
           <rise-button

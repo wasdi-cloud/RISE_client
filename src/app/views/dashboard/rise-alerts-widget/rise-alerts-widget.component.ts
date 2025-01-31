@@ -1,7 +1,8 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
-import { EventViewModel } from '../../../models/EventViewModel';
+import {CommonModule} from '@angular/common';
+import {Component, Input, OnInit} from '@angular/core';
+import {TranslateModule} from '@ngx-translate/core';
+import {EventViewModel} from '../../../models/EventViewModel';
+import {EventType} from "../../../models/EventType";
 
 @Component({
   selector: 'rise-alerts-widget',
@@ -18,7 +19,7 @@ export class RiseAlertsWidgetComponent implements OnInit {
     id: '',
     startDate: Date.now(),
     endDate: 0,
-    type: 'Flood',
+    type: EventType.FLOOD,
     bbox: '',
     peakDate: 0,
     description:""

@@ -109,3 +109,14 @@ rise-dropdown {
   font-weight: bold;
   margin-bottom: 10px;
 }
+.event-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two columns */
+  gap: 10px; /* Space between items */
+}
+
+.event-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}

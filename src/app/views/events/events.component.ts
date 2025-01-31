@@ -3,7 +3,7 @@ import {RiseToolbarComponent} from "../../components/rise-toolbar/rise-toolbar.c
 import {
   BuyNewSubscriptionComponent
 } from "../account/user-subscriptions/buy-new-subscription/buy-new-subscription.component";
-import {DatePipe, NgForOf, NgIf} from "@angular/common";
+import {DatePipe, NgForOf, NgIf, TitleCasePipe} from "@angular/common";
 import {RiseButtonComponent} from "../../components/rise-button/rise-button.component";
 import {RiseDropdownComponent} from "../../components/rise-dropdown/rise-dropdown.component";
 import {TranslateModule} from "@ngx-translate/core";
@@ -33,6 +33,7 @@ import {MatSlideToggleChange, MatSlideToggleModule} from "@angular/material/slid
 import {FormsModule} from "@angular/forms";
 import {geojsonToWKT} from "@terraformer/wkt";
 import {MapService} from "../../services/map.service";
+import {EventType} from "../../models/EventType";
 
 @Component({
   selector: 'rise-events',
@@ -63,7 +64,8 @@ import {MapService} from "../../services/map.service";
     MatFormFieldModule,
     RiseDateInputComponent,
     MatSlideToggleModule,
-    FormsModule
+    FormsModule,
+    TitleCasePipe
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './events.component.html',
@@ -77,9 +79,10 @@ export class EventsComponent implements OnInit {
   m_aoEvents: EventViewModel[] = [];
   m_aoAreasOfOperations: Array<AreaViewModel> = [];
   m_oEvent: EventViewModel = {};
-  m_sStartDate: any
-  m_sPeakDate: any
-  m_sEndDate: any
+  m_sStartDate: any;
+  m_sPeakDate: any;
+  m_sEndDate: any;
+  m_aoEventTypes: { name: string; value: EventType }[];
 
   constructor(
     private m_oEventService: EventService,
@@ -90,6 +93,7 @@ export class EventsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getEventTypes()
     this.getActiveAOI()
 
   }
@@ -97,7 +101,14 @@ export class EventsComponent implements OnInit {
   onCreateNewEvent() {
     this.m_bCreateNewEvent = true;
   }
+  getEventTypes(){
+    this.m_aoEventTypes= Object.values(EventType).map(type => ({
+      name: type.toLowerCase().replace('_', ' '), // Formatting name for display
+      value: type
+    }));
 
+    console.log(this.m_aoEventTypes)
+  }
   editEvent(oEvent: EventViewModel) {
     this.m_oEvent=oEvent;
     this.m_sStartDate=this.formatEpochToDate(this.m_oEvent.startDate);
@@ -239,8 +250,11 @@ export class EventsComponent implements OnInit {
 
   }
 
-  onSwitchButton(toggel: MatSlideToggleChange) {
-    this.m_bIsOngoingEvent = toggel.checked;
+  onSwitchOnGoingButton(toggel: MatSlideToggleChange) {
+    this.m_oEvent.isOnGoing = toggel.checked;
+  }
+  onSwitchPublicButton(toggel: MatSlideToggleChange) {
+    this.m_oEvent.isPublic = toggel.checked;
   }
 
   // Convert epoch time to 'mm/dd/yyyy' string
@@ -292,13 +306,16 @@ export class EventsComponent implements OnInit {
 
   // Handle user input: validate and convert to epoch
 
+
   private getEventsList() {
     if (FadeoutUtils.utilsIsStrNullOrEmpty(this.m_sAreaId)) {
       return;
     }
+    console.log(this.m_sAreaId)
     this.m_oEventService.getEvents(this.m_sAreaId).subscribe({
       next: (aoEvents) => {
         this.m_aoEvents = aoEvents;
+        console.log(aoEvents)
       },
       error: (oError) => {
         console.error(oError);
@@ -327,4 +344,20 @@ export class EventsComponent implements OnInit {
 
     return true;
   }
+
+  getNameOfEventType(type: EventType): string {
+    const nameMap: { [key in EventType]: string } = {
+      [EventType.FLOOD]: 'Flood',
+      [EventType.DROUGHT]: 'Drought',
+      [EventType.CONFLICT]: 'Conflict',
+      [EventType.EARTHQUAKE]: 'Earthquake',
+      [EventType.TSUNAMI]: 'Tsunami',
+      [EventType.INDUSTRIAL_ACCIDENT]: 'Industrial Accident',
+      [EventType.LANDSLIDE]: 'Landslide',
+      [EventType.OTHER]: 'Other'
+    };
+
+    return nameMap[type] || 'Unknown'; // Default to "Unknown" if type is undefined
+  }
+
 }
