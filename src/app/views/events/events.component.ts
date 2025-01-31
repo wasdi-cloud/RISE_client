@@ -255,10 +255,10 @@ export class EventsComponent implements OnInit {
   }
 
   onSwitchOnGoingButton(toggel: MatSlideToggleChange) {
-    this.m_oEvent.isOnGoing = toggel.checked;
+    this.m_oEvent.onGoing = toggel.checked;
   }
   onSwitchPublicButton(toggel: MatSlideToggleChange) {
-    this.m_oEvent.isPublic = toggel.checked;
+    this.m_oEvent.publicEvent = toggel.checked;
   }
 
   // Convert epoch time to 'mm/dd/yyyy' string

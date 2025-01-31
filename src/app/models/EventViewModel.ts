@@ -24,9 +24,9 @@ export class EventViewModel extends RiseViewModel {
 
   markerCoordinates?:string;
 
-  isOnGoing?:boolean=false;
+  onGoing?:boolean=false;
 
-  isPublic?:boolean=true;
+  publicEvent?:boolean=true;
 
 
 

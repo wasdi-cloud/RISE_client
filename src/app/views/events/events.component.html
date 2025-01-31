@@ -84,7 +84,7 @@
           ></rise-text-input>
           <div class="align-items-md-start d-flex">
             <span class="toggle-label">Public event</span>
-            <mat-slide-toggle labelPosition="before" (change)="onSwitchPublicButton($event)" [(ngModel)]="m_oEvent.isPublic" class="custom-toggle"></mat-slide-toggle>
+            <mat-slide-toggle labelPosition="before" (change)="onSwitchPublicButton($event)" [(ngModel)]="m_oEvent.publicEvent" class="custom-toggle"></mat-slide-toggle>
           </div>
           <rise-textarea-input
             [m_bHasTitle]="true"
@@ -105,7 +105,7 @@
             (m_sInputDateChange)="onDateChange($event,'peakDate')"
           ></rise-date-input>
           <rise-date-input
-            *ngIf="!m_oEvent.isOnGoing"
+            *ngIf="!m_oEvent.onGoing"
             [m_bHasTitle]="true"
             [m_sLocalizationKey]="'End Date'"
             [(m_sInputDate)]="m_sEndDate "
@@ -122,7 +122,7 @@
           <!--          todo add date range here with switch button for live or no-->
           <div class="align-items-md-start d-flex">
             <span class="toggle-label">On-going event</span>
-            <mat-slide-toggle labelPosition="before" (change)="onSwitchOnGoingButton($event)" [(ngModel)]="m_oEvent.isOnGoing" class="custom-toggle"></mat-slide-toggle>
+            <mat-slide-toggle labelPosition="before" (change)="onSwitchOnGoingButton($event)" [(ngModel)]="m_oEvent.onGoing" class="custom-toggle"></mat-slide-toggle>
           </div>
 
 
