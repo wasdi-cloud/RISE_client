@@ -81,7 +81,6 @@
             [m_bHasTitle]="true"
             [(m_sInputText)]="m_oEvent.name"
             [m_sLocalizationKey]="'CREATE_NEW_EVENT.NAME'"
-
           ></rise-text-input>
           <div class="align-items-md-start d-flex">
             <span class="toggle-label">Public event</span>
@@ -112,6 +111,13 @@
             [(m_sInputDate)]="m_sEndDate "
             (m_sInputDateChange)="onDateChange($event,'endDate')"
           ></rise-date-input>
+          <div
+            class="invalid-feedback d-flex flex-row gap-1 mt-2"
+            *ngIf="m_bIsDateInvalid"
+          >
+            <span class="material-symbols-outlined"> info </span>
+            <div [innerHTML]="m_sDateErrorText"></div>
+          </div>
 
           <!--          todo add date range here with switch button for live or no-->
           <div class="align-items-md-start d-flex">
@@ -139,8 +145,8 @@
         <div class="d-flex flex-column gap-2">
           <rise-button
             [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.SAVE'"
-            [m_bDisabled]="false"
-            (click)="executeEventSaving()"
+            [m_bDisabled]="!enableSubmit()"
+            (click)="enableSubmit()?executeEventSaving():''"
           ></rise-button>
           <rise-button
             [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.CANCEL'"

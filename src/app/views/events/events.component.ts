@@ -83,6 +83,10 @@ export class EventsComponent implements OnInit {
   m_sPeakDate: any;
   m_sEndDate: any;
   m_aoEventTypes: { name: string; value: EventType }[];
+  m_sEventNameError: string ="";
+  m_bEventNameIsValid:boolean=true;
+  m_bIsDateInvalid: boolean=false;
+  m_sDateErrorText: string="";
 
   constructor(
     private m_oEventService: EventService,
@@ -194,7 +198,7 @@ export class EventsComponent implements OnInit {
   }
 
   executeEventSaving() {
-    if (this.validateInputs()) {
+    if (this.validateEvent()) {
       if(this.m_bCreateNewEvent){
         this.addNewEvent()
       }else if (this.m_bUpdatingEvent){
@@ -307,6 +311,7 @@ export class EventsComponent implements OnInit {
   // Handle user input: validate and convert to epoch
 
 
+
   private getEventsList() {
     if (FadeoutUtils.utilsIsStrNullOrEmpty(this.m_sAreaId)) {
       return;
@@ -330,18 +335,19 @@ export class EventsComponent implements OnInit {
     });
   }
 
-  private validateInputs() {
+  enableSubmit() {
     if (!this.m_oEvent) {
       return false;
     }
-    if (!this.m_oEvent.name) return false;
-    if (!this.m_oEvent.description) return false;
-    if (!this.m_oEvent.bbox) return false;
-    if (!this.m_oEvent.startDate) return false;
-    if (!this.m_oEvent.endDate) return false;
-    if (!this.m_oEvent.peakDate) return false;
-    if (!this.m_oEvent.type) return false;
-
+    if (
+      !this.m_oEvent.name ||
+      !this.m_oEvent.startDate ||
+      !this.m_oEvent.endDate ||
+      !this.m_oEvent.peakDate ||
+      !this.m_oEvent.type
+    ){
+      return false;
+    }
     return true;
   }
 
@@ -360,4 +366,26 @@ export class EventsComponent implements OnInit {
     return nameMap[type] || 'Unknown'; // Default to "Unknown" if type is undefined
   }
 
+  private validateEvent() {
+    //validate if dates aligns
+    if(
+      (this.m_oEvent.peakDate<this.m_oEvent.startDate) ||
+      (this.m_oEvent.peakDate>this.m_oEvent.endDate) ||
+      (this.m_oEvent.startDate>this.m_oEvent.endDate)
+    ){
+      this.m_bIsDateInvalid=true;
+      this.m_sDateErrorText="Please ensure the dates are aligned";
+      return false;
+    }
+    //validate if area is created
+    if(!this.m_oEvent.bbox){
+      this.m_oNotificationServiceDialog.openSnackBar(
+        "Please create area for your event",
+        "Error",
+        "danger"
+      );
+      return false;
+    }
+    return true;
+  }
 }
