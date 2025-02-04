@@ -51,7 +51,7 @@
   --wasdiWarnLight: #fff9eb;
   --wasdiDangerLight: #fff0eb;
   --wasdiGreenLight: #ebf7ef;
-  --wasdiBluelight: #f0f5fd;
+  --wasdiBluelight: #075be4;
 }
 
 html,
@@ -414,6 +414,11 @@ a.leaflet-control-zoom-fullscreen {
 .invalid-sub {
   border: 1px solid var(--wasdiWarn);
   background-color: rgba(255, 61, 0, 0.1);
+  border-radius: 8px;
+}
+.invalid-area {
+  border: 1px solid var(--wasdiBlue);
+  background-color: var(--rise-teal);
   border-radius: 8px;
 }
 
