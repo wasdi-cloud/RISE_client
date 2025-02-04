@@ -1,23 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { NgIf } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {NgIf} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {Router} from '@angular/router';
 
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
 
-import { AuthService } from '../../services/api/auth.service';
-import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
+import {AuthService} from '../../services/api/auth.service';
+import {NotificationsDialogsService} from '../../services/notifications-dialogs.service';
 
-import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
-import { RiseDropdownComponent } from '../../components/rise-dropdown/rise-dropdown.component';
-import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
-import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
+import {RiseButtonComponent} from '../../components/rise-button/rise-button.component';
+import {RiseDropdownComponent} from '../../components/rise-dropdown/rise-dropdown.component';
+import {RiseTextInputComponent} from '../../components/rise-text-input/rise-text-input.component';
+import {RiseToolbarComponent} from '../../components/rise-toolbar/rise-toolbar.component';
 
-import { OrganizationViewModel } from '../../models/OrganizationViewModel';
-import { RegisterViewModel } from '../../models/RegisterViewModel';
-import { UserViewModel } from '../../models/UserViewModel';
+import {OrganizationViewModel} from '../../models/OrganizationViewModel';
+import {RegisterViewModel} from '../../models/RegisterViewModel';
+import {UserViewModel} from '../../models/UserViewModel';
 
-import { OrganizationTypes } from '../../shared/organization-types';
+import {OrganizationTypes} from '../../shared/organization-types';
 
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 
@@ -89,12 +89,15 @@ export class SignUpComponent implements OnInit {
 
   m_bMobileIsValid: boolean = true;
 
+  m_bIsSubmitted:boolean=false;
+
   constructor(
     private m_oAuthService: AuthService,
     private m_oNotificationService: NotificationsDialogsService,
     private m_oTranslate: TranslateService,
     private m_oRouter: Router
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.resetFormVariables();
@@ -215,38 +218,46 @@ export class SignUpComponent implements OnInit {
     if (this.validatePassword()) {
       this.m_oRegisterInput.password = this.m_oPasswordInputs.password;
     }
-
     this.m_oRegisterInput.admin = this.m_oUserInfoInput;
     this.m_oRegisterInput.organization = this.m_oOrgInfoInput;
 
-    this.m_oAuthService.registerUser(this.m_oRegisterInput).subscribe({
-      next: (oResponse) => {
-        if (oResponse.status === 200) {
-          //Alert User to success and re-direct to login
-          this.m_oNotificationService.openInfoDialog(
-            'User Registered - Check your email for a confirmation link',
-            'success',
-            'User Registered'
-          );
-          this.m_oRouter.navigateByUrl('/login');
-        }
-      },
-      error: (oError) => {
-        let asErrorCodes = Array.isArray(oError?.error?.errorStringCodes)
-          ? oError.error.errorStringCodes.map(
+    if (this.validateRegisterInputs()) {
+      this.m_bIsSubmitted=true;
+      this.m_oAuthService.registerUser(this.m_oRegisterInput).subscribe({
+        next: (oResponse) => {
+
+          if (oResponse.status === 200) {
+            //Alert User to success and re-direct to login
+            this.m_oNotificationService.openInfoDialog(
+              'User Registered - Check your email for a confirmation link',
+              'success',
+              'User Registered'
+            );
+            this.m_oRouter.navigateByUrl('/login');
+          }
+          this.m_bIsSubmitted=false;
+        },
+        error: (oError) => {
+          this.m_bIsSubmitted=false;
+          let asErrorCodes = Array.isArray(oError?.error?.errorStringCodes)
+            ? oError.error.errorStringCodes.map(
               (sCode: string) =>
                 `<li>${this.m_oTranslate.instant('ERROR_MSG.' + sCode)}</li>`
             )
-          : [];
-        let sErrorMsg = `'There were some issues with your inputted information. Please review your entries'<ul>
+            : [];
+          let sErrorMsg = `'There were some issues with your inputted information. Please review your entries'<ul>
         ${asErrorCodes.toString().replaceAll(',', '')}
         </ul>`;
-        this.m_oNotificationService.openInfoDialog(sErrorMsg, 'alert', 'Error');
-        if (oError.error.errorStringCodes) {
-          this.handleAPIErrors(oError.error.errorStringCodes);
-        }
-      },
-    });
+          this.m_oNotificationService.openInfoDialog(sErrorMsg, 'alert', 'Error');
+          if (oError.error.errorStringCodes) {
+            this.handleAPIErrors(oError.error.errorStringCodes);
+          }
+        },
+      });
+    }else{
+      console.error("Validating register input : not validated")
+    }
+
   }
 
   /**
@@ -269,48 +280,6 @@ export class SignUpComponent implements OnInit {
       }
     });
     this.setPage('username');
-  }
-
-  /**
-   * Resets the form variables
-   */
-  private resetFormVariables(): void {
-    this.m_oRegisterInput = {} as RegisterViewModel;
-
-    this.m_oUserInfoInput = {
-      userId: '',
-    } as UserViewModel;
-
-    this.m_oOrgInfoInput = {
-      city: '',
-      country: '',
-      name: '',
-      number: '',
-      phone: '',
-      postalCode: '',
-      street: '',
-      type: '',
-    };
-    this.m_sCurrentPg = 'username';
-    this.m_oEmailInputs = {
-      email: '',
-      confirmEmail: '',
-    };
-
-    this.m_oPasswordInputs = {
-      password: '',
-      confirmPw: '',
-    };
-
-    this.m_sEmailError = '';
-    this.m_sPasswordError = '';
-    this.m_sOrgError = '';
-    this.m_sPersonalError = '';
-    this.m_bPersonalValid = true;
-    this.m_bEmailIsValid = true;
-    this.m_bOrgIsValid = true;
-    this.m_bUsernameIsValid = true;
-    this.m_sUsernameError = '';
   }
 
   /***********************
@@ -401,6 +370,56 @@ export class SignUpComponent implements OnInit {
     if (!sPhoneRegex.test(sPhone)) {
       return false;
     }
+    return true;
+  }
+
+  /**
+   * Resets the form variables
+   */
+  private resetFormVariables(): void {
+    this.m_oRegisterInput = {} as RegisterViewModel;
+
+    this.m_oUserInfoInput = {
+      userId: '',
+    } as UserViewModel;
+
+    this.m_oOrgInfoInput = {
+      city: '',
+      country: '',
+      name: '',
+      number: '',
+      phone: '',
+      postalCode: '',
+      street: '',
+      type: '',
+    };
+    this.m_sCurrentPg = 'username';
+    this.m_oEmailInputs = {
+      email: '',
+      confirmEmail: '',
+    };
+
+    this.m_oPasswordInputs = {
+      password: '',
+      confirmPw: '',
+    };
+
+    this.m_sEmailError = '';
+    this.m_sPasswordError = '';
+    this.m_sOrgError = '';
+    this.m_sPersonalError = '';
+    this.m_bPersonalValid = true;
+    this.m_bEmailIsValid = true;
+    this.m_bOrgIsValid = true;
+    this.m_bUsernameIsValid = true;
+    this.m_sUsernameError = '';
+  }
+
+  private validateRegisterInputs() {
+    if(this.m_oRegisterInput==null) return false;
+    if(this.m_oRegisterInput.password==null) return false;
+    if(this.m_oRegisterInput.admin==null) return false;
+    if(this.m_oRegisterInput.organization==null) return false;
     return true;
   }
 }

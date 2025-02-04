@@ -195,8 +195,8 @@
         <rise-button
           [m_sLabel]="'Register'"
           [m_sRole]="'primary'"
-          [m_bDisabled]="!checkOrgInfo(true)"
-          (click)="m_bOrgIsValid ? register() : ''"
+          [m_bDisabled]="!checkOrgInfo(true) && !m_bIsSubmitted"
+          (click)="m_bOrgIsValid && !m_bIsSubmitted? register() : ''"
         ></rise-button>
         <rise-button
           [m_sLabel]="'Previous'"
