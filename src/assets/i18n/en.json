@@ -227,7 +227,9 @@
     "PAYMENT_TYPE": "Payment Type",
     "UPDATE": "Update Subscription",
     "WIRE": "Wire Transfer",
-    "YEAR": "One Year"
+    "YEAR": "One Year",
+    "INVALID_SUB": "Invalid Subscription",
+    "INVALID_SUB_MSG": "Your subscription has expired or you do not have an active subscription. Please buy new subscription to continue using this feature."
   },
   "TOOLBAR": {
     "ACCOUNT": "Account",

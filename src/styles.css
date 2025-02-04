@@ -411,6 +411,11 @@ a.leaflet-control-zoom-fullscreen {
   background-color: rgba(255, 61, 0, 0.1);
   border-radius: 8px;
 }
+.invalid-sub {
+  border: 1px solid var(--wasdiWarn);
+  background-color: rgba(255, 61, 0, 0.1);
+  border-radius: 8px;
+}
 
 .widget-container {
   background-color: var(--surface-glass-elevation);

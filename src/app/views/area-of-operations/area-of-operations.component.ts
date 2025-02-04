@@ -21,6 +21,8 @@ import {
 import {AreaInfoComponent} from './area-info/area-info.component';
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 import {environment} from "../../../environments/environments";
+import {SubscriptionService} from "../../services/api/subscription.service";
+import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
 
 @Component({
   selector: 'area-of-operations',
@@ -32,6 +34,10 @@ import {environment} from "../../../environments/environments";
     RiseMapComponent,
     NgIf,
     NgFor,
+    MatCard,
+    MatCardContent,
+    MatCardHeader,
+    MatCardTitle,
   ],
   templateUrl: './area-of-operations.component.html',
   styleUrl: './area-of-operations.component.css',
@@ -39,13 +45,15 @@ import {environment} from "../../../environments/environments";
 export class AreaOfOperationsComponent implements OnInit {
   m_aoAreasOfOperations: AreaViewModel[] = [];
   m_bShowNewArea: boolean = false;
+  m_bShouldBuySub: boolean = false;
 
   constructor(
     private m_oAreaService: AreaService,
     private m_oDialog: MatDialog,
     private m_oMapService: MapService,
     private m_oNotificationService: NotificationsDialogsService,
-    private m_oTranslate: TranslateService
+    private m_oTranslate: TranslateService,
+    private m_oSubService: SubscriptionService,
   ) {
   }
 
@@ -151,5 +159,22 @@ export class AreaOfOperationsComponent implements OnInit {
       return true;
     }
 
+  }
+  hasValidSubscription(){
+    this.m_oSubService.getSubscriptionsList(true).subscribe(
+      {
+        next:(oResponse)=>{
+          if(oResponse==null || oResponse.length==0){
+            //no sub is found,tell user to buy one
+            this.m_bShouldBuySub=true;
+          }else{
+            this.m_bShouldBuySub=false;
+          }
+        },
+        error:(oError)=>{
+          console.error(oError)
+        }
+      }
+    )
   }
 }

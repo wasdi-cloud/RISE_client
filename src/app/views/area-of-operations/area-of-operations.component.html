@@ -41,13 +41,29 @@
           </div>
         </div>
         <rise-button
+          *ngIf="!m_bShouldBuySub"
           [m_sLabel]="'AREA_OF_OPERATIONS.CREATE_NEW_AREA_OF_OPERATION'"
           (click)="toggleShowNew(true)"
         ></rise-button>
+        <div
+          *ngIf="m_bShouldBuySub"
+          class="invalid-sub p-3 d-flex flex-row justify-content-between align-items-center"
+        >
+          <div>
+            <div class="account-sub-header">
+              {{ "SUBSCRIPTIONS.INVALID_SUB" | translate }}
+            </div>
+            <p class="my-0">
+              {{ "SUBSCRIPTIONS.INVALID_SUB_MSG" | translate }}
+            </p>
+          </div>
+        </div>
       </div>
+
       <div class="map-container flex-fill">
         <rise-map [m_aoAreas]="m_aoAreasOfOperations"></rise-map>
       </div>
+
     </div>
   </div>
 </div>
