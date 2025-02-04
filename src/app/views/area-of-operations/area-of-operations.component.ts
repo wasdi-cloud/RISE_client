@@ -59,6 +59,7 @@ export class AreaOfOperationsComponent implements OnInit {
 
   ngOnInit() {
     this.getAreas();
+    this.hasValidSubscription()
   }
 
   getAreas() {
