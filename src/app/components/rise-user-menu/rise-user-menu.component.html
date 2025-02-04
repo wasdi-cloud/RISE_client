@@ -7,12 +7,17 @@
     (click)="toggleDropdown()"
   >
     <span class="material-symbols-outlined"> account_circle </span>
+    <span *ngIf="!m_bHasArea" class="notification-dot"></span>
   </div>
 
   <div *ngIf="m_bShowDropdown" class="dropdown-list d-flex flex-column gap-1">
     <!-- TODO: Add user's information -->
-    <div class="name">{{m_oUser.name}}</div>
+    <div class="user-info d-flex justify-content-between align-items-center">
+      <div class="name">{{ m_oUser.name }}</div>
+      <div [ngClass]="getRoleClass(m_oUser.role)"  class="role-badge">{{ m_oUser.role }}</div>
+    </div>
     <div class="email">{{m_oUser.email}}</div>
+<!--    <div class="role-badge">{{m_oUser.role}}</div>-->
     <ul class="d-flex flex-column gap-2 pt-2">
       <li
         *ngFor="let oItem of m_aoMenuItems"
@@ -23,5 +28,18 @@
         {{ oItem.translation | translate }}
       </li>
     </ul>
+    <div
+      *ngIf="!m_bHasArea"
+      class="invalid-sub p-3 d-flex flex-row justify-content-between align-items-center"
+    >
+      <div>
+        <div class="account-sub-header">
+          {{ "AREA_OF_OPERATIONS.AREA_NOT_FOUND" | translate }}
+        </div>
+        <p class="my-0">
+          {{ "AREA_OF_OPERATIONS.AREA_NOT_FOUND_MSG" | translate }}
+        </p>
+      </div>
+    </div>
   </div>
 </div>

@@ -53,7 +53,9 @@
     "ERROR_GET_USERS": "Could not retrieve users for this Area of Operations",
     "ERROR_PLUGINS": "Could not retrieve plugin information",
     "ERROR_SAVE": "Could not save changes to this area",
-    "SUCCESS_SAVE": "Area changes saved"
+    "SUCCESS_SAVE": "Area changes saved",
+    "AREA_NOT_FOUND": "Area not found",
+    "AREA_NOT_FOUND_MSG": "It looks like you haven't created or joined an Area of Operation yet. Please create one to start using the features of our system."
   },
   "BANNER": {
     "LIVE_SIT": "Live Situation",

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgFor, NgIf } from '@angular/common';
+import {NgClass, NgFor, NgIf} from '@angular/common';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
@@ -17,11 +17,12 @@ import {
   FullMenuItems,
   ReducedMenuItems,
 } from './menu-items';
+import {AreaService} from "../../services/api/area.service";
 
 @Component({
   selector: 'rise-user-menu',
   standalone: true,
-  imports: [NgFor, NgIf, TranslateModule],
+  imports: [NgFor, NgIf, TranslateModule, NgClass],
   templateUrl: './rise-user-menu.component.html',
   styleUrl: './rise-user-menu.component.css',
 })
@@ -30,6 +31,7 @@ export class RiseUserMenuComponent implements OnInit {
 
   m_bShowDropdown: boolean = false;
   m_oUser: UserViewModel;
+  m_bHasArea:boolean=false;
 
   constructor(
     private m_oActivatedRoute: ActivatedRoute,
@@ -39,7 +41,9 @@ export class RiseUserMenuComponent implements OnInit {
     private m_oNotificationService: NotificationsDialogsService,
     private m_oRouter: Router,
     private m_oTranslate: TranslateService,
-    private m_oUserService: UserService
+    private m_oUserService: UserService,
+    private m_oAreaService: AreaService,
+
   ) {
     // this.m_aoMenuItems = DefaultMenuItems;
   }
@@ -47,31 +51,6 @@ export class RiseUserMenuComponent implements OnInit {
   ngOnInit(): void {
     // this.initUserMenu();
     this.getUserMenu();
-  }
-
-  /**
-   * Initialize the user's information
-   */
-  private initUserMenu(): void {
-    let sError: string = this.m_oTranslate.instant('USER_MENU.ERROR');
-    if (!this.m_oUser?.role) {
-      this.m_oUserService.getUser().subscribe({
-        next: (oResponse) => {
-          this.m_oUser = oResponse;
-          this.m_oConstantsService.setUser(this.m_oUser);
-          if (this.m_oUser.role == UserRole.FIELD) {
-            this.m_aoMenuItems = DefaultMenuItems.filter(
-              (item) => item.name != 'subscriptions'
-            );
-          } else {
-            this.m_aoMenuItems = DefaultMenuItems;
-          }
-        },
-        error: (oError) => {
-          this.m_oNotificationService.openInfoDialog(sError, 'danger');
-        },
-      });
-    }
   }
 
   /**
@@ -84,62 +63,113 @@ export class RiseUserMenuComponent implements OnInit {
     if (!this.m_oUser) {
       this.m_oUserService.getUser().subscribe({
         next: (oResponse) => {
+          this.checkIfUserHasAreas()
           this.m_oUser = oResponse;
           this.m_oConstantsService.setUser(this.m_oUser);
+          this.m_oActivatedRoute.url.subscribe((params) => {
+
+            if (params.toString().includes('account')) {
+              this.m_aoMenuItems = ReducedMenuItems;
+            } else if (params.toString().includes('monitor')) {
+              let oUserRole = this.m_oConstantsService.getUserRole();
+              if (!oUserRole) {
+                this.m_oUserService.getUser().subscribe({
+                  next: (oResponse) => {
+                    oUserRole = oResponse.role;
+                  },
+                });
+              }
+              if (oUserRole == UserRole.FIELD) {
+                this.m_aoMenuItems = FullMenuItems.filter(
+                  (item) => item.name != 'subscriptions'
+                );
+              } else {
+                this.m_aoMenuItems = FullMenuItems;
+              }
+            } else {
+              let oUserRole = this.m_oConstantsService.getUserRole();
+              if (!oUserRole) {
+                this.m_oUserService.getUser().subscribe({
+                  next: (oResponse) => {
+                    oUserRole = oResponse.role;
+                    if (oUserRole == UserRole.FIELD) {
+                      this.m_aoMenuItems = DefaultMenuItems.filter(
+                        (item) => item.name != 'subscriptions'
+                      );
+                    } else {
+                      this.m_aoMenuItems = DefaultMenuItems;
+                    }
+                  },
+                });
+              }else{
+                if (oUserRole == UserRole.FIELD) {
+                  this.m_aoMenuItems = DefaultMenuItems.filter(
+                    (item) => item.name != 'subscriptions'
+                  );
+                } else {
+                  this.m_aoMenuItems = DefaultMenuItems;
+                }
+              }
+
+            }
+          });
         },
         error: (oError) => {
           this.m_oNotificationService.openInfoDialog(sError, 'danger');
         },
       });
     }
+    else{
+      this.checkIfUserHasAreas()
+      this.m_oActivatedRoute.url.subscribe((params) => {
 
-    this.m_oActivatedRoute.url.subscribe((params) => {
-
-      if (params.toString().includes('account')) {
-        this.m_aoMenuItems = ReducedMenuItems;
-      } else if (params.toString().includes('monitor')) {
-        let oUserRole = this.m_oConstantsService.getUserRole();
-        if (!oUserRole) {
-          this.m_oUserService.getUser().subscribe({
-            next: (oResponse) => {
-              oUserRole = oResponse.role;
-            },
-          });
-        }
-        if (oUserRole == UserRole.FIELD) {
-          this.m_aoMenuItems = FullMenuItems.filter(
-            (item) => item.name != 'subscriptions'
-          );
-        } else {
-          this.m_aoMenuItems = FullMenuItems;
-        }
-      } else {
-        let oUserRole = this.m_oConstantsService.getUserRole();
-        if (!oUserRole) {
-          this.m_oUserService.getUser().subscribe({
-            next: (oResponse) => {
-              oUserRole = oResponse.role;
-              if (oUserRole == UserRole.FIELD) {
-                this.m_aoMenuItems = DefaultMenuItems.filter(
-                  (item) => item.name != 'subscriptions'
-                );
-              } else {
-                this.m_aoMenuItems = DefaultMenuItems;
-              }
-            },
-          });
-        }else{
+        if (params.toString().includes('account')) {
+          this.m_aoMenuItems = ReducedMenuItems;
+        } else if (params.toString().includes('monitor')) {
+          let oUserRole = this.m_oConstantsService.getUserRole();
+          if (!oUserRole) {
+            this.m_oUserService.getUser().subscribe({
+              next: (oResponse) => {
+                oUserRole = oResponse.role;
+              },
+            });
+          }
           if (oUserRole == UserRole.FIELD) {
-            this.m_aoMenuItems = DefaultMenuItems.filter(
+            this.m_aoMenuItems = FullMenuItems.filter(
               (item) => item.name != 'subscriptions'
             );
           } else {
-            this.m_aoMenuItems = DefaultMenuItems;
+            this.m_aoMenuItems = FullMenuItems;
           }
-        }
+        } else {
+          let oUserRole = this.m_oConstantsService.getUserRole();
+          if (!oUserRole) {
+            this.m_oUserService.getUser().subscribe({
+              next: (oResponse) => {
+                oUserRole = oResponse.role;
+                if (oUserRole == UserRole.FIELD) {
+                  this.m_aoMenuItems = DefaultMenuItems.filter(
+                    (item) => item.name != 'subscriptions'
+                  );
+                } else {
+                  this.m_aoMenuItems = DefaultMenuItems;
+                }
+              },
+            });
+          }else{
+            if (oUserRole == UserRole.FIELD) {
+              this.m_aoMenuItems = DefaultMenuItems.filter(
+                (item) => item.name != 'subscriptions'
+              );
+            } else {
+              this.m_aoMenuItems = DefaultMenuItems;
+            }
+          }
 
-      }
-    });
+        }
+      });
+    }
+
   }
 
   /**
@@ -175,5 +205,24 @@ export class RiseUserMenuComponent implements OnInit {
    */
   toggleDropdown(): void {
     this.m_bShowDropdown = !this.m_bShowDropdown;
+  }
+
+  getRoleClass(role: UserRole): string {
+    const roleClassMap: { [key in UserRole]: string } = {
+      [UserRole.RISE_ADMIN]: 'role-badge-rise-admin',
+      [UserRole.ADMIN]: 'role-badge-admin',
+      [UserRole.HQ]: 'role-badge-hq',
+      [UserRole.FIELD]: 'role-badge-field'
+    };
+
+    return roleClassMap[role] || 'role-badge-default'; // Default if role is unknown
+  }
+
+  private checkIfUserHasAreas() {
+    this.m_oAreaService.getAreaListByUser().subscribe({
+      next:(oResponse)=>{
+        this.m_bHasArea = !(oResponse == null || oResponse.length == 0);
+      }
+    })
   }
 }

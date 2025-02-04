@@ -52,3 +52,52 @@ li:hover {
 li > span.material-symbols-outlined {
   font-size: 20px;
 }
+.role-badge {
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: bold;
+  text-align: start;
+  align-self: start;
+}
+.notification-dot {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 10px;
+  height: 10px;
+  background-color: #ff4d4d;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+
+/* RISE_ADMIN */
+.role-badge-rise-admin {
+  background-color: var(--rise-gold);
+  color: #916e0d;
+}
+
+/* ADMIN */
+.role-badge-admin {
+  background-color: var(--rise-gold);
+  color: #916e0d;
+}
+
+/* HQ */
+.role-badge-hq {
+  background-color: #007bff; /* Blue */
+  color: #241a8f;
+}
+
+/* FIELD */
+.role-badge-field {
+  background-color: #28a745; /* Green */
+  color: #105e11;
+}
+
+/* Fallback */
+.role-badge-default {
+  background-color: gray;
+  color: white;
+}
