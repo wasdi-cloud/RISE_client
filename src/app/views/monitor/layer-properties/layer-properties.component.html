@@ -1,4 +1,4 @@
-<div class="dialog-container d-flex flex-column gap-2 p-3">
+<div class="dialog-container d-flex flex-column gap-2 p-3" xmlns="http://www.w3.org/1999/html">
   <div
     class="header d-flex flex-row justify-content-between align-items-center"
   >
@@ -40,6 +40,16 @@
           [m_bReadonly]="true"
         ></rise-text-input>
       </div>
+    </div>
+    <!-- Full Width Text Area -->
+    <div class="d-flex" >
+      <rise-text-input
+        style="width: 750px"
+        [m_bHasTitle]="true"
+        [m_sLocalizationKey]="'MONITOR.RESOLUTION'"
+        [(m_sInputText)]="m_oLayerProperties.layerId"
+        [m_bReadonly]="true"
+      ></rise-text-input>
     </div>
     <!-- Full Width Text Area -->
     <div class="d-flex">

@@ -60,6 +60,7 @@ export class LayerPropertiesComponent implements OnInit {
       this.m_oLayerProperties.createdDate = this.m_oData.createdDate ? new Date(this.m_oData.createdDate).toDateString() : ""
       this.m_oLayerProperties.inputData = this.m_oData.inputData ? this.m_oData.inputData : ""
       this.m_oLayerProperties.referenceDate = this.m_oData.referenceDate ? (new Date(this.m_oData.referenceDate)).toDateString() : "";
+      this.m_oLayerProperties.layerId =this.m_oData.layerId ? this.m_oData.layerId : ""
 
     }
   }
@@ -73,4 +74,5 @@ export interface LayerProperties {
   createdDate?: string,
   referenceDate?: string,
   inputData?: string,
+  layerId?:string;
 }
