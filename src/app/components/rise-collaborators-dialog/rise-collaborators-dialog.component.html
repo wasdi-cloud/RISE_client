@@ -47,6 +47,7 @@
             class="option delete material-symbols-outlined remove"
             [matTooltip]="'Remove User'"
             (click)="removeFieldOperator(oUser)"
+            style="color: red;cursor: pointer"
           >
             delete
           </span>
@@ -66,6 +67,8 @@
             class="option material-symbols-outlined edit"
             [matTooltip]="'Save'"
             (click)="addFieldUser()"
+            style="color: gold;cursor: pointer"
+
           >
             save
           </span>
@@ -73,6 +76,7 @@
             class="option material-symbols-outlined edit"
             [matTooltip]="'Cancel Editing'"
             (click)="m_bAddingUser = false"
+            style="color: red;cursor: pointer"
           >
             close
           </span>
