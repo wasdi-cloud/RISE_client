@@ -184,6 +184,7 @@ export class UserAccountComponent implements OnInit {
       name: this.m_oUser.name,
       surname: this.m_oUser.surname,
       mobile: this.m_oUser.mobile,
+      userId: this.m_oUser.userId,
     };
     this.m_oUserService.updateUser(oBody).subscribe({
       next: (oResponse) => {

@@ -48,6 +48,7 @@ export class LoginViewComponent {
   public m_bValidOtp: boolean = true;
 
   public m_oOTPVerifyVM: any = {};
+  m_bIsSubmitted: boolean =false;
 
   constructor(
     private m_oAuthService: AuthService,
@@ -86,16 +87,19 @@ export class LoginViewComponent {
    * UC: If credentials are valid, RISE ask to validate the login with OTP (UC_005)
    */
   verifyOtp(): void {
+    this.m_bIsSubmitted=true;
     this.m_oAuthService.verifyOTP(this.m_oOTPVerifyVM).subscribe({
       next: (oResponse) => {
         if (oResponse.status === 200) {
           this.verifyLogin();
+
         }
       },
       error: (oError) => {
         this.m_oRiseUtils.handleNotificationError(
           oError.error.errorStringCodes
         );
+        this.m_bIsSubmitted=true;
       },
     });
   }
@@ -129,12 +133,14 @@ export class LoginViewComponent {
               }
             },
           });
+          this.m_bIsSubmitted=true;
         }
       },
       error: (oError) => {
         if (oError.error.errorStringCodes) {
           this.handleAPIErrors(sError,oError.error.errorStringCodes);
         }
+        this.m_bIsSubmitted=true;
 
       },
     });
