@@ -27,6 +27,8 @@ import { UserViewModel } from '../../../models/UserViewModel';
 import { NotificationOptions } from '../../../shared/notification-options/notification-options';
 
 import FadeoutUtils from '../../../shared/utilities/FadeoutUtils';
+import {Router} from "@angular/router";
+import {MapService} from "../../../services/map.service";
 
 @Component({
   selector: 'user-account',
@@ -108,6 +110,8 @@ export class UserAccountComponent implements OnInit {
     verifyNewEmail: '',
   };
 
+  m_sNewUserId:string;
+
   /**
    * Inputs to change user's password
    */
@@ -128,7 +132,8 @@ export class UserAccountComponent implements OnInit {
     private m_oNotificationDialogService: NotificationsDialogsService,
     private m_oOrganizationService: OrganizationsService,
     private m_oTranslate: TranslateService,
-    private m_oUserService: UserService
+    private m_oUserService: UserService,
+    private m_oMapService:MapService
   ) {
     m_oTranslate.addLangs(['en', 'es', 'fr', 'ar']);
     m_oTranslate.setDefaultLang('en');
@@ -150,6 +155,7 @@ export class UserAccountComponent implements OnInit {
           return;
         }
         this.m_oUser = oResponse;
+        this.m_sNewUserId=this.m_oUser.userId
         this.setUserLanguage();
         this.m_oEmailInputs.currentEmail = this.m_oUser.email;
         this.initCheckboxOptions();
@@ -180,27 +186,60 @@ export class UserAccountComponent implements OnInit {
    * Save changes to the user id, name, surname, number
    */
   saveUserPersonalInformation() {
+    let bIsUserIdChanged=false;
+    if(this.m_oUser.userId!=this.m_sNewUserId){
+      bIsUserIdChanged=true;
+    }
     let oBody = {
       name: this.m_oUser.name,
       surname: this.m_oUser.surname,
       mobile: this.m_oUser.mobile,
-      userId: this.m_oUser.userId,
+      userId: bIsUserIdChanged?this.m_sNewUserId:this.m_oUser.userId,
     };
-    this.m_oUserService.updateUser(oBody).subscribe({
-      next: (oResponse) => {
-        this.m_oNotificationDialogService.openSnackBar(
-          "Information Saved",
-          "Account",
-          'success'
-        )
-      },error:(oError)=>{
-        this.m_oNotificationDialogService.openSnackBar(
-          oError,
-          "Account",
-          'danger'
-        )
-      }
-    });
+    //verify if user id is changed if it is , user have to log in again , if not we proceed
+    if(bIsUserIdChanged){
+      this.m_oNotificationDialogService.openConfirmationDialog(
+        "If you want to change the User Id, you will have to log in again, Do you want to proceed?",
+        "success"
+      ).subscribe((oDialogResult)=>{
+        if(oDialogResult){
+          this.m_oUserService.updateUser(oBody).subscribe({
+            next: (oResponse) => {
+              this.m_oNotificationDialogService.openSnackBar(
+                "Information Saved",
+                "Account",
+                'success'
+              );
+              this.m_oMapService.clearMarkerSubject(); // Clear the subject
+              this.m_oAuthService.logout();
+            },error:(oError)=>{
+              this.m_oNotificationDialogService.openSnackBar(
+                oError,
+                "Account",
+                'danger'
+              )
+            }
+          });
+        }
+      })
+    }else{
+      this.m_oUserService.updateUser(oBody).subscribe({
+        next: (oResponse) => {
+          this.m_oNotificationDialogService.openSnackBar(
+            "Information Saved",
+            "Account",
+            'success'
+          );
+        },error:(oError)=>{
+          this.m_oNotificationDialogService.openSnackBar(
+            oError,
+            "Account",
+            'danger'
+          )
+        }
+      });
+    }
+
   }
 
   setUserDefaultLanguage(lang: any) {

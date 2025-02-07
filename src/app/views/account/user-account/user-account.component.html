@@ -33,7 +33,7 @@
           class="col-6"
           [m_sLocalizationKey]="'LOGIN.USER_ID'"
           [m_bHasTitle]="true"
-          [m_sInputText]="m_oUser.userId"
+          [(m_sInputText)]="m_sNewUserId"
         ></rise-text-input>
         <rise-button
           class="align-self-start mt-2"
