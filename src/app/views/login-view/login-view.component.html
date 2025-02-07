@@ -69,7 +69,7 @@
             [m_bDisabled]="m_bIsSubmitted"
             [m_sLabel]="'Next'"
             [m_sRole]="'primary'"
-            (click)="verifyOtp()"
+            (click)="!m_bIsSubmitted?verifyOtp():''"
           ></rise-button>
           <p class="retry-text">
             Didn't receive a one time password?
