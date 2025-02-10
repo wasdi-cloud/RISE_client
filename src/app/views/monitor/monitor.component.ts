@@ -451,6 +451,23 @@ export class MonitorComponent implements OnInit {
       }
     });
   }
+  getOpacity(sLayerId): number {
+    let oMap = this.m_oMapService.getMap();
+    let opacity = 0; // Default opacity
+
+    oMap.eachLayer((layer) => {
+      if (
+        layer.options?.layers === 'wasdi:' + sLayerId ||
+        layer.options?.layers === sLayerId
+      ) {
+        opacity=layer.options.opacity
+
+      }
+    });
+
+    return opacity;
+  }
+
 
   removeLayer(oEvent) {
     let oMap = this.m_oMapService.getMap();
@@ -554,13 +571,31 @@ export class MonitorComponent implements OnInit {
     //todo show  layer gradually from selected date to newest date
     if (this.m_aoLayers && this.m_aoLayers.length > 0) {
       const aoSortedLayers = this.m_aoLayers.sort((a, b) => a.referenceDate - b.referenceDate);
+      // Store initial opacities
+      const m_oInitialOpacities = new Map();
+      aoSortedLayers.forEach(layer => {
+        const iInitialOpacity = this.getOpacity(layer.layerId);
+        m_oInitialOpacities.set(layer.layerId, iInitialOpacity);
+      });
+      //setting every layer to 0
+      for (const aoSortedLayer of aoSortedLayers) {
+        this.setOpacity(0,aoSortedLayer.layerId);
+      }
+      //animation :showing layer by layer
       for (const aoSortedLayer of aoSortedLayers) {
         // Show the current aoSortedLayer
-        this.setOpacity(1, aoSortedLayer.layerId);
+        this.setOpacity(100, aoSortedLayer.layerId);
         // Wait for 2 seconds
         await new Promise(resolve => setTimeout(resolve, 2000));
         // Hide the current aoSortedLayer
         this.setOpacity(0,aoSortedLayer.layerId);
+
+      }
+      // go back to initial point
+      for (const aoSortedLayer of aoSortedLayers) {
+        const iInitialOpacity = m_oInitialOpacities.get(aoSortedLayer.layerId) || 0;
+        this.setOpacity(iInitialOpacity * 100, aoSortedLayer.layerId);
+
       }
     }
   }
