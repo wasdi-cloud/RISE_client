@@ -46,9 +46,10 @@
       <rise-text-input
         style="width: 750px"
         [m_bHasTitle]="true"
-        [m_sLocalizationKey]="'MONITOR.RESOLUTION'"
+        [m_sLocalizationKey]="'MONITOR.LAYER_ID'"
         [(m_sInputText)]="m_oLayerProperties.layerId"
         [m_bReadonly]="true"
+        (click)="copyToClipboard(m_oLayerProperties.layerId)"
       ></rise-text-input>
     </div>
     <!-- Full Width Text Area -->

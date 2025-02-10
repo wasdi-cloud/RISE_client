@@ -10,6 +10,7 @@ import {
   BuyNewSubscriptionComponent
 } from "../../account/user-subscriptions/buy-new-subscription/buy-new-subscription.component";
 import FadeoutUtils from "../../../shared/utilities/FadeoutUtils";
+import {NotificationsDialogsService} from "../../../services/notifications-dialogs.service";
 
 @Component({
   selector: 'app-layer-properties',
@@ -37,6 +38,7 @@ export class LayerPropertiesComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) private m_oData: any,
     private m_oDialogRef: MatDialogRef<BuyNewSubscriptionComponent>,
+    private m_oNotificationDialogService:NotificationsDialogsService
   ) {
   }
 
@@ -66,6 +68,21 @@ export class LayerPropertiesComponent implements OnInit {
   }
 
 
+  copyToClipboard(text: string) {
+    if (!text) return;
+
+    navigator.clipboard.writeText(text).then(() => {
+      console.log('Copied to clipboard:', text);
+      // Optional: Show a toast notification or message
+      this.m_oNotificationDialogService.openSnackBar(
+        "Copied to Clipboard!",
+        "Update",
+        "success"
+      )
+    }).catch(err => {
+      console.error('Failed to copy text:', err);
+    });
+  }
 }
 
 export interface LayerProperties {
