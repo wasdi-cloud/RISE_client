@@ -274,6 +274,7 @@ export class MonitorComponent implements OnInit {
    * @param iDate
    */
   getLayer(oPlugin: any, sAreaId: string, iDate: string | number) {
+    console.log(this.m_oSelectedDate)
     this.m_oLayerService
       .findLayer(oPlugin.id, sAreaId, this.m_oSelectedDate)
       .subscribe({
@@ -299,20 +300,29 @@ export class MonitorComponent implements OnInit {
       });
   }
 
-  private fillPluginsAndLayers(oPlugin: any, aoLayer:LayerViewModel) {
-    if (!this.m_aoLayers.some(layer => layer.layerId === aoLayer.layerId)) {
-      this.m_aoLayers.push(aoLayer);
+  private fillPluginsAndLayers(oPlugin: any, oLayer:LayerViewModel) {
+    if (!this.m_aoLayers.some(layer => layer.layerId === oLayer.layerId)) {
+      this.m_aoLayers.push(oLayer);
     }
     // Check if oPlugin.layers already contains the object
-    if (!oPlugin.layers.some(layer => layer.layerId === aoLayer.layerId)) {
-      oPlugin.layers.push(aoLayer);
+    if (!oPlugin.layers.some(layer => layer.layerId === oLayer.layerId)) {
+      oPlugin.layers.push(oLayer);
     }
+
+    //sort the layers
+    this.m_aoLayers = this.m_aoLayers.sort((a, b) => a.referenceDate - b.referenceDate);
+    //filter the layer based on the selected date
+    if(this.m_oSelectedDate){
+      this.m_aoLayers = this.m_aoLayers.filter(layer => layer.referenceDate *1000<= this.m_oSelectedDate);
+    }
+
+    //
     this.m_aoReversedLayers = [...this.m_aoLayers].reverse();
 
 
     this.m_oMapService.addLayerMap2DByServer(
-      aoLayer.layerId,
-      aoLayer.geoserverUrl
+      oLayer.layerId,
+      oLayer.geoserverUrl
     );
     // Update the selected layers
     this.m_oMapService.setSelectedLayers(this.m_aoLayers)
@@ -322,7 +332,7 @@ export class MonitorComponent implements OnInit {
    * Handle Changes to the Reference Time from the Timebar Component
    *  UC: RISE shows the Monitor Section containing a timeline to change the reference time of the viewer
    */
-  getReferenceTime(oEvent): void {
+  getReferenceTime(oEvent:any): void {
     this.m_oSelectedDate = oEvent;
     this.m_aoPlugins.forEach((oPlugin) => {
       if (oPlugin.loaded) {
@@ -330,20 +340,6 @@ export class MonitorComponent implements OnInit {
       }
     });
   }
-
-  /**
-   * TODO: open dialog to add event
-   * UC: Add new Geolocalized Events (and show the layer on the map)
-   */
-  addNewGeolocalizedEvent() {
-  }
-
-  /**
-   * TODO: Open Cross-section tool
-   */
-  openCrossSectionTool() {
-  }
-
   switchPluginButton(oPlugin:any) {
     //was active,turn it to inactive
     if(oPlugin.loaded){
