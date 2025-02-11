@@ -17,6 +17,8 @@ import {MatTooltip} from "@angular/material/tooltip";
 import {RiseCalendarComponent} from "../rise-calendar/rise-calendar.component";
 import moment from "moment";
 import {EventViewModel} from "../../models/EventViewModel";
+import {DomEvent} from "leaflet";
+import getMousePosition = DomEvent.getMousePosition;
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
@@ -129,6 +131,8 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   @HostListener('wheel', ['$event'])
   onMouseWheel(event: WheelEvent) {
     if (this.isMouseOverSlider(event)) {
+      let oDate=this.getMousePositionDate(event);
+      console.log(oDate)
       if (event.deltaY < 0) {
         console.log('Zooming In on Slider');
       } else {
@@ -400,5 +404,24 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
       return oReturnList;
     }
     return [];
+  }
+
+  private getMousePositionDate(event:WheelEvent) {
+    const slider = document.getElementById('slider-id') as HTMLInputElement;
+    if (!slider) return;
+
+    // Get the cursor position relative to the slider
+    const rect = slider.getBoundingClientRect();
+    const cursorPosition = event.clientX - rect.left;
+    const sliderWidth = rect.width;
+
+    // Convert position to a value within slider range
+    const relativePosition = cursorPosition / sliderWidth;
+    const index = Math.round(relativePosition * (this.m_asDates.length - 1));
+
+    // Ensure index is within bounds
+    const clampedIndex = Math.max(0, Math.min(this.m_asDates.length - 1, index));
+    const selectedDate = this.m_asDates[clampedIndex];
+    return selectedDate;
   }
 }
