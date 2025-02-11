@@ -1,5 +1,15 @@
 import {CommonModule} from '@angular/common';
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges,} from '@angular/core';
+import {
+  Component, ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 import {RiseChipMenuComponent} from '../rise-chip-menu/rise-chip-menu.component';
 import {RiseButtonComponent} from "../rise-button/rise-button.component";
@@ -21,7 +31,10 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   /**
    * UC_190 Browse Time
    */
-
+  /**
+   * element ref for the slider
+   */
+  @ViewChild('slider', { static: true }) slider!: ElementRef<HTMLInputElement>;
   /**
    * Timebar start date
    */
@@ -106,6 +119,34 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     this.initDates();
     this.generateYearTicks();
+  }
+
+
+  /**
+   * detect the wheel movement on the slider
+   * @param event
+   */
+  @HostListener('wheel', ['$event'])
+  onMouseWheel(event: WheelEvent) {
+    if (this.isMouseOverSlider(event)) {
+      if (event.deltaY < 0) {
+        console.log('Zooming In on Slider');
+      } else {
+        console.log('Zooming Out on Slider');
+      }
+      event.preventDefault(); // Prevents page scrolling
+    }
+  }
+
+  private isMouseOverSlider(event: WheelEvent): boolean {
+    const sliderElement = this.slider.nativeElement;
+    const rect = sliderElement.getBoundingClientRect();
+    return (
+      event.clientX >= rect.left &&
+      event.clientX <= rect.right &&
+      event.clientY >= rect.top &&
+      event.clientY <= rect.bottom
+    );
   }
 
   /**
