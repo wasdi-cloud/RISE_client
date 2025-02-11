@@ -139,10 +139,9 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
       let oDate=this.getMousePositionDate(event);
       console.log(oDate)
       if (event.deltaY < 0) {
-        console.log('Zooming In on Slider');
         this.handleZoomingIn(oDate);
       } else {
-        console.log('Zooming Out on Slider');
+        this.handleZoomingOut(oDate);
       }
       event.preventDefault(); // Prevents page scrolling
     }
@@ -179,8 +178,6 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    * Based on difference between start date and  end date , generate the ticks for the timebar
    */
   generateYearTicks() {
-    //todo make zoom in from year to months to days
-    //todo make zoom out from days to months to years
     //this is for alpha only
 
     // this.m_iStartDate=this.m_iStartDate==-1?1420130166:this.m_iStartDate
@@ -467,6 +464,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
 
     // Keep the selected date if possible
     const selectedDay = oDate.getDate();
+    console.log('this is selected date : '+selectedDay)
     this.m_iSliderValue = selectedDay - 1; // Adjust index for zero-based array
     this.m_sSelectedDate = this.m_asDates[this.m_iSliderValue];
 
@@ -489,6 +487,23 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     const selectedMonth = dateObj.getMonth();
     this.m_iSliderValue = selectedMonth; // Since months are zero-based
     this.m_sSelectedDate = this.m_asDates[this.m_iSliderValue];
+
+  }
+
+
+  private handleZoomingOut(oDate: any) {
+    if(this.m_iZoomLevel >0){
+      this.m_iZoomLevel--;
+      if(this.m_iZoomLevel==0){
+        //handle months to years
+        this.initDates();
+        this.generateYearTicks();
+      }else if(this.m_iZoomLevel==1){
+        //handle days to months
+
+        this.generateMonthTicks(oDate);
+      }
+    }
 
   }
 
