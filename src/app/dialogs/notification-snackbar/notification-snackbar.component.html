@@ -1,9 +1,18 @@
 <div class="w-100">
   <div class="snackbar-header d-flex flex-row justify-content-between w-100 font-bold">
-    {{ m_oData.title
-    }}<span class="close-btn material-symbols-outlined" (click)="onDismiss()">
-      close</span
-    >
+    {{ m_oData.title }}
+    <div class="d-flex align-items-center">
+      <!-- Conditionally show the copy button -->
+      <span
+        *ngIf="m_oData.enableCopy"
+        class="copy-btn material-symbols-outlined mx-2"
+        (click)="copyMessage()"
+        title="Copy message"
+      >
+        content_copy
+      </span>
+      <span class="close-btn material-symbols-outlined" (click)="onDismiss()"> close </span>
+    </div>
   </div>
   <div matSnackbarLabel [innerHTML]="m_oData.message"></div>
 </div>

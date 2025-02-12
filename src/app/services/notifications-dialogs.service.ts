@@ -62,8 +62,9 @@ export class NotificationsDialogsService {
    * @param sMessage
    * @param sTitle
    * @param className
+   * @param enableCopy
    */
-  openSnackBar(sMessage: string, sTitle?: string, className?: string) {
+  openSnackBar(sMessage: string, sTitle?: string, className?: string, enableCopy?: boolean) {
     this.m_oMatSnackbar.openFromComponent(NotificationSnackbarComponent, {
       duration: 10000,
       horizontalPosition: 'right',
@@ -73,6 +74,7 @@ export class NotificationsDialogsService {
         message: sMessage,
         title: sTitle ? sTitle : 'Update',
         class: className ? className : 'info-snackbar',
+        enableCopy:enableCopy?enableCopy:false
       },
     });
   }

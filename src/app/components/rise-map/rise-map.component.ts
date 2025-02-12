@@ -412,7 +412,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   addMeasurementTools(oMap) {
     this.m_oMapService.addMeasurementTools(oMap).subscribe({
       next: (sMessage) => {
-        this.m_oNotificationService.openSnackBar(sMessage, 'Measurement', 'success');
+        this.m_oNotificationService.openSnackBar(sMessage, 'Measurement', 'success',true);
         // this.m_oNotificationService.openInfoDialog(sMessage, 'Measurement', 'success');
         window.dispatchEvent(new Event("resize"))
       },

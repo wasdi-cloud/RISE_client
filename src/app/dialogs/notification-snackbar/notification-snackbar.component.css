@@ -12,3 +12,11 @@
 .snackbar-header {
   font-weight: 700;
 }
+.copy-btn {
+  cursor: pointer;
+  color: #000000;
+}
+
+.copy-btn:hover {
+  color: #6a6161;
+}
