@@ -321,6 +321,7 @@ export class SignUpComponent implements OnInit {
    * @returns boolean
    */
   validateEmail(): boolean {
+    this.m_oEmailInputs.email = this.m_oEmailInputs.email.trim();
     let sEmail = this.m_oEmailInputs.email;
     let sConfirmEmail = this.m_oEmailInputs.confirmEmail;
     // Standard email regex:
@@ -346,6 +347,7 @@ export class SignUpComponent implements OnInit {
    * @returns boolean
    */
   validateUserName(): boolean {
+    this.m_oUserInfoInput.userId= this.m_oUserInfoInput.userId.trim();
     let sUserId = this.m_oUserInfoInput.userId;
     if (sUserId) {
       if (sUserId.length < 8) {
