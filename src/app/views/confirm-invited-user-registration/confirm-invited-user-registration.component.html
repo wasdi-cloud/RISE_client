@@ -13,7 +13,7 @@
           <rise-text-input
             [m_sLocalizationKey]="'REGISTER.USER_ID'"
             [(m_sInputText)]="m_oUserInfoInput.userId"
-            [m_bIsValid]="m_bUsernameIsValid"
+            [m_bIsValid]="validateUserName() && m_bUsernameIsValid"
             [m_sErrorText]="m_sUsernameError"
             [m_bIsValidatorInput]="true"
             [m_bHasTitle]="true"
@@ -65,7 +65,8 @@
           <rise-button
             [m_sLabel]="'Submit'"
             [m_sRole]="'primary'"
-            (click)="register()"
+            [m_bDisabled]="!verifyInputs()"
+            (click)="verifyInputs()?register():''"
           ></rise-button>
         </div>
       </div>

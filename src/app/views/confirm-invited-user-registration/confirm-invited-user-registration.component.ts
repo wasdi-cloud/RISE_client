@@ -95,6 +95,9 @@ export class ConfirmInvitedUserRegistrationComponent implements OnInit {
     if (this.validatePassword()) {
       this.m_oConfirmInviteModel.password = this.m_oPasswordInputs.password;
     }
+    if(this.validateUserName()){
+      this.m_oConfirmInviteModel.userId=this.m_oUserInfoInput.userId.trim()
+    }
     if (this.verifyInputs()) {
       this.m_oAuthService.confirmUser(this.m_oConfirmInviteModel).subscribe({
         next: (oResponse) => {
@@ -127,7 +130,7 @@ export class ConfirmInvitedUserRegistrationComponent implements OnInit {
     }
   }
 
-  private verifyInputs() {
+  verifyInputs() {
     if (
       FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oUserInfoInput.userId) ||
       FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oUserInfoInput.name) ||
@@ -139,12 +142,23 @@ export class ConfirmInvitedUserRegistrationComponent implements OnInit {
     if (this.m_asTermsAndConditionSelected.length != 2) {
       return false;
     }
-    this.m_oConfirmInviteModel.userId = this.m_oUserInfoInput.userId;
     this.m_oConfirmInviteModel.name = this.m_oUserInfoInput.name;
     this.m_oConfirmInviteModel.surname = this.m_oUserInfoInput.surname;
     this.m_oConfirmInviteModel.mobile = this.m_oUserInfoInput.mobile;
     this.m_oConfirmInviteModel.acceptedPrivacy = true;
     this.m_oConfirmInviteModel.acceptedTermsAndConditions = true;
+    return true;
+  }
+
+  validateUserName(): boolean {
+    if (this.m_oUserInfoInput.userId) {
+      this.m_oUserInfoInput.userId= this.m_oUserInfoInput.userId.trim();
+      if (this.m_oUserInfoInput.userId.length < 8) {
+        this.m_sUsernameError =
+          'Please ensure that user id is longer than 8 characters';
+        return false;
+      }
+    }
     return true;
   }
 }

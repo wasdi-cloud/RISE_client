@@ -321,15 +321,15 @@ export class SignUpComponent implements OnInit {
    * @returns boolean
    */
   validateEmail(): boolean {
-    this.m_oEmailInputs.email = this.m_oEmailInputs.email.trim();
-    let sEmail = this.m_oEmailInputs.email;
-    let sConfirmEmail = this.m_oEmailInputs.confirmEmail;
+
     // Standard email regex:
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     // if the user has modified both inputs
-    if (sEmail && sConfirmEmail) {
+    if (this.m_oEmailInputs.email && this.m_oEmailInputs.confirmEmail) {
+      this.m_oEmailInputs.email = this.m_oEmailInputs.email.trim();
+      this.m_oEmailInputs.confirmEmail = this.m_oEmailInputs.confirmEmail.trim();
       // if the first email doesn't pass Regex OR the emails don't match
-      if (!emailRegex.test(sEmail) || sEmail !== sConfirmEmail) {
+      if (!emailRegex.test(this.m_oEmailInputs.email) || this.m_oEmailInputs.email !== this.m_oEmailInputs.confirmEmail) {
         this.m_sEmailError =
           'Please ensure the inputted emails are valid emails and match';
         return false;
@@ -347,10 +347,9 @@ export class SignUpComponent implements OnInit {
    * @returns boolean
    */
   validateUserName(): boolean {
-    this.m_oUserInfoInput.userId= this.m_oUserInfoInput.userId.trim();
-    let sUserId = this.m_oUserInfoInput.userId;
-    if (sUserId) {
-      if (sUserId.length < 8) {
+    if (this.m_oUserInfoInput.userId) {
+      this.m_oUserInfoInput.userId= this.m_oUserInfoInput.userId.trim();
+      if (this.m_oUserInfoInput.userId.length < 8) {
         this.m_sUsernameError =
           'Please ensure that user id is longer than 8 characters';
         return false;
