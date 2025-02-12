@@ -2,13 +2,16 @@
   <div class="slider-container position-relative">
     <!-- Slider input -->
     <input
-      class="slider"
+      #slider
+      class="slider {{ m_sSliderClass }}"
       type="range"
       name=""
-      id=""
+      id="slider-id"
       [max]="m_asDates.length - 1"
       [(value)]="m_iSliderValue"
       (change)="dateSelected($event)"
+      (mouseenter)="onMouseEnter()"
+      (mouseleave)="onMouseLeave()"
     />
 
     <!-- Ticks -->

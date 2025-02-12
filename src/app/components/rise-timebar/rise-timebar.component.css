@@ -69,6 +69,24 @@
   position: relative;
   z-index: 1;
 }
+.slider:hover{
+  cursor: pointer;
+  filter:brightness(1.2) ;
+}
+
+/* Add a subtle glow effect when hovering */
+.slider-container:hover .slider {
+  box-shadow: 0px 0px 8px rgba(0, 140, 255, 0.6);
+}
+
+/* Change cursor when zooming in or out */
+.slider.zoom-in:hover {
+  cursor: zoom-in;
+}
+
+.slider.zoom-out:hover {
+  cursor: zoom-out;
+}
 .slider-container {
   position: relative;
   width: 100%;
