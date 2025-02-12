@@ -1,6 +1,7 @@
 import {CommonModule} from '@angular/common';
 import {
-  Component, ElementRef,
+  Component,
+  ElementRef,
   EventEmitter,
   HostListener,
   Input,
@@ -17,8 +18,6 @@ import {MatTooltip} from "@angular/material/tooltip";
 import {RiseCalendarComponent} from "../rise-calendar/rise-calendar.component";
 import moment from "moment";
 import {EventViewModel} from "../../models/EventViewModel";
-import {DomEvent} from "leaflet";
-import getMousePosition = DomEvent.getMousePosition;
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
@@ -36,7 +35,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   /**
    * element ref for the slider
    */
-  @ViewChild('slider', { static: true }) slider!: ElementRef<HTMLInputElement>;
+  @ViewChild('slider', {static: true}) slider!: ElementRef<HTMLInputElement>;
   /**
    * Timebar start date
    */
@@ -109,10 +108,11 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   /**
    * Events to mark in the timebar
    */
-  @Input() m_aoEvents:EventViewModel[] = [];
+  @Input() m_aoEvents: EventViewModel[] = [];
 
-  m_iZoomLevel:number=0;
-  m_iMaxZoomLevel:number=2;
+  m_iZoomLevel: number = 0;
+  m_iMaxZoomLevel: number = 2;
+  m_sSliderClass: string = ''
 
   constructor() {
   }
@@ -136,7 +136,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   @HostListener('wheel', ['$event'])
   onMouseWheel(event: WheelEvent) {
     if (this.isMouseOverSlider(event)) {
-      let oDate=this.getMousePositionDate(event);
+      let oDate = this.getMousePositionDate(event);
       console.log(oDate)
       if (event.deltaY < 0) {
         this.handleZoomingIn(oDate);
@@ -147,31 +147,40 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     }
   }
 
-  private isMouseOverSlider(event: WheelEvent): boolean {
-    const sliderElement = this.slider.nativeElement;
-    const rect = sliderElement.getBoundingClientRect();
-    return (
-      event.clientX >= rect.left &&
-      event.clientX <= rect.right &&
-      event.clientY >= rect.top &&
-      event.clientY <= rect.bottom
-    );
-  }
-
   /**
    * Get Marker position to insert in its right position in the timebar
    */
   getEventMarkerPosition(eventDate: number): string {
-    let sDate=new Date(eventDate).toDateString()
+    let sDate = new Date(eventDate).toDateString()
     const eventIndex = this.m_asDates.findIndex(
       (date) => date === sDate
     );
     if (eventIndex === -1) {
-      return "" ; // Default to 0% if the event date isn't in the range
+      return ""; // Default to 0% if the event date isn't in the range
     }
 
     const percentage = (eventIndex / (this.m_asDates.length - 1)) * 100;
     return `${percentage}%`;
+  }
+
+  @HostListener('mouseenter', ['$event'])
+  onMouseEnter() {
+    this.updateSliderCursor();
+  }
+
+  @HostListener('mouseleave', ['$event'])
+  onMouseLeave() {
+    this.m_sSliderClass = ''; // Reset cursor when leaving
+  }
+
+  updateSliderCursor() {
+    if (this.m_iZoomLevel < 2) {
+      this.m_sSliderClass = 'zoom-in';
+    } else if (this.m_iZoomLevel > 0) {
+      this.m_sSliderClass = 'zoom-out';
+    } else {
+      this.m_sSliderClass = '';
+    }
   }
 
   /**
@@ -180,8 +189,8 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   generateYearTicks() {
     //this is for alpha only
 
-    // this.m_iStartDate=this.m_iStartDate==-1?1420130166:this.m_iStartDate
-    this.m_iStartDate=1420130166
+    this.m_iStartDate = this.m_iStartDate == -1 ? 1420130166 : this.m_iStartDate
+    // this.m_iStartDate=1420130166
     // const iStartYear =2015
     const iStartDate = new Date(this.m_iStartDate * 1000);
     const iStartYear = iStartDate.getFullYear();
@@ -193,7 +202,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     const iEndMonth = iEndDate.getMonth();
     const iEndDay = iEndDate.getDate();
     const iYearRange = iEndYear - iStartYear;
-    this.aiTicks=[];
+    this.aiTicks = [];
     // If the range is more than one year
     if (iYearRange > 1) {
       let interval = 1; // Default interval: one tick per year
@@ -208,22 +217,22 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
       }
 
       for (let year = iStartYear; year <= iEndYear; year += interval) {
-        this.aiTicks.push({ value: year });
+        this.aiTicks.push({value: year});
       }
-      this.m_iZoomLevel=0;// can go from year to month , and from month to days
-    }else {
+      this.m_iZoomLevel = 0;// can go from year to month , and from month to days
+    } else {
       //same year
       if (iYearRange == 0) {
         if (iEndMonth - iStartMonth > 1) {
           for (let month = iStartMonth; month <= iEndMonth; month++) {
             this.aiTicks.push({value: MONTHS[month]});
           }
-          this.m_iZoomLevel=1;// can go from month to days
+          this.m_iZoomLevel = 1;// can go from month to days
         } else {
           for (let day = iStartDay; day <= iEndDay; day++) {
             this.aiTicks.push({value: day});
           }
-          this.m_iZoomLevel=2; // can go from month to days
+          this.m_iZoomLevel = 2; // can go from month to days
 
         }
       }
@@ -236,12 +245,12 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
           for (let month = 0; month <= iEndMonth; month++) {
             this.aiTicks.push({value: MONTHS[month]});
           }
-          this.m_iZoomLevel=1; // can go from month to days
+          this.m_iZoomLevel = 1; // can go from month to days
         } else {
           for (let day = iStartDay; day <= iEndDay; day++) {
             this.aiTicks.push({value: day});
           }
-          this.m_iZoomLevel=2;// cant zoom since its only days
+          this.m_iZoomLevel = 2;// cant zoom since its only days
 
         }
       }
@@ -405,9 +414,9 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   }
 
   convertEventToDates() {
-    if(this.m_aoEvents){
-      let oReturnList:Date[]=[];
-      for (let i = 0; i <this.m_aoEvents.length ; i++) {
+    if (this.m_aoEvents) {
+      let oReturnList: Date[] = [];
+      for (let i = 0; i < this.m_aoEvents.length; i++) {
         oReturnList.push(new Date(this.m_aoEvents[i].peakDate));
       }
       return oReturnList;
@@ -415,7 +424,63 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     return [];
   }
 
-  private getMousePositionDate(event:WheelEvent) {
+  generateDayTicks(oSelectedDate: string) {
+    const oDate = new Date(oSelectedDate);
+    const oSelectedYear = oDate.getFullYear();
+    const oSelectedMonth = oDate.getMonth();
+    const daysInMonth = new Date(oSelectedYear, oSelectedMonth + 1, 0).getDate();
+
+    this.aiTicks = [];
+    this.m_asDates = []; // Reset slider values
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const dateString = `${oSelectedYear}-${oSelectedMonth + 1}-${day}`;
+      this.aiTicks.push({value: `${day} ${MONTHS[oSelectedMonth]}`});
+      this.m_asDates.push(dateString); // Update slider values
+    }
+
+
+    // Keep the selected date if possible
+    const selectedDay = oDate.getDate();
+    console.log('this is selected date : ' + selectedDay)
+    this.m_iSliderValue = selectedDay - 1; // Adjust index for zero-based array
+    this.m_sSelectedDate = this.m_asDates[this.m_iSliderValue];
+
+  }
+
+  generateMonthTicks(oDate: string) {
+    const dateObj = new Date(oDate);
+    const selectedYear = dateObj.getFullYear();
+
+    this.aiTicks = [];
+    this.m_asDates = []; // Reset slider values
+
+    for (let month = 0; month < 12; month++) {
+      const dateString = `${selectedYear}-${month + 1}-01`;
+      this.aiTicks.push({value: MONTHS[month]}); // Display months as labels
+      this.m_asDates.push(dateString); // Store full date string
+    }
+
+
+    // Keep the selected month if possible
+    const selectedMonth = dateObj.getMonth();
+    this.m_iSliderValue = selectedMonth; // Since months are zero-based
+    this.m_sSelectedDate = this.m_asDates[this.m_iSliderValue];
+
+  }
+
+  private isMouseOverSlider(event: WheelEvent): boolean {
+    const sliderElement = this.slider.nativeElement;
+    const rect = sliderElement.getBoundingClientRect();
+    return (
+      event.clientX >= rect.left &&
+      event.clientX <= rect.right &&
+      event.clientY >= rect.top &&
+      event.clientY <= rect.bottom
+    );
+  }
+
+  private getMousePositionDate(event: WheelEvent) {
     const slider = document.getElementById('slider-id') as HTMLInputElement;
     if (!slider) return;
 
@@ -435,70 +500,26 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   }
 
   private handleZoomingIn(oDate: any) {
-    if(this.m_iZoomLevel < this.m_iMaxZoomLevel){
+    if (this.m_iZoomLevel < this.m_iMaxZoomLevel) {
       this.m_iZoomLevel++;
-      if(this.m_iZoomLevel==1){
+      if (this.m_iZoomLevel == 1) {
         //handle years to months
         this.generateMonthTicks(oDate);
-      }else if(this.m_iZoomLevel==2){
+      } else if (this.m_iZoomLevel == 2) {
         //handle months to days
         this.generateDayTicks(oDate)
       }
     }
   }
-  generateDayTicks(oSelectedDate: string) {
-    const oDate = new Date(oSelectedDate);
-    const oSelectedYear = oDate.getFullYear();
-    const oSelectedMonth = oDate.getMonth();
-    const daysInMonth = new Date(oSelectedYear, oSelectedMonth + 1, 0).getDate();
-
-    this.aiTicks = [];
-    this.m_asDates = []; // Reset slider values
-
-    for (let day = 1; day <= daysInMonth; day++) {
-      const dateString = `${oSelectedYear}-${oSelectedMonth + 1}-${day}`;
-      this.aiTicks.push({ value: `${day} ${MONTHS[oSelectedMonth]}` });
-      this.m_asDates.push(dateString); // Update slider values
-    }
-
-
-    // Keep the selected date if possible
-    const selectedDay = oDate.getDate();
-    console.log('this is selected date : '+selectedDay)
-    this.m_iSliderValue = selectedDay - 1; // Adjust index for zero-based array
-    this.m_sSelectedDate = this.m_asDates[this.m_iSliderValue];
-
-  }
-  generateMonthTicks(oDate: string) {
-    const dateObj = new Date(oDate);
-    const selectedYear = dateObj.getFullYear();
-
-    this.aiTicks = [];
-    this.m_asDates = []; // Reset slider values
-
-    for (let month = 0; month < 12; month++) {
-      const dateString = `${selectedYear}-${month + 1}-01`;
-      this.aiTicks.push({ value: MONTHS[month] }); // Display months as labels
-      this.m_asDates.push(dateString); // Store full date string
-    }
-
-
-    // Keep the selected month if possible
-    const selectedMonth = dateObj.getMonth();
-    this.m_iSliderValue = selectedMonth; // Since months are zero-based
-    this.m_sSelectedDate = this.m_asDates[this.m_iSliderValue];
-
-  }
-
 
   private handleZoomingOut(oDate: any) {
-    if(this.m_iZoomLevel >0){
+    if (this.m_iZoomLevel > 0) {
       this.m_iZoomLevel--;
-      if(this.m_iZoomLevel==0){
+      if (this.m_iZoomLevel == 0) {
         //handle months to years
         this.initDates();
         this.generateYearTicks();
-      }else if(this.m_iZoomLevel==1){
+      } else if (this.m_iZoomLevel == 1) {
         //handle days to months
 
         this.generateMonthTicks(oDate);
