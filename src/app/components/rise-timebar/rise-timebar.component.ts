@@ -111,7 +111,8 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   @Input() m_aoEvents: EventViewModel[] = [];
 
   m_iZoomLevel: number = 0;
-  m_iMaxZoomLevel: number = 2;
+  m_iMaxZoomInLevel: number = 2;
+  m_iMaxZoomOutLevel: number = 0;
   m_sSliderClass: string = ''
 
   constructor() {
@@ -120,12 +121,12 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   ngOnInit(): void {
 
     this.initDates();
-    this.generateYearTicks();
+    this.generateTicks();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.initDates();
-    this.generateYearTicks();
+    this.generateTicks();
   }
 
 
@@ -186,7 +187,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   /**
    * Based on difference between start date and  end date , generate the ticks for the timebar
    */
-  generateYearTicks() {
+  generateTicks() {
     //this is for alpha only
 
     this.m_iStartDate = this.m_iStartDate == -1 ? 1420130166 : this.m_iStartDate
@@ -215,11 +216,8 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
       } else if (iYearRange > 10) {
         interval = 2; // One tick every 2 years for ranges over 10 years
       }
+      this.generateYearTicks(iStartYear,iEndYear,interval);
 
-      for (let year = iStartYear; year <= iEndYear; year += interval) {
-        this.aiTicks.push({value: year});
-      }
-      this.m_iZoomLevel = 0;// can go from year to month , and from month to days
     } else {
       //same year
       if (iYearRange == 0) {
@@ -228,11 +226,15 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
             this.aiTicks.push({value: MONTHS[month]});
           }
           this.m_iZoomLevel = 1;// can go from month to days
+          this.m_iMaxZoomInLevel = 2;
+          this.m_iMaxZoomOutLevel = 1;
         } else {
           for (let day = iStartDay; day <= iEndDay; day++) {
             this.aiTicks.push({value: day});
           }
-          this.m_iZoomLevel = 2; // can go from month to days
+          this.m_iZoomLevel = 2; // will be always days
+          this.m_iMaxZoomInLevel = 2;
+          this.m_iMaxZoomOutLevel = 2;
 
         }
       }
@@ -246,11 +248,15 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
             this.aiTicks.push({value: MONTHS[month]});
           }
           this.m_iZoomLevel = 1; // can go from month to days
+          this.m_iMaxZoomInLevel = 2;
+          this.m_iMaxZoomOutLevel = 1;
         } else {
           for (let day = iStartDay; day <= iEndDay; day++) {
             this.aiTicks.push({value: day});
           }
           this.m_iZoomLevel = 2;// cant zoom since its only days
+          this.m_iMaxZoomInLevel = 2;
+          this.m_iMaxZoomOutLevel = 2;
 
         }
       }
@@ -500,7 +506,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   }
 
   private handleZoomingIn(oDate: any) {
-    if (this.m_iZoomLevel < this.m_iMaxZoomLevel) {
+    if (this.m_iZoomLevel < this.m_iMaxZoomInLevel) {
       this.m_iZoomLevel++;
       if (this.m_iZoomLevel == 1) {
         //handle years to months
@@ -518,15 +524,28 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
       if (this.m_iZoomLevel == 0) {
         //handle months to years
         this.initDates();
-        this.generateYearTicks();
+        this.generateTicks();
       } else if (this.m_iZoomLevel == 1) {
         //handle days to months
-
-        this.generateMonthTicks(oDate);
+        //check if we have initial state as months or years
+        if(this.m_iMaxZoomOutLevel==1){
+          this.initDates();
+          this.generateTicks();
+        }else{
+          this.generateMonthTicks(oDate);
+        }
       }
     }
 
   }
 
 
+  private generateYearTicks(iStartYear:number,iEndYear:number,interval:number) {
+    for (let year = iStartYear; year <= iEndYear; year += interval) {
+      this.aiTicks.push({value: year});
+    }
+    this.m_iZoomLevel = 0;// can go from year to month , and from month to days
+    this.m_iMaxZoomOutLevel = 0;
+    this.m_iMaxZoomInLevel = 2;
+  }
 }
