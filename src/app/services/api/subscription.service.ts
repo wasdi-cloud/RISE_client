@@ -82,4 +82,8 @@ export class SubscriptionService {
       }
     );
   }
+
+  confirmSubscription(m_sCheckoutCode: string) {
+    return this.m_oHttp.get<any>(this.APIURL + '/subscriptions/stripe/confirmation/'+m_sCheckoutCode);
+  }
 }

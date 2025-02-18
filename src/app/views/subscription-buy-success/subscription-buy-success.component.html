@@ -1,0 +1,29 @@
+<main class="d-flex flex-column">
+  <rise-toolbar [m_bUserIsSigned]="false"></rise-toolbar>
+  <div
+    class="outlet-container d-flex flex-fill flex-column align-items-center justify-content-center"
+  >
+    <div class="hero-img"></div>
+    <div class="login-container d-flex flex-column">
+      <div
+        class="slider-content flex-fill d-flex flex-column justify-content-between gap-4 my-2"
+      >
+        <h2 class="space-mono-regular">Subscription Activated Successfully!</h2>
+        <div class="inputs-container d-flex flex-column flex-fill gap-2">
+          <p>
+            Thank you for subscribing to RISE! Your subscription has been successfully activated, and you're all set to enjoy premium features.
+          </p>
+          <p>
+            Click below to go to your dashboard and start using your new subscription.
+          </p>
+          <rise-button
+            [m_sLabel]="'go to Dashboard'"
+            [m_sRole]="'primary'"
+            [m_bDisabled]="!m_bCanProceed"
+            (click)="m_bCanProceed?navigateToDashboard():''"
+          ></rise-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

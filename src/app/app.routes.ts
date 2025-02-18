@@ -19,6 +19,7 @@ import {ConfirmChangeEmailComponent} from "./views/confirm-change-email/confirm-
 import {ChangeForgetPasswordComponent} from "./views/change-forget-password/change-forget-password.component";
 import {ForgetPasswordRequestComponent} from "./views/forget-password-request/forget-password-request.component";
 import {PasswordExpiredComponent} from "./views/password-expired/password-expired.component";
+import {SubscriptionBuySuccessComponent} from "./views/subscription-buy-success/subscription-buy-success.component";
 
 export const routes: Routes = [
   {path: '', component: PublicHomeComponent, canActivate: [isLoggedGuard]},
@@ -66,6 +67,9 @@ export const routes: Routes = [
   {
     path: 'auth/confirm_adm',
     component: ConfirmAdminRegistrationComponent,
-
+  },
+  {
+    path: 'subscription/success/:CHECKOUT_SESSION_ID',
+    component: SubscriptionBuySuccessComponent,
   },
 ];
