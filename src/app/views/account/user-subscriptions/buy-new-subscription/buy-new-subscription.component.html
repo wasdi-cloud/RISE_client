@@ -172,15 +172,15 @@
           [m_sLabel]="'SUBSCRIPTIONS.PURCHASE_CREDIT'"
           (click)="enablePurchaseBtn() ? executePurchaseWithCreditCard() : ''"
         ></rise-button>
-<!--&lt;!&ndash;        Handle the case of Wire&ndash;&gt;-->
-<!--        <rise-button-->
-<!--          *ngIf="m_sPaymentMethod=='wire'"-->
-<!--          class="align-self-end"-->
-<!--          [m_bDisabled]="!enablePurchaseBtn()"-->
-<!--          [m_sRole]="'action'"-->
-<!--          [m_sLabel]="'SUBSCRIPTIONS.PURCHASE_CREDIT'"-->
-<!--          (click)="enablePurchaseBtn() ? executePurchase() : ''"-->
-<!--        ></rise-button>-->
+<!--        Handle the case of Wire-->
+        <rise-button
+          *ngIf="m_sPaymentMethod=='wire'"
+          class="align-self-end"
+          [m_bDisabled]="!enablePurchaseBtn()"
+          [m_sRole]="'action'"
+          [m_sLabel]="'SUBSCRIPTIONS.PURCHASE'"
+          (click)="enablePurchaseBtn() ? executePurchaseWithWire() : ''"
+        ></rise-button>
 <!--        Handle the case of Contact Us-->
         <rise-button
           *ngIf="m_sPaymentMethod=='contact'"
