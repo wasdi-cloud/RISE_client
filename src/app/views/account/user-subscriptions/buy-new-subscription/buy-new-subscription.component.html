@@ -61,6 +61,7 @@
             [m_sLabel]="'SUBSCRIPTIONS.PLUGINS'"
             [m_aoDropdownItems]="m_aoPluginNames"
             [m_bIsMultiSelect]="true"
+            [m_aoSelectedItems]="m_asSelectedPluginsDisplay"
             (m_oSelectionChange)="handlePluginSelect($event)"
           ></rise-dropdown>
         </div>
@@ -140,14 +141,16 @@
             [m_sSize]="'small'"
             [m_sRole]="'action'"
             [m_sLabel]="'SUBSCRIPTIONS.COMPUTE_SECOND'"
-            (click)="getComputedPrice()"
+            [m_bDisabled]="!enableComputePrice()"
+            (click)="enableComputePrice()?getComputedPrice():''"
           ></rise-button>
         } @else {
           <rise-button
             [m_sSize]="'small'"
             [m_sRole]="'action'"
             [m_sLabel]="'SUBSCRIPTIONS.COMPUTE_PRICE'"
-            (click)="getComputedPrice()"
+            [m_bDisabled]="!enableComputePrice()"
+            (click)="enableComputePrice()?getComputedPrice():''"
           ></rise-button>
         }
       </div>

@@ -54,6 +54,8 @@ export class BuyNewSubscriptionComponent implements OnInit {
 
   m_asSelectedPlugins: Array<string> = [];
 
+  m_asSelectedPluginsDisplay: Array<string> = [];
+
   m_iComputedPrice: number = 0;
 
   m_aoPaymentTypes: Array<{ name: string; value: string }> = [];
@@ -146,6 +148,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
 
   handlePluginSelect(oEvent) {
     let asSelectedPlugins = oEvent.value;
+    this.m_asSelectedPluginsDisplay = asSelectedPlugins
     asSelectedPlugins.forEach((sPlugin) => {
       this.m_aoPluginTypes.forEach((oPlugin) => {
         if (oPlugin.name === sPlugin) {
@@ -281,12 +284,33 @@ export class BuyNewSubscriptionComponent implements OnInit {
     }
     if (
       !this.m_oSelectedType ||
-      !this.m_asSelectedPlugins
+      !this.m_asSelectedPlugins ||
+      this.m_asSelectedPlugins.length == 0
     ) {
       return false;
     }
 
 
+    return true;
+  }
+
+  enableComputePrice() {
+    if (!this.m_oSelectedType.stringCode) {
+
+      return false;
+    }
+    if (!this.m_asSelectedPlugins || this.m_asSelectedPlugins.length == 0) {
+
+      return false;
+    }
+    if (!this.m_sOrganizationId) {
+
+      return false;
+    }
+    if (!this.m_oSelectedPaymentType?.value) {
+
+      return false;
+    }
     return true;
   }
 }
