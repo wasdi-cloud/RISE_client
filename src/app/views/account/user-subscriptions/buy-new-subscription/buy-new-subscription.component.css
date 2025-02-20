@@ -1,7 +1,7 @@
 div.dialog-container {
   background-color: var(--surface-glass);
   backdrop-filter: blur(20px);
-  height: 600px;
+  height: 400px;
   width: 650px;
 }
 

@@ -27,7 +27,7 @@ export class SubscriptionViewModel {
 
   currency: string;
 
-  supportsArchive: boolean;
+  supportsArchive: boolean=false;
 
   plugins: string[];
 }

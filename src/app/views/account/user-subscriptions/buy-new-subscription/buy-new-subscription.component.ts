@@ -1,28 +1,21 @@
-import {
-  Component,
-  EventEmitter,
-  Inject,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
-import { SubscriptionService } from '../../../../services/api/subscription.service';
-import { SubscriptionTypeViewModel } from '../../../../models/SubscriptionTypeViewModel';
-import { RiseDropdownComponent } from '../../../../components/rise-dropdown/rise-dropdown.component';
-import { RiseButtonComponent } from '../../../../components/rise-button/rise-button.component';
-import { RiseTextInputComponent } from '../../../../components/rise-text-input/rise-text-input.component';
-import { RiseTextareaInputComponent } from '../../../../components/rise-textarea-input/rise-textarea-input.component';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { CommonModule } from '@angular/common';
-import { PluginService } from '../../../../services/api/plugin.service';
-import { PluginViewModel } from '../../../../models/PluginViewModel';
-import { NotificationsDialogsService } from '../../../../services/notifications-dialogs.service';
-import { SubscriptionViewModel } from '../../../../models/SubscriptionViewModel';
-import { ConstantsService } from '../../../../services/constants.service';
+import {Component, EventEmitter, Inject, Input, OnInit, Output,} from '@angular/core';
+import {SubscriptionService} from '../../../../services/api/subscription.service';
+import {SubscriptionTypeViewModel} from '../../../../models/SubscriptionTypeViewModel';
+import {RiseDropdownComponent} from '../../../../components/rise-dropdown/rise-dropdown.component';
+import {RiseButtonComponent} from '../../../../components/rise-button/rise-button.component';
+import {RiseTextInputComponent} from '../../../../components/rise-text-input/rise-text-input.component';
+import {RiseTextareaInputComponent} from '../../../../components/rise-textarea-input/rise-textarea-input.component';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
+import {CommonModule} from '@angular/common';
+import {PluginService} from '../../../../services/api/plugin.service';
+import {PluginViewModel} from '../../../../models/PluginViewModel';
+import {NotificationsDialogsService} from '../../../../services/notifications-dialogs.service';
+import {SubscriptionViewModel} from '../../../../models/SubscriptionViewModel';
+import {ConstantsService} from '../../../../services/constants.service';
 
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import FadeoutUtils from '../../../../shared/utilities/FadeoutUtils';
-import { UserService } from '../../../../services/api/user.service';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {UserService} from '../../../../services/api/user.service';
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'buy-new-subscription',
@@ -34,6 +27,7 @@ import { UserService } from '../../../../services/api/user.service';
     RiseTextInputComponent,
     RiseTextareaInputComponent,
     RiseDropdownComponent,
+    FormsModule,
   ],
   templateUrl: './buy-new-subscription.component.html',
   styleUrl: './buy-new-subscription.component.css',
@@ -50,6 +44,8 @@ export class BuyNewSubscriptionComponent implements OnInit {
 
   m_asSubTypeNames: Array<string> = [];
 
+  m_sSelectedSubType:string=""
+
   m_oSelectedType: SubscriptionTypeViewModel = null;
 
   m_aoPluginTypes: Array<PluginViewModel> = [];
@@ -64,7 +60,19 @@ export class BuyNewSubscriptionComponent implements OnInit {
 
   m_asPaymentTypeNames: Array<string> = [];
 
+  m_sPaymentMethod:string='credit';
   m_oSelectedPaymentType = null;
+  m_sSelectedPaymentTypeName:string = "";
+
+  m_iStep: number = 1; // Step 1 initially
+
+  goToNextStep() {
+    this.m_iStep = 2;
+  }
+
+  goToPreviousStep() {
+    this.m_iStep = 1;
+  }
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private m_oData: any,
@@ -131,6 +139,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
     this.m_aoSubTypes.forEach((oType) => {
       if (oType.stringCode.includes(sSelectedType.slice(0, -12))) {
         this.m_oSelectedType = oType;
+        this.m_sSelectedSubType=sSelectedType;
       }
     });
   }
@@ -215,9 +224,11 @@ export class BuyNewSubscriptionComponent implements OnInit {
   handlePaymentTypeSelect(oPaymentType: any) {
     let sTypeName = oPaymentType.value;
     console.log(oPaymentType.value);
+    this.m_sSelectedPaymentTypeName=oPaymentType.value
     this.m_oSelectedPaymentType = this.m_aoPaymentTypes.find(
       (oType) => oType.name === sTypeName
     );
+
   }
 
   getPaymentTypes() {
@@ -262,5 +273,20 @@ export class BuyNewSubscriptionComponent implements OnInit {
       sOrganizationId = this.m_oConstantsService.getUser()?.organizationId;
     }
     return sOrganizationId;
+  }
+
+  enableNextBtn() {
+    if (!this.m_oSubInput.name) {
+      return false;
+    }
+    if (
+      !this.m_oSelectedType ||
+      !this.m_asSelectedPlugins
+    ) {
+      return false;
+    }
+
+
+    return true;
   }
 }
