@@ -221,6 +221,7 @@
     "PAYMENT": "Payment Method",
     "PLUGINS": "Plugins",
     "PURCHASE": "Purchase",
+    "PURCHASE_CREDIT": "Checkout on Stripe",
     "PURCHASE_ERROR": "An error occurred while executing your purchase. Please try again or contact RISE staff",
     "PRICE": "Price",
     "START_DATE": "Start Date",
@@ -231,6 +232,8 @@
     "UPDATE": "Update Subscription",
     "WIRE": "Wire Transfer",
     "YEAR": "One Year",
+    "STRIPE_TITLE":  "Re-directing to STRIPE",
+    "STRIPE_MSG":  "You will be re-directed to our payment partner, Stripe. Click 'Yes' to continue or 'CANCEL' to end the payment process.",
     "INVALID_SUB": "Invalid Subscription",
     "INVALID_SUB_MSG": "Your subscription has expired or you do not have an active subscription. Please buy new subscription to continue using this feature."
   },

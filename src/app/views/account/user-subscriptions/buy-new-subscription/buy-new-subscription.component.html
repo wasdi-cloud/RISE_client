@@ -163,14 +163,34 @@
           [m_sLabel]="'Back'"
           (click)="goToPreviousStep()"
         ></rise-button>
-
+<!--        Handle the case of Credit Card-->
         <rise-button
+          *ngIf="m_sPaymentMethod=='credit'"
           class="align-self-end"
           [m_bDisabled]="!enablePurchaseBtn()"
           [m_sRole]="'action'"
-          [m_sLabel]="'SUBSCRIPTIONS.PURCHASE'"
-          (click)="enablePurchaseBtn() ? executePurchase() : ''"
+          [m_sLabel]="'SUBSCRIPTIONS.PURCHASE_CREDIT'"
+          (click)="enablePurchaseBtn() ? executePurchaseWithCreditCard() : ''"
         ></rise-button>
+<!--&lt;!&ndash;        Handle the case of Wire&ndash;&gt;-->
+<!--        <rise-button-->
+<!--          *ngIf="m_sPaymentMethod=='wire'"-->
+<!--          class="align-self-end"-->
+<!--          [m_bDisabled]="!enablePurchaseBtn()"-->
+<!--          [m_sRole]="'action'"-->
+<!--          [m_sLabel]="'SUBSCRIPTIONS.PURCHASE_CREDIT'"-->
+<!--          (click)="enablePurchaseBtn() ? executePurchase() : ''"-->
+<!--        ></rise-button>-->
+<!--&lt;!&ndash;        Handle the case of Contact Us&ndash;&gt;-->
+<!--        <rise-button-->
+<!--          *ngIf="m_sPaymentMethod=='contact'"-->
+<!--          class="align-self-end"-->
+<!--          [m_bDisabled]="!enablePurchaseBtn()"-->
+<!--          [m_sRole]="'action'"-->
+<!--          [m_sLabel]="'SUBSCRIPTIONS.PURCHASE'"-->
+<!--          (click)="enablePurchaseBtn() ? executePurchase() : ''"-->
+<!--        ></rise-button>-->
+
       </div>
     </ng-container>
   </div>

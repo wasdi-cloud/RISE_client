@@ -73,8 +73,8 @@ export class SubscriptionService {
    * @param oSubscriptionViewModel
    * @return
    */
-  buySubscription(oSubscriptionViewModel) {
-    return this.m_oHttp.post<any>(
+  saveSubscription(oSubscriptionViewModel:SubscriptionViewModel){
+    return this.m_oHttp.post<SubscriptionViewModel>(
       this.APIURL + '/subscriptions',
       oSubscriptionViewModel,
       {
@@ -86,4 +86,9 @@ export class SubscriptionService {
   confirmSubscription(m_sCheckoutCode: string) {
     return this.m_oHttp.get<any>(this.APIURL + '/subscriptions/stripe/confirmation/'+m_sCheckoutCode);
   }
+
+  getStripePaymentUrl(subscriptionId: string) {
+    return this.m_oHttp.get(this.APIURL + '/subscriptions/stripe/paymentUrl?subscription=' + subscriptionId, { responseType: 'text' });
+  }
+
 }

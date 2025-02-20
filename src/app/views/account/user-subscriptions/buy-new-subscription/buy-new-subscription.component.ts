@@ -16,6 +16,7 @@ import {ConstantsService} from '../../../../services/constants.service';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {UserService} from '../../../../services/api/user.service';
 import {FormsModule} from "@angular/forms";
+import FadeoutUtils from "../../../../shared/utilities/FadeoutUtils";
 
 @Component({
   selector: 'buy-new-subscription',
@@ -65,7 +66,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
   m_sPaymentMethod:string='credit';
   m_oSelectedPaymentType = null;
   m_sSelectedPaymentTypeName:string = "";
-
+  isCheckoutNow: boolean = false;
   m_iStep: number = 1; // Step 1 initially
 
   goToNextStep() {
@@ -82,6 +83,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
     private m_oDialogRef: MatDialogRef<BuyNewSubscriptionComponent>,
     private m_oNotificationService: NotificationsDialogsService,
     private m_oPluginService: PluginService,
+    private m_oTranslate: TranslateService,
     private m_oSubscriptionService: SubscriptionService,
     private m_oTranslateService: TranslateService,
     private m_oUserService: UserService
@@ -159,7 +161,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
     });
   }
 
-  executePurchase() {
+  executePurchaseWithCreditCard() {
     let sSuccess: string = this.m_oTranslateService.instant(
       'SUBSCRIPTIONS.SUCCESS'
     );
@@ -168,22 +170,49 @@ export class BuyNewSubscriptionComponent implements OnInit {
       'SUBSCRIPTIONS.ERROR'
     );
     this.initSubscriptionInput();
+    // let sMessage = this.m_oTranslate.instant("SUBSCRIPTIONS.STRIPE_MSG");
+    // let sTitle = this.m_oTranslate.instant("SUBSCRIPTIONS.STRIPE_TITLE");
+    //Notification that user will be re-directed to Stripe
+    this.m_oNotificationService.openConfirmationDialog(
+      "You will be re-directed to our payment partner, Stripe. Click 'Yes' to continue or 'CANCEL' to end the payment process.",
+    ).subscribe(oDialogResult => {
+      if (oDialogResult === true) {
+        this.isCheckoutNow=true;
+        this.m_oSubscriptionService.saveSubscription(this.m_oSubInput).subscribe({
+          next: (oResponse) => {
+            this.getStripePaymentUrl(oResponse.body.id);
+          },
+          error: (oError) => {
+            this.isCheckoutNow=false;
+            this.m_oNotificationService.openInfoDialog(sError, 'danger');
+          },
+        });
+        // if (!this.m_oEditSubscription.subscriptionId) {
+        //   this.m_bCheckoutNow = true;
+        //   this.saveSubscription();
+        // } else {
+        //   this.getStripePaymentUrl();
+        // }
+      }
+    })
 
-    this.m_oSubscriptionService.buySubscription(this.m_oSubInput).subscribe({
-      next: (oResponse) => {
-        this.m_oNotificationService.openSnackBar(
-          sSuccess,
-          'Success',
-          'success'
-        );
-        this.onDismiss();
-      },
-      error: (oError) => {
-        this.m_oNotificationService.openInfoDialog(sError, 'danger');
-      },
-    });
   }
 
+  getStripePaymentUrl(subscriptionId: string) {
+    this.m_oSubscriptionService.getStripePaymentUrl(subscriptionId).subscribe({
+      next: (oResponse) => {
+        if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
+          // this.m_oNotificationService.openSnackBar(this.m_oTranslate.instant("USER_SUBSCRIPTION_URL"), '', 'success-snackbar');
+          let sUrl = oResponse;
+          window.open(sUrl, '_blank');
+        }
+      },
+      error: (oError) => {
+        this.m_oNotificationService.openSnackBar(this.m_oTranslate.instant("USER_SUBSCRIPTION_URL_ERROR"), this.m_oTranslate.instant("KEY_PHRASES.GURU_MEDITATION"), 'alert');
+        this.isCheckoutNow=false;
+      }
+    });
+  }
   initSubscriptionInput() {
     this.m_oSubInput.type = this.m_oSelectedType.stringCode;
     this.m_oSubInput.plugins = this.m_asSelectedPlugins;
@@ -246,6 +275,9 @@ export class BuyNewSubscriptionComponent implements OnInit {
   }
 
   enablePurchaseBtn(): boolean {
+    if (this.isCheckoutNow) {
+      return false;
+    }
     if (!this.m_oSubInput.name) {
       return false;
     }
