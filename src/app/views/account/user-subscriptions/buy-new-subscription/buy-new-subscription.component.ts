@@ -204,7 +204,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
         if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           // this.m_oNotificationService.openSnackBar(this.m_oTranslate.instant("USER_SUBSCRIPTION_URL"), '', 'success-snackbar');
           let sUrl = oResponse;
-          window.open(sUrl, '_blank');
+          window.location.href = sUrl;
         }
       },
       error: (oError) => {
