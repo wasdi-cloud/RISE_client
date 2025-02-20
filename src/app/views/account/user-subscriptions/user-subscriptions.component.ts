@@ -18,6 +18,7 @@ import FadeoutUtils from '../../../shared/utilities/FadeoutUtils';
 import {RiseDropdownComponent} from "../../../components/rise-dropdown/rise-dropdown.component";
 import {UserRole} from "../../../models/UserRole";
 import {environment} from "../../../../environments/environments";
+import {UserService} from "../../../services/api/user.service";
 
 @Component({
   selector: 'user-subscriptions',
@@ -50,7 +51,8 @@ export class UserSubscriptionsComponent implements OnInit {
     private m_oConstantsService: ConstantsService,
     private m_oDialog: MatDialog,
     private m_oNotificationService: NotificationsDialogsService,
-    private m_oSubscriptionService: SubscriptionService
+    private m_oSubscriptionService: SubscriptionService,
+    private m_oUserService: UserService
   ) {
   }
 
@@ -182,12 +184,19 @@ export class UserSubscriptionsComponent implements OnInit {
     //todo add translation
     let oUser = this.m_oConstantsService.getUser()
     if (FadeoutUtils.utilsIsObjectNullOrUndefined(oUser)) {
-      console.error("user is null")
-      return false;
+      this.m_oUserService.getUser().subscribe({
+        next:(oResponse)=>{
+          this.m_oConstantsService.setUser(oResponse);
+          return oResponse.role != UserRole.FIELD;
+
+        }
+      })
+    }else{
+      if (this.m_oConstantsService.getUserRole() == UserRole.FIELD) {
+        return false;
+      }
     }
-    if (this.m_oConstantsService.getUserRole() == UserRole.FIELD) {
-      return false;
-    }
+
     return true;
   }
 }
