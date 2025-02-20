@@ -181,15 +181,15 @@
 <!--          [m_sLabel]="'SUBSCRIPTIONS.PURCHASE_CREDIT'"-->
 <!--          (click)="enablePurchaseBtn() ? executePurchase() : ''"-->
 <!--        ></rise-button>-->
-<!--&lt;!&ndash;        Handle the case of Contact Us&ndash;&gt;-->
-<!--        <rise-button-->
-<!--          *ngIf="m_sPaymentMethod=='contact'"-->
-<!--          class="align-self-end"-->
-<!--          [m_bDisabled]="!enablePurchaseBtn()"-->
-<!--          [m_sRole]="'action'"-->
-<!--          [m_sLabel]="'SUBSCRIPTIONS.PURCHASE'"-->
-<!--          (click)="enablePurchaseBtn() ? executePurchase() : ''"-->
-<!--        ></rise-button>-->
+<!--        Handle the case of Contact Us-->
+        <rise-button
+          *ngIf="m_sPaymentMethod=='contact'"
+          class="align-self-end"
+          [m_bDisabled]="!enablePurchaseBtn()"
+          [m_sRole]="'action'"
+          [m_sLabel]="'SUBSCRIPTIONS.PURCHASE'"
+          (click)="enablePurchaseBtn() ? executePurchaseWithContactUs() : ''"
+        ></rise-button>
 
       </div>
     </ng-container>

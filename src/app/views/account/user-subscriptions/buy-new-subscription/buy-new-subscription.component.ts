@@ -174,7 +174,8 @@ export class BuyNewSubscriptionComponent implements OnInit {
     // let sTitle = this.m_oTranslate.instant("SUBSCRIPTIONS.STRIPE_TITLE");
     //Notification that user will be re-directed to Stripe
     this.m_oNotificationService.openConfirmationDialog(
-      "You will be re-directed to our payment partner, Stripe. Click 'Yes' to continue or 'CANCEL' to end the payment process.",
+      "You will be re-directed to our payment partner, Stripe. Click 'Confirm' to continue or 'CANCEL' to end the payment process.",
+      'alert'
     ).subscribe(oDialogResult => {
       if (oDialogResult === true) {
         this.isCheckoutNow=true;
@@ -344,5 +345,43 @@ export class BuyNewSubscriptionComponent implements OnInit {
       return false;
     }
     return true;
+  }
+
+  executePurchaseWithContactUs() {
+    let sSuccess: string = this.m_oTranslateService.instant(
+      'SUBSCRIPTIONS.SUCCESS'
+    );
+
+    let sError: string = this.m_oTranslateService.instant(
+      'SUBSCRIPTIONS.ERROR'
+    );
+    this.initSubscriptionInput();
+    // let sMessage = this.m_oTranslate.instant("SUBSCRIPTIONS.STRIPE_MSG");
+    // let sTitle = this.m_oTranslate.instant("SUBSCRIPTIONS.STRIPE_TITLE");
+    //Notification that user will be re-directed to Stripe
+    this.m_oNotificationService.openConfirmationDialog(
+      "The team of RISE will contact you to handle the payment. Click 'Confirm' to continue or 'CANCEL' to end the payment process.",
+      'alert'
+    ).subscribe(oDialogResult => {
+      if (oDialogResult === true) {
+        this.isCheckoutNow=true;
+        this.m_oSubscriptionService.saveSubscription(this.m_oSubInput).subscribe({
+          next: (oResponse) => {
+            this.m_oNotificationService.openSnackBar("Subscription is created successfully","Subscription created",'success');
+            this.onDismiss();
+          },
+          error: (oError) => {
+            this.isCheckoutNow=false;
+            this.m_oNotificationService.openInfoDialog(sError, 'danger');
+          },
+        });
+        // if (!this.m_oEditSubscription.subscriptionId) {
+        //   this.m_bCheckoutNow = true;
+        //   this.saveSubscription();
+        // } else {
+        //   this.getStripePaymentUrl();
+        // }
+      }
+    })
   }
 }
