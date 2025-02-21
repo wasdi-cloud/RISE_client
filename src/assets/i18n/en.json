@@ -294,6 +294,8 @@
     "NAME": "Name",
     "TYPE": "Type",
     "PURCHASE_DATE": "Purchase date",
-    "EXPIRY_DATE": "Expiry date"
+    "CREATION_DATE": "Creation date",
+    "EXPIRY_DATE": "Expiry date",
+    "PAID_STATUS": "Status"
   }
 }

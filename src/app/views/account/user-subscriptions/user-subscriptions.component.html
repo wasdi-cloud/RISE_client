@@ -29,8 +29,10 @@
          <tr>
           <td>{{ "SUBSCRIPTION_ARRAY.NAME" | translate }}</td>
           <td>{{ "SUBSCRIPTION_ARRAY.TYPE" | translate }}</td>
+           <td>{{ "SUBSCRIPTION_ARRAY.CREATION_DATE" | translate }}</td>
           <td>{{ "SUBSCRIPTION_ARRAY.PURCHASE_DATE" | translate }}</td>
           <td>{{ "SUBSCRIPTION_ARRAY.EXPIRY_DATE" | translate }}</td>
+           <td>{{ "SUBSCRIPTION_ARRAY.PAID_STATUS" | translate }}</td>
           <td></td>
         </tr>
         </thead>
@@ -38,8 +40,16 @@
         <tr *ngFor="let oSubscription of m_aoSubscriptionsToShow">
           <td>{{ oSubscription.name }}</td>
           <td>{{ oSubscription.type }}</td>
-          <td>{{ oSubscription.buyDate | date }}</td>
-          <td>{{ oSubscription.expireDate | date }}</td>
+          <td>{{ oSubscription.creationDate | date }}</td>
+          <td>{{ oSubscription.buyDate ? (oSubscription.buyDate | date) : 'N/A' }}</td>
+          <td>{{ oSubscription.expireDate ? (oSubscription.expireDate | date) : 'N/A' }}</td>
+          <td>
+              <span [ngClass]="getPaymentClass(oSubscription.buySuccess)" class="payment-badge">
+                {{ oSubscription.buySuccess ? 'Paid' : 'Not Paid' }}
+              </span>
+          </td>
+
+
           <td class="d-flex flex-row justify-content-end gap-2">
               <span
                 class="material-symbols-outlined edit"
@@ -47,6 +57,13 @@
                 (click)="openEditor(oSubscription)"
               >
                 edit
+              </span>
+            <span
+              class="material-symbols-outlined edit"
+              [matTooltip]="'Edit Subscription'"
+              (click)="openEditor(oSubscription)"
+            >
+                info
               </span>
           </td>
         </tr>

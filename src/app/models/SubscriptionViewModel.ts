@@ -32,4 +32,6 @@ export class SubscriptionViewModel {
   plugins: string[];
 
   paymentMethod:string
+
+  buySuccess:boolean;
 }

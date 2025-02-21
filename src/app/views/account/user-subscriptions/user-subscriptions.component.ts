@@ -64,11 +64,12 @@ export class UserSubscriptionsComponent implements OnInit {
    * RISE show by default a list of the active subscriptions
    */
   getSubscriptions() {
-    this.m_oSubscriptionService.getSubscriptionsList(true).subscribe({
+    this.m_oSubscriptionService.getSubscriptionsList(false).subscribe({
       next: (oResponse) => {
         if (!oResponse) {
           return;
         } else {
+          console.log(oResponse)
           this.m_aoSubscriptionsToShow = oResponse;
           this.m_aoAllSubscriptions = this.m_aoSubscriptionsToShow;
           this.getSubTypes();
@@ -199,4 +200,9 @@ export class UserSubscriptionsComponent implements OnInit {
 
     return true;
   }
+
+  getPaymentClass(buySuccess: boolean): string {
+    return buySuccess ? 'payment-badge-paid' : 'payment-badge-not-paid';
+  }
+
 }

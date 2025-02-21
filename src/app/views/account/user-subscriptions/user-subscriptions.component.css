@@ -24,3 +24,25 @@ rise-dropdown {
   font-size: 0.9rem;
   margin-top: 8px;
 }
+.payment-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Paid (true) */
+.payment-badge-paid {
+  background-color: var(--rise-gold); /* Green */
+  color: #705710;
+}
+
+/* Not Paid (false) */
+.payment-badge-not-paid {
+  background-color: #7e444b; /* Red */
+  color: #291e1e;
+}
+
