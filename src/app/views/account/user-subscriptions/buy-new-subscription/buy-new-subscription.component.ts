@@ -220,6 +220,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
     this.m_oSubInput.price = this.m_iComputedPrice;
     this.m_oSubInput.organizationId = this.m_sOrganizationId;
     this.m_oSubInput.paymentType = this.m_oSelectedPaymentType.value;
+    this.m_oSubInput.paymentMethod = this.m_sPaymentMethod;
   }
 
   getComputedPrice() {
@@ -285,7 +286,8 @@ export class BuyNewSubscriptionComponent implements OnInit {
     if (
       !this.m_oSelectedType ||
       !this.m_asSelectedPlugins ||
-      !this.m_oSelectedPaymentType
+      !this.m_oSelectedPaymentType||
+      FadeoutUtils.utilsIsStrNullOrEmpty(this.m_sPaymentMethod)
     ) {
       return false;
     }

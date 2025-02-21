@@ -30,4 +30,6 @@ export class SubscriptionViewModel {
   supportsArchive: boolean=false;
 
   plugins: string[];
+
+  paymentMethod:string
 }
