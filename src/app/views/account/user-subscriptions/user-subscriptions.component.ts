@@ -105,9 +105,9 @@ export class UserSubscriptionsComponent implements OnInit {
     });
   }
 
-  openEditor(oEvent) {
+  openEditor(oEvent,isEditing) {
     let oDialog = this.m_oDialog.open(SubscriptionEditorComponent, {
-      data: {subscription: oEvent, isEditing: false},
+      data: {subscription: oEvent, isEditing: isEditing},
     });
     oDialog.afterClosed().subscribe((bResult) => {
       if (bResult === true) {
