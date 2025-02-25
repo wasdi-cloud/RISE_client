@@ -52,6 +52,14 @@
 
           <td class="d-flex flex-row justify-content-end gap-2">
               <span
+                *ngIf="oSubscription.paymentMethod==='credit'"
+                class="material-symbols-outlined edit"
+                [matTooltip]="'Get Invoice'"
+                (click)="openEditor(oSubscription,true)"
+              >
+                paid
+              </span>
+            <span
                 class="material-symbols-outlined edit"
                 [matTooltip]="'Edit Subscription'"
                 (click)="openEditor(oSubscription,true)"
@@ -60,7 +68,7 @@
               </span>
             <span
               class="material-symbols-outlined edit"
-              [matTooltip]="'Edit Subscription'"
+              [matTooltip]="'Info'"
               (click)="openEditor(oSubscription,false)"
             >
                 info
