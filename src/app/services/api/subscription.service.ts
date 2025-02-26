@@ -91,4 +91,8 @@ export class SubscriptionService {
     return this.m_oHttp.get(this.APIURL + '/subscriptions/stripe/paymentUrl?subscription=' + subscriptionId, { responseType: 'text' });
   }
 
+ getStripeInvoice(subscriptionId: string) {
+    return this.m_oHttp.get(this.APIURL + '/subscriptions/stripe/invoice?subscription=' + subscriptionId, { responseType: 'text' });
+  }
+
 }

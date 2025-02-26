@@ -205,4 +205,21 @@ export class UserSubscriptionsComponent implements OnInit {
     return buySuccess ? 'payment-badge-paid' : 'payment-badge-not-paid';
   }
 
+  getInvoice(oSubscription: SubscriptionViewModel) {
+    if(oSubscription.id){
+      this.m_oSubscriptionService.getStripeInvoice(oSubscription.id).subscribe({
+        next:(oResponse)=>{
+          const link = document.createElement('a');
+          link.href = oResponse;
+          link.target = '_blank'; // Open in a new tab
+          link.download = 'invoice.pdf'; // Suggest a filename
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        },error:(oError)=>{
+          console.error('Error downloading invoice:', oError);
+        }
+      })
+    }
+  }
 }

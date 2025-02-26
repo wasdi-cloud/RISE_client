@@ -55,7 +55,7 @@
                 *ngIf="oSubscription.paymentMethod==='credit'"
                 class="material-symbols-outlined edit"
                 [matTooltip]="'Get Invoice'"
-                (click)="openEditor(oSubscription,true)"
+                (click)="getInvoice(oSubscription)"
               >
                 paid
               </span>
