@@ -32,3 +32,19 @@ div.options-container {
 .delete {
   color: #992500;
 }
+.legend-container {
+  margin-top: 5px;
+  padding: 5px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.legend-image {
+  max-width: 100%;
+  height: auto;
+}

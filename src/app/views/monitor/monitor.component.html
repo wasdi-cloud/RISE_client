@@ -82,44 +82,5 @@
         [m_aoEvents]="m_aoEvents"
       ></rise-timebar>
     </div>
-
-    <div *ngIf="m_bShowLegends" class="legends-container">
-      <div
-        class="legends-header px-1 d-flex flex-row justify-content-between align-items-center"
-      >
-        <div class="d-flex flex-row gap-1 align-items-center">
-          <span class="material-symbols-outlined">legend_toggle</span> Map
-          Legends
-        </div>
-        <span
-          class="material-symbols-outlined close-btn"
-          (click)="toggleLegend(false)"
-        >
-          close
-        </span>
-      </div>
-      <div
-        *ngFor="let oLegend of m_aoLegendUrls"
-        class="legend-item m-1 d-flex flex-column justify-content-center align-items-center gap-1"
-      >
-        <div
-          class="align-self-start w-100 d-flex flex-row justify-content-between align-items-center"
-        >
-          {{ oLegend.plugin }}
-          <span
-            class="material-symbols-outlined button"
-            (click)="toggleIconVis(oLegend)"
-          >
-            keyboard_arrow_up
-          </span>
-        </div>
-        <img
-          [hidden]="oLegend.visible === false"
-          class="legend-image"
-          [src]="oLegend.url"
-          alt=""
-        />
-      </div>
-    </div>
   </div>
 </main>

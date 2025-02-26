@@ -29,7 +29,6 @@ import {MatDialog} from "@angular/material/dialog";
 import {LayerPropertiesComponent} from "./layer-properties/layer-properties.component";
 import {LayerAnalyzerComponent} from "./layer-analyzer/layer-analyzer.component";
 import {LayerViewModel} from "../../models/LayerViewModel";
-import {PluginViewModel} from "../../models/PluginViewModel";
 import {EventService} from "../../services/api/event.service";
 import {EventViewModel} from "../../models/EventViewModel";
 
@@ -62,10 +61,7 @@ export class MonitorComponent implements OnInit {
    */
   m_bShow2D: boolean = true;
 
-  /**
-   * Flag to track if the layer legend should be shown
-   */
-  m_bShowLegends: boolean = false;
+
 
   /**
    * Active area of operation
@@ -106,10 +102,7 @@ export class MonitorComponent implements OnInit {
    */
   m_oSelectedDate: any = '';
 
-  /**
-   * Legend URLs
-   */
-  m_aoLegendUrls: Array<{ url: string; plugin: string; visible: boolean }> = [];
+
 
   /**
    * Available plugins for the workspace
@@ -421,9 +414,6 @@ export class MonitorComponent implements OnInit {
       case 'properties':
         this.openPropertiesLayer(oEvent.layer);
         break;
-      case 'toggleLegend':
-        this.showLegend(oEvent.layer);
-        break;
     }
   }
 
@@ -481,15 +471,6 @@ export class MonitorComponent implements OnInit {
       }
     });
     this.m_aoReversedLayers=this.m_aoLayers.reverse();
-    let iLegendIndex = this.m_aoLegendUrls.findIndex(
-      (oLayer) => oLayer.plugin === oEvent.mapId
-    );
-
-    this.m_aoLegendUrls.splice(iLegendIndex, 1);
-
-    if (this.m_aoLegendUrls.length === 0) {
-      this.toggleLegend(false);
-    }
     // Update the selected layers
 
     this.m_oMapService.setSelectedLayers(this.m_aoLayers);
@@ -513,39 +494,6 @@ export class MonitorComponent implements OnInit {
         oPlugin.layers=[];
       }
     });
-  }
-
-  showLegend(oLayer) {
-    let sLayerUrl = this.m_oMapService.getLegendUrl(oLayer);
-    // If there are no legends - add right away
-    if (this.m_aoLegendUrls.length === 0) {
-      this.m_aoLegendUrls.push({
-        url: sLayerUrl,
-        plugin: oLayer.mapId,
-        visible: true,
-      });
-    }
-
-    //Is the legend already in the array?
-    let iIndex = this.m_aoLegendUrls.findIndex(
-      (layer) => layer.url === sLayerUrl
-    );
-    if (iIndex === -1) {
-      this.m_aoLegendUrls.push({
-        url: sLayerUrl,
-        plugin: oLayer.mapId,
-        visible: true,
-      });
-    }
-    this.toggleLegend(true);
-  }
-
-  toggleLegend(bShowLegend: boolean) {
-    this.m_bShowLegends = bShowLegend;
-  }
-
-  toggleIconVis(oLegend) {
-    oLegend.visible = !oLegend.visible;
   }
 
   handleLiveButtonPressed() {

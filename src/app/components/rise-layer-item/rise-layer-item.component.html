@@ -16,12 +16,11 @@
     <input
       type="checkbox"
       class="rise-checkbox align-self-start"
-      name=""
-      id=""
       [(ngModel)]="m_bShowLayer"
       (change)="emitVisibility()"
     />
   </div>
+
   <div class="options-container d-flex flex-column gap-2 p-2">
     <div
       class="d-flex flex-row gap-1 align-items-center justify-content-between"
@@ -30,8 +29,6 @@
         Opacity
         <input
           type="range"
-          name=""
-          id=""
           [(ngModel)]="m_iOpacity"
           (change)="emitOpacity()"
           (mousedown)="$event.stopPropagation()"
@@ -46,6 +43,7 @@
         more_horiz
       </span>
     </div>
+
     <div
       *ngIf="m_bShowExpanded"
       class="expanded-content d-flex flex-row justify-content-between"
@@ -54,7 +52,7 @@
         <span
           class="material-symbols-outlined"
           [matTooltip]="'Toggle legend visibility'"
-          (click)="emitAction('toggleLegend')"
+          (click)="showLegend(m_oLayer)"
         >
           legend_toggle
         </span>
@@ -82,13 +80,22 @@
       </div>
       <div class="">
         <span
-          class="material-symbols-outlined delete justify-self-end align-self-end"
+          class="material-symbols-outlined delete"
           (click)="emitAction('remove')"
           [matTooltip]="'Remove layer'"
         >
           delete
         </span>
       </div>
+    </div>
+
+    <!-- Legend moved to a new row below -->
+    <div *ngIf="m_bShowLegend" class="legend-container">
+      <img
+        class="legend-image"
+        [src]="m_oLegend.url"
+        alt="Layer Legend"
+      />
     </div>
   </div>
 </div>
