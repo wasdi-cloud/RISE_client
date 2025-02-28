@@ -21,7 +21,18 @@
       />
     </div>
     <mat-select-trigger>
-      {{ getValues(m_aoSelectedItems) }}
+      <ng-container *ngIf="m_bShowChips; else defaultDisplay">
+        <div class="chip-container">
+          <span *ngFor="let plugin of m_aoSelectedItems" class="chip">
+            {{ plugin.name ? plugin.name : plugin }}
+            <button class="chip-close" (click)="removePlugin(plugin, $event)">×</button>
+          </span>
+        </div>
+      </ng-container>
+      <!-- Default text display if chips are disabled -->
+      <ng-template #defaultDisplay>
+        {{ getValues(m_aoSelectedItems) }}
+      </ng-template>
     </mat-select-trigger>
     <div *ngIf="m_bHasSearch">
       <mat-option

@@ -55,6 +55,9 @@ export class RiseDropdownComponent {
 
   @Input() m_bHasTitle?: boolean = false;
 
+  @Input() m_bShowChips: boolean = false;
+
+
   @Input() m_oDeleteFn?: (args: any, controller: any) => void;
 
   /**
@@ -94,4 +97,12 @@ export class RiseDropdownComponent {
     }
     return aoNewValues;
   }
+
+  removePlugin(plugin: any, event: Event) {
+    event.stopPropagation(); // Prevent dropdown from opening
+    this.m_aoSelectedItems = this.m_aoSelectedItems.filter(item => item !== plugin);
+    this.emitSelectionChange({ value: this.m_aoSelectedItems }); // Emit updated selection
+  }
+
+
 }
