@@ -99,7 +99,7 @@ export class LoginViewComponent {
         this.m_oRiseUtils.handleNotificationError(
           oError.error.errorStringCodes
         );
-        this.m_bIsSubmitted=true;
+        this.m_bIsSubmitted=false;
       },
     });
   }
@@ -132,15 +132,18 @@ export class LoginViewComponent {
                 this.m_oRouter.navigateByUrl('/dashboard');
               }
             },
+            error:(oError)=>{
+              this.m_bIsSubmitted=false;
+            }
           });
-          this.m_bIsSubmitted=true;
+          this.m_bIsSubmitted=false;
         }
       },
       error: (oError) => {
         if (oError.error.errorStringCodes) {
           this.handleAPIErrors(sError,oError.error.errorStringCodes);
         }
-        this.m_bIsSubmitted=true;
+        this.m_bIsSubmitted=false;
 
       },
     });
@@ -160,6 +163,7 @@ export class LoginViewComponent {
    * Navigate the user back to the Login View
    */
   backToLogin(): void {
+    this.m_bIsSubmitted=false;
     this.m_bShowOtp = false;
   }
 

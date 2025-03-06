@@ -158,6 +158,16 @@ export class ConfirmInvitedUserRegistrationComponent implements OnInit {
           'Please ensure that user id is longer than 8 characters';
         return false;
       }
+
+      if (/\s/.test(this.m_oUserInfoInput.userId)) {
+        this.m_sUsernameError = 'User ID cannot contain spaces';
+        return false;
+      }
+
+      if (this.m_oUserInfoInput.userId !== this.m_oUserInfoInput.userId.toLowerCase()) {
+        this.m_sUsernameError = 'User ID must be all lowercase';
+        return false;
+      }
     }
     return true;
   }

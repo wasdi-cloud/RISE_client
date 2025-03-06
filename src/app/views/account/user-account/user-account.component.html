@@ -34,6 +34,9 @@
           [m_sLocalizationKey]="'LOGIN.USER_ID'"
           [m_bHasTitle]="true"
           [(m_sInputText)]="m_sNewUserId"
+          [m_sErrorText]="m_sUsernameError"
+          [m_bIsValidatorInput]="true"
+          [m_bIsValid]="validateUserId()"
         ></rise-text-input>
         <rise-button
           class="align-self-start mt-2"

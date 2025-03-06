@@ -124,6 +124,7 @@ export class UserAccountComponent implements OnInit {
   //TODO : UPDATE USER INFORMATION
   m_sPasswordError: string = '';
   m_oSelectedLanguageItem: any;
+  m_sUsernameError: string="";
 
   constructor(
     private m_oAuthService: AuthService,
@@ -189,6 +190,11 @@ export class UserAccountComponent implements OnInit {
     let bIsUserIdChanged=false;
     if(this.m_oUser.userId!=this.m_sNewUserId){
       bIsUserIdChanged=true;
+    }
+    if(bIsUserIdChanged){
+      if(!this.validateUserId()){
+        return;
+      }
     }
     let oBody = {
       name: this.m_oUser.name,
@@ -559,5 +565,28 @@ export class UserAccountComponent implements OnInit {
           },
         });
       });
+  }
+
+  validateUserId() {
+    if (this.m_sNewUserId) {
+      this.m_sNewUserId= this.m_sNewUserId.trim();
+      if (this.m_sNewUserId.length < 8) {
+        this.m_sUsernameError =
+          'Please ensure that user id is longer than 8 characters';
+        return false;
+      }
+
+
+      if (/\s/.test(this.m_sNewUserId)) {
+        this.m_sUsernameError = 'User ID cannot contain spaces';
+        return false;
+      }
+
+      if (this.m_sNewUserId !== this.m_sNewUserId.toLowerCase()) {
+        this.m_sUsernameError = 'User ID must be all lowercase';
+        return false;
+      }
+    }
+    return true;
   }
 }
