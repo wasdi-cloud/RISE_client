@@ -1,0 +1,34 @@
+div.dialog-container {
+  background-color: var(--surface-glass);
+  backdrop-filter: blur(20px);
+  height: 250px;
+  padding: 20px; /* Adjust padding as needed */
+  width: 500px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
+  background-color: transparent !important;
+}
+
+.total-container {
+  font-size: 20px;
+}
+
+.divider {
+  border-bottom: 3px dotted var(--rise-text-dim);
+}
+.col-6 {
+  padding-right: 10px; /* Ensure consistent spacing between columns */
+}
+
+.rise-text-input,
+.rise-textarea-input {
+  padding: 10px; /* Add padding for inner spacing */
+  margin-bottom: 10px; /* Space between inputs */
+  border-radius: 5px; /* Optional: rounded corners for better UI */
+  border: 1px solid #ddd; /* Optional: light border for clarity */
+}

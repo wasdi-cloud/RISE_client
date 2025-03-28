@@ -1,8 +1,61 @@
-<h3>Please Insert The coordination</h3>
-<!--todo to change later to float input-->
-<rise-text-input [(m_sInputText)]="m_oBBox.north"  [m_sLocalizationKey]="'North'"></rise-text-input>
-<rise-text-input [(m_sInputText)]="m_oBBox.west" [m_sLocalizationKey]="'West'"></rise-text-input>
-<rise-text-input [(m_sInputText)]="m_oBBox.east" [m_sLocalizationKey]="'East'"></rise-text-input>
-<rise-text-input [(m_sInputText)]="m_oBBox.south" [m_sLocalizationKey]="'South'"></rise-text-input>
-<rise-button [m_sLabel]="'Submit'" (click)="submit()"></rise-button>
-<rise-button [m_sLabel]="'Cancel'" (click)="onDismiss()"></rise-button>
+<!--<h3>Please Insert The coordination</h3>-->
+<!--&lt;!&ndash;todo to change later to float input&ndash;&gt;-->
+<!--<rise-text-input [(m_sInputText)]="m_oBBox.north"  [m_sLocalizationKey]="'North'"></rise-text-input>-->
+<!--<rise-text-input [(m_sInputText)]="m_oBBox.west" [m_sLocalizationKey]="'West'"></rise-text-input>-->
+<!--<rise-text-input [(m_sInputText)]="m_oBBox.east" [m_sLocalizationKey]="'East'"></rise-text-input>-->
+<!--<rise-text-input [(m_sInputText)]="m_oBBox.south" [m_sLocalizationKey]="'South'"></rise-text-input>-->
+<!--<rise-button [m_sLabel]="'Submit'" (click)="submit()"></rise-button>-->
+<!--<rise-button [m_sLabel]="'Cancel'" (click)="onDismiss()"></rise-button>-->
+
+<div class="dialog-container d-flex flex-column gap-2 p-3" xmlns="http://www.w3.org/1999/html">
+  <div
+    class="header d-flex flex-row justify-content-between align-items-center"
+  >
+    <h3>
+      Please insert The coordination
+    </h3>
+    <span class="close-btn material-symbols-outlined" (click)="onDismiss()">
+      close
+    </span>
+  </div>
+  <div class="body flex-fill d-flex flex-column">
+    <!-- Two Columns -->
+    <div class="d-flex flex-row  mb-2">
+      <div class="col-6 d-flex flex-column ">
+        <rise-text-input
+          [m_bHasTitle]="true"
+          [m_sLocalizationKey]="'North'"
+          [(m_sInputText)]="m_oBBox.north"
+
+        ></rise-text-input>
+        <rise-text-input
+          [m_bHasTitle]="true"
+          [m_sLocalizationKey]="'South'"
+          [(m_sInputText)]="m_oBBox.south"
+
+        ></rise-text-input>
+      </div>
+      <div class="col-6 d-flex flex-column ">
+        <rise-text-input
+          [m_bHasTitle]="true"
+          [m_sLocalizationKey]="'East'"
+          [(m_sInputText)]="m_oBBox.east"
+
+        ></rise-text-input>
+        <rise-text-input
+          [m_bHasTitle]="true"
+          [m_sLocalizationKey]="'West'"
+          [(m_sInputText)]="m_oBBox.west "
+
+        ></rise-text-input>
+      </div>
+    </div>
+    <!-- Button -->
+    <rise-button
+      class="align-self-end mt-3"
+      [m_sRole]="'action'"
+      [m_sLabel]="'Confirm'"
+      (click)=" submit()"
+    ></rise-button>
+  </div>
+</div>

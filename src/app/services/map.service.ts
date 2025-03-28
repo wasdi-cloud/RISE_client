@@ -1119,10 +1119,7 @@ export class MapService {
 
         L.DomEvent.on(oButton, 'click', function () {
           // We open the Manual Boundig Box Dialog
-          let oDialog = oController.m_oDialog.open(ManualBoundingBoxComponent, {
-            height: '420px',
-            width: '600px',
-          });
+          let oDialog = oController.m_oDialog.open(ManualBoundingBoxComponent);
           // Once is closed...
           oDialog.afterClosed().subscribe((oResult) => {
             if (oResult != null) {
