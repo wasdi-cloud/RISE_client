@@ -244,10 +244,10 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
 
     if (
       FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oAreaOfOperation.name) ||
-      this.m_oAreaOfOperation.name.length < 6
+      this.m_oAreaOfOperation.name.length < 3
     ) {
       this.m_sAreaOfOperationNameError =
-        'Please enter a valid name of at least 6 characters.';
+        'Please enter a valid name of at least 3 characters.';
       this.m_bNameIsValid = false;
       return false;
     }

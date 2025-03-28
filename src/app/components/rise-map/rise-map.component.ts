@@ -18,8 +18,8 @@ const MAX_AREA_CIRCLE = 49_284_000_000; // Maximum 2x2 degree in square meters
 
 const MIN_WIDTH = 111_000; // Minimum width 1 degree in meters
 const MIN_HEIGHT = 111_000; // Minimum height 1 degree in meters
-const MAX_WIDTH = 222_000; // Maximum width 2 degrees in meters
-const MAX_HEIGHT = 222_000; // Maximum height 2 degrees in meters
+const MAX_WIDTH = 666_000; // Maximum width 2 degrees in meters
+const MAX_HEIGHT = 888_000; // Maximum height 2 degrees in meters
 
 const MIN_AREA_POLYGON = 12_321_000_000; // Minimum 1x1 degree in square meters
 const MAX_AREA_POLYGON = 49_284_000_000; // Maximum 2x2 degree in square meters
