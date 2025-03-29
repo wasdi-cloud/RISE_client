@@ -200,6 +200,8 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
         this.m_oAreaOfOperation.bbox = geojsonToWKT(shapeInfo.geoJson);
         this.m_oAreaOfOperation.markerCoordinates =
           'POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')';
+
+
       }
     }
   }

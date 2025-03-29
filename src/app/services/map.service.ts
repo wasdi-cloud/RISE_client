@@ -151,6 +151,10 @@ export class MapService {
   m_aoEventMarkers: L.Marker[] = [];
   oMeasurementResultSubject = new Subject<string>();
   m_oMarkerSubject = new BehaviorSubject<AreaViewModel>(null);
+  /**
+   * Manual Bounding Box Event Listener
+   */
+  m_oManualBoundingBoxSubscription: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   m_oMarkerSubject$ = this.m_oMarkerSubject.asObservable();
   objectUrlCache = new Map<string,string>; // Map to store ObjectURLs for cached tiles
   circleDrawnSubject = new Subject<{
@@ -1097,12 +1101,11 @@ export class MapService {
    * @param oMap
    */
   addManualBbox(oMap: any) {
-    let oController = this;
     const m_oManualBoxingButton = L.Control.extend({
       options: {
         position: 'topright',
       },
-      onAdd: function (oMap) {
+      onAdd:  (oMap)=> {
         // Create the container for the dialog
         let oContainer = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
         // Create the button to add to leaflet
@@ -1117,9 +1120,9 @@ export class MapService {
 
         // And here we decide what to do with our button
 
-        L.DomEvent.on(oButton, 'click', function () {
+        L.DomEvent.on(oButton, 'click',  ()=> {
           // We open the Manual Boundig Box Dialog
-          let oDialog = oController.m_oDialog.open(ManualBoundingBoxComponent);
+          let oDialog = this.m_oDialog.open(ManualBoundingBoxComponent);
           // Once is closed...
           oDialog.afterClosed().subscribe((oResult) => {
             if (oResult != null) {
@@ -1138,9 +1141,25 @@ export class MapService {
                 // Calculate the center of the bounds (midpoint of North-South and West-East)
                 let fCenterLat = (fNorth + fSouth) / 2;
                 let fCenterLng = (fWest + fEast) / 2;
-
+                this.m_oLastMarker = L.marker([fCenterLat, fCenterLng]).addTo(oMap);
                 // Move the map to the center of the bounds and set a zoom level
-                oMap.setView([fCenterLat, fCenterLng], 13);
+                oMap.setView([fCenterLat, fCenterLng], 8);
+                // Create the bounds array
+                let geoJson = {
+                  type: 'Polygon',
+                  coordinates: [
+                    [
+                      [fWest, fNorth], // Top-left
+                      [fEast, fNorth], // Top-right
+                      [fEast, fSouth], // Bottom-right
+                      [fWest, fSouth], // Bottom-left
+                      [fWest, fNorth], // Close Polygon
+                    ],
+                  ],
+                };
+                let aoBounds = [[fNorth, fWest], [fSouth, fEast]];
+                this.addManualBboxLayer(oMap,aoBounds)
+                this.m_oManualBoundingBoxSubscription.next({ geoJson, center: { lat: fCenterLat, lng: fCenterLng } });
               }
             }
           });
@@ -1158,8 +1177,21 @@ export class MapService {
       },
     });
     oMap.addControl(new m_oManualBoxingButton());
+    return this.m_oManualBoundingBoxSubscription.asObservable();
   }
+  addManualBboxLayer(oMap, aoBounds) {
+    let oLayer = L.rectangle(aoBounds, { color: "#3388ff", weight: 1 });
 
+    //remove old shape
+    if (this.m_oDrawnItems && this.m_oDrawnItems.getLayers().length !== 0) {
+      this.m_oDrawnItems.clearLayers();
+    }
+
+    this.m_oDrawnItems.addLayer(oLayer);
+    this.zoomOnBounds(aoBounds);
+    //Emit bounding box to listening component:
+    return aoBounds
+  }
   addPixelInfoToggle(oMap: any) {
     let oPixelButton = L.Control.extend({
       options: {
@@ -1235,7 +1267,29 @@ export class MapService {
 
     oMap.addControl(new oPixelButton());
   }
+  /**
+   * Zoom on bounds
+   * @param aBounds
+   * @param oMap
+   * @returns {boolean}
+   */
+  zoomOnBounds(aBounds, oMap = null): boolean {
+    try {
+      if (!aBounds) { return false; }
+      if (aBounds.length == 0) { return false; }
+      if (oMap == null && this.m_oRiseMap == null) { return false; }
 
+      if (oMap == null) oMap = this.m_oRiseMap;
+
+      oMap.flyToBounds([aBounds]);
+
+      return true;
+    }
+    catch (e) {
+      console.log(e);
+    }
+    return true;
+  };
   getPixelInfo() {
     let sErrorMsg: string = this.m_oTranslate.instant('MAP.ERROR_LAYER');
     this.m_oRiseMap.on('click', (oClickEvent) => {

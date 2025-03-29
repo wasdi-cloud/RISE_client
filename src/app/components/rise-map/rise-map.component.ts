@@ -80,6 +80,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   m_bIsDrawCreated: boolean = false;
   m_bIsAutoDrawCreated: boolean = false;
   m_bIsImportDrawCreated: boolean = false;
+  private m_bIsManualBBoxInsert: boolean=false;
 
 
   constructor(
@@ -227,7 +228,13 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
 
   //Go to position by inserting coords
   addManualBbox(oMap: any) {
-    this.m_oMapService.addManualBbox(oMap);
+    this.m_oMapService.addManualBbox(oMap).subscribe((bboxData)=>{
+      if(bboxData){
+        this.m_bIsManualBBoxInsert=true;
+        const { geoJson,center}=bboxData;
+        this.emitInsertedArea(null,null,center.lat,center.lng,geoJson)
+      }
+    });
   }
 
   addImportBtn(oMap: any) {
@@ -386,6 +393,15 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       this.m_bIsAutoDrawCreated = false;
       this.emitCircleButtonAreaEvent(fRadius, fLat, fLng);
     }
+    else if (
+      this.m_bIsManualBBoxInsert &&
+      geoJson !== undefined &&
+      fLat !== undefined &&
+      fLng !== undefined
+    ) {
+      this.m_bIsManualBBoxInsert = false;
+      this.emitManualBboxEvent(geoJson, fLat, fLng);
+    }
   }
 
   // Function to calculate the centroid of a polygon
@@ -543,4 +559,43 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
 
 
   }
+
+  private emitManualBboxEvent(geoJson: any, fLat: number, fLng: number) {
+    if (!geoJson || geoJson.type !== 'Polygon' || !geoJson.coordinates) {
+      console.error('Invalid GeoJSON format:', geoJson);
+      return;
+    }
+
+    let iSelectedArea = 0;
+    let latLngs: L.LatLng[] = [];
+
+    try {
+      // Convert [lng, lat] to [lat, lng] for Leaflet compatibility
+      latLngs = geoJson.coordinates[0].map(
+        (point: [number, number]) => L.latLng(point[1], point[0])
+      );
+
+      // Calculate the area of the polygon
+      iSelectedArea = L.GeometryUtil.geodesicArea(latLngs);
+    } catch (error) {
+      console.error('Error processing GeoJSON coordinates:', error);
+      return;
+    }
+
+    // Convert to array of lat/lng objects
+    const points = latLngs.map((point: L.LatLng) => ({ lat: point.lat, lng: point.lng }));
+
+    // Use provided center coordinates instead of recalculating centroid
+    const oShapeInfo = {
+      type: 'polygon',
+      points,
+      area: iSelectedArea,
+      center: { lat: fLat, lng: fLng }, // Using provided center
+      geoJson, // Keep original GeoJSON
+    };
+
+    // Emit the structured shape information
+    this.m_oMapInputChange.emit(oShapeInfo);
+  }
+
 }
