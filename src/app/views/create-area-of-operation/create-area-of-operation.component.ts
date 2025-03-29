@@ -257,23 +257,7 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
     return true;
   }
 
-  /**
-   * Ensure the user has entered a valid description for their area
-   * @returns boolean
-   */
-  validateAOIDescription(): boolean {
-    if (
-      FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oAreaOfOperation.description)
-    ) {
-      this.m_sAreaOfOperationDescriptionError =
-        'Please provide a description for your area of operations';
-      this.m_bDescriptionIsValid = false;
-      return false;
-    }
-    this.m_sAreaOfOperationDescriptionError = ''; // Clear error when valid
-    this.m_bDescriptionIsValid = true;
-    return true;
-  }
+
 
   private saveAreaOfOperation() {
     //TODO until the daemon is ready
@@ -335,7 +319,6 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
    */
   private validateAOI(): boolean {
     return !(!this.validateAOIName() ||
-      !this.validateAOIDescription() ||
       !this.validateAOIPlugins() ||
       !this.validateAreaInfo());
   }

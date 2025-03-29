@@ -11,7 +11,6 @@
     (change)="onInputChange()"
   ></textarea>
   <div class="form-text" *ngIf="m_bIsValidatorInput && !m_bIsValid">
-    Please ensure the values are the same.
     <span class="material-symbols-outlined"> info </span>
     <div [innerHTML]="m_sErrorText | translate"></div>
   </div>
