@@ -700,6 +700,7 @@ export class MapService {
   addMeasurementTools(oMap: L.Map): Observable<string> {
     let bMeasurementMode = false;
     let oActiveShape: L.Layer | null = null; // Track the currently drawn shape
+    let oDrawControl: any = null; // Declare globally within the function
 
     const oMeasurementControl = L.Control.extend({
       options: {position: 'topright'},
@@ -735,11 +736,10 @@ export class MapService {
               'leaflet-control-button',
               oContainer
             );
-            oToolButton.innerHTML = `<span class="material-symbols-outlined" style="color: var(--rise-gold);">${tool.icon}</span>`; // Set icon color to yellow
+            oToolButton.innerHTML = `<span class="material-symbols-outlined" style="color: var(--rise-gold);">${tool.icon}</span>`;
             oToolButton.title = tool.title;
 
             L.DomEvent.on(oToolButton, 'click', () => {
-              let oDrawControl: any;
               switch (tool.type) {
                 case 'rectangle':
                   oDrawControl = new L.Draw.Rectangle(
@@ -775,11 +775,7 @@ export class MapService {
 
                   // Set the new shape as active
                   oActiveShape = layer;
-
-
                 });
-                // Emit the result
-
               }
             });
           });
@@ -802,15 +798,23 @@ export class MapService {
             oMeasurementButton.title = 'Start Measurement';
             oContainer.appendChild(oMeasurementButton);
 
+            // Disable drawing if active
+            if (oDrawControl) {
+              oDrawControl.disable();
+              oDrawControl = null; // Reset to avoid reuse
+            }
+
             // Remove the current shape if it exists
             if (oActiveShape) {
               oMap.removeLayer(oActiveShape);
-              oActiveShape = null; // Reset active shape
+              oActiveShape = null;
             }
 
             // Emit cancel event
             this.oMeasurementResultSubject.next('Measurement cancelled.');
           });
+
+          oContainer.appendChild(oCancelButton);
         });
 
         return oContainer;
@@ -819,7 +823,6 @@ export class MapService {
 
     oMap.addControl(new oMeasurementControl());
 
-    // Return the observable
     return this.oMeasurementResultSubject.asObservable();
   }
 
