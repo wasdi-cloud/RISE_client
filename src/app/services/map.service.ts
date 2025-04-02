@@ -664,17 +664,30 @@ export class MapService {
    * Adds Mouse Position and Scale to the actual map
    * @returns
    */
-  addMousePositionAndScale(oMap) {
+  addMousePositionAndScale(oMap,isDashboard:boolean) {
     if (oMap == null) {
       oMap = this.m_oRiseMap;
-      return;
+      // return;
     }
     // coordinates in map find this plugin in lib folder
-    // let oMousePosition = L.control.mousePosition();
+    if(isDashboard){
+      let oMousePosition = L.control.mousePosition({
+        position:'bottomright'
+      });
+      if (oMousePosition != null) {
+        oMousePosition.addTo(oMap);
+      }
+    }else{
+      let oMousePosition = L.control.mousePosition({
+        position:'bottomleft'
+      });
+      if (oMousePosition != null) {
+        oMousePosition.addTo(oMap);
+      }
+    }
 
-    // if (oMousePosition != null) {
-    //   oMousePosition.addTo(oMap);
-    // }
+
+
     L.control
       .scale({
         position: 'bottomright',
@@ -1255,7 +1268,7 @@ export class MapService {
 
         // Set up the toggle button icon and tooltip
         oButton.innerHTML =
-          '<span class="material-symbols-outlined">chat_info</span>';
+          '<span class="material-symbols-outlined">pinch</span>';
         oButton.title = 'Toggle Pixel Info';
 
         return oContainer;

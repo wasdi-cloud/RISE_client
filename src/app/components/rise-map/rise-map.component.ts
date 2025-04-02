@@ -187,7 +187,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     oMap.fitBounds(oBoundaries);
     oMap.setZoom(3);
 
-    this.m_oMapService.addMousePositionAndScale(oMap);
+    this.m_oMapService.addMousePositionAndScale(oMap,this.m_bDashboardMap);
     this.m_oMapService.addZoom();
     this.m_oMapService.m_oLayersControl.addTo(oMap);
     this.m_oMapService.initGeoSearchPluginForOpenStreetMap(oMap);

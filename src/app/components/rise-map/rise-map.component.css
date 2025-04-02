@@ -14,3 +14,13 @@ div.map-container {
   height: 100%;
   width: 100%;
 }
+/* Default position (for the area of interest interface) */
+.default-coords {
+  left: 10px !important;  /* Adjust horizontal position */
+}
+
+/* Dashboard-specific position */
+.dashboard-coords {
+  left: 420% !important; /* Move it away from the panel */
+  right: auto !important; /* Reset left to avoid conflicts */
+}
