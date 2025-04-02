@@ -30,6 +30,7 @@
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
     "@terraformer/wkt": "^2.2.1",
+    "ace-builds": "^1.32.8",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.7",
     "express": "^4.18.2",

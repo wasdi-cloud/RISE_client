@@ -1,12 +1,3 @@
-<!--<h3>Please Insert The coordination</h3>-->
-<!--&lt;!&ndash;todo to change later to float input&ndash;&gt;-->
-<!--<rise-text-input [(m_sInputText)]="m_oBBox.north"  [m_sLocalizationKey]="'North'"></rise-text-input>-->
-<!--<rise-text-input [(m_sInputText)]="m_oBBox.west" [m_sLocalizationKey]="'West'"></rise-text-input>-->
-<!--<rise-text-input [(m_sInputText)]="m_oBBox.east" [m_sLocalizationKey]="'East'"></rise-text-input>-->
-<!--<rise-text-input [(m_sInputText)]="m_oBBox.south" [m_sLocalizationKey]="'South'"></rise-text-input>-->
-<!--<rise-button [m_sLabel]="'Submit'" (click)="submit()"></rise-button>-->
-<!--<rise-button [m_sLabel]="'Cancel'" (click)="onDismiss()"></rise-button>-->
-
 <div class="dialog-container d-flex flex-column gap-2 p-3" xmlns="http://www.w3.org/1999/html">
   <div
     class="header d-flex flex-row justify-content-between align-items-center"
@@ -18,7 +9,16 @@
       close
     </span>
   </div>
-  <div class="body flex-fill d-flex flex-column">
+  <div class="d-flex flex-row justify-content-end">
+    <rise-button *ngIf="!m_bShowJSON" [m_sLabel]="'JSON Input'" [m_sSize]="'small'"
+                (click)="toggleShowJSON()"></rise-button>
+    <rise-button *ngIf="m_bShowJSON" [m_sLabel]="'Input Fields'" [m_sSize]="'small'"
+                (click)="toggleShowJSON()"></rise-button>
+  </div>
+
+
+
+  <div *ngIf="!m_bShowJSON" class="body flex-fill d-flex flex-column">
     <!-- Two Columns -->
     <div class="d-flex flex-row  mb-2">
       <div class="col-6 d-flex flex-column ">
@@ -51,11 +51,20 @@
       </div>
     </div>
     <!-- Button -->
-    <rise-button
-      class="align-self-end mt-3"
-      [m_sRole]="'action'"
-      [m_sLabel]="'Draw Area'"
-      (click)=" submit()"
-    ></rise-button>
+
   </div>
+  <div [hidden]="!m_bShowJSON" class="flex-fill my-2 JSON-container">
+    <div #editor class="json-editor" style="height: 100%; width: 100%;" (keyup)="getJsonInput()"
+         (change)="getJsonInput()"></div>
+    <rise-button class="info-button" [m_sIconLeft]="'info'" [m_sSize]="'small'"
+                (click)="openInfoDialog()"></rise-button>
+    <rise-button class="json-button" [m_sLabel]="'MANUAL_BBOX.DIALOG_PROCESSOR_UI_APP_FORMAT_JSON' | translate"
+                [m_sSize]="'small'" (click)="checkJSON()"></rise-button>
+  </div>
+  <rise-button
+    class="align-self-end mt-3"
+    [m_sRole]="'action'"
+    [m_sLabel]="'Draw Area'"
+    (click)=" submit()"
+  ></rise-button>
 </div>

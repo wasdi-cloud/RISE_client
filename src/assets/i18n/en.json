@@ -297,5 +297,11 @@
     "CREATION_DATE": "Creation date",
     "EXPIRY_DATE": "Expiry date",
     "PAID_STATUS": "Status"
+  },
+  "MANUAL_BBOX":{
+    "DIALOG_MANUAL_INSERT_BBOX_INFO": "Input JSON in the following format:<br>",
+    "DIALOG_PROCESSOR_UI_APP_FORMAT_JSON": "Format JSON",
+    "DIALOG_FORMAT_JSON_ERROR": "Could not format your JSON input. Please ensure it is a valid JSON",
+    "DIALOG_PARSE_JSON_ERROR": "There was an error in parsing the JSON payload"
   }
 }

@@ -503,3 +503,10 @@ a.leaflet-control-zoom-fullscreen {
   border-radius: 50%;
   color: white;
 }
+.json-editor {
+  min-height: 400px !important;
+  height: 100% !important;
+  width: 100%;
+  border: 1px solid #ccc;
+  display: block !important;
+}
