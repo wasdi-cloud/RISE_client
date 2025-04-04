@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {RiseToolbarComponent} from '../../components/rise-toolbar/rise-toolbar.component';
 import {TranslateModule} from '@ngx-translate/core';
-import {NavigationEnd, Router} from '@angular/router';
+import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
 import {AccountSidebarComponent} from './account-sidebar/account-sidebar.component';
 import {AccountBtns} from './account-sidebar/account-btns';
 import {UserAccountComponent} from './user-account/user-account.component';
@@ -27,6 +27,7 @@ import {EventsComponent} from "../events/events.component";
     UserOrganizationComponent,
     UserSubscriptionsComponent,
     EventsComponent,
+    RouterOutlet,
   ],
   templateUrl: './account.component.html',
   styleUrl: './account.component.css',
@@ -45,12 +46,11 @@ export class AccountComponent implements OnInit {
 
   ngOnInit(): void {
     // Update on component initialization
-    this.updateActiveOutletFromState();
+    this.setActiveOutletFromUrl();
     this.getActiveButtonsBasedOnUserRole();
-    // Listen for navigation events to handle state updates dynamically
     this.m_oRouter.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        this.updateActiveOutletFromState();
+        this.setActiveOutletFromUrl();
       }
     });
   }
@@ -85,7 +85,11 @@ export class AccountComponent implements OnInit {
       this.m_sActiveOutlet = history.state['m_sActiveOutlet'];
     }
   }
-
+  private setActiveOutletFromUrl(): void {
+    const url = this.m_oRouter.url;
+    const pathMatch = url.split('/')[2]; // because `/account/xxx`
+    this.m_sActiveOutlet = pathMatch || 'user'; // fallback to 'user' if needed
+  }
   public navigateRoute(sLocation: string) {
     this.m_oRouter.navigateByUrl(`/${sLocation}`);
   }
@@ -93,6 +97,7 @@ export class AccountComponent implements OnInit {
   public getActiveOutlet(sSelectedOutlet: string) {
     if (sSelectedOutlet) {
       this.m_sActiveOutlet = sSelectedOutlet;
+      this.navigateRoute('account/'+sSelectedOutlet)
     }
   }
 }

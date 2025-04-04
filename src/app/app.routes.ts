@@ -20,10 +20,25 @@ import {ChangeForgetPasswordComponent} from "./views/change-forget-password/chan
 import {ForgetPasswordRequestComponent} from "./views/forget-password-request/forget-password-request.component";
 import {PasswordExpiredComponent} from "./views/password-expired/password-expired.component";
 import {SubscriptionBuySuccessComponent} from "./views/subscription-buy-success/subscription-buy-success.component";
+import {UserAccountComponent} from "./views/account/user-account/user-account.component";
+import {UserOrganizationComponent} from "./views/account/user-organization/user-organization.component";
+import {UserSubscriptionsComponent} from "./views/account/user-subscriptions/user-subscriptions.component";
+import {AreaOfOperationsComponent} from "./views/area-of-operations/area-of-operations.component";
 
 export const routes: Routes = [
   {path: '', component: PublicHomeComponent, canActivate: [isLoggedGuard]},
-  {path: 'account', component: AccountComponent, canActivate: [authGuard]},
+  {
+    path: 'account',
+    component: AccountComponent, // layout component with toolbar + sidebar + <router-outlet>
+    canActivate: [authGuard],
+    children: [
+      { path: '', redirectTo: 'user', pathMatch: 'full' }, // default inside /account
+      { path: 'user', component: UserAccountComponent },
+      { path: 'organization', component: UserOrganizationComponent },
+      { path: 'subscriptions', component: UserSubscriptionsComponent },
+      { path: 'area-of-operations', component: AreaOfOperationsComponent },
+    ]
+  },
   {path: 'events/:aoiId', component: EventsComponent, canActivate: [authGuard]},
   {
     path: 'dashboard',
