@@ -3,7 +3,7 @@
   cursor: pointer; /* Indicate it's clickable */
 }
 .temp-fix {
-  height: 870px;
+  height: 840px;
 }
 
 .logo-img:hover {
@@ -18,11 +18,10 @@
 }
 
 .timebar {
-  bottom: 0rem;
-  left: 25%;
+  left: 23%;
   position: absolute;
   z-index: 999;
-  width: 75%;
+  width: 77%;
 }
 
 .btn-select-container {
@@ -35,11 +34,12 @@
   background-color: rgba(0, 31, 40, 0.8);
   border-right: 1px solid var(--rise-border-default);
   backdrop-filter: blur(10px);
-  position: absolute;
-  z-index: 999;
+  display: flex;
+  flex-direction: column;
+
   padding: 1rem;
   height: 100vh;
-  width: 25%;
+  width: 23%;
 }
 
 img {
@@ -50,6 +50,8 @@ img {
   background-color: rgba(255, 255, 255, 0.04);
   border-radius: 8px;
   color: var(--rise-text-dim);
+  flex-grow: 1; /* Makes the layer list expand while leaving space for the button */
+  overflow-y: auto; /* Optional: adds scrolling if the list is too long */
 }
 
 .layer-outlet {
@@ -97,3 +99,7 @@ span.cta-text {
   cursor: pointer;
 }
 
+.button-container {
+  margin-top: auto; /* Pushes the button to the bottom */
+  padding-bottom: 16px; /* Optional: Adds some spacing from the bottom */
+}

@@ -2,6 +2,7 @@
   <!-- <rise-user-menu ></rise-user-menu> -->
   <!-- <rise-toolbar [m_bUserIsSigned]="true"></rise-toolbar> -->
   <div class="flex-fill d-flex flex-row">
+<!--    this is the left panel -->
     <div
       class="rise-sidebar d-flex flex-column justify-content-between gap-4 px-3"
       cdkDropList
@@ -51,12 +52,15 @@
         </div>
         } @else {  {{"MONITOR.NO_LAYERS_TO_SHOW"|translate}} }
       </div>
-      <rise-button
-        [m_sLabel]="'MONITOR.MANAGE_EVENTS'"
-        [m_sRole]="'primary'"
-        (click)="navigateRoute('events')"
-      ></rise-button>
+      <div class="button-container">
+        <rise-button
+          [m_sLabel]="'MONITOR.MANAGE_EVENTS'"
+          [m_sRole]="'primary'"
+          (click)="navigateRoute('events')"
+        ></rise-button>
+      </div>
     </div>
+<!--    this is the map-->
     <div class="map-container flex-fill temp-fix">
       <div
         *ngIf="m_aoPlugins.length > 0"

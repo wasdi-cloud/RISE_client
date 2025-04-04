@@ -221,13 +221,15 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     } else {
       //same year
       if (iYearRange == 0) {
-        if (iEndMonth - iStartMonth > 1) {
+
+        if (iEndMonth - iStartMonth >= 1) {
           for (let month = iStartMonth; month <= iEndMonth; month++) {
             this.aiTicks.push({value: MONTHS[month]});
           }
           this.m_iZoomLevel = 1;// can go from month to days
           this.m_iMaxZoomInLevel = 2;
           this.m_iMaxZoomOutLevel = 1;
+
         } else {
           for (let day = iStartDay; day <= iEndDay; day++) {
             this.aiTicks.push({value: day});
@@ -235,12 +237,11 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
           this.m_iZoomLevel = 2; // will be always days
           this.m_iMaxZoomInLevel = 2;
           this.m_iMaxZoomOutLevel = 2;
-
         }
       }
       //different  year
       else {
-        if (Math.abs(iEndMonth - iStartMonth) > 1) {
+        if (Math.abs(iEndMonth - iStartMonth) >= 1) {
           for (let month = iStartMonth; month < 12; month++) {
             this.aiTicks.push({value: MONTHS[month]});
           }
@@ -261,7 +262,6 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
         }
       }
     }
-
   }
 
   /**
@@ -515,11 +515,12 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
         //handle months to days
         this.generateDayTicks(oDate)
       }
+      this.updateSliderCursor()
     }
   }
 
   private handleZoomingOut(oDate: any) {
-    if (this.m_iZoomLevel > 0) {
+    if (this.m_iZoomLevel > 0 && this.m_iZoomLevel>this.m_iMaxZoomOutLevel ) {
       this.m_iZoomLevel--;
       if (this.m_iZoomLevel == 0) {
         //handle months to years
@@ -535,6 +536,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
           this.generateMonthTicks(oDate);
         }
       }
+      this.updateSliderCursor()
     }
 
   }
