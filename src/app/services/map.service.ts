@@ -20,6 +20,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ConstantsService} from './constants.service';
 import {TranslateService} from '@ngx-translate/core';
 import {EventViewModel} from "../models/EventViewModel";
+import {MapZoomLevels} from "../shared/MapZoomLevels";
 // import L from 'leaflet';
 declare const L: any;
 
@@ -39,8 +40,6 @@ const iconDefault = L.icon({
 L.Marker.prototype.options.icon = iconDefault;
 
 const MAX_STORAGE_SIZE = 2 * 1024 * 1024; // 2MB for testing
-const MIN_ZOOM = 3;
-const MAX_ZOOM = 13;
 const MIN_AREA_CIRCLE = 12_321_000_000; // Minimum 1x1 degree in square meters
 const MAX_AREA_CIRCLE = 49_284_000_000; // Maximum 2x2 degree in square meters
 
@@ -214,8 +213,8 @@ export class MapService {
       {
         attribution:
           '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
-        maxZoom: MAX_ZOOM,
-        minZoom: MIN_ZOOM,
+        maxZoom: MapZoomLevels.STANDARD_MAX_ZOOM,
+        minZoom: MapZoomLevels.STANDARD_MIN_ZOOM,
         // this option disables loading tiles outside the world bounds.
         noWrap: true,
       }
@@ -225,8 +224,8 @@ export class MapService {
     this.m_oOpenTopoMap = L.tileLayer(
       'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
       {
-        maxZoom: MAX_ZOOM,
-        minZoom: MIN_ZOOM,
+        maxZoom: MapZoomLevels.DEFAULT_MAX_ZOOM,
+        minZoom: MapZoomLevels.DEFAULT_MIN_ZOOM,
         attribution:
           'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
       }
@@ -236,8 +235,8 @@ export class MapService {
     this.m_oEsriWorldStreetMap = L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
       {
-        maxZoom: MAX_ZOOM,
-        minZoom: MIN_ZOOM,
+        maxZoom: MapZoomLevels.STREET_MAX_ZOOM,
+        minZoom: MapZoomLevels.STREET_MIN_ZOOM,
         attribution:
           'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
       }
@@ -247,8 +246,8 @@ export class MapService {
     this.m_oEsriWorldImagery = L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
       {
-        maxZoom: MAX_ZOOM,
-        minZoom: MIN_ZOOM,
+        maxZoom: MapZoomLevels.IMAGERY_MAX_ZOOM,
+        minZoom: MapZoomLevels.IMAGERY_MIN_ZOOM,
         attribution:
           'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
       }
@@ -258,8 +257,8 @@ export class MapService {
     this.m_oStadiMapDark = L.tileLayer(
       'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png',
       {
-        minZoom: MIN_ZOOM,
-        maxZoom: MAX_ZOOM,
+        minZoom: MapZoomLevels.DARK_MAX_ZOOM,
+        maxZoom: MapZoomLevels.DARK_MIN_ZOOM,
         attribution:
           '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         // ext: 'png'
@@ -268,8 +267,8 @@ export class MapService {
     this.m_oDarkGrayArcGIS = L.tileLayer(
       'https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
       {
-        minZoom: MIN_ZOOM,
-        maxZoom: MAX_ZOOM,
+        minZoom: MapZoomLevels.DARK_MAX_ZOOM,
+        maxZoom: MapZoomLevels.DARK_MIN_ZOOM,
         attribution:
           '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         // ext: 'png'
@@ -900,14 +899,12 @@ export class MapService {
 
   private isShapeCoveringServerLayer(oDrawnShape: L.Layer, sLayerId: string): boolean {
     const oLayer = this.m_oLayerMap[sLayerId];
-
     if (!oLayer) {
       console.warn(`Layer with ID ${sLayerId} not found on the map.`);
       return false;
     }
     // Get the bounding box of the WMS layer
     const oLayerBounds = this.getLayerBounds(oLayer);
-
     if (!oLayerBounds) {
       console.warn(`Could not retrieve bounds for layer ${sLayerId}`);
       return false;
@@ -922,7 +919,7 @@ export class MapService {
       // Calculate the bounds of the circle manually
       const latLngBounds = this.getCircleBounds(circleCenter, circleRadius);
       // Check if the circle's bounds intersect with the layer's bounds
-      return oLayerBounds.intersects(latLngBounds)
+      return oLayerBounds.intersects(latLngBounds);
     }
 
     if (oDrawnShape instanceof L.Rectangle || oDrawnShape instanceof L.Polygon) {
@@ -997,14 +994,14 @@ export class MapService {
    * @param oMap
    */
   addEventMarker(oEvent: EventViewModel, oMap: LeafletMap): Marker {
-    console.log(oEvent)
+
     let asCoordinates = this.convertPointLatLng(oEvent);
     if(asCoordinates){
       asCoordinates=asCoordinates._northEast
     }
-    console.log(asCoordinates)
+
     if (asCoordinates && oMap) {
-      console.log("here")
+
       let lat = parseFloat(asCoordinates.lat);
       let lon = parseFloat(asCoordinates.lng);
       let oMarker = L.marker([lat, lon])
@@ -1014,7 +1011,7 @@ export class MapService {
           // this.m_oRouter.navigateByUrl('/monitor');
         })
       if (oMarker) {
-        console.log("here")
+
         oMarker.addTo(oMap);
         this.m_aoEventMarkers.push(oMarker); // Store the marker in the array
         return oMarker;
@@ -1817,7 +1814,6 @@ export class MapService {
    */
   async evictOldestTiles(store: IDBObjectStore) {
     return new Promise((resolve, reject) => {
-      console.log(store.index('timestamp'));
       const index = store.index('timestamp'); // Assuming there's an index on 'timestamp'
       const cursorRequest = index.openCursor(null, 'next'); // Iterate over tiles in order of oldest first
 
