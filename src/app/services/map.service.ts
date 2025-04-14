@@ -257,8 +257,8 @@ export class MapService {
     this.m_oStadiMapDark = L.tileLayer(
       'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png',
       {
-        minZoom: MapZoomLevels.DARK_MAX_ZOOM,
-        maxZoom: MapZoomLevels.DARK_MIN_ZOOM,
+        minZoom: MapZoomLevels.DARK_MIN_ZOOM,
+        maxZoom: MapZoomLevels.DARK_MAX_ZOOM,
         attribution:
           '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         // ext: 'png'
@@ -267,8 +267,8 @@ export class MapService {
     this.m_oDarkGrayArcGIS = L.tileLayer(
       'https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
       {
-        minZoom: MapZoomLevels.DARK_MAX_ZOOM,
-        maxZoom: MapZoomLevels.DARK_MIN_ZOOM,
+        minZoom: MapZoomLevels.DARK_MIN_ZOOM,
+        maxZoom: MapZoomLevels.DARK_MAX_ZOOM,
         attribution:
           '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         // ext: 'png'
