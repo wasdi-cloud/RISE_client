@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
-import {CurrencyPipe} from "@angular/common";
+import {CurrencyPipe, DatePipe} from "@angular/common";
 import {RiseButtonComponent} from "../../../components/rise-button/rise-button.component";
 import {RiseDropdownComponent} from "../../../components/rise-dropdown/rise-dropdown.component";
 import {RiseTextInputComponent} from "../../../components/rise-text-input/rise-text-input.component";
@@ -16,12 +16,11 @@ import {NotificationsDialogsService} from "../../../services/notifications-dialo
   selector: 'app-layer-properties',
   standalone: true,
   imports: [
-    CurrencyPipe,
     RiseButtonComponent,
-    RiseDropdownComponent,
     RiseTextInputComponent,
     RiseTextareaInputComponent,
-    TranslateModule
+    TranslateModule,
+    DatePipe
   ],
   templateUrl: './layer-properties.component.html',
   styleUrl: './layer-properties.component.css'
@@ -59,9 +58,9 @@ export class LayerPropertiesComponent implements OnInit {
     if (!FadeoutUtils.utilsIsObjectNullOrUndefined(this.m_oData)) {
       this.m_oLayerProperties.dataSource = this.m_oData.source ? this.m_oData.source : "";
       this.m_oLayerProperties.resolution = this.m_oData.resolution ? this.m_oData.resolution : ""
-      this.m_oLayerProperties.createdDate = this.m_oData.createdDate ? new Date(this.m_oData.createdDate).toDateString() : ""
+      this.m_oLayerProperties.createdDate = this.m_oData.createdDate ?? this.m_oData.createdDate
       this.m_oLayerProperties.inputData = this.m_oData.inputData ? this.m_oData.inputData : ""
-      this.m_oLayerProperties.referenceDate = this.m_oData.referenceDate ? (new Date(this.m_oData.referenceDate)).toDateString() : "";
+      this.m_oLayerProperties.referenceDate = this.m_oData.referenceDate??this.m_oData.referenceDate;
       this.m_oLayerProperties.layerId =this.m_oData.layerId ? this.m_oData.layerId : ""
 
     }
@@ -88,8 +87,8 @@ export class LayerPropertiesComponent implements OnInit {
 export interface LayerProperties {
   dataSource?: string,
   resolution?: string,
-  createdDate?: string,
-  referenceDate?: string,
+  createdDate?: number,
+  referenceDate?: number,
   inputData?: string,
   layerId?:string;
 }

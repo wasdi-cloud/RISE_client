@@ -30,13 +30,13 @@
         <rise-text-input
           [m_bHasTitle]="true"
           [m_sLocalizationKey]="'MONITOR.CREATED_DATE'"
-          [(m_sInputText)]="m_oLayerProperties.createdDate"
+          [m_sInputText]="m_oLayerProperties.createdDate*1000|date: 'dd/MM/YYYY hh:mm:ss a'"
           [m_bReadonly]="true"
         ></rise-text-input>
         <rise-text-input
           [m_bHasTitle]="true"
           [m_sLocalizationKey]="'MONITOR.REFERENCE_DATE'"
-          [(m_sInputText)]="m_oLayerProperties.referenceDate "
+          [m_sInputText]="m_oLayerProperties.referenceDate * 1000 |date: 'dd/MM/YYYY hh:mm:ss a'"
           [m_bReadonly]="true"
         ></rise-text-input>
       </div>
