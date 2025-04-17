@@ -280,6 +280,8 @@ export class MonitorComponent implements OnInit {
             );
             let sErrorMessage=sError.concat(oPlugin.name?oPlugin.name:"this plugin");
             this.m_oNotificationService.openInfoDialog(sErrorMessage, 'error', 'Error');
+            oPlugin.loaded = false;
+            // this.m_oActivePlugin=null;
           }
         },
         error: (oError) => {
@@ -305,9 +307,10 @@ export class MonitorComponent implements OnInit {
     //sort the layers
     this.m_aoLayers = this.m_aoLayers.sort((a, b) => a.referenceDate - b.referenceDate);
     //filter the layer based on the selected date
-    if(this.m_oSelectedDate){
-      this.m_aoLayers = this.m_aoLayers.filter(layer => layer.referenceDate *1000<= this.m_oSelectedDate);
-    }
+    //todo verify this , because i think its implemented already in backend
+    // if(this.m_oSelectedDate){
+    //   this.m_aoLayers = this.m_aoLayers.filter(layer => layer.referenceDate *1000<= this.m_oSelectedDate);
+    // }
 
     //
     this.m_aoReversedLayers = [...this.m_aoLayers].reverse();
