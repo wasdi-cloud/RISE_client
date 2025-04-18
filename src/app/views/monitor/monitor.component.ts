@@ -242,11 +242,7 @@ export class MonitorComponent implements OnInit {
     this.m_oMapAPIService.byArea(sAreaId).subscribe({
       next: (oResponse) => {
         if (oResponse.length > 0) {
-          this.m_aoPlugins = [
-            ...oResponse,
-            ...oResponse.map(p => ({ ...p })), // clone to avoid reference issues
-            ...oResponse.map(p => ({ ...p })),
-          ];
+          this.m_aoPlugins = oResponse;
           this.m_aoPlugins.forEach((oPlugin) => {
             if (this.m_aoPlugins[0].name === oPlugin.name) {
               this.m_oActivePlugin = this.m_aoPlugins[0];
