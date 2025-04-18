@@ -1,31 +1,21 @@
 import {Component, OnInit} from '@angular/core';
 import {RiseToolbarComponent} from "../../components/rise-toolbar/rise-toolbar.component";
-import {
-  BuyNewSubscriptionComponent
-} from "../account/user-subscriptions/buy-new-subscription/buy-new-subscription.component";
 import {DatePipe, NgForOf, NgIf, TitleCasePipe} from "@angular/common";
 import {RiseButtonComponent} from "../../components/rise-button/rise-button.component";
-import {RiseDropdownComponent} from "../../components/rise-dropdown/rise-dropdown.component";
 import {TranslateModule} from "@ngx-translate/core";
 import {EventViewModel} from "../../models/EventViewModel";
 import {MatTooltip} from "@angular/material/tooltip";
 import {EventService} from "../../services/api/event.service";
 import FadeoutUtils from "../../shared/utilities/FadeoutUtils";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {RiseMapComponent} from "../../components/rise-map/rise-map.component";
 import {AreaViewModel} from "../../models/AreaViewModel";
 import {NotificationsDialogsService} from "../../services/notifications-dialogs.service";
-import {RiseCheckboxComponent} from "../../components/rise-checkbox/rise-checkbox.component";
 import {RiseTextInputComponent} from "../../components/rise-text-input/rise-text-input.component";
 import {RiseTextareaInputComponent} from "../../components/rise-textarea-input/rise-textarea-input.component";
 import {RiseDragAndDropComponent} from "../../components/rise-drag-and-drop/rise-drag-and-drop.component";
-import {MatFormFieldModule, MatHint, MatLabel, MatSuffix} from "@angular/material/form-field";
-import {
-  MatDatepickerModule,
-  MatDatepickerToggle,
-  MatDateRangeInput,
-  MatDateRangePicker
-} from "@angular/material/datepicker";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatDatepickerModule} from "@angular/material/datepicker";
 import {provideNativeDateAdapter} from "@angular/material/core";
 import {MatInputModule} from "@angular/material/input";
 import {RiseDateInputComponent} from "../../components/rise-date-input/rise-date-input.component";
@@ -40,25 +30,16 @@ import {EventType} from "../../models/EventType";
   standalone: true,
   imports: [
     RiseToolbarComponent,
-    BuyNewSubscriptionComponent,
     DatePipe,
     NgForOf,
     NgIf,
     RiseButtonComponent,
-    RiseDropdownComponent,
     TranslateModule,
     MatTooltip,
     RiseMapComponent,
-    RiseCheckboxComponent,
     RiseTextInputComponent,
     RiseTextareaInputComponent,
     RiseDragAndDropComponent,
-    MatLabel,
-    MatDateRangeInput,
-    MatHint,
-    MatDatepickerToggle,
-    MatDateRangePicker,
-    MatSuffix,
     MatDatepickerModule,
     MatInputModule,
     MatFormFieldModule,
@@ -92,6 +73,7 @@ export class EventsComponent implements OnInit {
     private m_oEventService: EventService,
     private m_oActiveRoute: ActivatedRoute,
     private m_oMapService: MapService,
+    private m_oRouter: Router,
     private m_oNotificationServiceDialog: NotificationsDialogsService,
   ) {
   }
@@ -387,5 +369,9 @@ export class EventsComponent implements OnInit {
       return false;
     }
     return true;
+  }
+
+  onReturn() {
+    this.m_oRouter.navigateByUrl(`monitor/${this.m_sAreaId}`)
   }
 }

@@ -11,13 +11,23 @@
           class="account-header d-flex flex-row align-items-center justify-content-between mt-2 p-2"
         >
           {{ "MANAGE_EVENTS.HEADER" | translate }}
-          <rise-button
-            [m_sSize]="'small'"
-            [m_sRole]="'action'"
-            [m_sLabel]="'MANAGE_EVENTS.CREATE_NEW_EVENT'"
-            (click)="onCreateNewEvent()"
-          ></rise-button>
+
+          <div class="d-flex flex-row gap-2">
+            <rise-button
+              [m_sSize]="'small'"
+              [m_sRole]="'action'"
+              [m_sLabel]="'MANAGE_EVENTS.CREATE_NEW_EVENT'"
+              (click)="onCreateNewEvent()"
+            ></rise-button>
+            <rise-button
+              [m_sSize]="'small'"
+              [m_sRole]="'regular'"
+              [m_sLabel]="'MANAGE_EVENTS.RETURN'"
+              (click)="onReturn()"
+            ></rise-button>
+          </div>
         </div>
+
         <div class="body d-flex flex-fill flex-column gap-5 py-4 px-1">
           <table class="w-100">
             <thead>

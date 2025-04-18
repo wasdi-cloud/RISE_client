@@ -14,8 +14,9 @@
     "MANAGE_EVENTS": "Manage Events"
   },
   "MANAGE_EVENTS": {
-    "HEADER": "MANAGE EVENTS",
-    "CREATE_NEW_EVENT": "Create new Event"
+    "HEADER": "Manage Events",
+    "CREATE_NEW_EVENT": "Create new Event",
+    "RETURN": "Return"
   },
   "CREATE_NEW_EVENT": {
     "NAME": "Name",
