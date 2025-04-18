@@ -1,22 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NgClass, NgFor, NgIf} from '@angular/common';
-import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
 
-import { AuthService } from '../../services/api/auth.service';
-import { ConstantsService } from '../../services/constants.service';
-import { MapService } from '../../services/map.service';
-import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
-import { UserService } from '../../services/api/user.service';
+import {AuthService} from '../../services/api/auth.service';
+import {ConstantsService} from '../../services/constants.service';
+import {MapService} from '../../services/map.service';
+import {NotificationsDialogsService} from '../../services/notifications-dialogs.service';
+import {UserService} from '../../services/api/user.service';
 
-import { UserRole } from '../../models/UserRole';
-import { UserViewModel } from '../../models/UserViewModel';
+import {UserRole} from '../../models/UserRole';
+import {UserViewModel} from '../../models/UserViewModel';
 
-import {
-  DefaultMenuItems,
-  FullMenuItems,
-  ReducedMenuItems,
-} from './menu-items';
+import {DefaultMenuItems, FullMenuItems, ReducedMenuItems,} from './menu-items';
 import {AreaService} from "../../services/api/area.service";
 
 @Component({
@@ -179,10 +175,18 @@ export class RiseUserMenuComponent implements OnInit {
   handleClick(sName): void {
     switch (sName) {
       case 'subscriptions':
-        let oNavExtra: NavigationExtras = {
-          state: { m_sActiveOutlet: sName },
-        };
-        this.m_oRouter.navigate(['account'], oNavExtra);
+        // let oNavExtra: NavigationExtras = {
+        //   state: { m_sActiveOutlet: sName },
+        // };
+        // this.m_oRouter.navigate(['account'], oNavExtra);
+        this.m_oRouter.navigateByUrl('account/subscriptions');
+        break;
+      case 'area of operations':
+        // let oNavExtra: NavigationExtras = {
+        //   state: { m_sActiveOutlet: sName },
+        // };
+        // this.m_oRouter.navigate(['account'], oNavExtra);
+        this.m_oRouter.navigateByUrl('account/area-of-operations');
         break;
       case 'help':
         window.open('https://discord.gg/FkRu2GypSg', '_blank');

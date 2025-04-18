@@ -281,7 +281,8 @@
     "HELP": "Help",
     "LANGUAGE": "Language",
     "LOGOUT": "Logout",
-    "SUBSCRIPTIONS": "Subscriptions"
+    "SUBSCRIPTIONS": "Subscriptions",
+    "AREA_OF_OPERATIONS": "Area of operations"
   },
   "WIDGET": {
     "AFFECTED_PPL": "Affected People",
