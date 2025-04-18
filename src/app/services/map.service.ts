@@ -279,11 +279,11 @@ export class MapService {
     this.m_oLayersControl = L.control.layers(
       {
         Standard: this.m_oOSMBasic,
-        OpenTopoMap: this.m_oOpenTopoMap,
-        EsriWorldStreetMap: this.m_oEsriWorldStreetMap,
-        EsriWorldImagery: this.m_oEsriWorldImagery,
+        "Topology ": this.m_oOpenTopoMap,
+        "Street": this.m_oEsriWorldStreetMap,
+        "World Imagery": this.m_oEsriWorldImagery,
         // 'Stadi Map Dark': this.m_oStadiMapDark,
-        'Arcgis Dark gray Map': this.m_oDarkGrayArcGIS,
+        'Dark': this.m_oDarkGrayArcGIS,
       },
       null,
       {position: 'bottomright'}
