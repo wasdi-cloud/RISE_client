@@ -28,6 +28,10 @@ export class RiseMapChipComponent implements OnInit {
       this.m_sIcon = 'light_mode';
     } else if (sTitle.includes('building')) {
       this.m_sIcon = 'domain';
+    }else if (sTitle.includes('rain')) {
+      this.m_sIcon = 'rainy';
+    }else if (sTitle.includes('impacts')) {
+      this.m_sIcon = 'destruction';
     } else {
       this.m_sIcon = 'layers';
     }
