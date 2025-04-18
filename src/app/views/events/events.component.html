@@ -44,9 +44,9 @@
             <tr *ngFor="let oEvent of m_aoEvents">
               <td>{{ oEvent.name }}</td>
               <td>{{ getNameOfEventType(oEvent.type)}}</td>
-              <td>{{ oEvent.startDate| date }}</td>
-              <td>{{ oEvent.peakDate| date }}</td>
-              <td>{{ oEvent.endDate| date }}</td>
+              <td>{{ oEvent.startDate*1000| date : 'yyyy-MM-dd' }}</td>
+              <td>{{ oEvent.peakDate*1000| date : 'yyyy-MM-dd' }}</td>
+              <td>{{ oEvent.endDate*1000| date : 'yyyy-MM-dd' }}</td>
               <td class="d-flex flex-row justify-content-end gap-2">
               <span
                 class="material-symbols-outlined edit"

@@ -610,7 +610,7 @@ export class MonitorComponent implements OnInit {
     if(this.m_sAreaId){
       this.m_oEventService.getEvents(this.m_sAreaId).subscribe({
         next:(oEventVM)=>{
-
+            this.m_aoEvents=oEventVM
         },
         error:(oError)=>{
           console.error(oError)
