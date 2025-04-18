@@ -128,7 +128,8 @@ export class MonitorComponent implements OnInit {
    */
   m_aoEvents:EventViewModel[]=[]
 
-
+  m_iVisibleCount = 3;
+  m_bShowAllPlugins = false;
   constructor(
     private m_oActivatedRoute: ActivatedRoute,
     private m_oAreaService: AreaService,
@@ -616,5 +617,32 @@ export class MonitorComponent implements OnInit {
       })
     }
 
+  }
+
+
+
+  getVisiblePlugins() {
+    const selected = this.m_aoPlugins.filter(p => p.loaded);
+    const unselected = this.m_aoPlugins.filter(p => !p.loaded);
+
+    if (this.m_bShowAllPlugins) {
+      return [...selected, ...unselected];
+    }
+
+    if (selected.length > this.m_iVisibleCount) {
+      return selected;
+    }
+
+    return [...selected, ...unselected.slice(0, this.m_iVisibleCount - selected.length)];
+  }
+
+  getHiddenPluginsCount(): number {
+    const visiblePlugins = this.getVisiblePlugins();
+    return this.m_aoPlugins.length - visiblePlugins.length;
+  }
+
+
+  togglePluginView() {
+    this.m_bShowAllPlugins = !this.m_bShowAllPlugins;
   }
 }
