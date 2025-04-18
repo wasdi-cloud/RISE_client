@@ -128,7 +128,7 @@ export class MonitorComponent implements OnInit {
    */
   m_aoEvents:EventViewModel[]=[]
 
-  m_iVisibleCount = 3;
+  m_iVisibleCount = 5;
   m_bShowAllPlugins = false;
   constructor(
     private m_oActivatedRoute: ActivatedRoute,
@@ -242,12 +242,17 @@ export class MonitorComponent implements OnInit {
     this.m_oMapAPIService.byArea(sAreaId).subscribe({
       next: (oResponse) => {
         if (oResponse.length > 0) {
-          this.m_aoPlugins = oResponse;
+          this.m_aoPlugins = [
+            ...oResponse,
+            ...oResponse.map(p => ({ ...p })), // clone to avoid reference issues
+            ...oResponse.map(p => ({ ...p })),
+          ];
           this.m_aoPlugins.forEach((oPlugin) => {
             if (this.m_aoPlugins[0].name === oPlugin.name) {
               this.m_oActivePlugin = this.m_aoPlugins[0];
             }
           });
+
         }
       },
       error: (oError) => {
@@ -622,18 +627,9 @@ export class MonitorComponent implements OnInit {
 
 
   getVisiblePlugins() {
-    const selected = this.m_aoPlugins.filter(p => p.loaded);
-    const unselected = this.m_aoPlugins.filter(p => !p.loaded);
-
-    if (this.m_bShowAllPlugins) {
-      return [...selected, ...unselected];
-    }
-
-    if (selected.length > this.m_iVisibleCount) {
-      return selected;
-    }
-
-    return [...selected, ...unselected.slice(0, this.m_iVisibleCount - selected.length)];
+    return this.m_bShowAllPlugins
+      ? this.m_aoPlugins
+      : this.m_aoPlugins.slice(0, this.m_iVisibleCount);
   }
 
   getHiddenPluginsCount(): number {

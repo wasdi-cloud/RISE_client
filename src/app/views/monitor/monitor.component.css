@@ -29,6 +29,8 @@
   left: 26%;
   position: absolute;
   z-index: 999;
+  padding-right: 80px;
+  flex-wrap: wrap;
 }
 .rise-sidebar {
   background-color: rgba(0, 31, 40, 0.8);

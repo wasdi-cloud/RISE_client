@@ -64,7 +64,7 @@
     <div class="map-container flex-fill temp-fix">
       <div
         *ngIf="m_aoPlugins.length > 0"
-        class="btn-select-container d-flex flex-row gap-2"
+        class="btn-select-container d-flex flex-row flex-wrap gap-2 align-items-center"
       >
 <!--        <rise-map-chip-->
 <!--          *ngFor="let oPlugin of m_aoPlugins"-->
@@ -77,21 +77,27 @@
         <rise-map-chip
           *ngFor="let oPlugin of getVisiblePlugins()"
           [m_sTitle]="oPlugin.name"
+          [m_sIcon]="oPlugin.icon"
           [m_bIsActive]="oPlugin.loaded"
           (click)="switchPluginButton(oPlugin)"
+          [m_sChipType]="'default'"
         ></rise-map-chip>
 
         <!-- "+X more" chip -->
         <rise-map-chip
           *ngIf="!m_bShowAllPlugins && m_aoPlugins.length > m_iVisibleCount"
           [m_sTitle]="'+' + getHiddenPluginsCount() + ' more'"
+          [m_sIcon]="'more'"
           (click)="togglePluginView()"
+          [m_sChipType]="'toggle'"
         ></rise-map-chip>
 
         <!-- "Show less" chip when expanded -->
         <rise-map-chip
           *ngIf="m_bShowAllPlugins && m_aoPlugins.length > m_iVisibleCount"
-          m_sTitle="Show less"
+          [m_sTitle]="'Show less'"
+          [m_sIcon]="'less'"
+          [m_sChipType]="'toggle'"
           (click)="togglePluginView()"
         ></rise-map-chip>
       </div>

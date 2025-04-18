@@ -1,12 +1,15 @@
 <div
   class="map-chip-container d-flex flex-row align-items-center gap-2"
-  [class.active]="m_bIsActive"
+  [ngClass]="{
+    active: m_bIsActive,
+    'toggle-chip': m_sChipType === 'toggle'
+  }"
 >
-  <span class="material-symbols-outlined"> {{ m_sIcon }} </span>
+  <span class="material-symbols-outlined">{{ m_sIcon }}</span>
   <div>
     {{ m_sTitle }}
   </div>
   <span *ngIf="m_bIsActive" class="material-symbols-outlined check">
-    check</span
-  >
+    check
+  </span>
 </div>

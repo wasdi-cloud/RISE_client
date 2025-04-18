@@ -21,3 +21,16 @@
 .check {
     font-size: 14px;
 }
+
+.toggle-chip {
+  background-color: #c89b27;
+  color: #000;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  font-weight: 600;
+}
+
+.toggle-chip:hover {
+  background-color: #b18727;
+  transition: background-color 300ms;
+}
+

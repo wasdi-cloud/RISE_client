@@ -1,17 +1,19 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NgIf } from '@angular/common';
+import {NgClass, NgIf} from '@angular/common';
 
 @Component({
   selector: 'rise-map-chip',
   standalone: true,
-  imports: [NgIf],
+  imports: [NgIf, NgClass],
   templateUrl: './rise-map-chip.component.html',
   styleUrl: './rise-map-chip.component.css',
 })
 export class RiseMapChipComponent implements OnInit {
   @Input() m_sTitle: string = '';
   @Input() m_bIsActive: boolean = false;
-  m_sIcon: string = '';
+  @Input() m_sIcon: string = '';
+  @Input() m_sChipType: 'default' | 'toggle' = 'default';
+
 
   ngOnInit() {
     this.applyIcon();
@@ -21,17 +23,21 @@ export class RiseMapChipComponent implements OnInit {
    * Search the plugin name for the appropriate icon
    */
   applyIcon() {
-    let sTitle = this.m_sTitle.toLowerCase();
-    if (sTitle.includes('flood')) {
+    let sIcon = this.m_sIcon.toLowerCase();
+    if (sIcon.includes('flood')) {
       this.m_sIcon = 'flood';
-    } else if (sTitle.includes('drought')) {
+    } else if (sIcon.includes('drought')) {
       this.m_sIcon = 'light_mode';
-    } else if (sTitle.includes('building')) {
+    } else if (sIcon.includes('building')) {
       this.m_sIcon = 'domain';
-    }else if (sTitle.includes('rain')) {
+    }else if (sIcon.includes('rain')) {
       this.m_sIcon = 'rainy';
-    }else if (sTitle.includes('impacts')) {
+    }else if (sIcon.includes('impact')) {
       this.m_sIcon = 'destruction';
+    }else if (sIcon.includes('more')) {
+      this.m_sIcon = 'chevron_right';
+    }else if (sIcon.includes('less')) {
+      this.m_sIcon = 'chevron_left';
     } else {
       this.m_sIcon = 'layers';
     }
