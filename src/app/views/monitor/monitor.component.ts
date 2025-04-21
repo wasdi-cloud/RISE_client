@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
 
@@ -48,6 +48,7 @@ import {EventViewModel} from "../../models/EventViewModel";
     RiseTimebarComponent,
     RiseUserMenuComponent,
     TranslateModule,
+    NgOptimizedImage,
   ],
   templateUrl: './monitor.component.html',
   styleUrl: './monitor.component.css',
@@ -609,8 +610,9 @@ export class MonitorComponent implements OnInit {
   private getEvents() {
     if(this.m_sAreaId){
       this.m_oEventService.getEvents(this.m_sAreaId).subscribe({
-        next:(oEventVM)=>{
-            this.m_aoEvents=oEventVM
+        next:(aoEventsVM)=>{
+
+            this.m_aoEvents=aoEventsVM
         },
         error:(oError)=>{
           console.error(oError)

@@ -30,7 +30,7 @@
       <div
         *ngFor="let event of m_aoEvents; let i = index"
         class="event-marker"
-        [style.left]="getEventMarkerPosition(event.peakDate)"
+        [style.left]="getEventMarkerPosition(event.peakDate*1000)"
         [matTooltip]="event.description"
       >
 

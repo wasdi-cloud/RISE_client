@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
+import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInput, MatInputModule} from "@angular/material/input";
 import {
   MatCalendarCellClassFunction,
@@ -9,9 +9,7 @@ import {
   MatDatepickerToggle
 } from "@angular/material/datepicker";
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule} from "@angular/material/core";
-import {MatIcon} from "@angular/material/icon";
 import {FormsModule} from "@angular/forms";
-import {DatePipe} from "@angular/common";
 import {MomentDateAdapter} from "@angular/material-moment-adapter";
 import moment from "moment";
 
@@ -28,7 +26,6 @@ export const CUSTOM_DATE_FORMATS = {
   selector: 'rise-calendar',
   standalone: true,
   imports: [
-    MatFormField,
     MatInput,
     MatDatepickerInput,
     MatDatepickerToggle,
@@ -37,9 +34,7 @@ export const CUSTOM_DATE_FORMATS = {
     MatNativeDateModule,
     MatFormFieldModule,
     MatInputModule,
-    MatIcon,
-    FormsModule,
-    DatePipe
+    FormsModule
   ],
   providers: [
     // provideNativeDateAdapter()

@@ -12,7 +12,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
-import {RiseChipMenuComponent} from '../rise-chip-menu/rise-chip-menu.component';
 import {RiseButtonComponent} from "../rise-button/rise-button.component";
 import {MatTooltip} from "@angular/material/tooltip";
 import {RiseCalendarComponent} from "../rise-calendar/rise-calendar.component";
@@ -24,7 +23,7 @@ const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "
 @Component({
   selector: 'rise-timebar',
   standalone: true,
-  imports: [CommonModule, RiseChipMenuComponent, RiseButtonComponent, MatTooltip, RiseCalendarComponent],
+  imports: [CommonModule, RiseButtonComponent, MatTooltip, RiseCalendarComponent],
   templateUrl: './rise-timebar.component.html',
   styleUrl: './rise-timebar.component.css',
 })
@@ -422,11 +421,13 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   }
 
   convertEventToDates() {
+
     if (this.m_aoEvents) {
       let oReturnList: Date[] = [];
       for (let i = 0; i < this.m_aoEvents.length; i++) {
-        oReturnList.push(new Date(this.m_aoEvents[i].peakDate));
+        oReturnList.push(new Date(this.m_aoEvents[i].peakDate*1000));
       }
+
       return oReturnList;
     }
     return [];
