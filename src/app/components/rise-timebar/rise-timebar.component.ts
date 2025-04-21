@@ -575,12 +575,40 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   }
 
   goToEvent(event: any): void {
-    const index = this.m_asDates.findIndex(d => d.getTime() === event.peakDate * 1000);
+    const eventTimestamp = event.peakDate * 1000;
+
+    // Check if the event is within the current zoom window
+    const isInWindow = this.m_oZoomWindow &&
+      eventTimestamp >= this.m_oZoomWindow.start &&
+      eventTimestamp < this.m_oZoomWindow.end;
+
+    if (!isInWindow && this.m_iZoomLevel < this.m_iMaxZoomInLevel) {
+      // Event is outside current view — zoom in around it
+      const eventDateString = new Date(eventTimestamp).toISOString().split("T")[0];
+      this.handleZoomingIn(eventDateString); // will regenerate m_asDates
+    }
+
+    // Find the closest matching date string (since m_asDates is string-based)
+    const eventDate = new Date(eventTimestamp);
+    const formattedDate = `${eventDate.getFullYear()}-${eventDate.getMonth() + 1}-${eventDate.getDate()}`;
+
+    const index = this.m_asDates.findIndex(dateStr => {
+      const d = new Date(dateStr);
+      return (
+        d.getFullYear() === eventDate.getFullYear() &&
+        d.getMonth() === eventDate.getMonth() &&
+        d.getDate() === eventDate.getDate()
+      );
+    });
+
     if (index >= 0) {
       this.m_iSliderValue = index;
-      this.dateSelected({ target: { value: index } } as any); // simulate event
+      this.dateSelected({ target: { value: index } } as any); // simulate slider input
+    } else {
+      console.warn('Could not find event date in current timeline:', formattedDate);
     }
   }
+
 
   protected readonly EventType = EventType;
 }

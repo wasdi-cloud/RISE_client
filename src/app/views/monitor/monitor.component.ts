@@ -333,6 +333,7 @@ export class MonitorComponent implements OnInit {
    */
   getReferenceTime(oEvent:any): void {
     this.m_oSelectedDate = oEvent;
+    console.log(this.m_oSelectedDate)
     this.m_aoPlugins.forEach((oPlugin) => {
       if (oPlugin.loaded) {
         this.getLayer(oPlugin, this.m_sAreaId, this.m_oSelectedDate);
