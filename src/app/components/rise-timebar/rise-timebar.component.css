@@ -21,15 +21,19 @@
   cursor: pointer;
   z-index: 100;
 }
-.events-markers-container {
-  position: absolute;
-  top: -1px; /* Adjust this to position ticks above the slider */
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  pointer-events: none; /* Prevent ticks from interfering with slider interaction */
-}
 
+/*.events-markers-container {*/
+/*  position: absolute;*/
+/*  top: -1px; !* Adjust this to position ticks above the slider *!*/
+/*  display: flex;*/
+/*  justify-content: space-between;*/
+/*  width: 100%;*/
+/*  pointer-events: none; !* Prevent ticks from interfering with slider interaction *!*/
+/*}*/
+.events-markers-container {
+  top: -50px;
+  pointer-events: none;
+}
 
 .timecontrol-slider {
   background-color: rgba(150, 215, 235, 0.6);
@@ -121,4 +125,17 @@
 
 .tick:last-child {
   transform: translateX(-100%); /* Align last tick to the end */
+}
+
+.event-icon {
+  position: absolute;
+  transform: translateX(-50%);
+  cursor: pointer;
+  pointer-events: all;
+  color: var(--rise-gold);
+  font-size: 8px;
+
+  span {
+    user-select: none;
+  }
 }

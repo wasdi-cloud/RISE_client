@@ -26,14 +26,33 @@
     </div>
 
     <!-- Event Markers -->
+<!--    <div class="events-markers-container position-absolute w-100">-->
+<!--      <div-->
+<!--        *ngFor="let event of m_aoEvents; let i = index"-->
+<!--        class="event-marker"-->
+<!--        [style.left]="getEventMarkerPosition(event.peakDate*1000)"-->
+<!--        [matTooltip]="event.description"-->
+<!--      >-->
+
+<!--      </div>-->
+<!--    </div>-->
+
     <div class="events-markers-container position-absolute w-100">
       <div
-        *ngFor="let event of m_aoEvents; let i = index"
-        class="event-marker"
-        [style.left]="getEventMarkerPosition(event.peakDate*1000)"
+        *ngFor="let event of getVisibleEvents()"
+        class="event-icon"
+        [style.left]="getEventMarkerPosition(event.peakDate * 1000)"
         [matTooltip]="event.description"
+        (click)="goToEvent(event)"
       >
-
+        <span class="material-symbols-outlined" *ngIf="event.type===EventType.FLOOD">flood</span>
+        <span class="material-symbols-outlined" *ngIf="event.type===EventType.DROUGHT">light_mode</span>
+        <span class="material-symbols-outlined" *ngIf="event.type===EventType.CONFLICT">destruction</span>
+        <span class="material-symbols-outlined" *ngIf="event.type===EventType.EARTHQUAKE">domain</span>
+        <span class="material-symbols-outlined" *ngIf="event.type===EventType.TSUNAMI">rainy</span>
+        <span class="material-symbols-outlined" *ngIf="event.type===EventType.INDUSTRIAL_ACCIDENT">event</span>
+        <span class="material-symbols-outlined" *ngIf="event.type===EventType.LANDSLIDE">destruction</span>
+        <span class="material-symbols-outlined" *ngIf="event.type===EventType.OTHER">event</span>
       </div>
     </div>
   </div>

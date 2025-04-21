@@ -17,6 +17,7 @@ import {MatTooltip} from "@angular/material/tooltip";
 import {RiseCalendarComponent} from "../rise-calendar/rise-calendar.component";
 import moment from "moment";
 import {EventViewModel} from "../../models/EventViewModel";
+import {EventType} from "../../models/EventType";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
@@ -109,6 +110,9 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    */
   @Input() m_aoEvents: EventViewModel[] = [];
 
+  m_oZoomWindow: { start: number, end: number }; // in milliseconds
+
+
   m_iZoomLevel: number = 0;
   m_iMaxZoomInLevel: number = 2;
   m_iMaxZoomOutLevel: number = 0;
@@ -150,18 +154,26 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   /**
    * Get Marker position to insert in its right position in the timebar
    */
-  getEventMarkerPosition(eventDate: number): string {
-    let sDate = new Date(eventDate).toDateString()
-    const eventIndex = this.m_asDates.findIndex(
-      (date) => date === sDate
-    );
-    if (eventIndex === -1) {
-      return ""; // Default to 0% if the event date isn't in the range
-    }
+  // getEventMarkerPosition(eventDate: number): string {
+  //   let sDate = new Date(eventDate).toDateString()
+  //   const eventIndex = this.m_asDates.findIndex(
+  //     (date) => date === sDate
+  //   );
+  //   if (eventIndex === -1) {
+  //     return ""; // Default to 0% if the event date isn't in the range
+  //   }
+  //
+  //   const percentage = (eventIndex / (this.m_asDates.length - 1)) * 100;
+  //   return `${percentage}%`;
+  // }
+  getEventMarkerPosition(timestamp: number): string {
+    const rangeStart = this.m_oZoomWindow?.start || this.m_iStartDate * 1000;
+    const rangeEnd = this.m_oZoomWindow?.end || this.m_iEndDate * 1000;
 
-    const percentage = (eventIndex / (this.m_asDates.length - 1)) * 100;
-    return `${percentage}%`;
+    const percent = (timestamp - rangeStart) / (rangeEnd - rangeStart);
+    return `${percent * 100}%`;
   }
+
 
   @HostListener('mouseenter', ['$event'])
   onMouseEnter() {
@@ -215,6 +227,9 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
       } else if (iYearRange > 10) {
         interval = 2; // One tick every 2 years for ranges over 10 years
       }
+      this.m_iZoomLevel = 0;// can go from year to month , and from month to days
+      this.m_iMaxZoomOutLevel = 0;
+      this.m_iMaxZoomInLevel = 2;
       this.generateYearTicks(iStartYear,iEndYear,interval);
 
     } else {
@@ -310,6 +325,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     this.m_sSelectedDate = asDates[asDates.length - 1];
     this.m_iSliderValue = asDates.length - 1;
     this.m_oSelectedDate = endDate
+
   }
 
   /**
@@ -372,21 +388,6 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     this.m_oSelectedDateEmitter.emit(this.m_sSelectedDateTimestamp);
   }
 
-  /**
-   * TODO: Initialize the registered events on the timebar - make them clickable and associated to date/time
-   * UC: RISE shows on the time bar markers where there are registered events (both automatically detected or inserted by the user)
-   * @returns void
-   */
-  initRegisteredEvents(): void {
-  }
-
-  /**
-   * TODO: Ability to zoom in and out of the timebar
-   * UC: User can zoom in and out the time bar
-   * @returns void
-   */
-  zoomToTime(): void {
-  }
 
   /**
    * add One day to the timebar / time
@@ -455,6 +456,12 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     this.m_iSliderValue = selectedDay - 1; // Adjust index for zero-based array
     this.m_sSelectedDate = this.m_asDates[this.m_iSliderValue];
 
+    // 👇 Zoom window for selected month
+    this.m_oZoomWindow = {
+      start: new Date(oSelectedYear, oSelectedMonth, 1).getTime(),
+      end: new Date(oSelectedYear, oSelectedMonth + 1, 1).getTime(),
+    };
+
   }
 
   generateMonthTicks(oDate: string) {
@@ -475,7 +482,10 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     const selectedMonth = dateObj.getMonth();
     this.m_iSliderValue = selectedMonth; // Since months are zero-based
     this.m_sSelectedDate = this.m_asDates[this.m_iSliderValue];
-
+    this.m_oZoomWindow = {
+      start: new Date(selectedYear, 0, 1).getTime(),
+      end: new Date(selectedYear + 1, 0, 1).getTime(),
+    };
   }
 
   private isMouseOverSlider(event: WheelEvent): boolean {
@@ -544,13 +554,33 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
 
   }
 
+  getVisibleEvents(): any[] {
+    if (!this.m_oZoomWindow) return this.m_aoEvents;
+
+    return this.m_aoEvents.filter(event => {
+      const eventTime = event.peakDate * 1000;
+      return eventTime >= this.m_oZoomWindow.start && eventTime < this.m_oZoomWindow.end;
+    });
+  }
+
 
   private generateYearTicks(iStartYear:number,iEndYear:number,interval:number) {
     for (let year = iStartYear; year <= iEndYear; year += interval) {
       this.aiTicks.push({value: year});
     }
-    this.m_iZoomLevel = 0;// can go from year to month , and from month to days
-    this.m_iMaxZoomOutLevel = 0;
-    this.m_iMaxZoomInLevel = 2;
+    this.m_oZoomWindow = {
+      start: new Date(iStartYear, 0, 1).getTime(),
+      end: new Date(iEndYear + 1, 0, 1).getTime(), // exclusive end
+    };
   }
+
+  goToEvent(event: any): void {
+    const index = this.m_asDates.findIndex(d => d.getTime() === event.peakDate * 1000);
+    if (index >= 0) {
+      this.m_iSliderValue = index;
+      this.dateSelected({ target: { value: index } } as any); // simulate event
+    }
+  }
+
+  protected readonly EventType = EventType;
 }
