@@ -1,6 +1,7 @@
 div.map-container {
   height: 100%;
   width: 100%;
+  position: relative;
 }
 
 .map-frame {
@@ -13,6 +14,7 @@ div.map-container {
 #map {
   height: 100%;
   width: 100%;
+  position: relative;
 }
 /* Default position (for the area of interest interface) */
 .default-coords {

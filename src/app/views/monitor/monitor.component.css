@@ -3,8 +3,17 @@
   cursor: pointer; /* Indicate it's clickable */
 }
 .temp-fix {
-  height: 840px;
+  height: 100vh; /* Full height of the viewport */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
+rise-map {
+  flex-grow: 1;
+  min-height: 0; /* Important when inside flex */
+  position: relative;
+}
+
 
 .logo-img:hover {
   transform: scale(1.1); /* Slightly enlarge the image */
@@ -18,11 +27,17 @@
 }
 
 .timebar {
-  left: 23%;
-  position: absolute;
+  position: relative;
   z-index: 999;
-  width: 77%;
+  width: 100%;
+  height: 80px; /* Adjust as needed */
 }
+.map-section {
+  flex-grow: 1;
+  position: relative;
+  min-height: 0;
+}
+
 
 .btn-select-container {
   top: 1rem;
