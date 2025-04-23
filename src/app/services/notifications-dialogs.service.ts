@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable, ViewContainerRef} from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
 import { NotificationDialogComponent } from '../dialogs/notification-dialog/notification-dialog.component';
@@ -63,8 +63,10 @@ export class NotificationsDialogsService {
    * @param sTitle
    * @param className
    * @param enableCopy
+   * @param viewContainerRef
    */
-  openSnackBar(sMessage: string, sTitle?: string, className?: string, enableCopy?: boolean) {
+  openSnackBar(sMessage: string, sTitle?: string, className?: string, enableCopy?: boolean,  viewContainerRef?: ViewContainerRef) {
+    this.onFullScreenMode(viewContainerRef);
     this.m_oMatSnackbar.openFromComponent(NotificationSnackbarComponent, {
       duration: 10000,
       horizontalPosition: 'right',
@@ -76,6 +78,29 @@ export class NotificationsDialogsService {
         class: className ? className : 'info-snackbar',
         enableCopy:enableCopy?enableCopy:false
       },
+      viewContainerRef: viewContainerRef
     });
   }
+
+  private onFullScreenMode(viewContainerRef: ViewContainerRef) {
+    if (viewContainerRef) {
+      // Ensure overlay exists before opening actual snackbar
+      const overlayContainer = document.querySelector('.cdk-overlay-container');
+      if (!overlayContainer) {
+        // Preload invisible snackbar to force creation of overlay container
+        this.m_oMatSnackbar.open('', '', {duration: 0,panelClass: ['invisible-snackbar']});
+      }
+
+      this.moveOverlayIntoFullscreen();
+    }
+  }
+
+  moveOverlayIntoFullscreen() {
+    const fullscreenElement = document.fullscreenElement;
+    const overlayContainer = document.querySelector('.cdk-overlay-container');
+    if (fullscreenElement && overlayContainer && !fullscreenElement.contains(overlayContainer)) {
+      fullscreenElement.appendChild(overlayContainer);
+    }
+  }
+
 }

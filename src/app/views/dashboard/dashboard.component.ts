@@ -7,7 +7,6 @@ import {RiseAlertsWidgetComponent} from './rise-alerts-widget/rise-alerts-widget
 import {RiseBannerComponent} from '../../components/rise-banner/rise-banner.component';
 import {RiseMapComponent} from '../../components/rise-map/rise-map.component';
 import {RiseOngoingWidgetComponent} from './rise-ongoing-widget/rise-ongoing-widget.component';
-import {RiseTextInputComponent} from '../../components/rise-text-input/rise-text-input.component';
 import {RiseUserMenuComponent} from '../../components/rise-user-menu/rise-user-menu.component';
 
 import {EventViewModel} from '../../models/EventViewModel';
@@ -27,7 +26,6 @@ import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
     RiseBannerComponent,
     RiseMapComponent,
     RiseOngoingWidgetComponent,
-    RiseTextInputComponent,
     RiseUserMenuComponent,
   ],
   templateUrl: './dashboard.component.html',

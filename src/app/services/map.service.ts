@@ -148,7 +148,6 @@ export class MapService {
   m_bPixelInfoOn: boolean = false;
   m_aoMarkers: L.Marker[] = [];
   m_aoEventMarkers: L.Marker[] = [];
-  oMeasurementResultSubject = new Subject<string>();
   m_oMarkerSubject = new BehaviorSubject<AreaViewModel>(null);
   /**
    * Manual Bounding Box Event Listener
@@ -697,6 +696,9 @@ export class MapService {
 
 
   addMeasurementTools(oMap: L.Map): Observable<string> {
+
+    console.log("init measurement tool")
+    const oResultSubject = new Subject<string>();
     let bMeasurementMode = false;
     let oActiveShape: L.Layer | null = null; // Track the currently drawn shape
     let oDrawControl: any = null; // Declare globally within the function
@@ -739,6 +741,8 @@ export class MapService {
             oToolButton.title = tool.title;
 
             L.DomEvent.on(oToolButton, 'click', () => {
+              console.log("clicked")
+              console.log(oResultSubject)
               switch (tool.type) {
                 case 'rectangle':
                   oDrawControl = new L.Draw.Rectangle(
@@ -765,15 +769,20 @@ export class MapService {
                   );
                   break;
               }
+              oResultSubject.next(null)
               if (oDrawControl) {
-                this.startDrawing(oMap, oDrawControl, (layer) => {
+                oResultSubject.next(null);
+                this.startDrawing(oMap, oDrawControl, (layer,message) => {
                   if (oActiveShape) {
                     oMap.removeLayer(oActiveShape);
                     oActiveShape = null;
                   }
-
+                  console.log("inside draw control condition")
+                  console.log(message)
                   // Set the new shape as active
                   oActiveShape = layer;
+                  oResultSubject.next(message);
+
                 });
               }
             });
@@ -810,7 +819,7 @@ export class MapService {
             }
 
             // Emit cancel event
-            this.oMeasurementResultSubject.next('Measurement cancelled.');
+            oResultSubject.next('Measurement cancelled.');
           });
 
           oContainer.appendChild(oCancelButton);
@@ -821,20 +830,22 @@ export class MapService {
     });
 
     oMap.addControl(new oMeasurementControl());
-
-    return this.oMeasurementResultSubject.asObservable();
+    console.log("are we here?")
+    return oResultSubject.asObservable();
   }
 
 
   startDrawing(
     oMap: L.Map,
     oDrawControl: any,
-    onShapeCreated: (layer: L.Layer) => void
+    onShapeCreated: (layer: L.Layer,message:string) => void
   ) {
+    console.log("or are we here?")
     oDrawControl.enable();
+
     oMap.once('draw:created', (e: any) => {
       const {layerType: sLayerType, layer} = e;
-      onShapeCreated(layer)
+
       // Temporary layer for measurement
       oMap.addLayer(layer);
       const formatNumber = (num: number) => {
@@ -863,7 +874,8 @@ export class MapService {
         // message = `Area: ${(area / 1000).toFixed(2)} Km²`;
       }
       // Call the callback with the new layer and message
-      this.oMeasurementResultSubject.next(message);
+      onShapeCreated(layer,message)
+      console.log("we drawed again")
     });
   }
   //todo find a better way to write only one drawing method

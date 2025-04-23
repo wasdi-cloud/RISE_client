@@ -510,3 +510,10 @@ a.leaflet-control-zoom-fullscreen {
   border: 1px solid #ccc;
   display: block !important;
 }
+
+.invisible-snackbar {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}

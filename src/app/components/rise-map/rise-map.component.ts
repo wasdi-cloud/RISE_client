@@ -1,4 +1,14 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges,} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewContainerRef,
+} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {MapService} from '../../services/map.service';
@@ -83,10 +93,13 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   private m_bIsManualBBoxInsert: boolean=false;
 
 
+
+
   constructor(
     private m_oMapService: MapService,
     private m_oNotificationService: NotificationsDialogsService,
     private m_oTranslate: TranslateService,
+    private m_oViewContainerRef: ViewContainerRef,
   ) {
     this.m_oMapService.initTilelayer();
     this.m_oMapService.setMapOptions();
@@ -428,9 +441,11 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   addMeasurementTools(oMap) {
     this.m_oMapService.addMeasurementTools(oMap).subscribe({
       next: (sMessage) => {
-        this.m_oNotificationService.openSnackBar(sMessage, 'Measurement', 'success',true);
+        if(sMessage){
+          this.m_oNotificationService.openSnackBar(sMessage, 'Measurement', 'success',true,this.m_oViewContainerRef);
+          window.dispatchEvent(new Event("resize"))
+        }
         // this.m_oNotificationService.openInfoDialog(sMessage, 'Measurement', 'success');
-        window.dispatchEvent(new Event("resize"))
       },
       error: (err) => {
         console.error('Error in Measurement:', err);
@@ -597,5 +612,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     // Emit the structured shape information
     this.m_oMapInputChange.emit(oShapeInfo);
   }
+
+
 
 }
