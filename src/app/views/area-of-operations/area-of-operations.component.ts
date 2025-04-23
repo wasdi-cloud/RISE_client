@@ -22,7 +22,7 @@ import {AreaInfoComponent} from './area-info/area-info.component';
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 import {environment} from "../../../environments/environments";
 import {SubscriptionService} from "../../services/api/subscription.service";
-import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'area-of-operations',
@@ -34,10 +34,7 @@ import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/mat
     RiseMapComponent,
     NgIf,
     NgFor,
-    MatCard,
-    MatCardContent,
-    MatCardHeader,
-    MatCardTitle,
+
   ],
   templateUrl: './area-of-operations.component.html',
   styleUrl: './area-of-operations.component.css',
@@ -54,6 +51,7 @@ export class AreaOfOperationsComponent implements OnInit {
     private m_oNotificationService: NotificationsDialogsService,
     private m_oTranslate: TranslateService,
     private m_oSubService: SubscriptionService,
+    private m_oRouter: Router
   ) {
   }
 
@@ -177,5 +175,9 @@ export class AreaOfOperationsComponent implements OnInit {
         }
       }
     )
+  }
+
+  goToMonitorArea(oArea: AreaViewModel) {
+    this.m_oRouter.navigateByUrl(`monitor/${oArea.id}`)
   }
 }

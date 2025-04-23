@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {CommonModule, NgOptimizedImage} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
 
@@ -48,7 +48,7 @@ import {EventViewModel} from "../../models/EventViewModel";
     RiseTimebarComponent,
     RiseUserMenuComponent,
     TranslateModule,
-    NgOptimizedImage,
+
   ],
   templateUrl: './monitor.component.html',
   styleUrl: './monitor.component.css',
