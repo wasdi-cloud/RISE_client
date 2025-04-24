@@ -147,6 +147,7 @@ export class MonitorComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.m_iCurrentDate=this.getCurrentDate();
     this.getActiveAOI();
     this.m_oMapService.m_oLayerAnalyzerDialogEventEmitter.subscribe((shouldOpenDialog: boolean) => {
@@ -249,7 +250,7 @@ export class MonitorComponent implements OnInit {
               this.m_oActivePlugin = this.m_aoPlugins[0];
             }
           });
-
+          this.initPluginsButtons(this.m_aoPlugins);
         }
       },
       error: (oError) => {
@@ -334,6 +335,7 @@ export class MonitorComponent implements OnInit {
   getReferenceTime(oEvent:any): void {
     this.m_oSelectedDate = oEvent;
     console.log(this.m_oSelectedDate)
+    this.initPluginsButtons(this.m_aoPlugins);
     this.m_aoPlugins.forEach((oPlugin) => {
       if (oPlugin.loaded) {
         this.getLayer(oPlugin, this.m_sAreaId, this.m_oSelectedDate);
@@ -342,6 +344,9 @@ export class MonitorComponent implements OnInit {
   }
   switchPluginButton(oPlugin:any) {
     //was active,turn it to inactive
+    if(oPlugin.disabled){
+      return;
+    }
     if(oPlugin.loaded){
       oPlugin.loaded = false;
       let oMap=this.m_oMapService.getMap();
@@ -639,5 +644,18 @@ export class MonitorComponent implements OnInit {
 
   togglePluginView() {
     this.m_bShowAllPlugins = !this.m_bShowAllPlugins;
+  }
+  /*
+  this method is made to enable/disable the plugins button
+   */
+  initPluginsButtons(aoPlugins: any[]){
+    for (const oPlugin of aoPlugins) {
+      this.m_oLayerService.findLayer(oPlugin.id,this.m_sAreaId,this.m_oSelectedDate).subscribe({
+        next:(oResponse)=>{
+          oPlugin.disabled = FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse);
+        }
+      })
+
+    }
   }
 }

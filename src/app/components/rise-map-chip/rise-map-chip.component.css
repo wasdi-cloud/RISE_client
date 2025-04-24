@@ -34,3 +34,11 @@
   transition: background-color 300ms;
 }
 
+.map-chip-container.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pointer-events-none {
+  pointer-events: none;
+}

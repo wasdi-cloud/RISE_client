@@ -13,6 +13,7 @@ export class RiseMapChipComponent implements OnInit {
   @Input() m_bIsActive: boolean = false;
   @Input() m_sIcon: string = '';
   @Input() m_sChipType: 'default' | 'toggle' = 'default';
+  @Input() m_bDisabled: boolean=false;
 
 
   ngOnInit() {

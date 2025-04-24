@@ -2,8 +2,10 @@
   class="map-chip-container d-flex flex-row align-items-center gap-2"
   [ngClass]="{
     active: m_bIsActive,
-    'toggle-chip': m_sChipType === 'toggle'
+    'toggle-chip': m_sChipType === 'toggle',
+    'disabled': m_bDisabled
   }"
+  [class.pointer-events-none]="m_bDisabled"
 >
   <span class="material-symbols-outlined">{{ m_sIcon }}</span>
   <div>

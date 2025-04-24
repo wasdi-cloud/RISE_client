@@ -81,6 +81,7 @@
           [m_sTitle]="oPlugin.name"
           [m_sIcon]="oPlugin.icon"
           [m_bIsActive]="oPlugin.loaded"
+          [m_bDisabled]="oPlugin.disabled"
           (click)="switchPluginButton(oPlugin)"
           [m_sChipType]="'default'"
         ></rise-map-chip>
