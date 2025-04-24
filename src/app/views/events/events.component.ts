@@ -97,9 +97,9 @@ export class EventsComponent implements OnInit {
   }
   editEvent(oEvent: EventViewModel) {
     this.m_oEvent=oEvent;
-    this.m_sStartDate=this.formatEpochToDate(this.m_oEvent.startDate);
-    this.m_sPeakDate=this.formatEpochToDate(this.m_oEvent.peakDate);
-    this.m_sEndDate=this.formatEpochToDate(this.m_oEvent.endDate);
+    this.m_sStartDate=this.formatEpochToDate(this.m_oEvent.startDate*1000);
+    this.m_sPeakDate=this.formatEpochToDate(this.m_oEvent.peakDate*1000);
+    this.m_sEndDate=this.formatEpochToDate(this.m_oEvent.endDate*1000);
 
     this.m_bUpdatingEvent=true;
   }
