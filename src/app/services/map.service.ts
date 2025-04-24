@@ -464,7 +464,7 @@ export class MapService {
 
       this.m_oRiseMap.flyToBounds(bounds, {maxZoom: 8});
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 
@@ -697,7 +697,7 @@ export class MapService {
 
   addMeasurementTools(oMap: L.Map): Observable<string> {
 
-    console.log("init measurement tool")
+
     const oResultSubject = new Subject<string>();
     let bMeasurementMode = false;
     let oActiveShape: L.Layer | null = null; // Track the currently drawn shape
@@ -741,8 +741,7 @@ export class MapService {
             oToolButton.title = tool.title;
 
             L.DomEvent.on(oToolButton, 'click', () => {
-              console.log("clicked")
-              console.log(oResultSubject)
+
               switch (tool.type) {
                 case 'rectangle':
                   oDrawControl = new L.Draw.Rectangle(
@@ -777,8 +776,7 @@ export class MapService {
                     oMap.removeLayer(oActiveShape);
                     oActiveShape = null;
                   }
-                  console.log("inside draw control condition")
-                  console.log(message)
+
                   // Set the new shape as active
                   oActiveShape = layer;
                   oResultSubject.next(message);
@@ -830,7 +828,7 @@ export class MapService {
     });
 
     oMap.addControl(new oMeasurementControl());
-    console.log("are we here?")
+
     return oResultSubject.asObservable();
   }
 
@@ -840,7 +838,7 @@ export class MapService {
     oDrawControl: any,
     onShapeCreated: (layer: L.Layer,message:string) => void
   ) {
-    console.log("or are we here?")
+
     oDrawControl.enable();
 
     oMap.once('draw:created', (e: any) => {
@@ -875,7 +873,7 @@ export class MapService {
       }
       // Call the callback with the new layer and message
       onShapeCreated(layer,message)
-      console.log("we drawed again")
+
     });
   }
   //todo find a better way to write only one drawing method

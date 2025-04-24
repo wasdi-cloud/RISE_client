@@ -220,7 +220,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       "<span class='material-symbols-outlined'>fullscreen</span>";
 
     oMap.on('baselayerchange', (e) => {
-      console.log('base layer changed');
+
       this.m_oMapService.setActiveLayer(oMap, e.layer);
     });
 
@@ -286,7 +286,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
         L.latLng(northEast.lat, southWest.lng)
       );
 
-      console.log('Calculated width:', width, 'Calculated height:', height);
+
 
       // Adjust if width or height are out of bounds
       if (
@@ -302,7 +302,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
           sErrorMsg = sErrorHeaderForTooSmall;
         }
         this.m_oNotificationService
-          .openConfirmationDialog(sErrorMsg, 'danger')
+          .openConfirmationDialog(sErrorMsg, 'danger',this.m_oViewContainerRef)
           .subscribe({
             next: (oResponse) => {
               if (oResponse) {
@@ -347,7 +347,8 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
         this.m_oNotificationService.openInfoDialog(
           sErrorMsgAdjust,
           'danger',
-          sErrorHeader
+          sErrorHeader,
+          this.m_oViewContainerRef
         );
       } else {
         this.handleValidArea(oEvent);
@@ -364,7 +365,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
           sErrorMsg = sErrorMsgToSmall;
         }
         this.m_oNotificationService
-          .openConfirmationDialog(sErrorMsg, 'danger')
+          .openConfirmationDialog(sErrorMsg, 'danger',this.m_oViewContainerRef)
           .subscribe({
             next: (oResponse) => {
               if (oResponse) {
@@ -441,7 +442,9 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   addMeasurementTools(oMap) {
     this.m_oMapService.addMeasurementTools(oMap).subscribe({
       next: (sMessage) => {
+
         if(sMessage){
+
           this.m_oNotificationService.openSnackBar(sMessage, 'Measurement', 'success',true,this.m_oViewContainerRef);
           window.dispatchEvent(new Event("resize"))
         }
