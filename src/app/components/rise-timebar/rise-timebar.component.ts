@@ -110,6 +110,9 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    */
   @Input() m_aoEvents: EventViewModel[] = [];
 
+  @Input() m_iInitialSelectedDate: number = null;
+
+
   m_oZoomWindow: { start: number, end: number }; // in milliseconds
 
 
@@ -322,9 +325,18 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     // asDates.push(endDate.toDateString());
     this.m_asDates = asDates;
 
-    this.m_sSelectedDate = asDates[asDates.length - 1];
-    this.m_iSliderValue = asDates.length - 1;
-    this.m_oSelectedDate = endDate
+    // 🔥 Pick initial selection based on input date
+
+    if(this.m_iInitialSelectedDate && this.m_iInitialSelectedDate>=this.m_iStartDate && this.m_iInitialSelectedDate<=this.m_iEndDate  ){
+      this.m_sSelectedDate = new Date(this.m_iInitialSelectedDate * 1000).toDateString()
+      this.m_iSliderValue = this.m_asDates.indexOf(this.m_sSelectedDate);
+      this.m_oSelectedDate = new Date(this.m_iInitialSelectedDate * 1000)
+    }else{
+      this.m_sSelectedDate =asDates[asDates.length - 1];
+      this.m_iSliderValue = asDates.length - 1;
+      this.m_oSelectedDate = endDate
+    }
+
 
   }
 

@@ -128,7 +128,7 @@ export class MonitorComponent implements OnInit {
    * List of Events
    */
   m_aoEvents:EventViewModel[]=[]
-
+  m_iInitialPeakDate: number;
   m_iVisibleCount = 5;
   m_bShowAllPlugins = false;
   constructor(
@@ -144,6 +144,15 @@ export class MonitorComponent implements OnInit {
     private m_oDialog: MatDialog,
     private m_oEventService: EventService,
   ) {
+    const navigation = this.m_oRouter.getCurrentNavigation();
+    const state = navigation?.extras?.state as { peakDate?: string };
+
+    if (state?.peakDate) {
+
+      this.m_oSelectedDate= (Number(state?.peakDate) * 1000).toString();
+      this.m_iInitialPeakDate = new Date(state.peakDate).getTime();
+
+    }
   }
 
   ngOnInit(): void {
@@ -649,6 +658,7 @@ export class MonitorComponent implements OnInit {
   this method is made to enable/disable the plugins button
    */
   initPluginsButtons(aoPlugins: any[]){
+
     for (const oPlugin of aoPlugins) {
       this.m_oLayerService.findLayer(oPlugin.id,this.m_sAreaId,this.m_oSelectedDate).subscribe({
         next:(oResponse)=>{

@@ -93,7 +93,7 @@ export class EventsComponent implements OnInit {
       value: type
     }));
 
-    console.log(this.m_aoEventTypes)
+
   }
   editEvent(oEvent: EventViewModel) {
     this.m_oEvent=oEvent;
@@ -298,11 +298,11 @@ export class EventsComponent implements OnInit {
     if (FadeoutUtils.utilsIsStrNullOrEmpty(this.m_sAreaId)) {
       return;
     }
-    console.log(this.m_sAreaId)
+
     this.m_oEventService.getEvents(this.m_sAreaId).subscribe({
       next: (aoEvents) => {
         this.m_aoEvents = aoEvents;
-        console.log(aoEvents)
+
       },
       error: (oError) => {
         console.error(oError);
@@ -374,4 +374,13 @@ export class EventsComponent implements OnInit {
   onReturn() {
     this.m_oRouter.navigateByUrl(`monitor/${this.m_sAreaId}`)
   }
+
+  goToMonitorWithEventPeakDate(oEvent: EventViewModel) {
+    if (oEvent.peakDate) {
+      this.m_oRouter.navigate([`monitor/${this.m_sAreaId}`], {
+        state: { peakDate: oEvent.peakDate }
+      });
+    }
+  }
+
 }

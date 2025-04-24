@@ -55,6 +55,14 @@
               >
                 edit
               </span>
+               <span
+                  class="material-symbols-outlined edit"
+                  [matTooltip]="'Monitor with this event'"
+                  (click)="goToMonitorWithEventPeakDate(oEvent)"
+                  style="color: var(--rise-gold)"
+                >
+                jump_to_element
+              </span>
                 <span
                   class="material-symbols-outlined remove"
                   [matTooltip]="'Remove Event'"
