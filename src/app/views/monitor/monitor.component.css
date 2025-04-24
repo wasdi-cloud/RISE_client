@@ -40,8 +40,8 @@ rise-map {
 
 
 .btn-select-container {
-  top: 1rem;
-  left: 26%;
+  top: 0.5rem;
+  left: 27%;
   position: absolute;
   z-index: 999;
   padding-right: 80px;
@@ -119,4 +119,12 @@ span.cta-text {
 .button-container {
   margin-top: auto; /* Pushes the button to the bottom */
   padding-bottom: 16px; /* Optional: Adds some spacing from the bottom */
+}
+.fullscreen-btn-container {
+  position: fixed !important;
+  top: 0.5rem;
+  left: 5%;
+  z-index: 999;
+  padding-right: 80px;
+  flex-wrap: wrap;
 }

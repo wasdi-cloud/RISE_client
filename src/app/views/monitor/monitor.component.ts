@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
@@ -53,7 +53,7 @@ import {EventViewModel} from "../../models/EventViewModel";
   templateUrl: './monitor.component.html',
   styleUrl: './monitor.component.css',
 })
-export class MonitorComponent implements OnInit {
+export class MonitorComponent implements OnInit,AfterViewInit {
   /**
    * UC_120 Monitor Area of Operations
    */
@@ -131,6 +131,9 @@ export class MonitorComponent implements OnInit {
   m_iInitialPeakDate: number;
   m_iVisibleCount = 5;
   m_bShowAllPlugins = false;
+
+  @ViewChild('btnContainer', { static: false }) btnContainerRef!: ElementRef;
+  @ViewChild('tempFix', { static: false }) tempFixRef!: ElementRef;
   constructor(
     private m_oActivatedRoute: ActivatedRoute,
     private m_oAreaService: AreaService,
@@ -166,6 +169,35 @@ export class MonitorComponent implements OnInit {
     });
     this.getEvents()
   }
+
+  ngAfterViewInit(): void {
+    document.addEventListener('fullscreenchange', () => {
+
+      const fullscreenElement = document.fullscreenElement;
+      const btnContainer = this.btnContainerRef.nativeElement;
+      const originalParent = this.tempFixRef.nativeElement;
+      console.log(btnContainer);
+      console.log(fullscreenElement);
+
+      const fullscreenClass = 'fullscreen-btn-container'; // This will be the class for fullscreen mode
+      const normalClass = 'btn-select-container'; // This will be the class for fullscreen mode
+
+      // Add or remove the fullscreen class based on the fullscreen state
+      if (fullscreenElement && !fullscreenElement.contains(btnContainer)) {
+        fullscreenElement.appendChild(btnContainer);
+        btnContainer.classList.add(fullscreenClass);
+        btnContainer.classList.remove(normalClass);
+      } else if (!fullscreenElement) {
+        originalParent.insertBefore(btnContainer, originalParent.firstChild);
+        btnContainer.classList.remove(fullscreenClass);
+        btnContainer.classList.add(normalClass);
+
+
+      }
+    });
+  }
+
+
 
   //   RISE shows the Monitor Section containing:
   // A browsable map (including a geocoding search tool)

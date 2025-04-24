@@ -63,8 +63,9 @@
       </div>
     </div>
 <!--    this is the map-->
-    <div class=" flex-fill temp-fix">
+    <div  class=" flex-fill temp-fix" #tempFix>
       <div
+        #btnContainer
         *ngIf="m_aoPlugins.length > 0"
         class="btn-select-container d-flex flex-row flex-wrap gap-2 align-items-center"
       >
@@ -105,7 +106,7 @@
         ></rise-map-chip>
       </div>
       <rise-user-menu class="user-menu"></rise-user-menu>
-      <rise-map class="map-section" [m_bMonitorMap]="true" [m_bDashboardMap]="true"></rise-map>
+      <rise-map  #mapElement class="map-section" [m_bMonitorMap]="true" [m_bDashboardMap]="true"></rise-map>
       <rise-timebar
         class="timebar"
         [m_iStartDate]="m_oAreaOfOperation.archiveStartDate"
