@@ -120,3 +120,7 @@ rise-dropdown {
   align-items: center;
   gap: 5px;
 }
+.scrollable-table-container {
+  overflow-y: auto;
+  max-height: 75vh;
+}

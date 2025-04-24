@@ -29,25 +29,26 @@
         </div>
 
         <div class="body d-flex flex-fill flex-column gap-5 py-4 px-1">
-          <table class="w-100">
-            <thead>
-            <tr>
-              <td>{{ "EVENT.NAME" | translate }}</td>
-              <td>{{ "EVENT.TYPE" | translate }}</td>
-              <td>{{ "EVENT.START_DATE" | translate }}</td>
-              <td>{{ "EVENT.PEAK_DATE" | translate }}</td>
-              <td>{{ "EVENT.END_DATE" | translate }}</td>
-              <td></td>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let oEvent of m_aoEvents">
-              <td>{{ oEvent.name }}</td>
-              <td>{{ getNameOfEventType(oEvent.type)}}</td>
-              <td>{{ oEvent.startDate*1000| date : 'yyyy-MM-dd' }}</td>
-              <td>{{ oEvent.peakDate*1000| date : 'yyyy-MM-dd' }}</td>
-              <td>{{ oEvent.endDate*1000| date : 'yyyy-MM-dd' }}</td>
-              <td class="d-flex flex-row justify-content-end gap-2">
+          <div class="scrollable-table-container">
+            <table class="w-100">
+              <thead>
+              <tr>
+                <td>{{ "EVENT.NAME" | translate }}</td>
+                <td>{{ "EVENT.TYPE" | translate }}</td>
+                <td>{{ "EVENT.START_DATE" | translate }}</td>
+                <td>{{ "EVENT.PEAK_DATE" | translate }}</td>
+                <td>{{ "EVENT.END_DATE" | translate }}</td>
+                <td></td>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let oEvent of m_aoEvents">
+                <td>{{ oEvent.name }}</td>
+                <td>{{ getNameOfEventType(oEvent.type)}}</td>
+                <td>{{ oEvent.startDate*1000| date : 'yyyy-MM-dd' }}</td>
+                <td>{{ oEvent.peakDate*1000| date : 'yyyy-MM-dd' }}</td>
+                <td>{{ oEvent.endDate*1000| date : 'yyyy-MM-dd' }}</td>
+                <td class="d-flex flex-row justify-content-end gap-2">
               <span
                 class="material-symbols-outlined edit"
                 [matTooltip]="'Edit Event'"
@@ -55,27 +56,27 @@
               >
                 edit
               </span>
-               <span
-                  class="material-symbols-outlined edit"
-                  [matTooltip]="'Monitor with this event'"
-                  (click)="goToMonitorWithEventPeakDate(oEvent)"
-                  style="color: var(--rise-gold)"
-                >
+                  <span
+                    class="material-symbols-outlined edit"
+                    [matTooltip]="'Monitor with this event'"
+                    (click)="goToMonitorWithEventPeakDate(oEvent)"
+                    style="color: var(--rise-gold)"
+                  >
                 jump_to_element
               </span>
-                <span
-                  class="material-symbols-outlined remove"
-                  [matTooltip]="'Remove Event'"
-                  (click)="deleteEvent(oEvent)"
-                >
+                  <span
+                    class="material-symbols-outlined remove"
+                    [matTooltip]="'Remove Event'"
+                    (click)="deleteEvent(oEvent)"
+                  >
                 delete
               </span>
-              </td>
-            </tr>
-            </tbody>
-          </table>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-
       </div>
     </div>
   </div>
