@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
@@ -53,7 +53,7 @@ import {EventViewModel} from "../../models/EventViewModel";
   templateUrl: './monitor.component.html',
   styleUrl: './monitor.component.css',
 })
-export class MonitorComponent implements OnInit,AfterViewInit {
+export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   /**
    * UC_120 Monitor Area of Operations
    */
@@ -132,8 +132,12 @@ export class MonitorComponent implements OnInit,AfterViewInit {
   m_iVisibleCount = 5;
   m_bShowAllPlugins = false;
 
+  private m_oLiveTimer: any;
+
+
   @ViewChild('btnContainer', { static: false }) btnContainerRef!: ElementRef;
   @ViewChild('tempFix', { static: false }) tempFixRef!: ElementRef;
+  private m_bIsLive: boolean=true;
   constructor(
     private m_oActivatedRoute: ActivatedRoute,
     private m_oAreaService: AreaService,
@@ -161,6 +165,8 @@ export class MonitorComponent implements OnInit,AfterViewInit {
   ngOnInit(): void {
 
     this.m_iCurrentDate=this.getCurrentDate();
+    this.startLiveTimer();
+
     this.getActiveAOI();
     this.m_oMapService.m_oLayerAnalyzerDialogEventEmitter.subscribe((shouldOpenDialog: boolean) => {
       if (shouldOpenDialog) {
@@ -197,21 +203,30 @@ export class MonitorComponent implements OnInit,AfterViewInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.stopLiveTimer();
+  }
+
+  startLiveTimer() {
+    this.stopLiveTimer(); // clear any existing interval
+    console.log("started")
+    this.m_oLiveTimer = setInterval(() => {
+      if (this.m_bIsLive) {
+        this.m_iCurrentDate = this.getCurrentDate();
+        console.log(this.m_iCurrentDate)
+      }
+    }, 0.5 * 60 * 1000); // every 5 minutes
+  }
 
 
-  //   RISE shows the Monitor Section containing:
-  // A browsable map (including a geocoding search tool)
-  // A timeline to change the reference time of the viewer
-  // Options to show/hide the available layers:
-  // Near Real Time flood Maps
-  // Near Real Time drought indicator
-  // Near Real Time Buildings Map
-  // Near Real Time Impacts Map
-  // Updated Flood Frequency Map
-  // Meteo Models
-  // Ground Stations Data
-  // Add new Geolocalized Events (and show the layer on the map)
-  // Activate the cross-section tool
+  stopLiveTimer() {
+    if (this.m_oLiveTimer) {
+      clearInterval(this.m_oLiveTimer);
+      this.m_oLiveTimer = null;
+    }
+  }
+
+
 
   /**
    * Get area of operations from the constants service if it was active or the URL if on refresh then open
@@ -234,11 +249,10 @@ export class MonitorComponent implements OnInit,AfterViewInit {
       this.m_oRouter.navigateByUrl('dashboard');
     }
   }
-  getCurrentDate(){
-      const oToday = new Date(); // Get the current date and time
-      const oStaticDate = new Date(oToday.getFullYear(), oToday.getMonth(), oToday.getDate());
-      return Math.floor(oStaticDate.getTime() / 1000); // Return as UNIX timestamp (seconds)
+  getCurrentDate(): number {
+    return Math.floor(Date.now() / 1000); // Current timestamp in seconds
   }
+
   /**
    * Retrieve area of operations info from the server
    * UC: RISE shows the Monitor Section containing a browsable map (including a geocoding search tool)
@@ -549,21 +563,30 @@ export class MonitorComponent implements OnInit,AfterViewInit {
     });
   }
 
-  handleLiveButtonPressed() {
-    //todo show closet layer to the live button
-    //sort the layer based on difference between date and closest date
-    if(this.m_aoLayers && this.m_aoLayers.length>0){
-      let oTargetDate = new Date(this.m_sEndDate).getTime();
-      const aoSortedLayers = this.m_aoLayers.sort((a, b) =>
-        Math.abs(a.referenceDate - oTargetDate) -
-        Math.abs(b.referenceDate - oTargetDate)
-      );
-      this.setOpacity(100, aoSortedLayers[0].layerId)
-      for (let i = 1; i < this.m_aoLayers.length; i++) {
-        this.setOpacity(0, aoSortedLayers[i].layerId)
+  handleLiveButtonPressed(bIsLive) {
+    this.m_bIsLive = bIsLive;
+    if(this.m_bIsLive){
+      this.startLiveTimer();
+      // Update current date and end date immediately
+      this.m_iCurrentDate = this.getCurrentDate();
+      this.m_sEndDate = new Date(this.m_iCurrentDate * 1000).toISOString(); // Store as ISO string if expected
+
+      // Show closest layer to live date
+      if (this.m_aoLayers && this.m_aoLayers.length > 0) {
+        const oTargetDate = this.m_iCurrentDate * 1000; // milliseconds
+        const aoSortedLayers = this.m_aoLayers.sort((a, b) =>
+          Math.abs(a.referenceDate - oTargetDate) -
+          Math.abs(b.referenceDate - oTargetDate)
+        );
+        this.setOpacity(100, aoSortedLayers[0].layerId);
+        for (let i = 1; i < this.m_aoLayers.length; i++) {
+          this.setOpacity(0, aoSortedLayers[i].layerId);
+        }
       }
     }
+
   }
+
   async handlePlayButtonPressed(sSelectedDate) {
     //todo show  layer gradually from selected date to newest date
     if (this.m_aoLayers && this.m_aoLayers.length > 0) {

@@ -112,7 +112,7 @@
         [m_iStartDate]="m_oAreaOfOperation.archiveStartDate"
         [m_iEndDate]="m_iCurrentDate"
         (m_oSelectedDateEmitter)="getReferenceTime($event)"
-        (m_bLiveButtonPressed)="handleLiveButtonPressed()"
+        (m_bLiveButtonPressed)="handleLiveButtonPressed($event)"
         (m_sPlayButtonPressed)="handlePlayButtonPressed($event)"
         [m_aoEvents]="m_aoEvents"
         [m_iInitialSelectedDate]="m_iInitialPeakDate"

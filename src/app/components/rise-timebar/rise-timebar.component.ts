@@ -131,8 +131,17 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.initDates();
-    this.generateTicks();
+
+
+    if (changes['m_iEndDate'] && !changes['m_iEndDate'].firstChange) {
+      console.log("changed!")
+      this.initDates();
+    }else{
+      console.log("also changed!")
+      this.initDates();
+      this.generateTicks();
+    }
+
   }
 
 
@@ -351,14 +360,22 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oEvent.target)) {
 
       this.m_sSelectedDate = this.m_asDates[oEvent.target.value];
+
       this.m_iSliderValue = this.m_asDates.indexOf(this.m_sSelectedDate);
     } else {
       this.m_sSelectedDate = oEvent;
       this.m_iSliderValue = this.m_asDates.indexOf(this.m_sSelectedDate);
     }
     this.m_bIsLive = this.m_sSelectedDate === this.m_asDates[this.m_asDates.length - 1];
-    this.m_sSelectedDateTimestamp = new Date(this.m_sSelectedDate).valueOf();
+    // this.m_sSelectedDateTimestamp = new Date(this.m_sSelectedDate).valueOf();
     this.m_oSelectedDate = new Date(this.m_sSelectedDate);
+    this.m_oSelectedDate.setHours(23, 59, 0, 0); // Set to 23:59:00
+    this.m_sSelectedDateTimestamp = this.m_oSelectedDate.valueOf(); // Now based on the new time
+
+    console.log(this.m_sSelectedDate)
+    console.log(this.m_sSelectedDateTimestamp)
+    console.log(this.m_oSelectedDate)
+    this.emitLiveButtonAction();
     this.emitSelectedDate();
   }
 
@@ -381,7 +398,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    * handle live button click
    */
   emitLiveButtonAction() {
-    this.m_bLiveButtonPressed.emit(true);
+    this.m_bLiveButtonPressed.emit(this.m_bIsLive);
   }
 
   /**
@@ -397,6 +414,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    * @returns void
    */
   emitSelectedDate(): void {
+
     this.m_oSelectedDateEmitter.emit(this.m_sSelectedDateTimestamp);
   }
 
