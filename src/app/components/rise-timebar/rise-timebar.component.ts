@@ -131,13 +131,9 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-
-
     if (changes['m_iEndDate'] && !changes['m_iEndDate'].firstChange) {
-      console.log("changed!")
       this.initDates();
     }else{
-      console.log("also changed!")
       this.initDates();
       this.generateTicks();
     }
@@ -356,7 +352,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    * @returns void
    */
   dateSelected(oEvent): void {
-
+    console.log(oEvent)
     if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oEvent.target)) {
 
       this.m_sSelectedDate = this.m_asDates[oEvent.target.value];
@@ -372,9 +368,11 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     this.m_oSelectedDate.setHours(23, 59, 0, 0); // Set to 23:59:00
     this.m_sSelectedDateTimestamp = this.m_oSelectedDate.valueOf(); // Now based on the new time
 
+    console.log(this.m_asDates[this.m_asDates.length - 1])
     console.log(this.m_sSelectedDate)
     console.log(this.m_sSelectedDateTimestamp)
     console.log(this.m_oSelectedDate)
+    console.log(this.m_bIsLive)
     this.emitLiveButtonAction();
     this.emitSelectedDate();
   }
@@ -414,7 +412,6 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    * @returns void
    */
   emitSelectedDate(): void {
-
     this.m_oSelectedDateEmitter.emit(this.m_sSelectedDateTimestamp);
   }
 

@@ -165,7 +165,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   ngOnInit(): void {
 
     this.m_iCurrentDate=this.getCurrentDate();
-    this.startLiveTimer();
+    // this.startLiveTimer();
 
     this.getActiveAOI();
     this.m_oMapService.m_oLayerAnalyzerDialogEventEmitter.subscribe((shouldOpenDialog: boolean) => {
@@ -204,27 +204,27 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.stopLiveTimer();
+    // this.stopLiveTimer();
   }
 
-  startLiveTimer() {
-    this.stopLiveTimer(); // clear any existing interval
-    console.log("started")
-    this.m_oLiveTimer = setInterval(() => {
-      if (this.m_bIsLive) {
-        this.m_iCurrentDate = this.getCurrentDate();
-        console.log(this.m_iCurrentDate)
-      }
-    }, 0.5 * 60 * 1000); // every 5 minutes
-  }
-
-
-  stopLiveTimer() {
-    if (this.m_oLiveTimer) {
-      clearInterval(this.m_oLiveTimer);
-      this.m_oLiveTimer = null;
-    }
-  }
+  // startLiveTimer() {
+  //   this.stopLiveTimer(); // clear any existing interval
+  //   console.log("started")
+  //   this.m_oLiveTimer = setInterval(() => {
+  //     if (this.m_bIsLive) {
+  //       this.m_iCurrentDate = this.getCurrentDate();
+  //       console.log(this.m_iCurrentDate)
+  //     }
+  //   }, 0.5 * 60 * 1000); // every 5 minutes
+  // }
+  //
+  //
+  // stopLiveTimer() {
+  //   if (this.m_oLiveTimer) {
+  //     clearInterval(this.m_oLiveTimer);
+  //     this.m_oLiveTimer = null;
+  //   }
+  // }
 
 
 
@@ -566,7 +566,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   handleLiveButtonPressed(bIsLive) {
     this.m_bIsLive = bIsLive;
     if(this.m_bIsLive){
-      this.startLiveTimer();
+      // this.startLiveTimer();
       // Update current date and end date immediately
       this.m_iCurrentDate = this.getCurrentDate();
       this.m_sEndDate = new Date(this.m_iCurrentDate * 1000).toISOString(); // Store as ISO string if expected
