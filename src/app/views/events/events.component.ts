@@ -53,6 +53,9 @@ import {EventType} from "../../models/EventType";
   styleUrl: './events.component.css'
 })
 export class EventsComponent implements OnInit {
+  m_sSortField: string = '';
+  m_sSortDirection: 'asc' | 'desc' | '' = '';
+  m_aoOriginalEvents: EventViewModel[] = []; // Backup the original order
   m_bIsOngoingEvent: boolean = false;
   m_sAreaId: string;
   m_bCreateNewEvent: boolean = false;
@@ -302,12 +305,48 @@ export class EventsComponent implements OnInit {
     this.m_oEventService.getEvents(this.m_sAreaId).subscribe({
       next: (aoEvents) => {
         this.m_aoEvents = aoEvents;
+        this.m_aoOriginalEvents = [...this.m_aoEvents];
 
       },
       error: (oError) => {
         console.error(oError);
       }
     })
+  }
+  sortBy(sField: string) {
+    if (this.m_sSortField !== sField) {
+      // New field clicked, start with ascending
+      this.m_sSortField = sField;
+      this.m_sSortDirection = 'asc';
+    } else {
+      // Same field clicked again, toggle direction
+      if (this.m_sSortDirection === 'asc') {
+        this.m_sSortDirection = 'desc';
+      } else if (this.m_sSortDirection === 'desc') {
+        // After descending, reset to original
+        this.m_sSortField = '';
+        this.m_sSortDirection = '';
+        this.m_aoEvents = [...this.m_aoOriginalEvents];
+        return;
+      }
+    }
+
+    this.m_aoEvents.sort((a, b) => {
+      let valueA = a[sField];
+      let valueB = b[sField];
+
+      // If dealing with timestamp, multiply to get milliseconds
+      if (typeof valueA === 'number') {
+        valueA = valueA * 1000;
+        valueB = valueB * 1000;
+      }
+
+      if (this.m_sSortDirection === 'asc') {
+        return valueA - valueB;
+      } else {
+        return valueB - valueA;
+      }
+    });
   }
 
   private getActiveAOI() {

@@ -35,9 +35,41 @@
               <tr>
                 <td>{{ "EVENT.NAME" | translate }}</td>
                 <td>{{ "EVENT.TYPE" | translate }}</td>
-                <td>{{ "EVENT.START_DATE" | translate }}</td>
-                <td>{{ "EVENT.PEAK_DATE" | translate }}</td>
-                <td>{{ "EVENT.END_DATE" | translate }}</td>
+                <td (click)="sortBy('startDate')" style="cursor: pointer;">
+                  {{ "EVENT.START_DATE" | translate }}
+                  <span>
+                        <ng-container *ngIf="m_sSortField !== 'startDate'; else sortedStart">
+                          ⇅
+                        </ng-container>
+                        <ng-template #sortedStart>
+                          {{ m_sSortDirection === 'asc' ? '↑' : '↓' }}
+                        </ng-template>
+                  </span>
+                 </td>
+
+                  <td (click)="sortBy('peakDate')" style="cursor: pointer;">
+                   {{ "EVENT.PEAK_DATE" | translate }}
+                     <span>
+                      <ng-container *ngIf="m_sSortField !== 'peakDate'; else sortedPeak">
+                        ⇅
+                      </ng-container>
+                      <ng-template #sortedPeak>
+                        {{ m_sSortDirection === 'asc' ? '↑' : '↓' }}
+                      </ng-template>
+                    </span>
+                  </td>
+
+                  <td (click)="sortBy('endDate')" style="cursor: pointer;">
+                              {{ "EVENT.END_DATE" | translate }}
+                  <span>
+                      <ng-container *ngIf="m_sSortField !== 'endDate'; else sortedEnd">
+                        ⇅
+                      </ng-container>
+                      <ng-template #sortedEnd>
+                        {{ m_sSortDirection === 'asc' ? '↑' : '↓' }}
+                      </ng-template>
+                  </span>
+                </td>
                 <td></td>
               </tr>
               </thead>
