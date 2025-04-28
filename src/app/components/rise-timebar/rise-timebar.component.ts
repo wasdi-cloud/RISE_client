@@ -149,7 +149,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   onMouseWheel(event: WheelEvent) {
     if (this.isMouseOverSlider(event)) {
       let oDate = this.getMousePositionDate(event);
-      console.log(oDate)
+
       if (event.deltaY < 0) {
         this.handleZoomingIn(oDate);
       } else {
@@ -354,7 +354,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    * @returns void
    */
   dateSelected(oEvent): void {
-    console.log(oEvent)
+
     if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oEvent.target)) {
 
       this.m_sSelectedDate = this.m_asDates[oEvent.target.value];
@@ -370,11 +370,6 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     this.m_oSelectedDate.setHours(23, 59, 0, 0); // Set to 23:59:00
     this.m_sSelectedDateTimestamp = this.m_oSelectedDate.valueOf(); // Now based on the new time
 
-    console.log(this.m_asDates[this.m_asDates.length - 1])
-    console.log(this.m_sSelectedDate)
-    console.log(this.m_sSelectedDateTimestamp)
-    console.log(this.m_oSelectedDate)
-    console.log(this.m_bIsLive)
     this.emitLiveButtonAction();
     this.emitSelectedDate();
   }
@@ -481,7 +476,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
 
     // Keep the selected date if possible
     const selectedDay = oDate.getDate();
-    console.log('this is selected date : ' + selectedDay)
+
     this.m_iSliderValue = selectedDay - 1; // Adjust index for zero-based array
     this.m_sSelectedDate = this.m_asDates[this.m_iSliderValue];
 

@@ -182,8 +182,6 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       const fullscreenElement = document.fullscreenElement;
       const btnContainer = this.btnContainerRef.nativeElement;
       const originalParent = this.tempFixRef.nativeElement;
-      console.log(btnContainer);
-      console.log(fullscreenElement);
 
       const fullscreenClass = 'fullscreen-btn-container'; // This will be the class for fullscreen mode
       const normalClass = 'btn-select-container'; // This will be the class for fullscreen mode
@@ -209,11 +207,11 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
   startLiveTimer() {
     this.stopLiveTimer(); // clear any existing interval
-    console.log("started")
+
     this.m_oLiveTimer = setInterval(() => {
       if (this.m_bIsLive) {
         this.m_iCurrentDate = this.getCurrentDate();
-        console.log(this.m_iCurrentDate)
+
       }
     }, 0.5 * 60 * 1000); // every 5 minutes
   }
@@ -326,12 +324,13 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    * @param iDate
    */
   getLayer(oPlugin: any, sAreaId: string, iDate: string | number) {
-    console.log(this.m_oSelectedDate)
+
     this.m_oLayerService
       .findLayer(oPlugin.id, sAreaId, this.m_oSelectedDate)
       .subscribe({
         next: (oLayerVM:LayerViewModel) => {
           if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oLayerVM)) {
+
             this.fillPluginsAndLayers(oPlugin, oLayerVM);
           }else{
             let sError: string = this.m_oTranslate.instant(
@@ -355,9 +354,25 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   }
 
   private fillPluginsAndLayers(oPlugin: any, oLayer:LayerViewModel) {
-    if (!this.m_aoLayers.some(layer => layer.layerId === oLayer.layerId)) {
-      this.m_aoLayers.push(oLayer);
+    console.log(oLayer)
+    console.log("before")
+    console.log(this.m_aoLayers)
+    const oMap = this.m_oMapService.getMap();
+    const index = this.m_aoLayers.findIndex(layer => layer.mapId === oLayer.mapId);
+    if (index !== -1) {
+      oMap.eachLayer((oMapLayer) => {
+        let sOldLayerId = this.m_aoLayers[index].layerId;
+        if (sOldLayerId === oMapLayer.options.layers) {
+          oMap.removeLayer(oMapLayer);
+        }
+      });
+      this.m_aoLayers[index] = oLayer;  // Replace existing
+    } else {
+      this.m_aoLayers.push(oLayer);     // Add new if not found
     }
+
+    console.log("after")
+    console.log(this.m_aoLayers)
     // Check if oPlugin.layers already contains the object
     if (!oPlugin.layers.some(layer => layer.layerId === oLayer.layerId)) {
       oPlugin.layers.push(oLayer);
@@ -389,7 +404,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    */
   getReferenceTime(oEvent:any): void {
     this.m_oSelectedDate = oEvent;
-    console.log(this.m_oSelectedDate)
+
     this.initPluginsButtons(this.m_aoPlugins);
     this.m_aoPlugins.forEach((oPlugin) => {
       if (oPlugin.loaded) {
