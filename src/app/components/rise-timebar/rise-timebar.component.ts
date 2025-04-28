@@ -321,7 +321,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     let startDate = new Date(this.m_iStartDate * 1000);
     let endDate = new Date(this.m_iEndDate * 1000);
 
-    console.log(endDate)
+
     let asDates = [];
     // asDates.push(startDate)
     // asDates.push(endDate)
@@ -331,7 +331,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     }
     asDates.push(endDate.toDateString());
     this.m_asDates = asDates;
-    console.log(this.m_asDates)
+
     // 🔥 Pick initial selection based on input date
 
     if(this.m_iInitialSelectedDate && this.m_iInitialSelectedDate>=this.m_iStartDate && this.m_iInitialSelectedDate<=this.m_iEndDate  ){
