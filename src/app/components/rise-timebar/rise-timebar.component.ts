@@ -411,20 +411,20 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   emitSelectedDate(): void {
     this.m_oSelectedDateEmitter.emit(this.m_sSelectedDateTimestamp);
   }
-
-
+  //todo make one function for add / minus day
   /**
    * add One day to the timebar / time
    *
    */
   addOneDayToDate() {
-    if (this.m_sSelectedDate && this.m_sSelectedDate<this.m_asDates[this.m_asDates.length-1]) {
-      let oDate = new Date(this.m_sSelectedDate)
-      oDate.setDate(oDate.getDate() + 1)
-      this.m_sSelectedDate = oDate.toDateString();
+    const oSelectedDate = new Date(this.m_sSelectedDate);
+    const oLastDate = new Date(this.m_asDates[this.m_asDates.length-1]);
+    if (this.m_sSelectedDate && oSelectedDate<oLastDate) {
+      oSelectedDate.setDate(oSelectedDate.getDate() + 1)
+      this.m_sSelectedDate = oSelectedDate.toDateString();
       this.m_iSliderValue = this.m_asDates.indexOf(this.m_sSelectedDate);
-      this.m_sSelectedDateTimestamp = new Date(this.m_sSelectedDate).valueOf();
-      this.m_oSelectedDate = new Date(this.m_sSelectedDate);
+      this.m_sSelectedDateTimestamp = oSelectedDate.valueOf();
+      this.m_oSelectedDate = oSelectedDate;
       this.emitSelectedDate();
     }
   }
@@ -434,16 +434,18 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    *
    */
   minusOneDayFromDate() {
-    if (this.m_sSelectedDate && this.m_sSelectedDate>this.m_asDates[0] ) {
-      let oDate = new Date(this.m_sSelectedDate)
-      oDate.setDate(oDate.getDate() - 1)
-      this.m_sSelectedDate = oDate.toDateString();
+    const oSelectedDate = new Date(this.m_sSelectedDate);
+    const oFirstDate = new Date(this.m_asDates[0]);
+    if (this.m_sSelectedDate && oSelectedDate > oFirstDate) {
+      oSelectedDate.setDate(oSelectedDate.getDate() - 1);
+      this.m_sSelectedDate = oSelectedDate.toDateString();
       this.m_iSliderValue = this.m_asDates.indexOf(this.m_sSelectedDate);
-      this.m_sSelectedDateTimestamp = new Date(this.m_sSelectedDate).valueOf();
-      this.m_oSelectedDate = new Date(this.m_sSelectedDate);
+      this.m_sSelectedDateTimestamp = oSelectedDate.valueOf();
+      this.m_oSelectedDate = oSelectedDate;
       this.emitSelectedDate();
     }
   }
+
 
   convertEventToDates() {
 
