@@ -86,10 +86,11 @@ export class BuyNewSubscriptionComponent implements OnInit {
     private m_oTranslate: TranslateService,
     private m_oSubscriptionService: SubscriptionService,
     private m_oTranslateService: TranslateService,
-    private m_oUserService: UserService
   ) {}
 
   ngOnInit(): void {
+    let oDate=new Date()
+    this.m_oSubInput.name="Subscription - "+oDate.toDateString()
     this.getSubTypes();
     this.getPlugins();
     this.getPaymentTypes();
