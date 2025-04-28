@@ -48,7 +48,8 @@ export class LoginViewComponent {
   public m_bValidOtp: boolean = true;
 
   public m_oOTPVerifyVM: any = {};
-  m_bIsSubmitted: boolean =false;
+  m_bIsOtpSubmitted: boolean =false;
+  m_bIsLoginSubmitted: boolean =false;
 
   constructor(
     private m_oAuthService: AuthService,
@@ -67,17 +68,20 @@ export class LoginViewComponent {
    * If credentials are not valid, RISE gives to the User a message that Credentials are not valid and invites the Operator to try again.
    */
   executeLogin(): void {
+    this.m_bIsLoginSubmitted=true;
     this.m_oAuthService.loginUser(this.m_oUserInput).subscribe({
       next: (oResponse) => {
         if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           this.m_oOTPVerifyVM = oResponse;
           this.m_bShowOtp = true;
+          this.m_bIsLoginSubmitted=false;
         }
       },
       error: (oError) => {
         this.m_oRiseUtils.handleNotificationError(
           oError.error.errorStringCodes
         );
+        this.m_bIsLoginSubmitted=false;
       },
     });
   }
@@ -87,7 +91,7 @@ export class LoginViewComponent {
    * UC: If credentials are valid, RISE ask to validate the login with OTP (UC_005)
    */
   verifyOtp(): void {
-    this.m_bIsSubmitted=true;
+    this.m_bIsOtpSubmitted=true;
     this.m_oAuthService.verifyOTP(this.m_oOTPVerifyVM).subscribe({
       next: (oResponse) => {
         if (oResponse.status === 200) {
@@ -99,7 +103,7 @@ export class LoginViewComponent {
         this.m_oRiseUtils.handleNotificationError(
           oError.error.errorStringCodes
         );
-        this.m_bIsSubmitted=false;
+        this.m_bIsOtpSubmitted=false;
       },
     });
   }
@@ -133,17 +137,17 @@ export class LoginViewComponent {
               }
             },
             error:(oError)=>{
-              this.m_bIsSubmitted=false;
+              this.m_bIsOtpSubmitted=false;
             }
           });
-          this.m_bIsSubmitted=false;
+          this.m_bIsOtpSubmitted=false;
         }
       },
       error: (oError) => {
         if (oError.error.errorStringCodes) {
           this.handleAPIErrors(sError,oError.error.errorStringCodes);
         }
-        this.m_bIsSubmitted=false;
+        this.m_bIsOtpSubmitted=false;
 
       },
     });
@@ -163,7 +167,7 @@ export class LoginViewComponent {
    * Navigate the user back to the Login View
    */
   backToLogin(): void {
-    this.m_bIsSubmitted=false;
+    this.m_bIsOtpSubmitted=false;
     this.m_bShowOtp = false;
   }
 

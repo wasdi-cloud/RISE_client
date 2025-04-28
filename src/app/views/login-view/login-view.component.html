@@ -38,9 +38,10 @@
         <rise-button
           class="justify-self-end"
           style="width: 100%"
+          [m_bDisabled]="m_bIsLoginSubmitted"
           [m_sLabel]="'TOOLBAR.LOGIN'"
           [m_sRole]="'primary'"
-          (click)="executeLogin()"
+          (click)="!m_bIsLoginSubmitted?executeLogin():''"
         ></rise-button>
       </div>
       <div
@@ -66,10 +67,10 @@
         </div>
         <div class="d-flex flex-column gap-2">
           <rise-button
-            [m_bDisabled]="m_bIsSubmitted"
+            [m_bDisabled]="m_bIsOtpSubmitted"
             [m_sLabel]="'Next'"
             [m_sRole]="'primary'"
-            (click)="!m_bIsSubmitted?verifyOtp():''"
+            (click)="!m_bIsOtpSubmitted?verifyOtp():''"
           ></rise-button>
           <p class="retry-text">
             Didn't receive a one time password?
