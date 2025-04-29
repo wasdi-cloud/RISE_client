@@ -45,51 +45,6 @@
           (click)="saveUserPersonalInformation()"
         ></rise-button>
       </div>
-
-      <div class="d-flex flex-row gap-2">
-        <!-- System Language Selector -->
-        <div class="d-flex flex-column align-items-start col-6">
-          <div class="account-sub-header">
-            {{ "USER.SELECT_LANG" | translate }}
-          </div>
-          <p class="account-sub-msg">
-            {{ "USER.SELECT_LANG_MSG" | translate }}
-          </p>
-          <rise-dropdown
-            class="col-6"
-            [m_sLabel]="'USER.LANGUAGE'"
-            [m_aoDropdownItems]="m_aoLanguages"
-            (m_oSelectionChange)="setUserDefaultLanguage($event)"
-            [m_aoSelectedItems]="m_oSelectedLanguageItem?m_oSelectedLanguageItem:''"
-          ></rise-dropdown>
-          <rise-button
-            (click)="saveUserLanguagesSetting()"
-            class="align-self-start mt-2"
-            [m_sRole]="'primary'"
-            [m_sLabel]="'ORGANIZATION.SAVE'"
-          ></rise-button>
-        </div>
-        <div class="d-flex flex-column gap-1 ps-2">
-          <div class="account-sub-header">
-            {{ "USER.NOTIFICATIONS" | translate }}
-          </div>
-          <p
-            class="account-sub-msg"
-            [innerHTML]="'USER.NOTIFICATIONS_MSG' | translate"
-          ></p>
-          <rise-checkbox
-            [m_aoOptions]="m_aoNotificationOptions"
-            [m_aoSelectedValues]="m_aoSelectedNotifications"
-            (m_oSelectionChange)="handleCheckboxChange($event)"
-          ></rise-checkbox>
-          <rise-button
-            (click)="saveNotifications()"
-            class="align-self-start mt-2"
-            [m_sRole]="'primary'"
-            [m_sLabel]="'ORGANIZATION.SAVE'"
-          ></rise-button>
-        </div>
-      </div>
       <div class="d-flex flex-row gap-2">
         <!-- Update Email and Password Container -->
         <div class="d-flex flex-column gap-1 col-6">
@@ -166,6 +121,50 @@
             [m_sLabel]="'USER.CHANGE_PW'"
             [m_bDisabled]="!enableChangePassword()"
             (click)="changePassword()"
+          ></rise-button>
+        </div>
+      </div>
+      <div class="d-flex flex-row gap-2">
+        <!-- System Language Selector -->
+        <div class="d-flex flex-column align-items-start col-6">
+          <div class="account-sub-header">
+            {{ "USER.SELECT_LANG" | translate }}
+          </div>
+          <p class="account-sub-msg">
+            {{ "USER.SELECT_LANG_MSG" | translate }}
+          </p>
+          <rise-dropdown
+            class="col-6"
+            [m_sLabel]="'USER.LANGUAGE'"
+            [m_aoDropdownItems]="m_aoLanguages"
+            (m_oSelectionChange)="setUserDefaultLanguage($event)"
+            [m_aoSelectedItems]="m_oSelectedLanguageItem?m_oSelectedLanguageItem:''"
+          ></rise-dropdown>
+          <rise-button
+            (click)="saveUserLanguagesSetting()"
+            class="align-self-start mt-2"
+            [m_sRole]="'primary'"
+            [m_sLabel]="'ORGANIZATION.SAVE'"
+          ></rise-button>
+        </div>
+        <div class="d-flex flex-column gap-1 ps-2">
+          <div class="account-sub-header">
+            {{ "USER.NOTIFICATIONS" | translate }}
+          </div>
+          <p
+            class="account-sub-msg"
+            [innerHTML]="'USER.NOTIFICATIONS_MSG' | translate"
+          ></p>
+          <rise-checkbox
+            [m_aoOptions]="m_aoNotificationOptions"
+            [m_aoSelectedValues]="m_aoSelectedNotifications"
+            (m_oSelectionChange)="handleCheckboxChange($event)"
+          ></rise-checkbox>
+          <rise-button
+            (click)="saveNotifications()"
+            class="align-self-start mt-2"
+            [m_sRole]="'primary'"
+            [m_sLabel]="'ORGANIZATION.SAVE'"
           ></rise-button>
         </div>
       </div>
