@@ -1,0 +1,86 @@
+input,
+span.input-group-text,
+input:focus {
+  background-color: var(--surface-glass-interactive);
+  border: 1px solid var(--rise-text-dim);
+  color: var(--rise-text-bright);
+}
+
+.form-label {
+  color: var(--rise-text-dim);
+  line-height: 12px;
+}
+
+span.icon-right {
+  cursor: pointer;
+  border-left: none;
+}
+
+input:focus,
+input.form-control:focus {
+  outline-width: 0 !important;
+}
+
+::placeholder {
+  color: var(--rise-text-dim);
+}
+
+:-ms-input-placeholder {
+  color: var(--rise-text-dim);
+}
+
+input.invalid {
+  border: 1px solid var(--rise-danger-text);
+}
+
+.no-left-border {
+  border-left: none;
+}
+
+.no-right-border {
+  border-right: none;
+}
+span.icon-left {
+  border-right-width: 0px;
+}
+
+.icon-right > span.input-group-text {
+  border-left: none !important;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+.icon-right {
+  cursor: pointer;
+  margin: 0px !important;
+}
+
+.form-control {
+  margin: 0px !important;
+}
+/* Make select match the input style */
+.phone-prefix-select {
+  width: 50px;
+  min-width: 30px;
+  background-color: var(--surface-glass-interactive);
+  border: 1px solid var(--rise-text-dim);
+  color: var(--rise-text-bright);
+  border-radius: 0.375rem;
+  padding: 0.375rem 0.5rem;
+  font-size: 0.875rem;
+  margin-right: 4px;
+  outline: none;
+}
+
+/* Match input border and focus behavior */
+.phone-prefix-select:focus {
+  outline-width: 0 !important;
+  border: 1px solid var(--rise-text-dim);
+}
+
+/* Optional: Remove default select arrow in WebKit for consistency */
+.phone-prefix-select::-webkit-inner-spin-button,
+.phone-prefix-select::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

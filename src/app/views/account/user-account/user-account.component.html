@@ -23,12 +23,20 @@
             [(m_sInputText)]="m_oUser.surname"
           ></rise-text-input>
         </div>
-        <rise-text-input
+        <rise-number-input
           class="col-6"
           [m_sLocalizationKey]="'REGISTER.MOBILE'"
           [m_bHasTitle]="true"
           [(m_sInputText)]="m_oUser.mobile"
-        ></rise-text-input>
+          [m_sType]="'phone'"
+        >
+        </rise-number-input>
+<!--        <rise-text-input-->
+<!--          class="col-6"-->
+<!--          [m_sLocalizationKey]="'REGISTER.MOBILE'"-->
+<!--          [m_bHasTitle]="true"-->
+<!--          [(m_sInputText)]="m_oUser.mobile"-->
+<!--        ></rise-text-input>-->
         <rise-text-input
           class="col-6"
           [m_sLocalizationKey]="'LOGIN.USER_ID'"

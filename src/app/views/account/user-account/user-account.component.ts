@@ -29,6 +29,7 @@ import { NotificationOptions } from '../../../shared/notification-options/notifi
 import FadeoutUtils from '../../../shared/utilities/FadeoutUtils';
 import {Router} from "@angular/router";
 import {MapService} from "../../../services/map.service";
+import {RiseNumberInputComponent} from "../../../components/rise-number-input/rise-number-input.component";
 
 @Component({
   selector: 'user-account',
@@ -40,6 +41,7 @@ import {MapService} from "../../../services/map.service";
     RiseCheckboxComponent,
     RiseDropdownComponent,
     RiseTextInputComponent,
+    RiseNumberInputComponent,
   ],
   templateUrl: './user-account.component.html',
   styleUrl: './user-account.component.css',
