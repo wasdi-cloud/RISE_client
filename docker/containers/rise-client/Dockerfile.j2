@@ -1,7 +1,7 @@
 FROM ubuntu:22.04
 
 
-MAINTAINER "WASDI SARL"
+LABEL org.opencontainers.image.authors="WASDI SARL"
 
 
 # Labels used to search our containers and/or images
@@ -81,6 +81,7 @@ RUN apt-get update && \
     ln --symbolic --force /dev/stdout /var/log/nginx/access.log && \
     ln --symbolic --force /dev/stderr /var/log/nginx/error.log && \
     sed --in-place 's/user www-data;/user {{ sWasdiSystemUserName }};/g' /etc/nginx/nginx.conf && \
+    sed --in-place 's|$uri/ =404;|/index.html;|g' /etc/nginx/sites-available/default && \
     echo "server_tokens off;" > /etc/nginx/conf.d/wasdi-secure.conf && \
 {% if bWasdiSslEnabled == True %}
     echo "add_header Strict-Transport-Security \"max-age=31536000; includeSubDomains\" always;" >> /etc/nginx/conf.d/wasdi-secure.conf && \
