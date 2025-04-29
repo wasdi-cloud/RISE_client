@@ -26,7 +26,19 @@ declare const L: any;
 
 const iconRetinaUrl = 'assets/rise-assets/icon-location-hazard-filled.png';
 const iconUrl = 'assets/rise-assets/icon-location-hazard-filled.png';
+const geoCoderIconUrl = 'assets/rise-assets/flag_optimized.png';
+const geoCoderRetinaIconUrl = 'assets/rise-assets/flag_optimized.png';
 const shadowUrl = '/assets/marker-shadow.png';
+const geoCoderIcon = L.icon({
+  iconUrl:geoCoderIconUrl,
+  iconRetinaUrl:geoCoderRetinaIconUrl,
+  shadowUrl:shadowUrl,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  tooltipAnchor: [16, -28],
+  shadowSize: [41, 41],
+});
 const iconDefault = L.icon({
   iconRetinaUrl,
   iconUrl,
@@ -37,7 +49,7 @@ const iconDefault = L.icon({
   tooltipAnchor: [16, -28],
   shadowSize: [41, 41],
 });
-L.Marker.prototype.options.icon = iconDefault;
+// L.Marker.prototype.options.icon = iconDefault;
 
 const MAX_STORAGE_SIZE = 2 * 1024 * 1024; // 2MB for testing
 const MIN_AREA_CIRCLE = 12_321_000_000; // Minimum 1x1 degree in square meters
@@ -653,7 +665,7 @@ export class MapService {
     oGeocoderControl.on('markgeocode', (event) => {
       this.clearPreviousDrawings(oMap);
       const aoLatLng = event.geocode.center;
-      this.m_oGeocoderMarker = L.marker(aoLatLng).addTo(oMap);
+      this.m_oGeocoderMarker = L.marker(aoLatLng,{icon:geoCoderIcon}).addTo(oMap);
       oMap.setView(aoLatLng, 14);
     });
   }
@@ -982,7 +994,7 @@ export class MapService {
     if (asCoordinates && oMap) {
       let lat = parseFloat(asCoordinates.lat);
       let lon = parseFloat(asCoordinates.lng);
-      let oMarker = L.marker([lat, lon])
+      let oMarker = L.marker([lat, lon],{icon:iconDefault})
         .on('click', () => {
           this.m_oMarkerSubject.next(oArea);
           // this.m_oMarkerClicked.emit(oArea);

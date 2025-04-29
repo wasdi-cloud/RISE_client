@@ -5,4 +5,9 @@ export const OrganizationTypes = [
   'Educational',
   'Government',
   'Individual',
+  'International Organization (IO)',
+  'Intergovernmental Organizations (IGO)',
+  'International Non-Governmental Organizations (INGO)',
+  'Non-Governmental Organizations (NGO)',
+  'Other'
 ];
