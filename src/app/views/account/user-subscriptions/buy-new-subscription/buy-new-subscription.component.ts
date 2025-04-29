@@ -442,4 +442,23 @@ export class BuyNewSubscriptionComponent implements OnInit {
       }
     })
   }
+
+  openInfoDialog() {
+    const sMsg = `
+    <strong>Area Type:</strong><br/>
+    <ul>
+      <li><strong>Emergency:</strong> Best suited for short-term, high-priority monitoring (e.g., natural disasters, ongoing incidents). Data is delivered quickly, but not stored for long.</li>
+      <li><strong>Long-Term:</strong> Designed for continuous or periodic monitoring over time (e.g., environmental studies, infrastructure tracking). Data may arrive slower but is archived for future access.</li>
+    </ul>
+    <br/>
+    <strong>Subscription Type:</strong><br/>
+    <ul>
+      <li><strong>1 Location:</strong> Monitor a single area of interest.</li>
+      <li><strong>5 Locations:</strong> Monitor up to five different areas simultaneously.</li>
+      <li><strong>10 Locations:</strong> Ideal for broader monitoring needs — track up to ten separate regions.</li>
+    </ul>
+  `;
+    this.m_oNotificationService.openInfoDialog(sMsg, 'alert', '');
+  }
+
 }

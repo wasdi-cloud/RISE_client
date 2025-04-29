@@ -67,15 +67,25 @@
           ></rise-dropdown>
         </div>
       </div>
+      <!-- Step Footer -->
+      <div class="d-flex justify-content-between mt-3">
+        <!-- Left Info Button -->
+        <rise-button
+          class="info-button"
+          [m_sIconLeft]="'info'"
+          [m_sSize]="'small'"
+          (click)="openInfoDialog()"
+        ></rise-button>
 
-      <!-- Next Button -->
-      <rise-button
-        class="align-self-end"
-        [m_sRole]="'action'"
-        [m_sLabel]="'Next'"
-        [m_bDisabled]="!enableNextBtn()"
-        (click)="enableNextBtn()?goToNextStep():''"
-      ></rise-button>
+        <!-- Right Next Button -->
+        <rise-button
+          [m_sRole]="'action'"
+          [m_sLabel]="'Next'"
+          [m_bDisabled]="!enableNextBtn()"
+          (click)="enableNextBtn()?goToNextStep():''"
+        ></rise-button>
+      </div>
+
     </ng-container>
 
     <!-- Step 2: Payment Selection -->
