@@ -364,22 +364,30 @@ export class UserAccountComponent implements OnInit {
   }
 
   changePassword() {
-    let sError = this.m_oTranslate.instant('USER.PW_ERROR');
-    let oChangePasswordRequest: ChangePasswordRequestViewModel = {
-      oldPassword: this.m_oPasswordInputs.currentPW,
-      newPassword: this.m_oPasswordInputs.newPw,
-    };
-    this.m_oUserService.updatePassword(oChangePasswordRequest).subscribe({
-      next: (oResponse) => {
-        this.confirmChangePassword(oResponse);
-      },
-      error: (oError) => {
-        this.m_oNotificationDialogService.openSnackBar(
-          sError,
-          'Error',
-          'danger'
-        );
-      },
+
+    this.m_oNotificationDialogService.openConfirmationDialog(
+      "If you want to change your Password, you will have to log in again, Do you want to proceed?",
+      "success"
+    ).subscribe((oDialogResult)=>{
+      if(oDialogResult){
+        let sError = this.m_oTranslate.instant('USER.PW_ERROR');
+        let oChangePasswordRequest: ChangePasswordRequestViewModel = {
+          oldPassword: this.m_oPasswordInputs.currentPW,
+          newPassword: this.m_oPasswordInputs.newPw,
+        };
+        this.m_oUserService.updatePassword(oChangePasswordRequest).subscribe({
+          next: (oResponse) => {
+            this.confirmChangePassword(oResponse);
+          },
+          error: (oError) => {
+            this.m_oNotificationDialogService.openSnackBar(
+              sError,
+              'Error',
+              'danger'
+            );
+          },
+        });
+      }
     });
   }
 
@@ -566,6 +574,8 @@ export class UserAccountComponent implements OnInit {
                     'Success',
                     'success'
                   );
+                  this.m_oMapService.clearMarkerSubject(); // Clear the subject
+                  this.m_oAuthService.logout();
                 },
                 error: (oError) => {
                   console.log(oResponse);
