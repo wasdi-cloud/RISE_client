@@ -53,6 +53,7 @@ export class UserAccountComponent implements OnInit {
    * User account information
    */
   m_oUser: UserViewModel = {} as UserViewModel;
+  m_oOriginalUser: UserViewModel = {} as UserViewModel;
 
   /**
    * Organization Information
@@ -156,6 +157,7 @@ export class UserAccountComponent implements OnInit {
           return;
         }
         this.m_oUser = oResponse;
+        this.m_oOriginalUser={...this.m_oUser}
         this.m_sNewUserId=this.m_oUser.userId
         this.setUserLanguage();
         this.m_oEmailInputs.currentEmail = this.m_oUser.email;
@@ -181,6 +183,14 @@ export class UserAccountComponent implements OnInit {
     );
     this.m_sUserDefaultLanguage = defaultLanguage ? defaultLanguage.name : 'Select Language';
     this.m_oSelectedLanguageItem = defaultLanguage ? defaultLanguage : null;
+  }
+  hasUserChanged(): boolean {
+    return (
+      this.m_oUser.name !== this.m_oOriginalUser.name ||
+      this.m_oUser.surname !== this.m_oOriginalUser.surname ||
+      this.m_oUser.mobile !== this.m_oOriginalUser.mobile ||
+      this.m_sNewUserId !== this.m_oOriginalUser.userId
+    );
   }
 
   /**
