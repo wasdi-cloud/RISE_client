@@ -61,7 +61,8 @@
     "CANCEL": "Cancelar",
     "ADD_FIELD_OPERATOR": "Agregar operador de campo",
     "PLUGINS": "Seleccionar complementos",
-    "MANAGE_USERS": "Gestionar usuarios"
+    "MANAGE_USERS": "Gestionar usuarios",
+    "ID": "Id"
   },
 
   "COLLABORATORS": {

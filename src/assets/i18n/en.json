@@ -71,7 +71,8 @@
     "CANCEL": "Cancel",
     "ADD_FIELD_OPERATOR": "Add Field Operator",
     "PLUGINS": "Select Plugins",
-    "MANAGE_USERS": "Manage Users"
+    "MANAGE_USERS": "Manage Users",
+    "ID": "Id"
   },
   "COLLABORATORS": {
     "ADD": "Invite a Collaborator to RISE",
