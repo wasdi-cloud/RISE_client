@@ -18,14 +18,24 @@
     </div>
     <div class="email">{{m_oUser.email}}</div>
 <!--    <div class="role-badge">{{m_oUser.role}}</div>-->
-    <ul class="d-flex flex-column gap-2 pt-2">
+    <ul  *ngIf="!m_bShowLanguageDropdown" class="d-flex flex-column gap-2 pt-2">
       <li
         *ngFor="let oItem of m_aoMenuItems"
+        #menuItem
         class="d-flex flex-row align-items-center gap-2"
-        (click)="handleClick(oItem.name)"
+        (click)="handleClick(oItem.name, menuItem)"
       >
         <span class="material-symbols-outlined"> {{ oItem.icon }} </span>
         {{ oItem.translation | translate }}
+      </li>
+    </ul>
+    <ul *ngIf="m_bShowLanguageDropdown" class="d-flex flex-column gap-2 pt-2">
+      <li
+        *ngFor="let lang of m_aoLanguages"
+        class="d-flex flex-row align-items-center gap-2"
+        (click)="changeLanguage(lang.value)"
+      >
+        {{ lang.name }}
       </li>
     </ul>
     <div

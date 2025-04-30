@@ -14,6 +14,7 @@ import {UserViewModel} from '../../models/UserViewModel';
 
 import {DefaultMenuItems, FullMenuItems, ReducedMenuItems,} from './menu-items';
 import {AreaService} from "../../services/api/area.service";
+import FadeoutUtils from "../../shared/utilities/FadeoutUtils";
 
 @Component({
   selector: 'rise-user-menu',
@@ -168,11 +169,40 @@ export class RiseUserMenuComponent implements OnInit {
 
   }
 
+  m_bShowLanguageDropdown: boolean = false;
+  m_aoLanguages = [
+    {
+      name: 'English',
+      value: 'en',
+    },
+    {
+      name: 'Español',
+      value: 'es',
+    },
+    {
+      name: 'Français',
+      value: 'fr',
+    },
+    {
+      name: 'عربي',
+      value: 'ar',
+    },
+  ];
+
   /**
    * Click handler for user inputs in dropdown state
    * @param sName
+   * @param elRef
    */
-  handleClick(sName): void {
+  handleClick(sName, elRef?: HTMLElement): void {
+
+    if (sName === 'language') {
+      this.m_bShowLanguageDropdown = !this.m_bShowLanguageDropdown;
+      return;
+    }
+
+
+    this.m_bShowLanguageDropdown = false; // Close language submenu on other clicks
     switch (sName) {
       case 'subscriptions':
         // let oNavExtra: NavigationExtras = {
@@ -228,5 +258,50 @@ export class RiseUserMenuComponent implements OnInit {
         this.m_bHasArea = !(oResponse == null || oResponse.length == 0);
       }
     })
+  }
+
+  changeLanguage(value: string) {
+    // //todo change the languege
+
+
+    this.m_oUser = this.m_oConstantsService.getUser();
+    if (FadeoutUtils.utilsIsObjectNullOrUndefined(this.m_oUser)) {
+      //there is no user
+      this.m_oUserService.getUser().subscribe({
+        next: (oResponse) => {
+          this.m_oConstantsService.setUser(oResponse);
+          this.m_oUser = oResponse;
+          this.m_oUser.defaultLanguage = value;
+          this.m_oUserService.changeUserLanguageSetting(this.m_oUser).subscribe({
+            next: (oResponse) => {
+              this.m_oTranslate.use(this.m_oUser.defaultLanguage);
+              this.m_bShowLanguageDropdown = false;
+            },
+            error: (oError) => {
+              console.error(oError);
+              this.m_bShowLanguageDropdown = false;
+            },
+          });
+        },
+        error:(oError)=>{
+          console.error(oError)
+          this.m_bShowLanguageDropdown = false;
+        }
+      })
+    } else {
+      this.m_oUser.defaultLanguage = value;
+
+      this.m_oUserService.changeUserLanguageSetting(this.m_oUser).subscribe({
+        next: (oResponse) => {
+          this.m_oTranslate.use(this.m_oUser.defaultLanguage);
+          this.m_bShowLanguageDropdown = false;
+        },
+        error: (oError) => {
+          console.error(oError);
+          this.m_bShowLanguageDropdown = false;
+        },
+      });
+    }
+
   }
 }
