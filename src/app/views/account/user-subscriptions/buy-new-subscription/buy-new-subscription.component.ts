@@ -151,16 +151,22 @@ export class BuyNewSubscriptionComponent implements OnInit {
 
   handlePluginSelect(oEvent) {
     let asSelectedPlugins = oEvent.value;
-    this.m_asSelectedPluginsDisplay = asSelectedPlugins
+    this.m_asSelectedPluginsDisplay = asSelectedPlugins;
+
     asSelectedPlugins.forEach((sPlugin) => {
       this.m_aoPluginTypes.forEach((oPlugin) => {
-        if (oPlugin.name === sPlugin) {
+        if (oPlugin.name === sPlugin && !this.m_asSelectedPlugins.includes(oPlugin.id)) {
           this.m_asSelectedPlugins.push(oPlugin.id);
         }
       });
-      this.m_oSubInput.plugins = this.m_asSelectedPlugins;
     });
+
+    this.m_oSubInput.plugins = this.m_asSelectedPlugins;
+
+    console.log(this.m_asSelectedPlugins);
+    console.log(this.m_oSubInput.plugins);
   }
+
 
   executePurchaseWithCreditCard() {
     let sSuccess: string = this.m_oTranslateService.instant(
@@ -180,15 +186,16 @@ export class BuyNewSubscriptionComponent implements OnInit {
     ).subscribe(oDialogResult => {
       if (oDialogResult === true) {
         this.isCheckoutNow=true;
-        this.m_oSubscriptionService.saveSubscription(this.m_oSubInput).subscribe({
-          next: (oResponse) => {
-            this.getStripePaymentUrl(oResponse.body.id);
-          },
-          error: (oError) => {
-            this.isCheckoutNow=false;
-            this.m_oNotificationService.openInfoDialog(sError, 'danger');
-          },
-        });
+        console.log(this.m_oSubInput)
+        // this.m_oSubscriptionService.saveSubscription(this.m_oSubInput).subscribe({
+        //   next: (oResponse) => {
+        //     this.getStripePaymentUrl(oResponse.body.id);
+        //   },
+        //   error: (oError) => {
+        //     this.isCheckoutNow=false;
+        //     this.m_oNotificationService.openInfoDialog(sError, 'danger');
+        //   },
+        // });
         // if (!this.m_oEditSubscription.subscriptionId) {
         //   this.m_bCheckoutNow = true;
         //   this.saveSubscription();
