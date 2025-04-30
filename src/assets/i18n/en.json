@@ -56,7 +56,8 @@
     "ERROR_SAVE": "Could not save changes to this area",
     "SUCCESS_SAVE": "Area changes saved",
     "AREA_NOT_FOUND": "Area not found",
-    "AREA_NOT_FOUND_MSG": "To start creating areas of operations in RISE , please go to Account --> Area Of Operations "
+    "AREA_NOT_FOUND_MSG": "To start creating areas of operations in RISE , please ",
+    "AREA_NOT_FOUND_LINK": "click here"
   },
   "BANNER": {
     "LIVE_SIT": "Live Situation",
@@ -174,7 +175,7 @@
   },
   "REGISTER": {
     "HEADER": "Register in RISE",
-    "USER_ID": "User Id",
+    "USER_ID": "User ID (your login name, e.g. johndoe or john.doe ..ect)",
     "PASSWORD": "Password",
     "CONFIRM_PW": "Confirm Password",
     "NAME": "Name",

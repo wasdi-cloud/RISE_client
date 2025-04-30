@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NgClass, NgFor, NgIf} from '@angular/common';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
 
 import {AuthService} from '../../services/api/auth.service';
@@ -18,7 +18,7 @@ import {AreaService} from "../../services/api/area.service";
 @Component({
   selector: 'rise-user-menu',
   standalone: true,
-  imports: [NgFor, NgIf, TranslateModule, NgClass],
+  imports: [NgFor, NgIf, TranslateModule, NgClass, RouterLink],
   templateUrl: './rise-user-menu.component.html',
   styleUrl: './rise-user-menu.component.css',
 })

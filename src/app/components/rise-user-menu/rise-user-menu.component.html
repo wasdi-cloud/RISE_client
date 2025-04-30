@@ -38,8 +38,12 @@
         </div>
         <p class="my-0">
           {{ "AREA_OF_OPERATIONS.AREA_NOT_FOUND_MSG" | translate }}
+          <a [routerLink]="['/account/area-of-operations']" class="text-link">
+            {{ "AREA_OF_OPERATIONS.AREA_NOT_FOUND_LINK" | translate }}
+          </a>.
         </p>
       </div>
     </div>
+
   </div>
 </div>

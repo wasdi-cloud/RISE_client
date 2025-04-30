@@ -101,3 +101,9 @@ li > span.material-symbols-outlined {
   background-color: gray;
   color: white;
 }
+.text-link {
+  color: var(--rise-gold);
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
