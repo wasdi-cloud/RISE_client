@@ -98,9 +98,10 @@ export class SubscriptionEditorComponent implements OnInit {
           }
         },
         error: (oError) => {
+          console.error(oError)
           this.m_oNotificationService.openInfoDialog(
             'Could not update subscription',
-            'error',
+            'danger',
             'Error'
           );
         },

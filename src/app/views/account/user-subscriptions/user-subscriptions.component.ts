@@ -76,6 +76,12 @@ export class UserSubscriptionsComponent implements OnInit {
         }
       },
       error: (oError) => {
+        console.error(oError)
+        this.m_oNotificationService.openInfoDialog(
+          "Could not get Subscriptions",
+          'danger',
+          "Error"
+        )
       },
     });
   }
