@@ -144,6 +144,7 @@ export class EventsComponent implements OnInit {
       }
     )
   }
+
   addNewEvent() {
     this.m_oEventService.addEvent(this.m_sAreaId, this.m_oEvent).subscribe(
       {
@@ -185,6 +186,11 @@ export class EventsComponent implements OnInit {
   executeEventSaving() {
     if (this.validateEvent()) {
       if(this.m_bCreateNewEvent){
+
+        // this.m_oEvent.startDate /= 1000;
+        // this.m_oEvent.peakDate /= 1000;
+        // this.m_oEvent.endDate /= 1000;
+    
         this.addNewEvent()
       }else if (this.m_bUpdatingEvent){
         this.updateEvent();
@@ -272,13 +278,13 @@ export class EventsComponent implements OnInit {
   }
 
   // Handle date input changes
-  onDateChange(dateString: string, property: 'startDate' | 'endDate' | 'peakDate'): void {
-    const epoch = this.convertDateToEpoch(dateString);
+  onDateChange(sDateString: string, sProperty: 'startDate' | 'endDate' | 'peakDate'): void {
+    const oEpoch = this.convertDateToEpoch(sDateString);
 
-    if (epoch !== null) {
-      this.m_oEvent[property] = epoch; // Dynamically update the specified property
+    if (oEpoch !== null) {
+      this.m_oEvent[sProperty] = oEpoch/1000; // Dynamically update the specified property
     } else {
-      console.warn(`Invalid date format for ${property}. Expected mm-dd-yyyy.`);
+      console.warn(`Invalid date format for ${sProperty}. Expected mm-dd-yyyy.`);
     }
   }
 

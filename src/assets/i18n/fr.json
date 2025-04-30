@@ -85,7 +85,8 @@
     "CANCEL": "Annuler",
     "ADD_FIELD_OPERATOR": "Ajouter un opérateur de terrain",
     "PLUGINS": "Sélectionner les plugins",
-    "MANAGE_USERS": "Gérer les utilisateurs"
+    "MANAGE_USERS": "Gérer les utilisateurs",
+    "ID": "Id"
   },
   "COLLABORATORS": {
     "ADD": "Inviter un collaborateur à RISE",

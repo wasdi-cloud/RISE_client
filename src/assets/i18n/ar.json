@@ -53,8 +53,8 @@
     "CANCEL": "إلغاء",
     "ADD_FIELD_OPERATOR": "إضافة مشغل ميداني",
     "PLUGINS": "اختر الإضافات",
-    "MANAGE_USERS": "إدارة المستخدمين"
-
+    "MANAGE_USERS": "إدارة المستخدمين",
+    "ID": "معرف"
   },
   "COLLABORATORS": {
     "ADD": "دعوة متعاون إلى RISE",
