@@ -16,6 +16,7 @@ import {
 export class NotificationDialogComponent implements OnInit {
   m_sMessage: string = '';
   m_sClassName: string = '';
+  m_sTitle: string = '';
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public m_oData,
@@ -25,6 +26,13 @@ export class NotificationDialogComponent implements OnInit {
   ngOnInit(): void {
     this.m_sClassName = this.m_oData.className;
     this.m_sMessage = this.m_oData.message;
+    this.m_sTitle = this.m_oData.title;
+    if (this.m_sTitle === undefined) {
+      this.m_sTitle = 'Information';
+    }
+    else if (this.m_sTitle === null) {
+      this.m_sTitle = 'Information';
+    }
   }
 
   onDismiss() {
