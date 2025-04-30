@@ -333,19 +333,27 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       const bounds = layer.getBounds();
       const center = bounds.getCenter();
       const latitudeFactor = Math.cos(center.lat * (Math.PI / 180)); // Scale for latitude
+      const adjustedArea = area * latitudeFactor;
 
-      const adjustedMinArea = MIN_AREA_POLYGON * latitudeFactor;
-      const adjustedMaxArea = MAX_AREA_POLYGON * latitudeFactor;
-
-      if (area < adjustedMinArea || area > adjustedMaxArea) {
+      if (area < MIN_AREA_POLYGON || area > MAX_AREA_POLYGON) {
         let sErrorHeader = '';
-        if (area < adjustedMinArea) {
+
+        console.log('here')
+        if (area < MIN_AREA_POLYGON) {
+          console.log('here2')
+          console.log(area)
+          console.log(MIN_AREA_POLYGON)
+          console.log(area<MIN_AREA_POLYGON)
           sErrorHeader = sErrorHeaderForTooSmall;
-        } else if (area > adjustedMaxArea) {
+        } else if (area > MAX_AREA_POLYGON) {
+          console.log('here3')
+          console.log(area)
+          console.log(MAX_AREA_POLYGON)
+          console.log(area>MAX_AREA_POLYGON)
           sErrorHeader = sErrorHeaderForTooBig;
         }
         this.m_oNotificationService.openInfoDialog(
-          sErrorMsgAdjust,
+          sErrorHeader,
           'danger',
           sErrorHeader,
           this.m_oViewContainerRef
