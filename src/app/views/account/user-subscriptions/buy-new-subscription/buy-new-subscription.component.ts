@@ -163,8 +163,6 @@ export class BuyNewSubscriptionComponent implements OnInit {
 
     this.m_oSubInput.plugins = this.m_asSelectedPlugins;
 
-    console.log(this.m_asSelectedPlugins);
-    console.log(this.m_oSubInput.plugins);
   }
 
 
@@ -186,16 +184,16 @@ export class BuyNewSubscriptionComponent implements OnInit {
     ).subscribe(oDialogResult => {
       if (oDialogResult === true) {
         this.isCheckoutNow=true;
-        console.log(this.m_oSubInput)
-        // this.m_oSubscriptionService.saveSubscription(this.m_oSubInput).subscribe({
-        //   next: (oResponse) => {
-        //     this.getStripePaymentUrl(oResponse.body.id);
-        //   },
-        //   error: (oError) => {
-        //     this.isCheckoutNow=false;
-        //     this.m_oNotificationService.openInfoDialog(sError, 'danger');
-        //   },
-        // });
+
+        this.m_oSubscriptionService.saveSubscription(this.m_oSubInput).subscribe({
+          next: (oResponse) => {
+            this.getStripePaymentUrl(oResponse.body.id);
+          },
+          error: (oError) => {
+            this.isCheckoutNow=false;
+            this.m_oNotificationService.openInfoDialog(sError, 'danger');
+          },
+        });
         // if (!this.m_oEditSubscription.subscriptionId) {
         //   this.m_bCheckoutNow = true;
         //   this.saveSubscription();
