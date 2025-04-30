@@ -52,7 +52,7 @@
 
           <td class="d-flex flex-row justify-content-end gap-2">
               <span
-                *ngIf="oSubscription.paymentMethod==='credit'"
+                *ngIf="oSubscription.paymentMethod==='credit' && oSubscription.buySuccess"
                 class="material-symbols-outlined edit"
                 [matTooltip]="'Get Invoice'"
                 (click)="getInvoice(oSubscription)"
