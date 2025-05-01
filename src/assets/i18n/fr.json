@@ -109,7 +109,8 @@
     "ERROR_API_WRONG_USER_OR_PASSWORD": "Soit le nom d'utilisateur soit le mot de passe saisi est incorrect",
     "ERROR_API_WRONG_OTP": "Ce mot de passe à usage unique ne correspond pas à celui envoyé à l'e-mail ci-dessus.",
     "ERROR_API_NO_VALID_SUBSCRIPTION": "Vous n'avez pas d'abonnement valide pour le moment.",
-    "ERROR_LAYER_FAILURE": "Impossible de charger les calques pour "
+    "ERROR_LAYER_FAILURE": "Impossible de charger les calques pour ",
+    "ERROR_UNKNOWN": "Une erreur inconnue s'est produite. Veuillez réessayer plus tard"
   },
   "INVITE_USER": {
     "EMAIL": "Entrez l'email de la personne à inviter",

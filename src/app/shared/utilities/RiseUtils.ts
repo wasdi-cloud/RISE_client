@@ -1,6 +1,7 @@
 import { TranslateService } from '@ngx-translate/core';
 import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
 import { Injectable } from '@angular/core';
+import FadeoutUtils from './FadeoutUtils';
 @Injectable({
   providedIn: 'root',
 })
@@ -33,6 +34,11 @@ export class RiseUtils {
    * Format Error Array to pass to either a notification dialog or a snackbar
    */
   handleServerError(aoError: Array<string>): string {
+
+    if (FadeoutUtils.utilsIsObjectNullOrUndefined(aoError)) {
+      aoError = ["ERROR_UNKNOWN"]
+    }
+
     let sErrorMsg = `<ul>${aoError.map((sError) => {
       let sErrorTranslated = this.m_oTranslationService.instant(
         'ERROR_MSG.' + sError

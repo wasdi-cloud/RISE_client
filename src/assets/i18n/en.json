@@ -95,8 +95,9 @@
     "ERROR_API_WRONG_USER_OR_PASSWORD": "Either the entered username or password is incorrect",
     "ERROR_API_WRONG_OTP": "This one time password does not match the one sent to the email above.",
     "ERROR_API_NO_VALID_SUBSCRIPTION": "You do not have a valid subscription at this time.",
-    "ERROR_LAYER_FAILURE": "Could not load layers for "
-  },
+    "ERROR_LAYER_FAILURE": "Could not load layers for ",
+    "ERROR_UNKNOWN": "An unknown error occurred"
+    },
   "INVITE_USER": {
     "EMAIL": "Enter the email of the person to invite",
     "CONFIRM": "Confirm the email of your invitee",
