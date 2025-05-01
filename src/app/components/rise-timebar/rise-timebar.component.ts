@@ -320,8 +320,6 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     this.m_oMomentStartDate = moment(this.m_iStartDate * 1000);
     let startDate = new Date(this.m_iStartDate * 1000);
     let endDate = new Date(this.m_iEndDate * 1000);
-
-
     let asDates = [];
     // asDates.push(startDate)
     // asDates.push(endDate)
@@ -344,7 +342,8 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
       this.m_oSelectedDate = endDate
     }
 
-
+    this.m_sSelectedDateTimestamp = this.m_oSelectedDate.valueOf();
+    this.emitSelectedDate()
   }
 
   /**
@@ -369,7 +368,8 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     this.m_oSelectedDate = new Date(this.m_sSelectedDate);
     this.m_oSelectedDate.setHours(23, 59, 0, 0); // Set to 23:59:00
     this.m_sSelectedDateTimestamp = this.m_oSelectedDate.valueOf(); // Now based on the new time
-
+    console.log(this.m_oSelectedDate)
+    console.log(this.m_sSelectedDateTimestamp)
     this.emitLiveButtonAction();
     this.emitSelectedDate();
   }
@@ -409,7 +409,9 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    * @returns void
    */
   emitSelectedDate(): void {
-    this.m_oSelectedDateEmitter.emit(this.m_sSelectedDateTimestamp);
+    const utcDate = new Date(this.m_oSelectedDate.getTime() - this.m_oSelectedDate.getTimezoneOffset() * 60000);
+    this.m_oSelectedDateEmitter.emit(utcDate.getTime());
+
   }
   //todo make one function for add / minus day
   /**
