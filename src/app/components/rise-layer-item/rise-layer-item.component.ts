@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {LayerViewModel} from '../../models/LayerViewModel';
 import {MatTooltip} from '@angular/material/tooltip';
@@ -12,7 +12,7 @@ import {MapService} from "../../services/map.service";
   templateUrl: './rise-layer-item.component.html',
   styleUrl: './rise-layer-item.component.css',
 })
-export class RiseLayerItemComponent {
+export class RiseLayerItemComponent implements OnChanges{
 
 
   @Input() m_oLayer: any;
@@ -40,6 +40,15 @@ export class RiseLayerItemComponent {
     action: string;
   }> = new EventEmitter<{ layer: LayerViewModel; action: string }>(null);
 
+
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['m_oLayer'] && this.m_oLayer) {
+      // Sync internal UI state from input layer
+      this.m_iOpacity = this.m_oLayer.opacity ?? 100;
+      this.m_bShowLayer = this.m_oLayer.opacity !== 0;
+    }
+  }
   toggleExpandedContent() {
     this.m_bShowExpanded = !this.m_bShowExpanded;
   }

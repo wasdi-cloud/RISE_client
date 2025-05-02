@@ -438,7 +438,8 @@ export class MapService {
    * @param sLayerId
    * @param sServer
    */
-  addLayerMap2DByServer(sLayerId: string, sServer: string) {
+  addLayerMap2DByServer(sLayerId: string, sServer: string,opacity?:number) {
+
     if (!sLayerId) {
       return false;
     }
@@ -453,6 +454,7 @@ export class MapService {
       format: 'image/png',
       transparent: true,
       noWrap: true,
+      opacity:opacity!=null?opacity/100:100
     });
     oWmsLayer.setZIndex(1000);
     oWmsLayer.addTo(oMap);
@@ -1013,12 +1015,12 @@ export class MapService {
         color: "red", // Outline color
         weight: 1,
         fillOpacity: 0 // Removes fill color, only showing contour
-      }).addTo(oMap);      
+      }).addTo(oMap);
 
       if (oPolygon) {
         this.m_aoAreaPolygons.push(oPolygon);
       }
-      
+
       let oIcon = oIconDefault;
 
       // Change icon for public areas
@@ -1031,7 +1033,7 @@ export class MapService {
         .on('click', () => {
           this.m_oMarkerSubject.next(oArea);
       });
-      
+
       if (oMarker) {
         oMarker.addTo(oMap);
         this.m_aoMarkers.push(oMarker); // Store the marker in the array

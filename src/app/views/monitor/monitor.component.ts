@@ -371,6 +371,10 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     const oMap = this.m_oMapService.getMap();
     const index = this.m_aoLayers.findIndex(layer => layer.mapId === oLayer.mapId);
     oLayer.pluginName=oPlugin.name;
+    // oLayer.opacity=oLayer.opacity!=null?oLayer.opacity:100;
+    // 🔁 Preserve opacity if it existed before
+    let existingLayer = this.m_aoLayers.find(l => l.layerId === oLayer.layerId);
+    oLayer.opacity = (typeof existingLayer?.opacity === 'number') ? existingLayer.opacity : 100;
     if (index !== -1) {
       oMap.eachLayer((oMapLayer) => {
         let sOldLayerId = this.m_aoLayers[index].layerId;
@@ -378,10 +382,12 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
           oMap.removeLayer(oMapLayer);
         }
       });
+
       this.m_aoLayers[index] = oLayer;  // Replace existing
     } else {
       this.m_aoLayers.push(oLayer);     // Add new if not found
     }
+
 
     // Check if oPlugin.layers already contains the object
     if (!oPlugin.layers.some(layer => layer.layerId === oLayer.layerId)) {
@@ -397,12 +403,15 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     // }
 
     //
-    this.m_aoReversedLayers = [...this.m_aoLayers].reverse();
+    this.m_aoReversedLayers = [...this.m_aoLayers].slice().reverse();
 
 
+    console.log(this.m_aoLayers)
+    console.log(this.m_aoReversedLayers)
     this.m_oMapService.addLayerMap2DByServer(
       oLayer.layerId,
-      oLayer.geoserverUrl
+      oLayer.geoserverUrl,
+      oLayer.opacity
     );
     // Update the selected layers
     this.m_oMapService.setSelectedLayers(this.m_aoLayers)
@@ -475,6 +484,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    */
   handleLayerOrder(): void {
     let aoOrderedLayers=this.m_aoReversedLayers.reverse();
+    console.log(aoOrderedLayers)
     aoOrderedLayers.forEach((oLayer) => {
       let oMap = this.m_oMapService.getMap();
       oMap.eachLayer((oMapLayer) => {
@@ -487,7 +497,8 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     aoOrderedLayers.forEach((oLayer) => {
       this.m_oMapService.addLayerMap2DByServer(
         oLayer.layerId,
-        oLayer.geoserverUrl
+        oLayer.geoserverUrl,
+        oLayer.opacity
       );
     });
   }
@@ -522,6 +533,20 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     let iOpacity = iValue;
     let oMap = this.m_oMapService.getMap();
     let fPercentage = iOpacity / 100;
+    const oLayerInMain = this.m_aoLayers.find((o) => o.layerId === sLayerId);
+    if (oLayerInMain) {
+      oLayerInMain.opacity = iValue;
+    }
+
+    // Update opacity in m_aoReversedLayers
+    const oLayerInReversed = this.m_aoReversedLayers.find((o) => o.layerId === sLayerId);
+    if (oLayerInReversed) {
+      oLayerInReversed.opacity = iValue;
+    }
+
+    console.log("setOpacity")
+    console.log(this.m_aoLayers)
+    console.log(this.m_aoReversedLayers)
 
     oMap.eachLayer(function (layer) {
       if (

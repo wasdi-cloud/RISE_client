@@ -21,7 +21,7 @@ export class LayerViewModel extends RiseViewModel {
 
   geoserverUrl: string;
 
-  isVisible:boolean=true;
+  opacity:number=100;
 
   pluginName:string;
 
