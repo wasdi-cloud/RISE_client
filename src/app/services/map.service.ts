@@ -1010,7 +1010,7 @@ export class MapService {
 
       // Add the polygon to the map with only a red contour
       let oPolygon = L.polygon(afBoundsCoords, {
-        color: "red", // Outline color
+        color: "#efba35", // Outline color
         weight: 1,
         fillOpacity: 0 // Removes fill color, only showing contour
       }).addTo(oMap);      
