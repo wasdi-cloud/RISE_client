@@ -297,11 +297,11 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       next: (oResponse) => {
         if (oResponse.length > 0) {
           this.m_aoPlugins = oResponse;
-          this.m_aoPlugins.forEach((oPlugin) => {
-            if (this.m_aoPlugins[0].name === oPlugin.name) {
-              this.m_oActivePlugin = this.m_aoPlugins[0];
-            }
-          });
+          // this.m_aoPlugins.forEach((oPlugin) => {
+          //   if (this.m_aoPlugins[0].name === oPlugin.name) {
+          //     this.m_oActivePlugin = this.m_aoPlugins[0];
+          //   }
+          // });
           this.initPluginsButtons(this.m_aoPlugins);
         }
       },
@@ -332,12 +332,27 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
             this.fillPluginsAndLayers(oPlugin, oLayerVM);
           }else{
-            let sError: string = this.m_oTranslate.instant(
-              'ERROR_MSG.ERROR_LAYER_FAILURE'
-            );
-            let sErrorMessage=sError.concat(oPlugin.name?oPlugin.name:"this plugin");
-            this.m_oNotificationService.openInfoDialog(sErrorMessage, 'error', 'Error');
+
+            // let sError: string = this.m_oTranslate.instant(
+            //   'ERROR_MSG.ERROR_LAYER_FAILURE'
+            // );
+            // let sErrorMessage=sError.concat(oPlugin.name?oPlugin.name:"this plugin");
+            // this.m_oNotificationService.openInfoDialog(sErrorMessage, 'error', 'Error');
             oPlugin.loaded = false;
+            const oMap = this.m_oMapService.getMap();
+            oPlugin.layers.forEach(layer => {
+              oMap.eachLayer(oMapLayer => {
+                if (oMapLayer.options.layers === layer.layerId) {
+                  oMap.removeLayer(oMapLayer);
+                }
+              });
+
+              // Remove from this.m_aoLayers
+              this.m_aoLayers = this.m_aoLayers.filter(l => l.layerId !== layer.layerId);
+              this.m_aoReversedLayers = [...this.m_aoLayers]
+            });
+            oPlugin.layers=[]
+
             // this.m_oActivePlugin=null;
           }
         },
@@ -402,11 +417,13 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     this.initPluginsButtons(this.m_aoPlugins);
     this.m_aoPlugins.forEach((oPlugin) => {
       if (oPlugin.loaded) {
+
         this.getLayer(oPlugin, this.m_sAreaId, this.m_oSelectedDate);
       }
     });
   }
   switchPluginButton(oPlugin:any) {
+
     //was active,turn it to inactive
     if(oPlugin.disabled){
       return;
@@ -431,9 +448,10 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
     }else{
       //was inactive,turn it to active
-      this.m_oActivePlugin = oPlugin;
+      // this.m_oActivePlugin = oPlugin;
       oPlugin.loaded = true;
       if (!oPlugin.layers || oPlugin.layers.length < 1) {
+
         oPlugin.layers = []; //Init layers array in plugin to hold it after loading
         this.getLayer(oPlugin, this.m_sAreaId, '');
       }
@@ -727,6 +745,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       this.m_oLayerService.findLayer(oPlugin.id,this.m_sAreaId,this.m_oSelectedDate).subscribe({
         next:(oResponse)=>{
           oPlugin.disabled = FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse);
+
         }
       })
 
