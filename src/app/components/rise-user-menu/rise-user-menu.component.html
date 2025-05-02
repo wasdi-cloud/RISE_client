@@ -13,9 +13,10 @@
   <div *ngIf="m_bShowDropdown" class="dropdown-list d-flex flex-column gap-1">
     <!-- TODO: Add user's information -->
     <div class="user-info d-flex justify-content-between align-items-center">
-      <div class="name">{{ m_oUser.name }}</div>
+      <div class="name">{{ m_oUser.userId }}</div>
       <div [ngClass]="getRoleClass(m_oUser.role)"  class="role-badge">{{ m_oUser.role }}</div>
     </div>
+    <div class="email">{{m_oUser.name}}&nbsp;{{m_oUser.surname}}</div>
     <div class="email">{{m_oUser.email}}</div>
 <!--    <div class="role-badge">{{m_oUser.role}}</div>-->
     <ul  *ngIf="!m_bShowLanguageDropdown" class="d-flex flex-column gap-2 pt-2">

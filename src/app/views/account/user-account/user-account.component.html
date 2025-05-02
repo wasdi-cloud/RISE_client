@@ -23,29 +23,25 @@
             [(m_sInputText)]="m_oUser.surname"
           ></rise-text-input>
         </div>
-        <rise-number-input
-          class="col-6"
-          [m_sLocalizationKey]="'REGISTER.MOBILE'"
-          [m_bHasTitle]="true"
-          [(m_sInputText)]="m_oUser.mobile"
-          [m_sType]="'phone'"
-        >
-        </rise-number-input>
-<!--        <rise-text-input-->
-<!--          class="col-6"-->
-<!--          [m_sLocalizationKey]="'REGISTER.MOBILE'"-->
-<!--          [m_bHasTitle]="true"-->
-<!--          [(m_sInputText)]="m_oUser.mobile"-->
-<!--        ></rise-text-input>-->
-        <rise-text-input
-          class="col-6"
-          [m_sLocalizationKey]="'LOGIN.USER_ID'"
-          [m_bHasTitle]="true"
-          [(m_sInputText)]="m_sNewUserId"
-          [m_sErrorText]="m_sUsernameError"
-          [m_bIsValidatorInput]="true"
-          [m_bIsValid]="validateUserId()"
-        ></rise-text-input>
+        <div class="d-flex flex-row gap-2">
+          <rise-text-input
+            class="col-6"
+            [m_sLocalizationKey]="'LOGIN.USER_ID'"
+            [m_bHasTitle]="true"
+            [(m_sInputText)]="m_sNewUserId"
+            [m_sErrorText]="m_sUsernameError"
+            [m_bIsValidatorInput]="true"
+            [m_bIsValid]="validateUserId()"
+          ></rise-text-input>
+          <rise-number-input
+            class="col-6"
+            [m_sLocalizationKey]="'REGISTER.MOBILE'"
+            [m_bHasTitle]="true"
+            [(m_sInputText)]="m_oUser.mobile"
+            [m_sType]="'phone'"
+          >
+          </rise-number-input>
+      </div>
         <rise-button
           class="align-self-start mt-2"
           [m_sRole]="'primary'"

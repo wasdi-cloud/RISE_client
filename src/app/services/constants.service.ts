@@ -4,6 +4,7 @@ import { AreaViewModel } from '../models/AreaViewModel';
 import { OrganizationViewModel } from '../models/OrganizationViewModel';
 import { UserViewModel } from '../models/UserViewModel';
 import {UserRole} from "../models/UserRole";
+import FadeoutUtils from '../shared/utilities/FadeoutUtils';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ import {UserRole} from "../models/UserRole";
 export class ConstantsService {
   URL: string = environment.riseUrl;
 
-  APIURL: string = this.URL + '/rise-api/api';
+  APIURL: string = this.URL;
 
   m_oActiveAOI: AreaViewModel = null;
 
