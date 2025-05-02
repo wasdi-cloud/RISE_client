@@ -427,6 +427,10 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
       this.m_iSliderValue = this.m_asDates.indexOf(this.m_sSelectedDate);
       this.m_sSelectedDateTimestamp = oSelectedDate.valueOf();
       this.m_oSelectedDate = oSelectedDate;
+      if(oSelectedDate.getTime()===oLastDate.getTime()){
+        this.m_bIsLive=true;
+        this.emitLiveButtonAction();
+      }
       this.emitSelectedDate();
     }
   }
@@ -444,6 +448,8 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
       this.m_iSliderValue = this.m_asDates.indexOf(this.m_sSelectedDate);
       this.m_sSelectedDateTimestamp = oSelectedDate.valueOf();
       this.m_oSelectedDate = oSelectedDate;
+      this.m_bIsLive=false;
+      this.emitLiveButtonAction();
       this.emitSelectedDate();
     }
   }
