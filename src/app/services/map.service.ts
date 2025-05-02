@@ -46,22 +46,22 @@ const oIconDefault = L.icon({
   iconRetinaUrl: sIconRetinaUrl,
   iconUrl: sIconUrl,
   shadowUrl: sShadowUrl,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
   popupAnchor: [1, -34],
   tooltipAnchor: [16, -28],
-  shadowSize: [41, 41],
+  shadowSize: [32, 32],
 });
 
 const oIconPublic = L.icon({
   iconRetinaUrl: sIconUrlPublic,
   iconUrl: sIconUrlPublic,
   shadowUrl: sShadowUrl,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
   popupAnchor: [1, -34],
   tooltipAnchor: [16, -28],
-  shadowSize: [41, 41],
+  shadowSize: [32, 32],
 });
 
 
@@ -1005,13 +1005,6 @@ export class MapService {
       let fLat = parseFloat(asCoordinates.lat);
       let fLon = parseFloat(asCoordinates.lng);
 
-      let oIcon = oIconDefault;
-
-      // Change icon for public areas
-      if (oArea.publicArea) {
-        oIcon = oIconPublic;
-      }
-
       // Get the coordinates (Note: duplicate of above? To be checked)
       const afBoundsCoords = this.parseWKTPolygon(oArea.bbox);
 
@@ -1024,6 +1017,13 @@ export class MapService {
 
       if (oPolygon) {
         this.m_aoAreaPolygons.push(oPolygon);
+      }
+      
+      let oIcon = oIconDefault;
+
+      // Change icon for public areas
+      if (oArea.publicArea) {
+        oIcon = oIconPublic;
       }
 
       let oMarker = L.marker([fLat, fLon],{icon:oIcon})

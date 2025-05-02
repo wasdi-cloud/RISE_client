@@ -13,7 +13,7 @@
           {{ "MANAGE_EVENTS.HEADER" | translate }}
 
           <div class="d-flex flex-row gap-2">
-            <rise-button
+            <rise-button *ngIf="canUserWriteArea()"
               [m_sSize]="'small'"
               [m_sRole]="'action'"
               [m_sLabel]="'MANAGE_EVENTS.CREATE_NEW_EVENT'"
@@ -81,7 +81,7 @@
                 <td>{{ oEvent.peakDate*1000| date : 'yyyy-MM-dd' }}</td>
                 <td>{{ oEvent.endDate*1000| date : 'yyyy-MM-dd' }}</td>
                 <td class="d-flex flex-row justify-content-end gap-2">
-              <span
+              <span *ngIf="canUserWriteArea()"
                 class="material-symbols-outlined edit"
                 [matTooltip]="'Edit Event'"
                 (click)="editEvent(oEvent)"
@@ -96,7 +96,7 @@
                   >
                 jump_to_element
               </span>
-                  <span
+                  <span *ngIf="canUserWriteArea()"
                     class="material-symbols-outlined remove"
                     [matTooltip]="'Remove Event'"
                     (click)="deleteEvent(oEvent)"

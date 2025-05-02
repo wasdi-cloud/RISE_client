@@ -187,6 +187,10 @@ export class RiseUserMenuComponent implements OnInit {
       name: 'عربي',
       value: 'ar',
     },
+    {
+      name: "Italiano",
+      value: 'it'
+    }
   ];
 
   /**

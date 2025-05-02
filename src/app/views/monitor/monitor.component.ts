@@ -232,9 +232,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    * @returns void
    */
   getActiveAOI(): void {
-    if (this.m_oConstantsService.getActiveAOI()) {
-      this.m_oAreaOfOperation = this.m_oConstantsService.getActiveAOI();
-    } else if (this.m_oActivatedRoute.snapshot.params['aoiId']) {
+    if (this.m_oActivatedRoute.snapshot.params['aoiId']) {
       this.m_sAreaId = this.m_oActivatedRoute.snapshot.params['aoiId'];
       this.openAOI(this.m_sAreaId);
     } else {
@@ -260,6 +258,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     this.m_oAreaService.getAreaById(sAreaId).subscribe({
       next: (oResponse) => {
         this.m_oAreaOfOperation = oResponse;
+        this.m_oConstantsService.setActiveArea(this.m_oAreaOfOperation);
         if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           this.getMapsByArea(oResponse.id, oResponse.startDate);
           this.m_oMapService.flyToMonitorBounds(oResponse.bbox);

@@ -15,6 +15,8 @@ export class AreaViewModel extends RiseViewModel {
 
  subscriptionId?: string;
 
+ organizationId?: string;
+
  bbox?: string;
 
  markerCoordinates?: string;

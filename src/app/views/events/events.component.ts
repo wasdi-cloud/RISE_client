@@ -24,6 +24,7 @@ import {FormsModule} from "@angular/forms";
 import {geojsonToWKT} from "@terraformer/wkt";
 import {MapService} from "../../services/map.service";
 import {EventType} from "../../models/EventType";
+import { ConstantsService } from '../../services/constants.service';
 
 @Component({
   selector: 'rise-events',
@@ -78,6 +79,7 @@ export class EventsComponent implements OnInit {
     private m_oMapService: MapService,
     private m_oRouter: Router,
     private m_oNotificationServiceDialog: NotificationsDialogsService,
+    private m_oConstantsService: ConstantsService
   ) {
   }
 
@@ -143,6 +145,21 @@ export class EventsComponent implements OnInit {
         }
       }
     )
+  }
+
+  canUserWriteArea() {
+    let oUser = this.m_oConstantsService.getUser();
+    let oArea = this.m_oConstantsService.getActiveAOI();
+
+    if (oUser == null || oArea == null) {
+      return false;
+    }
+
+    if (oUser.organizationId == oArea.organizationId) {
+      return true;
+    }
+
+    return false;
   }
 
   addNewEvent() {
