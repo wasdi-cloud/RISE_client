@@ -27,6 +27,7 @@ declare const L: any;
 const sIconRetinaUrl = 'assets/rise-assets/icon-location-hazard-filled.png';
 const sIconUrl = 'assets/rise-assets/icon-location-hazard-filled.png';
 const sIconUrlPublic = 'assets/rise-assets/icon-location-hazard-filled-public.png';
+const sIconUrlShared = 'assets/rise-assets/icon-location-hazard-filled-shared.png';
 const sGeoCoderIconUrl = 'assets/rise-assets/flag_optimized.png';
 const sGeoCoderRetinaIconUrl = 'assets/rise-assets/flag_optimized.png';
 const sShadowUrl = '/assets/marker-shadow.png';
@@ -45,6 +46,17 @@ const oGeoCoderIcon = L.icon({
 const oIconDefault = L.icon({
   iconRetinaUrl: sIconRetinaUrl,
   iconUrl: sIconUrl,
+  shadowUrl: sShadowUrl,
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
+  popupAnchor: [1, -34],
+  tooltipAnchor: [16, -28],
+  shadowSize: [32, 32],
+});
+
+const oIconShared = L.icon({
+  iconRetinaUrl: sIconUrlShared,
+  iconUrl: sIconUrlShared,
   shadowUrl: sShadowUrl,
   iconSize: [32, 32],
   iconAnchor: [16, 32],
@@ -1018,16 +1030,26 @@ export class MapService {
       if (oPolygon) {
         this.m_aoAreaPolygons.push(oPolygon);
       }
-      
+      let sPrefix = "";
+
       let oIcon = oIconDefault;
+
+      let oActualUser = this.m_oConstantsService.getUser();
+
+      // Change icon for shared areas
+      if (oActualUser.organizationId != oArea.organizationId) {
+        sPrefix = "Shared - ";
+        oIcon = oIconShared;
+      }
 
       // Change icon for public areas
       if (oArea.publicArea) {
+        sPrefix = "Public - ";
         oIcon = oIconPublic;
       }
 
       let oMarker = L.marker([fLat, fLon],{icon:oIcon})
-        .bindTooltip(oArea.name)
+        .bindTooltip(sPrefix + oArea.name)
         .on('click', () => {
           this.m_oMarkerSubject.next(oArea);
       });
@@ -2009,3 +2031,4 @@ export class MapService {
     this.m_oMarkerSubject$ = this.m_oMarkerSubject.asObservable();
   }
 }
+
