@@ -58,11 +58,9 @@ export class AreaInfoComponent implements OnInit {
       this.m_sAreaId = this.m_oData.area.id;
       this.getAreaInfo();
     }
+
     this.getPlugins();
-
-
   }
-  
 
   getAreaInfo() {
     let sError: string = this.m_oTranslate.instant(

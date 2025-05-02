@@ -216,6 +216,18 @@ input[type="radio"]:checked {
   width: 36px !important;
 }
 
+.leaflet-tooltip {
+  background-color: rgba(0, 31, 40, 0.5) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--rise-text-bright) !important;
+  padding: 8px; /* Add padding for better readability */
+  border-radius: 5px; /* Optional: Adds rounded corners */
+}
+
+.leaflet-tooltip::before {
+  border-color: rgba(0, 31, 40, 0.5);
+}
+
 a.leaflet-control-zoom-in {
   border-top-left-radius: 8px !important;
   border-top-right-radius: 8px !important;

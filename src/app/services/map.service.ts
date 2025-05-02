@@ -24,32 +24,46 @@ import {MapZoomLevels} from "../shared/MapZoomLevels";
 // import L from 'leaflet';
 declare const L: any;
 
-const iconRetinaUrl = 'assets/rise-assets/icon-location-hazard-filled.png';
-const iconUrl = 'assets/rise-assets/icon-location-hazard-filled.png';
-const geoCoderIconUrl = 'assets/rise-assets/flag_optimized.png';
-const geoCoderRetinaIconUrl = 'assets/rise-assets/flag_optimized.png';
-const shadowUrl = '/assets/marker-shadow.png';
-const geoCoderIcon = L.icon({
-  iconUrl:geoCoderIconUrl,
-  iconRetinaUrl:geoCoderRetinaIconUrl,
-  shadowUrl:shadowUrl,
+const sIconRetinaUrl = 'assets/rise-assets/icon-location-hazard-filled.png';
+const sIconUrl = 'assets/rise-assets/icon-location-hazard-filled.png';
+const sIconUrlPublic = 'assets/rise-assets/icon-location-hazard-filled-public.png';
+const sGeoCoderIconUrl = 'assets/rise-assets/flag_optimized.png';
+const sGeoCoderRetinaIconUrl = 'assets/rise-assets/flag_optimized.png';
+const sShadowUrl = '/assets/marker-shadow.png';
+
+const oGeoCoderIcon = L.icon({
+  iconUrl:sGeoCoderIconUrl,
+  iconRetinaUrl:sGeoCoderRetinaIconUrl,
+  shadowUrl:sShadowUrl,
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
   tooltipAnchor: [16, -28],
   shadowSize: [41, 41],
 });
-const iconDefault = L.icon({
-  iconRetinaUrl,
-  iconUrl,
-  shadowUrl,
+
+const oIconDefault = L.icon({
+  iconRetinaUrl: sIconRetinaUrl,
+  iconUrl: sIconUrl,
+  shadowUrl: sShadowUrl,
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
   tooltipAnchor: [16, -28],
   shadowSize: [41, 41],
 });
-// L.Marker.prototype.options.icon = iconDefault;
+
+const oIconPublic = L.icon({
+  iconRetinaUrl: sIconUrlPublic,
+  iconUrl: sIconUrlPublic,
+  shadowUrl: sShadowUrl,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  tooltipAnchor: [16, -28],
+  shadowSize: [41, 41],
+});
+
 
 const MAX_STORAGE_SIZE = 2 * 1024 * 1024; // 2MB for testing
 const MIN_AREA_CIRCLE = 12_321_000_000; // Minimum 1x1 degree in square meters
@@ -159,6 +173,7 @@ export class MapService {
    */
   m_bPixelInfoOn: boolean = false;
   m_aoMarkers: L.Marker[] = [];
+  m_aoAreaPolygons: L.Polygon[] = [];
   m_aoEventMarkers: L.Marker[] = [];
   m_oMarkerSubject = new BehaviorSubject<AreaViewModel>(null);
   /**
@@ -647,7 +662,7 @@ export class MapService {
     oGeocoderControl.on('markgeocode', (event) => {
       this.clearPreviousDrawings(oMap);
       const aoLatLng = event.geocode.center;
-      this.m_oGeocoderMarker = L.marker(aoLatLng,{icon:geoCoderIcon}).addTo(oMap);
+      this.m_oGeocoderMarker = L.marker(aoLatLng,{icon:oGeoCoderIcon}).addTo(oMap);
       oMap.setView(aoLatLng, 14);
     });
   }
@@ -966,6 +981,18 @@ export class MapService {
   }
 
 
+    // Function to parse WKT POLYGON string into an array of LatLng
+  parseWKTPolygon(sWkt) {
+    // Remove 'POLYGON ((' and '))' from the string
+    const asCoordsString = sWkt.replace(/^POLYGON \(\(/, "").replace(/\)\)$/, "");
+
+    // Split coordinates and convert them to Leaflet format [lat, lon]
+    return asCoordsString.split(", ").map(fCoord => {
+      const [fLon, fLat] = fCoord.split(" ").map(Number); // Swap order since Leaflet uses [lat, lon]
+      return [fLat, fLon];
+    });
+  }
+
   /**
    * Add Area Marker
    * @param oArea
@@ -973,15 +1000,38 @@ export class MapService {
    */
   addAreaMarker(oArea: AreaViewModel, oMap: LeafletMap): Marker {
     let asCoordinates = this.convertPointLatLng(oArea)._northEast;
+
     if (asCoordinates && oMap) {
-      let lat = parseFloat(asCoordinates.lat);
-      let lon = parseFloat(asCoordinates.lng);
-      let oMarker = L.marker([lat, lon],{icon:iconDefault})
+      let fLat = parseFloat(asCoordinates.lat);
+      let fLon = parseFloat(asCoordinates.lng);
+
+      let oIcon = oIconDefault;
+
+      // Change icon for public areas
+      if (oArea.publicArea) {
+        oIcon = oIconPublic;
+      }
+
+      // Get the coordinates (Note: duplicate of above? To be checked)
+      const afBoundsCoords = this.parseWKTPolygon(oArea.bbox);
+
+      // Add the polygon to the map with only a red contour
+      let oPolygon = L.polygon(afBoundsCoords, {
+        color: "red", // Outline color
+        weight: 1,
+        fillOpacity: 0 // Removes fill color, only showing contour
+      }).addTo(oMap);      
+
+      if (oPolygon) {
+        this.m_aoAreaPolygons.push(oPolygon);
+      }
+
+      let oMarker = L.marker([fLat, fLon],{icon:oIcon})
+        .bindTooltip(oArea.name)
         .on('click', () => {
           this.m_oMarkerSubject.next(oArea);
-          // this.m_oMarkerClicked.emit(oArea);
-          // this.m_oRouter.navigateByUrl('/monitor');
-        })
+      });
+      
       if (oMarker) {
         oMarker.addTo(oMap);
         this.m_aoMarkers.push(oMarker); // Store the marker in the array
@@ -1027,11 +1077,23 @@ export class MapService {
   }
 
   clearMarkers(): void {
+
+    this.m_aoAreaPolygons.forEach((oPolygon) => {
+      oPolygon.remove();
+    });
+
+    this.m_aoAreaPolygons = [];
+
     this.m_aoMarkers.forEach((marker) => {
       marker.remove(); // Remove the marker from the map
     });
+
     this.m_aoMarkers = []; // Clear the marker array
   }
+
+  /**
+   * Clear Event Markers
+   */
   clearEventMarkers(): void {
     this.m_aoEventMarkers.forEach((marker) => {
       marker.remove(); // Remove the marker from the map
@@ -1196,6 +1258,7 @@ export class MapService {
     oMap.addControl(new m_oManualBoxingButton());
     return this.m_oManualBoundingBoxSubscription.asObservable();
   }
+
   addManualBboxLayer(oMap, aoBounds) {
     let oLayer = L.rectangle(aoBounds, { color: "#3388ff", weight: 1 });
 
@@ -1209,6 +1272,7 @@ export class MapService {
     //Emit bounding box to listening component:
     return aoBounds
   }
+
   addPixelInfoToggle(oMap: any) {
     let oPixelButton = L.Control.extend({
       options: {
@@ -1307,6 +1371,9 @@ export class MapService {
     }
     return true;
   };
+
+
+
   getPixelInfo() {
     let sErrorMsg: string = this.m_oTranslate.instant('MAP.ERROR_LAYER');
     this.m_oRiseMap.on('click', (oClickEvent) => {
