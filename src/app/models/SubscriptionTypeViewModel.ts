@@ -5,4 +5,8 @@ export class SubscriptionTypeViewModel {
   id: string;
 
   stringCode: string;
+
+  price: number;
+
+  allowedAreas: number;
 }

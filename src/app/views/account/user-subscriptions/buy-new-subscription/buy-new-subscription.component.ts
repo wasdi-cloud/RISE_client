@@ -274,7 +274,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
   getPaymentTypes() {
     this.m_aoPaymentTypes = [
       { name: 'Year', value: 'YEAR' },
-      { name: 'Month', value: 'MONTH' },
+      { name: '3 Months', value: 'MONTH' },
     ];
 
     this.m_asPaymentTypeNames = this.m_aoPaymentTypes.map(
