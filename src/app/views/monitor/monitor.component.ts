@@ -370,6 +370,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   private fillPluginsAndLayers(oPlugin: any, oLayer:LayerViewModel) {
     const oMap = this.m_oMapService.getMap();
     const index = this.m_aoLayers.findIndex(layer => layer.mapId === oLayer.mapId);
+    oLayer.pluginName=oPlugin.name;
     if (index !== -1) {
       oMap.eachLayer((oMapLayer) => {
         let sOldLayerId = this.m_aoLayers[index].layerId;
