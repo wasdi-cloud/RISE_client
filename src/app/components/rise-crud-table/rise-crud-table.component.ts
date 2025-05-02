@@ -37,7 +37,6 @@ import { RiseButtonComponent } from '../rise-button/rise-button.component';
     MatHeaderCell,
     MatColumnDef,
     MatTable,
-    MatButton,
     MatHeaderRow,
     MatRow,
     MatRowDef,

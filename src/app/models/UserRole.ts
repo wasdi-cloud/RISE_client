@@ -3,6 +3,7 @@ export enum UserRole {
   ADMIN = "ADMIN",
   HQ = "HQ",
   FIELD = "FIELD",
+  SHARED = "SHARED"
 }
 
 export class UserRoleHelper {

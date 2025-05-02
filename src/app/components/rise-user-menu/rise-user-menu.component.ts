@@ -250,7 +250,8 @@ export class RiseUserMenuComponent implements OnInit {
       [UserRole.RISE_ADMIN]: 'role-badge-rise-admin',
       [UserRole.ADMIN]: 'role-badge-admin',
       [UserRole.HQ]: 'role-badge-hq',
-      [UserRole.FIELD]: 'role-badge-field'
+      [UserRole.FIELD]: 'role-badge-field',
+      [UserRole.SHARED]: 'role-badge-field'
     };
 
     return roleClassMap[role] || 'role-badge-default'; // Default if role is unknown

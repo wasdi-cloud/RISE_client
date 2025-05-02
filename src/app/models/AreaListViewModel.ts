@@ -18,4 +18,5 @@ export class AreaListViewModel extends RiseViewModel {
 
   publicArea?: boolean;
 
+  organizationId?: string;
 }
