@@ -354,9 +354,6 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   }
 
   private fillPluginsAndLayers(oPlugin: any, oLayer:LayerViewModel) {
-    console.log(oLayer)
-    console.log("before")
-    console.log(this.m_aoLayers)
     const oMap = this.m_oMapService.getMap();
     const index = this.m_aoLayers.findIndex(layer => layer.mapId === oLayer.mapId);
     if (index !== -1) {
@@ -371,8 +368,6 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       this.m_aoLayers.push(oLayer);     // Add new if not found
     }
 
-    console.log("after")
-    console.log(this.m_aoLayers)
     // Check if oPlugin.layers already contains the object
     if (!oPlugin.layers.some(layer => layer.layerId === oLayer.layerId)) {
       oPlugin.layers.push(oLayer);

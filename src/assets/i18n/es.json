@@ -47,7 +47,8 @@
     "ERROR_GET_USERS": "No se pudieron recuperar usuarios para esta Área de Operaciones",
     "ERROR_PLUGINS": "No se pudo recuperar la información del complemento",
     "ERROR_SAVE": "No se pudieron guardar los cambios en esta área",
-    "SUCCESS_SAVE": "Cambios de área guardados"
+    "SUCCESS_SAVE": "Cambios de área guardados",
+    "IS_PUBLIC": "¿Es esta área pública?"
   },
   "BANNER": {
     "LIVE_SIT": "Situación en vivo",

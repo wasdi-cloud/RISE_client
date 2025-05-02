@@ -23,11 +23,19 @@ export class AreaViewModel extends RiseViewModel {
 
  supportArchive?: boolean;
 
-
   archiveStartDate?: number;
 
   archiveEndDate?: number;
 
   plugins?: string[];
 
+  publicArea?: boolean;
+
+  firstShortArchivesReady?: boolean;
+
+  allShortArchivesReady?: boolean;
+
+  firstFullArchivesReady?: boolean; 
+
+  allFullArchivesReady?: boolean;
 }

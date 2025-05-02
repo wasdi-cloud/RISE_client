@@ -96,7 +96,6 @@ export class RiseCollaboratorsComponent implements OnInit {
     if (this.m_sResourceType === 'area') {
       this.m_oAreaService.getUsersFromArea(this.m_sResourceId).subscribe({
         next: (oResponse) => {
-          console.log(oResponse);
           this.m_aoUsers = oResponse;
         },
         error: (oError) => {

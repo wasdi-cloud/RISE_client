@@ -23,7 +23,11 @@
             [m_bHasTitle]="true"
             [(m_sInputText)]="m_oAreaOfOperation.description"
             [m_sLocalizationKey]="'CREATE_NEW_AREA_OF_OPERATION.DESCRIPTION'"
-          ></rise-textarea-input>
+          ></rise-textarea-input>        
+          <rise-checkbox
+          [m_aoOptions]="m_asIsPublic"
+          [m_aoSelectedValues]="m_asSelectedIsPublic"
+          [m_bReadonly]="true"> </rise-checkbox>
           <div>
             {{ 'CREATE_NEW_AREA_OF_OPERATION.PLUGINS' | translate }}
             <rise-checkbox

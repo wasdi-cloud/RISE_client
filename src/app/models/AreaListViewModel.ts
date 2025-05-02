@@ -16,4 +16,6 @@ export class AreaListViewModel extends RiseViewModel {
 
   markerCoordinates?: string;
 
+  publicArea?: boolean;
+
 }

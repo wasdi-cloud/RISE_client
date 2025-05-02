@@ -68,8 +68,8 @@ export class UserSubscriptionsComponent implements OnInit {
       next: (oResponse) => {
         if (!oResponse) {
           return;
-        } else {
-          console.log(oResponse)
+        } 
+        else {
           this.m_aoSubscriptionsToShow = oResponse;
           this.m_aoAllSubscriptions = this.m_aoSubscriptionsToShow;
           this.getSubTypes();

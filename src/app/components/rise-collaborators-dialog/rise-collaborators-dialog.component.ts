@@ -74,8 +74,9 @@ export class RiseCollaboratorsDialogComponent implements OnInit {
           console.error(oError)
         }
       })
-    }else{
-      console.log("please add field op")
+    }
+    else{
+      console.log("please add field operator")
     }
   }
 

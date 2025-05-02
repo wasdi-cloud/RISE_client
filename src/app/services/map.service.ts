@@ -433,13 +433,6 @@ export class MapService {
     // }
     let oMap = this.getMap();
 
-    // console.log(sServer);
-    // if (sServer.endsWith('?')) {
-    //   sServer = sServer.replace('wms?', 'ows?');
-    // } else {
-    //   sServer = sServer.replace('ows', 'wms?');
-    // }
-
     let oWmsLayer = L.tileLayer.wms(sServer, {
       layers: sLayerId,
       format: 'image/png',
@@ -460,9 +453,7 @@ export class MapService {
   zoomBandImageOnGeoserverBoundingBox(geoserverBoundingBox) {
     try {
       if (!geoserverBoundingBox) {
-        console.log(
-          'MapService.zoomBandImageOnGeoserverBoundingBox: geoserverBoundingBox is null or empty '
-        );
+        console.log('MapService.zoomBandImageOnGeoserverBoundingBox: geoserverBoundingBox is null or empty ');
         return;
       }
 
@@ -601,18 +592,9 @@ export class MapService {
     const bounds = layer.getBounds();
     const center = bounds.getCenter();
 
-    // Log current width and height for debugging
-    // console.log('Original width:', width, 'Original height:', height);
-
     // Adjust dimensions to fit within min/max constraints
     const adjustedWidth = Math.max(MIN_WIDTH, Math.min(width, MAX_WIDTH));
     const adjustedHeight = Math.max(MIN_HEIGHT, Math.min(height, MAX_HEIGHT));
-    // console.log(
-    //   'Adjusted width:',
-    //   adjustedWidth,
-    //   'Adjusted height:',
-    //   adjustedHeight
-    // );
 
     // Dynamic conversion factors
     const metersToLatitudeDegrees = (meters) => meters / 111_000;
@@ -1746,16 +1728,6 @@ export class MapService {
     sUrl = this.m_oConstantsService.getWmsUrlGeoserver() + sUrl;
     return this.m_oHttp.get(sUrl, {headers: aoHeaders});
   }
-
-  // setFeatureInfoMode(bEnabled: boolean) {
-  //   if (this.m_bPixelInfoOn === false) {
-  //     console.log(this.m_oFeatureInfoMarker);
-  //     if (this.m_oFeatureInfoMarker != null) {
-  //       this.m_oFeatureInfoMarker.remove();
-  //     }
-  //   }
-  // }
-
 
   /****** CACHE RELATED ******/
   /**

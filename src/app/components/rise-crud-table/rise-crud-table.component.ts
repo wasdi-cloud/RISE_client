@@ -105,7 +105,6 @@ export class RiseCrudTableComponent implements OnChanges, AfterViewInit {
   }
   onRowClick(row: any) {
     if (this.canClickRow) {
-      console.log('Selected row:', row);
       this.m_oClickedRow.emit(row)
     }
   }

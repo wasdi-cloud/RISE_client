@@ -33,7 +33,6 @@ export class FilterPipe implements PipeTransform {
       }
       // Search implementation for LAYER ITEMS - Search by mapId
       if (item.mapId) {
-        console.log(item);
         if (typeof item.mapId === 'number') {
           return item.mapId === parseInt(searchText);
         }

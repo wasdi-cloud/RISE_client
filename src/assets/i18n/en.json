@@ -57,7 +57,8 @@
     "SUCCESS_SAVE": "Area changes saved",
     "AREA_NOT_FOUND": "Area not found",
     "AREA_NOT_FOUND_MSG": "To start creating areas of operations in RISE , please ",
-    "AREA_NOT_FOUND_LINK": "click here"
+    "AREA_NOT_FOUND_LINK": "click here",
+    "IS_PUBLIC": "Is Public"
   },
   "BANNER": {
     "LIVE_SIT": "Live Situation",

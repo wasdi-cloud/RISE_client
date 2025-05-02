@@ -26,6 +26,12 @@
       [m_bReadonly]="false"
       [(m_sInputText)]="m_oArea.description"
     ></rise-textarea-input>
+    <rise-checkbox
+      [m_aoOptions]="m_asIsPublic"
+      [m_aoSelectedValues]="m_asSelectedIsPublic"
+      [m_bReadonly]="true"
+    >
+    </rise-checkbox>
     <rise-date-input
       [m_bHasTitle]="true"
       [m_sLocalizationKey]="'AREA_OF_OPERATIONS.CREATION_DATE'"

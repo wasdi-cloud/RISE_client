@@ -95,6 +95,9 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
   m_bPluginsAreValid: boolean = true;
   m_sOrganizationId: string;
 
+  m_asIsPublic: { label: string; value: string }[] = [];
+  m_asSelectedIsPublic: string[] = [];
+
   constructor(
     private m_oAreaOfOperationService: AreaService,
     private m_oDialog: MatDialog,
@@ -112,6 +115,15 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    let sPublic: string = this.m_oTranslate.instant(
+      'AREA_OF_OPERATIONS.IS_PUBLIC'
+    );
+
+    this.m_asIsPublic.push({
+      label: sPublic, 
+      value: 'isPublic'
+    });
+
     //used for checking overlapping area
     this.getOrganizationId();
     // Optional: Ensure the component reference is available
@@ -259,13 +271,15 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
     return true;
   }
 
-
-
   private saveAreaOfOperation() {
-    //TODO until the daemon is ready
-    // if(environment.isTestEnvironment){
-    //   this.m_oAreaOfOperation.plugins=[]
-    // }
+
+    if (this.m_asSelectedIsPublic.length > 0) {
+      this.m_oAreaOfOperation.publicArea = true;
+    }
+    else {
+      this.m_oAreaOfOperation.publicArea = false;
+    }
+
     this.m_oAreaOfOperationService
       .addArea(this.m_oAreaOfOperation)
       .subscribe({

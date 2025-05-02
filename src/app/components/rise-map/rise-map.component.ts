@@ -124,14 +124,6 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
           this.m_oMapService.addEventMarker(oEvent, this.m_oMap);
         }
       }
-      // if(this.m_oEvent){
-      //   console.log(this.m_oMap)
-      //   this.m_oMapService.clearEventMarkers();
-      //   this.m_oMapService.addEventMarker(this.m_oEvent, this.m_oMap);
-      // }
-
-
-
     }
   }
 
@@ -338,18 +330,10 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       if (area < MIN_AREA_POLYGON || area > MAX_AREA_POLYGON) {
         let sErrorHeader = '';
 
-        console.log('here')
         if (area < MIN_AREA_POLYGON) {
-          console.log('here2')
-          console.log(area)
-          console.log(MIN_AREA_POLYGON)
-          console.log(area<MIN_AREA_POLYGON)
           sErrorHeader = sErrorHeaderForTooSmall;
-        } else if (area > MAX_AREA_POLYGON) {
-          console.log('here3')
-          console.log(area)
-          console.log(MAX_AREA_POLYGON)
-          console.log(area>MAX_AREA_POLYGON)
+        } 
+        else if (area > MAX_AREA_POLYGON) {
           sErrorHeader = sErrorHeaderForTooBig;
         }
         this.m_oNotificationService.openInfoDialog(

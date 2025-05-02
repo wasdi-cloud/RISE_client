@@ -71,7 +71,8 @@
     "ERROR_GET_USERS": "Impossible de récupérer les utilisateurs pour cette zone d'opérations",
     "ERROR_PLUGINS": "Impossible de récupérer les informations du plugin",
     "ERROR_SAVE": "Impossible d'enregistrer les modifications dans cette zone",
-    "SUCCESS_SAVE": "Modifications de zone enregistrées"
+    "SUCCESS_SAVE": "Modifications de zone enregistrées",
+    "IS_PUBLIC": "Cette zone est publique"
   },
   "BANNER": {
     "LIVE_SIT": "Situation en direct",

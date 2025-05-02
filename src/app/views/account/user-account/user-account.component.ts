@@ -102,6 +102,10 @@ export class UserAccountComponent implements OnInit {
       name: 'عربي',
       value: 'ar',
     },
+    {
+      name: "Italiano",
+      value: 'it'
+    }
   ];
   m_sUserDefaultLanguage: string;
   /**

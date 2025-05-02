@@ -33,6 +33,8 @@ export class AreaInfoComponent implements OnInit {
   m_sAreaId: string = '';
   m_oArea: AreaViewModel = {} as AreaViewModel;
   m_asPlugins: { label: string; value: string }[] = [];
+  m_asIsPublic: { label: string; value: string }[] = [];
+  m_asSelectedIsPublic: string[] = [];
   constructor(
     @Inject(MAT_DIALOG_DATA) private m_oData: any,
     private m_oDialogRef: MatDialogRef<AreaInfoComponent>,
@@ -43,14 +45,24 @@ export class AreaInfoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    let sPublic: string = this.m_oTranslate.instant(
+      'AREA_OF_OPERATIONS.IS_PUBLIC'
+    );
+
+    this.m_asIsPublic.push({
+      label: sPublic, 
+      value: 'isPublic'
+    });
+
     if (this.m_oData.area) {
       this.m_sAreaId = this.m_oData.area.id;
       this.getAreaInfo();
     }
     this.getPlugins();
 
-    console.log(this.m_oArea);
+
   }
+  
 
   getAreaInfo() {
     let sError: string = this.m_oTranslate.instant(
@@ -64,6 +76,10 @@ export class AreaInfoComponent implements OnInit {
         }
 
         this.m_oArea = oResponse;
+
+        if (this.m_oArea.publicArea) {
+          this.m_asSelectedIsPublic.push('isPublic');
+        }
       },
       error: (oError) => {
         this.m_oNotificationService.openInfoDialog(sError, 'alert', 'Error');
@@ -109,6 +125,14 @@ export class AreaInfoComponent implements OnInit {
     let sSuccess: string = this.m_oTranslate.instant(
       'AREA_OF_OPERATIONS.SUCCESS_SAVE'
     );
+
+    if (this.m_asSelectedIsPublic.length > 0) {
+      this.m_oArea.publicArea = true;
+    }
+    else {
+      this.m_oArea.publicArea = false;
+    }
+
     this.m_oAreaService.updateArea(this.m_oArea).subscribe({
       next: (oResponse) => {
         this.m_oNotificationService.openSnackBar(
