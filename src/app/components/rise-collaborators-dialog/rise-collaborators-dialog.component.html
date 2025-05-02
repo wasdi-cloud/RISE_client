@@ -51,6 +51,16 @@
           >
             delete
           </span>
+          <span
+            *ngIf="oUser.role==UserRole.SHARED"
+            class="option delete material-symbols-outlined remove"
+            [matTooltip]="'Remove User'"
+            (click)="removeExternalOperator(oUser)"
+            style="color: red;cursor: pointer"
+          >
+            delete
+          </span>          
+          
         </td>
       </tr>
       <tr *ngIf="m_bAddingUser">
@@ -83,6 +93,36 @@
 
         </td>
       </tr>
+      <tr *ngIf="m_bAddingExternalUser">
+        <td>
+          <rise-text-input
+          [m_bHasTitle]="true"
+          [m_sLocalizationKey]="'Rise User Id'"
+          [(m_sInputText)]="m_sExternalRiseUserId"
+        ></rise-text-input>          
+        </td>
+        <td></td>
+        <td>
+          <span
+            class="option material-symbols-outlined edit"
+            [matTooltip]="'Save'"
+            (click)="addExternalUser()"
+            style="color: gold;cursor: pointer"
+
+          >
+            save
+          </span>
+          <span
+            class="option material-symbols-outlined edit"
+            [matTooltip]="'Cancel Editing'"
+            (click)="m_bAddingExternalUser = false"
+            style="color: red;cursor: pointer"
+          >
+            close
+          </span>
+
+        </td>
+      </tr>      
       <tr class="mt-1">
         <td class="d-flex flex-row justify-content-start">
           <rise-button
@@ -90,6 +130,14 @@
             [m_sLabel]="'Add Collaborator'"
             [m_sRole]="'primary'"
             (click)="m_bAddingUser = true"
+          ></rise-button>
+        </td>
+        <td class="d-flex flex-row justify-content-start">
+          <rise-button
+            *ngIf="m_sResourceType !== 'organization'"
+            [m_sLabel]="'Add External Collaborator'"
+            [m_sRole]="'primary'"
+            (click)="m_bAddingExternalUser = true"
           ></rise-button>
         </td>
       </tr>

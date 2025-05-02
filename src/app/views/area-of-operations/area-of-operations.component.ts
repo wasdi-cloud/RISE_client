@@ -96,6 +96,7 @@ export class AreaOfOperationsComponent implements OnInit {
             resourceType: 'area',
             id: oArea.id,
             isDialog: true,
+            entity: oArea
           },
         });
       },

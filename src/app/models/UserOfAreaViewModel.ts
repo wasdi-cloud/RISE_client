@@ -14,4 +14,6 @@ export class UserOfAreaViewModel {
 
   areaId: string;
 
+  organizationId: string;
+
 }

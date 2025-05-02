@@ -53,7 +53,6 @@ export class AreaService {
 
   /**
    * Add an Area
-   * @param sSessionId
    * @param oAreaViewModel
    * @return
    */
@@ -63,7 +62,6 @@ export class AreaService {
 
   /**
    * Get Users from Area
-   * @param sSessionId
    * @param sId
    * @return
    */
@@ -75,7 +73,6 @@ export class AreaService {
 
   /**
    * Add Users to  an Area
-   * @param sSessionId
    * @param sId
    * @param oUserToAdd
    * @return
@@ -91,7 +88,6 @@ export class AreaService {
 
   /**
    * Delete User from an Area
-   * @param sSessionId
    * @param sId
    * @param oUserToDelete
    * @return
@@ -106,7 +102,6 @@ export class AreaService {
 
   /**
    * Check overlapping area
-   * @param sSessionId
    * @param sId
    * @param oArea
    * @return
