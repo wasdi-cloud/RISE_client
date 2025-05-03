@@ -271,14 +271,15 @@ export class EventsComponent implements OnInit {
       return false;
     }
 
-    // TODO: Event Id, FileName
+    const oFormData = new FormData();
+    oFormData.append("file", this.m_oUploadImageFile);        
 
-    this.m_oAttachmentService.upload("event_images", this.m_oEvent.id, this.m_sUploadImageName, this.m_oUploadImageFile).subscribe({
+    this.m_oAttachmentService.upload("event_images", this.m_oEvent.id, this.m_sUploadImageName, oFormData).subscribe({
       next: oResponse => {
         console.log("Image uploaded successfully", oResponse);
       },
       error: oError => {
-        
+        console.log("Error ", oError);
       }
     });
     return true;
@@ -286,7 +287,7 @@ export class EventsComponent implements OnInit {
   }
 
   setImageFile(oEvent: any) {
-    this.m_sUploadImageName = oEvent.name;
+    this.m_sUploadImageName = oEvent.file.name;
     this.m_oUploadImageFile = oEvent.file;
   }
 

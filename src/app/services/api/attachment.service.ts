@@ -31,6 +31,9 @@ export class AttachmentService {
     if (bNotSameName) {
       sUrlParams += '&notSameName=true';
     }
+    else {
+      sUrlParams += '&notSameName=false';
+    }
     return this.m_oHttp.post<any>(
       this.APIURL + '/attachment/upload' + sUrlParams,
       oBody
