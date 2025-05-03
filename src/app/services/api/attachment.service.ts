@@ -55,7 +55,7 @@ export class AttachmentService {
       sUrlParams += '&token=' + sToken;
     }
 
-    return this.m_oHttp.get<any>(this.APIURL + '/attachment/get' + sUrlParams);
+    return this.m_oHttp.get(this.APIURL + '/attachment/get' + sUrlParams, { responseType: "blob"});
   }
 
   /**
@@ -91,7 +91,7 @@ export class AttachmentService {
    */
   delete(sCollection: string, sFolder: string, sName: string) {
     let sUrlParams = '?collection=' + sCollection + '&folder=' + sFolder + '&name=' + encodeURI(sName);
-    return this.m_oHttp.delete(this.APIURL + "/delete" + sUrlParams);
+    return this.m_oHttp.delete(this.APIURL + "/attachment/delete" + sUrlParams);
   };
 
   /**

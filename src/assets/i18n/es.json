@@ -21,6 +21,14 @@
     "EDIT_EVENT": "Editar Evento",
     "RETURN": "Volver"
   },
+  "CREATE_NEW_EVENT": {
+    "NAME": "Nombre",
+    "DESCRIPTION": "Descripción",
+    "TYPE": "Tipo",
+    "SITUATION": "Situación",
+    "UPLOAD_IMAGES": "Subir Imágenes",
+    "UPLOAD_DOCUMENTS": "Subir Documentos"
+  },  
   "EVENT": {
     "NAME": "Nombre",
     "TYPE": "Tipo",

@@ -19,6 +19,14 @@
     "EDIT_EVENT": "تعديل حدث",
     "RETURN": "العودة إلى الأحداث"
   },
+  "CREATE_NEW_EVENT": {
+    "NAME": "الاسم",
+    "DESCRIPTION": " الوص",
+    "TYPE": "النوع",
+    "SITUATION": "الوضع",
+    "UPLOAD_IMAGES": "تحميل الصور",
+    "UPLOAD_DOCUMENTS": "تحميل المستندات"
+  },  
   "EVENT": {
     "NAME": "الاسم",
     "TYPE": "النوع",

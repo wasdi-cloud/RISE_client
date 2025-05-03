@@ -27,6 +27,9 @@ import {EventType} from "../../models/EventType";
 import { ConstantsService } from '../../services/constants.service';
 import { AttachmentService } from '../../services/api/attachment.service';
 import { AreaService } from '../../services/api/area.service';
+import {MatDialog} from "@angular/material/dialog";
+import { ImageDialogComponent } from '../../dialogs/image-dialog/image-dialog.component';
+
 
 @Component({
   selector: 'rise-events',
@@ -79,6 +82,8 @@ export class EventsComponent implements OnInit {
   m_oUploadImageFile: any;
   m_oArea: AreaViewModel = null;
   m_sAreaName: string = null;
+  m_asEventImages: string[] = [];
+  m_asEventDocs: string[] = [];
 
 
   constructor(
@@ -89,7 +94,8 @@ export class EventsComponent implements OnInit {
     private m_oNotificationServiceDialog: NotificationsDialogsService,
     private m_oConstantsService: ConstantsService,
     private m_oAttachmentService: AttachmentService,
-    private m_oAreaService: AreaService
+    private m_oAreaService: AreaService,
+    private m_oImageDialog: MatDialog
   ) {
   }
 
@@ -116,9 +122,33 @@ export class EventsComponent implements OnInit {
     this.m_sPeakDate=this.formatEpochToDate(this.m_oEvent.peakDate*1000);
     this.m_sEndDate=this.formatEpochToDate(this.m_oEvent.endDate*1000);
 
+    this.loadEventAttachments();
+
     this.m_bUpdatingEvent=true;
   }
-//todo we might want to add a confirmation
+
+  loadEventAttachments() {
+    this.m_oAttachmentService.list("event_images", this.m_oEvent.id).subscribe({
+      next: (oResponse) => {
+        this.m_asEventImages = oResponse.files;
+      },
+      error: (oError) => {
+        console.error("Error loading image attachment", oError);
+      }
+    });
+
+    this.m_oAttachmentService.list("event_docs", this.m_oEvent.id).subscribe({
+      next: (oResponse) => {
+        this.m_asEventDocs = oResponse.files;
+      },
+      error: (oError) => {
+        console.error("Error loading document attachment", oError);
+      }
+    });
+  }
+
+
+  //todo we might want to add a confirmation
   deleteEvent(oEvent: EventViewModel) {
     if (oEvent) {
       this.m_oEventService.deleteEvent(oEvent.id).subscribe({
@@ -279,6 +309,7 @@ export class EventsComponent implements OnInit {
         console.log("Image uploaded successfully", oResponse);
         this.m_oUploadImageFile = null;
         this.m_sUploadImageName = "";
+        this.loadEventAttachments();
       },
       error: oError => {
         console.log("Error ", oError);
@@ -308,6 +339,7 @@ export class EventsComponent implements OnInit {
         console.log("Doc uploaded successfully", oResponse);
         this.m_oUploadDocFile = null;
         this.m_sUploadDocName = "";
+        this.loadEventAttachments();
       },
       error: oError => {
         console.log("Error ", oError);
@@ -439,8 +471,13 @@ export class EventsComponent implements OnInit {
       this.m_oAreaService.getAreaById(this.m_sAreaId).subscribe({
         next: (oArea: AreaViewModel) => {
           this.m_oArea = oArea;
+
           this.m_oMapService.flyToMonitorBounds(oArea.bbox);
           this.m_sAreaName = oArea.name;
+
+          if (this.m_oConstantsService.getActiveAOI()==null) {
+            this.m_oConstantsService.setActiveArea(oArea);
+          }
         }
       });
 
@@ -513,5 +550,64 @@ export class EventsComponent implements OnInit {
       });
     }
   }
+
+  onPreviewImage(sFileName: string) { 
+    if (sFileName) {
+
+      let sLink = this.m_oAttachmentService.getAttachmentLink("event_images", this.m_oEvent.id, sFileName)
+
+      let oPayload = 
+      {
+        fileName: sFileName,
+        link: sLink,
+        type: "image",
+        eventId: this.m_oEvent.id
+      }
+
+      // Open the Material Dialog with the image
+      const oPreviewDialogRef = this.m_oImageDialog.open(ImageDialogComponent, {
+        data: { oPayload },
+        width: '90vw'
+      });
+
+      // Handle dialog close event
+      oPreviewDialogRef.afterClosed().subscribe(result => {
+        this.loadEventAttachments();
+      });
+
+    }
+  }  
+
+  onPreviewDoc(sFileName: string) { 
+    if (sFileName) {
+
+      let sLink = this.m_oAttachmentService.getAttachmentLink("event_docs", this.m_oEvent.id, sFileName)
+      
+      let sType = "txt";
+
+      if (sFileName.toLowerCase().endsWith('.pdf') || sFileName.toLowerCase().endsWith('.docx') || sFileName.toLowerCase().endsWith('.doc')) {  
+        sType = "pdf";
+      }
+
+      let oPayload = 
+      {
+        fileName: sFileName,
+        link: sLink,
+        type: sType,
+        eventId: this.m_oEvent.id
+      }
+
+      // Open the Material Dialog with the image
+      const oPreviewDialogRef = this.m_oImageDialog.open(ImageDialogComponent, {
+        data: { oPayload },
+        width: '90vw'
+      });
+
+      // Handle dialog close event
+      oPreviewDialogRef.afterClosed().subscribe(result => {
+        this.loadEventAttachments();
+      });
+    }
+  }  
 
 }

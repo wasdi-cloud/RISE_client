@@ -214,31 +214,52 @@
           [m_bIsSelectingArea]="m_bCreateNewEvent"
           [m_oEvent]="m_bUpdatingEvent?m_oEvent:{}"
         ></rise-map>
+
+        <div class="drag-drop-container d-flex flex-row justify-content-between mt-3">
+          <div class="download-zone">
+          <div *ngFor="let sFile of m_asEventImages" class="file-item" (click)="onPreviewImage(sFile)">
+            <div class="icon-container">
+              <span class="material-icons file-icon">image</span>
+              <span class="file-name">{{ sFile }}</span>
+            </div>
+          </div>        
+        </div>
+        <div class="download-zone">
+          <div *ngFor="let sFile of m_asEventDocs" class="file-item" (click)="onPreviewDoc(sFile)">
+            <div class="icon-container">
+              <span class="material-icons file-icon">description</span>
+              <span class="file-name">{{ sFile }}</span>
+            </div>
+          </div>                  
+        </div>
+      </div>
+
         <!-- Drag-and-Drop Zones -->
         <div class="drag-drop-container d-flex flex-row justify-content-between mt-3" *ngIf="!m_bCreateNewEvent">
           <!-- Images Drag-and-Drop -->
           <div class="drag-drop-zone">
-            <rise-button
-              [m_sLabel]="'CREATE_NEW_EVENT.UPLOAD_IMAGES'"
-              [m_bDisabled]="false"
-              (click)="uploadImage()"
-            ></rise-button>
-
             <rise-drag-and-drop
               (m_oSelectedFileOutput)="setImageFile($event)"
             ></rise-drag-and-drop>
           </div>
+          <rise-button
+          [m_sLabel]="'CREATE_NEW_EVENT.UPLOAD_IMAGES'"
+          [m_bDisabled]="m_oUploadImageFile==null"
+          (click)="uploadImage()"
+        ></rise-button>
+
           <!-- Documents Drag-and-Drop -->
           <div class="drag-drop-zone">
-            <rise-button
-              [m_sLabel]="'CREATE_NEW_EVENT.UPLOAD_DOCUMENTS'"
-              [m_bDisabled]="false"
-              (click)="uploadDocument()"
-            ></rise-button>
             <rise-drag-and-drop
               (m_oSelectedFileOutput)="setDocumentFile($event)"
             ></rise-drag-and-drop>
           </div>
+          <rise-button
+          [m_sLabel]="'CREATE_NEW_EVENT.UPLOAD_DOCUMENTS'"
+          [m_bDisabled]="m_oUploadDocFile==null"
+          (click)="uploadDocument()"
+        ></rise-button>
+
         </div>
         <div class="drag-drop-container d-flex flex-row justify-content-between mt-3" *ngIf="m_bCreateNewEvent">
           <div>

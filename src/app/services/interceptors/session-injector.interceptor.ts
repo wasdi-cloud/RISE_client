@@ -13,6 +13,7 @@ export const SessionInjectorInterceptor: HttpInterceptorFn = (req, next) => {
   if (!sToken) {
     if (m_oAuthService.getTokenObject()) {
       sToken = m_oAuthService.getTokenObject().access_token;
+      m_oConstantsService.setSessionId(sToken);
     }
   }
 

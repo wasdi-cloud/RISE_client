@@ -22,10 +22,16 @@ export class ConstantsService {
 
   WMSURL: string = environment.wmsUrl;
 
+  m_sSessionId: string = null;
+
   constructor() {}
 
   getSessionId() {
-    return '';
+    return this.m_sSessionId;
+  }
+
+  setSessionId(sSessionId: string) {
+    this.m_sSessionId = sSessionId;
   }
 
   getUser(): UserViewModel {

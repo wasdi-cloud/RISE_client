@@ -105,6 +105,12 @@ rise-dropdown {
   border-radius: 5px;
 }
 
+.download-zone {
+  display: flex; /* Enables flexbox layout */
+  flex-wrap: wrap; /* Allows items to wrap to the next line if needed */
+  gap: 10px; /* Adds spacing between items */
+  align-items: center; /* Vertically aligns items */
+}
 .drag-drop-label {
   font-weight: bold;
   margin-bottom: 10px;
@@ -123,4 +129,18 @@ rise-dropdown {
 .scrollable-table-container {
   overflow-y: auto;
   max-height: 75vh;
+}
+
+.icon-container {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column; /* Stacks items vertically */
+  align-items: center;    /* Centers them horizontally */
+}
+
+
+.file-icon {
+  font-size: 34px; /* Adjust size */
+  color: var(--rise-gold) !important;  /* Blue color */
+  margin-right: 10px;
 }

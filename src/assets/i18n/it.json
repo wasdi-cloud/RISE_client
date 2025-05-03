@@ -24,8 +24,8 @@
 		"DESCRIPTION": "Descrizione",
 		"TYPE": "Tipo",
 		"SITUATION": "Situazione",
-		"UPLOAD_IMAGES": "Carica immagini",
-		"UPLOAD_DOCUMENTS": "Carica documenti"
+		"UPLOAD_IMAGES": "Carica immagine",
+		"UPLOAD_DOCUMENTS": "Carica documento"
 	},
 	"EVENT": {
 		"NAME": "Nome",
