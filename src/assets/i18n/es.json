@@ -17,7 +17,9 @@
 
   "MANAGE_EVENTS": {
     "HEADER": "GESTIONAR EVENTOS",
-    "CREATE_EVENT": "Crear nuevo Evento"
+    "CREATE_NEW_EVENT": "Crear nuevo Evento",
+    "EDIT_EVENT": "Editar Evento",
+    "RETURN": "Volver"
   },
   "EVENT": {
     "NAME": "Nombre",

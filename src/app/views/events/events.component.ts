@@ -25,6 +25,8 @@ import {geojsonToWKT} from "@terraformer/wkt";
 import {MapService} from "../../services/map.service";
 import {EventType} from "../../models/EventType";
 import { ConstantsService } from '../../services/constants.service';
+import { AttachmentService } from '../../services/api/attachment.service';
+import { AreaService } from '../../services/api/area.service';
 
 @Component({
   selector: 'rise-events',
@@ -62,7 +64,6 @@ export class EventsComponent implements OnInit {
   m_bCreateNewEvent: boolean = false;
   m_bUpdatingEvent: boolean = false;
   m_aoEvents: EventViewModel[] = [];
-  m_aoAreasOfOperations: Array<AreaViewModel> = [];
   m_oEvent: EventViewModel = {};
   m_sStartDate: any;
   m_sPeakDate: any;
@@ -72,6 +73,13 @@ export class EventsComponent implements OnInit {
   m_bEventNameIsValid:boolean=true;
   m_bIsDateInvalid: boolean=false;
   m_sDateErrorText: string="";
+  m_sUploadDocName: any;
+  m_oUploadDocFile: any;
+  m_sUploadImageName: any;
+  m_oUploadImageFile: any;
+  m_oArea: AreaViewModel = null;
+  m_sAreaName: string = null;
+
 
   constructor(
     private m_oEventService: EventService,
@@ -79,7 +87,9 @@ export class EventsComponent implements OnInit {
     private m_oMapService: MapService,
     private m_oRouter: Router,
     private m_oNotificationServiceDialog: NotificationsDialogsService,
-    private m_oConstantsService: ConstantsService
+    private m_oConstantsService: ConstantsService,
+    private m_oAttachmentService: AttachmentService,
+    private m_oAreaService: AreaService
   ) {
   }
 
@@ -209,7 +219,8 @@ export class EventsComponent implements OnInit {
         // this.m_oEvent.endDate /= 1000;
     
         this.addNewEvent()
-      }else if (this.m_bUpdatingEvent){
+      }
+      else if (this.m_bUpdatingEvent){
         this.updateEvent();
       }
 
@@ -252,14 +263,39 @@ export class EventsComponent implements OnInit {
     }
   }
 
+  uploadImage() {
 
+    //Check for uploaded file:
+    if (FadeoutUtils.utilsIsObjectNullOrUndefined(this.m_oUploadImageFile)) {
+      console.log("Please upload a file");
+      return false;
+    }
 
-  uploadImage($event: any) {
+    // TODO: Event Id, FileName
 
+    this.m_oAttachmentService.upload("event_images", this.m_oEvent.id, this.m_sUploadImageName, this.m_oUploadImageFile).subscribe({
+      next: oResponse => {
+        console.log("Image uploaded successfully", oResponse);
+      },
+      error: oError => {
+        
+      }
+    });
+    return true;
+    
   }
 
-  uploadDocument($event: any) {
+  setImageFile(oEvent: any) {
+    this.m_sUploadImageName = oEvent.name;
+    this.m_oUploadImageFile = oEvent.file;
+  }
 
+  uploadDocument() {
+  }
+
+  setDocumentFile(oEvent: any) {
+    this.m_sUploadDocName = oEvent.name;
+    this.m_oUploadDocFile = oEvent.file;
   }
 
   onSwitchOnGoingButton(toggel: MatSlideToggleChange) {
@@ -375,6 +411,15 @@ export class EventsComponent implements OnInit {
   private getActiveAOI() {
     this.m_oActiveRoute.paramMap.subscribe(params => {
       this.m_sAreaId = params.get('aoiId');
+
+      this.m_oAreaService.getAreaById(this.m_sAreaId).subscribe({
+        next: (oArea: AreaViewModel) => {
+          this.m_oArea = oArea;
+          this.m_oMapService.flyToMonitorBounds(oArea.bbox);
+          this.m_sAreaName = oArea.name;
+        }
+      });
+
       this.getEventsList();
     });
   }

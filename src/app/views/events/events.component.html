@@ -10,7 +10,7 @@
         <div
           class="account-header d-flex flex-row align-items-center justify-content-between mt-2 p-2"
         >
-          {{ "MANAGE_EVENTS.HEADER" | translate }}
+          {{ "MANAGE_EVENTS.HEADER" | translate }} - {{ m_sAreaName}}
 
           <div class="d-flex flex-row gap-2">
             <rise-button *ngIf="canUserWriteArea()"
@@ -120,11 +120,12 @@
   <div
     class="create-container h-100 d-flex flex-column justify-content-between px-4"
   >
-    <div
-      class="account-header d-flex flex-row align-items-center justify-content-between mt-2 p-2"
-    >
+    <div class="account-header d-flex flex-row align-items-center justify-content-between mt-2 p-2" *ngIf="m_bCreateNewEvent">
       {{ "MANAGE_EVENTS.CREATE_NEW_EVENT" | translate }}
     </div>
+    <div class="account-header d-flex flex-row align-items-center justify-content-between mt-2 p-2" *ngIf="m_bUpdatingEvent">
+      {{ "MANAGE_EVENTS.EDIT_EVENT" | translate }}
+    </div>    
     <div class="body flex-fill d-flex flex-row my-3">
       <div class="create-sidebar d-flex flex-column justify-content-between">
         <div class="d-flex flex-column gap-2">
@@ -214,26 +215,36 @@
           [m_oEvent]="m_bUpdatingEvent?m_oEvent:{}"
         ></rise-map>
         <!-- Drag-and-Drop Zones -->
-        <div class="drag-drop-container d-flex flex-row justify-content-between mt-3">
+        <div class="drag-drop-container d-flex flex-row justify-content-between mt-3" *ngIf="!m_bCreateNewEvent">
           <!-- Images Drag-and-Drop -->
           <div class="drag-drop-zone">
-            <label class="drag-drop-label">
-              {{ "CREATE_NEW_EVENT.UPLOAD_IMAGES" | translate }}
-            </label>
+            <rise-button
+              [m_sLabel]="'CREATE_NEW_EVENT.UPLOAD_IMAGES'"
+              [m_bDisabled]="false"
+              (click)="uploadImage()"
+            ></rise-button>
+
             <rise-drag-and-drop
-              (m_oSelectedFileOutput)="uploadImage($event)"
+              (m_oSelectedFileOutput)="setImageFile($event)"
             ></rise-drag-and-drop>
           </div>
           <!-- Documents Drag-and-Drop -->
           <div class="drag-drop-zone">
-            <label class="drag-drop-label">
-              {{ "CREATE_NEW_EVENT.UPLOAD_DOCUMENTS" | translate }}
-            </label>
+            <rise-button
+              [m_sLabel]="'CREATE_NEW_EVENT.UPLOAD_DOCUMENTS'"
+              [m_bDisabled]="false"
+              (click)="uploadDocument()"
+            ></rise-button>
             <rise-drag-and-drop
-              (m_oSelectedFileOutput)="uploadDocument($event)"
+              (m_oSelectedFileOutput)="setDocumentFile($event)"
             ></rise-drag-and-drop>
           </div>
         </div>
+        <div class="drag-drop-container d-flex flex-row justify-content-between mt-3" *ngIf="m_bCreateNewEvent">
+          <div>
+            
+          </div>
+        </div>        
       </div>
 
     </div>

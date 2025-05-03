@@ -8,6 +8,7 @@
       cdkDropList
 
     >
+    <div class="d-flex align-items-center gap-2">
       <img
         class="align-self-start logo-img"
         src="/assets/rise-assets/logo-white-horizontal.svg"
@@ -16,6 +17,10 @@
         height="35%"
         (click)="navigateRoute('dashboard')"
       />
+      <div class="area-name-text">
+        {{ m_sAreaName }}
+      </div>   
+    </div>   
       <rise-text-input
         [m_bHasIcon]="true"
         [m_sIcon]="'search'"

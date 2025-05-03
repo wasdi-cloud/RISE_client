@@ -131,6 +131,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   m_iInitialPeakDate: number;
   m_iVisibleCount = 5;
   m_bShowAllPlugins = false;
+  m_sAreaName = "";
 
   private m_oLiveTimer: any;
 
@@ -258,6 +259,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     this.m_oAreaService.getAreaById(sAreaId).subscribe({
       next: (oResponse) => {
         this.m_oAreaOfOperation = oResponse;
+        this.m_sAreaName = this.m_oAreaOfOperation.name;
         this.m_oConstantsService.setActiveArea(this.m_oAreaOfOperation);
         if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           this.getMapsByArea(oResponse.id, oResponse.startDate);

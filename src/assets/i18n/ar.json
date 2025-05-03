@@ -15,7 +15,9 @@
   },
   "MANAGE_EVENTS": {
     "HEADER": "إدارة الأحداث",
-    "CREATE_EVENT": "إنشاء حدث جديد"
+    "CREATE_NEW_EVENT": "إنشاء حدث جديد",
+    "EDIT_EVENT": "تعديل حدث",
+    "RETURN": "العودة إلى الأحداث"
   },
   "EVENT": {
     "NAME": "الاسم",

@@ -128,3 +128,11 @@ span.cta-text {
   padding-right: 80px;
   flex-wrap: wrap;
 }
+
+.area-name-text {
+  font-size: 1.2rem; /* Adjust font size */
+  font-weight: bold; /* Make the text bold */
+  color: var(--rise-text-dim); /* Use a custom color variable */
+  text-align: center; /* Center the text */
+  margin-top: -3px;
+}
