@@ -125,7 +125,7 @@
     </div>
     <div class="account-header d-flex flex-row align-items-center justify-content-between mt-2 p-2" *ngIf="m_bUpdatingEvent">
       {{ "MANAGE_EVENTS.EDIT_EVENT" | translate }}
-    </div>    
+    </div>
     <div class="body flex-fill d-flex flex-row my-3">
       <div class="create-sidebar d-flex flex-column justify-content-between">
         <div class="d-flex flex-column gap-2">
@@ -157,7 +157,7 @@
             (m_sInputDateChange)="onDateChange($event,'peakDate')"
           ></rise-date-input>
           <rise-date-input
-            *ngIf="!m_oEvent.onGoing"
+            *ngIf="!m_oEvent.inGoing"
             [m_bHasTitle]="true"
             [m_sLocalizationKey]="'End Date'"
             [(m_sInputDate)]="m_sEndDate "
@@ -174,7 +174,7 @@
           <!--          todo add date range here with switch button for live or no-->
           <div class="align-items-md-start d-flex">
             <span class="toggle-label">On-going event</span>
-            <mat-slide-toggle labelPosition="before" (change)="onSwitchOnGoingButton($event)" [(ngModel)]="m_oEvent.onGoing" class="custom-toggle"></mat-slide-toggle>
+            <mat-slide-toggle labelPosition="before" (change)="onSwitchOnGoingButton($event)" [(ngModel)]="m_oEvent.inGoing" class="custom-toggle"></mat-slide-toggle>
           </div>
 
 
@@ -222,7 +222,7 @@
               <span class="material-icons file-icon">image</span>
               <span class="file-name">{{ sFile }}</span>
             </div>
-          </div>        
+          </div>
         </div>
         <div class="download-zone">
           <div *ngFor="let sFile of m_asEventDocs" class="file-item" (click)="onPreviewDoc(sFile)">
@@ -230,7 +230,7 @@
               <span class="material-icons file-icon">description</span>
               <span class="file-name">{{ sFile }}</span>
             </div>
-          </div>                  
+          </div>
         </div>
       </div>
 
@@ -263,9 +263,9 @@
         </div>
         <div class="drag-drop-container d-flex flex-row justify-content-between mt-3" *ngIf="m_bCreateNewEvent">
           <div>
-            
+
           </div>
-        </div>        
+        </div>
       </div>
 
     </div>
