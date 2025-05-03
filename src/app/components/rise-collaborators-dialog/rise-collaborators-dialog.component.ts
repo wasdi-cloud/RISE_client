@@ -2,7 +2,6 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {UserViewModel} from '../../models/UserViewModel';
 import {TranslateModule} from '@ngx-translate/core';
-import {RiseCollaboratorsComponent} from '../rise-collaborators/rise-collaborators.component';
 import {AreaService} from "../../services/api/area.service";
 import {NgForOf, NgIf} from "@angular/common";
 import {RiseButtonComponent} from "../rise-button/rise-button.component";
@@ -12,12 +11,12 @@ import {MatTooltip} from "@angular/material/tooltip";
 import {UserRole} from "../../models/UserRole";
 import {OrganizationsService} from "../../services/api/organizations.service";
 import {UserOfAreaViewModel} from "../../models/UserOfAreaViewModel";
-import { PermissionService } from '../../services/api/permission.service';
+import {PermissionService} from '../../services/api/permission.service';
 
 @Component({
   selector: 'rise-collaborators-dialog',
   standalone: true,
-  imports: [TranslateModule, RiseCollaboratorsComponent, NgForOf, NgIf, RiseButtonComponent, RiseDropdownComponent, RiseTextInputComponent, MatTooltip],
+  imports: [TranslateModule, NgForOf, NgIf, RiseButtonComponent, RiseDropdownComponent, RiseTextInputComponent, MatTooltip],
   templateUrl: './rise-collaborators-dialog.component.html',
   styleUrl: './rise-collaborators-dialog.component.css',
 })
@@ -34,6 +33,7 @@ export class RiseCollaboratorsDialogComponent implements OnInit {
   m_oFieldOperatorOfAreaUserId: string="";
   m_sExternalRiseUserId: string = "";
   m_oEntity = null;
+  m_bNoUserExists: boolean=false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public m_oData: any,
@@ -47,7 +47,7 @@ export class RiseCollaboratorsDialogComponent implements OnInit {
   ngOnInit(): void {
     if (this.m_oData) {
       this.m_oEntity = this.m_oData.entity;
-      
+
       this.m_sResourceId = this.m_oData.id;
       this.m_sResourceType = this.m_oData.resourceType;
 
@@ -64,9 +64,9 @@ export class RiseCollaboratorsDialogComponent implements OnInit {
       if (this.m_oEntity!=null) {
         if (this.m_oEntity.organizationId != oUser.organizationId) {
           oUser.role = UserRole.SHARED;
-        }  
+        }
       }
-    }    
+    }
     this.m_aoUsers = aoUserList;
   }
 
@@ -122,12 +122,12 @@ export class RiseCollaboratorsDialogComponent implements OnInit {
         }
       })
 
-      
+
     }
     else{
       console.log("please add field operator")
     }
-  }  
+  }
 
   removeFieldOperator(oFieldOP: UserViewModel) {
     if(oFieldOP){
@@ -200,6 +200,11 @@ export class RiseCollaboratorsDialogComponent implements OnInit {
     this.m_oOrgService.getOrganizationUsers().subscribe({
       next: (oResponse) => {
         this.m_aoFieldOperators = oResponse
+        //if no users exists , show a message to the user to tell him to invite
+        console.log(this.m_aoFieldOperators)
+        if(!this.m_aoFieldOperators || this.m_aoFieldOperators.length==0){
+          this.m_bNoUserExists=true;
+        }
         this.fillMap()
       },
       error: (oError) => {
@@ -207,7 +212,7 @@ export class RiseCollaboratorsDialogComponent implements OnInit {
       }
     })
   }
-
+  //todo delete this , because i think its useless
   private fillMap() {
     for (let i = 0; i <this.m_aoFieldOperators.length ; i++) {
       let oFieldOperator = this.m_aoFieldOperators[i];
@@ -217,4 +222,6 @@ export class RiseCollaboratorsDialogComponent implements OnInit {
   getFieldOperatorKeys() {
     return Array.from(this.m_aoFieldOperatorsMap.keys());
   }
+
+
 }
