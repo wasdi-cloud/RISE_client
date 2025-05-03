@@ -277,13 +277,15 @@ export class EventsComponent implements OnInit {
     this.m_oAttachmentService.upload("event_images", this.m_oEvent.id, this.m_sUploadImageName, oFormData).subscribe({
       next: oResponse => {
         console.log("Image uploaded successfully", oResponse);
+        this.m_oUploadImageFile = null;
+        this.m_sUploadImageName = "";
       },
       error: oError => {
         console.log("Error ", oError);
       }
     });
+
     return true;
-    
   }
 
   setImageFile(oEvent: any) {
@@ -292,10 +294,31 @@ export class EventsComponent implements OnInit {
   }
 
   uploadDocument() {
+    //Check for uploaded file:
+    if (FadeoutUtils.utilsIsObjectNullOrUndefined(this.m_oUploadDocFile)) {
+      console.log("Please upload a file");
+      return false;
+    }
+
+    const oFormData = new FormData();
+    oFormData.append("file", this.m_oUploadDocFile);        
+
+    this.m_oAttachmentService.upload("event_docs", this.m_oEvent.id, this.m_sUploadDocName, oFormData).subscribe({
+      next: oResponse => {
+        console.log("Doc uploaded successfully", oResponse);
+        this.m_oUploadDocFile = null;
+        this.m_sUploadDocName = "";
+      },
+      error: oError => {
+        console.log("Error ", oError);
+      }
+    });
+
+    return true;    
   }
 
   setDocumentFile(oEvent: any) {
-    this.m_sUploadDocName = oEvent.name;
+    this.m_sUploadDocName = oEvent.file.name;
     this.m_oUploadDocFile = oEvent.file;
   }
 

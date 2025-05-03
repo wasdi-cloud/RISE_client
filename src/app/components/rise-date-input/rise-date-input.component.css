@@ -18,3 +18,16 @@ input:focus {
 :-ms-input-placeholder {
   color: var(--rise-text-dim);
 }
+
+.input-group {
+  position: relative;
+}
+
+.calendar-icon {
+  position: absolute;
+  right: 10px; /* Adjust to align with the input field */
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--rise-gold); /* Replace with your desired color */
+  pointer-events: none; /* Prevent the icon from blocking input clicks */
+}

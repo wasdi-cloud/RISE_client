@@ -29,10 +29,10 @@ export class AttachmentService {
     let sUrlParams = '?collection=' + sCollection + '&folder=' + sFolder + '&name=' + encodeURI(sName);
 
     if (bNotSameName) {
-      sUrlParams += '&notSameName=true';
+      sUrlParams += '&notsamename=true';
     }
     else {
-      sUrlParams += '&notSameName=false';
+      sUrlParams += '&notsamename=false';
     }
     return this.m_oHttp.post<any>(
       this.APIURL + '/attachment/upload' + sUrlParams,
