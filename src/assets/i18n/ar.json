@@ -153,8 +153,8 @@
     "CITY": "المدينة",
     "PHONE": "الهاتف",
     "COUNTRY": "الدولة",
-    "TERMS_CONDITIONS": "لقد قرأت وأوافق على <a class='inner-html-link' href=''>الشروط والأحكام</a>",
-    "PRIVACY_POLICY": "لقد قرأت وأوافق على <a class='inner-html-link' href=''>سياسة الخصوصية</a>"
+    "TERMS_CONDITIONS": "لقد قرأت وأوافق على <a class='inner-html-link' target='_blank' href='https://wasdi.readthedocs.io/en/latest/Legal/EULA.html'>الشروط والأحكام</a>",
+    "PRIVACY_POLICY": "لقد قرأت وأوافق على <a class='inner-html-link' target='_blank' href='https://wasdi.readthedocs.io/en/latest/Legal/PrivacyPolicy.html'>سياسة الخصوصية</a>"
   },
   "RISE_CRUD_TABLE": {
     "ADD_FIELD_USER": "إضافة مستخدم ميداني"

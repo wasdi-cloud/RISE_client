@@ -165,8 +165,8 @@
     "CITY": "Ciudad",
     "PHONE": "Teléfono",
     "COUNTRY": "País",
-    "TERMS_CONDITIONS": " He leído y acepto los <a class='inner-html-link' href=''>Términos y condiciones</a>",
-    "PRIVACY_POLICY": "He leído y acepto la <a class='inner-html-link' href=''>Política de Privacidad</a>"
+    "TERMS_CONDITIONS": " He leído y acepto los <a class='inner-html-link' target='_blank' href='https://wasdi.readthedocs.io/en/latest/Legal/EULA.html'>Términos y condiciones</a>",
+    "PRIVACY_POLICY": "He leído y acepto la <a class='inner-html-link' target='_blank' href='https://wasdi.readthedocs.io/en/latest/Legal/PrivacyPolicy.html'>Política de Privacidad</a>"
   },
   "RISE_CRUD_TABLE": {
     "ADD_FIELD_USER": "Agregar usuario de campo"
@@ -208,7 +208,7 @@
   "MONITOR": {
     "ADD_EVENT": "Agregar evento",
     "SEARCH_LAYERS_BY_NAME": "Buscar capas por nombre",
-    "MAP_LAYERS": "Capas del mapa",
+    "MAP_LAYERS": "Capas visibles",
     "NO_LAYERS_TO_SHOW": "No hay capas para mostrar",
     "LAYER_PROPERTIES": "Propiedades de la capa",
     "DATA_SOURCE": "Fuente de datos",

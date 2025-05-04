@@ -17,11 +17,13 @@ export const SessionInjectorInterceptor: HttpInterceptorFn = (req, next) => {
     }
   }
 
-  req = req.clone({
-    setHeaders: {
-      'x-session-token': sToken,
-    },
-  });
+  if (sToken) {
+    req = req.clone({
+      setHeaders: {
+        'x-session-token': sToken,
+      },
+    });  
+  }
 
   return next(req);
 };
