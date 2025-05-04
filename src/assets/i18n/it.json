@@ -124,7 +124,7 @@
 	"MONITOR": {
 		"ADD_EVENT": "Aggiungi evento",
 		"SEARCH_LAYERS_BY_NAME": "Cerca Layer per Nome",
-		"MAP_LAYERS": "Layer della Mappa",
+		"MAP_LAYERS": "Layers",
 		"NO_LAYERS_TO_SHOW": "Nessun layer da mostrare",
 		"LAYER_PROPERTIES": "Proprietà del Layer",
 		"DATA_SOURCE": "Fonte dati",
@@ -196,8 +196,8 @@
 		"CITY": "Città",
 		"PHONE": "Telefono",
 		"COUNTRY": "Paese",
-		"TERMS_CONDITIONS": "Ho letto e accetto i <a class='inner-html-link' href=''>Termini e Condizioni</a>",
-		"PRIVACY_POLICY": "Ho letto e accetto l'<a class='inner-html-link' href=''>Informativa sulla Privacy</a>"
+		"TERMS_CONDITIONS": "Ho letto e accetto i <a class='inner-html-link' target='_blank' href='https://wasdi.readthedocs.io/en/latest/Legal/EULA.html'>Termini e Condizioni</a>",
+		"PRIVACY_POLICY": "Ho letto e accetto l'<a class='inner-html-link' target='_blank' href='https://wasdi.readthedocs.io/en/latest/Legal/PrivacyPolicy.html'>Informativa sulla Privacy</a>"
 	},
 	"RISE_CRUD_TABLE": {
 		"ADD_FIELD_USER": "Aggiungi Utente sul Campo"

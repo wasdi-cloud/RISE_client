@@ -1,5 +1,7 @@
-<div class="chip-container d-flex flex-row gap-2 align-items-center justify-content-between">
-  {{ m_sSelectedItem }}
+<div class="chip-container d-flex flex-row gap-2 align-items-center justify-content-between no-select">
+  <div style="user-select: none !important;">
+    {{ m_sSelectedItem }}
+  </div>
   <span class="material-symbols-outlined" (click)="toggleOptions()">
     keyboard_arrow_up</span
   >

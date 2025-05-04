@@ -8,6 +8,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   templateUrl: './rise-chip-menu.component.html',
   styleUrl: './rise-chip-menu.component.css',
 })
+
 export class RiseChipMenuComponent {
   @Input() m_sSelectedItem: string = null;
   @Input() m_asItems: Array<string> = [];
