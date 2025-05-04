@@ -2,6 +2,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {ConstantsService} from '../constants.service';
 import {Observable} from "rxjs";
+import { LayerAnalyzerInputViewModel } from '../../models/LayerAnalyzerInputViewModel';
 
 @Injectable({
   providedIn: 'root',
@@ -28,5 +29,9 @@ export class LayerService {
         params: params,
         responseType: 'blob' as 'blob'
       });
+  }
+
+  analyzer(oInput: LayerAnalyzerInputViewModel) {
+    return this.m_oHttp.post<any>(this.APIURL + '/layer/analyzer', oInput);
   }
 }

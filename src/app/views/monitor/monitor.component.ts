@@ -434,8 +434,8 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       }
     });
   }
-  switchPluginButton(oPlugin:any) {
 
+  switchPluginButton(oPlugin:any) {
     //was active,turn it to inactive
     if(oPlugin.disabled){
       return;
@@ -703,7 +703,18 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   }
 
   private openLayerAnalyzerDialog() {
-    this.m_oDialog.open(LayerAnalyzerComponent).afterClosed().subscribe(() => {
+
+    let aoSelectedLayers = this.m_oMapService.getSelectedLayers();
+    let oAOIBbox = this.m_oMapService.getMagicToolAOI();
+
+    this.m_oDialog.open(LayerAnalyzerComponent,
+      {
+        data: {
+          selectedLayers: aoSelectedLayers,
+          aoiBbox: oAOIBbox
+        }
+      }
+    ).afterClosed().subscribe(() => {
       console.log("layer analyzer is working")
     })
   }

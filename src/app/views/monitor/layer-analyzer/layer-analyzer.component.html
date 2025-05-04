@@ -20,7 +20,7 @@
         <rise-button
           [m_sRole]="'action'"
           [m_sLabel]="'LAYER_ANALYZER.REFRESH'"
-          (click)="onRefreshLayer()"
+          (click)="onRefresh()"
         ></rise-button>
       </div>
     </div>
@@ -33,13 +33,13 @@
           class="flex-grow-1"
           [m_bHasTitle]="true"
           [m_sLocalizationKey]="'LAYER_ANALYZER.TOT_AREA_PIXEL'"
-          [(m_sInputText)]="m_oLayerProperties.dataSource"
+          [(m_sInputText)]="m_sTotAreaPixels"
         ></rise-text-input>
         <rise-text-input
           class="flex-grow-1"
           [m_bHasTitle]="true"
           [m_sLocalizationKey]="'LAYER_ANALYZER.ESTIMATED_AREA'"
-          [(m_sInputText)]="m_oLayerProperties.resolution"
+          [(m_sInputText)]="m_sEstimatedArea"
         ></rise-text-input>
       </div>
       <div class="d-flex flex-row gap-3">
@@ -47,13 +47,13 @@
           class="flex-grow-1"
           [m_bHasTitle]="true"
           [m_sLocalizationKey]="'LAYER_ANALYZER.PER_TOT_AREA_AFFECTED_PIXEL'"
-          [(m_sInputText)]="m_oLayerProperties.createdDate"
+          [(m_sInputText)]="m_sPercentTotAreaAffectedPixels"
         ></rise-text-input>
         <rise-text-input
           class="flex-grow-1"
           [m_bHasTitle]="true"
           [m_sLocalizationKey]="'LAYER_ANALYZER.PER_AREA_AFFECTED_PIXEL'"
-          [(m_sInputText)]="m_oLayerProperties.referenceDate"
+          [(m_sInputText)]="m_sPercentAreaAffectedPixels"
         ></rise-text-input>
       </div>
       <div class="col-6">
@@ -61,7 +61,7 @@
           class="flex-grow-1"
           [m_bHasTitle]="true"
           [m_sLocalizationKey]="'LAYER_ANALYZER.ESTIMATED_AREA_PIXEL_AFFECTED'"
-          [(m_sInputText)]="m_oLayerProperties.inputData"
+          [(m_sInputText)]="m_sAreaPixelAffected"
         ></rise-text-input>
       </div>
     </div>
@@ -78,12 +78,12 @@
       <rise-button
         [m_sRole]="'action'"
         [m_sLabel]="'LAYER_ANALYZER.DOWNLOAD'"
-        (click)="forceUpdateLayer()"
+        (click)="onDownload()"
       ></rise-button>
       <rise-button
         [m_sRole]="'action'"
         [m_sLabel]="'LAYER_ANALYZER.EXPORT'"
-        (click)="forceUpdateLayer()"
+        (click)="onExport()"
       ></rise-button>
     </div>
 

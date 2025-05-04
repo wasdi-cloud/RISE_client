@@ -146,6 +146,11 @@ export class MapService {
   m_oGeocoderMarker: L.Marker = null;
 
   /**
+   * Area of Interest for Magic Tool
+   */
+  m_oMagicToolAOI: any = null; 
+
+  /**
    * Init options for leaflet-draw
    */
   m_oDrawOptions: any = {
@@ -707,8 +712,6 @@ export class MapService {
       }
     }
 
-
-
     L.control
       .scale({
         position: 'bottomright',
@@ -719,8 +722,6 @@ export class MapService {
 
 
   addMeasurementTools(oMap: L.Map): Observable<string> {
-
-
     const oResultSubject = new Subject<string>();
     let bMeasurementMode = false;
     let oActiveShape: L.Layer | null = null; // Track the currently drawn shape
@@ -912,23 +913,54 @@ export class MapService {
 
       const aoSelectedLayers = this.getSelectedLayers(); // Retrieve selected layers
 
-      // Check if the drawn shape covers or intersects any selected layer
-      aoSelectedLayers.forEach((oLayerData) => {
-        const { layerId } = oLayerData;
-
-        if (this.isShapeCoveringServerLayer(oLayer, layerId)) {
-          this.oMagicToolResultSubject.next('Shape intersects with a selected layer.');
-          this.m_oLayerAnalyzerDialogEventEmitter.emit(true);
-
-        }else{
-          this.oMagicToolResultSubject.next('Shape does not intersect with any selected layer.');
-          this.m_oLayerAnalyzerDialogEventEmitter.emit(false);
+      let bOpenDialog = false;
+      if (aoSelectedLayers!=null) {
+        if  (aoSelectedLayers.length>0 ){
+          let oAOIBbox = this.getMagicToolBbox(oLayer);
+          if (oAOIBbox) {
+            bOpenDialog = true;
+            this.m_oMagicToolAOI = oAOIBbox; // Store the AOI for later use
+          }
         }
-      });
+      }
+
+      if (bOpenDialog) {
+        this.oMagicToolResultSubject.next('Shape intersects with a selected layer.');
+        this.m_oLayerAnalyzerDialogEventEmitter.emit(true);
+
+      }else{
+        this.oMagicToolResultSubject.next('Shape does not intersect with any selected layer.');
+        this.m_oLayerAnalyzerDialogEventEmitter.emit(false);
+      }
+
       oMap.addLayer(oLayer);
 
     });
   }
+
+  private getMagicToolBbox(oDrawnShape: L.Layer): L.LatLngBounds {
+
+    // Check if the drawn shape is a Circle
+    if (oDrawnShape instanceof L.Circle) {
+      const oCircle = oDrawnShape as L.Circle;
+      const oCircleCenter = oCircle.getLatLng();
+      const oCircleRadius = oCircle.getRadius();
+
+      // Calculate the bounds of the circle manually
+      const oLatLngBounds = this.getCircleBounds(oCircleCenter, oCircleRadius);
+      // Check if the circle's bounds intersect with the layer's bounds
+      return oLatLngBounds;
+    }
+
+    if (oDrawnShape instanceof L.Rectangle || oDrawnShape instanceof L.Polygon) {
+      // Check if the drawn shape's bounds intersect with the layer bounds
+      const oDrawnBounds = (oDrawnShape as L.Rectangle | L.Polygon).getBounds();
+      return oDrawnBounds;
+    }
+    console.warn(`Unsupported shape type: ${oDrawnShape.constructor.name}`);
+    return null;
+
+  }  
 
   private isShapeCoveringServerLayer(oDrawnShape: L.Layer, sLayerId: string): boolean {
     const oLayer = this.m_oLayerMap[sLayerId];
@@ -2031,6 +2063,14 @@ export class MapService {
     this.m_oMarkerSubject.complete();
     this.m_oMarkerSubject = new BehaviorSubject<AreaViewModel | null>(null);
     this.m_oMarkerSubject$ = this.m_oMarkerSubject.asObservable();
+  }
+
+  getMagicToolAOI() {
+    return this.m_oMagicToolAOI;
+  }
+
+  cleanMagicToolAOI() {
+    this.m_oMagicToolAOI = null;
   }
 }
 
