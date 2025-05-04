@@ -151,15 +151,24 @@ export class EventsComponent implements OnInit {
   //todo we might want to add a confirmation
   deleteEvent(oEvent: EventViewModel) {
     if (oEvent) {
-      this.m_oEventService.deleteEvent(oEvent.id).subscribe({
-        next: (oResponse) => {
-          this.getEventsList();
-          this.m_oNotificationServiceDialog.openSnackBar("Event deleted successfully", "Success", "success")
-        },
-        error: (oError) => {
-          this.m_oNotificationServiceDialog.openSnackBar("Error deleting the event", "Error", "danger")
+      this.m_oNotificationServiceDialog.openConfirmationDialog(
+        "Are you sure you want to delete this event",
+        'alert',
+      ).subscribe((oResponse)=>{
+        if(oResponse){
+          this.m_oEventService.deleteEvent(oEvent.id).subscribe({
+            next: (oResponse) => {
+              this.getEventsList();
+              this.m_oNotificationServiceDialog.openSnackBar("Event deleted successfully", "Success", "success")
+            },
+            error: (oError) => {
+              this.m_oNotificationServiceDialog.openSnackBar("Error deleting the event", "Error", "danger")
+            }
+          })
         }
       })
+
+
     }
   }
 
@@ -247,7 +256,7 @@ export class EventsComponent implements OnInit {
         // this.m_oEvent.startDate /= 1000;
         // this.m_oEvent.peakDate /= 1000;
         // this.m_oEvent.endDate /= 1000;
-    
+
         this.addNewEvent()
       }
       else if (this.m_bUpdatingEvent){
@@ -302,7 +311,7 @@ export class EventsComponent implements OnInit {
     }
 
     const oFormData = new FormData();
-    oFormData.append("file", this.m_oUploadImageFile);        
+    oFormData.append("file", this.m_oUploadImageFile);
 
     this.m_oAttachmentService.upload("event_images", this.m_oEvent.id, this.m_sUploadImageName, oFormData).subscribe({
       next: oResponse => {
@@ -332,7 +341,7 @@ export class EventsComponent implements OnInit {
     }
 
     const oFormData = new FormData();
-    oFormData.append("file", this.m_oUploadDocFile);        
+    oFormData.append("file", this.m_oUploadDocFile);
 
     this.m_oAttachmentService.upload("event_docs", this.m_oEvent.id, this.m_sUploadDocName, oFormData).subscribe({
       next: oResponse => {
@@ -346,7 +355,7 @@ export class EventsComponent implements OnInit {
       }
     });
 
-    return true;    
+    return true;
   }
 
   setDocumentFile(oEvent: any) {
@@ -355,7 +364,7 @@ export class EventsComponent implements OnInit {
   }
 
   onSwitchOnGoingButton(toggel: MatSlideToggleChange) {
-    this.m_oEvent.onGoing = toggel.checked;
+    this.m_oEvent.inGoing = toggel.checked;
   }
   onSwitchPublicButton(toggel: MatSlideToggleChange) {
     this.m_oEvent.publicEvent = toggel.checked;
@@ -551,12 +560,12 @@ export class EventsComponent implements OnInit {
     }
   }
 
-  onPreviewImage(sFileName: string) { 
+  onPreviewImage(sFileName: string) {
     if (sFileName) {
 
       let sLink = this.m_oAttachmentService.getAttachmentLink("event_images", this.m_oEvent.id, sFileName)
 
-      let oPayload = 
+      let oPayload =
       {
         fileName: sFileName,
         link: sLink,
@@ -576,20 +585,20 @@ export class EventsComponent implements OnInit {
       });
 
     }
-  }  
+  }
 
-  onPreviewDoc(sFileName: string) { 
+  onPreviewDoc(sFileName: string) {
     if (sFileName) {
 
       let sLink = this.m_oAttachmentService.getAttachmentLink("event_docs", this.m_oEvent.id, sFileName)
-      
+
       let sType = "txt";
 
-      if (sFileName.toLowerCase().endsWith('.pdf') || sFileName.toLowerCase().endsWith('.docx') || sFileName.toLowerCase().endsWith('.doc')) {  
+      if (sFileName.toLowerCase().endsWith('.pdf') || sFileName.toLowerCase().endsWith('.docx') || sFileName.toLowerCase().endsWith('.doc')) {
         sType = "pdf";
       }
 
-      let oPayload = 
+      let oPayload =
       {
         fileName: sFileName,
         link: sLink,
@@ -608,6 +617,6 @@ export class EventsComponent implements OnInit {
         this.loadEventAttachments();
       });
     }
-  }  
+  }
 
 }

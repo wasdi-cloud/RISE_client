@@ -7,23 +7,6 @@
       close
     </span>
   </div>
-  <!-- No Collaborators -->
-<!--  <div-->
-<!--    class="collaborators-container text-center px-4 py-5 d-flex flex-column gap-4"-->
-<!--    *ngIf="m_aoUsers.length === 0 "-->
-<!--  >-->
-<!--    <span class="material-symbols-outlined"> diversity_3 </span>-->
-<!--    {{ "COLLABORATORS.NONE" | translate }}-->
-<!--    <rise-button-->
-<!--      class="align-self-center"-->
-<!--      [m_sLabel]="'COLLABORATORS.INVITE'"-->
-<!--      [m_sRole]="'primary'"-->
-<!--      (click)="emitInviteClick()"-->
-<!--    ></rise-button>-->
-<!--  </div>-->
-
-  <!-- With Collaborators already -->
-
   <div class="table-wrapper w-100" *ngIf="m_aoUsers.length > 0 ">
     <table class="w-100">
       <thead class="table-heading-container">
@@ -59,8 +42,8 @@
             style="color: red;cursor: pointer"
           >
             delete
-          </span>          
-          
+          </span>
+
         </td>
       </tr>
       <tr *ngIf="m_bAddingUser">
@@ -96,53 +79,66 @@
       <tr *ngIf="m_bAddingExternalUser">
         <td>
           <rise-text-input
-          [m_bHasTitle]="true"
-          [m_sLocalizationKey]="'Rise User Id'"
-          [(m_sInputText)]="m_sExternalRiseUserId"
-        ></rise-text-input>          
+            [m_bHasTitle]="true"
+            [m_sLocalizationKey]="'Rise User Id'"
+            [(m_sInputText)]="m_sExternalRiseUserId"
+          ></rise-text-input>
         </td>
-        <td></td>
-        <td>
-          <span
-            class="option material-symbols-outlined edit"
-            [matTooltip]="'Save'"
-            (click)="addExternalUser()"
-            style="color: gold;cursor: pointer"
-
-          >
-            save
-          </span>
+        <td style="padding-top: 1.25rem;"></td> <!-- Match label height -->
+        <td style="padding-top: 2.25rem;">
+    <span
+      class="option material-symbols-outlined edit"
+      [matTooltip]="'Save'"
+      (click)="addExternalUser()"
+      style="color: gold; cursor: pointer"
+    >
+      save
+    </span>
           <span
             class="option material-symbols-outlined edit"
             [matTooltip]="'Cancel Editing'"
             (click)="m_bAddingExternalUser = false"
-            style="color: red;cursor: pointer"
+            style="color: red; cursor: pointer"
           >
-            close
-          </span>
-
-        </td>
-      </tr>      
-      <tr class="mt-1">
-        <td class="d-flex flex-row justify-content-start">
-          <rise-button
-            *ngIf="m_sResourceType !== 'organization'"
-            [m_sLabel]="'Add Collaborator'"
-            [m_sRole]="'primary'"
-            (click)="m_bAddingUser = true"
-          ></rise-button>
-        </td>
-        <td class="d-flex flex-row justify-content-start">
-          <rise-button
-            *ngIf="m_sResourceType !== 'organization'"
-            [m_sLabel]="'Add External Collaborator'"
-            [m_sRole]="'primary'"
-            (click)="m_bAddingExternalUser = true"
-          ></rise-button>
+      close
+    </span>
         </td>
       </tr>
+
+      <tr *ngIf="!m_bNoUserExists">
+        <td colspan="4">
+          <div class="d-flex flex-row gap-2">
+            <rise-button
+              *ngIf="m_sResourceType !== 'organization'"
+              [m_sLabel]="'Add Collaborator'"
+              [m_sRole]="'primary'"
+              (click)="m_bAddingUser = true"
+            ></rise-button>
+            <rise-button
+              *ngIf="m_sResourceType !== 'organization'"
+              [m_sLabel]="'Add External Collaborator'"
+              [m_sRole]="'primary'"
+              (click)="m_bAddingExternalUser = true"
+            ></rise-button>
+          </div>
+        </td>
+      </tr>
+
       </tbody>
     </table>
+    <div
+      *ngIf="m_bNoUserExists"
+      class="invalid-sub p-3 d-flex flex-row justify-content-between align-items-center"
+    >
+      <div>
+        <div class="account-sub-header">
+          {{ "Your organization is empty" | translate }}
+        </div>
+        <p class="my-0">
+          {{ "There are no other users in your org. Please invite them to be collaborator then add them to your areas" | translate }}
+        </p>
+      </div>
+    </div>
   </div>
 
 </div>

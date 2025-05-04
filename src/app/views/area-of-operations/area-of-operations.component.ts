@@ -90,6 +90,7 @@ export class AreaOfOperationsComponent implements OnInit {
         if (FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           return;
         }
+        //PS: users include yourself here
         this.m_oDialog.open(RiseCollaboratorsDialogComponent, {
           data: {
             users: oResponse,
