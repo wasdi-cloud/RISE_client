@@ -163,9 +163,15 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     private m_oEventService: EventService,
   ) {
     const navigation = this.m_oRouter.getCurrentNavigation();
-    const state = navigation?.extras?.state as { peakDate?: string };
+    const state = navigation?.extras?.state as { peakDate?: string,name?:string,type?:EventType,startDate:string,endDate?:string };
 
     if (state?.peakDate) {
+      this.m_oSelectedEvent.endDate=(Number(state?.endDate) * 1000);
+      this.m_oSelectedEvent.startDate=(Number(state?.startDate) * 1000);
+      this.m_oSelectedEvent.peakDate=(Number(state?.peakDate) * 1000);
+      this.m_oSelectedEvent.type=state?.type;
+      this.m_oSelectedEvent.name=state?.name;
+
       this.m_bShowEventInfo=true;
       this.m_oSelectedDate= (Number(state?.peakDate) * 1000).toString();
       this.m_iInitialPeakDate = new Date(state.peakDate).getTime();
