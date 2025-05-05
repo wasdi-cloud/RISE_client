@@ -31,6 +31,7 @@ import {LayerAnalyzerComponent} from "./layer-analyzer/layer-analyzer.component"
 import {LayerViewModel} from "../../models/LayerViewModel";
 import {EventService} from "../../services/api/event.service";
 import {EventViewModel} from "../../models/EventViewModel";
+import {EventType} from "../../models/EventType";
 
 @Component({
   selector: 'app-monitor',
@@ -134,6 +135,15 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   m_sAreaName = "";
 
   private m_oLiveTimer: any;
+  //todo
+  m_bShowEventInfo:boolean=false;
+  m_oSelectedEvent: EventViewModel = {
+    name:"demo event",
+    type:EventType.FLOOD,
+    startDate:1746463550178,
+    endDate:1746463550178,
+    peakDate:1746463550178
+  };
 
 
   @ViewChild('btnContainer', { static: false }) btnContainerRef!: ElementRef;
@@ -156,9 +166,10 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     const state = navigation?.extras?.state as { peakDate?: string };
 
     if (state?.peakDate) {
-
+      this.m_bShowEventInfo=true;
       this.m_oSelectedDate= (Number(state?.peakDate) * 1000).toString();
       this.m_iInitialPeakDate = new Date(state.peakDate).getTime();
+
 
     }
   }
@@ -777,6 +788,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   /*
   this method is made to enable/disable the plugins button
    */
+
   initPluginsButtons(aoPlugins: any[]){
 
     for (const oPlugin of aoPlugins) {

@@ -19,8 +19,8 @@
       />
       <div class="area-name-text">
         {{ m_sAreaName }}
-      </div>   
-    </div>   
+      </div>
+    </div>
       <rise-text-input
         [m_bHasIcon]="true"
         [m_sIcon]="'search'"
@@ -59,6 +59,27 @@
         </div>
         } @else {  {{"MONITOR.NO_LAYERS_TO_SHOW"|translate}} }
       </div>
+      <div *ngIf="m_bShowEventInfo"  class="event-section d-flex flex-column p-3 event-container">
+        <!-- Fixed Header -->
+        <div class="layers-header d-flex justify-content-between gap-2 flex-shrink-0">
+          <span class="material-symbols-outlined"> file_open </span>
+          <div class="flex-fill d-flex flex-column">
+            {{ "Selected Event" | translate }}
+          </div>
+        </div>
+
+        <!-- Scrollable Event Details -->
+        <div class="event-details-scroll mt-2 flex-grow-1 overflow-auto">
+          <p><strong>Event:</strong> {{ m_oSelectedEvent.name }}</p>
+          <p><strong>Type:</strong> {{ m_oSelectedEvent.type }}</p>
+          <p><strong>Start Date:</strong> {{ m_oSelectedEvent.startDate * 1000 | date: 'medium' }}</p>
+          <p><strong>Peak Date:</strong> {{ m_oSelectedEvent.peakDate * 1000 | date: 'medium' }}</p>
+          <p><strong>End Date:</strong> {{ m_oSelectedEvent.endDate * 1000 | date: 'medium' }}</p>
+        </div>
+      </div>
+
+
+
       <div class="button-container">
         <rise-button
           [m_sLabel]="'MONITOR.MANAGE_EVENTS'"
