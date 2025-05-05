@@ -72,6 +72,11 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() m_bDashboardMap: boolean = false;
 
   /**
+   * Should we check max or min size?
+   */
+  @Input() m_bCheckAreaSize: boolean = true;
+
+  /**
    * Is the map appearing on the user's monitor area?
    */
   @Input() m_bMonitorMap: boolean = false;
@@ -90,6 +95,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   m_bIsDrawCreated: boolean = false;
   m_bIsAutoDrawCreated: boolean = false;
   m_bIsImportDrawCreated: boolean = false;
+  
   private m_bIsManualBBoxInsert: boolean=false;
 
 
@@ -167,11 +173,6 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
         }
 
       }
-
-
-
-
-
     }
   }
 
@@ -212,7 +213,6 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       "<span class='material-symbols-outlined'>fullscreen</span>";
 
     oMap.on('baselayerchange', (e) => {
-
       this.m_oMapService.setActiveLayer(oMap, e.layer);
     });
 
@@ -282,10 +282,10 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
 
       // Adjust if width or height are out of bounds
       if (
-        width > MAX_WIDTH ||
+        (width > MAX_WIDTH ||
         height > MAX_HEIGHT ||
         width < MIN_WIDTH ||
-        height < MIN_HEIGHT
+        height < MIN_HEIGHT) && this.m_bCheckAreaSize
       ) {
         let sErrorMsg = '';
         if (width > MAX_WIDTH || height > MAX_HEIGHT) {
@@ -327,7 +327,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       const latitudeFactor = Math.cos(center.lat * (Math.PI / 180)); // Scale for latitude
       const adjustedArea = area * latitudeFactor;
 
-      if (area < MIN_AREA_POLYGON || area > MAX_AREA_POLYGON) {
+      if ( (area < MIN_AREA_POLYGON || area > MAX_AREA_POLYGON) && this.m_bCheckAreaSize) {
         let sErrorHeader = '';
 
         if (area < MIN_AREA_POLYGON) {
@@ -349,7 +349,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     if (layerType === 'circle') {
       const radius = layer.getRadius(); // Radius in meters
       const area = Math.PI * radius * radius; // Circle area
-      if (area < MIN_AREA_CIRCLE || area > MAX_AREA_CIRCLE) {
+      if ( (area < MIN_AREA_CIRCLE || area > MAX_AREA_CIRCLE) && this.m_bCheckAreaSize) {
         let sErrorMsg = '';
         if (area > MAX_AREA_CIRCLE) {
           sErrorMsg = sErrorMsgToBig;

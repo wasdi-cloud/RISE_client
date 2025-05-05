@@ -114,15 +114,15 @@
               [m_sRole]="'primary'"
               (click)="m_bAddingUser = true"
             ></rise-button>
-            <rise-button
-              *ngIf="m_sResourceType !== 'organization'"
-              [m_sLabel]="'Add External Collaborator'"
-              [m_sRole]="'primary'"
-              (click)="m_bAddingExternalUser = true"
-            ></rise-button>
           </div>
         </td>
       </tr>
+      <rise-button
+      *ngIf="m_sResourceType !== 'organization'"
+      [m_sLabel]="'Add External Collaborator'"
+      [m_sRole]="'primary'"
+      (click)="m_bAddingExternalUser = true"></rise-button>
+
 
       </tbody>
     </table>

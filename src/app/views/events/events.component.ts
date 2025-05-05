@@ -102,7 +102,6 @@ export class EventsComponent implements OnInit {
   ngOnInit() {
     this.getEventTypes()
     this.getActiveAOI()
-
   }
 
   onCreateNewEvent() {
