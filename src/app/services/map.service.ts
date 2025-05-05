@@ -1045,57 +1045,89 @@ export class MapService {
    * @param oMap
    */
   addAreaMarker(oArea: AreaViewModel, oMap: LeafletMap): Marker {
-    let asCoordinates = this.convertPointLatLng(oArea)._northEast;
 
-    if (asCoordinates && oMap) {
-      let fLat = parseFloat(asCoordinates.lat);
-      let fLon = parseFloat(asCoordinates.lng);
-
-      // Get the coordinates (Note: duplicate of above? To be checked)
-      const afBoundsCoords = this.parseWKTPolygon(oArea.bbox);
-
-      // Add the polygon to the map with only a red contour
-      let oPolygon = L.polygon(afBoundsCoords, {
-        color: "#efba35", // Outline color
-        weight: 1,
-        fillOpacity: 0 // Removes fill color, only showing contour
-      }).addTo(oMap);
-
-      if (oPolygon) {
-        this.m_aoAreaPolygons.push(oPolygon);
+    try {
+      let oCoordinates = this.convertPointLatLng(oArea);
+      let asCoordinates = null;
+  
+      if(oCoordinates) { 
+        asCoordinates = oCoordinates._northEast;
       }
-      let sPrefix = "";
+  
+      if (asCoordinates && oMap) {
+        let fLat = parseFloat(asCoordinates.lat);
+        let fLon = parseFloat(asCoordinates.lng);
+  
+        // Get the coordinates (Note: duplicate of above? To be checked)
+        const afBoundsCoords = this.parseWKTPolygon(oArea.bbox);
+  
+        for (let iCoordinates = afBoundsCoords.length-1; iCoordinates >=0 ; iCoordinates--) {
+  
+          try {
+            afBoundsCoords[iCoordinates][0] = parseFloat(afBoundsCoords[iCoordinates][0]);
+            afBoundsCoords[iCoordinates][1] = parseFloat(afBoundsCoords[iCoordinates][1]);
+  
+            if (isNaN(afBoundsCoords[iCoordinates][0]) || isNaN(afBoundsCoords[iCoordinates][1])) {
+              console.error("Invalid coordinates: ", afBoundsCoords[iCoordinates]);
+              afBoundsCoords.splice(iCoordinates, 1); // Remove invalid coordinates
+            }
+          }
+          catch (oEx) {
+            console.error("Error parsing coordinates: ", oEx);
+            afBoundsCoords.splice(iCoordinates, 1);
+          }
+        }
+  
+        // Add the polygon to the map with only a gold contour
+        let oPolygon = L.polygon(afBoundsCoords, {
+          color: "#efba35", // Outline color
+          weight: 1,
+          fillOpacity: 0 // Removes fill color, only showing contour
+        }).addTo(oMap);
+  
+        if (oPolygon) {
+          this.m_aoAreaPolygons.push(oPolygon);
+        }
+        let sPrefix = "";
+  
+        let oIcon = oIconDefault;
+  
+        let oActualUser = this.m_oConstantsService.getUser();
+  
+        if (oActualUser) {
+          // Change icon for shared areas
+          if (oActualUser.organizationId != oArea.organizationId) {
+            sPrefix = "Shared - ";
+            oIcon = oIconShared;
+          }
+        }
+  
+        // Change icon for public areas
+        if (oArea.publicArea) {
+          sPrefix = "Public - ";
+          oIcon = oIconPublic;
+        }
+  
+        let oMarker = L.marker([fLat, fLon],{icon:oIcon})
+          .bindTooltip(sPrefix + oArea.name)
+          .on('click', () => {
+            this.m_oMarkerSubject.next(oArea);
+        });
+  
+        if (oMarker) {
+          oMarker.addTo(oMap);
+          this.m_aoMarkers.push(oMarker); // Store the marker in the array
+          return oMarker;
+        }
 
-      let oIcon = oIconDefault;
-
-      let oActualUser = this.m_oConstantsService.getUser();
-
-      // Change icon for shared areas
-      if (oActualUser.organizationId != oArea.organizationId) {
-        sPrefix = "Shared - ";
-        oIcon = oIconShared;
+        return null;
       }
-
-      // Change icon for public areas
-      if (oArea.publicArea) {
-        sPrefix = "Public - ";
-        oIcon = oIconPublic;
-      }
-
-      let oMarker = L.marker([fLat, fLon],{icon:oIcon})
-        .bindTooltip(sPrefix + oArea.name)
-        .on('click', () => {
-          this.m_oMarkerSubject.next(oArea);
-      });
-
-      if (oMarker) {
-        oMarker.addTo(oMap);
-        this.m_aoMarkers.push(oMarker); // Store the marker in the array
-        return oMarker;
-      }
-      return null;
-
+      return null; 
     }
+    catch (oEx) {
+      console.error("Error adding area marker: ", oEx); 
+    }
+
     return null;
   }
   /**
