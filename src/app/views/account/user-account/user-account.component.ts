@@ -324,7 +324,7 @@ export class UserAccountComponent implements OnInit {
               let sMessage =
                 'You are the only Admin of ' +
                 this.getOrganizationName() +
-                ' You should add another  admin or delete the organization';
+                ' You should add another admin or delete the organization before deleting your account';
               this.m_oNotificationDialogService.openInfoDialog(
                 sMessage,
                 'Error',

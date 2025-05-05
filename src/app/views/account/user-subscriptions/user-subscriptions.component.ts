@@ -180,7 +180,7 @@ export class UserSubscriptionsComponent implements OnInit {
   initSubTypeNames() {
     this.m_aoSubscriptionsToShow.map((oSubscription) => {
       this.m_aoSubtypes.forEach((oType) => {
-        oSubscription.type === oType.stringCode
+        oSubscription.type === oType.stringCode || oSubscription.type === oType.stringCode + "_QUARTER"
           ? (oSubscription.type = oType.stringCode.slice(8) + ' Location(s)')
           : '';
       });
