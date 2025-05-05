@@ -1,20 +1,34 @@
 <label *ngIf="m_bHasTitle" class="form-label" for="{{ m_sName }}"
 >{{ m_sLocalizationKey | translate }}
 </label>
-<div class="input-group">
-<!--  <select-->
-<!--    *ngIf="m_sType === 'phone'"-->
-<!--    class="form-select phone-prefix-select"-->
-<!--    [(ngModel)]="m_sCountryPrefix"-->
-<!--    (change)="onInputChange()"-->
-<!--  >-->
-<!--    <option *ngFor="let prefix of m_aoCountryPrefixes" [value]="prefix.code">-->
-<!--      {{ prefix.name }} ({{ prefix.code }})-->
-<!--    </option>-->
-<!--  </select>-->
+<div class="input-group" *ngIf="m_sType === 'phone'; else numberInput">
+  <select
+    class="form-select phone-prefix-select"
+    [(ngModel)]="m_sCountryPrefix"
+    (change)="onInputChange()"
+  >
+    <option *ngFor="let prefix of m_aoCountryPrefixes" [value]="prefix.code">
+      {{ prefix.name }} ({{ prefix.code }})
+    </option>
+  </select>
   <input
     class="form-control"
     type="tel"
+    [readOnly]="m_bReadonly"
+    [class.invalid]="!m_bIsValid"
+    [(ngModel)]="m_sPhoneInput"
+    (change)="onInputChange()"
+    (keypress)="onNumberKeyPress($event)"
+    (paste)="onNumberPaste($event)"
+    [placeholder]="!m_bHasTitle ? (m_sLocalizationKey | translate) : ''"
+    [required]="m_bRequired"
+  />
+</div>
+
+<ng-template #numberInput>
+  <input
+    class="form-control"
+    type="number"
     name="{{ m_sName }}"
     [readOnly]="m_bReadonly"
     [class.no-left-border]="m_bHasIcon"
@@ -26,7 +40,8 @@
     [placeholder]="!m_bHasTitle ? (m_sLocalizationKey | translate) : ''"
     [required]="m_bRequired"
   />
-</div>
+</ng-template>
+
 <div
   class="invalid-feedback d-flex flex-row gap-1 mt-2"
   *ngIf="m_bIsValidatorInput && !m_bIsValid"

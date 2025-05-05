@@ -162,6 +162,7 @@ export class UserAccountComponent implements OnInit {
         if (FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           return;
         }
+
         this.m_oUser = oResponse;
         this.m_oOriginalUser={...this.m_oUser}
         this.m_sNewUserId=this.m_oUser.userId
@@ -195,7 +196,9 @@ export class UserAccountComponent implements OnInit {
       this.m_oUser.name !== this.m_oOriginalUser.name ||
       this.m_oUser.surname !== this.m_oOriginalUser.surname ||
       this.m_oUser.mobile !== this.m_oOriginalUser.mobile ||
-      this.m_sNewUserId !== this.m_oOriginalUser.userId
+      this.m_sNewUserId !== this.m_oOriginalUser.userId ||
+        this.m_oUser.internationalPrefix != this.m_oOriginalUser.internationalPrefix
+
     );
   }
 
@@ -216,6 +219,7 @@ export class UserAccountComponent implements OnInit {
       name: this.m_oUser.name,
       surname: this.m_oUser.surname,
       mobile: this.m_oUser.mobile,
+      internationalPrefix: this.m_oUser.internationalPrefix,
       userId: bIsUserIdChanged?this.m_sNewUserId:this.m_oUser.userId,
     };
     //verify if user id is changed if it is , user have to log in again , if not we proceed
@@ -481,7 +485,7 @@ export class UserAccountComponent implements OnInit {
     // Minimum 8 Characters, at least one letter, one number, and one special character:
 
     const sPasswordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d\s])[A-Za-z\d\S]{8,}$/;
-    
+
     // If the user has modified both inputs
     if (sPassword && sConfirmPw) {
       //If the first password doesn't pass regex OR the pw's don't match

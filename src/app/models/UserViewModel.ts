@@ -31,4 +31,6 @@ export class UserViewModel extends RiseViewModel {
 
   organizationId:string;
 
+  internationalPrefix:string
+
 }

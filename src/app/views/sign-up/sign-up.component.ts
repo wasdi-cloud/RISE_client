@@ -20,6 +20,7 @@ import {UserViewModel} from '../../models/UserViewModel';
 import {OrganizationTypes} from '../../shared/organization-types';
 
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
+import {RiseNumberInputComponent} from "../../components/rise-number-input/rise-number-input.component";
 
 @Component({
   selector: 'app-sign-up',
@@ -32,6 +33,7 @@ import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
     RiseToolbarComponent,
     TranslateModule,
     NgIf,
+    RiseNumberInputComponent,
   ],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.css',

@@ -181,12 +181,19 @@
               [m_bIsValid]="m_bOrgIsValid"
               [(m_sInputText)]="m_oOrgInfoInput.city"
             ></rise-text-input>
-            <rise-text-input
-              class="flex-fill"
+            <rise-number-input
               [m_sLocalizationKey]="'Phone Number'"
               [m_bIsValid]="m_bOrgIsValid"
               [(m_sInputText)]="m_oOrgInfoInput.phone"
-            ></rise-text-input>
+              [m_sType]="'phone'"
+            >
+            </rise-number-input>
+<!--            <rise-text-input-->
+<!--              class="flex-fill"-->
+<!--              [m_sLocalizationKey]="'Phone Number'"-->
+<!--              [m_bIsValid]="m_bOrgIsValid"-->
+<!--              [(m_sInputText)]="m_oOrgInfoInput.phone"-->
+<!--            ></rise-text-input>-->
           </div>
         </div>
       </div>

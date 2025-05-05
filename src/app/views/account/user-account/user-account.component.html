@@ -33,15 +33,24 @@
             [m_bIsValidatorInput]="true"
             [m_bIsValid]="validateUserId()"
           ></rise-text-input>
+<!--          <rise-number-input-->
+<!--            class="col-6"-->
+<!--            [m_sLocalizationKey]="'REGISTER.MOBILE'"-->
+<!--            [m_bHasTitle]="true"-->
+<!--            [(m_sInputText)]="m_oUser.mobile"-->
+<!--            [m_sType]="'phone'"-->
+<!--          >-->
+<!--          </rise-number-input>-->
           <rise-number-input
             class="col-6"
             [m_sLocalizationKey]="'REGISTER.MOBILE'"
             [m_bHasTitle]="true"
-            [(m_sInputText)]="m_oUser.mobile"
+            [(m_sPhonePrefix)]="m_oUser.internationalPrefix"
+            [(m_sPhoneNumber)]="m_oUser.mobile"
             [m_sType]="'phone'"
-          >
-          </rise-number-input>
-      </div>
+          ></rise-number-input>
+
+        </div>
         <rise-button
           class="align-self-start mt-2"
           [m_sRole]="'primary'"

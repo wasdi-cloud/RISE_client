@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {NgForOf, NgIf} from "@angular/common";
 import {TranslateModule} from "@ngx-translate/core";
@@ -10,12 +10,13 @@ import {TranslateModule} from "@ngx-translate/core";
     FormsModule,
     NgIf,
     TranslateModule,
+    NgForOf,
 
   ],
   templateUrl: './rise-number-input.component.html',
   styleUrl: './rise-number-input.component.css'
 })
-export class RiseNumberInputComponent implements OnInit{
+export class RiseNumberInputComponent implements OnInit,OnChanges{
   @Input() m_sName: string;
   @Input() m_sLocalizationKey: string = '';
   @Input() m_sType?: 'number' | 'phone' = 'number';
@@ -30,7 +31,18 @@ export class RiseNumberInputComponent implements OnInit{
    */
   @Input() m_bIsValid: boolean = true;
 
-  @Input() m_sInputText: string;
+  @Input() m_sPhonePrefix: string = '+1';
+  @Output() m_sPhonePrefixChange = new EventEmitter<string>();
+
+  @Input() m_sPhoneNumber: string = '';
+  @Output() m_sPhoneNumberChange = new EventEmitter<string>();
+
+// Optional for type='number'
+  @Input() m_sInputText: string = '';
+  @Output() m_sInputTextChange = new EventEmitter<string>();
+
+
+
 
   @Input() m_sErrorText?: string = 'The input was not valid';
 
@@ -44,8 +56,7 @@ export class RiseNumberInputComponent implements OnInit{
 
   @Input() m_bReadonly?: boolean = false;
 
-  @Output() m_sInputTextChange: EventEmitter<string> =
-    new EventEmitter<string>();
+
 
 
 // Phone-specific
@@ -55,6 +66,7 @@ export class RiseNumberInputComponent implements OnInit{
   m_aoCountryPrefixes = [
     { code: '+1', name: 'US/Canada' },
     { code: '+33', name: 'France' },
+    { code: '+39', name: 'Italy' },
     { code: '+49', name: 'Germany' },
     { code: '+44', name: 'UK' },
     { code: '+91', name: 'India' },
@@ -63,28 +75,34 @@ export class RiseNumberInputComponent implements OnInit{
   ];
 
   ngOnInit(): void {
-    // if (this.m_sType === 'phone' && this.m_sInputText) {
-    //   const match = this.m_aoCountryPrefixes.find((p) => this.m_sInputText.startsWith(p.code));
-    //   if (match) {
-    //     this.m_sCountryPrefix = match.code;
-    //     this.m_sPhoneInput = this.m_sInputText.replace(match.code, '').trim();
-    //   } else {
-    //     this.m_sPhoneInput = this.m_sInputText;
-    //   }
-    // }
+    console.log(this.m_sPhoneNumber)
+    console.log(this.m_sPhonePrefix)
+    this.syncPhoneValues();
   }
 
-  onInputChange() {
-    // if (this.m_sType === 'phone') {
-    //   const fullPhone = `${this.m_sCountryPrefix} ${this.m_sPhoneInput.trim()}`;
-    //   this.m_sInputTextChange.emit(fullPhone);
-    // } else {
-    //   this.m_sInputTextChange.emit(this.m_sInputText);
-    // }
-
-    this.m_sInputTextChange.emit(this.m_sInputText);
-
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.m_sType === 'phone') {
+      console.log(this.m_sPhoneNumber)
+      console.log(this.m_sPhonePrefix)
+      this.syncPhoneValues();
+    }
   }
+
+  private syncPhoneValues(): void {
+    if (this.m_sPhonePrefix) {
+      this.m_sCountryPrefix = this.m_sPhonePrefix;
+    }
+    if (this.m_sPhoneNumber) {
+      this.m_sPhoneInput = this.m_sPhoneNumber;
+    }
+  }
+
+  onInputChange(): void {
+    this.m_sPhonePrefixChange.emit(this.m_sCountryPrefix);
+    this.m_sPhoneNumberChange.emit(this.m_sPhoneInput.trim());
+  }
+
+
   onNumberKeyPress(event: KeyboardEvent): void {
     const charCode = event.key;
     if (!/^\d$/.test(charCode)) {
