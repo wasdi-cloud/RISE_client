@@ -114,6 +114,8 @@ export class AuthService {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     this.m_oConstantsService.resetUser();
+    this.m_oConstantsService.setSessionId(null);
     this.m_oRouter.navigateByUrl('login');
+
   }
 }
