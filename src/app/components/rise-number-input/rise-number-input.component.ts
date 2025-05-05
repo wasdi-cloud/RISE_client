@@ -71,6 +71,7 @@ export class RiseNumberInputComponent implements OnInit,OnChanges{
     { code: '+44', name: 'UK' },
     { code: '+91', name: 'India' },
     { code: '+213', name: 'Algeria' },
+    { code: '+352', name: 'Luxembourg' },
     // Add more as needed
   ];
 

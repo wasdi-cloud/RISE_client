@@ -3,14 +3,16 @@
 </label>
 <div class="input-group" *ngIf="m_sType === 'phone'; else numberInput">
   <select
-    class="form-select phone-prefix-select"
+    class="form-select"
     [(ngModel)]="m_sCountryPrefix"
     (change)="onInputChange()"
+    style="width: 40%; max-width: 120px;"
   >
     <option *ngFor="let prefix of m_aoCountryPrefixes" [value]="prefix.code">
       {{ prefix.name }} ({{ prefix.code }})
     </option>
   </select>
+
   <input
     class="form-control"
     type="tel"
@@ -22,8 +24,10 @@
     (paste)="onNumberPaste($event)"
     [placeholder]="!m_bHasTitle ? (m_sLocalizationKey | translate) : ''"
     [required]="m_bRequired"
+    style="width: 70%;"
   />
 </div>
+
 
 <ng-template #numberInput>
   <input

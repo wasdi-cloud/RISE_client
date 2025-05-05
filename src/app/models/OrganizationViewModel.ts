@@ -25,4 +25,6 @@ export class OrganizationViewModel extends RiseViewModel {
   vat?: string;
 
   creationDate?: number;
+
+  internationalPrefix:string
 }

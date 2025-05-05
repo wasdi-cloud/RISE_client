@@ -55,6 +55,7 @@ export class SignUpComponent implements OnInit {
     postalCode: '',
     street: '',
     type: '',
+    internationalPrefix:'+352'
   };
 
   m_aoOrganizationTypes: Array<any> = OrganizationTypes;
@@ -380,7 +381,7 @@ export class SignUpComponent implements OnInit {
     if (FadeoutUtils.utilsIsStrNullOrEmpty(sPhone)) {
       return true;
     }
-    const sPhoneRegex = /^[+]?[0-9]{6,15}$/;
+    const sPhoneRegex = /^[0-9]{6,15}$/;
     if (!sPhoneRegex.test(sPhone)) {
       return false;
     }
@@ -406,6 +407,7 @@ export class SignUpComponent implements OnInit {
       postalCode: '',
       street: '',
       type: '',
+      internationalPrefix:'+352'
     };
     this.m_sCurrentPg = 'username';
     this.m_oEmailInputs = {

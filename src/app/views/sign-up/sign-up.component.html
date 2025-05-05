@@ -105,14 +105,24 @@
           [(m_sInputText)]="m_oUserInfoInput.surname"
           [m_bIsValid]="m_bPersonalValid"
         ></rise-text-input>
-        <rise-text-input
+        <rise-number-input
           [m_sLocalizationKey]="'REGISTER.MOBILE'"
           [m_bHasTitle]="true"
-          [(m_sInputText)]="m_oUserInfoInput.mobile"
+          [(m_sPhonePrefix)]="m_oUserInfoInput.internationalPrefix"
+          [(m_sPhoneNumber)]="m_oUserInfoInput.mobile"
+          [m_sType]="'phone'"
           [m_bIsValidatorInput]="true"
           [m_sErrorText]="m_sPersonalError"
           [m_bIsValid]="validatePhone(m_oUserInfoInput.mobile) && m_bMobileIsValid"
-        ></rise-text-input>
+        ></rise-number-input>
+<!--        <rise-text-input-->
+<!--          [m_sLocalizationKey]="'REGISTER.MOBILE'"-->
+<!--          [m_bHasTitle]="true"-->
+<!--          [(m_sInputText)]="m_oUserInfoInput.mobile"-->
+<!--          [m_bIsValidatorInput]="true"-->
+<!--          [m_sErrorText]="m_sPersonalError"-->
+<!--          [m_bIsValid]="validatePhone(m_oUserInfoInput.mobile) && m_bMobileIsValid"-->
+<!--        ></rise-text-input>-->
       </div>
       <div class="d-flex flex-column gap-1">
         <rise-button
@@ -155,11 +165,19 @@
             [m_bIsValid]="m_bOrgIsValid"
             [(m_sInputText)]="m_oOrgInfoInput.street"
           ></rise-text-input>
-          <rise-text-input
-            [m_sLocalizationKey]="'Country'"
-            [m_bIsValid]="m_bOrgIsValid"
-            [(m_sInputText)]="m_oOrgInfoInput.country"
-          ></rise-text-input>
+          <div class="d-flex flex-row gap-2">
+            <rise-text-input
+              [m_sLocalizationKey]="'Country'"
+              [m_bIsValid]="m_bOrgIsValid"
+              [(m_sInputText)]="m_oOrgInfoInput.country"
+            ></rise-text-input>
+            <rise-text-input
+              class="flex-fill"
+              [m_sLocalizationKey]="'City'"
+              [m_bIsValid]="m_bOrgIsValid"
+              [(m_sInputText)]="m_oOrgInfoInput.city"
+            ></rise-text-input>
+          </div>
           <div class="d-flex flex-row gap-1">
             <rise-text-input
               class="flex-fill"
@@ -174,27 +192,15 @@
               [(m_sInputText)]="m_oOrgInfoInput.postalCode"
             ></rise-text-input>
           </div>
-          <div class="d-flex flex-row gap-2">
-            <rise-text-input
-              class="flex-fill"
-              [m_sLocalizationKey]="'City'"
-              [m_bIsValid]="m_bOrgIsValid"
-              [(m_sInputText)]="m_oOrgInfoInput.city"
-            ></rise-text-input>
-            <rise-number-input
-              [m_sLocalizationKey]="'Phone Number'"
-              [m_bIsValid]="m_bOrgIsValid"
-              [(m_sInputText)]="m_oOrgInfoInput.phone"
-              [m_sType]="'phone'"
-            >
-            </rise-number-input>
-<!--            <rise-text-input-->
-<!--              class="flex-fill"-->
-<!--              [m_sLocalizationKey]="'Phone Number'"-->
-<!--              [m_bIsValid]="m_bOrgIsValid"-->
-<!--              [(m_sInputText)]="m_oOrgInfoInput.phone"-->
-<!--            ></rise-text-input>-->
-          </div>
+
+          <rise-number-input
+            class="col-6"
+            [m_sLocalizationKey]="'REGISTER.MOBILE'"
+            [m_bHasTitle]="false"
+            [(m_sPhonePrefix)]="m_oOrgInfoInput.internationalPrefix"
+            [(m_sPhoneNumber)]="m_oOrgInfoInput.phone"
+            [m_sType]="'phone'"
+          ></rise-number-input>
         </div>
       </div>
 
