@@ -407,9 +407,9 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     //
     this.m_aoReversedLayers = [...this.m_aoLayers].slice().reverse();
 
+    //console.log(this.m_aoLayers)
+    //console.log(this.m_aoReversedLayers)
 
-    console.log(this.m_aoLayers)
-    console.log(this.m_aoReversedLayers)
     this.m_oMapService.addLayerMap2DByServer(
       oLayer.layerId,
       oLayer.geoserverUrl,
@@ -715,7 +715,6 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
         }
       }
     ).afterClosed().subscribe(() => {
-      console.log("layer analyzer is working")
     })
   }
 

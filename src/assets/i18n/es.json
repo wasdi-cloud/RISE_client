@@ -19,7 +19,8 @@
     "HEADER": "GESTIONAR EVENTOS",
     "CREATE_NEW_EVENT": "Crear nuevo Evento",
     "EDIT_EVENT": "Editar Evento",
-    "RETURN": "Volver"
+    "RETURN": "Volver",
+    "CREATION_UPLOAD_ALTERNATIVE_TEXT": "Después de la creación de tu evento, podrás subir imágenes y documentos asociados al editarlo."
   },
   "CREATE_NEW_EVENT": {
     "NAME": "Nombre",

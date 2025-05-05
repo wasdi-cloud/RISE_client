@@ -18,7 +18,8 @@
     "HEADER": "GÉRER LES ÉVÉNEMENTS",
     "CREATE_NEW_EVENT": "Créer un nouvel événement",
     "EDIT_EVENT": "Modifier l'événement",
-    "RETURN": "Retour"
+    "RETURN": "Retour",
+    "CREATION_UPLOAD_ALTERNATIVE_TEXT": "Après la création de votre événement, vous pourrez télécharger les images et documents associés lors de son édition."
   },
   "CREATE_NEW_EVENT": {
     "NAME": "Nom",
