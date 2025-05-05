@@ -10,6 +10,7 @@ import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
 import { RiseUtils } from '../../shared/utilities/RiseUtils';
 import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
+import {RiseNumberInputComponent} from "../../components/rise-number-input/rise-number-input.component";
 
 @Component({
   selector: 'app-confirm-registration',
@@ -19,6 +20,7 @@ import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar
     RiseButtonComponent,
     RiseCheckboxComponent,
     RiseToolbarComponent,
+    RiseNumberInputComponent,
   ],
   templateUrl: './confirm-invited-user-registration.component.html',
   styleUrl: './confirm-invited-user-registration.component.css',

@@ -48,14 +48,25 @@
             [(m_sInputText)]="m_oUserInfoInput.surname"
             [m_bIsValid]="m_bPersonalValid"
           ></rise-text-input>
-          <rise-text-input
+          <rise-number-input
+            class="col-6"
             [m_sLocalizationKey]="'REGISTER.MOBILE'"
             [m_bHasTitle]="true"
-            [(m_sInputText)]="m_oUserInfoInput.mobile"
+            [(m_sPhonePrefix)]="m_oUserInfoInput.internationalPrefix"
+            [(m_sPhoneNumber)]="m_oUserInfoInput.mobile"
+            [m_sType]="'phone'"
             [m_bIsValid]="m_bPersonalValid"
             [m_bIsValidatorInput]="true"
             [m_sErrorText]="m_sPersonalError"
-          ></rise-text-input>
+          ></rise-number-input>
+<!--          <rise-text-input-->
+<!--            [m_sLocalizationKey]="'REGISTER.MOBILE'"-->
+<!--            [m_bHasTitle]="true"-->
+<!--            [(m_sInputText)]="m_oUserInfoInput.mobile"-->
+<!--            [m_bIsValid]="m_bPersonalValid"-->
+<!--            [m_bIsValidatorInput]="true"-->
+<!--            [m_sErrorText]="m_sPersonalError"-->
+<!--          ></rise-text-input>-->
           <rise-checkbox
             [m_aoOptions]="this.m_asTermsAndConditions"
             (m_oSelectionChange)="onSelectionChange($event)"
