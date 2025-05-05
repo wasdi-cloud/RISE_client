@@ -17,7 +17,8 @@
     "HEADER": "Manage Events",
     "CREATE_NEW_EVENT": "Create new Event",
     "EDIT_EVENT": "Edit Event",
-    "RETURN": "Return"
+    "RETURN": "Return" ,
+    "CREATION_UPLOAD_ALTERNATIVE_TEXT": "After the creation of your event, you will be able to upload associated images and documents when editing it."
   },
   "CREATE_NEW_EVENT": {
     "NAME": "Name",
