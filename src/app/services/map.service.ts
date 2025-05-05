@@ -146,6 +146,11 @@ export class MapService {
   m_oGeocoderMarker: L.Marker = null;
 
   /**
+   * Area of Interest for Magic Tool
+   */
+  m_oMagicToolAOI: any = null; 
+
+  /**
    * Init options for leaflet-draw
    */
   m_oDrawOptions: any = {
@@ -707,8 +712,6 @@ export class MapService {
       }
     }
 
-
-
     L.control
       .scale({
         position: 'bottomright',
@@ -719,8 +722,6 @@ export class MapService {
 
 
   addMeasurementTools(oMap: L.Map): Observable<string> {
-
-
     const oResultSubject = new Subject<string>();
     let bMeasurementMode = false;
     let oActiveShape: L.Layer | null = null; // Track the currently drawn shape
@@ -912,23 +913,54 @@ export class MapService {
 
       const aoSelectedLayers = this.getSelectedLayers(); // Retrieve selected layers
 
-      // Check if the drawn shape covers or intersects any selected layer
-      aoSelectedLayers.forEach((oLayerData) => {
-        const { layerId } = oLayerData;
-
-        if (this.isShapeCoveringServerLayer(oLayer, layerId)) {
-          this.oMagicToolResultSubject.next('Shape intersects with a selected layer.');
-          this.m_oLayerAnalyzerDialogEventEmitter.emit(true);
-
-        }else{
-          this.oMagicToolResultSubject.next('Shape does not intersect with any selected layer.');
-          this.m_oLayerAnalyzerDialogEventEmitter.emit(false);
+      let bOpenDialog = false;
+      if (aoSelectedLayers!=null) {
+        if  (aoSelectedLayers.length>0 ){
+          let oAOIBbox = this.getMagicToolBbox(oLayer);
+          if (oAOIBbox) {
+            bOpenDialog = true;
+            this.m_oMagicToolAOI = oAOIBbox; // Store the AOI for later use
+          }
         }
-      });
+      }
+
+      if (bOpenDialog) {
+        this.oMagicToolResultSubject.next('Shape intersects with a selected layer.');
+        this.m_oLayerAnalyzerDialogEventEmitter.emit(true);
+
+      }else{
+        this.oMagicToolResultSubject.next('Shape does not intersect with any selected layer.');
+        this.m_oLayerAnalyzerDialogEventEmitter.emit(false);
+      }
+
       oMap.addLayer(oLayer);
 
     });
   }
+
+  private getMagicToolBbox(oDrawnShape: L.Layer): L.LatLngBounds {
+
+    // Check if the drawn shape is a Circle
+    if (oDrawnShape instanceof L.Circle) {
+      const oCircle = oDrawnShape as L.Circle;
+      const oCircleCenter = oCircle.getLatLng();
+      const oCircleRadius = oCircle.getRadius();
+
+      // Calculate the bounds of the circle manually
+      const oLatLngBounds = this.getCircleBounds(oCircleCenter, oCircleRadius);
+      // Check if the circle's bounds intersect with the layer's bounds
+      return oLatLngBounds;
+    }
+
+    if (oDrawnShape instanceof L.Rectangle || oDrawnShape instanceof L.Polygon) {
+      // Check if the drawn shape's bounds intersect with the layer bounds
+      const oDrawnBounds = (oDrawnShape as L.Rectangle | L.Polygon).getBounds();
+      return oDrawnBounds;
+    }
+    console.warn(`Unsupported shape type: ${oDrawnShape.constructor.name}`);
+    return null;
+
+  }  
 
   private isShapeCoveringServerLayer(oDrawnShape: L.Layer, sLayerId: string): boolean {
     const oLayer = this.m_oLayerMap[sLayerId];
@@ -1013,57 +1045,89 @@ export class MapService {
    * @param oMap
    */
   addAreaMarker(oArea: AreaViewModel, oMap: LeafletMap): Marker {
-    let asCoordinates = this.convertPointLatLng(oArea)._northEast;
 
-    if (asCoordinates && oMap) {
-      let fLat = parseFloat(asCoordinates.lat);
-      let fLon = parseFloat(asCoordinates.lng);
-
-      // Get the coordinates (Note: duplicate of above? To be checked)
-      const afBoundsCoords = this.parseWKTPolygon(oArea.bbox);
-
-      // Add the polygon to the map with only a red contour
-      let oPolygon = L.polygon(afBoundsCoords, {
-        color: "#efba35", // Outline color
-        weight: 1,
-        fillOpacity: 0 // Removes fill color, only showing contour
-      }).addTo(oMap);
-
-      if (oPolygon) {
-        this.m_aoAreaPolygons.push(oPolygon);
+    try {
+      let oCoordinates = this.convertPointLatLng(oArea);
+      let asCoordinates = null;
+  
+      if(oCoordinates) { 
+        asCoordinates = oCoordinates._northEast;
       }
-      let sPrefix = "";
+  
+      if (asCoordinates && oMap) {
+        let fLat = parseFloat(asCoordinates.lat);
+        let fLon = parseFloat(asCoordinates.lng);
+  
+        // Get the coordinates (Note: duplicate of above? To be checked)
+        const afBoundsCoords = this.parseWKTPolygon(oArea.bbox);
+  
+        for (let iCoordinates = afBoundsCoords.length-1; iCoordinates >=0 ; iCoordinates--) {
+  
+          try {
+            afBoundsCoords[iCoordinates][0] = parseFloat(afBoundsCoords[iCoordinates][0]);
+            afBoundsCoords[iCoordinates][1] = parseFloat(afBoundsCoords[iCoordinates][1]);
+  
+            if (isNaN(afBoundsCoords[iCoordinates][0]) || isNaN(afBoundsCoords[iCoordinates][1])) {
+              console.error("Invalid coordinates: ", afBoundsCoords[iCoordinates]);
+              afBoundsCoords.splice(iCoordinates, 1); // Remove invalid coordinates
+            }
+          }
+          catch (oEx) {
+            console.error("Error parsing coordinates: ", oEx);
+            afBoundsCoords.splice(iCoordinates, 1);
+          }
+        }
+  
+        // Add the polygon to the map with only a gold contour
+        let oPolygon = L.polygon(afBoundsCoords, {
+          color: "#efba35", // Outline color
+          weight: 1,
+          fillOpacity: 0 // Removes fill color, only showing contour
+        }).addTo(oMap);
+  
+        if (oPolygon) {
+          this.m_aoAreaPolygons.push(oPolygon);
+        }
+        let sPrefix = "";
+  
+        let oIcon = oIconDefault;
+  
+        let oActualUser = this.m_oConstantsService.getUser();
+  
+        if (oActualUser) {
+          // Change icon for shared areas
+          if (oActualUser.organizationId != oArea.organizationId) {
+            sPrefix = "Shared - ";
+            oIcon = oIconShared;
+          }
+        }
+  
+        // Change icon for public areas
+        if (oArea.publicArea) {
+          sPrefix = "Public - ";
+          oIcon = oIconPublic;
+        }
+  
+        let oMarker = L.marker([fLat, fLon],{icon:oIcon})
+          .bindTooltip(sPrefix + oArea.name)
+          .on('click', () => {
+            this.m_oMarkerSubject.next(oArea);
+        });
+  
+        if (oMarker) {
+          oMarker.addTo(oMap);
+          this.m_aoMarkers.push(oMarker); // Store the marker in the array
+          return oMarker;
+        }
 
-      let oIcon = oIconDefault;
-
-      let oActualUser = this.m_oConstantsService.getUser();
-
-      // Change icon for shared areas
-      if (oActualUser.organizationId != oArea.organizationId) {
-        sPrefix = "Shared - ";
-        oIcon = oIconShared;
+        return null;
       }
-
-      // Change icon for public areas
-      if (oArea.publicArea) {
-        sPrefix = "Public - ";
-        oIcon = oIconPublic;
-      }
-
-      let oMarker = L.marker([fLat, fLon],{icon:oIcon})
-        .bindTooltip(sPrefix + oArea.name)
-        .on('click', () => {
-          this.m_oMarkerSubject.next(oArea);
-      });
-
-      if (oMarker) {
-        oMarker.addTo(oMap);
-        this.m_aoMarkers.push(oMarker); // Store the marker in the array
-        return oMarker;
-      }
-      return null;
-
+      return null; 
     }
+    catch (oEx) {
+      console.error("Error adding area marker: ", oEx); 
+    }
+
     return null;
   }
   /**
@@ -2031,6 +2095,14 @@ export class MapService {
     this.m_oMarkerSubject.complete();
     this.m_oMarkerSubject = new BehaviorSubject<AreaViewModel | null>(null);
     this.m_oMarkerSubject$ = this.m_oMarkerSubject.asObservable();
+  }
+
+  getMagicToolAOI() {
+    return this.m_oMagicToolAOI;
+  }
+
+  cleanMagicToolAOI() {
+    this.m_oMagicToolAOI = null;
   }
 }
 
