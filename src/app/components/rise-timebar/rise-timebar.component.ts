@@ -49,7 +49,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   /**
    * Date selected by the user
    */
-  @Output() m_oSelectedDateEmitter: EventEmitter<number> = new EventEmitter<number>(null);
+  @Output() m_oSelectedDateEmitter: EventEmitter<any> = new EventEmitter<any>(null);
 
   /**
    * Event of live button pressed
@@ -143,19 +143,22 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    */
   @HostListener('wheel', ['$event'])
   onMouseWheel(event: WheelEvent) {
-    if (this.isMouseOverSlider(event)) {
-      let oDate = this.getMousePositionDate(event);
-
-      if (event.deltaY < 0) {
-        this.handleZoomingIn(oDate);
-      } else {
-        this.handleZoomingOut(oDate);
-      }
-      event.preventDefault(); // Prevents page scrolling
-    }
+    // ZOOM Disabled at the moment
+    //
+    // if (this.isMouseOverSlider(event)) {
+    //   let oDate = this.getMousePositionDate(event);
+      
+    //   if (event.deltaY < 0) {
+    //     this.handleZoomingIn(oDate);
+    //   } else {
+    //     this.handleZoomingOut(oDate);
+    //   }
+    //   event.preventDefault(); // Prevents page scrolling
+    // }
   }
 
   getEventMarkerPosition(iEventTimestamp: number): string {
+    // NOTE: this is for zoom but at the moment not working
     // const iRangeStart = this.m_oZoomWindow?.start || this.m_iStartDate * 1000;
     // const iRangeEnd = this.m_oZoomWindow?.end || this.m_iEndDate * 1000;
     const iRangeStart = this.m_iStartDate * 1000;
@@ -398,7 +401,13 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     console.log(this.m_oSelectedDate)
     console.log(this.m_sSelectedDateTimestamp)
     this.emitLiveButtonAction();
-    this.emitSelectedDate();
+
+    if (FadeoutUtils.utilsIsObjectNullOrUndefined(oEvent.target?.eventId)) {
+      this.emitSelectedDate();
+    }
+    else {
+      this.emitSelectedDate(oEvent.target.eventId);
+    }
   }
 
   /**
@@ -411,6 +420,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
       this.m_sSelectedDateTimestamp = new Date(this.m_sSelectedDate).valueOf();
       this.m_oSelectedDate = new Date(this.m_sSelectedDate);
       this.m_bIsLive = true;
+      this.m_iInitialSelectedDate = null;
       this.emitSelectedDate();
       this.emitLiveButtonAction();
     }
@@ -435,9 +445,15 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    * UC: RISE re-align all the maps and layers according to the selected date
    * @returns void
    */
-  emitSelectedDate(): void {
-    const utcDate = new Date(this.m_oSelectedDate.getTime() - this.m_oSelectedDate.getTimezoneOffset() * 60000);
-    this.m_oSelectedDateEmitter.emit(utcDate.getTime());
+  emitSelectedDate(sEventId?: string): void {
+    //const oUtcDate = new Date(this.m_oSelectedDate.getTime() - this.m_oSelectedDate.getTimezoneOffset() * 60000);
+
+    let oSelecteDateInfo = {
+      iReferenceTime: this.m_oSelectedDate.getTime(),
+      eventId: sEventId
+    }
+
+    this.m_oSelectedDateEmitter.emit(oSelecteDateInfo);
 
   }
   //todo make one function for add / minus day
@@ -635,38 +651,38 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     };
   }
 
-  goToEvent(event: any): void {
-    const eventTimestamp = event.peakDate * 1000;
+  goToEvent(oEvent: any): void {
+    const iEventTimestamp = oEvent.peakDate * 1000;
 
     // Check if the event is within the current zoom window
-    const isInWindow = this.m_oZoomWindow &&
-      eventTimestamp >= this.m_oZoomWindow.start &&
-      eventTimestamp < this.m_oZoomWindow.end;
+    const bIsInWindow = this.m_oZoomWindow &&
+      iEventTimestamp >= this.m_oZoomWindow.start &&
+      iEventTimestamp < this.m_oZoomWindow.end;
 
-    if (!isInWindow && this.m_iZoomLevel < this.m_iMaxZoomInLevel) {
+    if (!bIsInWindow && this.m_iZoomLevel < this.m_iMaxZoomInLevel) {
       // Event is outside current view — zoom in around it
-      const eventDateString = new Date(eventTimestamp).toISOString().split("T")[0];
-      this.handleZoomingIn(eventDateString); // will regenerate m_asDates
+      const sEventDateString = new Date(iEventTimestamp).toISOString().split("T")[0];
+      this.handleZoomingIn(sEventDateString); // will regenerate m_asDates
     }
 
     // Find the closest matching date string (since m_asDates is string-based)
-    const eventDate = new Date(eventTimestamp);
-    const formattedDate = `${eventDate.getFullYear()}-${eventDate.getMonth() + 1}-${eventDate.getDate()}`;
+    const oEventDate = new Date(iEventTimestamp);
+    const sFormattedDate = `${oEventDate.getFullYear()}-${oEventDate.getMonth() + 1}-${oEventDate.getDate()}`;
 
-    const index = this.m_asDates.findIndex(dateStr => {
-      const d = new Date(dateStr);
+    const iIndex = this.m_asDates.findIndex(sDateStr => {
+      const oDate = new Date(sDateStr);
       return (
-        d.getFullYear() === eventDate.getFullYear() &&
-        d.getMonth() === eventDate.getMonth() &&
-        d.getDate() === eventDate.getDate()
+        oDate.getFullYear() === oEventDate.getFullYear() &&
+        oDate.getMonth() === oEventDate.getMonth() &&
+        oDate.getDate() === oEventDate.getDate()
       );
     });
 
-    if (index >= 0) {
-      this.m_iSliderValue = index;
-      this.dateSelected({ target: { value: index } } as any); // simulate slider input
+    if (iIndex >= 0) {
+      this.m_iSliderValue = iIndex;
+      this.dateSelected({ target: { value: iIndex, eventId: oEvent.id } } as any); // simulate slider input
     } else {
-      console.warn('Could not find event date in current timeline:', formattedDate);
+      console.warn('Could not find event date in current timeline:', sFormattedDate);
     }
   }
 

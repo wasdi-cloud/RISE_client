@@ -179,7 +179,16 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       this.m_oSelectedEvent.name=state?.name;
 
       this.m_bShowEventInfo=true;
-      this.m_iSelectedDate= (Number(state?.peakDate) * 1000).toString();
+
+      // Convert peakDate to milliseconds and create a Date object
+      const iPeakDateInSeconds = Number(state?.peakDate);
+      const oPeakDateUTC = new Date(iPeakDateInSeconds * 1000);
+      // Set the time to 23:59:59 in UTC
+      oPeakDateUTC.setUTCHours(23, 59, 59, 0);
+
+      let iFinalTimestampMs = oPeakDateUTC.getTime(); // Convert to seconds
+
+      this.m_iSelectedDate= iFinalTimestampMs;
       this.m_iInitialPeakDate = new Date(state.peakDate).getTime();
     }
   }
@@ -245,7 +254,6 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     this.m_oLiveTimer = setInterval(() => {
       if (this.m_bIsLive) {
         this.m_iCurrentDate = this.getCurrentDate();
-
       }
     }, 0.5 * 60 * 1000); // every 5 minutes
   }
@@ -451,8 +459,12 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    * Handle Changes to the Reference Time from the Timebar Component
    *  UC: RISE shows the Monitor Section containing a timeline to change the reference time of the viewer
    */
-  getReferenceTime(iReferenceTime:any): void {
-    this.m_iSelectedDate = iReferenceTime;
+  getReferenceTime(oSelecteDateInfo:any): void {
+    this.m_iSelectedDate = oSelecteDateInfo.iReferenceTime;
+
+    if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oSelecteDateInfo?.eventId)) {
+      this.fillEventPanel(oSelecteDateInfo.eventId);
+    }
 
     this.initPluginsButtons(this.m_aoPlugins);
 
@@ -646,10 +658,32 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     });
   }
 
+  cleanEventPanel() {
+    this.m_bShowEventInfo=false;
+    this.m_oSelectedEvent={};
+  }
+
+  fillEventPanel(sEventId:string) {
+
+    for (let i = 0; i < this.m_aoEvents.length; i++) {
+      if (this.m_aoEvents[i].id === sEventId) {
+        this.m_oSelectedEvent = this.m_aoEvents[i];
+        this.m_bShowEventInfo = true;
+        break;
+      }
+    }
+  }
+
   handleLiveButtonPressed(bIsLive) {
     this.m_bIsLive = bIsLive;
+
     if(this.m_bIsLive){
+      // Clean the event panel if we go live
+      this.cleanEventPanel();
+
+      // Re-start the timer
       this.startLiveTimer();
+
       // Update current date and end date immediately
       this.m_iCurrentDate = this.getCurrentDate();
       this.m_sEndDate = new Date(this.m_iCurrentDate * 1000).toISOString(); // Store as ISO string if expected
@@ -661,7 +695,9 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
           Math.abs(a.referenceDate - oTargetDate) -
           Math.abs(b.referenceDate - oTargetDate)
         );
+
         this.setOpacity(100, aoSortedLayers[0].layerId);
+
         for (let i = 1; i < this.m_aoLayers.length; i++) {
           this.setOpacity(0, aoSortedLayers[i].layerId);
         }
