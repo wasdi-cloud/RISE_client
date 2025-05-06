@@ -130,6 +130,8 @@ export class BuyNewSubscriptionComponent implements OnInit {
   }
 
   initSubTypeNames() {
+    console.log(this.m_aoSubTypes)
+    this.m_aoSubTypes.sort((a, b) => a.allowedAreas - b.allowedAreas);
     this.m_asSubTypeNames = this.m_aoSubTypes.map(
       (oSubType) => oSubType.stringCode.slice(8) + ' Location(s)'
     );
@@ -147,6 +149,10 @@ export class BuyNewSubscriptionComponent implements OnInit {
         this.m_sSelectedSubType=sSelectedType;
       }
     });
+
+    if(this.enableComputePrice()){
+      this.getComputedPrice();
+    }
   }
 
   handlePluginSelect(oEvent) {
@@ -265,9 +271,13 @@ export class BuyNewSubscriptionComponent implements OnInit {
     let sTypeName = oPaymentType.value;
     console.log(oPaymentType.value);
     this.m_sSelectedPaymentTypeName=oPaymentType.value
+
     this.m_oSelectedPaymentType = this.m_aoPaymentTypes.find(
       (oType) => oType.name === sTypeName
     );
+    if(this.enableComputePrice()){
+      this.getComputedPrice();
+    }
 
   }
 
@@ -458,7 +468,8 @@ export class BuyNewSubscriptionComponent implements OnInit {
     <br/>
     <strong>Subscription Type:</strong><br/>
     <ul>
-      <li><strong>1 Location:</strong> Monitor a single area of interest.</li>
+      <li><strong>1 Location:</strong> Monitor a single area of operations.</li>
+      <li><strong>3 Location:</strong> Monitor up to 3 different areas of operations.</li>
       <li><strong>5 Locations:</strong> Monitor up to five different areas simultaneously.</li>
       <li><strong>10 Locations:</strong> Ideal for broader monitoring needs — track up to ten separate regions.</li>
     </ul>

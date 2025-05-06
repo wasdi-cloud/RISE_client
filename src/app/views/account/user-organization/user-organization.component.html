@@ -64,22 +64,33 @@
               [m_sLocalizationKey]="'ORGANIZATION.POSTAL_CODE'"
             ></rise-text-input>
           </div>
-          <div class="d-flex flex-row gap-2">
+          <div class="d-flex flex-row gap-1">
             <rise-text-input
               [m_bHasTitle]="true"
               [(m_sInputText)]="m_oOrganization.city"
               class="flex-fill"
               [m_sLocalizationKey]="'ORGANIZATION.CITY'"
             ></rise-text-input>
-            <rise-text-input
-              [m_bHasTitle]="true"
-              [(m_sInputText)]="m_oOrganization.phone"
-              class="flex-fill"
-              [m_sLocalizationKey]="'ORGANIZATION.PHONE_NUMBER'"
-            ></rise-text-input>
+            <div class="flex-fill">
+              <rise-number-input
+                class="w-100"
+                [m_sLocalizationKey]="'REGISTER.MOBILE'"
+                [m_bHasTitle]="true"
+                [(m_sPhonePrefix)]="m_oOrganization.internationalPrefix"
+                [(m_sPhoneNumber)]="m_oOrganization.phone"
+                [m_sType]="'phone'"
+              ></rise-number-input>
+            </div>
+<!--            <rise-text-input-->
+<!--              [m_bHasTitle]="true"-->
+<!--              [(m_sInputText)]="m_oOrganization.phone"-->
+<!--              class="flex-fill"-->
+<!--              [m_sLocalizationKey]="'ORGANIZATION.PHONE_NUMBER'"-->
+<!--            ></rise-text-input>-->
           </div>
         </div>
         <rise-button
+
           class="align-self-start"
           [m_sRole]="'primary'"
           [m_sLabel]="'ORGANIZATION.SAVE'"

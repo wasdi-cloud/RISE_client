@@ -26,19 +26,21 @@ import {OrganizationTypes} from '../../../shared/organization-types';
 import FadeoutUtils from '../../../shared/utilities/FadeoutUtils';
 import {OtpDialogComponent} from "../../../dialogs/otp-dialog/otp-dialog.component";
 import {AuthService} from "../../../services/api/auth.service";
+import {RiseNumberInputComponent} from "../../../components/rise-number-input/rise-number-input.component";
 
 @Component({
   selector: 'user-organization',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    TranslateModule,
-    RiseButtonComponent,
-    RiseCollaboratorsComponent,
-    RiseDropdownComponent,
-    RiseTextInputComponent,
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        TranslateModule,
+        RiseButtonComponent,
+        RiseCollaboratorsComponent,
+        RiseDropdownComponent,
+        RiseTextInputComponent,
+        RiseNumberInputComponent,
+    ],
   templateUrl: './user-organization.component.html',
   styleUrl: './user-organization.component.css',
 })
