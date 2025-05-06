@@ -49,9 +49,8 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   /**
    * Date selected by the user
    */
-  @Output() m_oSelectedDateEmitter: EventEmitter<number> = new EventEmitter<number>(
-    null
-  );
+  @Output() m_oSelectedDateEmitter: EventEmitter<number> = new EventEmitter<number>(null);
+
   /**
    * Event of live button pressed
    */
@@ -104,7 +103,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   /**
    * Ticks for the timebar
    */
-  aiTicks: { value: any }[] = [];
+  m_aiTicks: { value: any , timestamp: number}[] = [];
   /**
    * Events to mark in the timebar
    */
@@ -125,7 +124,6 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-
     this.initDates();
     this.generateTicks();
   }
@@ -137,9 +135,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
       this.initDates();
       this.generateTicks();
     }
-
   }
-
 
   /**
    * detect the wheel movement on the slider
@@ -159,27 +155,25 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     }
   }
 
-  /**
-   * Get Marker position to insert in its right position in the timebar
-   */
-  // getEventMarkerPosition(eventDate: number): string {
-  //   let sDate = new Date(eventDate).toDateString()
-  //   const eventIndex = this.m_asDates.findIndex(
-  //     (date) => date === sDate
-  //   );
-  //   if (eventIndex === -1) {
-  //     return ""; // Default to 0% if the event date isn't in the range
-  //   }
-  //
-  //   const percentage = (eventIndex / (this.m_asDates.length - 1)) * 100;
-  //   return `${percentage}%`;
-  // }
-  getEventMarkerPosition(timestamp: number): string {
-    const rangeStart = this.m_oZoomWindow?.start || this.m_iStartDate * 1000;
-    const rangeEnd = this.m_oZoomWindow?.end || this.m_iEndDate * 1000;
+  getEventMarkerPosition(iEventTimestamp: number): string {
+    // const iRangeStart = this.m_oZoomWindow?.start || this.m_iStartDate * 1000;
+    // const iRangeEnd = this.m_oZoomWindow?.end || this.m_iEndDate * 1000;
+    const iRangeStart = this.m_iStartDate * 1000;
+    const iRangeEnd = this.m_iEndDate * 1000;
 
-    const percent = (timestamp - rangeStart) / (rangeEnd - rangeStart);
-    return `${percent * 100}%`;
+    // Ensure the timestamp is within the range
+    if (iEventTimestamp < iRangeStart || iEventTimestamp > iRangeEnd) {
+      // Default to 0% if the event timestamp is out of range
+      return "0%"; 
+    }
+
+    if (iRangeEnd==iRangeStart) {
+      // Avoid division by zero
+      return "0%"; 
+    }
+
+    const fPercent = (iEventTimestamp - iRangeStart) / (iRangeEnd - iRangeStart);
+    return `${fPercent * 100}%`;
   }
 
 
@@ -222,7 +216,11 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     const iEndMonth = iEndDate.getMonth();
     const iEndDay = iEndDate.getDate();
     const iYearRange = iEndYear - iStartYear;
-    this.aiTicks = [];
+    this.m_aiTicks = [];
+
+    let iCurrentYear = new Date().getFullYear();
+    let iCurrentMonth = new Date().getMonth();
+
     // If the range is more than one year
     if (iYearRange > 1) {
       let interval = 1; // Default interval: one tick per year
@@ -240,22 +238,26 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
       this.m_iMaxZoomInLevel = 2;
       this.generateYearTicks(iStartYear,iEndYear,interval);
 
-    } else {
+    } 
+    else {
       //same year
       if (iYearRange == 0) {
 
         if (iEndMonth - iStartMonth >= 1) {
-          for (let month = iStartMonth; month <= iEndMonth; month++) {
-            this.aiTicks.push({value: MONTHS[month]});
+
+          for (let iMonth = iStartMonth; iMonth <= iEndMonth; iMonth++) {
+            this.m_aiTicks.push({value: MONTHS[iMonth], timestamp: new Date(iCurrentYear, iMonth, 1).getTime()});
           }
           this.m_iZoomLevel = 1;// can go from month to days
           this.m_iMaxZoomInLevel = 2;
           this.m_iMaxZoomOutLevel = 1;
 
-        } else {
-          for (let day = iStartDay; day <= iEndDay; day++) {
-            this.aiTicks.push({value: day});
+        } 
+        else {
+          for (let iDay = iStartDay; iDay <= iEndDay; iDay++) {
+            this.m_aiTicks.push({value: iDay, timestamp: new Date(iCurrentYear, iCurrentMonth, iDay).getTime()});
           }
+
           this.m_iZoomLevel = 2; // will be always days
           this.m_iMaxZoomInLevel = 2;
           this.m_iMaxZoomOutLevel = 2;
@@ -264,18 +266,19 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
       //different  year
       else {
         if (Math.abs(iEndMonth - iStartMonth) >= 1) {
-          for (let month = iStartMonth; month < 12; month++) {
-            this.aiTicks.push({value: MONTHS[month]});
+          for (let iMonth = iStartMonth; iMonth < 12; iMonth++) {
+            this.m_aiTicks.push({value: MONTHS[iMonth], timestamp: new Date(iStartYear, iMonth, 1).getTime()});
           }
-          for (let month = 0; month <= iEndMonth; month++) {
-            this.aiTicks.push({value: MONTHS[month]});
+          for (let iMonth = 0; iMonth <= iEndMonth; iMonth++) {
+            this.m_aiTicks.push({value: MONTHS[iMonth], timestamp: new Date(iEndYear, iMonth, 1).getTime()});
           }
           this.m_iZoomLevel = 1; // can go from month to days
           this.m_iMaxZoomInLevel = 2;
           this.m_iMaxZoomOutLevel = 1;
-        } else {
-          for (let day = iStartDay; day <= iEndDay; day++) {
-            this.aiTicks.push({value: day});
+        } 
+        else {
+          for (let iDay = iStartDay; iDay <= iEndDay; iDay++) {
+            this.m_aiTicks.push({value: iDay, timestamp: new Date(iEndYear, iEndMonth, iDay).getTime()});
           }
           this.m_iZoomLevel = 2;// cant zoom since its only days
           this.m_iMaxZoomInLevel = 2;
@@ -289,20 +292,34 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   /**
    * Get Tick  position to insert in its right position in the timebar
    */
-  getTickPosition(index: number): string {
-    const totalTicks = this.aiTicks.length;
+  getTickPosition2(iIndex: number): string {
+    const iTotalTicks = this.m_aiTicks.length;
 
-    if (index === 0) {
+    if (iIndex === 0) {
       return `0%`; // Align the first tick to the start
     }
-    if (index === totalTicks - 1) {
+    if (iIndex === iTotalTicks - 1) {
       return `100%`; // Align the last tick to the end
     }
 
     // For other ticks, calculate the percentage
-    const percentage = (index / (totalTicks - 1)) * 100;
-    return `${percentage}%`;
+    const fPercentage = (iIndex / (iTotalTicks - 1)) * 100;
+    return `${fPercentage}%`;
   }
+
+  getTickPosition(iIndex: number): string {
+    const oTick = this.m_aiTicks[iIndex];
+    const iStartTimestamp = this.m_iStartDate * 1000;
+    const iEndTimestamp = this.m_iEndDate * 1000;
+    const iTotalDuration = iEndTimestamp - iStartTimestamp;
+  
+    if (!oTick.timestamp) return "0%"; // fallback if not initialized
+  
+    const iTickOffset = oTick.timestamp - iStartTimestamp;
+    const fPercentage = (iTickOffset / iTotalDuration) * 100;
+  
+    return `${fPercentage}%`;
+  }  
 
   /**
    * Initialize array of dates for the archive based on inputted start and end date
@@ -318,29 +335,38 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
       return;
     }
     this.m_oMomentStartDate = moment(this.m_iStartDate * 1000);
-    let startDate = new Date(this.m_iStartDate * 1000);
-    let endDate = new Date(this.m_iEndDate * 1000);
+    let oStartDate = new Date(this.m_iStartDate * 1000);
+    let oEndDate = new Date(this.m_iEndDate * 1000);
     let asDates = [];
-    // asDates.push(startDate)
-    // asDates.push(endDate)
-    while (startDate <= endDate) {
-      asDates.push(startDate.toDateString());
-      startDate.setDate(startDate.getDate() + 1);
+
+    while (oStartDate <= oEndDate) {
+      asDates.push(oStartDate.toDateString());
+      oStartDate.setDate(oStartDate.getDate() + 1);
     }
-    asDates.push(endDate.toDateString());
+
+    // The end date is already included in the loop, so we don't need to add it again
+    let sLastDayString = oEndDate.toDateString();
+
+    // Safe check to ensure the last day is not already in the array
+    if (!asDates.includes(sLastDayString)) {
+      asDates.push(sLastDayString);
+    }
+    
     this.m_asDates = asDates;
 
     // 🔥 Pick initial selection based on input date
-
     if(this.m_iInitialSelectedDate && this.m_iInitialSelectedDate>=this.m_iStartDate && this.m_iInitialSelectedDate<=this.m_iEndDate  ){
       this.m_sSelectedDate = new Date(this.m_iInitialSelectedDate * 1000).toDateString()
       this.m_iSliderValue = this.m_asDates.indexOf(this.m_sSelectedDate);
       this.m_oSelectedDate = new Date(this.m_iInitialSelectedDate * 1000)
-    }else{
+    }
+    else {
       this.m_sSelectedDate =asDates[asDates.length - 1];
       this.m_iSliderValue = asDates.length - 1;
-      this.m_oSelectedDate = endDate
+      this.m_oSelectedDate = oEndDate
     }
+
+    this.m_bIsLive = this.m_sSelectedDate === this.m_asDates[this.m_asDates.length - 1];
 
     this.m_sSelectedDateTimestamp = this.m_oSelectedDate.valueOf();
     this.emitSelectedDate()
@@ -357,12 +383,13 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oEvent.target)) {
 
       this.m_sSelectedDate = this.m_asDates[oEvent.target.value];
-
       this.m_iSliderValue = this.m_asDates.indexOf(this.m_sSelectedDate);
-    } else {
+    } 
+    else {
       this.m_sSelectedDate = oEvent;
       this.m_iSliderValue = this.m_asDates.indexOf(this.m_sSelectedDate);
     }
+
     this.m_bIsLive = this.m_sSelectedDate === this.m_asDates[this.m_asDates.length - 1];
     // this.m_sSelectedDateTimestamp = new Date(this.m_sSelectedDate).valueOf();
     this.m_oSelectedDate = new Date(this.m_sSelectedDate);
@@ -472,15 +499,14 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     const oDate = new Date(oSelectedDate);
     const oSelectedYear = oDate.getFullYear();
     const oSelectedMonth = oDate.getMonth();
-    const daysInMonth = new Date(oSelectedYear, oSelectedMonth + 1, 0).getDate();
+    const iDayInMonth = new Date(oSelectedYear, oSelectedMonth + 1, 0).getDate();
 
-    this.aiTicks = [];
+    this.m_aiTicks = [];
     this.m_asDates = []; // Reset slider values
 
-    for (let day = 1; day <= daysInMonth; day++) {
-      const dateString = `${oSelectedYear}-${oSelectedMonth + 1}-${day}`;
-      this.aiTicks.push({value: `${day} ${MONTHS[oSelectedMonth]}`});
-      this.m_asDates.push(dateString); // Update slider values
+    for (let iDay = 1; iDay <= iDayInMonth; iDay++) {
+      const sDateString = `${oSelectedYear}-${oSelectedMonth + 1}-${iDay}`;
+      this.m_aiTicks.push({value: `${iDay} ${MONTHS[oSelectedMonth]}`, timestamp: new Date(oSelectedYear, oSelectedMonth, iDay).getTime()});
     }
 
 
@@ -499,26 +525,26 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   }
 
   generateMonthTicks(oDate: string) {
-    const dateObj = new Date(oDate);
-    const selectedYear = dateObj.getFullYear();
+    const oDateObj = new Date(oDate);
+    const iSelectedYear = oDateObj.getFullYear();
 
-    this.aiTicks = [];
+    this.m_aiTicks = [];
     this.m_asDates = []; // Reset slider values
 
-    for (let month = 0; month < 12; month++) {
-      const dateString = `${selectedYear}-${month + 1}-01`;
-      this.aiTicks.push({value: MONTHS[month]}); // Display months as labels
-      this.m_asDates.push(dateString); // Store full date string
+    for (let iMonth = 0; iMonth < 12; iMonth++) {
+      const sDateString = `${iSelectedYear}-${iMonth + 1}-01`;
+      this.m_aiTicks.push({value: MONTHS[iMonth], timestamp: new Date(iSelectedYear, iMonth, 1).getTime() }); // Display months as labels
+      this.m_asDates.push(sDateString); // Store full date string
     }
 
 
     // Keep the selected month if possible
-    const selectedMonth = dateObj.getMonth();
-    this.m_iSliderValue = selectedMonth; // Since months are zero-based
+    const iSelectedMonth = oDateObj.getMonth();
+    this.m_iSliderValue = iSelectedMonth; // Since months are zero-based
     this.m_sSelectedDate = this.m_asDates[this.m_iSliderValue];
     this.m_oZoomWindow = {
-      start: new Date(selectedYear, 0, 1).getTime(),
-      end: new Date(selectedYear + 1, 0, 1).getTime(),
+      start: new Date(iSelectedYear, 0, 1).getTime(),
+      end: new Date(iSelectedYear + 1, 0, 1).getTime(),
     };
   }
 
@@ -599,9 +625,10 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
 
 
   private generateYearTicks(iStartYear:number,iEndYear:number,interval:number) {
-    for (let year = iStartYear; year <= iEndYear; year += interval) {
-      this.aiTicks.push({value: year});
+    for (let iYear = iStartYear; iYear <= iEndYear; iYear += interval) {
+      this.m_aiTicks.push({value: iYear, timestamp: new Date(iYear, 0, 1).getTime()});
     }
+
     this.m_oZoomWindow = {
       start: new Date(iStartYear, 0, 1).getTime(),
       end: new Date(iEndYear + 1, 0, 1).getTime(), // exclusive end

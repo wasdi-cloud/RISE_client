@@ -85,7 +85,7 @@
 
 /* Change cursor when zooming in or out */
 .slider.zoom-in:hover {
-  cursor: zoom-in;
+  cursor: pointer;
 }
 
 .slider.zoom-out:hover {

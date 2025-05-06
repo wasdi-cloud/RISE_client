@@ -33,7 +33,11 @@ import {EventService} from "../../services/api/event.service";
 import {EventViewModel} from "../../models/EventViewModel";
 import {EventType} from "../../models/EventType";
 
-@Component({
+
+  /**
+   * UC_120 Monitor Area of Operations
+   */
+  @Component({
   selector: 'app-monitor',
   standalone: true,
   imports: [
@@ -55,15 +59,11 @@ import {EventType} from "../../models/EventType";
   styleUrl: './monitor.component.css',
 })
 export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
-  /**
-   * UC_120 Monitor Area of Operations
-   */
+
   /**
    * Flag to show either 2D Leaflet map or 3D Cesium Map (TODO: CESIUM)
    */
   m_bShow2D: boolean = true;
-
-
 
   /**
    * Active area of operation
@@ -102,9 +102,12 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   /**
    * User's selected date (initialized as most recent date then passed from TIMEBAR COMPONENT)
    */
-  m_oSelectedDate: any = '';
+  m_iSelectedDate: any = '';
 
-
+  /**
+   * Current date
+   */
+  m_iCurrentDate: number = null;
 
   /**
    * Available plugins for the workspace
@@ -120,10 +123,6 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    * Search string for users to search for Layer items based on their MAP ID
    */
   m_sSearchString: string = null;
-  /**
-   * Current date
-   */
-  m_iCurrentDate: number = null;
 
   /**
    * List of Events
@@ -132,18 +131,25 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   m_iInitialPeakDate: number;
   m_iVisibleCount = 5;
   m_bShowAllPlugins = false;
+
+  /**
+   * Name of the area of operations
+   */
   m_sAreaName = "";
 
+  /**
+   * Timer to update the current date
+   */
   private m_oLiveTimer: any;
-  //todo
+  /**
+   * Flag to show the event info box
+   */
   m_bShowEventInfo:boolean=false;
-  m_oSelectedEvent: EventViewModel = {
-    name:"demo event",
-    type:EventType.FLOOD,
-    startDate:1746463550178,
-    endDate:1746463550178,
-    peakDate:1746463550178
-  };
+
+  /**
+   * Event information
+   */
+  m_oSelectedEvent: EventViewModel = {} as EventViewModel;
 
 
   @ViewChild('btnContainer', { static: false }) btnContainerRef!: ElementRef;
@@ -166,55 +172,65 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     const state = navigation?.extras?.state as { peakDate?: string,name?:string,type?:EventType,startDate:string,endDate?:string };
 
     if (state?.peakDate) {
-      this.m_oSelectedEvent.endDate=(Number(state?.endDate) * 1000);
-      this.m_oSelectedEvent.startDate=(Number(state?.startDate) * 1000);
-      this.m_oSelectedEvent.peakDate=(Number(state?.peakDate) * 1000);
+      this.m_oSelectedEvent.endDate=(Number(state?.endDate));
+      this.m_oSelectedEvent.startDate=(Number(state?.startDate));
+      this.m_oSelectedEvent.peakDate=(Number(state?.peakDate));
       this.m_oSelectedEvent.type=state?.type;
       this.m_oSelectedEvent.name=state?.name;
 
       this.m_bShowEventInfo=true;
-      this.m_oSelectedDate= (Number(state?.peakDate) * 1000).toString();
+      this.m_iSelectedDate= (Number(state?.peakDate) * 1000).toString();
       this.m_iInitialPeakDate = new Date(state.peakDate).getTime();
-
-
     }
   }
 
   ngOnInit(): void {
 
     this.m_iCurrentDate=this.getCurrentDate();
-    this.startLiveTimer();
 
+    if (!this.m_bShowEventInfo) {
+      this.startLiveTimer();  
+      this.m_bIsLive=true;
+    }
+    else {
+      this.m_iSelectedDate = this.m_oSelectedEvent.peakDate;
+      this.m_bIsLive = false;
+    }
+
+    // Get the data of the AOI
     this.getActiveAOI();
-    this.m_oMapService.m_oLayerAnalyzerDialogEventEmitter.subscribe((shouldOpenDialog: boolean) => {
-      if (shouldOpenDialog) {
+
+    // Register the event to show layer analyzer 
+    this.m_oMapService.m_oLayerAnalyzerDialogEventEmitter.subscribe((bShouldOpenDialog: boolean) => {
+      if (bShouldOpenDialog) {
         this.openLayerAnalyzerDialog(); // Your dialog opening method
       }
     });
+
+    // Get the list of events of the area
     this.getEvents()
   }
 
   ngAfterViewInit(): void {
     document.addEventListener('fullscreenchange', () => {
 
-      const fullscreenElement = document.fullscreenElement;
-      const btnContainer = this.btnContainerRef.nativeElement;
-      const originalParent = this.tempFixRef.nativeElement;
+      const oFullscreenElement = document.fullscreenElement;
+      const oBtnContainer = this.btnContainerRef.nativeElement;
+      const oOriginalParent = this.tempFixRef.nativeElement;
 
-      const fullscreenClass = 'fullscreen-btn-container'; // This will be the class for fullscreen mode
-      const normalClass = 'btn-select-container'; // This will be the class for fullscreen mode
+      const sFullscreenClass = 'fullscreen-btn-container'; // This will be the class for fullscreen mode
+      const sNormalClass = 'btn-select-container'; // This will be the class for fullscreen mode
 
       // Add or remove the fullscreen class based on the fullscreen state
-      if (fullscreenElement && !fullscreenElement.contains(btnContainer)) {
-        fullscreenElement.appendChild(btnContainer);
-        btnContainer.classList.add(fullscreenClass);
-        btnContainer.classList.remove(normalClass);
-      } else if (!fullscreenElement) {
-        originalParent.insertBefore(btnContainer, originalParent.firstChild);
-        btnContainer.classList.remove(fullscreenClass);
-        btnContainer.classList.add(normalClass);
-
-
+      if (oFullscreenElement && !oFullscreenElement.contains(oBtnContainer)) {
+        oFullscreenElement.appendChild(oBtnContainer);
+        oBtnContainer.classList.add(sFullscreenClass);
+        oBtnContainer.classList.remove(sNormalClass);
+      } 
+      else if (!oFullscreenElement) {
+        oOriginalParent.insertBefore(oBtnContainer, oOriginalParent.firstChild);
+        oBtnContainer.classList.remove(sFullscreenClass);
+        oBtnContainer.classList.add(sNormalClass);
       }
     });
   }
@@ -234,15 +250,12 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     }, 0.5 * 60 * 1000); // every 5 minutes
   }
 
-
   stopLiveTimer() {
     if (this.m_oLiveTimer) {
       clearInterval(this.m_oLiveTimer);
       this.m_oLiveTimer = null;
     }
   }
-
-
 
   /**
    * Get area of operations from the constants service if it was active or the URL if on refresh then open
@@ -263,8 +276,14 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       this.m_oRouter.navigateByUrl('dashboard');
     }
   }
+
+  /**
+   * Get the current date in seconds
+   * @returns 
+   */
   getCurrentDate(): number {
-    return Math.floor(Date.now() / 1000); // Current timestamp in seconds
+    // Current timestamp in seconds
+    return Math.floor(Date.now() / 1000); 
   }
 
   /**
@@ -344,7 +363,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   getLayer(oPlugin: any, sAreaId: string, iDate: string | number) {
 
     this.m_oLayerService
-      .findLayer(oPlugin.id, sAreaId, this.m_oSelectedDate)
+      .findLayer(oPlugin.id, sAreaId, this.m_iSelectedDate)
       .subscribe({
         next: (oLayerVM:LayerViewModel) => {
           if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oLayerVM)) {
@@ -388,44 +407,36 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
   private fillPluginsAndLayers(oPlugin: any, oLayer:LayerViewModel) {
     const oMap = this.m_oMapService.getMap();
-    const index = this.m_aoLayers.findIndex(layer => layer.mapId === oLayer.mapId);
+    const iIndex = this.m_aoLayers.findIndex(layer => layer.mapId === oLayer.mapId);
     oLayer.pluginName=oPlugin.name;
     // oLayer.opacity=oLayer.opacity!=null?oLayer.opacity:100;
     // 🔁 Preserve opacity if it existed before
-    let existingLayer = this.m_aoLayers.find(l => l.layerId === oLayer.layerId);
-    oLayer.opacity = (typeof existingLayer?.opacity === 'number') ? existingLayer.opacity : 100;
-    if (index !== -1) {
+    let oExistingLayer = this.m_aoLayers.find(l => l.layerId === oLayer.layerId);
+    oLayer.opacity = (typeof oExistingLayer?.opacity === 'number') ? oExistingLayer.opacity : 100;
+    if (iIndex !== -1) {
       oMap.eachLayer((oMapLayer) => {
-        let sOldLayerId = this.m_aoLayers[index].layerId;
+        let sOldLayerId = this.m_aoLayers[iIndex].layerId;
         if (sOldLayerId === oMapLayer.options.layers) {
           oMap.removeLayer(oMapLayer);
         }
       });
 
-      this.m_aoLayers[index] = oLayer;  // Replace existing
-    } else {
+      this.m_aoLayers[iIndex] = oLayer;  // Replace existing
+    } 
+    else {
       this.m_aoLayers.push(oLayer);     // Add new if not found
     }
 
 
     // Check if oPlugin.layers already contains the object
-    if (!oPlugin.layers.some(layer => layer.layerId === oLayer.layerId)) {
+    if (!oPlugin.layers.some(oLayer => oLayer.layerId === oLayer.layerId)) {
       oPlugin.layers.push(oLayer);
     }
 
     //sort the layers
     this.m_aoLayers = this.m_aoLayers.sort((a, b) => a.referenceDate - b.referenceDate);
-    //filter the layer based on the selected date
-    //todo verify this , because i think its implemented already in backend
-    // if(this.m_oSelectedDate){
-    //   this.m_aoLayers = this.m_aoLayers.filter(layer => layer.referenceDate *1000<= this.m_oSelectedDate);
-    // }
 
-    //
     this.m_aoReversedLayers = [...this.m_aoLayers].slice().reverse();
-
-    //console.log(this.m_aoLayers)
-    //console.log(this.m_aoReversedLayers)
 
     this.m_oMapService.addLayerMap2DByServer(
       oLayer.layerId,
@@ -440,14 +451,14 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    * Handle Changes to the Reference Time from the Timebar Component
    *  UC: RISE shows the Monitor Section containing a timeline to change the reference time of the viewer
    */
-  getReferenceTime(oEvent:any): void {
-    this.m_oSelectedDate = oEvent;
+  getReferenceTime(iReferenceTime:any): void {
+    this.m_iSelectedDate = iReferenceTime;
 
     this.initPluginsButtons(this.m_aoPlugins);
+
     this.m_aoPlugins.forEach((oPlugin) => {
       if (oPlugin.loaded) {
-
-        this.getLayer(oPlugin, this.m_sAreaId, this.m_oSelectedDate);
+        this.getLayer(oPlugin, this.m_sAreaId, this.m_iSelectedDate);
       }
     });
   }
@@ -656,7 +667,9 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
         }
       }
     }
-
+    else {
+      this.stopLiveTimer();
+    }
   }
 
   async handlePlayButtonPressed(sSelectedDate) {
@@ -755,10 +768,6 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
   }
 
-  private addEventsToTimebar() {
-
-  }
-
   private getEvents() {
     if(this.m_sAreaId){
       this.m_oEventService.getEvents(this.m_sAreaId).subscribe({
@@ -773,8 +782,6 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     }
 
   }
-
-
 
   getVisiblePlugins() {
     return this.m_bShowAllPlugins
@@ -798,7 +805,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   initPluginsButtons(aoPlugins: any[]){
 
     for (const oPlugin of aoPlugins) {
-      this.m_oLayerService.findLayer(oPlugin.id,this.m_sAreaId,this.m_oSelectedDate).subscribe({
+      this.m_oLayerService.findLayer(oPlugin.id,this.m_sAreaId,this.m_iSelectedDate).subscribe({
         next:(oResponse)=>{
           oPlugin.disabled = FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse);
 

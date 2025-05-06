@@ -82,6 +82,9 @@ export class LoginViewComponent {
           oError.error.errorStringCodes
         );
         this.m_bIsLoginSubmitted=false;
+        if (this.m_oUserInput) {
+          this.m_oUserInput.password = "";
+        }
       },
     });
   }
