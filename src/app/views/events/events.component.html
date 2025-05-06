@@ -219,7 +219,7 @@
         <div class="drag-drop-container d-flex flex-row justify-content-between mt-3">
           <div class="download-zone">
           <div *ngFor="let sFile of m_asEventImages" class="file-item" (click)="onPreviewImage(sFile)">
-            <div class="icon-container">
+            <div class="attachmment-icon-container">
               <span class="material-icons file-icon">image</span>
               <span class="file-name">{{ sFile }}</span>
             </div>
@@ -227,7 +227,7 @@
         </div>
         <div class="download-zone">
           <div *ngFor="let sFile of m_asEventDocs" class="file-item" (click)="onPreviewDoc(sFile)">
-            <div class="icon-container">
+            <div class="attachmment-icon-container">
               <span class="material-icons file-icon">description</span>
               <span class="file-name">{{ sFile }}</span>
             </div>

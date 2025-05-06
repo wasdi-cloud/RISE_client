@@ -20,6 +20,9 @@ import {LayerService} from '../../services/api/layer.service';
 import {MapAPIService} from '../../services/api/map.service';
 import {MapService} from '../../services/map.service';
 import {NotificationsDialogsService} from '../../services/notifications-dialogs.service';
+import {AttachmentService} from '../../services/api/attachment.service';
+
+import {ImageDialogComponent} from '../../dialogs/image-dialog/image-dialog.component';
 
 import {LayerTypes} from './layer-types';
 import {FilterPipe} from '../../shared/pipes/filter.pipe';
@@ -128,6 +131,17 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    * List of Events
    */
   m_aoEvents:EventViewModel[]=[]
+
+  /**
+   * List of Event images
+   */
+  m_asEventImages: string[] = [];
+
+  /**
+   * List of Event documents
+   */
+  m_asEventDocs: string[] = [];
+
   m_iInitialPeakDate: number;
   m_iVisibleCount = 5;
   m_bShowAllPlugins = false;
@@ -167,9 +181,11 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     private m_oTranslate: TranslateService,
     private m_oDialog: MatDialog,
     private m_oEventService: EventService,
+    private m_oAttachmentService: AttachmentService,
+    private m_oImageDialog: MatDialog
   ) {
     const navigation = this.m_oRouter.getCurrentNavigation();
-    const state = navigation?.extras?.state as { peakDate?: string,name?:string,type?:EventType,startDate:string,endDate?:string };
+    const state = navigation?.extras?.state as { id?:string, peakDate?: string,name?:string,type?:EventType,startDate:string,endDate?:string };
 
     if (state?.peakDate) {
       this.m_oSelectedEvent.endDate=(Number(state?.endDate));
@@ -177,19 +193,28 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       this.m_oSelectedEvent.peakDate=(Number(state?.peakDate));
       this.m_oSelectedEvent.type=state?.type;
       this.m_oSelectedEvent.name=state?.name;
+      this.m_oSelectedEvent.id=state?.id;
+
+      this.loadEventAttachments(this.m_oSelectedEvent.id);
 
       this.m_bShowEventInfo=true;
 
       // Convert peakDate to milliseconds and create a Date object
       const iPeakDateInSeconds = Number(state?.peakDate);
-      const oPeakDateUTC = new Date(iPeakDateInSeconds * 1000);
-      // Set the time to 23:59:59 in UTC
-      oPeakDateUTC.setUTCHours(23, 59, 59, 0);
+      const oPeakDate = new Date(iPeakDateInSeconds * 1000);
 
-      let iFinalTimestampMs = oPeakDateUTC.getTime(); // Convert to seconds
+      // Ensure the date is at the end of the day
+      const oAdjustedDate = new Date(
+        oPeakDate.getFullYear(),
+        oPeakDate.getMonth(),
+        oPeakDate.getDate(),
+        23, 59, 59, 0
+      );      
+
+      let iFinalTimestampMs = oAdjustedDate.getTime(); // Convert to seconds
 
       this.m_iSelectedDate= iFinalTimestampMs;
-      this.m_iInitialPeakDate = new Date(state.peakDate).getTime();
+      this.m_iInitialPeakDate = iFinalTimestampMs/1000;
     }
   }
 
@@ -377,7 +402,8 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
           if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oLayerVM)) {
 
             this.fillPluginsAndLayers(oPlugin, oLayerVM);
-          }else{
+          }
+          else {
 
             // let sError: string = this.m_oTranslate.instant(
             //   'ERROR_MSG.ERROR_LAYER_FAILURE'
@@ -661,6 +687,8 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   cleanEventPanel() {
     this.m_bShowEventInfo=false;
     this.m_oSelectedEvent={};
+    this.m_asEventImages = [];
+    this.m_asEventDocs = [];
   }
 
   fillEventPanel(sEventId:string) {
@@ -669,10 +697,90 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       if (this.m_aoEvents[i].id === sEventId) {
         this.m_oSelectedEvent = this.m_aoEvents[i];
         this.m_bShowEventInfo = true;
+        this.loadEventAttachments(sEventId) 
         break;
       }
     }
   }
+
+  loadEventAttachments(sEventId:string) {
+    this.m_oAttachmentService.list("event_images", sEventId).subscribe({
+      next: (oResponse) => {
+        this.m_asEventImages = oResponse.files;
+      },
+      error: (oError) => {
+        console.error("Error loading image attachment", oError);
+      }
+    });
+
+    this.m_oAttachmentService.list("event_docs", sEventId).subscribe({
+      next: (oResponse) => {
+        this.m_asEventDocs = oResponse.files;
+      },
+      error: (oError) => {
+        console.error("Error loading document attachment", oError);
+      }
+    });
+  }
+
+  onPreviewImage(sFileName: string) {
+    if (sFileName) {
+
+      let sLink = this.m_oAttachmentService.getAttachmentLink("event_images", this.m_oSelectedEvent.id, sFileName)
+
+      let oPayload =
+      {
+        fileName: sFileName,
+        link: sLink,
+        type: "image",
+        eventId: this.m_oSelectedEvent.id
+      }
+
+      // Open the Material Dialog with the image
+      const oPreviewDialogRef = this.m_oImageDialog.open(ImageDialogComponent, {
+        data: { oPayload },
+        width: '90vw'
+      });
+
+      // Handle dialog close event
+      oPreviewDialogRef.afterClosed().subscribe(result => {
+        this.loadEventAttachments(this.m_oSelectedEvent.id);
+      });
+
+    }
+  }
+
+  onPreviewDoc(sFileName: string) {
+    if (sFileName) {
+
+      let sLink = this.m_oAttachmentService.getAttachmentLink("event_docs", this.m_oSelectedEvent.id, sFileName)
+
+      let sType = "txt";
+
+      if (sFileName.toLowerCase().endsWith('.pdf') || sFileName.toLowerCase().endsWith('.docx') || sFileName.toLowerCase().endsWith('.doc')) {
+        sType = "pdf";
+      }
+
+      let oPayload =
+      {
+        fileName: sFileName,
+        link: sLink,
+        type: sType,
+        eventId: this.m_oSelectedEvent.id
+      }
+
+      // Open the Material Dialog with the image
+      const oPreviewDialogRef = this.m_oImageDialog.open(ImageDialogComponent, {
+        data: { oPayload },
+        width: '90vw'
+      });
+
+      // Handle dialog close event
+      oPreviewDialogRef.afterClosed().subscribe(result => {
+        this.loadEventAttachments(this.m_oSelectedEvent.id);
+      });
+    }
+  }  
 
   handleLiveButtonPressed(bIsLive) {
     this.m_bIsLive = bIsLive;

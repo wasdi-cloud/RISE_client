@@ -536,3 +536,10 @@ a.leaflet-control-zoom-fullscreen {
   -ms-user-select: none;     /* Internet Explorer/Edge */
   user-select: none;         /* Standard syntax */  
 }
+
+.attachmment-icon-container {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column; /* Stacks items vertically */
+  align-items: center;    /* Centers them horizontally */
+}

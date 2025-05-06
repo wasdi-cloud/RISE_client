@@ -158,3 +158,10 @@ span.cta-text {
   text-align: center; /* Center the text */
   margin-top: -3px;
 }
+
+.attachments-zone {
+  display: flex; /* Enables flexbox layout */
+  flex-wrap: wrap; /* Allows items to wrap to the next line if needed */
+  gap: 10px; /* Adds spacing between items */
+  align-items: center; /* Vertically aligns items */
+}

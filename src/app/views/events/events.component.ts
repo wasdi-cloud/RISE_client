@@ -554,7 +554,7 @@ export class EventsComponent implements OnInit {
   goToMonitorWithEventPeakDate(oEvent: EventViewModel) {
     if (oEvent.peakDate) {
       this.m_oRouter.navigate([`monitor/${this.m_sAreaId}`], {
-        state: { peakDate: oEvent.peakDate,name:oEvent.name,type:oEvent.type,startDate:oEvent.startDate,endDate:oEvent.endDate}
+        state: { id: oEvent.id, peakDate: oEvent.peakDate,name:oEvent.name,type:oEvent.type,startDate:oEvent.startDate,endDate:oEvent.endDate}
       });
     }
   }

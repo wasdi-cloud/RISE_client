@@ -396,10 +396,12 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     this.m_bIsLive = this.m_sSelectedDate === this.m_asDates[this.m_asDates.length - 1];
     // this.m_sSelectedDateTimestamp = new Date(this.m_sSelectedDate).valueOf();
     this.m_oSelectedDate = new Date(this.m_sSelectedDate);
-    this.m_oSelectedDate.setHours(23, 59, 0, 0); // Set to 23:59:00
+    this.m_oSelectedDate.setHours(23, 59, 59, 0); // Set to 23:59:00
     this.m_sSelectedDateTimestamp = this.m_oSelectedDate.valueOf(); // Now based on the new time
-    console.log(this.m_oSelectedDate)
-    console.log(this.m_sSelectedDateTimestamp)
+
+    //console.log(this.m_oSelectedDate)
+    //console.log(this.m_sSelectedDateTimestamp)
+
     this.emitLiveButtonAction();
 
     if (FadeoutUtils.utilsIsObjectNullOrUndefined(oEvent.target?.eventId)) {

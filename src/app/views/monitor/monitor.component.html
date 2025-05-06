@@ -62,7 +62,7 @@
       <div *ngIf="m_bShowEventInfo"  class="event-section d-flex flex-column p-3 event-container">
         <!-- Fixed Header -->
         <div class="layers-header d-flex justify-content-between gap-2 flex-shrink-0">
-          <span class="material-symbols-outlined"> file_open </span>
+          <span class="material-symbols-outlined"> flag </span>
           <div class="flex-fill d-flex flex-column">
             {{ "Selected Event" | translate }}
           </div>
@@ -70,11 +70,28 @@
 
         <!-- Scrollable Event Details -->
         <div class="event-details-scroll mt-2 flex-grow-1 overflow-auto">
-          <p><strong>Event:</strong> {{ m_oSelectedEvent.name }}</p>
-          <p><strong>Type:</strong> {{ m_oSelectedEvent.type }}</p>
-          <p><strong>Start Date:</strong> {{ m_oSelectedEvent.startDate * 1000 | date: 'medium' }}</p>
-          <p><strong>Peak Date:</strong> {{ m_oSelectedEvent.peakDate * 1000 | date: 'medium' }}</p>
-          <p><strong>End Date:</strong> {{ m_oSelectedEvent.endDate * 1000 | date: 'medium' }}</p>
+          <p><strong>Event:</strong> {{ m_oSelectedEvent.name }} - <strong>Type:</strong> {{ m_oSelectedEvent.type }}</p>
+          <p><strong>Start:</strong> {{ m_oSelectedEvent.startDate * 1000 | date: 'medium' }}</p>
+          <p><strong>Peak:</strong> {{ m_oSelectedEvent.peakDate * 1000 | date: 'medium' }}</p>
+          <p><strong>End:</strong> {{ m_oSelectedEvent.endDate * 1000 | date: 'medium' }}</p>
+          <div class="drag-drop-container d-flex flex-row justify-content-between mt-3">
+            <div class="attachments-zone">
+            <div *ngFor="let sFile of m_asEventImages" class="file-item" (click)="onPreviewImage(sFile)">
+              <div class="attachmment-icon-container">
+                <span class="material-icons file-icon">image</span>
+                <span class="file-name">{{ sFile }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="attachments-zone">
+            <div *ngFor="let sFile of m_asEventDocs" class="file-item" (click)="onPreviewDoc(sFile)">
+              <div class="attachmment-icon-container">
+                <span class="material-icons file-icon">description</span>
+                <span class="file-name">{{ sFile }}</span>
+              </div>
+            </div>
+          </div>
+        </div>  
         </div>
       </div>
 

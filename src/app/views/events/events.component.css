@@ -131,15 +131,7 @@ rise-dropdown {
   max-height: 75vh;
 }
 
-.icon-container {
-  cursor: pointer;
-  display: flex;
-  flex-direction: column; /* Stacks items vertically */
-  align-items: center;    /* Centers them horizontally */
-}
-
-
-.file-icon {
+.icon {
   font-size: 34px; /* Adjust size */
   color: var(--rise-gold) !important;  /* Blue color */
   margin-right: 10px;
