@@ -1,33 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import { CommonModule } from '@angular/common';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import {CommonModule} from '@angular/common';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
 
-import { MatDialog } from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 
-import { OtpDialogComponent } from '../../../dialogs/otp-dialog/otp-dialog.component';
-import { RiseButtonComponent } from '../../../components/rise-button/rise-button.component';
-import { RiseCheckboxComponent } from '../../../components/rise-checkbox/rise-checkbox.component';
-import { RiseDropdownComponent } from '../../../components/rise-dropdown/rise-dropdown.component';
-import { RiseTextInputComponent } from '../../../components/rise-text-input/rise-text-input.component';
+import {OtpDialogComponent} from '../../../dialogs/otp-dialog/otp-dialog.component';
+import {RiseButtonComponent} from '../../../components/rise-button/rise-button.component';
+import {RiseCheckboxComponent} from '../../../components/rise-checkbox/rise-checkbox.component';
+import {RiseDropdownComponent} from '../../../components/rise-dropdown/rise-dropdown.component';
+import {RiseTextInputComponent} from '../../../components/rise-text-input/rise-text-input.component';
 
-import { AuthService } from '../../../services/api/auth.service';
-import { ConstantsService } from '../../../services/constants.service';
-import { NotificationsDialogsService } from '../../../services/notifications-dialogs.service';
-import { OrganizationsService } from '../../../services/api/organizations.service';
-import { UserService } from '../../../services/api/user.service';
+import {AuthService} from '../../../services/api/auth.service';
+import {ConstantsService} from '../../../services/constants.service';
+import {NotificationsDialogsService} from '../../../services/notifications-dialogs.service';
+import {OrganizationsService} from '../../../services/api/organizations.service';
+import {UserService} from '../../../services/api/user.service';
 
-import { ChangeEmailViewModel } from '../../../models/ChangeEmailViewModel';
-import { ChangePasswordRequestViewModel } from '../../../models/ChangePasswordRequestViewModel';
-import { OrganizationViewModel } from '../../../models/OrganizationViewModel';
-import { OTPVerifyViewModel } from '../../../models/OTPVerifyViewModel';
-import { OTPViewModel } from '../../../models/OTPViewModel';
-import { UserViewModel } from '../../../models/UserViewModel';
+import {ChangeEmailViewModel} from '../../../models/ChangeEmailViewModel';
+import {ChangePasswordRequestViewModel} from '../../../models/ChangePasswordRequestViewModel';
+import {OrganizationViewModel} from '../../../models/OrganizationViewModel';
+import {OTPVerifyViewModel} from '../../../models/OTPVerifyViewModel';
+import {OTPViewModel} from '../../../models/OTPViewModel';
+import {UserViewModel} from '../../../models/UserViewModel';
 
-import { NotificationOptions } from '../../../shared/notification-options/notification-options';
+import {NotificationOptions} from '../../../shared/notification-options/notification-options';
 
 import FadeoutUtils from '../../../shared/utilities/FadeoutUtils';
-import {Router} from "@angular/router";
 import {MapService} from "../../../services/map.service";
 import {RiseNumberInputComponent} from "../../../components/rise-number-input/rise-number-input.component";
 

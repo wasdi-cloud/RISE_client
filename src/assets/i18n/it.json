@@ -95,7 +95,7 @@
 		"ERROR_API_USER_ALREADY_EXISTS": "Un utente con questo ID esiste già.",
 		"ERROR_API_MAIL_ALREADY_EXISTS": "Questa email è già in uso",
 		"ERROR_API_MISSING_ACCEPT_TERMS_AND_PRIVACY": "Accetta i Termini e Condizioni e l'Informativa sulla Privacy di RISE",
-		"ERROR_API_WRONG_USER_OR_PASSWORD": "Il nome utente o la password inseriti non sono corretti",
+		"ERROR_API_WRONG_USER_OR_PASSWORD": "O il nome utente o la password inseriti sono errati, oppure non hai ancora confermato il tuo account.",
 		"ERROR_API_WRONG_OTP": "La password monouso non corrisponde a quella inviata all'email sopra indicata.",
 		"ERROR_API_NO_VALID_SUBSCRIPTION": "Al momento non hai un abbonamento valido.",
 		"ERROR_LAYER_FAILURE": "Impossibile caricare i layer per ",

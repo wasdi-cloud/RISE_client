@@ -29,7 +29,7 @@
     "SITUATION": "Situación",
     "UPLOAD_IMAGES": "Subir Imágenes",
     "UPLOAD_DOCUMENTS": "Subir Documentos"
-  },  
+  },
   "EVENT": {
     "NAME": "Nombre",
     "TYPE": "Tipo",
@@ -95,7 +95,7 @@
     "ERROR_API_USER_ALREADY_EXISTS": "Ya existe un usuario con este ID.",
     "ERROR_API_MAIL_ALREADY_EXISTS": "Este correo electrónico ya está en uso",
     "ERROR_API_MISSING_ACCEPT_TERMS_AND_PRIVACY": "Acepte los Términos y condiciones, así como la Política de privacidad de RISE",
-    "ERROR_API_WRONG_USER_OR_PASSWORD": "El nombre de usuario o la contraseña ingresados ​​son incorrectos",
+    "ERROR_API_WRONG_USER_OR_PASSWORD": "O bien el nombre de usuario o la contraseña son incorrectos, o todavía no has confirmado tu cuenta.",
     "ERROR_API_WRONG_OTP": "Esta contraseña única no coincide con la enviada al correo electrónico anterior.",
     "ERROR_API_NO_VALID_SUBSCRIPTION": "No tienes una suscripción válida en este momento.",
     "ERROR_LAYER_FAILURE": "No se pudieron cargar capas para este complemento",
