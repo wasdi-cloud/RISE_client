@@ -48,3 +48,15 @@ div.options-container {
   max-width: 100%;
   height: auto;
 }
+
+.material-symbols-outlined.delete {
+  font-size: 24px; /* Adjust size to match the checkbox */
+  cursor: pointer; /* Add a pointer cursor for better UX */
+  margin-right: 8px; /* Add spacing between the delete icon and the checkbox */
+  color: var(--rise-danger, red); /* Optional: Add a color to highlight the delete icon */
+}
+
+.rise-checkbox {
+  width: 24px; /* Ensure the checkbox size matches the delete icon */
+  height: 24px;
+}

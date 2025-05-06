@@ -13,12 +13,19 @@
         </div>
       </div>
     </div>
-    <input
-      type="checkbox"
-      class="rise-checkbox align-self-start"
-      [(ngModel)]="m_bShowLayer"
-      (change)="emitVisibility()"
-    />
+    <div lass="d-flex flex-row align-items-center gap-2">
+      <span
+        class="material-symbols-outlined delete"
+        (click)="emitAction('remove')"
+        [matTooltip]="'Remove layer'">
+        delete
+      </span>    
+      <input
+        type="checkbox"
+        class="rise-checkbox align-self-start"
+        [(ngModel)]="m_bShowLayer"
+        (change)="emitVisibility()" />
+  </div>
   </div>
 
   <div class="options-container d-flex flex-column gap-2 p-2">
@@ -76,15 +83,6 @@
           (click)="emitAction('properties')"
         >
           display_settings
-        </span>
-      </div>
-      <div class="">
-        <span
-          class="material-symbols-outlined delete"
-          (click)="emitAction('remove')"
-          [matTooltip]="'Remove layer'"
-        >
-          delete
         </span>
       </div>
     </div>
