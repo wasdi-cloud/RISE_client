@@ -26,6 +26,7 @@ export class OtpDialogComponent implements OnInit {
   }
 
   submitOTP() {
+    if (this.m_sOneTimePW != null) this.m_sOneTimePW = this.m_sOneTimePW.trim();
     this.m_oDialogRef.close(this.m_sOneTimePW);
   }
 

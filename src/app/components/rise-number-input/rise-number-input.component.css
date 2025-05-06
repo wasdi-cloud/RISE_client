@@ -84,3 +84,36 @@ span.icon-left {
   -webkit-appearance: none;
   margin: 0;
 }
+
+.rise-select {
+  background-color: var(--surface-glass-interactive); /* Use RISE surface color */
+  border: 1px solid white;
+  border-radius: 4px; /* Rounded corners */
+  padding: 0.5rem; /* Add padding for better spacing */
+  font-size: 1rem; /* Adjust font size */
+  color: var(--rise-text-bright); /* White text color */
+  appearance: none; /* Remove default browser styles */
+  outline: none; /* Remove focus outline */
+  transition: border-color 0.2s ease-in-out; /* Smooth transition for hover/focus */
+}
+
+.rise-select:focus {
+  border-color: var(--surface-glass-interactive); /* Highlight border on focus */
+  box-shadow: 0 0 0 2px var(--rise-primary-light); /* Add focus shadow */
+}
+
+.rise-select option {
+  background-color: var(--surface-glass-interactive); /* Match dropdown background */
+  color: var(--rise-text-primary); /* Match text color */
+}
+
+.rise-select optgroup {
+  background-color: var(--surface-glass-interactive); /* Match dropdown background for grouped options */
+  color: var(--rise-text-bright); /* White text color */
+}
+
+/* Optional: Style the dropdown itself for consistency */
+.rise-select::-ms-expand {
+  background-color: var(--surface-glass-interactive); /* Match dropdown background */
+  color: var(--rise-text-bright); /* White text color */
+}
