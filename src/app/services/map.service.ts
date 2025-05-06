@@ -455,7 +455,7 @@ export class MapService {
    * @param sLayerId
    * @param sServer
    */
-  addLayerMap2DByServer(sLayerId: string, sServer: string,opacity?:number) {
+  addLayerMap2DByServer(sLayerId: string, sServer: string, iOpacity?:number, iZIndex?: number) {
 
     if (!sLayerId) {
       return false;
@@ -471,9 +471,13 @@ export class MapService {
       format: 'image/png',
       transparent: true,
       noWrap: true,
-      opacity:opacity!=null?opacity/100:100
+      opacity:iOpacity!=null?iOpacity/100:100
     });
-    oWmsLayer.setZIndex(1000);
+
+    if (!FadeoutUtils.utilsIsObjectNullOrUndefined(iZIndex)){
+      oWmsLayer.setZIndex(1000+iZIndex);
+    }
+    
     oWmsLayer.addTo(oMap);
     // Store the layer in the map for later reference
     this.m_oLayerMap[sLayerId] = oWmsLayer;

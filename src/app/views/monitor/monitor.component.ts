@@ -395,21 +395,13 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    */
   getLayer(oPlugin: any, sAreaId: string, iDate: string | number) {
 
-    this.m_oLayerService
-      .findLayer(oPlugin.id, sAreaId, this.m_iSelectedDate)
-      .subscribe({
+    this.m_oLayerService.findLayer(oPlugin.id, sAreaId, this.m_iSelectedDate).subscribe({
         next: (oLayerVM:LayerViewModel) => {
-          if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oLayerVM)) {
 
+          if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oLayerVM)) {
             this.fillPluginsAndLayers(oPlugin, oLayerVM);
           }
           else {
-
-            // let sError: string = this.m_oTranslate.instant(
-            //   'ERROR_MSG.ERROR_LAYER_FAILURE'
-            // );
-            // let sErrorMessage=sError.concat(oPlugin.name?oPlugin.name:"this plugin");
-            // this.m_oNotificationService.openInfoDialog(sErrorMessage, 'error', 'Error');
             oPlugin.loaded = false;
             const oMap = this.m_oMapService.getMap();
             oPlugin.layers.forEach(layer => {
@@ -461,21 +453,21 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       this.m_aoLayers.push(oLayer);     // Add new if not found
     }
 
-
     // Check if oPlugin.layers already contains the object
     if (!oPlugin.layers.some(oLayer => oLayer.layerId === oLayer.layerId)) {
       oPlugin.layers.push(oLayer);
     }
 
     //sort the layers
-    this.m_aoLayers = this.m_aoLayers.sort((a, b) => a.referenceDate - b.referenceDate);
+    //this.m_aoLayers = this.m_aoLayers.sort((a, b) => a.referenceDate - b.referenceDate);
 
     this.m_aoReversedLayers = [...this.m_aoLayers].slice().reverse();
 
     this.m_oMapService.addLayerMap2DByServer(
       oLayer.layerId,
       oLayer.geoserverUrl,
-      oLayer.opacity
+      oLayer.opacity,
+      this.m_aoReversedLayers.length
     );
     // Update the selected layers
     this.m_oMapService.setSelectedLayers(this.m_aoLayers)
@@ -798,16 +790,11 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
       // Show closest layer to live date
       if (this.m_aoLayers && this.m_aoLayers.length > 0) {
-        const oTargetDate = this.m_iCurrentDate * 1000; // milliseconds
-        const aoSortedLayers = this.m_aoLayers.sort((a, b) =>
-          Math.abs(a.referenceDate - oTargetDate) -
-          Math.abs(b.referenceDate - oTargetDate)
-        );
 
-        this.setOpacity(100, aoSortedLayers[0].layerId);
+        this.setOpacity(100, this.m_aoLayers[0].layerId);
 
         for (let i = 1; i < this.m_aoLayers.length; i++) {
-          this.setOpacity(0, aoSortedLayers[i].layerId);
+          this.setOpacity(0, this.m_aoLayers[i].layerId);
         }
       }
     }

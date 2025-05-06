@@ -30,26 +30,20 @@
       ></rise-text-input>
       <!-- Layer List output -->
       <div class="flex-fill d-flex flex-column gap-2 layer-list-container p-3" >
-        <div
-          class="layers-header d-flex flex-row justify-content-between gap-2"
-        >
+        <div class="layers-header d-flex flex-row justify-content-between gap-2" >
           <span class="material-symbols-outlined"> map </span>
           <div class="flex-fill d-flex flex-column">
             {{"MONITOR.MAP_LAYERS"|translate}}
-            <span *ngIf="m_aoLayers.length > 0" class="cta-text"
-              >Drag to rearrange</span
-            >
+            <span *ngIf="m_aoLayers.length > 0" class="cta-text">Drag to rearrange</span>
           </div>
           <!--span class="material-symbols-outlined"> keyboard_arrow_up </span-->
         </div>
+
         @if(m_aoLayers.length > 0) {
         <div class="layer-outlet flex-fill d-flex flex-column gap-2"  cdkDropList (cdkDropListDropped)="drop($event)">
           <!-- Reverse the layers list to show the correct order - when passing to the filter, if empty string pass null! -->
           <rise-layer-item
-            *ngFor="
-              let oLayer of m_aoReversedLayers
-                | filter : (m_sSearchString ? m_sSearchString : null)
-            "
+            *ngFor="let oLayer of m_aoReversedLayers | filter : (m_sSearchString ? m_sSearchString : null)"
             cdkDrag
             [m_oLayer]="oLayer"
             (m_oLayerVisibility)="getLayerVisibility($event, oLayer)"
@@ -64,16 +58,16 @@
         <div class="layers-header d-flex justify-content-between gap-2 flex-shrink-0">
           <span class="material-symbols-outlined"> flag </span>
           <div class="flex-fill d-flex flex-column">
-            {{ "Selected Event" | translate }}
+            <strong>{{ m_oSelectedEvent.name }} - {{ m_oSelectedEvent.type }}</strong>
           </div>
         </div>
 
         <!-- Scrollable Event Details -->
         <div class="event-details-scroll mt-2 flex-grow-1 overflow-auto">
-          <p><strong>Event:</strong> {{ m_oSelectedEvent.name }} - <strong>Type:</strong> {{ m_oSelectedEvent.type }}</p>
-          <p><strong>Start:</strong> {{ m_oSelectedEvent.startDate * 1000 | date: 'medium' }}</p>
-          <p><strong>Peak:</strong> {{ m_oSelectedEvent.peakDate * 1000 | date: 'medium' }}</p>
-          <p><strong>End:</strong> {{ m_oSelectedEvent.endDate * 1000 | date: 'medium' }}</p>
+          <!--p><strong>Event:</strong> {{ m_oSelectedEvent.name }} - <strong>Type:</strong> {{ m_oSelectedEvent.type }}</p-->
+          <p>Start: {{ m_oSelectedEvent.startDate * 1000 | date: 'medium' }}</p>
+          <p>Peak: {{ m_oSelectedEvent.peakDate * 1000 | date: 'medium' }}</p>
+          <p>End: {{ m_oSelectedEvent.endDate * 1000 | date: 'medium' }}</p>
           <div class="drag-drop-container d-flex flex-row justify-content-between mt-3">
             <div class="attachments-zone">
             <div *ngFor="let sFile of m_asEventImages" class="file-item" (click)="onPreviewImage(sFile)">
