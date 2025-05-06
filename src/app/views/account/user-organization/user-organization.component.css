@@ -3,3 +3,6 @@
   align-items: center; /* Vertically align items */
   justify-content: space-between; /* Adjust spacing between items if needed */
 }
+org-address-info{
+  width: 80%;
+}

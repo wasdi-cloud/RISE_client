@@ -65,13 +65,13 @@ export class RiseNumberInputComponent implements OnInit,OnChanges{
 
   m_aoCountryPrefixes = [
     { code: '+1', name: 'US/Canada' },
-    { code: '+33', name: 'France' },
-    { code: '+39', name: 'Italy' },
-    { code: '+49', name: 'Germany' },
+    { code: '+33', name: 'FR' },
+    { code: '+39', name: 'IT' },
+    { code: '+49', name: 'GER' },
     { code: '+44', name: 'UK' },
-    { code: '+91', name: 'India' },
-    { code: '+213', name: 'Algeria' },
-    { code: '+352', name: 'Luxembourg' },
+    { code: '+91', name: 'IND' },
+    { code: '+213', name: 'ALG' },
+    { code: '+352', name: 'LUX' },
     // Add more as needed
   ];
 
