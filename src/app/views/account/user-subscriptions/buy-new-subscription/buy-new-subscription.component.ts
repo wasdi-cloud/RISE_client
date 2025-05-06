@@ -147,6 +147,10 @@ export class BuyNewSubscriptionComponent implements OnInit {
         this.m_sSelectedSubType=sSelectedType;
       }
     });
+
+    if(this.enableComputePrice()){
+      this.getComputedPrice();
+    }
   }
 
   handlePluginSelect(oEvent) {
@@ -265,9 +269,13 @@ export class BuyNewSubscriptionComponent implements OnInit {
     let sTypeName = oPaymentType.value;
     console.log(oPaymentType.value);
     this.m_sSelectedPaymentTypeName=oPaymentType.value
+
     this.m_oSelectedPaymentType = this.m_aoPaymentTypes.find(
       (oType) => oType.name === sTypeName
     );
+    if(this.enableComputePrice()){
+      this.getComputedPrice();
+    }
 
   }
 

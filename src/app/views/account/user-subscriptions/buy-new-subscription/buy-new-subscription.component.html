@@ -148,21 +148,22 @@
         <div class="divider flex-fill"></div>
         @if (m_iComputedPrice) {
           {{ m_iComputedPrice | currency : "EUR" }}
-          <rise-button
-            [m_sSize]="'small'"
-            [m_sRole]="'action'"
-            [m_sLabel]="'SUBSCRIPTIONS.COMPUTE_SECOND'"
-            [m_bDisabled]="!enableComputePrice()"
-            (click)="enableComputePrice()?getComputedPrice():''"
-          ></rise-button>
+<!--          <rise-button-->
+<!--            [m_sSize]="'small'"-->
+<!--            [m_sRole]="'action'"-->
+<!--            [m_sLabel]="'SUBSCRIPTIONS.COMPUTE_SECOND'"-->
+<!--            [m_bDisabled]="!enableComputePrice()"-->
+<!--            (click)="enableComputePrice()?getComputedPrice():''"-->
+<!--          ></rise-button>-->
         } @else {
-          <rise-button
-            [m_sSize]="'small'"
-            [m_sRole]="'action'"
-            [m_sLabel]="'SUBSCRIPTIONS.COMPUTE_PRICE'"
-            [m_bDisabled]="!enableComputePrice()"
-            (click)="enableComputePrice()?getComputedPrice():''"
-          ></rise-button>
+          {{ 0 | currency : "EUR" }}
+<!--          <rise-button-->
+<!--            [m_sSize]="'small'"-->
+<!--            [m_sRole]="'action'"-->
+<!--            [m_sLabel]="'SUBSCRIPTIONS.COMPUTE_PRICE'"-->
+<!--            [m_bDisabled]="!enableComputePrice()"-->
+<!--            (click)="enableComputePrice()?getComputedPrice():''"-->
+<!--          ></rise-button>-->
         }
       </div>
 
