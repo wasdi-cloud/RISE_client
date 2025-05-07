@@ -72,7 +72,8 @@ export class RiseCalendarComponent implements OnInit{
    * emitter for sending the date to timebar
    *
    */
-  @Output() m_oSelectedDateFromCalendar: EventEmitter<string> = new EventEmitter<string>();
+  @Output() m_oSelectedDateFromCalendar: EventEmitter<{ date: string, isHighlighted: boolean }> = new EventEmitter();
+
 
   ngOnInit() {
 
@@ -126,7 +127,19 @@ export class RiseCalendarComponent implements OnInit{
    */
   emitDate(event: any): void {
     this.m_oSelectedDate = event.value.toDate(); // Update selected date as Date
-    this.m_oSelectedDateFromCalendar.emit(this.m_oSelectedDate.toDateString());
+
+    const isHighlighted = this.m_aoHighlightDates.some(d =>
+      d.getFullYear() === this.m_oSelectedDate.getFullYear() &&
+      d.getMonth() === this.m_oSelectedDate.getMonth() &&
+      d.getDate() === this.m_oSelectedDate.getDate()
+    );
+
+    console.log('Selected date is highlighted:', isHighlighted);
+
+    this.m_oSelectedDateFromCalendar.emit({
+      date: this.m_oSelectedDate.toDateString(),
+      isHighlighted: isHighlighted
+    });
   }
 
 }

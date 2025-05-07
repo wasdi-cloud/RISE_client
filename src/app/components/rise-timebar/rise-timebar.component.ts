@@ -379,6 +379,8 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    * Get the selected tick on the timebar and match it to the corresponding date in the dates array and find the timestamp
    * UC: User can click on a date in the time bar
    * @param oEvent
+   * @param bChangedByUser
+   * @param bIsHighlightedDate
    * @returns void
    */
   dateSelected(oEvent,bChangedByUser:boolean): void {
@@ -389,7 +391,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
       this.m_iSliderValue = this.m_asDates.indexOf(this.m_sSelectedDate);
     }
     else {
-      this.m_sSelectedDate = oEvent;
+      this.m_sSelectedDate = oEvent.date;
       this.m_iSliderValue = this.m_asDates.indexOf(this.m_sSelectedDate);
     }
 
@@ -403,13 +405,35 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     //console.log(this.m_sSelectedDateTimestamp)
 
     this.emitLiveButtonAction();
-
-    if (FadeoutUtils.utilsIsObjectNullOrUndefined(oEvent.target?.eventId)) {
+    if(!FadeoutUtils.utilsIsObjectNullOrUndefined(oEvent.isHighlighted) && oEvent.isHighlighted){
+      //todo we need to find the event for this highlighted date
+      console.log(this.m_oSelectedDate)
+      console.log(this.m_aoEvents)
+      for (let i = 0; i <this.m_aoEvents.length ; i++) {
+        const oEventDate = new Date(this.m_aoEvents[i].peakDate * 1000);
+        if (this.compareDatesByDay(oEventDate, this.m_oSelectedDate)) {
+          this.emitSelectedDate(this.m_aoEvents[i].id,bChangedByUser)
+          break;
+        }
+      }
+      // let sEventId="";
+      // this.emitSelectedDate(sEventId,bChangedByUser)
+    }
+    else if (FadeoutUtils.utilsIsObjectNullOrUndefined(oEvent.target?.eventId)) {
       this.emitSelectedDate(null,bChangedByUser);
     }
     else {
       this.emitSelectedDate(oEvent.target.eventId,bChangedByUser);
     }
+  }
+
+
+  private compareDatesByDay(date1: Date, date2: Date): boolean {
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    );
   }
 
   /**
@@ -506,11 +530,13 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     if (this.m_aoEvents) {
       let oReturnList: Date[] = [];
       for (let i = 0; i < this.m_aoEvents.length; i++) {
+
         oReturnList.push(new Date(this.m_aoEvents[i].peakDate*1000));
       }
 
       return oReturnList;
     }
+
     return [];
   }
 
