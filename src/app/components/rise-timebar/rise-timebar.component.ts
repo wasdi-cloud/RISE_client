@@ -684,15 +684,15 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     const iEventTimestamp = oEvent.peakDate * 1000;
 
     // Check if the event is within the current zoom window
-    const bIsInWindow = this.m_oZoomWindow &&
-      iEventTimestamp >= this.m_oZoomWindow.start &&
-      iEventTimestamp < this.m_oZoomWindow.end;
-
-    if (!bIsInWindow && this.m_iZoomLevel < this.m_iMaxZoomInLevel) {
-      // Event is outside current view — zoom in around it
-      const sEventDateString = new Date(iEventTimestamp).toISOString().split("T")[0];
-      this.handleZoomingIn(sEventDateString); // will regenerate m_asDates
-    }
+    // const bIsInWindow = this.m_oZoomWindow &&
+    //   iEventTimestamp >= this.m_oZoomWindow.start &&
+    //   iEventTimestamp < this.m_oZoomWindow.end;
+    //
+    // if (!bIsInWindow && this.m_iZoomLevel < this.m_iMaxZoomInLevel) {
+    //   // Event is outside current view — zoom in around it
+    //   const sEventDateString = new Date(iEventTimestamp).toISOString().split("T")[0];
+    //   this.handleZoomingIn(sEventDateString); // will regenerate m_asDates
+    // }
 
     // Find the closest matching date string (since m_asDates is string-based)
     const oEventDate = new Date(iEventTimestamp);
