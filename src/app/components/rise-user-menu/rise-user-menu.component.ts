@@ -258,7 +258,7 @@ export class RiseUserMenuComponent implements OnInit {
   }
 
   private checkIfUserHasAreas() {
-    this.m_oAreaService.getAreaListByUser().subscribe({
+    this.m_oAreaService.getAreaList().subscribe({
       next:(oResponse)=>{
         this.m_bHasArea = !(oResponse == null || oResponse.length == 0);
       }

@@ -69,8 +69,17 @@ li > span.material-symbols-outlined {
   background-color: #ff4d4d;
   border-radius: 50%;
   border: 2px solid white;
+  animation: blink 2s infinite;
 }
 
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
 
 /* RISE_ADMIN */
 .role-badge-rise-admin {
