@@ -148,7 +148,7 @@ export class MapService {
   /**
    * Area of Interest for Magic Tool
    */
-  m_oMagicToolAOI: any = null; 
+  m_oMagicToolAOI: any = null;
 
   /**
    * Init options for leaflet-draw
@@ -454,8 +454,9 @@ export class MapService {
    * Add Layer Map 2D By Server
    * @param sLayerId
    * @param sServer
+   * @param iOpacity
    */
-  addLayerMap2DByServer(sLayerId: string, sServer: string, iOpacity?:number, iZIndex?: number) {
+  addLayerMap2DByServer(sLayerId: string, sServer: string, iOpacity?:number) {
 
     if (!sLayerId) {
       return false;
@@ -474,10 +475,10 @@ export class MapService {
       opacity:iOpacity!=null?iOpacity/100:100
     });
 
-    if (!FadeoutUtils.utilsIsObjectNullOrUndefined(iZIndex)){
-      oWmsLayer.setZIndex(1000+iZIndex);
-    }
-    
+    // if (!FadeoutUtils.utilsIsObjectNullOrUndefined(iZIndex)){
+    //   oWmsLayer.setZIndex(1000+iZIndex);
+    // }
+    oWmsLayer.setZIndex(1000)
     oWmsLayer.addTo(oMap);
     // Store the layer in the map for later reference
     this.m_oLayerMap[sLayerId] = oWmsLayer;
@@ -964,7 +965,7 @@ export class MapService {
     console.warn(`Unsupported shape type: ${oDrawnShape.constructor.name}`);
     return null;
 
-  }  
+  }
 
   private isShapeCoveringServerLayer(oDrawnShape: L.Layer, sLayerId: string): boolean {
     const oLayer = this.m_oLayerMap[sLayerId];
@@ -1053,24 +1054,24 @@ export class MapService {
     try {
       let oCoordinates = this.convertPointLatLng(oArea);
       let asCoordinates = null;
-  
-      if(oCoordinates) { 
+
+      if(oCoordinates) {
         asCoordinates = oCoordinates._northEast;
       }
-  
+
       if (asCoordinates && oMap) {
         let fLat = parseFloat(asCoordinates.lat);
         let fLon = parseFloat(asCoordinates.lng);
-  
+
         // Get the coordinates (Note: duplicate of above? To be checked)
         const afBoundsCoords = this.parseWKTPolygon(oArea.bbox);
-  
+
         for (let iCoordinates = afBoundsCoords.length-1; iCoordinates >=0 ; iCoordinates--) {
-  
+
           try {
             afBoundsCoords[iCoordinates][0] = parseFloat(afBoundsCoords[iCoordinates][0]);
             afBoundsCoords[iCoordinates][1] = parseFloat(afBoundsCoords[iCoordinates][1]);
-  
+
             if (isNaN(afBoundsCoords[iCoordinates][0]) || isNaN(afBoundsCoords[iCoordinates][1])) {
               console.error("Invalid coordinates: ", afBoundsCoords[iCoordinates]);
               afBoundsCoords.splice(iCoordinates, 1); // Remove invalid coordinates
@@ -1081,23 +1082,23 @@ export class MapService {
             afBoundsCoords.splice(iCoordinates, 1);
           }
         }
-  
+
         // Add the polygon to the map with only a gold contour
         let oPolygon = L.polygon(afBoundsCoords, {
           color: "#efba35", // Outline color
           weight: 1,
           fillOpacity: 0 // Removes fill color, only showing contour
         }).addTo(oMap);
-  
+
         if (oPolygon) {
           this.m_aoAreaPolygons.push(oPolygon);
         }
         let sPrefix = "";
-  
+
         let oIcon = oIconDefault;
-  
+
         let oActualUser = this.m_oConstantsService.getUser();
-  
+
         if (oActualUser) {
           // Change icon for shared areas
           if (oActualUser.organizationId != oArea.organizationId) {
@@ -1105,19 +1106,19 @@ export class MapService {
             oIcon = oIconShared;
           }
         }
-  
+
         // Change icon for public areas
         if (oArea.publicArea) {
           sPrefix = "Public - ";
           oIcon = oIconPublic;
         }
-  
+
         let oMarker = L.marker([fLat, fLon],{icon:oIcon})
           .bindTooltip(sPrefix + oArea.name)
           .on('click', () => {
             this.m_oMarkerSubject.next(oArea);
         });
-  
+
         if (oMarker) {
           oMarker.addTo(oMap);
           this.m_aoMarkers.push(oMarker); // Store the marker in the array
@@ -1126,10 +1127,10 @@ export class MapService {
 
         return null;
       }
-      return null; 
+      return null;
     }
     catch (oEx) {
-      console.error("Error adding area marker: ", oEx); 
+      console.error("Error adding area marker: ", oEx);
     }
 
     return null;

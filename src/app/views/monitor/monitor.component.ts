@@ -209,7 +209,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
         oPeakDate.getMonth(),
         oPeakDate.getDate(),
         23, 59, 59, 0
-      );      
+      );
 
       let iFinalTimestampMs = oAdjustedDate.getTime(); // Convert to seconds
 
@@ -223,7 +223,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     this.m_iCurrentDate=this.getCurrentDate();
 
     if (!this.m_bShowEventInfo) {
-      this.startLiveTimer();  
+      this.startLiveTimer();
       this.m_bIsLive=true;
     }
     else {
@@ -234,7 +234,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     // Get the data of the AOI
     this.getActiveAOI();
 
-    // Register the event to show layer analyzer 
+    // Register the event to show layer analyzer
     this.m_oMapService.m_oLayerAnalyzerDialogEventEmitter.subscribe((bShouldOpenDialog: boolean) => {
       if (bShouldOpenDialog) {
         this.openLayerAnalyzerDialog(); // Your dialog opening method
@@ -260,7 +260,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
         oFullscreenElement.appendChild(oBtnContainer);
         oBtnContainer.classList.add(sFullscreenClass);
         oBtnContainer.classList.remove(sNormalClass);
-      } 
+      }
       else if (!oFullscreenElement) {
         oOriginalParent.insertBefore(oBtnContainer, oOriginalParent.firstChild);
         oBtnContainer.classList.remove(sFullscreenClass);
@@ -312,11 +312,11 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
   /**
    * Get the current date in seconds
-   * @returns 
+   * @returns
    */
   getCurrentDate(): number {
     // Current timestamp in seconds
-    return Math.floor(Date.now() / 1000); 
+    return Math.floor(Date.now() / 1000);
   }
 
   /**
@@ -434,11 +434,22 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   private fillPluginsAndLayers(oPlugin: any, oLayer:LayerViewModel) {
     const oMap = this.m_oMapService.getMap();
     const iIndex = this.m_aoLayers.findIndex(layer => layer.mapId === oLayer.mapId);
-    oLayer.pluginName=oPlugin.name;
-    // oLayer.opacity=oLayer.opacity!=null?oLayer.opacity:100;
-    // 🔁 Preserve opacity if it existed before
     let oExistingLayer = this.m_aoLayers.find(l => l.layerId === oLayer.layerId);
+    oLayer.pluginName=oPlugin.name;
+
+    //  Preserve opacity if it existed before
     oLayer.opacity = (typeof oExistingLayer?.opacity === 'number') ? oExistingLayer.opacity : 100;
+
+    const bIsSameLayer = oExistingLayer &&
+      oExistingLayer.layerId === oLayer.layerId &&
+      oExistingLayer.referenceDate === oLayer.referenceDate &&
+      oExistingLayer.geoserverUrl === oLayer.geoserverUrl;
+
+    if (bIsSameLayer) {
+      // Nothing changed: skip re-adding to the map so we can avoid the reorder issue
+      return;
+    }
+
     if (iIndex !== -1) {
       oMap.eachLayer((oMapLayer) => {
         let sOldLayerId = this.m_aoLayers[iIndex].layerId;
@@ -448,7 +459,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       });
 
       this.m_aoLayers[iIndex] = oLayer;  // Replace existing
-    } 
+    }
     else {
       this.m_aoLayers.push(oLayer);     // Add new if not found
     }
@@ -461,13 +472,13 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     //sort the layers
     //this.m_aoLayers = this.m_aoLayers.sort((a, b) => a.referenceDate - b.referenceDate);
 
-    this.m_aoReversedLayers = [...this.m_aoLayers].slice().reverse();
+    this.m_aoReversedLayers = [...this.m_aoLayers].reverse();
 
     this.m_oMapService.addLayerMap2DByServer(
       oLayer.layerId,
       oLayer.geoserverUrl,
       oLayer.opacity,
-      this.m_aoReversedLayers.length
+
     );
     // Update the selected layers
     this.m_oMapService.setSelectedLayers(this.m_aoLayers)
@@ -491,6 +502,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
         this.getLayer(oPlugin, this.m_sAreaId, this.m_iSelectedDate);
       }
     });
+
   }
 
   switchPluginButton(oPlugin:any) {
@@ -524,6 +536,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
         oPlugin.layers = []; //Init layers array in plugin to hold it after loading
         this.getLayer(oPlugin, this.m_sAreaId, '');
+
       }
     }
 
@@ -543,7 +556,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    * When the layer order changes, manually remove and then re-add the layers
    */
   handleLayerOrder(): void {
-    let aoOrderedLayers=this.m_aoReversedLayers.reverse();
+    let aoOrderedLayers = [...this.m_aoReversedLayers].reverse();
     console.log(aoOrderedLayers)
     aoOrderedLayers.forEach((oLayer) => {
       let oMap = this.m_oMapService.getMap();
@@ -561,6 +574,9 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
         oLayer.opacity
       );
     });
+
+    this.m_aoLayers = aoOrderedLayers;
+    this.m_aoReversedLayers = [...this.m_aoLayers].reverse();
   }
 
   /********** LAYER LIST ITEM HANDLERS **********/
@@ -603,10 +619,6 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     if (oLayerInReversed) {
       oLayerInReversed.opacity = iValue;
     }
-
-    console.log("setOpacity")
-    console.log(this.m_aoLayers)
-    console.log(this.m_aoReversedLayers)
 
     oMap.eachLayer(function (layer) {
       if (
@@ -689,7 +701,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       if (this.m_aoEvents[i].id === sEventId) {
         this.m_oSelectedEvent = this.m_aoEvents[i];
         this.m_bShowEventInfo = true;
-        this.loadEventAttachments(sEventId) 
+        this.loadEventAttachments(sEventId)
         break;
       }
     }
@@ -772,7 +784,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
         this.loadEventAttachments(this.m_oSelectedEvent.id);
       });
     }
-  }  
+  }
 
   handleLiveButtonPressed(bIsLive) {
     this.m_bIsLive = bIsLive;
