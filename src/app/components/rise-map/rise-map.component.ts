@@ -95,7 +95,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   m_bIsDrawCreated: boolean = false;
   m_bIsAutoDrawCreated: boolean = false;
   m_bIsImportDrawCreated: boolean = false;
-  
+
   private m_bIsManualBBoxInsert: boolean=false;
 
 
@@ -332,7 +332,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
 
         if (area < MIN_AREA_POLYGON) {
           sErrorHeader = sErrorHeaderForTooSmall;
-        } 
+        }
         else if (area > MAX_AREA_POLYGON) {
           sErrorHeader = sErrorHeaderForTooBig;
         }
