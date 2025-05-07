@@ -603,7 +603,7 @@ export class MapService {
       if (this.m_oDrawMarker) {
         oMap.removeLayer(this.m_oDrawMarker);
       }
-      this.m_oDrawMarker = L.marker([center.lat, center.lng]).addTo(oMap);
+      this.m_oDrawMarker = L.marker([center.lat, center.lng],{icon:oIconDefault}).addTo(oMap);
       // alert(`Circle Area: ${(area / 1000000).toFixed(2)} square kilometers`);
     }
 
@@ -1252,7 +1252,7 @@ export class MapService {
             oController.m_oImportShapeMarker = L.marker([
               centroid.lat,
               centroid.lng,
-            ]).addTo(oMap);
+            ],{icon:oIconDefault}).addTo(oMap);
             oMap.fitBounds(oController.oGeoJsonLayer.getBounds());
           });
         });
@@ -1312,7 +1312,7 @@ export class MapService {
                 // Calculate the center of the bounds (midpoint of North-South and West-East)
                 let fCenterLat = (fNorth + fSouth) / 2;
                 let fCenterLng = (fWest + fEast) / 2;
-                this.m_oLastMarker = L.marker([fCenterLat, fCenterLng]).addTo(oMap);
+                this.m_oLastMarker = L.marker([fCenterLat, fCenterLng],{icon:oIconDefault}).addTo(oMap);
                 // Move the map to the center of the bounds and set a zoom level
                 oMap.setView([fCenterLat, fCenterLng], 8);
                 // Create the bounds array
@@ -1587,7 +1587,7 @@ export class MapService {
             this.m_oLastCircle = L.circle([fLat, fLng], {
               radius: fRadius,
             }).addTo(oMap);
-            this.m_oLastMarker = L.marker([fLat, fLng]).addTo(oMap);
+            this.m_oLastMarker = L.marker([fLat, fLng],{icon:oIconDefault}).addTo(oMap);
             setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
 
             // Emit the circle data through the Subject
