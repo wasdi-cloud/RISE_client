@@ -124,15 +124,15 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.initDates();
+    this.initDates(false);
     this.generateTicks();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['m_iEndDate'] && !changes['m_iEndDate'].firstChange) {
-      this.initDates();
+      this.initDates(false);
     }else{
-      this.initDates();
+      this.initDates(false);
       this.generateTicks();
     }
   }
@@ -147,7 +147,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     //
     // if (this.isMouseOverSlider(event)) {
     //   let oDate = this.getMousePositionDate(event);
-      
+
     //   if (event.deltaY < 0) {
     //     this.handleZoomingIn(oDate);
     //   } else {
@@ -167,12 +167,12 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     // Ensure the timestamp is within the range
     if (iEventTimestamp < iRangeStart || iEventTimestamp > iRangeEnd) {
       // Default to 0% if the event timestamp is out of range
-      return "0%"; 
+      return "0%";
     }
 
     if (iRangeEnd==iRangeStart) {
       // Avoid division by zero
-      return "0%"; 
+      return "0%";
     }
 
     const fPercent = (iEventTimestamp - iRangeStart) / (iRangeEnd - iRangeStart);
@@ -241,7 +241,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
       this.m_iMaxZoomInLevel = 2;
       this.generateYearTicks(iStartYear,iEndYear,interval);
 
-    } 
+    }
     else {
       //same year
       if (iYearRange == 0) {
@@ -255,7 +255,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
           this.m_iMaxZoomInLevel = 2;
           this.m_iMaxZoomOutLevel = 1;
 
-        } 
+        }
         else {
           for (let iDay = iStartDay; iDay <= iEndDay; iDay++) {
             this.m_aiTicks.push({value: iDay, timestamp: new Date(iCurrentYear, iCurrentMonth, iDay).getTime()});
@@ -278,7 +278,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
           this.m_iZoomLevel = 1; // can go from month to days
           this.m_iMaxZoomInLevel = 2;
           this.m_iMaxZoomOutLevel = 1;
-        } 
+        }
         else {
           for (let iDay = iStartDay; iDay <= iEndDay; iDay++) {
             this.m_aiTicks.push({value: iDay, timestamp: new Date(iEndYear, iEndMonth, iDay).getTime()});
@@ -315,21 +315,21 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     const iStartTimestamp = this.m_iStartDate * 1000;
     const iEndTimestamp = this.m_iEndDate * 1000;
     const iTotalDuration = iEndTimestamp - iStartTimestamp;
-  
+
     if (!oTick.timestamp) return "0%"; // fallback if not initialized
-  
+
     const iTickOffset = oTick.timestamp - iStartTimestamp;
     const fPercentage = (iTickOffset / iTotalDuration) * 100;
-  
+
     return `${fPercentage}%`;
-  }  
+  }
 
   /**
    * Initialize array of dates for the archive based on inputted start and end date
    * UC: RISE shows a time bar starting from the first date where there is data available for this area of interest
    * @returns void
    */
-  initDates(): void {
+  initDates(bChangedByUser:boolean): void {
 
     if (
       FadeoutUtils.utilsIsObjectNullOrUndefined(this.m_iStartDate) ||
@@ -354,7 +354,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     if (!asDates.includes(sLastDayString)) {
       asDates.push(sLastDayString);
     }
-    
+
     this.m_asDates = asDates;
 
     // 🔥 Pick initial selection based on input date
@@ -372,7 +372,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     this.m_bIsLive = this.m_sSelectedDate === this.m_asDates[this.m_asDates.length - 1];
 
     this.m_sSelectedDateTimestamp = this.m_oSelectedDate.valueOf();
-    this.emitSelectedDate()
+    this.emitSelectedDate(null,bChangedByUser)
   }
 
   /**
@@ -381,13 +381,13 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    * @param oEvent
    * @returns void
    */
-  dateSelected(oEvent): void {
+  dateSelected(oEvent,bChangedByUser:boolean): void {
 
     if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oEvent.target)) {
 
       this.m_sSelectedDate = this.m_asDates[oEvent.target.value];
       this.m_iSliderValue = this.m_asDates.indexOf(this.m_sSelectedDate);
-    } 
+    }
     else {
       this.m_sSelectedDate = oEvent;
       this.m_iSliderValue = this.m_asDates.indexOf(this.m_sSelectedDate);
@@ -405,10 +405,10 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     this.emitLiveButtonAction();
 
     if (FadeoutUtils.utilsIsObjectNullOrUndefined(oEvent.target?.eventId)) {
-      this.emitSelectedDate();
+      this.emitSelectedDate(null,bChangedByUser);
     }
     else {
-      this.emitSelectedDate(oEvent.target.eventId);
+      this.emitSelectedDate(oEvent.target.eventId,bChangedByUser);
     }
   }
 
@@ -447,12 +447,13 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    * UC: RISE re-align all the maps and layers according to the selected date
    * @returns void
    */
-  emitSelectedDate(sEventId?: string): void {
+  emitSelectedDate(sEventId?: string,bChangedByUser?:boolean): void {
     //const oUtcDate = new Date(this.m_oSelectedDate.getTime() - this.m_oSelectedDate.getTimezoneOffset() * 60000);
 
     let oSelecteDateInfo = {
       iReferenceTime: this.m_oSelectedDate.getTime(),
-      eventId: sEventId
+      eventId: sEventId,
+      bChangedByUser:bChangedByUser
     }
 
     this.m_oSelectedDateEmitter.emit(oSelecteDateInfo);
@@ -615,13 +616,13 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
       this.m_iZoomLevel--;
       if (this.m_iZoomLevel == 0) {
         //handle months to years
-        this.initDates();
+        this.initDates(false);
         this.generateTicks();
       } else if (this.m_iZoomLevel == 1) {
         //handle days to months
         //check if we have initial state as months or years
         if(this.m_iMaxZoomOutLevel==1){
-          this.initDates();
+          this.initDates(false);
           this.generateTicks();
         }else{
           this.generateMonthTicks(oDate);
@@ -653,7 +654,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     };
   }
 
-  goToEvent(oEvent: any): void {
+  goToEvent(oEvent: any,bChangedByUser): void {
     const iEventTimestamp = oEvent.peakDate * 1000;
 
     // Check if the event is within the current zoom window
@@ -682,7 +683,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
 
     if (iIndex >= 0) {
       this.m_iSliderValue = iIndex;
-      this.dateSelected({ target: { value: iIndex, eventId: oEvent.id } } as any); // simulate slider input
+      this.dateSelected({ target: { value: iIndex, eventId: oEvent.id } } as any,bChangedByUser); // simulate slider input
     } else {
       console.warn('Could not find event date in current timeline:', sFormattedDate);
     }

@@ -164,9 +164,14 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    * Event information
    */
   m_oSelectedEvent: EventViewModel = {} as EventViewModel;
+    /**
+     * a flag to distinguish going to event from the event page or click on the event marker
+     */
+  private m_bIsNavigatedFromEventList = false;
 
 
-  @ViewChild('btnContainer', { static: false }) btnContainerRef!: ElementRef;
+
+    @ViewChild('btnContainer', { static: false }) btnContainerRef!: ElementRef;
   @ViewChild('tempFix', { static: false }) tempFixRef!: ElementRef;
   private m_bIsLive: boolean=true;
   constructor(
@@ -188,6 +193,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     const state = navigation?.extras?.state as { id?:string, peakDate?: string,name?:string,type?:EventType,startDate:string,endDate?:string };
 
     if (state?.peakDate) {
+      this.m_bIsNavigatedFromEventList=true;
       this.m_oSelectedEvent.endDate=(Number(state?.endDate));
       this.m_oSelectedEvent.startDate=(Number(state?.startDate));
       this.m_oSelectedEvent.peakDate=(Number(state?.peakDate));
@@ -490,11 +496,13 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    */
   getReferenceTime(oSelecteDateInfo:any): void {
     this.m_iSelectedDate = oSelecteDateInfo.iReferenceTime;
-
+    this.m_bIsNavigatedFromEventList=!oSelecteDateInfo.bChangedByUser;
     if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oSelecteDateInfo?.eventId)) {
       this.fillEventPanel(oSelecteDateInfo.eventId);
-    }
 
+    }else if(!this.m_bIsNavigatedFromEventList){
+        this.cleanEventPanel();
+    }
     this.initPluginsButtons(this.m_aoPlugins);
 
     this.m_aoPlugins.forEach((oPlugin) => {

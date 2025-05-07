@@ -9,7 +9,7 @@
       id="slider-id"
       [max]="m_asDates.length - 1"
       [(value)]="m_iSliderValue"
-      (change)="dateSelected($event)"
+      (change)="dateSelected($event,true)"
       (mouseenter)="onMouseEnter()"
       (mouseleave)="onMouseLeave()"
     />
@@ -43,7 +43,7 @@
         class="event-icon"
         [style.left]="getEventMarkerPosition(event.peakDate * 1000)"
         [matTooltip]="event.description"
-        (click)="goToEvent(event)"
+        (click)="goToEvent(event,true)"
       >
       <span class="material-symbols-outlined">flag</span>
         <!-- <span class="material-symbols-outlined" *ngIf="event.type===EventType.FLOOD">flood</span>
@@ -84,7 +84,7 @@
     <rise-calendar
       [m_oSelectedDate]="m_oSelectedDate"
       [m_oStartDate]="m_oMomentStartDate"
-      (m_oSelectedDateFromCalendar)="dateSelected($event)"
+      (m_oSelectedDateFromCalendar)="dateSelected($event,true)"
       [m_aoHighlightDates]="convertEventToDates()"
     ></rise-calendar>
   </div>
