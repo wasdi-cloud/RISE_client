@@ -37,12 +37,12 @@
   },
   "AREA_OF_OPERATIONS": {
     "ACTIVE_AREAS": "Active Areas of Operations",
-    "AREA_HEADER_TOO_BIG": "Area too large!",
-    "AREA_HEADER_TOO_SMALL": "Area too Small!",
+    "AREA_HEADER_TOO_BIG": "Selected area is too large!",
+    "AREA_HEADER_TOO_SMALL": "Selected area is too small",
     "CREATE_NEW_AREA_OF_OPERATION": "Create New Area of Operations",
     "CONFIRM_DELETE": "Are you sure you want to delete this area?",
-    "CONFIRM_SAME_AREA": "The area that you have selected overlaps with another area.Do you want to proceed?",
-    "CONFIRM_SAME_NAME": "The area that you have selected shares a name with an already existing area.Do you want to proceed?",
+    "CONFIRM_SAME_AREA": "The selected area overlaps with another area. Do you want to proceed?",
+    "CONFIRM_SAME_NAME": "The selected area shares a name with an already existing area. Do you want to proceed?",
     "CONFIRM": "<bt>Proceed anyways?",
     "CONFIRM_AREA_TOO_BIG": "The area you've selected is too large. Click 'confirm' to have RISE automatically adjust it.",
     "CONFIRM_AREA_TOO_SMALL": "The area you've selected is too small. Click 'confirm' to have RISE automatically adjust it.",
@@ -84,20 +84,20 @@
     "HEADER": "Manage Collaborators",
     "CHANGE_ROLE": "Change User Role",
     "ROLE": "Role",
-    "ROLE_CHANGE_ERROR": "User role could not be changed. Please try again or contact RISE",
+    "ROLE_CHANGE_ERROR": "User role could not be changed. Please try again or contact us.",
     "ROLE_CHANGE_SUCCESS": "User Role successfully changed"
   },
   "DASHBOARD": {
     "SEARCH": "Search Map"
   },
   "ERROR_MSG": {
-    "ERROR_API_ORG_ALREADY_EXISTS": "An organization with this information already exists.",
-    "ERROR_API_USER_ALREADY_EXISTS": "A user with this ID already exists.",
-    "ERROR_API_MAIL_ALREADY_EXISTS": "This email is already in use",
+    "ERROR_API_ORG_ALREADY_EXISTS": "This organization is already registered",
+    "ERROR_API_USER_ALREADY_EXISTS": "This User ID is already taken. Please choose another one",
+    "ERROR_API_MAIL_ALREADY_EXISTS": "This email is already registered",
     "ERROR_API_MISSING_ACCEPT_TERMS_AND_PRIVACY": "Please accept the Terms and Conditions as well as RISE's Privacy Policy",
     "ERROR_API_WRONG_USER_OR_PASSWORD": "Either the entered username or password is incorrect or you did not yet confirm your account",
-    "ERROR_API_WRONG_OTP": "This one time password does not match the one sent to the email above.",
-    "ERROR_API_NO_VALID_SUBSCRIPTION": "You do not have a valid subscription at this time.",
+    "ERROR_API_WRONG_OTP": "The One-Time Password entered is invalid. Please enter the correct code",
+    "ERROR_API_NO_VALID_SUBSCRIPTION": "No valid subscription found. Please renew or subscribe to continue",
     "ERROR_LAYER_FAILURE": "Could not load layers for ",
     "ERROR_UNKNOWN": "An unknown error occurred"
     },
@@ -136,7 +136,9 @@
     "FORCE_UPDATE": "Force Layer Update",
     "LAYER_ANALYZER": "Layer Analyzer",
     "MANAGE_EVENTS": "Manage Events",
-    "LAYER_ID": "Layer ID"
+    "LAYER_ID": "Layer ID",
+    "WORK_IN_PROGRESS": "At RISE we like to manage only freshly aquired Satellite data. We are currently working on your new Area of Operations. Please check back later.",
+    "WORK_IN_PROGRESS_TITLE": "Work in Progress"
   },
   "LAYER_ANALYZER": {
     "FILTER": "Filter Pixel Values",
@@ -180,7 +182,7 @@
   },
   "REGISTER": {
     "HEADER": "Register in RISE",
-    "USER_ID": "User ID (your login name, e.g. johndoe or john.doe ..ect)",
+    "USER_ID": "User ID (your login name, e.g., johndoe or john.doe, etc.)",
     "PASSWORD": "Password",
     "CONFIRM_PW": "Confirm Password",
     "NAME": "Name",
@@ -229,7 +231,7 @@
     "PLUGINS": "Plugins",
     "PURCHASE": "Purchase",
     "PURCHASE_CREDIT": "Checkout on Stripe",
-    "PURCHASE_ERROR": "An error occurred while executing your purchase. Please try again or contact RISE staff",
+    "PURCHASE_ERROR": "An error occurred while executing your purchase. Please try again or contact us.",
     "PRICE": "Price",
     "START_DATE": "Start Date",
     "SUCCESS": "Subscription purchase successful!",
@@ -273,12 +275,12 @@
     "NOTIFICATIONS_MSG": "Select the notifications you wish to receive from <strong>RISE</strong>.",
     "NOTIFICATIONS_ERROR": "Could not save notifications settings",
     "OLD_PW": "Current Password",
-    "PW_MSG": "Change the password used to access your <strong>RISE</strong> account. If you have any difficulties, <a>Contact Us</a>",
+    "PW_MSG": "Change the password used to access your <strong>RISE</strong> account. If you encounter any difficulties, please contact us.",
     "PW_SECURITY": "Password and Security",
     "PW_ERROR": "Could not save password information",
     "SELECT_LANG": "Select Language",
     "SELECT_LANG_MSG": "Select the system language you want to use for RISE.",
-    "SUB_MSG": " <strong>RISE</strong> will use this e-mail to connect and send notifications. You can manage your notification settings above."
+    "SUB_MSG": " <strong>RISE</strong> will use this email to enable user login and send notifications. You can manage your notification settings below"
   },
   "USER_MENU": {
     "ACCOUNT": "Account",

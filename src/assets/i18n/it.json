@@ -136,7 +136,9 @@
 		"FORCE_UPDATE": "Forza l’Aggiornamento del Layer",
 		"LAYER_ANALYZER": "Analizzatore di Layer",
 		"MANAGE_EVENTS": "Gestisci Eventi",
-		"LAYER_ID": "ID Layer"
+		"LAYER_ID": "ID Layer",
+		"WORK_IN_PROGRESS": "In Rise, ci piace lavorare con immagine satellitari fresche. Stiamo lavorando sulla tua nuova area, passa a trovarci più tardi per favore!",
+		"WORK_IN_PROGRESS_TITLE": "Lavori in Corso"
 	},
 	"LAYER_ANALYZER": {
 		"FILTER": "Filtra Valori dei Pixel",

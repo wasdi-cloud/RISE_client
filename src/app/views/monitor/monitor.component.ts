@@ -333,12 +333,30 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   openAOI(sAreaId: string): void {
     this.m_oAreaService.getAreaById(sAreaId).subscribe({
       next: (oResponse) => {
-        this.m_oAreaOfOperation = oResponse;
-        this.m_sAreaName = this.m_oAreaOfOperation.name;
-        this.m_oConstantsService.setActiveArea(this.m_oAreaOfOperation);
         if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
+          this.m_oAreaOfOperation = oResponse;
+          this.m_sAreaName = this.m_oAreaOfOperation.name;
+          this.m_oConstantsService.setActiveArea(this.m_oAreaOfOperation);
+  
           this.getMapsByArea(oResponse.id, oResponse.startDate);
           this.m_oMapService.flyToMonitorBounds(oResponse.bbox);
+
+          if (!this.m_oAreaOfOperation.firstShortArchivesReady) {
+
+            let sWorkingOnIt: string = this.m_oTranslate.instant(
+              'MONITOR.WORK_IN_PROGRESS'
+            );
+            let sWorkingOnItTitle: string = this.m_oTranslate.instant(
+              'MONITOR.WORK_IN_PROGRESS_TITLE'
+            );
+  
+            this.m_oNotificationService.openInfoDialog(
+              sWorkingOnIt,
+              'alert',
+              sWorkingOnItTitle
+            );
+          }
+
           this.m_oEventService.getEvents(sAreaId).subscribe(
             {
               next:(oResponse)=>{
