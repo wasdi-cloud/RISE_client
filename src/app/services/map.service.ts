@@ -594,7 +594,7 @@ export class MapService {
       if (this.m_oDrawMarker) {
         oMap.removeLayer(this.m_oDrawMarker);
       }
-      this.m_oDrawMarker = L.marker([centroid.lat, centroid.lng]).addTo(oMap);
+      this.m_oDrawMarker = L.marker([centroid.lat, centroid.lng],{icon:oIconDefault}).addTo(oMap);
     }
     // For circle, calculate area
     if (layerType === 'circle') {
@@ -1148,10 +1148,9 @@ export class MapService {
     }
 
     if (asCoordinates && oMap) {
-
       let lat = parseFloat(asCoordinates.lat);
       let lon = parseFloat(asCoordinates.lng);
-      let oMarker = L.marker([lat, lon])
+      let oMarker = L.marker([lat, lon],{icon:oIconDefault})
         .on('click', () => {
           this.m_oMarkerSubject.next(oEvent);
           // this.m_oMarkerClicked.emit(oArea);
