@@ -11,15 +11,15 @@
     <table class="w-100">
       <thead class="table-heading-container">
       <tr>
-        <td class="font-bold">{{ "LOGIN.USER_ID" | translate }}</td>
-        <td class="font-bold">{{ "USER.EMAIL" | translate }}</td>
-        <td class="font-bold">{{ "COLLABORATORS.ROLE" | translate }}</td>
+        <td><strong>{{ "LOGIN.USER_ID" | translate }}</strong></td>
+        <td><strong>{{ "USER.EMAIL" | translate }}</strong></td>
+        <td><strong>{{ "COLLABORATORS.ROLE" | translate }}</strong></td>
         <td></td>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let oUser of m_aoUsers">
-        <td>{{ oUser.userId }}</td>
+        <td >{{ oUser.userId }}</td>
         <td>{{ oUser.email }}</td>
         <td>{{ oUser.role }}</td>
         <td
@@ -60,6 +60,7 @@
             class="option material-symbols-outlined edit"
             [matTooltip]="'Save'"
             (click)="addFieldUser()"
+
             style="color: gold;cursor: pointer"
 
           >
@@ -105,27 +106,45 @@
         </td>
       </tr>
 
-      <tr *ngIf="!m_bNoUserExists">
-        <td colspan="4">
-          <div class="d-flex flex-row gap-2">
-            <rise-button
-              *ngIf="m_sResourceType !== 'organization'"
-              [m_sLabel]="'Add Collaborator'"
-              [m_sRole]="'primary'"
-              (click)="m_bAddingUser = true"
-            ></rise-button>
-          </div>
-        </td>
-      </tr>
-      <rise-button
-      *ngIf="m_sResourceType !== 'organization'"
-      [m_sLabel]="'Add External Collaborator'"
-      [m_sRole]="'primary'"
-      (click)="m_bAddingExternalUser = true"></rise-button>
+<!--      <tr *ngIf="!m_bNoUserExists">-->
+<!--        <td colspan="4">-->
+<!--          <div class="d-flex flex-row gap-2">-->
+<!--            <rise-button-->
+<!--              *ngIf="m_sResourceType !== 'organization'"-->
+<!--              [m_sLabel]="'Add Collaborator'"-->
+<!--              [m_sRole]="'primary'"-->
+<!--              (click)="m_bAddingUser = true"-->
+<!--            ></rise-button>-->
 
-
+<!--            <rise-button-->
+<!--              *ngIf="m_sResourceType !== 'organization'"-->
+<!--              [m_sLabel]="'Add External Collaborator'"-->
+<!--              [m_sRole]="'primary'"-->
+<!--              (click)="m_bAddingExternalUser = true"-->
+<!--            ></rise-button>-->
+<!--          </div>-->
+<!--        </td>-->
+<!--      </tr>-->
       </tbody>
     </table>
+
+    <div
+      *ngIf="!m_bNoUserExists && m_sResourceType !== 'organization'"
+      class="bottom-buttons"
+    >
+      <rise-button
+        [m_sLabel]="'Add Collaborator'"
+        [m_sRole]="'primary'"
+        (click)="!isAddFieldOperatorDisabled()?m_bAddingUser = true:''"
+        [m_bDisabled]="isAddFieldOperatorDisabled()"
+      ></rise-button>
+
+      <rise-button
+        [m_sLabel]="'Add External Collaborator'"
+        [m_sRole]="'primary'"
+        (click)="m_bAddingExternalUser = true"
+      ></rise-button>
+    </div>
     <div
       *ngIf="m_bNoUserExists"
       class="invalid-sub p-3 d-flex flex-row justify-content-between align-items-center"

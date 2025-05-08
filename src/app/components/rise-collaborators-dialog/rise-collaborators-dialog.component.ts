@@ -23,7 +23,7 @@ import {PermissionService} from '../../services/api/permission.service';
 export class RiseCollaboratorsDialogComponent implements OnInit {
   m_aoUsers: Array<UserViewModel> = [];
   m_aoFieldOperators: Array<any> = [];
-  m_aoFieldOperatorsMap: Map<string,UserViewModel>=new Map<string,UserViewModel> ;
+  m_aoFieldOperatorsMap: Map<string, { user: UserViewModel; added: boolean }> = new Map();
   m_sResourceId: string = '';
   m_sResourceType: string = '';
   m_bAddingUser: boolean = false;
@@ -46,8 +46,9 @@ export class RiseCollaboratorsDialogComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.m_oData) {
+      //area
       this.m_oEntity = this.m_oData.entity;
-
+      //area id
       this.m_sResourceId = this.m_oData.id;
       this.m_sResourceType = this.m_oData.resourceType;
 
@@ -67,6 +68,8 @@ export class RiseCollaboratorsDialogComponent implements OnInit {
         }
       }
     }
+
+    //all users are here
     this.m_aoUsers = aoUserList;
   }
 
@@ -182,7 +185,7 @@ export class RiseCollaboratorsDialogComponent implements OnInit {
 
   selectFieldOperator(oFieldOperator: any) {
     if (oFieldOperator) {
-      let oFieldOp = this.m_aoFieldOperatorsMap.get(oFieldOperator.value);
+      let oFieldOp = this.m_aoFieldOperatorsMap.get(oFieldOperator.value).user;
       this.m_oFieldOperatorOfArea =
         {
           name: oFieldOp.name ? oFieldOp.name : "",
@@ -201,27 +204,54 @@ export class RiseCollaboratorsDialogComponent implements OnInit {
       next: (oResponse) => {
         this.m_aoFieldOperators = oResponse
         //if no users exists , show a message to the user to tell him to invite
-        console.log(this.m_aoFieldOperators)
+
         if(!this.m_aoFieldOperators || this.m_aoFieldOperators.length==0){
           this.m_bNoUserExists=true;
         }
         this.fillMap()
+        this.isAddFieldOperatorDisabled()
       },
       error: (oError) => {
         console.error(oError)
       }
     })
   }
-  //todo delete this , because i think its useless
-  private fillMap() {
-    for (let i = 0; i <this.m_aoFieldOperators.length ; i++) {
-      let oFieldOperator = this.m_aoFieldOperators[i];
-    }
-  }
+
 
   getFieldOperatorKeys() {
-    return Array.from(this.m_aoFieldOperatorsMap.keys());
+    return Array.from(this.m_aoFieldOperatorsMap.entries())
+      .filter(([_, value]) => !value.added)
+      .map(([key, _]) => key);
   }
 
+  isAddFieldOperatorDisabled(): boolean {
+    // If there are no field operators in the org, nothing to add — disable the button
+    if (!this.m_aoFieldOperators || this.m_aoFieldOperators.length === 0) {
+
+      return true;
+    }
+    //else check if all existing field operator already added
+    const aoAddedFieldOpIds = this.m_aoUsers
+      .map(u => u.userId);
+
+    const aoAllFieldOpIds = this.m_aoFieldOperators.map(op => op.userId);
+    return aoAllFieldOpIds.every(id => aoAddedFieldOpIds.includes(id));
+  }
+
+
+  private fillMap() {
+    this.m_aoFieldOperatorsMap.clear();
+
+    const aoAddedFieldOpIds = this.m_aoUsers
+      .map(u => u.userId);
+
+    for (let oFieldOperator of this.m_aoFieldOperators) {
+      const isAdded = aoAddedFieldOpIds.includes(oFieldOperator.userId);
+      this.m_aoFieldOperatorsMap.set(oFieldOperator.userId, {
+        user: oFieldOperator,
+        added: isAdded
+      });
+    }
+  }
 
 }

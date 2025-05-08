@@ -1,7 +1,10 @@
 div.dialog-container {
   background-color: rgba(0, 31, 40, 0.4);
   backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
   width: 700px;
+  height: 100%;
 }
 
 h3 {
@@ -11,4 +14,15 @@ h3 {
 
 ::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
   background-color: transparent !important;
+}
+.table-wrapper {
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
+.bottom-buttons {
+  padding-top: 1rem;
+  display: flex;
+  justify-content: flex-end; /* or center / start */
+  gap: 0.5rem;
 }
