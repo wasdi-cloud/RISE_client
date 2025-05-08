@@ -543,3 +543,10 @@ a.leaflet-control-zoom-fullscreen {
   flex-direction: column; /* Stacks items vertically */
   align-items: center;    /* Centers them horizontally */
 }
+
+.widget-gold-icon {
+  color: var(--rise-gold);
+  cursor: pointer;
+  
+  height: 20px;
+}

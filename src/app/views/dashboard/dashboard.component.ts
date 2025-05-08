@@ -52,7 +52,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private m_oAreaService: AreaService,
     private m_oMapService: MapService,
     private m_oRouter: Router,
-    private ngZone: NgZone,
+    private m_oNgZone: NgZone,
   ) {}
 
   ngOnInit(): void {
@@ -117,7 +117,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * TODO: Open the Monitor view with selected area of interest
    */
   openMonitor(oArea) {
-    this.ngZone.run(() => this.m_oRouter.navigateByUrl(`monitor/${oArea.id}`));
+    this.m_oNgZone.run(() => this.m_oRouter.navigateByUrl(`monitor/${oArea.id}`));
   }
 
   /**
