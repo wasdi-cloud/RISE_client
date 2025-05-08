@@ -19,4 +19,8 @@ export class WidgetService {
   getWidget(sWidgetId: string, iDate: string | number) {
     return this.m_oHttp.get<WidgetInfoViewModel>(this.APIURL + '/widget/bydate?widget=' + sWidgetId + "&date=" + iDate);
   }
+
+  getWidgetList(sWidgetId: string, iDate: string | number) {
+    return this.m_oHttp.get<WidgetInfoViewModel[]>(this.APIURL + '/widget/listbydate?widget=' + sWidgetId + "&date=" + iDate);
+  }
 }
