@@ -18,7 +18,7 @@ export class RiseAffectedWidgetComponent implements OnInit {
   @Input() m_iAffectedPpl: number = 0;
 
   m_oWidgetInfo: WidgetInfoViewModel = null;
-  m_sAreaName: string = "";;
+  m_sAreaName: string = "";
 
   constructor(
     private m_oWidgetService: WidgetService,
@@ -61,6 +61,5 @@ export class RiseAffectedWidgetComponent implements OnInit {
     if (this.m_oWidgetInfo) {
       this.m_oNgZone.run(() => this.m_oRouter.navigateByUrl(`monitor/${this.m_oWidgetInfo.areaId}`));
     }
-    
   }
 }

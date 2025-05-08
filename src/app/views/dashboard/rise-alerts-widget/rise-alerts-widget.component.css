@@ -10,3 +10,13 @@
   .event-date {
     font-size: 14px;
   }
+
+  .body-icon {
+    font-size: 40px;
+  }
+  
+  .alert-content {
+    color: var(--rise-gold);
+    font-size: 36px;
+  }
+  
