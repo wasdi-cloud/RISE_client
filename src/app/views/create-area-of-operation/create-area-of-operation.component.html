@@ -23,7 +23,7 @@
             [m_bHasTitle]="true"
             [(m_sInputText)]="m_oAreaOfOperation.description"
             [m_sLocalizationKey]="'CREATE_NEW_AREA_OF_OPERATION.DESCRIPTION'"
-          ></rise-textarea-input>        
+          ></rise-textarea-input>
           <rise-checkbox
           [m_aoOptions]="m_asIsPublic"
           [m_aoSelectedValues]="m_asSelectedIsPublic"
@@ -34,6 +34,7 @@
               [m_aoOptions]="this.m_asPlugins"
               (m_oSelectionChange)="onSelectionChange($event)"
               [m_aoSelectedValues]="this.m_asPluginsSelected"
+              [m_bEnableSelectAll]="true"
             >
             </rise-checkbox>
             <div class="invalid-feedback" *ngIf="!m_bPluginsAreValid"></div>

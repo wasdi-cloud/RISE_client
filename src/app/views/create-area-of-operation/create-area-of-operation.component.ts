@@ -120,7 +120,7 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
     );
 
     this.m_asIsPublic.push({
-      label: sPublic, 
+      label: sPublic,
       value: 'isPublic'
     });
 

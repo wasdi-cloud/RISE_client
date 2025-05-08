@@ -1,3 +1,15 @@
+<div *ngIf="m_bEnableSelectAll" class="rise-checkbox-container">
+  <!-- Select All / Unselect All -->
+  <label class="d-flex flex-row align-items-center gap-2">
+    <input
+      type="checkbox"
+      [checked]="isAllSelected()"
+      (change)="toggleSelectAll()"
+      [disabled]="m_bReadonly"
+    />
+    <strong>{{ isAllSelected() ? 'Unselect All' : 'Select All' }}</strong>
+  </label>
+</div>
 <div class="rise-checkbox-container" *ngFor="let option of m_aoOptions">
   <label class="d-flex flex-row align-items-center gap-2">
     <input
