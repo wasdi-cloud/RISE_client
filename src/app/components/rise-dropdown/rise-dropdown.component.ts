@@ -56,6 +56,11 @@ export class RiseDropdownComponent {
   @Input() m_bHasTitle?: boolean = false;
 
   @Input() m_bShowChips: boolean = false;
+  /*
+    a flag to enable select all
+   */
+
+  @Input() m_bEnableSelectAll: boolean = false;
 
 
   @Input() m_oDeleteFn?: (args: any, controller: any) => void;
@@ -103,6 +108,29 @@ export class RiseDropdownComponent {
     this.m_aoSelectedItems = this.m_aoSelectedItems.filter(item => item !== plugin);
     this.emitSelectionChange({ value: this.m_aoSelectedItems }); // Emit updated selection
   }
+  toggleSelectAll(): void {
+    this.m_aoSelectedItems = this.m_aoSelectedItems.filter(item => item !== null && item !== undefined);
+    if (this.isAllSelected()) {
+      // If all items are selected, unselect them
+      this.m_aoSelectedItems = [];
+    } else {
+      // Otherwise, select all items in the dropdown
+      this.m_aoSelectedItems = [...this.m_aoDropdownItems];
+    }
+    // Emit selection change to parent
+    this.emitSelectionChange({ value: this.m_aoSelectedItems });
+  }
+
+
+
+  isAllSelected(): boolean {
+    if (!this.m_aoSelectedItems || !this.m_aoDropdownItems) return false;
+    if (this.m_aoSelectedItems.length !== this.m_aoDropdownItems.length) return false;
+
+    const selectedSet = new Set(this.m_aoSelectedItems.map(item => item?.id || item?.name || item));
+    return this.m_aoDropdownItems.every(item => selectedSet.has(item?.id || item?.name || item));
+  }
+
 
 
 }

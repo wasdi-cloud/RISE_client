@@ -11,6 +11,15 @@
     (selectionChange)="emitSelectionChange($event)"
     [(value)]="m_aoSelectedItems"
   >
+    <mat-option
+      *ngIf="m_bIsMultiSelect && m_bEnableSelectAll"
+      (click)="toggleSelectAll()"
+      [disabled]="!m_aoDropdownItems.length"
+    >
+      <strong>{{ isAllSelected() ? 'Unselect All' : 'Select All' }}</strong>
+    </mat-option>
+
+
     <div *ngIf="m_bHasSearch" class="mat-search-container">
       <input
         class="mat-select-search"
