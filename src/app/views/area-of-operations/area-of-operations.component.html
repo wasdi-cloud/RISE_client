@@ -12,39 +12,48 @@
       <div class="area-sidebar d-flex flex-column justify-content-between">
         <h3>{{ "AREA_OF_OPERATIONS.ACTIVE_AREAS" | translate }}</h3>
         <div class="area-card-container d-flex flex-column gap-2 flex-fill">
-          <div
-            class="area-card d-flex flex-row justify-content-between align-items-center"
-            (click)="flyToArea(oArea)"
-            *ngFor="let oArea of m_aoAreasOfOperations"
-          >
-            <p class="mb-0">{{ oArea.name }}</p>
-            <div class="area-buttons d-flex flex-row gap-1">
-              <span
-                class="material-symbols-outlined"
-                (click)="openManageUsers(oArea)"
-              >
-                group_add
-              </span>
-              <span
-                class="material-symbols-outlined"
-                (click)="openEditArea(oArea)"
-              >
-                edit
-              </span>
-              <span
-                class="material-symbols-outlined"
-                (click)="goToMonitorArea(oArea)"
-              >
-                target
-              </span>
-              <span
-                class="material-symbols-outlined"
-                (click)="deleteArea(oArea)"
-              >
-                delete
-              </span>
+          <!-- Show this block when m_bDeleting is false -->
+          <ng-container *ngIf="!m_bDeleting">          
+            <div
+              class="area-card d-flex flex-row justify-content-between align-items-center"
+              (click)="flyToArea(oArea)"
+              *ngFor="let oArea of m_aoAreasOfOperations"
+            >
+              <p class="mb-0">{{ oArea.name }}</p>
+              <div class="area-buttons d-flex flex-row gap-1">
+                <span
+                  class="material-symbols-outlined"
+                  (click)="openManageUsers(oArea)"
+                >
+                  group_add
+                </span>
+                <span
+                  class="material-symbols-outlined"
+                  (click)="openEditArea(oArea)"
+                >
+                  edit
+                </span>
+                <span
+                  class="material-symbols-outlined"
+                  (click)="goToMonitorArea(oArea)"
+                >
+                  target
+                </span>
+                <span
+                  class="material-symbols-outlined"
+                  (click)="deleteArea(oArea)"
+                >
+                  delete
+                </span>
+              </div>
             </div>
-          </div>
+          </ng-container>
+          <!-- Show this block when m_bDeleting is true -->
+          <ng-container *ngIf="m_bDeleting">
+            <div class="deleting-message d-flex justify-content-center align-items-center">
+              <p>{{ "AREA_OF_OPERATIONS.DELETING_MESSAGE" | translate }}</p>
+            </div>
+          </ng-container>          
         </div>
         <rise-button
           *ngIf="!m_bShouldBuySub"

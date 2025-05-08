@@ -60,7 +60,8 @@
     "AREA_NOT_FOUND": "Area not found",
     "AREA_NOT_FOUND_MSG": "To start creating areas of operations in RISE , please ",
     "AREA_NOT_FOUND_LINK": "click here",
-    "IS_PUBLIC": "Is Public"
+    "IS_PUBLIC": "Is Public",
+    "DELETING_MESSAGE": "We are deleting your area of operation. Please wait."
   },
   "BANNER": {
     "LIVE_SIT": "Live Situation",

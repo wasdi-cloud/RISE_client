@@ -43,6 +43,7 @@ export class AreaOfOperationsComponent implements OnInit {
   m_aoAreasOfOperations: AreaViewModel[] = [];
   m_bShowNewArea: boolean = false;
   m_bShouldBuySub: boolean = false;
+  m_bDeleting: boolean = false;
 
   constructor(
     private m_oAreaService: AreaService,
@@ -136,11 +137,15 @@ export class AreaOfOperationsComponent implements OnInit {
         if (!bResult) {
           return;
         }
+        this.m_bDeleting = true;
+
         this.m_oAreaService.deleteAreaOfOperation(oArea.id).subscribe({
           next: (oResponse) => {
+            this.m_bDeleting = false;
             this.getAreas();
           },
           error: (oError) => {
+            this.m_bDeleting = false;
             this.m_oNotificationService.openInfoDialog(sErrorMsg, 'danger');
           },
         });

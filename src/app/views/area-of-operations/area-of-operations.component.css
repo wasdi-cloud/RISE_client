@@ -28,3 +28,10 @@ h3 {
   cursor: pointer;
   font-size: 20px;
 }
+
+.deleting-message {
+  font-size: 1.2rem;
+  color: red;
+  text-align: center;
+  padding: 1rem;
+}

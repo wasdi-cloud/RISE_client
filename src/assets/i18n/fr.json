@@ -84,7 +84,8 @@
     "ERROR_PLUGINS": "Impossible de récupérer les informations du plugin",
     "ERROR_SAVE": "Impossible d'enregistrer les modifications dans cette zone",
     "SUCCESS_SAVE": "Modifications de zone enregistrées",
-    "IS_PUBLIC": "Cette zone est publique"
+    "IS_PUBLIC": "Cette zone est publique",
+    "DELETING_MESSAGE": "Nous supprimons votre zone d'opérations. Veuillez patienter."
   },
   "BANNER": {
     "LIVE_SIT": "Situation en direct",
