@@ -1366,49 +1366,58 @@ export class MapService {
   }
 
   addPixelInfoToggle(oMap: any) {
+    // Inject global style once
+    const styleId = 'pixel-info-toggle-style';
+    if (!document.getElementById(styleId)) {
+      const style = document.createElement('style');
+      style.id = styleId;
+      style.innerHTML = `
+  .leaflet-control-button.active {
+    color: white !important;
+
+  }
+
+  .leaflet-control-button.active .material-symbols-outlined {
+    color: var(--rise-gold) !important; /* Or any color you want */
+  }
+`;
+      document.head.appendChild(style);
+    }
+
     let oPixelButton = L.Control.extend({
       options: {
         position: 'topright',
       },
       onAdd: () => {
-        // Create the container for the dialog
         let oContainer = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
-
-        // Create the toggle button
-        let oButton = L.DomUtil.create(
-          'a',
-          'leaflet-control-button',
-          oContainer
-        );
-
-        // Create the cancel button (initially not added to the DOM)
+        let oButton = L.DomUtil.create('a', 'leaflet-control-button', oContainer);
         let oCancelButton: HTMLElement | null = null;
 
-        // Click stops on our buttons
         L.DomEvent.disableClickPropagation(oButton);
 
-        // Configure the toggle button behavior
         L.DomEvent.on(oButton, 'click', () => {
-
           this.m_bPixelInfoOn = true;
 
+          // Add active style
+          oButton.classList.add('active');
+
           if (this.m_bPixelInfoOn) {
-            // Add the cancel button dynamically
+            // Change cursor style when Pixel Info is active
+            oMap.getContainer().style.cursor = 'crosshair';
             if (!oCancelButton) {
-              oCancelButton = L.DomUtil.create(
-                'a',
-                'leaflet-control-cancel',
-                oContainer
-              );
-              oCancelButton.innerHTML =
-                '<span class="material-symbols-outlined">cancel</span>';
+              oCancelButton = L.DomUtil.create('a', 'leaflet-control-cancel', oContainer);
+              oCancelButton.innerHTML = '<span class="material-symbols-outlined">cancel</span>';
               oCancelButton.title = 'Cancel Pixel Info';
 
-              // Attach cancel button click behavior
-              L.DomEvent.on(oCancelButton, 'click',  ()=> {
+              L.DomEvent.on(oCancelButton, 'click', () => {
                 this.m_bPixelInfoOn = false;
-                oContainer.removeChild(oCancelButton!); // Remove cancel button
-                oCancelButton = null; // Reset reference
+
+                // Remove active style
+                oButton.classList.remove('active');
+                oMap.getContainer().style.cursor = '';  // Reset cursor
+                oContainer.removeChild(oCancelButton!);
+                oCancelButton = null;
+
                 this.m_oNotificationService.openSnackBar(
                   'Pixel Info operation canceled.',
                   'Pixel Info',
@@ -1416,19 +1425,12 @@ export class MapService {
                 );
               });
             }
+
             this.getPixelInfo();
-          } else {
-            // Remove the cancel button if it exists
-            if (oCancelButton) {
-              oContainer.removeChild(oCancelButton);
-              oCancelButton = null;
-            }
           }
         });
 
-        // Set up the toggle button icon and tooltip
-        oButton.innerHTML =
-          '<span class="material-symbols-outlined">pinch</span>';
+        oButton.innerHTML = '<span class="material-symbols-outlined">pinch</span>';
         oButton.title = 'Toggle Pixel Info';
 
         return oContainer;
@@ -1440,6 +1442,7 @@ export class MapService {
 
     oMap.addControl(new oPixelButton());
   }
+
   /**
    * Zoom on bounds
    * @param aBounds
