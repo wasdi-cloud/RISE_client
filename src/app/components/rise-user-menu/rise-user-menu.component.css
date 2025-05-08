@@ -72,6 +72,17 @@ li > span.material-symbols-outlined {
   animation: blink 2s infinite;
 }
 
+.notification-dot-static {
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  /* No animation for static style */
+}
+
 @keyframes blink {
   0%, 100% {
     opacity: 1;

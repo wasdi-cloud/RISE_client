@@ -29,6 +29,7 @@ export class RiseUserMenuComponent implements OnInit {
   m_bShowDropdown: boolean = false;
   m_oUser: UserViewModel;
   m_bHasArea:boolean=false;
+  m_bAlertShown: boolean = false;
 
   constructor(
     private m_oActivatedRoute: ActivatedRoute,
@@ -243,6 +244,7 @@ export class RiseUserMenuComponent implements OnInit {
    */
   toggleDropdown(): void {
     this.m_bShowDropdown = !this.m_bShowDropdown;
+    this.m_bAlertShown = true;
   }
 
   getRoleClass(role: UserRole): string {

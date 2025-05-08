@@ -7,7 +7,8 @@
     (click)="toggleDropdown()"
   >
     <span class="material-symbols-outlined"> account_circle </span>
-    <span *ngIf="!m_bHasArea" class="notification-dot"></span>
+    <span *ngIf="!m_bHasArea" 
+    [ngClass]="m_bAlertShown ? 'notification-dot-static' : 'notification-dot'"></span>
   </div>
 
   <div *ngIf="m_bShowDropdown" class="dropdown-list d-flex flex-column gap-1">
