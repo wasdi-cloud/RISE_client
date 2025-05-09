@@ -15,3 +15,9 @@ div.map-container {
 img {
   height: 24px;
 }
+
+.scrollable-sidebar {
+  max-height: 100vh; /* Ensure the sidebar doesn't exceed the viewport height */
+  overflow-y: auto; /* Enable vertical scrolling if content overflows */
+  padding-right: 8px; /* Optional: Add padding to avoid scrollbar overlap */
+}
