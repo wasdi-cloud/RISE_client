@@ -21,6 +21,7 @@ import {ConstantsService} from './constants.service';
 import {TranslateService} from '@ngx-translate/core';
 import {EventViewModel} from "../models/EventViewModel";
 import {MapZoomLevels} from "../shared/MapZoomLevels";
+import { now } from 'moment';
 // import L from 'leaflet';
 declare const L: any;
 
@@ -271,6 +272,7 @@ export class MapService {
         minZoom: MapZoomLevels.DEFAULT_MIN_ZOOM,
         attribution:
           'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
+        noWrap: true,
       }
     );
 
@@ -282,6 +284,7 @@ export class MapService {
         minZoom: MapZoomLevels.STREET_MIN_ZOOM,
         attribution:
           'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
+        noWrap: true,
       }
     );
 
@@ -293,6 +296,7 @@ export class MapService {
         minZoom: MapZoomLevels.IMAGERY_MIN_ZOOM,
         attribution:
           'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+        noWrap: true,
       }
     );
 
@@ -304,9 +308,11 @@ export class MapService {
         maxZoom: MapZoomLevels.DARK_MAX_ZOOM,
         attribution:
           '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        nowrap: true,
         // ext: 'png'
       }
     );
+
     this.m_oDarkGrayArcGIS = L.tileLayer(
       'https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
       {
@@ -314,6 +320,7 @@ export class MapService {
         maxZoom: MapZoomLevels.DARK_MAX_ZOOM,
         attribution:
           '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        nowrap: true,
         // ext: 'png'
       }
     );
