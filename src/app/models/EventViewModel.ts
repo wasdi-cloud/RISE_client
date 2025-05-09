@@ -28,7 +28,8 @@ export class EventViewModel extends RiseViewModel {
 
   publicEvent?:boolean=true;
 
+  areaId?:string;
 
-
+  areaName?:string;
 
 }

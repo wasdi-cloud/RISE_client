@@ -28,4 +28,8 @@ export class EventService {
   updateEvent(oEvent:EventViewModel):Observable<EventViewModel>{
     return this.m_oHttp.put<EventViewModel>(this.APIURL+'/event/update',oEvent)
   }
+
+  getOngoing():Observable<EventViewModel[]>{
+    return this.m_oHttp.get<EventViewModel[]>(this.APIURL+'/event/ongoing')
+  }
 }

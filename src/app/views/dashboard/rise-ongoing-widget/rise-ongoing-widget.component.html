@@ -28,10 +28,7 @@
     <div class="d-flex flex-row justify-content-between">
         <div class="event-type">{{ oEvent.type }}</div>
         <div>{{ oEvent.name }}</div>
-      </div>
-
-      <div class="event-date">
-        {{ oEvent.startDate | date : "dd/MM/yyyy hh:mm:ss" }}
+        <span (click)="openTargetArea(oEvent.areaId)" class="material-symbols-outlined widget-gold-icon" [matTooltip]="oEvent.areaName">my_location</span>
       </div>
     </div>
     } @else {
