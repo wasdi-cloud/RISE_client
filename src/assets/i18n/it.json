@@ -299,7 +299,9 @@
 		"NO_AFFECTED": "Nessuna",
 		"NO_ALERTS": "Nessuna allerta",
 		"NO_EVENTS": "Nessun evento in corso",
-		"ONGOING_EVENTS": "Eventi in corso"
+		"ONGOING_EVENTS": "Eventi in corso",
+		"AFFECTED_ROAD": "Strade Interessate",
+		"AFFECTED_BUILDINGS": "Edifici Interessati"
 	},
 	"SUBSCRIPTION_ARRAY": {
 		"NAME": "Nome",

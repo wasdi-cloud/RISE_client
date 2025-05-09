@@ -1,11 +1,11 @@
 <div class="widget-container">
   <div class="widget-header d-flex flex-row justify-content-between align-items-center gap-2">
     <span class="material-symbols-outlined"> warning </span>
-    <div class="flex-fill">{{ "WIDGET.ALERTS" | translate }}</div>
-    @if (m_bShowContent) {
 
+    <div class="flex-fill">{{ "WIDGET.ALERTS" | translate }}</div>
+
+    @if (m_bShowContent) {
       <div class="header-icons d-flex flex-row align-items-center gap-2">
-        <span *ngIf="m_aoAlerts.length > 0" (click)="openTargetArea()" class="material-symbols-outlined widget-gold-icon" [matTooltip]="m_sAreaName">my_location</span>
         <span (click)="collapseWidget()" class="material-symbols-outlined" style="cursor: pointer;">
           keyboard_arrow_up
         </span>
@@ -16,14 +16,16 @@
     </span>
     }
   </div>
+
   <div *ngIf="m_bShowContent" class="affected-ppl">
 
     @if (m_aoAlerts.length > 0) {
 
     <div class="event-item d-flex flex-column gap-1 mt-2" *ngFor="let oAlert of m_aoAlerts">
-
+      
       <div class="widget-header d-flex flex-row justify-content-between">
-        <div>{{ oAlert.title }}</div>
+        <div>{{ oAlert.title }} - {{ oAlert.areaName }}</div>
+        <span (click)="openTargetArea()" class="material-symbols-outlined widget-gold-icon" [matTooltip]="oAlert.areaName">my_location</span>
       </div>
 
       <div class="event-item d-flex flex-row align-items-center gap-2 mt-2">

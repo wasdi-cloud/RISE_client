@@ -279,7 +279,9 @@
     "NO_AFFECTED": "لا يوجد",
     "NO_ALERTS": "لا توجد تنبيهات",
     "NO_EVENTS": "لا توجد أحداث جارية",
-    "ONGOING_EVENTS": "الأحداث الجارية"
+    "ONGOING_EVENTS": "الأحداث الجارية",
+    "AFFECTED_ROAD": "الطرق المتأثرة",
+    "AFFECTED_BUILDINGS": "المباني المتأثرة"
   }
 
 }

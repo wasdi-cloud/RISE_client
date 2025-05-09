@@ -299,7 +299,9 @@
     "NO_AFFECTED": "None",
     "NO_ALERTS": "No alerts",
     "NO_EVENTS": "No ongoing events",
-    "ONGOING_EVENTS": "Ongoing Events"
+    "ONGOING_EVENTS": "Ongoing Events",
+    "AFFECTED_ROAD": "Affected Roads",
+    "AFFECTED_BUILDINGS": "Affected Buildings"
   },
   "SUBSCRIPTION_ARRAY": {
     "NAME": "Name",

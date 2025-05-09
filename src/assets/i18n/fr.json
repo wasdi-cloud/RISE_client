@@ -280,7 +280,9 @@
     "NO_AFFECTED": "Aucune",
     "NO_ALERTS": "Aucune alerte",
     "NO_EVENTS": "Aucun événement en cours",
-    "ONGOING_EVENTS": "Événements en cours"
+    "ONGOING_EVENTS": "Événements en cours",
+    "AFFECTED_ROAD": "Routes affectées",
+    "AFFECTED_BUILDINGS": "Bâtiments affectés"
   },
   "SUBSCRIPTION_ARRAY": {
     "NAME": "Nom",

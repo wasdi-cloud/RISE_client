@@ -17,7 +17,7 @@
   <div *ngIf="m_bShowContent" class="affected-ppl d-flex flex-row align-items-center gap-2">
     <span class="body-icon material-symbols-outlined"> family_restroom </span>
     <div class="affected-total space-mono-regular">
-      {{ m_iAffectedPpl ? m_iAffectedPpl : ("WIDGET.NO_AFFECTED" | translate) }}
+      {{ m_iAffectedPpl ? (m_iAffectedPpl | number:'1.0-0':'en') : ("WIDGET.NO_AFFECTED" | translate) }}
     </div>
   </div>
 </div>
