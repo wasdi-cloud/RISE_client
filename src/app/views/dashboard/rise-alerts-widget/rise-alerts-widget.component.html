@@ -24,7 +24,7 @@
     <div class="event-item d-flex flex-column gap-1 mt-2" *ngFor="let oAlert of m_aoAlerts">
       
       <div class="widget-header d-flex flex-row justify-content-between">
-        <div>{{ oAlert.title }} - {{ oAlert.areaName }}</div>
+        <div>{{ oAlert.title | translate }} - {{ oAlert.areaName }}</div>
         <span (click)="openTargetArea()" class="material-symbols-outlined widget-gold-icon" [matTooltip]="oAlert.areaName">my_location</span>
       </div>
 
