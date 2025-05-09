@@ -50,9 +50,9 @@ export class RiseAlertsWidgetComponent implements OnInit {
     this.m_bShowContent = !this.m_bShowContent;
   }
 
-  openTargetArea() {
-    if (this.m_aoAlerts.length > 0) {
-      this.m_oNgZone.run(() => this.m_oRouter.navigateByUrl(`monitor/${this.m_aoAlerts[0].areaId}`));
+  openTargetArea(oAlert) {
+    if (oAlert) {
+      this.m_oNgZone.run(() => this.m_oRouter.navigateByUrl(`monitor/${oAlert.areaId}`));
     }
   }  
 }

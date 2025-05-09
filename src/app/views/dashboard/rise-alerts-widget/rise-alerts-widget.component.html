@@ -25,7 +25,7 @@
       
       <div class="widget-header d-flex flex-row justify-content-between">
         <div>{{ oAlert.title | translate }} - {{ oAlert.areaName }}</div>
-        <span (click)="openTargetArea()" class="material-symbols-outlined widget-gold-icon" [matTooltip]="oAlert.areaName">my_location</span>
+        <span (click)="openTargetArea(oAlert)" class="material-symbols-outlined widget-gold-icon" [matTooltip]="oAlert.areaName">my_location</span>
       </div>
 
       <div class="event-item d-flex flex-row align-items-center gap-2 mt-2">
