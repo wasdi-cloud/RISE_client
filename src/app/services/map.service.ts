@@ -185,6 +185,9 @@ export class MapService {
   m_oImportShapeMarker: L.Marker | null = null;
   m_oDrawMarker: L.Marker | null = null;
   m_oFeatureInfoMarker = null;
+  /*
+   a list of layers that are being selected , this help keep track and eventually used for layer analyzer and pixel info
+   */
   m_aoSelectedLayers = []
   /**
    * Flag to know if the pixel info tool should be enabled
@@ -1475,92 +1478,91 @@ export class MapService {
   };
 
 
-
+  //todo detect which layer is being choosen
+  //todo dont pass all layers ids or at least understand why
+  //todo figure it our why it does not work on shape file
   getPixelInfo() {
     let sErrorMsg: string = this.m_oTranslate.instant('MAP.ERROR_LAYER');
     this.m_oRiseMap.on('click', (oClickEvent) => {
+      //flag is false , button is not clicked
+      if(!this.m_bPixelInfoOn) return;
+      //there are not layer selected
+      if (!this.m_aoSelectedLayers || this.m_aoSelectedLayers.length === 0) {
+        this.m_oNotificationService.openSnackBar(
+          'No layer selected, please select one',
+          'Pixel Info',
+          'danger'
+        );
+        window.dispatchEvent(new Event('resize'));
+        return;
+      }
+      let sWmsUrl = '';
+      let sLayerIdList = '';
 
-      if (this.m_bPixelInfoOn) {
-        let i = 0;
-        this.m_oRiseMap.eachLayer(function () {
-          i += 1;
-        });
-        if (i > 1) {
-          let sWmsUrl = '';
-          let sLayerIdList = '';
+      this.m_oRiseMap.eachLayer((oLayer) => {
+        if (oLayer.options.layers) {
+          let sLayerId = oLayer.options.layers;
 
-          this.m_oRiseMap.eachLayer((oLayer) => {
-            if (oLayer.options.layers) {
-              let sLayerId = oLayer.options.layers;
-
-            // Find the selected layer by its ID
-              let oSelectedLayer = this.m_aoSelectedLayers.find(layer => layer.layerId === sLayerId);
-              let sMapId = oSelectedLayer?.mapId || 'Unknown';
+          // Find the selected layer by its ID
+          let oSelectedLayer = this.m_aoSelectedLayers.find(layer => layer.layerId === sLayerId);
+          let sMapId = oSelectedLayer?.mapId || 'Unknown';
 
 
 
-              if (FadeoutUtils.utilsIsStrNullOrEmpty(oLayer._url)) {
-                sWmsUrl = oLayer.url.replace('ows', 'wms');
-              }
+          if (FadeoutUtils.utilsIsStrNullOrEmpty(oLayer._url)) {
+            sWmsUrl = oLayer.url.replace('ows', 'wms');
+          }
 
-              sLayerIdList += oLayer.options.layers;
-              // sLayerIdList += ',';
+          sLayerIdList += oLayer.options.layers;
+          // sLayerIdList += ',';
 
-              let sFeatureInfoUrl = this.getWMSLayerInfoUrl(
-                sWmsUrl,
-                oClickEvent.latlng,
-                sLayerIdList
-              );
+          let sFeatureInfoUrl = this.getWMSLayerInfoUrl(
+            sWmsUrl,
+            oClickEvent.latlng,
+            sLayerIdList
+          );
 
-              if (sFeatureInfoUrl) {
-                if (this.m_oFeatureInfoMarker != null) {
-                  this.m_oFeatureInfoMarker.remove();
-                }
-                this.getFeatureInfo(sFeatureInfoUrl).subscribe({
-                  next: (oResponse) => {
-                    if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
-                      try {
-                        let sContentString = this.formatFeatureJSON(oResponse,sMapId);
-                        //handle the case when there are no info
-                        if(sContentString==='<ul></ul>'){
-                          sContentString='<ul>No Information Found</ul>'
-                        }
-                        this.m_oFeatureInfoMarker = L.popup()
-                          .setLatLng([
-                            oClickEvent.latlng.lat,
-                            oClickEvent.latlng.lng,
-                          ])
-                          .setContent(sContentString)
-                          .openOn(this.m_oRiseMap);
-                      } catch (error) {
-                        this.m_oNotificationService.openSnackBar(
-                          sErrorMsg,
-                          '',
-                          'danger'
-                        );
-                      }
+          if (sFeatureInfoUrl) {
+            if (this.m_oFeatureInfoMarker != null) {
+              this.m_oFeatureInfoMarker.remove();
+            }
+            this.getFeatureInfo(sFeatureInfoUrl).subscribe({
+              next: (oResponse) => {
+                if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
+                  try {
+                    let sContentString = this.formatFeatureJSON(oResponse,sMapId);
+                    //handle the case when there are no info
+                    if(sContentString==='<ul></ul>'){
+                      sContentString='<ul>No Information Found</ul>'
                     }
-                  },
-                  error: (oError) => {
+                    this.m_oFeatureInfoMarker = L.popup()
+                      .setLatLng([
+                        oClickEvent.latlng.lat,
+                        oClickEvent.latlng.lng,
+                      ])
+                      .setContent(sContentString)
+                      .openOn(this.m_oRiseMap);
+                  } catch (error) {
                     this.m_oNotificationService.openSnackBar(
                       sErrorMsg,
                       '',
-                      'danger-snackbar'
+                      'danger'
                     );
-                  },
-                });
-              }
-            }
-          });
-        }else{
-          this.m_oNotificationService.openSnackBar(
-            "No layer selected,Please select one ",
-            'Pixel Info',
-            'danger'
-          );
-          window.dispatchEvent(new Event("resize"))
+                  }
+                }
+              },
+              error: (oError) => {
+                this.m_oNotificationService.openSnackBar(
+                  sErrorMsg,
+                  '',
+                  'danger'
+                );
+                window.dispatchEvent(new Event("resize"))
+              },
+            });
+          }
         }
-      }
+      });
     });
   }
   /**
