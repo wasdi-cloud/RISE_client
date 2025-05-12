@@ -1491,6 +1491,14 @@ export class MapService {
 
           this.m_oRiseMap.eachLayer((oLayer) => {
             if (oLayer.options.layers) {
+              let sLayerId = oLayer.options.layers;
+
+            // Find the selected layer by its ID
+              let oSelectedLayer = this.m_aoSelectedLayers.find(layer => layer.layerId === sLayerId);
+              let sMapId = oSelectedLayer?.mapId || 'Unknown';
+
+
+
               if (FadeoutUtils.utilsIsStrNullOrEmpty(oLayer._url)) {
                 sWmsUrl = oLayer.url.replace('ows', 'wms');
               }
@@ -1512,7 +1520,7 @@ export class MapService {
                   next: (oResponse) => {
                     if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
                       try {
-                        let sContentString = this.formatFeatureJSON(oResponse);
+                        let sContentString = this.formatFeatureJSON(oResponse,sMapId);
                         //handle the case when there are no info
                         if(sContentString==='<ul></ul>'){
                           sContentString='<ul>No Information Found</ul>'
@@ -1528,7 +1536,7 @@ export class MapService {
                         this.m_oNotificationService.openSnackBar(
                           sErrorMsg,
                           '',
-                          'danger-snackbar'
+                          'danger'
                         );
                       }
                     }
@@ -1876,19 +1884,22 @@ export class MapService {
    * Type: string
    * - Gray Index: X.XXX
    */
-  formatFeatureJSON(oJSON: any) {
+  formatFeatureJSON(oJSON: any, sMapId: string) {
     let asFeatureContent = oJSON.features.map((oFeature) => {
       return `<li>Type: ${oFeature.type} <ul>${
         oFeature.properties instanceof Array
-          ? oFeature.properties.forEach((oProperty) => {
+          ? oFeature.properties.map((oProperty) => {
             return `<li> Gray Index: ${oProperty.GRAY_INDEX}</li>`;
-          })
+          }).join('')
           : `<li>Gray Index: ${oFeature.properties.GRAY_INDEX}</li>`
       }</ul> </li>`;
     });
-
-    return '<ul>' + asFeatureContent.toString() + '</ul>';
+    if(asFeatureContent===null || asFeatureContent.length===0){
+      return `<ul></ul>`;
+    }
+    return `<ul><li>Layer: ${sMapId}</li>${asFeatureContent.join('')}</ul>`;
   }
+
 
   getFeatureInfo(sUrl: string) {
     const aoHeaders = new HttpHeaders()
