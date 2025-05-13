@@ -58,19 +58,19 @@ export class RiseUserMenuComponent implements OnInit {
   private getUserMenu(): void {
     const sError = this.m_oTranslate.instant('USER_MENU.ERROR');
 
-    const applyMenuByPathAndRole = (path: string, role: string | null): void => {
-      if (path.includes('account')) {
+    const applyMenuByPathAndRole = (sPath: string, sRole: string | null): void => {
+      if (sPath.includes('account')) {
         this.m_aoMenuItems = ReducedMenuItems;
-      } else if (path.includes('monitor')) {
-        if (role === UserRole.FIELD) {
+      } else if (sPath.includes('monitor')) {
+        if (sRole === UserRole.FIELD) {
           this.m_aoMenuItems = FullMenuItems.filter(item => item.name !== 'subscriptions');
         } else {
           this.m_aoMenuItems = FullMenuItems;
         }
       } else {
-        if (role === UserRole.FIELD) {
+        if (sRole === UserRole.FIELD) {
           this.m_aoMenuItems = DefaultMenuItems.filter(
-            item => item.name !== 'subscriptions' && item.name !== 'area of operations'
+            oItem => oItem.name !== 'subscriptions' && oItem.name !== 'area of operations'
           );
         } else {
           this.m_aoMenuItems = DefaultMenuItems;
@@ -78,30 +78,31 @@ export class RiseUserMenuComponent implements OnInit {
       }
     };
 
-    const resolveUserRoleAndApplyMenu = (path: string): void => {
-      const cachedRole = this.m_oConstantsService.getUserRole();
-      if (cachedRole) {
-        applyMenuByPathAndRole(path, cachedRole);
+    const resolveUserRoleAndApplyMenu = (sPath: string): void => {
+      const oCachedRole = this.m_oConstantsService.getUserRole();
+      if (oCachedRole) {
+        applyMenuByPathAndRole(sPath, oCachedRole);
       } else {
         this.m_oUserService.getUser().subscribe({
           next: (user) => {
-            const role = user.role;
-            applyMenuByPathAndRole(path, role);
+            const oUserRole = user.role;
+            applyMenuByPathAndRole(sPath, oUserRole);
           },
-          error: () => {
-            this.m_oNotificationService.openInfoDialog(sError, 'danger');
+          error: (oError) => {
+            console.error(oError)
+            // this.m_oNotificationService.openInfoDialog(sError, 'danger');
           }
         });
       }
     };
 
     const setupMenuHandling = (): void => {
-      const currentPath = this.m_oRouter.url;
-      resolveUserRoleAndApplyMenu(currentPath);
+      const sCurrentPath = this.m_oRouter.url;
+      resolveUserRoleAndApplyMenu(sCurrentPath);
 
       // Also listen for route changes (NavigationEnd only)
       this.m_oRouter.events
-        .pipe(filter(event => event instanceof NavigationEnd))
+        .pipe(filter(oEvent => oEvent instanceof NavigationEnd))
         .subscribe(() => {
           resolveUserRoleAndApplyMenu(this.m_oRouter.url);
         });
@@ -111,14 +112,15 @@ export class RiseUserMenuComponent implements OnInit {
     this.m_oUser = this.m_oConstantsService.getUser();
     if (!this.m_oUser) {
       this.m_oUserService.getUser().subscribe({
-        next: (user) => {
-          this.m_oUser = user;
-          this.m_oConstantsService.setUser(user);
+        next: (oUser) => {
+          this.m_oUser = oUser;
+          this.m_oConstantsService.setUser(oUser);
           this.checkIfUserHasAreas();
           setupMenuHandling();
         },
-        error: () => {
-          this.m_oNotificationService.openInfoDialog(sError, 'danger');
+        error: (oError) => {
+          console.error(oError)
+          // this.m_oNotificationService.openInfoDialog(sError, 'danger');
         }
       });
     } else {
