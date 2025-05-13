@@ -87,6 +87,8 @@ const MIN_HEIGHT = 111_000; // Minimum height 1 degree in meters
 const MAX_WIDTH = 222_000; // Maximum width 2 degrees in meters
 const MAX_HEIGHT = 222_000; // Maximum height 2 degrees in meters
 
+
+
 @Injectable({
   providedIn: 'root',
 })
@@ -1478,9 +1480,6 @@ export class MapService {
   };
 
 
-  //todo detect which layer is being choosen
-  //todo dont pass all layers ids or at least understand why
-  //todo figure it our why it does not work on shape file
   getPixelInfo() {
     let sErrorMsg: string = this.m_oTranslate.instant('MAP.ERROR_LAYER');
     this.m_oRiseMap.on('click', (oClickEvent) => {
@@ -1497,74 +1496,115 @@ export class MapService {
         return;
       }
       let sWmsUrl = '';
-      let sLayerIdList = '';
+      let sMapId='Unknown'
+      let asLayerIds :string[]= [];
 
-      this.m_oRiseMap.eachLayer((oLayer) => {
+      this.m_oRiseMap.eachLayer( (oLayer) => {
         if (oLayer.options.layers) {
           let sLayerId = oLayer.options.layers;
 
           // Find the selected layer by its ID
           let oSelectedLayer = this.m_aoSelectedLayers.find(layer => layer.layerId === sLayerId);
-          let sMapId = oSelectedLayer?.mapId || 'Unknown';
+          sMapId = oSelectedLayer?.mapId || 'Unknown';
 
 
-
+          //todo maybe this is the reason why pixel info does not work on the shape files
           if (FadeoutUtils.utilsIsStrNullOrEmpty(oLayer._url)) {
             sWmsUrl = oLayer.url.replace('ows', 'wms');
           }
+          //todo detect if the click position include the layer
+          asLayerIds.push(oLayer.options.layers);
 
-          sLayerIdList += oLayer.options.layers;
-          // sLayerIdList += ',';
+        }
+      });
+      //todo in case layers ids have more than a one , we should prioritize the upper one
+      let sFeatureInfoUrl = this.getWMSLayerInfoUrl(
+        sWmsUrl,
+        oClickEvent.latlng,
+        asLayerIds
+      );
 
-          let sFeatureInfoUrl = this.getWMSLayerInfoUrl(
-            sWmsUrl,
-            oClickEvent.latlng,
-            sLayerIdList
-          );
-
-          if (sFeatureInfoUrl) {
-            if (this.m_oFeatureInfoMarker != null) {
-              this.m_oFeatureInfoMarker.remove();
-            }
-            this.getFeatureInfo(sFeatureInfoUrl).subscribe({
-              next: (oResponse) => {
-                if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
-                  try {
-                    let sContentString = this.formatFeatureJSON(oResponse,sMapId);
-                    //handle the case when there are no info
-                    if(sContentString==='<ul></ul>'){
-                      sContentString='<ul>No Information Found</ul>'
-                    }
-                    this.m_oFeatureInfoMarker = L.popup()
-                      .setLatLng([
-                        oClickEvent.latlng.lat,
-                        oClickEvent.latlng.lng,
-                      ])
-                      .setContent(sContentString)
-                      .openOn(this.m_oRiseMap);
-                  } catch (error) {
-                    this.m_oNotificationService.openSnackBar(
-                      sErrorMsg,
-                      '',
-                      'danger'
-                    );
-                  }
+      if (sFeatureInfoUrl) {
+        if (this.m_oFeatureInfoMarker != null) {
+          this.m_oFeatureInfoMarker.remove();
+        }
+        this.getFeatureInfo(sFeatureInfoUrl).subscribe({
+          next: (oResponse) => {
+            if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
+              try {
+                let sContentString = this.formatFeatureJSON(oResponse,sMapId);
+                //handle the case when there are no info
+                if(sContentString==='<ul></ul>'){
+                  sContentString='<ul>No Information Found</ul>'
                 }
-              },
-              error: (oError) => {
+                this.m_oFeatureInfoMarker = L.popup()
+                  .setLatLng([
+                    oClickEvent.latlng.lat,
+                    oClickEvent.latlng.lng,
+                  ])
+                  .setContent(sContentString)
+                  .openOn(this.m_oRiseMap);
+              } catch (error) {
                 this.m_oNotificationService.openSnackBar(
                   sErrorMsg,
                   '',
                   'danger'
                 );
-                window.dispatchEvent(new Event("resize"))
-              },
-            });
-          }
-        }
-      });
+              }
+            }
+          },
+          error: (oError) => {
+            this.m_oNotificationService.openSnackBar(
+              sErrorMsg,
+              '',
+              'danger'
+            );
+            window.dispatchEvent(new Event("resize"))
+          },
+        });
+      }
     });
   }
+  //todo delete
+  buildGetCapabilitiesUrl(oLayer: any): string {
+    const sBaseUrl = oLayer._url || oLayer.url;
+    return `${sBaseUrl}?service=WMS&version=1.3.0&request=GetCapabilities`;
+  }
+  //todo delete
+  async isClickInsideLayer(oLayer: any, oLatLng: L.LatLng): Promise<boolean> {
+    const sLayerId = oLayer.options.layers.replace(/^rise:/, '');
+    const sUrl = this.buildGetCapabilitiesUrl(oLayer);
+
+    const xmlText = await fetch(sUrl).then(res => res.text());
+    const oXml = new DOMParser().parseFromString(xmlText, "text/xml");
+
+    const oLayerElems = oXml.querySelectorAll("Layer");
+
+    for (const oElem of Array.from(oLayerElems)) {
+      const oNameNode = oElem.querySelector("Name");
+      if (oNameNode?.textContent === sLayerId) {
+        // Try <BoundingBox CRS="EPSG:4326" ... />
+        const oBBox = oElem.querySelector("BoundingBox[CRS='CRS:84']");
+        if (oBBox) {
+          const minx = parseFloat(oBBox.getAttribute("minx") || "0");
+          const miny = parseFloat(oBBox.getAttribute("miny") || "0");
+          const maxx = parseFloat(oBBox.getAttribute("maxx") || "0");
+          const maxy = parseFloat(oBBox.getAttribute("maxy") || "0");
+
+          const oBounds = L.latLngBounds(
+            L.latLng(miny, minx),
+            L.latLng(maxy, maxx)
+          );
+
+          return oBounds.contains(oLatLng);
+        }
+
+      }
+    }
+
+    return false; // If no matching layer or bbox found
+  }
+
   /**
    * Select a point in map and rise draw a circle with minimum radius
    * @param oMap
@@ -1833,8 +1873,9 @@ export class MapService {
   getWMSLayerInfoUrl(
     sWmsUrl: string,
     oPoint: L.LatLng,
-    sLayerIdList: string
+    sLayerIdList: string[]
   ): string {
+    const sLayerIds = sLayerIdList.join(',');
     const oLat = oPoint.lat;
     const oLng = oPoint.lng;
 
@@ -1857,11 +1898,11 @@ export class MapService {
       request: 'GetFeatureInfo',
       service: 'WMS',
       info_format: 'application/json',
-      query_layers: sLayerIdList,
+      query_layers: sLayerIds,
       feature_count: 10,
       version: sVersion,
       bbox: sBbox,
-      layers: sLayerIdList,
+      layers: sLayerIds,
       height: 101,
       width: 101,
     };
