@@ -60,8 +60,11 @@
     "ERROR_SAVE": "No se pudieron guardar los cambios en esta área",
     "SUCCESS_SAVE": "Cambios de área guardados",
     "IS_PUBLIC": "¿Es esta área pública?",
-    "DELETING_MESSAGE": "Estamos eliminando tu área de operaciones. Por favor, espera."
-  },
+    "DELETING_MESSAGE": "Estamos eliminando tu área de operaciones. Por favor, espera.",
+    "AREA_NOT_FOUND_MSG": "Para comenzar a crear áreas de operación en RISE, por favor ",
+    "AREA_NOT_FOUND_MSG_FIELD": "Tu cuenta no está vinculada actualmente a ninguna área de operación. Por favor, contacta al administrador de tu organización "
+
+},
   "BANNER": {
     "LIVE_SIT": "Situación en vivo",
     "BACK": "Volver a vivir"

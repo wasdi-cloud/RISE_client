@@ -61,8 +61,10 @@
 		"AREA_NOT_FOUND_MSG": "Per iniziare a creare aree di operazioni in RISE, ",
 		"AREA_NOT_FOUND_LINK": "clicca qui",
     	"IS_PUBLIC": "Questa area è pubblica?",
-		"DELETING_MESSAGE": "Stiamo eliminado la tua area di operazioni, attendere prego..."
-	},
+		"DELETING_MESSAGE": "Stiamo eliminado la tua area di operazioni, attendere prego...",
+    "AREA_NOT_FOUND_MSG_FIELD": "Il tuo account non è attualmente collegato a nessuna area operativa. Si prega di contattare l'amministratore della tua organizzazione "
+
+  },
 	"BANNER": {
 		"LIVE_SIT": "Situazione in diretta",
 		"BACK": "Torna al Live"

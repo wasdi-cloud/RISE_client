@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NgClass, NgFor, NgIf} from '@angular/common';
-import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router, RouterLink} from '@angular/router';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
 
 import {AuthService} from '../../services/api/auth.service';
@@ -15,6 +15,7 @@ import {UserViewModel} from '../../models/UserViewModel';
 import {DefaultMenuItems, FullMenuItems, ReducedMenuItems,} from './menu-items';
 import {AreaService} from "../../services/api/area.service";
 import FadeoutUtils from "../../shared/utilities/FadeoutUtils";
+import {filter} from "rxjs";
 
 @Component({
   selector: 'rise-user-menu',
@@ -55,119 +56,75 @@ export class RiseUserMenuComponent implements OnInit {
    * Retrieve the appropriate menu item set based on user's location and Role
    */
   private getUserMenu(): void {
-    let sError = this.m_oTranslate.instant('USER_MENU.ERROR');
-    this.m_oUser = this.m_oConstantsService.getUser();
+    const sError = this.m_oTranslate.instant('USER_MENU.ERROR');
 
+    const applyMenuByPathAndRole = (path: string, role: string | null): void => {
+      if (path.includes('account')) {
+        this.m_aoMenuItems = ReducedMenuItems;
+      } else if (path.includes('monitor')) {
+        if (role === UserRole.FIELD) {
+          this.m_aoMenuItems = FullMenuItems.filter(item => item.name !== 'subscriptions');
+        } else {
+          this.m_aoMenuItems = FullMenuItems;
+        }
+      } else {
+        if (role === UserRole.FIELD) {
+          this.m_aoMenuItems = DefaultMenuItems.filter(
+            item => item.name !== 'subscriptions' && item.name !== 'area of operations'
+          );
+        } else {
+          this.m_aoMenuItems = DefaultMenuItems;
+        }
+      }
+    };
+
+    const resolveUserRoleAndApplyMenu = (path: string): void => {
+      const cachedRole = this.m_oConstantsService.getUserRole();
+      if (cachedRole) {
+        applyMenuByPathAndRole(path, cachedRole);
+      } else {
+        this.m_oUserService.getUser().subscribe({
+          next: (user) => {
+            const role = user.role;
+            applyMenuByPathAndRole(path, role);
+          },
+          error: () => {
+            this.m_oNotificationService.openInfoDialog(sError, 'danger');
+          }
+        });
+      }
+    };
+
+    const setupMenuHandling = (): void => {
+      const currentPath = this.m_oRouter.url;
+      resolveUserRoleAndApplyMenu(currentPath);
+
+      // Also listen for route changes (NavigationEnd only)
+      this.m_oRouter.events
+        .pipe(filter(event => event instanceof NavigationEnd))
+        .subscribe(() => {
+          resolveUserRoleAndApplyMenu(this.m_oRouter.url);
+        });
+    };
+
+    // MAIN FLOW
+    this.m_oUser = this.m_oConstantsService.getUser();
     if (!this.m_oUser) {
       this.m_oUserService.getUser().subscribe({
-        next: (oResponse) => {
-          this.checkIfUserHasAreas()
-          this.m_oUser = oResponse;
-          this.m_oConstantsService.setUser(this.m_oUser);
-          this.m_oActivatedRoute.url.subscribe((params) => {
-
-            if (params.toString().includes('account')) {
-              this.m_aoMenuItems = ReducedMenuItems;
-            } else if (params.toString().includes('monitor')) {
-              let oUserRole = this.m_oConstantsService.getUserRole();
-              if (!oUserRole) {
-                this.m_oUserService.getUser().subscribe({
-                  next: (oResponse) => {
-                    oUserRole = oResponse.role;
-                  },
-                });
-              }
-              if (oUserRole == UserRole.FIELD) {
-                this.m_aoMenuItems = FullMenuItems.filter(
-                  (item) => item.name != 'subscriptions'
-                );
-              } else {
-                this.m_aoMenuItems = FullMenuItems;
-              }
-            } else {
-              let oUserRole = this.m_oConstantsService.getUserRole();
-              if (!oUserRole) {
-                this.m_oUserService.getUser().subscribe({
-                  next: (oResponse) => {
-                    oUserRole = oResponse.role;
-                    if (oUserRole == UserRole.FIELD) {
-                      this.m_aoMenuItems = DefaultMenuItems.filter(
-                        (item) => item.name != 'subscriptions'
-                      );
-                    } else {
-                      this.m_aoMenuItems = DefaultMenuItems;
-                    }
-                  },
-                });
-              }else{
-                if (oUserRole == UserRole.FIELD) {
-                  this.m_aoMenuItems = DefaultMenuItems.filter(
-                    (item) => item.name != 'subscriptions'
-                  );
-                } else {
-                  this.m_aoMenuItems = DefaultMenuItems;
-                }
-              }
-
-            }
-          });
+        next: (user) => {
+          this.m_oUser = user;
+          this.m_oConstantsService.setUser(user);
+          this.checkIfUserHasAreas();
+          setupMenuHandling();
         },
-        error: (oError) => {
+        error: () => {
           this.m_oNotificationService.openInfoDialog(sError, 'danger');
-        },
-      });
-    }
-    else{
-      this.checkIfUserHasAreas()
-      this.m_oActivatedRoute.url.subscribe((params) => {
-
-        if (params.toString().includes('account')) {
-          this.m_aoMenuItems = ReducedMenuItems;
-        } else if (params.toString().includes('monitor')) {
-          let oUserRole = this.m_oConstantsService.getUserRole();
-          if (!oUserRole) {
-            this.m_oUserService.getUser().subscribe({
-              next: (oResponse) => {
-                oUserRole = oResponse.role;
-              },
-            });
-          }
-          if (oUserRole == UserRole.FIELD) {
-            this.m_aoMenuItems = FullMenuItems.filter(
-              (item) => item.name != 'subscriptions'
-            );
-          } else {
-            this.m_aoMenuItems = FullMenuItems;
-          }
-        } else {
-          let oUserRole = this.m_oConstantsService.getUserRole();
-          if (!oUserRole) {
-            this.m_oUserService.getUser().subscribe({
-              next: (oResponse) => {
-                oUserRole = oResponse.role;
-                if (oUserRole == UserRole.FIELD) {
-                  this.m_aoMenuItems = DefaultMenuItems.filter(
-                    (item) => item.name != 'subscriptions'
-                  );
-                } else {
-                  this.m_aoMenuItems = DefaultMenuItems;
-                }
-              },
-            });
-          }else{
-            if (oUserRole == UserRole.FIELD) {
-              this.m_aoMenuItems = DefaultMenuItems.filter(
-                (item) => item.name != 'subscriptions'
-              );
-            } else {
-              this.m_aoMenuItems = DefaultMenuItems;
-            }
-          }
-
         }
       });
+    } else {
+      this.checkIfUserHasAreas();
+      setupMenuHandling();
     }
-
   }
 
   m_bShowLanguageDropdown: boolean = false;
@@ -311,4 +268,6 @@ export class RiseUserMenuComponent implements OnInit {
     }
 
   }
+
+  protected readonly UserRole = UserRole;
 }

@@ -85,7 +85,10 @@
     "ERROR_SAVE": "Impossible d'enregistrer les modifications dans cette zone",
     "SUCCESS_SAVE": "Modifications de zone enregistrées",
     "IS_PUBLIC": "Cette zone est publique",
-    "DELETING_MESSAGE": "Nous supprimons votre zone d'opérations. Veuillez patienter."
+    "DELETING_MESSAGE": "Nous supprimons votre zone d'opérations. Veuillez patienter.",
+    "AREA_NOT_FOUND_MSG": "Pour commencer à créer des zones d'opérations dans RISE, veuillez ",
+    "AREA_NOT_FOUND_MSG_FIELD": "Votre compte n'est actuellement lié à aucune zone d'opération. Veuillez contacter l'administrateur de votre organisation "
+
   },
   "BANNER": {
     "LIVE_SIT": "Situation en direct",

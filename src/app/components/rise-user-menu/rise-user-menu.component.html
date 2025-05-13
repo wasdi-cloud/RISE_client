@@ -7,7 +7,7 @@
     (click)="toggleDropdown()"
   >
     <span class="material-symbols-outlined"> account_circle </span>
-    <span *ngIf="!m_bHasArea" 
+    <span *ngIf="!m_bHasArea"
     [ngClass]="m_bAlertShown ? 'notification-dot-static' : 'notification-dot'"></span>
   </div>
 
@@ -48,12 +48,19 @@
         <div class="account-sub-header">
           {{ "AREA_OF_OPERATIONS.AREA_NOT_FOUND" | translate }}
         </div>
-        <p class="my-0">
-          {{ "AREA_OF_OPERATIONS.AREA_NOT_FOUND_MSG" | translate }}
-          <a [routerLink]="['/account/area-of-operations']" class="text-link">
-            {{ "AREA_OF_OPERATIONS.AREA_NOT_FOUND_LINK" | translate }}
-          </a>.
-        </p>
+        @if (m_oUser.role!=UserRole.FIELD) {
+          <p class="my-0">
+            {{ "AREA_OF_OPERATIONS.AREA_NOT_FOUND_MSG" | translate }}
+            <a  [routerLink]="['/account/area-of-operations']" class="text-link">
+              {{ "AREA_OF_OPERATIONS.AREA_NOT_FOUND_LINK" | translate }}
+            </a>.
+          </p>
+        } @else {
+          <p class="my-0">
+            {{ "AREA_OF_OPERATIONS.AREA_NOT_FOUND_MSG_FIELD" | translate }}
+
+          </p>
+        }
       </div>
     </div>
 
