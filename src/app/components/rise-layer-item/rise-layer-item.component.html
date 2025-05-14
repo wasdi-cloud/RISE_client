@@ -13,13 +13,13 @@
         </div>
       </div>
     </div>
-    <div lass="d-flex flex-row align-items-center gap-2">
+    <div class="d-flex flex-row align-items-center gap-2">
       <span
         class="material-symbols-outlined delete"
         (click)="emitAction('remove')"
         [matTooltip]="'Remove layer'">
         delete
-      </span>    
+      </span>
       <input
         type="checkbox"
         class="rise-checkbox align-self-start"
@@ -32,17 +32,19 @@
     <div
       class="d-flex flex-row gap-1 align-items-center justify-content-between"
     >
-      <div class="d-flex flex-row gap-2">
-        Opacity
+      <div class="d-flex flex-row align-items-center gap-2 w-100" style="min-width: 0;">
+        <span class="text-nowrap">Opacity</span>
         <input
           type="range"
           [(ngModel)]="m_iOpacity"
           (change)="emitOpacity()"
           (mousedown)="$event.stopPropagation()"
           (touchstart)="$event.stopPropagation()"
-        />
-        {{ m_iOpacity }}%
+          class="flex-grow-1"
+          style="min-width: 0;" />
+        <span class="text-nowrap" style="flex-shrink: 0;">{{ m_iOpacity }}%</span>
       </div>
+
       <span
         class="expand material-symbols-outlined"
         (click)="toggleExpandedContent()"
