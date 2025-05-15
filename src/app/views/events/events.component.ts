@@ -24,11 +24,12 @@ import {FormsModule} from "@angular/forms";
 import {geojsonToWKT} from "@terraformer/wkt";
 import {MapService} from "../../services/map.service";
 import {EventType} from "../../models/EventType";
-import { ConstantsService } from '../../services/constants.service';
-import { AttachmentService } from '../../services/api/attachment.service';
-import { AreaService } from '../../services/api/area.service';
+import {ConstantsService} from '../../services/constants.service';
+import {AttachmentService} from '../../services/api/attachment.service';
+import {AreaService} from '../../services/api/area.service';
 import {MatDialog} from "@angular/material/dialog";
-import { ImageDialogComponent } from '../../dialogs/image-dialog/image-dialog.component';
+import {ImageDialogComponent} from '../../dialogs/image-dialog/image-dialog.component';
+import {UserRole} from "../../models/UserRole";
 
 
 @Component({
@@ -204,6 +205,10 @@ export class EventsComponent implements OnInit {
     }
 
     if (oUser.organizationId == oArea.organizationId) {
+      return true;
+    }
+
+    if(oUser.role!=UserRole.FIELD){
       return true;
     }
 

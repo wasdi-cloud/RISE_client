@@ -85,7 +85,7 @@
               </div>
             </div>
           </div>
-        </div>  
+        </div>
         </div>
       </div>
 
@@ -119,6 +119,7 @@
           [m_bIsActive]="oPlugin.loaded"
           [m_bDisabled]="oPlugin.disabled"
           (click)="switchPluginButton(oPlugin)"
+          [m_sTooltip]="oPlugin.description"
           [m_sChipType]="'default'"
         ></rise-map-chip>
 

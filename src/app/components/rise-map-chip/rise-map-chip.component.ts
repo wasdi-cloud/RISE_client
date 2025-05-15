@@ -10,6 +10,7 @@ import {NgClass, NgIf} from '@angular/common';
 })
 export class RiseMapChipComponent implements OnInit {
   @Input() m_sTitle: string = '';
+  @Input() m_sTooltip: string = '';
   @Input() m_bIsActive: boolean = false;
   @Input() m_sIcon: string = '';
   @Input() m_sChipType: 'default' | 'toggle' = 'default';
