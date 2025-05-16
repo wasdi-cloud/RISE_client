@@ -120,6 +120,7 @@
   },
   "ERROR_MSG": {
     "ERROR_API_ORG_ALREADY_EXISTS": "Une organisation avec ces informations existe déjà.",
+    "ERROR_API_CONFIRM_EXPIRED": "Votre lien d'invitation a expiré",
     "ERROR_API_USER_ALREADY_EXISTS": "Un utilisateur avec cet ID existe déjà.",
     "ERROR_API_MAIL_ALREADY_EXISTS": "Cet email est déjà utilisé",
     "ERROR_API_MISSING_ACCEPT_TERMS_AND_PRIVACY": "Veuillez accepter les termes et conditions ainsi que la politique de confidentialité de RISE.",

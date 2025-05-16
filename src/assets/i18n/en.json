@@ -94,6 +94,7 @@
   },
   "ERROR_MSG": {
     "ERROR_API_ORG_ALREADY_EXISTS": "This organization is already registered",
+    "ERROR_API_CONFIRM_EXPIRED": "Your invitation link is expired",
     "ERROR_API_USER_ALREADY_EXISTS": "This User ID is already taken. Please choose another one",
     "ERROR_API_MAIL_ALREADY_EXISTS": "This email is already registered",
     "ERROR_API_MISSING_ACCEPT_TERMS_AND_PRIVACY": "Please accept the Terms and Conditions as well as RISE's Privacy Policy",
