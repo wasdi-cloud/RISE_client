@@ -103,7 +103,8 @@
 		"ERROR_API_WRONG_OTP": "La password monouso non corrisponde a quella inviata all'email sopra indicata.",
 		"ERROR_API_NO_VALID_SUBSCRIPTION": "Al momento non hai un abbonamento valido.",
 		"ERROR_LAYER_FAILURE": "Impossibile caricare i layer per ",
-		"ERROR_UNKNOWN": "Si è verificato un errore sconosciuto"
+		"ERROR_UNKNOWN": "Si è verificato un errore sconosciuto",
+		"ERROR_API_INVITE_STILL_PENDING": "L'email di invito è ancora in attesa di conferma."
 	},
 	"INVITE_USER": {
 		"EMAIL": "Inserisci l'email della persona da invitare",
