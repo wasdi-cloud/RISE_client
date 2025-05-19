@@ -84,6 +84,7 @@
   },
   "ERROR_MSG": {
     "ERROR_API_ORG_ALREADY_EXISTS": "هناك منظمة بهذه المعلومات موجودة بالفعل.",
+    "ERROR_API_CONFIRM_EXPIRED": "انتهت صلاحية رابط الدعوة الخاص بك",
     "ERROR_API_USER_ALREADY_EXISTS": "هناك مستخدم بهذا المعرف موجود بالفعل.",
     "ERROR_API_MAIL_ALREADY_EXISTS": "تم استخدام هذا البريد الإلكتروني بالفعل",
     "ERROR_API_MISSING_ACCEPT_TERMS_AND_PRIVACY": "يرجى قبول شروط الاستخدام وسياسة الخصوصية الخاصة بـ RISE",

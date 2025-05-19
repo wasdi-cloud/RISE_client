@@ -243,6 +243,13 @@ export class EventsComponent implements OnInit {
     this.m_bCreateNewEvent = false;
     this.m_bUpdatingEvent = false;
     this.getEventsList();
+    let oArea=this.m_oConstantsService.getActiveAOI();
+    if(!FadeoutUtils.utilsIsObjectNullOrUndefined(oArea)){
+      setTimeout(()=>{
+        this.m_oMapService.flyToMonitorBounds(oArea.bbox)
+      },500)
+    }
+
   }
 
   enableEventSubmit() {
