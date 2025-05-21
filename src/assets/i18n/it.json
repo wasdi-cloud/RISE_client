@@ -70,6 +70,7 @@
 		"BACK": "Torna al Live"
 	},
 	"CREATE_NEW_AREA_OF_OPERATION": {
+    "SUCCESS_AND_PENDING": "La tua area è stata aggiunta con successo. I livelli sono in fase di generazione; riceverai una notifica via email quando saranno pronti.",
 		"NAME": "Nome",
 		"DESCRIPTION": "Descrizione",
 		"MAP_TITLE": "Definisci la tua Area",

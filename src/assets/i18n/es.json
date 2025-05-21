@@ -72,6 +72,7 @@
     "BACK": "Volver a vivir"
   },
   "CREATE_NEW_AREA_OF_OPERATION": {
+    "SUCCESS_AND_PENDING": "Su área ha sido añadida con éxito. Las capas se están generando; recibirá una notificación por correo electrónico cuando estén listas.",
     "NAME": "Nombre",
     "DESCRIPTION": "Descripción",
     "MAP_TITLE": "Define tu Área",

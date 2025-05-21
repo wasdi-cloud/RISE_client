@@ -272,7 +272,7 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
   }
 
   private saveAreaOfOperation() {
-
+    let sMessage = this.m_oTranslate.instant("CREATE_NEW_AREA_OF_OPERATION.SUCCESS_AND_PENDING");
     if (this.m_asSelectedIsPublic.length > 0) {
       this.m_oAreaOfOperation.publicArea = true;
     }
@@ -286,7 +286,7 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
         next: (oResponse) => {
           //todo send confirmation to HQ operator
           this.m_oNotificationService.openSnackBar(
-            'Your area has been added successfully, The layers are being generated , you will receive a notification by email when they are ready',
+            sMessage,
             'Success',
             'success'
           );

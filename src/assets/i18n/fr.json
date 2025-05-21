@@ -97,6 +97,7 @@
     "BACK": "Retour au Live"
   },
   "CREATE_NEW_AREA_OF_OPERATION": {
+    "SUCCESS_AND_PENDING": "Votre zone a été ajoutée avec succès. Les couches sont en cours de génération ; vous recevrez une notification par e-mail lorsqu'elles seront prêtes.",
     "NAME": "Nom",
     "DESCRIPTION": "Description",
     "MAP_TITLE": "Définissez votre zone",
