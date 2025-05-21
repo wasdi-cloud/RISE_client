@@ -218,6 +218,7 @@
     "UPLOAD_SHAPE_FILE": "Télécharger le fichier de forme"
   },
   "SUBSCRIPTIONS": {
+    "AREA_INFO_MESSAGE": "<strong>Type de zone :</strong><br/><ul><li><strong>Urgence :</strong> Surveillance courte durée, haute priorité (ex: catastrophes). Données rapides, peu stockées.</li><li><strong>Long terme :</strong> Surveillance continue ou périodique (ex: environnement, infrastructures). Données plus lentes, mais archivées.</li></ul><br/><strong>Type d'abonnement :</strong><br/><ul><li><strong>1 Emplacement :</strong> Surveiller une seule zone d'opérations.</li><li><strong>3 Emplacements :</strong> Surveiller jusqu'à 3 zones d'opérations différentes.</li><li><strong>5 Emplacements :</strong> Surveiller jusqu'à cinq zones différentes simultanément.</li><li><strong>10 Emplacements :</strong> Suivre jusqu'à dix régions distinctes.</li></ul>",
     "AREA_TYPE": "Type de zone",
     "BACK": "Retour aux abonnements",
     "BILLING": "Facturation",
