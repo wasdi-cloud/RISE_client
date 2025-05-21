@@ -472,7 +472,6 @@ export class BuyNewSubscriptionComponent implements OnInit {
 
     const sMsg = this.m_oTranslateService.instant('SUBSCRIPTIONS.AREA_INFO_MESSAGE');
 
-    console.log(sMsg)
     this.m_oNotificationService.openInfoDialog(sMsg, 'alert', '');
   }
 
