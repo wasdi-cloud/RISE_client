@@ -336,5 +336,47 @@
     "ACTION": "conferma dell'azione",
     "CONFIRM": "Sì",
     "CANCEL": "Annulla"
+  },
+  "PLUGIN_MAP_NAMES": {
+    "HIGH_RES_FLOOD": "Aree Inondate (HR)",
+    "FFM": "Frequenza Inondazioni",
+    "BUILDINGS": "Edifici",
+    "ROADS": "Strade",
+    "DROUGHT": "Siccità",
+    "VIIRS": "Aree Inondate (LR)",
+    "URBAN_FLOOD": "Aree Inondate (Urbane)",
+    "IMERG12": "Pioggia 12h",
+    "IMERG24": "Pioggia 24h",
+    "IMERG6": "Pioggia 6h",
+    "IMERG3": "Pioggia 3h",
+    "EXPOSURES": "Esposti",
+    "MARKERS": "Markers",
+    "CROPS": "Campi Coltivati",
+    "POP": "Popolazione",
+    "FLOOD_COMPOSITE": "Massima Estensione Inondazione",
+    "LST": "Temperatura",
+    "FLOOD_DEPTH": "Profondità Inondazione"
+  },
+  "PLUGIN_MAP_DESCRIPTIONS": {
+    "HIGH_RES_FLOOD": "Mappa di Inondazione ad Alta Risoluzione",
+    "FFM": "Mappa di Frequenza Inondazioni",
+    "BUILDINGS": "Mappa degli Edifici",
+    "ROADS": "Mappa delle Strade Colpite",
+    "DROUGHT": "Mappa di Siccità",
+    "VIIRS": "Mappa di Inondazione a Bassa Risoluzione",
+    "URBAN_FLOOD": "Mappa di Inondazione Urbana",
+    "IMERG12": "Pioggia Cumulata 12h da IMERG",
+    "IMERG24": "Pioggia Cumulata 24h da IMERG",
+    "IMERG6": "Pioggia Cumulata 6h da IMERG",
+    "IMERG3": "Pioggia Cumulata 3h da IMERG",
+    "EXPOSURES": "Mappa degli Esposti colpiti",
+    "MARKERS": "Segnaposto degli Esposti colpiti",
+    "CROPS": "Mappa dei Campi Coltivati Interessati",
+    "POP": "Mappa della Popolazione Colpita",
+    "FLOOD_COMPOSITE": "Massima Estensione Inondazione",
+    "LST": "Temporatura della Superficie della Terra",
+    "FLOOD_DEPTH": "Stima della Profondità dell'acqua"    
   }
+
+
 }
