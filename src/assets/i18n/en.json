@@ -81,6 +81,13 @@
     "ID": "Id"
   },
   "COLLABORATORS": {
+    "ORG_EMPTY_TITLE": "Your Organization is empty",
+    "ORG_EMPTY_MESSAGE": "There are no other users in your org. Please invite them to be collaborator then add them to your areas",
+    "ADD_COLLAB": "Add Collaborator",
+    "ADD_EXT_COLLAB": "Add External Collaborator",
+    "CANCEL_EDITING": "Cancel Editing",
+    "SAVE": "Save",
+    "REMOVE_USER": "Remove User",
     "ADD": "Invite a Collaborator to RISE",
     "INVITE": "Add Users",
     "NONE": "You haven't invited any collaborators yet",

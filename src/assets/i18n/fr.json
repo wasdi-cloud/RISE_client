@@ -109,14 +109,21 @@
     "ID": "Id"
   },
   "COLLABORATORS": {
+    "ORG_EMPTY_TITLE": "Votre organisation est vide",
+    "ORG_EMPTY_MESSAGE": "Il n'y a pas d'autres utilisateurs dans votre organisation. Veuillez les inviter à devenir collaborateurs puis les ajouter à vos zones.",
+    "ADD_COLLAB": "Ajouter un collaborateur",
+    "ADD_EXT_COLLAB": "Ajouter un collaborateur externe",
+    "CANCEL_EDITING": "Annuler l'édition",
+    "SAVE": "Enregistrer",
+    "REMOVE_USER": "Supprimer l'utilisateur",
     "ADD": "Inviter un collaborateur à RISE",
     "INVITE": "Ajouter des utilisateurs",
     "NONE": "Vous n'avez pas encore invité de collaborateurs",
     "HEADER": "Gérer les collaborateurs",
     "CHANGE_ROLE": "Changer le rôle de l'utilisateur",
     "ROLE": "Rôle",
-    "ROLE_CHANGE_ERROR": "Le rôle de l'utilisateur n'a pas pu être modifié. Veuillez réessayer ou contactez-nous.",
-    "ROLE_CHANGE_SUCCESS": "Le rôle de l'utilisateur a été modifié avec succès"
+    "ROLE_CHANGE_ERROR": "Le rôle de l'utilisateur n'a pas pu être modifié. Veuillez réessayer ou nous contacter.",
+    "ROLE_CHANGE_SUCCESS": "Rôle de l'utilisateur modifié avec succès"
   },
   "DASHBOARD": {
     "SEARCH": "Rechercher une carte"

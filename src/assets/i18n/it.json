@@ -81,16 +81,23 @@
 		"MANAGE_USERS": "Gestisci Utenti",
 		"ID": "Id"
 	},
-	"COLLABORATORS": {
-		"ADD": "Invita un Collaboratore su RISE",
-		"INVITE": "Aggiungi Utenti",
-		"NONE": "Non hai ancora invitato collaboratori",
-		"HEADER": "Gestisci Collaboratori",
-		"CHANGE_ROLE": "Cambia Ruolo Utente",
-		"ROLE": "Ruolo",
-		"ROLE_CHANGE_ERROR": "Impossibile cambiare il ruolo dell'utente. Riprova o contatta RISE",
-		"ROLE_CHANGE_SUCCESS": "Ruolo dell'utente cambiato con successo"
-	},
+  "COLLABORATORS": {
+    "ORG_EMPTY_TITLE": "La tua organizzazione è vuota",
+    "ORG_EMPTY_MESSAGE": "Non ci sono altri utenti nella tua organizzazione. Ti preghiamo di invitarli a diventare collaboratori e poi aggiungerli alle tue aree.",
+    "ADD_COLLAB": "Aggiungi collaboratore",
+    "ADD_EXT_COLLAB": "Aggiungi collaboratore esterno",
+    "CANCEL_EDITING": "Annulla modifica",
+    "SAVE": "Salva",
+    "REMOVE_USER": "Rimuovi utente",
+    "ADD": "Invita un collaboratore a RISE",
+    "INVITE": "Aggiungi utenti",
+    "NONE": "Non hai ancora invitato collaboratori",
+    "HEADER": "Gestisci collaboratori",
+    "CHANGE_ROLE": "Cambia ruolo utente",
+    "ROLE": "Ruolo",
+    "ROLE_CHANGE_ERROR": "Impossibile modificare il ruolo dell'utente. Si prega di riprovare o contattarci.",
+    "ROLE_CHANGE_SUCCESS": "Ruolo utente modificato con successo"
+  },
 	"DASHBOARD": {
 		"SEARCH": "Cerca nella Mappa"
 	},
