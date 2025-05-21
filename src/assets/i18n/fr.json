@@ -86,8 +86,10 @@
     "SUCCESS_SAVE": "Modifications de zone enregistrées",
     "IS_PUBLIC": "Cette zone est publique",
     "DELETING_MESSAGE": "Nous supprimons votre zone d'opérations. Veuillez patienter.",
+    "AREA_NOT_FOUND": "Zone introuvable",
     "AREA_NOT_FOUND_MSG": "Pour commencer à créer des zones d'opérations dans RISE, veuillez ",
-    "AREA_NOT_FOUND_MSG_FIELD": "Votre compte n'est actuellement lié à aucune zone d'opération. Veuillez contacter l'administrateur de votre organisation "
+    "AREA_NOT_FOUND_MSG_FIELD": "Votre compte n'est lié à aucune zone d'opération pour le moment. Veuillez contacter l'administrateur de votre organisation ",
+    "AREA_NOT_FOUND_LINK": "cliquez ici"
 
   },
   "BANNER": {
@@ -277,10 +279,12 @@
   "USER_MENU": {
     "ACCOUNT": "Compte",
     "DASHBOARD": "Tableau de bord",
+    "ERROR": "Impossible de récupérer les informations de l'utilisateur",
     "HELP": "Aide",
     "LANGUAGE": "Langue",
     "LOGOUT": "Déconnexion",
-    "SUBSCRIPTIONS": "Abonnements"
+    "SUBSCRIPTIONS": "Abonnements",
+    "AREA_OF_OPERATIONS": "Zone d'opérations"
   },
   "WIDGET": {
     "AFFECTED_PPL": "Personnes concernées",

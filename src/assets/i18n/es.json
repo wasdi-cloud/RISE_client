@@ -61,8 +61,10 @@
     "SUCCESS_SAVE": "Cambios de área guardados",
     "IS_PUBLIC": "¿Es esta área pública?",
     "DELETING_MESSAGE": "Estamos eliminando tu área de operaciones. Por favor, espera.",
-    "AREA_NOT_FOUND_MSG": "Para comenzar a crear áreas de operación en RISE, por favor ",
-    "AREA_NOT_FOUND_MSG_FIELD": "Tu cuenta no está vinculada actualmente a ninguna área de operación. Por favor, contacta al administrador de tu organización "
+    "AREA_NOT_FOUND": "Área no encontrada",
+    "AREA_NOT_FOUND_MSG": "Para empezar a crear áreas de operaciones en RISE, por favor ",
+    "AREA_NOT_FOUND_MSG_FIELD": "Su cuenta no está vinculada a ninguna área de operación en este momento. Póngase en contacto con el administrador de su organización ",
+    "AREA_NOT_FOUND_LINK": "haga clic aquí"
 
 },
   "BANNER": {
@@ -281,10 +283,12 @@
   "USER_MENU": {
     "ACCOUNT": "Cuenta",
     "DASHBOARD": "Panel de control",
+    "ERROR": "No se pudo recuperar la información del usuario",
     "HELP": "Ayuda",
     "LANGUAGE": "Idioma",
     "LOGOUT": "Cerrar sesión",
-    "SUBSCRIPTIONS": "Suscripciones"
+    "SUBSCRIPTIONS": "Suscripciones",
+    "AREA_OF_OPERATIONS": "Área de operaciones"
   },
   "WIDGET": {
     "AFFECTED_PPL": "Personas Afectadas",
