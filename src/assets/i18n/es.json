@@ -210,7 +210,10 @@
     "PAYMENT_TYPE": "Tipo de pago",
     "UPDATE": "Actualizar suscripción",
     "WIRE": "Transferencia bancaria",
-    "YEAR": "Un año"
+    "YEAR": "Un año",
+    "STRIPE_MSG": "Será redirigido a nuestro socio de pago, Stripe. Haga clic en 'Sí' para continuar o en 'CANCELAR' para finalizar el proceso de pago.",
+    "INVALID_SUB": "Suscripción inválida",
+    "INVALID_SUB_MSG": "Su suscripción ha caducado o no tiene una suscripción activa. Por favor, adquiera una nueva suscripción para continuar usando esta función."
   },
   "MONITOR": {
     "ADD_EVENT": "Agregar evento",

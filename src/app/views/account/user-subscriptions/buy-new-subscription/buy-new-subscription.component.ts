@@ -181,11 +181,11 @@ export class BuyNewSubscriptionComponent implements OnInit {
       'SUBSCRIPTIONS.ERROR'
     );
     this.initSubscriptionInput();
-    // let sMessage = this.m_oTranslate.instant("SUBSCRIPTIONS.STRIPE_MSG");
+    let sMessage = this.m_oTranslate.instant("SUBSCRIPTIONS.STRIPE_MSG");
     // let sTitle = this.m_oTranslate.instant("SUBSCRIPTIONS.STRIPE_TITLE");
     //Notification that user will be re-directed to Stripe
     this.m_oNotificationService.openConfirmationDialog(
-      "You will be re-directed to our payment partner, Stripe. Click 'Confirm' to continue or 'CANCEL' to end the payment process.",
+      sMessage,
       'alert'
     ).subscribe(oDialogResult => {
       if (oDialogResult === true) {
@@ -200,12 +200,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
             this.m_oNotificationService.openInfoDialog(sError, 'danger');
           },
         });
-        // if (!this.m_oEditSubscription.subscriptionId) {
-        //   this.m_bCheckoutNow = true;
-        //   this.saveSubscription();
-        // } else {
-        //   this.getStripePaymentUrl();
-        // }
+
       }
     })
 

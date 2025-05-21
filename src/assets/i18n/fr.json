@@ -234,7 +234,10 @@
     "PAYMENT_TYPE": "Type de paiement",
     "UPDATE": "Mettre à jour l'abonnement",
     "WIRE": "Transfert bancaire",
-    "YEAR": "Un an"
+    "YEAR": "Un an",
+    "STRIPE_MSG": "Vous allez être redirigé vers notre partenaire de paiement, Stripe. Cliquez sur 'Oui' pour continuer ou sur 'ANNULER' pour mettre fin au processus de paiement.",
+    "INVALID_SUB": "Abonnement invalide",
+    "INVALID_SUB_MSG": "Votre abonnement a expiré ou vous n'avez pas d'abonnement actif. Veuillez acheter un nouvel abonnement pour continuer à utiliser cette fonctionnalité."
   },
   "TOOLBAR": {
     "ACCOUNT": "Compte",
