@@ -37,7 +37,7 @@
           <span
             *ngIf="oUser.role==UserRole.SHARED"
             class="option delete material-symbols-outlined remove"
-            [matTooltip]="'Remove User'"
+            [matTooltip]="'COLLABORATORS.REMOVE_USER'"
             (click)="removeExternalOperator(oUser)"
             style="color: red;cursor: pointer"
           >
@@ -58,7 +58,7 @@
         <td>
           <span
             class="option material-symbols-outlined edit"
-            [matTooltip]="'Save'"
+            [matTooltip]="'COLLABORATORS.SAVE'"
             (click)="addFieldUser()"
 
             style="color: gold;cursor: pointer"
@@ -68,7 +68,7 @@
           </span>
           <span
             class="option material-symbols-outlined edit"
-            [matTooltip]="'Cancel Editing'"
+            [matTooltip]="'COLLABORATORS.CANCEL_EDITING'"
             (click)="m_bAddingUser = false"
             style="color: red;cursor: pointer"
           >
@@ -89,7 +89,7 @@
         <td style="padding-top: 2.25rem;">
     <span
       class="option material-symbols-outlined edit"
-      [matTooltip]="'Save'"
+      [matTooltip]="'COLLABORATORS.SAVE'"
       (click)="addExternalUser()"
       style="color: gold; cursor: pointer"
     >
@@ -97,7 +97,7 @@
     </span>
           <span
             class="option material-symbols-outlined edit"
-            [matTooltip]="'Cancel Editing'"
+            [matTooltip]="'COLLABORATORS.CANCEL_EDITING'"
             (click)="m_bAddingExternalUser = false"
             style="color: red; cursor: pointer"
           >
@@ -133,28 +133,28 @@
       class="bottom-buttons"
     >
       <rise-button
-        [m_sLabel]="'Add Collaborator'"
+        [m_sLabel]="'COLLABORATORS.ADD_COLLAB'"
         [m_sRole]="'primary'"
         (click)="!isAddFieldOperatorDisabled()?m_bAddingUser = true:''"
         [m_bDisabled]="isAddFieldOperatorDisabled()"
       ></rise-button>
 
       <rise-button
-        [m_sLabel]="'Add External Collaborator'"
+        [m_sLabel]="'COLLABORATORS.ADD_EXT_COLLAB'"
         [m_sRole]="'primary'"
         (click)="m_bAddingExternalUser = true"
       ></rise-button>
     </div>
     <div
-      *ngIf="m_bNoUserExists"
+      *ngIf="true"
       class="invalid-sub p-3 d-flex flex-row justify-content-between align-items-center"
     >
       <div>
         <div class="account-sub-header">
-          {{ "Your organization is empty" | translate }}
+          {{ "COLLABORATORS.ORG_EMPTY_TITLE" | translate}}
         </div>
         <p class="my-0">
-          {{ "There are no other users in your org. Please invite them to be collaborator then add them to your areas" | translate }}
+          {{ "COLLABORATORS.ORG_EMPTY_MESSAGE" | translate}}
         </p>
       </div>
     </div>

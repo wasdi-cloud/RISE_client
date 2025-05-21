@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-confirmation-dialog',
   standalone: true,
-  imports: [CommonModule, RiseButtonComponent],
+  imports: [CommonModule, RiseButtonComponent, TranslateModule],
   templateUrl: './confirmation-dialog.component.html',
   styleUrl: './confirmation-dialog.component.css',
 })

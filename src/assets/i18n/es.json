@@ -85,14 +85,21 @@
   },
 
   "COLLABORATORS": {
+    "ORG_EMPTY_TITLE": "Su organización está vacía",
+    "ORG_EMPTY_MESSAGE": "No hay otros usuarios en su organización. Por favor, invítelos a ser colaboradores y luego añádalos a sus áreas.",
+    "ADD_COLLAB": "Añadir colaborador",
+    "ADD_EXT_COLLAB": "Añadir colaborador externo",
+    "CANCEL_EDITING": "Cancelar edición",
+    "SAVE": "Guardar",
+    "REMOVE_USER": "Eliminar usuario",
     "ADD": "Invitar a un colaborador a RISE",
-    "INVITE": "Agregar Usuarios",
-    "NONE": "Aún no has invitado a ningún colaborador",
-    "HEADER": "Administrar colaboradores",
+    "INVITE": "Añadir usuarios",
+    "NONE": "Aún no ha invitado a ningún colaborador",
+    "HEADER": "Gestionar colaboradores",
     "CHANGE_ROLE": "Cambiar rol de usuario",
-    "ROL": "Rol",
-    "ROLE_CHANGE_ERROR": "No se pudo cambiar el rol del usuario. Inténtelo de nuevo o comuníquese con RISE",
-    "ROLE_CHANGE_SUCCESS": "Rol de usuario cambiado exitosamente"
+    "ROLE": "Rol",
+    "ROLE_CHANGE_ERROR": "No se pudo cambiar el rol del usuario. Por favor, inténtelo de nuevo o contáctenos.",
+    "ROLE_CHANGE_SUCCESS": "Rol de usuario cambiado con éxito"
   },
   "DASHBOARD": {
     "SEARCH": "Buscar mapa"
