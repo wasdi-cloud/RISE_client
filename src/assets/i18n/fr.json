@@ -129,7 +129,7 @@
     "ERROR_API_NO_VALID_SUBSCRIPTION": "Vous n'avez pas d'abonnement valide pour le moment.",
     "ERROR_LAYER_FAILURE": "Impossible de charger les calques pour ",
     "ERROR_UNKNOWN": "Une erreur inconnue s'est produite. Veuillez réessayer plus tard.",
-    "ERROR_API_INVITE_STILL_PENDING": "L'invitation à l'utilisateur est toujours en attente."
+    "ERROR_API_INVITE_STILL_PENDING": "Il existe déjà une invitation en attente pour cet utilisateur. Vous pouvez renvoyer l'invitation après son expiration."
   },
   "INVITE_USER": {
     "EMAIL": "Entrez l'email de la personne à inviter",

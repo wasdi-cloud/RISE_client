@@ -103,7 +103,7 @@
     "ERROR_API_NO_VALID_SUBSCRIPTION": "No valid subscription found. Please renew or subscribe to continue",
     "ERROR_LAYER_FAILURE": "Could not load layers for ",
     "ERROR_UNKNOWN": "An unknown error occurred",
-    "ERROR_API_INVITE_STILL_PENDING": "This user has already been invited to join your organization. Please check your email for the invitation."
+    "ERROR_API_INVITE_STILL_PENDING": "There is already a pending invitation for this user. You can resend the invitation after it expires."
     },
   "INVITE_USER": {
     "EMAIL": "Enter the email of the person to invite",

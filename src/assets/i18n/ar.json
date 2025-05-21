@@ -93,7 +93,7 @@
     "ERROR_API_NO_VALID_SUBSCRIPTION": "ليس لديك اشتراك صالح في الوقت الحالي.",
     "ERROR_LAYER_FAILURE": "تعذر تحميل الطبقات لهذا الإضافة",
     "ERROR_UNKNOWN": "حدث خطأ غير معروف. يرجى المحاولة لاحقًا",
-    "ERROR_API_INVITE_STILL_PENDING": "الدعوة لا تزال معلقة"
+    "ERROR_API_INVITE_STILL_PENDING": "يوجد بالفعل دعوة معلقة لهذا المستخدم. يمكنك إعادة إرسال الدعوة بعد انتهائها."
   },
   "INVITE_USER": {
     "EMAIL": "أدخل بريد الشخص المدعو",

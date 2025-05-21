@@ -111,14 +111,16 @@ export class ConfirmInvitedUserRegistrationComponent implements OnInit {
           this.m_oRouter.navigateByUrl('/login');
         },
         error: (oError) => {
-          this.m_oNotificationService.openInfoDialog(
-            'There were some problems with your inputted information. Please review your entries',
-            'alert',
-            'Error'
-          );
+
           if (oError.error.errorStringCodes) {
             this.m_oRiseUtils.handleNotificationError(
               oError.error.errorStringCodes
+            );
+          }else{
+            this.m_oNotificationService.openInfoDialog(
+              'There were some problems with your inputted information. Please review your entries',
+              'alert',
+              'Error'
             );
           }
         },

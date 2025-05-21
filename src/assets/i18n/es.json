@@ -105,7 +105,7 @@
     "ERROR_API_NO_VALID_SUBSCRIPTION": "No tienes una suscripción válida en este momento.",
     "ERROR_LAYER_FAILURE": "No se pudieron cargar capas para este complemento",
     "ERROR_UNKNOWN": "Se produjo un error desconocido. Por favor, inténtalo más tarde",
-    "ERROR_API_INVITE_STILL_PENDING": "La invitación aún está pendiente."
+    "ERROR_API_INVITE_STILL_PENDING": "Ya existe una invitación pendiente para este usuario. Puedes reenviar la invitación después de que caduque."
   },
   "INVITE_USER": {
     "EMAIL": "Ingrese el correo electrónico de la persona a invitar",
