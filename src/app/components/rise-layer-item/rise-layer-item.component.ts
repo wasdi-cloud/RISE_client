@@ -1,6 +1,7 @@
 import {CommonModule} from '@angular/common';
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {FormsModule} from '@angular/forms';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import {LayerViewModel} from '../../models/LayerViewModel';
 import {MatTooltip} from '@angular/material/tooltip';
 import {MapService} from "../../services/map.service";
@@ -8,7 +9,7 @@ import {MapService} from "../../services/map.service";
 @Component({
   selector: 'rise-layer-item',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatTooltip],
+  imports: [CommonModule, FormsModule, MatTooltip, TranslateModule],
   templateUrl: './rise-layer-item.component.html',
   styleUrl: './rise-layer-item.component.css',
 })

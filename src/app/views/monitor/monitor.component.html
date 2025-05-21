@@ -114,12 +114,12 @@
         <!-- Show visible plugins or all if expanded -->
         <rise-map-chip
           *ngFor="let oPlugin of getVisiblePlugins()"
-          [m_sTitle]="oPlugin.name"
+          [m_sTitle]="oPlugin.name | translate"
           [m_sIcon]="oPlugin.icon"
           [m_bIsActive]="oPlugin.loaded"
           [m_bDisabled]="oPlugin.disabled"
           (click)="switchPluginButton(oPlugin)"
-          [m_sTooltip]="oPlugin.description"
+          [m_sTooltip]="oPlugin.description | translate"
           [m_sChipType]="'default'"
         ></rise-map-chip>
 
