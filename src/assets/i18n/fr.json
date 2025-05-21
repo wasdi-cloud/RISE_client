@@ -297,5 +297,11 @@
     "TYPE": "Type",
     "PURCHASE_DATE": "Date d'achat",
     "EXPIRY_DATE": "Date d'expiration"
+  },
+  "CONFIRM_DIALOG": {
+    "ACTION": "Confirmation",
+    "CONFIRM": "Oui",
+    "CANCEL": "Annuler"
   }
+
 }

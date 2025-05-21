@@ -320,5 +320,10 @@
 		"DIALOG_PROCESSOR_UI_APP_FORMAT_JSON": "Formato JSON",
 		"DIALOG_FORMAT_JSON_ERROR": "Impossibile formattare il tuo input JSON. Assicurati che sia un JSON valido",
 		"DIALOG_PARSE_JSON_ERROR": "Si è verificato un errore nell'analizzare il payload JSON"
-	}
+	},
+  "CONFIRM_DIALOG": {
+    "ACTION": "conferma dell'azione",
+    "CONFIRM": "Sì",
+    "CANCEL": "Annulla"
+  }
 }

@@ -290,6 +290,10 @@
     "ONGOING_EVENTS": "الأحداث الجارية",
     "AFFECTED_ROAD": "الطرق المتأثرة",
     "AFFECTED_BUILDINGS": "المباني المتأثرة"
+  },
+  "CONFIRM_DIALOG": {
+    "ACTION": "تأكيد الإجراء",
+    "CONFIRM": "نعم",
+    "CANCEL": "إلغاء"
   }
-
 }

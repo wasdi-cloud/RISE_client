@@ -6,7 +6,7 @@
     <div
       class="alert-header font-bold d-flex flex-row justify-content-between align-items-center"
     >
-      <div>Confirm Action</div>
+      <div>{{ 'CONFIRM_DIALOG.ACTION' }}</div>
       <span class="close-btn material-symbols-outlined" (click)="onDismiss()">
         close</span
       >
@@ -18,12 +18,12 @@
     ></div>
     <div class="d-flex flex-row justify-content-end gap-2">
       <rise-button
-        [m_sLabel]="'Confirm'"
+        [m_sLabel]="'CONFIRM_DIALOG.CONFIRM'"
         (click)="onConfirm()"
         [m_sRole]="'action'"
       ></rise-button>
       <rise-button
-        [m_sLabel]="'Cancel'"
+        [m_sLabel]="'CONFIRM_DIALOG.CANCEL'"
         [m_sRole]="'primary'"
         (click)="onDismiss()"
       ></rise-button>

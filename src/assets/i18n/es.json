@@ -301,5 +301,10 @@
     "TYPE": "Tipo",
     "PURCHASE_DATE": "Fecha de compra",
     "EXPIRY_DATE": "Fecha de caducidad"
+  },
+  "CONFIRM_DIALOG": {
+    "ACTION": "confirmación de acciones",
+    "CONFIRM": "Sí",
+    "CANCEL": "Cancelar"
   }
 }
