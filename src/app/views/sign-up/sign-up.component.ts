@@ -214,6 +214,9 @@ export class SignUpComponent implements OnInit {
    * Executes the registration of the user and handles errors
    */
   register(): void {
+
+    let sMessage=this.m_oTranslate.instant("REGISTER.SUCCESS_MESSAGE")
+    let sTitle=this.m_oTranslate.instant("REGISTER.SUCCESS_TITLE")
     //Check validations
     if (this.validateEmail()) {
       this.m_oUserInfoInput.email = this.m_oEmailInputs.email;
@@ -232,9 +235,9 @@ export class SignUpComponent implements OnInit {
           if (oResponse.status === 200) {
             //Alert User to success and re-direct to login
             this.m_oNotificationService.openInfoDialog(
-              'User Registered - Check your email for a confirmation link',
+              sMessage,
               'success',
-              'User Registered'
+              sTitle
             );
             this.m_oRouter.navigateByUrl('/login');
           }

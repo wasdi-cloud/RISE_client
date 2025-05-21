@@ -186,6 +186,8 @@
     "ENTER_PW": "Please enter your One Time Pass Code"
   },
   "REGISTER": {
+    "SUCCESS_MESSAGE": "User Registered - Check your email for a confirmation link",
+    "SUCCESS_TITLE": "User Registered",
     "HEADER": "Register in RISE",
     "USER_ID": "User ID (your login name, e.g., johndoe or john.doe, etc.)",
     "PASSWORD": "Password",

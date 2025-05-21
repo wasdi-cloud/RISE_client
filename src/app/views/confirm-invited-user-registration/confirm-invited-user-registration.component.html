@@ -67,12 +67,32 @@
 <!--            [m_bIsValidatorInput]="true"-->
 <!--            [m_sErrorText]="m_sPersonalError"-->
 <!--          ></rise-text-input>-->
-          <rise-checkbox
-            [m_aoOptions]="this.m_asTermsAndConditions"
-            (m_oSelectionChange)="onSelectionChange($event)"
-            [m_aoSelectedValues]="this.m_asTermsAndConditionSelected"
-          >
-          </rise-checkbox>
+
+          <div class="d-flex flex-row align-items-center gap-2">
+            <input
+              type="checkbox"
+              name="terms-and-conditions"
+              class="rise-checkbox"
+              id=""
+              [(ngModel)]="m_oUserInfoInput.acceptedTermsAndConditions"
+            />
+            <div
+              class="policy-text"
+              [innerHTML]="'REGISTER.TERMS_CONDITIONS' | translate"
+            ></div>
+          </div>
+          <div class="d-flex flex-row align-items-center gap-2">
+            <input
+              type="checkbox"
+              name="privacy-policy"
+              class="rise-checkbox"
+              [(ngModel)]="m_oUserInfoInput.acceptedPrivacy"
+            />
+            <div
+              class="policy-text"
+              [innerHTML]="'REGISTER.PRIVACY_POLICY' | translate"
+            ></div>
+          </div>
           <rise-button
             [m_sLabel]="'Submit'"
             [m_sRole]="'primary'"

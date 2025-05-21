@@ -187,6 +187,8 @@
 		"ENTER_PW": "Inserisci il tuo Codice di Accesso Temporaneo"
 	},
 	"REGISTER": {
+    "SUCCESS_MESSAGE": "Utente registrato - Controlla la tua email per un link di conferma",
+    "SUCCESS_TITLE": "Utente registrato",
 		"HEADER": "Registrati su RISE",
 		"USER_ID": "ID Utente (il tuo nome di accesso, es. johndoe o john.doe ..ecc)",
 		"PASSWORD": "Password",

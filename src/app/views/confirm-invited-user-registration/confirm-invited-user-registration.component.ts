@@ -11,6 +11,8 @@ import { NotificationsDialogsService } from '../../services/notifications-dialog
 import { RiseUtils } from '../../shared/utilities/RiseUtils';
 import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
 import {RiseNumberInputComponent} from "../../components/rise-number-input/rise-number-input.component";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-confirm-registration',
@@ -18,9 +20,11 @@ import {RiseNumberInputComponent} from "../../components/rise-number-input/rise-
   imports: [
     RiseTextInputComponent,
     RiseButtonComponent,
-    RiseCheckboxComponent,
     RiseToolbarComponent,
     RiseNumberInputComponent,
+    ReactiveFormsModule,
+    TranslateModule,
+    FormsModule,
   ],
   templateUrl: './confirm-invited-user-registration.component.html',
   styleUrl: './confirm-invited-user-registration.component.css',
@@ -37,17 +41,7 @@ export class ConfirmInvitedUserRegistrationComponent implements OnInit {
   m_sUsernameError: string = '';
   m_sPersonalError: string = '';
   m_oConfirmInviteModel: ConfirmInviteViewModel = {};
-  m_asTermsAndConditions: { label: string; value: string }[] = [
-    {
-      label: 'I have read and accept the RISE terms and conditions ',
-      value: 'RISE terms and conditions',
-    },
-    {
-      label: 'I have read and accept the RISE Privacy policy',
-      value: 'RISE Privacy policy',
-    },
-  ];
-  m_asTermsAndConditionSelected: string[] = [];
+
 
   constructor(
     private m_oActiveRoute: ActivatedRoute,
@@ -89,9 +83,7 @@ export class ConfirmInvitedUserRegistrationComponent implements OnInit {
     }
   }
 
-  onSelectionChange(selectedValues) {
-    this.m_asTermsAndConditionSelected = selectedValues;
-  }
+
 
   register() {
     if (this.validatePassword()) {
@@ -143,7 +135,7 @@ export class ConfirmInvitedUserRegistrationComponent implements OnInit {
     ) {
       return false;
     }
-    if (this.m_asTermsAndConditionSelected.length != 2) {
+    if (this.m_oUserInfoInput.acceptedPrivacy==null || this.m_oUserInfoInput.acceptedTermsAndConditions===null ) {
       return false;
     }
     this.m_oConfirmInviteModel.name = this.m_oUserInfoInput.name;

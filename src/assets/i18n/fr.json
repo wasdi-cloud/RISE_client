@@ -181,6 +181,8 @@
     "ENTER_PW": "Veuillez entrer votre code One Time Pass"
   },
   "REGISTER": {
+    "SUCCESS_MESSAGE": "Utilisateur enregistré - Vérifiez votre e-mail pour un lien de confirmation",
+    "SUCCESS_TITLE": "Utilisateur enregistré",
     "HEADER": "S'inscrire dans RISE",
     "USER_ID": "Identifiant utilisateur",
     "PASSWORD": "Mot de passe",

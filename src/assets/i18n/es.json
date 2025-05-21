@@ -157,6 +157,8 @@
     "ENTER_PW": "Ingrese su código de acceso único"
   },
   "REGISTER": {
+    "SUCCESS_MESSAGE": "Usuario registrado - Revisa tu correo electrónico para un enlace de confirmación",
+    "SUCCESS_TITLE": "Usuario registrado",
     "HEADER": "Registrarse en RISE",
     "USER_ID": "Identificación de usuario",
     "PASSWORD": "Contraseña",
