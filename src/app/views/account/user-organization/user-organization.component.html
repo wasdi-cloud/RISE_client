@@ -135,34 +135,3 @@
     </div>
   </div>
 </div>
-
-<!-- <div
-*ngIf="!m_bInviteUser && m_oOrganization"
-class="organization-container d-flex flex-column justify-content-between p-2"
->
-<div
-  class="header d-flex flex-row align-items-center justify-content-between gap-3"
->
-
-</div>
-<div class="orgs-body flex-fill">
-
-  </div>
-
-  <div class="users-container">
-    <h5>{{ "ORGANIZATION.USERS" | translate }}</h5>
-    <rise-crud-table [m_aoDataSource]="m_aoOrgUsers"></rise-crud-table>
-    <rise-button
-      [m_sLabel]="'ORGANIZATION.INVITE'"
-      (click)="openInviteUser(true)"
-    ></rise-button>
-  </div>
-</div>
-<div class="footer d-flex flex-row justify-content-end">
-  <rise-button [m_sLabel]="'ORGANIZATION.SAVE'"></rise-button>
-</div>
-</div>
-<invite-user
-*ngIf="m_bInviteUser"
-(m_oBackEmitter)="openInviteUser(false)"
-></invite-user> -->
