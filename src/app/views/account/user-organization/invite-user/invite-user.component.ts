@@ -109,11 +109,11 @@ export class InviteUserComponent implements OnInit {
     let sEmail = this.m_oEmailInputs.email;
     let sConfirmEmail = this.m_oEmailInputs.confirmEmail;
     // Standard email regex:
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const sEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     // if the user has modified both inputs
     if (sEmail && sConfirmEmail) {
       // if the first email doesn't pass Regex OR the emails don't match
-      if (!emailRegex.test(sEmail) || sEmail !== sConfirmEmail) {
+      if (!sEmailRegex.test(sEmail) || sEmail !== sConfirmEmail) {
         return false;
       } else {
         return true;
