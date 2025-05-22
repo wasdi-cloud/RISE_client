@@ -299,6 +299,7 @@
   },
   "USER_MENU": {
     "ACCOUNT": "Account",
+    "ORGANIZATION": "Organization",
     "DASHBOARD": "Dashboard",
     "ERROR": "Could not retrieve user information",
     "HELP": "Help",
@@ -374,7 +375,7 @@
     "POP": "Population Impacts Map",
     "FLOOD_COMPOSITE": "Flood Event Max Extent",
     "LST": "Land Surface Temperature",
-    "FLOOD_DEPTH": "Flood Depth Estimation"    
+    "FLOOD_DEPTH": "Flood Depth Estimation"
   }
 
 }

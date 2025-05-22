@@ -337,7 +337,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
           this.m_oAreaOfOperation = oResponse;
           this.m_sAreaName = this.m_oAreaOfOperation.name;
           this.m_oConstantsService.setActiveArea(this.m_oAreaOfOperation);
-  
+
           this.getMapsByArea(oResponse.id, oResponse.startDate);
           this.m_oMapService.flyToMonitorBounds(oResponse.bbox);
 
@@ -349,12 +349,15 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
             let sWorkingOnItTitle: string = this.m_oTranslate.instant(
               'MONITOR.WORK_IN_PROGRESS_TITLE'
             );
-  
+            //todo make notification type that only ask user for confirmation eg : I understand
             this.m_oNotificationService.openInfoDialog(
               sWorkingOnIt,
               'alert',
               sWorkingOnItTitle
             );
+
+
+
           }
 
           this.m_oEventService.getEvents(sAreaId).subscribe(

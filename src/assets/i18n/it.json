@@ -299,6 +299,7 @@
 		"SUB_MSG": "<strong>RISE</strong> utilizzerà questa email per connettersi e inviare notifiche. Puoi gestire le impostazioni delle notifiche sopra."
 	},
 	"USER_MENU": {
+    "ORGANIZATION": "Organizzazione",
 		"ACCOUNT": "Account",
 		"DASHBOARD": "Dashboard",
 		"ERROR": "Impossibile recuperare le informazioni dell'utente",
@@ -375,7 +376,7 @@
     "POP": "Mappa della Popolazione Colpita",
     "FLOOD_COMPOSITE": "Massima Estensione Inondazione",
     "LST": "Temporatura della Superficie della Terra",
-    "FLOOD_DEPTH": "Stima della Profondità dell'acqua"    
+    "FLOOD_DEPTH": "Stima della Profondità dell'acqua"
   }
 
 
