@@ -288,6 +288,7 @@
     "SUB_MSG": "<strong>RISE</strong> utilisera cet email pour se connecter et envoyer des notifications. Vous pouvez gérer vos paramètres de notification ci-dessous."
   },
   "USER_MENU": {
+    "ORGANIZATION": "Organisation",
     "ACCOUNT": "Compte",
     "DASHBOARD": "Tableau de bord",
     "ERROR": "Impossible de récupérer les informations de l'utilisateur",

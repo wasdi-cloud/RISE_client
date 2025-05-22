@@ -1,5 +1,6 @@
 export const DefaultMenuItems = [
   { name: 'account', icon: 'person', translation: 'USER_MENU.ACCOUNT' },
+  { name: 'organization', icon: 'groups', translation: 'USER_MENU.ORGANIZATION' },
   { name: 'subscriptions', icon: 'paid', translation: 'USER_MENU.SUBSCRIPTIONS' },
   { name: 'area of operations', icon: 'file_map_stack', translation: 'USER_MENU.AREA_OF_OPERATIONS' },
   { name: 'language', icon: 'translate', translation: 'USER_MENU.LANGUAGE' },
@@ -18,6 +19,7 @@ export const ReducedMenuItems = [
 export const FullMenuItems = [
   { name: 'dashboard', icon: 'home', translation: 'USER_MENU.DASHBOARD' },
   { name: 'account', icon: 'person', translation: 'USER_MENU.ACCOUNT' },
+  { name: 'organization', icon: 'groups', translation: 'USER_MENU.ORGANIZATION' },
   { name: 'subscriptions', icon: 'paid', translation: 'USER_MENU.SUBSCRIPTIONS' },
   { name: 'area of operations', icon: 'file_map_stack', translation: 'USER_MENU.AREA_OF_OPERATIONS' },
   { name: 'language', icon: 'translate', translation: 'USER_MENU.LANGUAGE' },

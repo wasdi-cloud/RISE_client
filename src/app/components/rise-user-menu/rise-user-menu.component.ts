@@ -53,6 +53,82 @@ export class RiseUserMenuComponent implements OnInit {
   }
 
   /**
+   * Click handler for user inputs in dropdown state
+   * @param sName
+   * @param elRef
+   */
+  handleClick(sName, elRef?: HTMLElement): void {
+
+    if (sName === 'language') {
+      this.m_bShowLanguageDropdown = !this.m_bShowLanguageDropdown;
+      return;
+    }
+
+
+    this.m_bShowLanguageDropdown = false; // Close language submenu on other clicks
+    switch (sName) {
+      case 'subscriptions':
+        // let oNavExtra: NavigationExtras = {
+        //   state: { m_sActiveOutlet: sName },
+        // };
+        // this.m_oRouter.navigate(['account'], oNavExtra);
+        this.m_oRouter.navigateByUrl('account/subscriptions');
+        break;
+      case 'area of operations':
+        // let oNavExtra: NavigationExtras = {
+        //   state: { m_sActiveOutlet: sName },
+        // };
+        // this.m_oRouter.navigate(['account'], oNavExtra);
+        this.m_oRouter.navigateByUrl('account/area-of-operations');
+        break;
+      case 'organization':
+        // let oNavExtra: NavigationExtras = {
+        //   state: { m_sActiveOutlet: sName },
+        // };
+        // this.m_oRouter.navigate(['account'], oNavExtra);
+        this.m_oRouter.navigateByUrl('account/organization');
+        break;
+      case 'help':
+        window.open('https://discord.gg/FkRu2GypSg', '_blank');
+        break;
+      case 'logout':
+        this.m_oMapService.clearMarkerSubject(); // Clear the subject
+        this.m_oAuthService.logout();
+        break;
+      case 'dashboard':
+        this.m_oMapService.closeWorkspace();
+        this.m_oRouter.navigateByUrl('dashboard');
+        break;
+      default:
+        this.m_oRouter.navigateByUrl(sName);
+    }
+  }
+
+  m_bShowLanguageDropdown: boolean = false;
+  m_aoLanguages = [
+    {
+      name: 'English',
+      value: 'en',
+    },
+    {
+      name: 'Español',
+      value: 'es',
+    },
+    {
+      name: 'Français',
+      value: 'fr',
+    },
+    {
+      name: 'عربي',
+      value: 'ar',
+    },
+    {
+      name: "Italiano",
+      value: 'it'
+    }
+  ];
+
+  /**
    * Retrieve the appropriate menu item set based on user's location and Role
    */
   private getUserMenu(): void {
@@ -63,14 +139,14 @@ export class RiseUserMenuComponent implements OnInit {
         this.m_aoMenuItems = ReducedMenuItems;
       } else if (sPath.includes('monitor')) {
         if (sRole === UserRole.FIELD) {
-          this.m_aoMenuItems = FullMenuItems.filter(item => item.name !== 'subscriptions');
+          this.m_aoMenuItems = FullMenuItems.filter(oItem => oItem.name !== 'subscriptions' && oItem.name !== 'organization' && oItem.name !== 'area of operations');
         } else {
           this.m_aoMenuItems = FullMenuItems;
         }
       } else {
         if (sRole === UserRole.FIELD) {
           this.m_aoMenuItems = DefaultMenuItems.filter(
-            oItem => oItem.name !== 'subscriptions' && oItem.name !== 'area of operations'
+            oItem => oItem.name !== 'subscriptions' && oItem.name !== 'organization' && oItem.name !== 'area of operations'
           );
         } else {
           this.m_aoMenuItems = DefaultMenuItems;
@@ -126,75 +202,6 @@ export class RiseUserMenuComponent implements OnInit {
     } else {
       this.checkIfUserHasAreas();
       setupMenuHandling();
-    }
-  }
-
-  m_bShowLanguageDropdown: boolean = false;
-  m_aoLanguages = [
-    {
-      name: 'English',
-      value: 'en',
-    },
-    {
-      name: 'Español',
-      value: 'es',
-    },
-    {
-      name: 'Français',
-      value: 'fr',
-    },
-    {
-      name: 'عربي',
-      value: 'ar',
-    },
-    {
-      name: "Italiano",
-      value: 'it'
-    }
-  ];
-
-  /**
-   * Click handler for user inputs in dropdown state
-   * @param sName
-   * @param elRef
-   */
-  handleClick(sName, elRef?: HTMLElement): void {
-
-    if (sName === 'language') {
-      this.m_bShowLanguageDropdown = !this.m_bShowLanguageDropdown;
-      return;
-    }
-
-
-    this.m_bShowLanguageDropdown = false; // Close language submenu on other clicks
-    switch (sName) {
-      case 'subscriptions':
-        // let oNavExtra: NavigationExtras = {
-        //   state: { m_sActiveOutlet: sName },
-        // };
-        // this.m_oRouter.navigate(['account'], oNavExtra);
-        this.m_oRouter.navigateByUrl('account/subscriptions');
-        break;
-      case 'area of operations':
-        // let oNavExtra: NavigationExtras = {
-        //   state: { m_sActiveOutlet: sName },
-        // };
-        // this.m_oRouter.navigate(['account'], oNavExtra);
-        this.m_oRouter.navigateByUrl('account/area-of-operations');
-        break;
-      case 'help':
-        window.open('https://discord.gg/FkRu2GypSg', '_blank');
-        break;
-      case 'logout':
-        this.m_oMapService.clearMarkerSubject(); // Clear the subject
-        this.m_oAuthService.logout();
-        break;
-      case 'dashboard':
-        this.m_oMapService.closeWorkspace();
-        this.m_oRouter.navigateByUrl('dashboard');
-        break;
-      default:
-        this.m_oRouter.navigateByUrl(sName);
     }
   }
 
