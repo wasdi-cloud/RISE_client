@@ -8,7 +8,7 @@ import Geocoder from 'leaflet-control-geocoder';
 import {geoJSON, Map as LeafletMap, Marker} from 'leaflet';
 import 'leaflet-draw';
 import 'leaflet-mouse-position';
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import {BehaviorSubject, buffer, Observable, Subject} from 'rxjs';
 import {wktToGeoJSON} from '@terraformer/wkt';
 import {ManualBoundingBoxComponent} from '../dialogs/manual-bounding-box-dialog/manual-bounding-box.component';
 import {
@@ -22,6 +22,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {EventViewModel} from "../models/EventViewModel";
 import {MapZoomLevels} from "../shared/MapZoomLevels";
 import { now } from 'moment';
+import { firstValueFrom } from 'rxjs';
 // import L from 'leaflet';
 declare const L: any;
 
@@ -176,25 +177,29 @@ export class MapService {
       },
     },
   };
-  oMagicToolResultSubject= new Subject<string>()
+
+  m_oMagicToolResultSubject= new Subject<string>()
   m_aoDrawnItems: L.FeatureGroup;
   m_oLastCircle: L.Circle | null = null;
   m_oLastMarker: L.Marker | null = null;
-  oGeoJsonLayer: L.GeoJSON | null = null;
+  m_oGeoJsonLayer: L.GeoJSON | null = null;
   m_bIsDrawCreated: boolean = false;
   m_bIsAutoDrawCreated: boolean = false;
   m_bIsImportDrawCreated: boolean = false;
   m_oImportShapeMarker: L.Marker | null = null;
   m_oDrawMarker: L.Marker | null = null;
   m_oFeatureInfoMarker = null;
+
   /*
    a list of layers that are being selected , this help keep track and eventually used for layer analyzer and pixel info
    */
   m_aoSelectedLayers = []
+
   /**
    * Flag to know if the pixel info tool should be enabled
    */
   m_bPixelInfoOn: boolean = false;
+
   m_aoMarkers: L.Marker[] = [];
   m_aoAreaPolygons: L.Polygon[] = [];
   m_aoEventMarkers: L.Marker[] = [];
@@ -204,12 +209,12 @@ export class MapService {
    */
   m_oManualBoundingBoxSubscription: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   m_oMarkerSubject$ = this.m_oMarkerSubject.asObservable();
-  objectUrlCache = new Map<string,string>; // Map to store ObjectURLs for cached tiles
-  circleDrawnSubject = new Subject<{
+  m_oObjectUrlCache = new Map<string,string>; // Map to store ObjectURLs for cached tiles
+  m_oCircleDrawnSubject = new Subject<{
     center: { lat: number; lng: number };
     radius: number;
   }>();
-  oActiveShapeForMagicTool: L.Layer | null = null; // Track the currently drawn shape
+  m_oActiveShapeForMagicTool: L.Layer | null = null; // Track the currently drawn shape
   private m_oLayerMap: { [key: string]: L.TileLayer.WMS } = {};
   public m_oLayerAnalyzerDialogEventEmitter = new EventEmitter<boolean>();
 
@@ -361,7 +366,7 @@ export class MapService {
     // Handle tile loading
     activeLayer.on('tileloadstart', async (event: { tile: any }) => {
       const url = event.tile.src;
-      const cachedObjectUrl = this.objectUrlCache.get(url);
+      const cachedObjectUrl = this.m_oObjectUrlCache.get(url);
 
       if (cachedObjectUrl) {
         // Use the cached ObjectURL
@@ -373,7 +378,7 @@ export class MapService {
         const cachedTile = await this.getTileFromCache(url);
         if (cachedTile) {
           const objectUrl = URL.createObjectURL(cachedTile);
-          this.objectUrlCache.set(url, objectUrl); // Cache the ObjectURL
+          this.m_oObjectUrlCache.set(url, objectUrl); // Cache the ObjectURL
           event.tile.src = objectUrl;
         }else {
           // Tile is not in the cache, fetch it from the network
@@ -389,7 +394,7 @@ export class MapService {
 
           // Update the tile's source
           const objectUrl = URL.createObjectURL(blob);
-          this.objectUrlCache.set(url, objectUrl); // Cache the ObjectURL
+          this.m_oObjectUrlCache.set(url, objectUrl); // Cache the ObjectURL
           event.tile.src = objectUrl;
         }
       } catch (error) {
@@ -400,10 +405,10 @@ export class MapService {
     // Cleanup ObjectURLs when tiles are removed
     activeLayer.on('tileunload', (event: { tile: any }) => {
       const url = event.tile.src;
-      const objectUrl = this.objectUrlCache.get(url);
+      const objectUrl = this.m_oObjectUrlCache.get(url);
       if (objectUrl) {
         URL.revokeObjectURL(objectUrl); // Revoke the ObjectURL
-        this.objectUrlCache.delete(url); // Remove it from the cache
+        this.m_oObjectUrlCache.delete(url); // Remove it from the cache
       }
     });
   }
@@ -573,9 +578,9 @@ export class MapService {
     }
 
     // Remove any previous GeoJSON layers (from imports or other drawing methods)
-    if (this.oGeoJsonLayer) {
-      oMap.removeLayer(this.oGeoJsonLayer);
-      this.oGeoJsonLayer = null; // Reset reference
+    if (this.m_oGeoJsonLayer) {
+      oMap.removeLayer(this.m_oGeoJsonLayer);
+      this.m_oGeoJsonLayer = null; // Reset reference
     }
     if (this.m_oGeocoderMarker) {
       oMap.removeLayer(this.m_oGeocoderMarker);
@@ -942,11 +947,11 @@ export class MapService {
       }
 
       if (bOpenDialog) {
-        this.oMagicToolResultSubject.next('Shape intersects with a selected layer.');
+        this.m_oMagicToolResultSubject.next('Shape intersects with a selected layer.');
         this.m_oLayerAnalyzerDialogEventEmitter.emit(true);
 
       }else{
-        this.oMagicToolResultSubject.next('Shape does not intersect with any selected layer.');
+        this.m_oMagicToolResultSubject.next('Shape does not intersect with any selected layer.');
         this.m_oLayerAnalyzerDialogEventEmitter.emit(false);
       }
 
@@ -1248,7 +1253,7 @@ export class MapService {
           oDialog.afterClosed().subscribe((oResult) => {
             oController.clearPreviousDrawings(oMap);
 
-            oController.oGeoJsonLayer = L.geoJSON(oResult).addTo(oMap);
+            oController.m_oGeoJsonLayer = L.geoJSON(oResult).addTo(oMap);
             // GeoJSON coordinates are in [lng, lat] format, need to convert to [lat, lng]
             const latLngs = oResult.geometry.coordinates[0].map(
               (point: [number, number]) => {
@@ -1265,7 +1270,7 @@ export class MapService {
               centroid.lat,
               centroid.lng,
             ],{icon:oIconDefault}).addTo(oMap);
-            oMap.fitBounds(oController.oGeoJsonLayer.getBounds());
+            oMap.fitBounds(oController.m_oGeoJsonLayer.getBounds());
           });
         });
 
@@ -1481,10 +1486,14 @@ export class MapService {
 
 
   getPixelInfo() {
+
     let sErrorMsg: string = this.m_oTranslate.instant('MAP.ERROR_LAYER');
-    this.m_oRiseMap.on('click', (oClickEvent) => {
+
+    this.m_oRiseMap.on('click', async  (oClickEvent) => {
+
       //flag is false , button is not clicked
       if(!this.m_bPixelInfoOn) return;
+
       //there are not layer selected
       if (!this.m_aoSelectedLayers || this.m_aoSelectedLayers.length === 0) {
         this.m_oNotificationService.openSnackBar(
@@ -1496,7 +1505,7 @@ export class MapService {
         return;
       }
       let sWmsUrl = '';
-      let sMapId='Unknown'
+      let asMapIds :string[]= [];
       let asLayerIds :string[]= [];
 
       this.m_oRiseMap.eachLayer( (oLayer) => {
@@ -1505,7 +1514,7 @@ export class MapService {
 
           // Find the selected layer by its ID
           let oSelectedLayer = this.m_aoSelectedLayers.find(layer => layer.layerId === sLayerId);
-          sMapId = oSelectedLayer?.mapId || 'Unknown';
+          asMapIds.push(oSelectedLayer?.mapId || 'Unknown');
 
 
           //todo maybe this is the reason why pixel info does not work on the shape files
@@ -1514,57 +1523,84 @@ export class MapService {
           }
           //todo detect if the click position include the layer
           asLayerIds.push(oLayer.options.layers);
-
         }
       });
-      //todo in case layers ids have more than a one , we should prioritize the upper one
-      let sFeatureInfoUrl = this.getWMSLayerInfoUrl(
-        sWmsUrl,
-        oClickEvent.latlng,
-        asLayerIds
-      );
 
-      if (sFeatureInfoUrl) {
-        if (this.m_oFeatureInfoMarker != null) {
-          this.m_oFeatureInfoMarker.remove();
-        }
-        this.getFeatureInfo(sFeatureInfoUrl).subscribe({
-          next: (oResponse) => {
-            if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
-              try {
-                let sContentString = this.formatFeatureJSON(oResponse,sMapId);
-                //handle the case when there are no info
-                if(sContentString==='<ul></ul>'){
-                  sContentString='<ul>No Information Found</ul>'
-                }
-                this.m_oFeatureInfoMarker = L.popup()
-                  .setLatLng([
-                    oClickEvent.latlng.lat,
-                    oClickEvent.latlng.lng,
-                  ])
-                  .setContent(sContentString)
-                  .openOn(this.m_oRiseMap);
-              } catch (error) {
-                this.m_oNotificationService.openSnackBar(
-                  sErrorMsg,
-                  '',
-                  'danger'
-                );
-              }
+      // We query the layers one by one 
+      let oFullFeatures = null;
+
+      for (let i = 0; i < asLayerIds.length; i++) {
+        // Get the layer id
+        let sLayerId = asLayerIds[i];
+
+        // Get the WMS Url
+        let sFeatureInfoUrl = this.getWMSLayerInfoUrl(
+          sWmsUrl,
+          oClickEvent.latlng,
+          [sLayerId]
+        );
+
+        let sMapId = asMapIds[i];
+
+        if (sFeatureInfoUrl) {
+          try {
+
+            // Fetch the feature info for the current layer 
+            const oResponse = await firstValueFrom(this.getFeatureInfo(sFeatureInfoUrl));
+
+            for (let i = 0; i < oResponse["features"].length; i++) {
+              oResponse["features"][i].id = sMapId;
             }
-          },
-          error: (oError) => {
-            this.m_oNotificationService.openSnackBar(
-              sErrorMsg,
-              '',
-              'danger'
-            );
-            window.dispatchEvent(new Event("resize"))
-          },
-        });
+
+            if (oFullFeatures== null) {
+              // Initialize oFullFeatures with the first response
+              oFullFeatures = oResponse;
+            }
+            else {
+              // Merge the features from the current response into oFullFeatures
+              oFullFeatures.features = oFullFeatures.features.concat(oResponse["features"]);
+            }            
+          } catch (oEx) {
+            console.error('Error fetching feature info:', oEx);
+          }
+        }
+      }
+
+      sErrorMsg = "Error fetching feature info from the server. Please try again later.";
+
+      if (oFullFeatures) {            
+        try {
+          let sContentString = this.formatFeatureJSON(oFullFeatures);
+          //handle the case when there are no info
+          if(sContentString==='<ul></ul>'){
+            sContentString='<ul>No Information Found</ul>'
+          }
+          this.m_oFeatureInfoMarker = L.popup()
+            .setLatLng([
+              oClickEvent.latlng.lat,
+              oClickEvent.latlng.lng,
+            ])
+            .setContent(sContentString)
+            .openOn(this.m_oRiseMap);
+        } catch (error) {
+          this.m_oNotificationService.openSnackBar(
+            sErrorMsg,
+            '',
+            'danger'
+          );
+        }
+      }
+      else {
+        this.m_oNotificationService.openSnackBar(
+          sErrorMsg,
+          '',
+          'danger'
+        );
+        window.dispatchEvent(new Event("resize"))
       }
     });
   }
+  
   //todo delete
   buildGetCapabilitiesUrl(oLayer: any): string {
     const sBaseUrl = oLayer._url || oLayer.url;
@@ -1651,7 +1687,7 @@ export class MapService {
             setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
 
             // Emit the circle data through the Subject
-            this.circleDrawnSubject.next({
+            this.m_oCircleDrawnSubject.next({
               center: {lat: fLat, lng: fLng},
               radius: fRadius,
             });
@@ -1671,7 +1707,7 @@ export class MapService {
     oMap.addControl(new circleButton());
 
     // Return the Subject as an Observable to subscribe in the component
-    return this.circleDrawnSubject.asObservable();
+    return this.m_oCircleDrawnSubject.asObservable();
   }
 
   addMagicTool(oMap: L.Map):  Observable<string> {
@@ -1688,7 +1724,7 @@ export class MapService {
     });
 
     oMap.addControl(new oMagicToolButton());
-    return this.oMagicToolResultSubject.asObservable();
+    return this.m_oMagicToolResultSubject.asObservable();
   }
   cleanupPixelInfo() {
     // Disable pixel info functionality
@@ -1724,7 +1760,7 @@ export class MapService {
     if (aoSelectedLayers.length > 0) {
       this.populateToolButtons(oContainer, oMap);
     } else {
-      this.oMagicToolResultSubject.next('No layers selected.');
+      this.m_oMagicToolResultSubject.next('No layers selected.');
       this.m_oLayerAnalyzerDialogEventEmitter.emit(false);
     }
   }
@@ -1789,13 +1825,13 @@ export class MapService {
     if (oDrawControl) {
       // Implement your drawing start logic here
       this.startDrawingForMagicTool(oMap,oDrawControl,(layer) => {
-        if (this.oActiveShapeForMagicTool) {
-          oMap.removeLayer(this.oActiveShapeForMagicTool);
-          this.oActiveShapeForMagicTool = null;
+        if (this.m_oActiveShapeForMagicTool) {
+          oMap.removeLayer(this.m_oActiveShapeForMagicTool);
+          this.m_oActiveShapeForMagicTool = null;
         }
 
         // Set the new shape as active
-        this.oActiveShapeForMagicTool = layer;
+        this.m_oActiveShapeForMagicTool = layer;
 
 
       });
@@ -1817,9 +1853,9 @@ export class MapService {
 
     L.DomEvent.on(oCancelButton, 'click', () => {
       this.initializeDrawButton(oContainer, oMap); // Reset the Draw button
-      if (this.oActiveShapeForMagicTool) {
-        oMap.removeLayer(this.oActiveShapeForMagicTool);
-        this.oActiveShapeForMagicTool = null; // Reset active shape
+      if (this.m_oActiveShapeForMagicTool) {
+        oMap.removeLayer(this.m_oActiveShapeForMagicTool);
+        this.m_oActiveShapeForMagicTool = null; // Reset active shape
       }
     });
 
@@ -1905,6 +1941,7 @@ export class MapService {
       layers: sLayerIds,
       height: 101,
       width: 101,
+      buffer: 30
     };
 
     //set x/y or i/j
@@ -1927,22 +1964,36 @@ export class MapService {
    * Type: string
    * - Gray Index: X.XXX
    */
-  formatFeatureJSON(oJSON: any, sMapId: string) {
-    let asFeatureContent = oJSON.features.map((oFeature) => {
-      return `<li>Type: ${oFeature.type} <ul>${
-        oFeature.properties instanceof Array
-          ? oFeature.properties.map((oProperty) => {
-            return `<li> Gray Index: ${oProperty.GRAY_INDEX}</li>`;
-          }).join('')
-          : `<li>Gray Index: ${oFeature.properties.GRAY_INDEX}</li>`
-      }</ul> </li>`;
-    });
-    if(asFeatureContent===null || asFeatureContent.length===0){
-      return `<ul></ul>`;
+  formatFeatureJSON(oJSON: any): string {
+    if (!oJSON.features || oJSON.features.length === 0) {
+      return `<ul><li>No Information Found</li></ul>`;
     }
-    return `<ul><li>Layer: ${sMapId}</li>${asFeatureContent.join('')}</ul>`;
-  }
 
+    const asFeatureContent: string[] = oJSON.features.map((oFeature) => {
+      const oProps = oFeature.properties;
+      let sPropsHtml = '';
+
+      let sFeatureId = oFeature.id;
+
+      if (sFeatureId.startsWith('rise:')) {
+        sFeatureId = sFeatureId.replace('rise:', '');
+      }
+
+      sPropsHtml += `<li><b>${sFeatureId}</b><ul>`;
+
+      for (const sKey in oProps) {
+        if (oProps.hasOwnProperty(sKey)) {
+          sPropsHtml += `<li>${sKey}: ${oProps[sKey]}</li>`;
+        }
+      }
+
+      sPropsHtml += '</ul></li>';
+      //return `<li>Type: ${oFeature.type}<ul>${sPropsHtml}</ul></li>`;
+      return sPropsHtml;
+    });
+
+    return `<ul>${asFeatureContent.join('')}</ul>`;
+  }
 
   getFeatureInfo(sUrl: string) {
     const aoHeaders = new HttpHeaders()
