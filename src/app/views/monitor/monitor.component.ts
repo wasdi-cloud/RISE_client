@@ -539,10 +539,15 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     if(oPlugin.disabled){
       return;
     }
-    if(oPlugin.loaded){
+
+    // Check if the plugin (Map indeed) is already loaded
+    if(oPlugin.loaded) {
+      // Remove the layers from the map
       oPlugin.loaded = false;
       let oMap=this.m_oMapService.getMap();
+
       for (let i=0;i<oPlugin.layers.length;i++) {
+
         oMap.eachLayer((oMapLayer) => {
           let sLayerId = oPlugin.layers[i].layerId;
           if (sLayerId === oMapLayer.options.layers) {
@@ -556,13 +561,13 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
         });
       }
       oPlugin.layers=[]
-
-    }else{
+    }
+    else {
       //was inactive,turn it to active
-      // this.m_oActivePlugin = oPlugin;
+      
       oPlugin.loaded = true;
-      if (!oPlugin.layers || oPlugin.layers.length < 1) {
 
+      if (!oPlugin.layers || oPlugin.layers.length < 1) {
         oPlugin.layers = []; //Init layers array in plugin to hold it after loading
         this.getLayer(oPlugin, this.m_sAreaId, '');
 
