@@ -1,6 +1,6 @@
 <div class="banner-container d-flex flex-row gap-2 p-2"
-[class.ongoing]="m_bLiveSituation">
-  <span class="material-symbols-outlined"> info </span>
+     [class.ongoing]="m_bLiveSituation">
+  <span (click)="showInfoDialog()" class="material-symbols-outlined info-button"> info </span>
   <div class="d-flex flex-column">
     <div>{{ m_sHeaderKey | translate }}</div>
     <div>{{ m_sDescriptionKey | translate }}</div>

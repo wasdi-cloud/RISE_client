@@ -126,7 +126,8 @@
     "ROLE_CHANGE_SUCCESS": "Rôle de l'utilisateur modifié avec succès"
   },
   "DASHBOARD": {
-    "SEARCH": "Rechercher une carte"
+    "SEARCH": "Rechercher une carte",
+    "INFO": "<strong>Aperçu du tableau de bord:</strong><br/>Depuis votre tableau de bord, vous pouvez accéder et surveiller diverses zones d'opération. Les widgets afficheront un résumé des informations pertinentes si des événements en cours ou des impacts ont été détectés dans ces zones. Cliquez sur une zone pour la surveiller.<br/><br/><strong>Types de zones:</strong><br/><ul><li><strong>Zones privées:</strong> Ce sont des zones d'opération spécifiques à votre organisation ou à vos autorisations. Elles sont pertinentes pour vos activités directes et fournissent des informations personnalisées.</li><li><strong>Zones publiques:</strong> Celles-ci sont généralement accessibles à tous les utilisateurs. Elles offrent des aperçus plus larges sur les incidents publics ou les zones d'opération communes.</li></ul>"
   },
   "ERROR_MSG": {
     "ERROR_API_ORG_ALREADY_EXISTS": "Une organisation avec ces informations existe déjà.",

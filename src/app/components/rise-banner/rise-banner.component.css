@@ -8,3 +8,12 @@
 div.ongoing {
   color: var(--rise-danger-text);
 }
+.info-button {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.info-button:hover {
+  color: var(--rise-gold);
+  transform: scale(1.1);
+}

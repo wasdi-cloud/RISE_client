@@ -98,7 +98,8 @@
     "ROLE_CHANGE_SUCCESS": "User Role successfully changed"
   },
   "DASHBOARD": {
-    "SEARCH": "Search Map"
+    "SEARCH": "Search Map",
+    "INFO": "<strong>Dashboard Overview:</strong><br/>From your Dashboard, you can access and monitor various operational areas. The widgets will provide a summary of related information if any on-going events or impacts have been detected within these areas. Click on an area to monitor it.<br/><br/><strong>Area Types:</strong><br/><ul><li><strong>Private Areas:</strong> These are areas of operation specific to your organization or permissions. They are relevant to your direct activities and provide tailored information.</li><li><strong>Public Areas:</strong> These are generally accessible to all users. They offer broader insights into public incidents or common operational zones.</li></ul>"
   },
   "ERROR_MSG": {
     "ERROR_API_ORG_ALREADY_EXISTS": "This organization is already registered",

@@ -102,7 +102,8 @@
     "ROLE_CHANGE_SUCCESS": "Rol de usuario cambiado con éxito"
   },
   "DASHBOARD": {
-    "SEARCH": "Buscar mapa"
+    "SEARCH": "Buscar mapa",
+    "INFO": "<strong>Resumen del Panel de Control:</strong><br/>Desde su Panel de Control, puede acceder y monitorear diversas áreas de operación. Los widgets mostrarán un resumen de la información relacionada si se han detectado eventos en curso o impactos dentro de estas áreas. Haga clic en un área para monitorearla.<br/><br/><strong>Tipos de Áreas:</strong><br/><ul><li><strong>Áreas Privadas:</strong> Son áreas de operación específicas de su organización o permisos. Son relevantes para sus actividades directas y proporcionan información personalizada.</li><li><strong>Áreas Públicas:</strong> Estas son generalmente accesibles para todos los usuarios. Ofrecen una visión más amplia sobre incidentes públicos o zonas de operación comunes.</li></ul>"
   },
   "ERROR_MSG": {
     "ERROR_API_ORG_ALREADY_EXISTS": "Ya existe una organización con esta información.",
