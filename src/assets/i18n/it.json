@@ -253,7 +253,7 @@
 		"SUCCESS": "Acquisto dell’abbonamento effettuato con successo!",
 		"TYPE": "Tipo",
 		"TYPE_ERROR": "Impossibile recuperare i tipi di abbonamento",
-		"PAYMENT_TYPE": "Tipo di Pagamento",
+    "PAYMENT_TYPE": "Durata dell'abbonamento",
 		"UPDATE": "Aggiorna Abbonamento",
 		"WIRE": "Bonifico Bancario",
 		"YEAR": "Un Anno",

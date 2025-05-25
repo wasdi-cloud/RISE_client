@@ -252,7 +252,7 @@
     "SUCCESS": "Subscription purchase successful!",
     "TYPE": "Type",
     "TYPE_ERROR": "Could not retrieve subscription types",
-    "PAYMENT_TYPE": "Payment Type",
+    "PAYMENT_TYPE": "Subscription Length",
     "UPDATE": "Update Subscription",
     "WIRE": "Wire Transfer",
     "YEAR": "One Year",

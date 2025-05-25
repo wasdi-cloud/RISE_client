@@ -244,7 +244,7 @@
     "START_DATE": "Date de début",
     "TYPE": "Type",
     "TYPE_ERROR": "Impossible de récupérer les types d'abonnement",
-    "PAYMENT_TYPE": "Type de paiement",
+    "PAYMENT_TYPE": "Durée de l'abonnement",
     "UPDATE": "Mettre à jour l'abonnement",
     "WIRE": "Transfert bancaire",
     "YEAR": "Un an",

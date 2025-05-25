@@ -220,7 +220,7 @@
     "START_DATE": "Fecha de inicio",
     "TYPE": "Tipo",
     "TYPE_ERROR": "No se pudieron recuperar los tipos de suscripción",
-    "PAYMENT_TYPE": "Tipo de pago",
+    "PAYMENT_TYPE": "Duración de la suscripción",
     "UPDATE": "Actualizar suscripción",
     "WIRE": "Transferencia bancaria",
     "YEAR": "Un año",
