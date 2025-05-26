@@ -36,7 +36,7 @@ export class LayerPropertiesComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private m_oData: any,
-    private m_oDialogRef: MatDialogRef<BuyNewSubscriptionComponent>,
+    private m_oDialogRef: MatDialogRef<LayerPropertiesComponent>,
     private m_oNotificationDialogService:NotificationsDialogsService
   ) {
   }

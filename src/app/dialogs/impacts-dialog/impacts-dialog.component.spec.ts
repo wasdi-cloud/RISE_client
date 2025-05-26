@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MagicToolDialogComponent } from './magic-tool-dialog.component';
+import { ImpactsDialogComponent } from './impacts-dialog.component';
 
-describe('MagicToolDialogComponent', () => {
-  let component: MagicToolDialogComponent;
-  let fixture: ComponentFixture<MagicToolDialogComponent>;
+describe('ImpactsDialogComponent', () => {
+  let component: ImpactsDialogComponent;
+  let fixture: ComponentFixture<ImpactsDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MagicToolDialogComponent]
+      imports: [ImpactsDialogComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(MagicToolDialogComponent);
+    fixture = TestBed.createComponent(ImpactsDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

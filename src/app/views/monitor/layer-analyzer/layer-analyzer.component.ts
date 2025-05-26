@@ -49,7 +49,7 @@ export class LayerAnalyzerComponent implements OnInit{
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private m_oData: any,
-    private m_oDialogRef: MatDialogRef<BuyNewSubscriptionComponent>,
+    private m_oDialogRef: MatDialogRef<LayerAnalyzerComponent>,
     private m_oLayerService: LayerService,
     private m_oNotificationService: NotificationsDialogsService,
     private m_oChangeDetectorRef: ChangeDetectorRef
@@ -57,7 +57,7 @@ export class LayerAnalyzerComponent implements OnInit{
   }
 
   ngOnInit(){
-    if (this.m_oData) { 
+    if (this.m_oData) {
       this.m_aoInputLayers = this.m_oData.selectedLayers;
       if (this.m_aoInputLayers) {
         if (this.m_aoInputLayers.length>0){
@@ -66,7 +66,7 @@ export class LayerAnalyzerComponent implements OnInit{
       }
       this.m_oAOI = this.m_oData.aoiBbox;
       this.m_sWKTAoi = this.latLngBoundsToWKT(this.m_oAOI);
-    } 
+    }
   }
 
   onRefresh() {
@@ -81,9 +81,9 @@ export class LayerAnalyzerComponent implements OnInit{
 
     oInput.filter = null;
 
-    if (this.m_sFilterValue) {  
+    if (this.m_sFilterValue) {
       if (this.m_sFilterValue !== 'None') {
-        try { 
+        try {
           oInput.filter = parseFloat(this.m_sFilterValue).toString();
         }
         catch (oEX) {
@@ -92,7 +92,7 @@ export class LayerAnalyzerComponent implements OnInit{
       }
     }
 
-    
+
     this.m_oLayerService.analyzer(oInput).subscribe({
       next: (oResponse) => {
         if (oResponse) {
@@ -102,7 +102,7 @@ export class LayerAnalyzerComponent implements OnInit{
           this.m_sPercentAreaAffectedPixels = oResponse.percentAreaAffectedPixels;
           this.m_sAreaPixelAffected = oResponse.areaPixelAffected;
           this.m_aiHistogramPixelValues = oResponse.histogram.map(sValue => parseInt(sValue, 10));;
-          
+
         }
         this.m_bIsLoading = false;
         this.m_oChangeDetectorRef.detectChanges();
@@ -115,8 +115,8 @@ export class LayerAnalyzerComponent implements OnInit{
         );
         this.m_bIsLoading = false;
         this.m_oChangeDetectorRef.detectChanges();
-      },  
-    })    
+      },
+    })
 
   }
 
@@ -126,10 +126,10 @@ export class LayerAnalyzerComponent implements OnInit{
     let oNorthEast = oBounds.getNorthEast();
 
     let sWkt = `POLYGON((${oSouthWest.lng} ${oSouthWest.lat}, ${oNorthEast.lng} ${oSouthWest.lat}, ${oNorthEast.lng} ${oNorthEast.lat}, ${oSouthWest.lng} ${oNorthEast.lat}, ${oSouthWest.lng} ${oSouthWest.lat}))`;
-    
+
     return sWkt;
   }
-  
+
 
 
   onDismiss() {

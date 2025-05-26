@@ -35,6 +35,8 @@ import {LayerViewModel} from "../../models/LayerViewModel";
 import {EventService} from "../../services/api/event.service";
 import {EventViewModel} from "../../models/EventViewModel";
 import {EventType} from "../../models/EventType";
+import {log} from "node:util";
+import {ImpactsDialogComponent} from "../../dialogs/impacts-dialog/impacts-dialog.component";
 
 
   /**
@@ -564,7 +566,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     }
     else {
       //was inactive,turn it to active
-      
+
       oPlugin.loaded = true;
 
       if (!oPlugin.layers || oPlugin.layers.length < 1) {
@@ -991,4 +993,14 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
     }
   }
-}
+    /*
+     Given an area id and selected date , we show Impacts
+     */
+    openImpacts() {
+      this.m_oDialog.open(ImpactsDialogComponent).afterClosed().subscribe(
+        ()=>{
+          console.log("imapcts works")
+        }
+      )
+    }
+  }
