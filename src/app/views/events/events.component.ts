@@ -408,18 +408,22 @@ export class EventsComponent implements OnInit {
 
   // Handle date input changes
   onDateChange(sDateString: string, sProperty: 'startDate' | 'endDate' | 'peakDate'): void {
+
+
     const oEpoch = this.convertDateToEpoch(sDateString);
 
     if (oEpoch !== null) {
       this.m_oEvent[sProperty] = oEpoch/1000; // Dynamically update the specified property
     } else {
       console.warn(`Invalid date format for ${sProperty}. Expected mm-dd-yyyy.`);
+      this.m_sDateErrorText="Invalid date format"
     }
   }
 
   // Validate the date
   isValidDate(mm: number, dd: number, yyyy: number): boolean {
     if (!mm || !dd || !yyyy) return false;
+    if(yyyy>=2200 || yyyy<=0) return false;
     const date = new Date(yyyy, mm - 1, dd);
     return (
       date.getFullYear() === yyyy &&

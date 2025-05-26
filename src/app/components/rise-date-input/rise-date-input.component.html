@@ -3,6 +3,7 @@
 </label>
 <div class="input-group">
   <input
+    #dateInput
     class="form-control"
     type="date"
     name="{{ m_sName }}"
@@ -11,6 +12,9 @@
     (change)="onInputChange()"
     [placeholder]="!m_bHasTitle ? (m_sLocalizationKey | translate) : ''"
     [required]="m_bRequired"
+    (keydown)="preventTyping($event)"
+    (focus)="openCalendar(dateInput)"
+
   />
   <span class="calendar-icon material-symbols-outlined">calendar_today</span>
 </div>

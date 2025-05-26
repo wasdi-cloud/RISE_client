@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -17,6 +17,7 @@ export class RiseDateInputComponent {
 
   @Input() m_sLocalizationKey: string = '';
 
+
   @Input() m_bReadonly: boolean = false;
 
   @Input() m_bRequired: boolean = false;
@@ -25,7 +26,18 @@ export class RiseDateInputComponent {
 
   @Output() m_sInputDateChange: EventEmitter<any> = new EventEmitter<any>();
 
+
+
   onInputChange() {
     this.m_sInputDateChange.emit(this.m_sInputDate)
+  }
+
+  preventTyping(event: KeyboardEvent) {
+    event.preventDefault();
+  }
+
+  openCalendar(inputElement: HTMLInputElement) {
+    // Delay to allow focus event to complete
+    setTimeout(() => inputElement.showPicker?.(), 0);
   }
 }
