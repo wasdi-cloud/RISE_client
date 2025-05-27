@@ -344,18 +344,35 @@ export class ImpactsDialogComponent implements OnInit, AfterViewInit {
     let sAffected = this.m_oTranslateService.instant('IMPACTS_DIALOG.AFFECTED');
     let sNotAffected = this.m_oTranslateService.instant('IMPACTS_DIALOG.NOT_AFFECTED');
 
-    let fCropsPerc = this.m_oSelectedWidget.payload['affectedLandUse']['crops']['percentage'];
-    let fGrassPerc = this.m_oSelectedWidget.payload['affectedLandUse']['grass']['percentage'];
-    let fBuiltPerc = this.m_oSelectedWidget.payload['affectedLandUse']['built_up']['percentage'];
+    let fCropsPerc = 0;
+    let fGrassPerc = 0;
+    let fBuiltPerc = 0;
+    this.m_sCropsTotArea = "N.A.";
+    this.m_sCropsAffectedArea = "N.A.";
+    this.m_sGrassTotArea = "N.A.";
+    this.m_sGrassAffectedArea = "N.A.";
+    this.m_sBuiltTotArea = "N.A.";
+    this.m_sBuiltAffectedArea = "N.A.";
 
-    this.m_sCropsTotArea = this.formatSquareMetersToKm(this.m_oSelectedWidget.payload['affectedLandUse']['crops']['tot_area']);
-    this.m_sCropsAffectedArea = this.formatSquareMetersToKm(this.m_oSelectedWidget.payload['affectedLandUse']['crops']['square_meters']);
-
-    this.m_sGrassTotArea = this.formatSquareMetersToKm(this.m_oSelectedWidget.payload['affectedLandUse']['grass']['tot_area']);
-    this.m_sGrassAffectedArea = this.formatSquareMetersToKm(this.m_oSelectedWidget.payload['affectedLandUse']['grass']['square_meters']);
-
-    this.m_sBuiltTotArea = this.formatSquareMetersToKm(this.m_oSelectedWidget.payload['affectedLandUse']['built_up']['tot_area']);
-    this.m_sBuiltAffectedArea = this.formatSquareMetersToKm(this.m_oSelectedWidget.payload['affectedLandUse']['built_up']['square_meters']);
+    if (this.m_oSelectedWidget.payload['affectedLandUse']) {
+      if (this.m_oSelectedWidget.payload['affectedLandUse']['crops']) {
+        fCropsPerc = this.m_oSelectedWidget.payload['affectedLandUse']['crops']['percentage'];
+        this.m_sCropsTotArea = this.formatSquareMetersToKm(this.m_oSelectedWidget.payload['affectedLandUse']['crops']['tot_area']);
+        this.m_sCropsAffectedArea = this.formatSquareMetersToKm(this.m_oSelectedWidget.payload['affectedLandUse']['crops']['square_meters']);
+      }
+      
+      if (this.m_oSelectedWidget.payload['affectedLandUse']['grass']) {
+        fGrassPerc = this.m_oSelectedWidget.payload['affectedLandUse']['grass']['percentage'];
+        this.m_sGrassTotArea = this.formatSquareMetersToKm(this.m_oSelectedWidget.payload['affectedLandUse']['grass']['tot_area']);
+        this.m_sGrassAffectedArea = this.formatSquareMetersToKm(this.m_oSelectedWidget.payload['affectedLandUse']['grass']['square_meters']);        
+      }
+      
+      if (this.m_oSelectedWidget.payload['affectedLandUse']['built_up']) {
+        fBuiltPerc = this.m_oSelectedWidget.payload['affectedLandUse']['built_up']['percentage'];
+        this.m_sBuiltTotArea = this.formatSquareMetersToKm(this.m_oSelectedWidget.payload['affectedLandUse']['built_up']['tot_area']);
+        this.m_sBuiltAffectedArea = this.formatSquareMetersToKm(this.m_oSelectedWidget.payload['affectedLandUse']['built_up']['square_meters']);
+      }
+    }
 
     // Charts must be created after the view has been initialized,
     // as the canvas elements need to be present in the DOM.
