@@ -58,3 +58,13 @@ span.icon-left {
 .form-control {
   margin: 0px !important;
 }
+.input-group .clear-icon {
+  cursor: pointer;
+  /* Add specific styles if needed, e.g., color, hover effect */
+  color: #888; /* A subtle grey */
+}
+
+.input-group .clear-icon:hover {
+  color: var(--rise-gold); /* Darker on hover */
+}
+
