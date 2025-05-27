@@ -503,8 +503,9 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     }
 
     // Check if oPlugin.layers already contains the object
-    if (!oPlugin.layers.some(oLayer => oLayer.layerId === oLayer.layerId)) {
-      oPlugin.layers.push(oLayer);
+    //todo so ugly , and must be one layer not layers and also get rid of the any type :'(
+    if (!oPlugin.layers.some(oPluginLayer => oPluginLayer.layerId === oLayer.layerId)) {
+      oPlugin.layers[0]=oLayer;
     }
 
     //sort the layers
@@ -996,7 +997,6 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       this.m_oLayerService.findLayer(oPlugin.id,this.m_sAreaId,this.m_iSelectedDate).subscribe({
         next:(oResponse)=>{
           oPlugin.disabled = FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse);
-
         }
       })
 

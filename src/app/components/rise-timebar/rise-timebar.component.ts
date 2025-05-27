@@ -405,6 +405,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     //console.log(this.m_sSelectedDateTimestamp)
 
     this.emitLiveButtonAction();
+    //this to capture when is the selected date from the calendar is an event date
     if(!FadeoutUtils.utilsIsObjectNullOrUndefined(oEvent.isHighlighted) && oEvent.isHighlighted){
       //todo we need to find the event for this highlighted date
       console.log(this.m_oSelectedDate)
