@@ -61,4 +61,12 @@ export class RiseTextInputComponent implements OnInit {
   onInputChange() {
     this.m_sInputTextChange.emit(this.m_sInputText);
   }
+
+  /**
+   * Clears the input text and emits the change.
+   */
+  clearInput() {
+    this.m_sInputText = '';
+    this.m_sInputTextChange.emit(this.m_sInputText);
+  }
 }
