@@ -23,7 +23,7 @@
   />
   <div
     class="icon-right input-group-append"
-    *ngIf="m_sInputText && m_sInputText.length > 0 && !m_bSetPassword"
+    *ngIf="m_sInputText && m_sInputText.length > 0 && !m_bSetPassword && !m_bReadonly"
     (click)="clearInput()"
   >
     <span class="material-symbols-outlined input-group-text clear-icon">
