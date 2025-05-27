@@ -7,7 +7,7 @@
     disableOptionCentering="'false'"
     name="dropdown"
     [multiple]="m_bIsMultiSelect"
-    [placeholder]="m_sLabel | translate"
+    [placeholder]="getPlaceholder() | translate"
     (selectionChange)="emitSelectionChange($event)"
     [(value)]="m_aoSelectedItems"
   >

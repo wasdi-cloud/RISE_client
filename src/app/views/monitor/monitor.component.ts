@@ -173,7 +173,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
 
 
-    @ViewChild('btnContainer', { static: false }) btnContainerRef!: ElementRef;
+  @ViewChild('btnContainer', { static: false }) btnContainerRef!: ElementRef;
   @ViewChild('tempFix', { static: false }) tempFixRef!: ElementRef;
   private m_bIsLive: boolean=true;
   constructor(
@@ -997,8 +997,16 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
      Given an area id and selected date , we show Impacts
      */
     openImpacts() {
-      this.m_oDialog.open(ImpactsDialogComponent).afterClosed().subscribe(
-        ()=>{
+
+      const oDialogData = {
+        areaId: this.m_sAreaId,
+        selectedDate: this.m_iSelectedDate,
+        areaName: this.m_sAreaName
+      }
+
+      this.m_oDialog.open(ImpactsDialogComponent, {
+        data: oDialogData
+      }).afterClosed().subscribe(()=>{
           console.log("imapcts works")
         }
       )

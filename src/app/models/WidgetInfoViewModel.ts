@@ -12,5 +12,6 @@ export class WidgetInfoViewModel extends RiseViewModel {
   title: string;
   content: string;
   referenceTime: number;
+  referenceDate: string;
   payload: { [key: string]: any } = {};
 }

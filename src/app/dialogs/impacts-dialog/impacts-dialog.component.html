@@ -1,7 +1,7 @@
 <div class="dialog-container d-flex flex-column gap-2 p-3">
   <div class="header d-flex flex-row justify-content-between align-items-center">
     <h3>
-      {{ "Impacts For: " + m_sAreaName+" | "+m_sAreaId}}
+      {{ m_sAreaName+" - "+ m_sRefDate}} - {{ 'IMPACTS_DIALOG.TITLE' | translate }}
     </h3>
     <span class="close-btn material-symbols-outlined" (click)="onDismiss()">
       close
@@ -10,13 +10,20 @@
   <div class="body flex-fill d-flex flex-column gap-3">
 
     <div class="d-flex justify-content-center">
-      <div style="max-width: 300px; width: 100%;">
+      <div style="max-width: 300px; width: 100%;" *ngIf="m_bImpactsAvailable">
         <rise-dropdown
           [m_bHasTitle]="true"
-          [m_sLabel]="'something'"
-          [m_aoDropdownItems]="m_asDropdownOptions"
+          [m_sLabel]="'IMPACTS_DIALOG.SELECT_LAYER' | translate"
+          [m_aoDropdownItems]="m_aoDropdownOptions"
+          (m_oSelectionChange)="onDropdownSelectionChange($event)"
+          [m_sPlaceholder]="'IMPACTS_DIALOG.SELECT_LAYER_PLACEHOLDER' | translate"
 
         ></rise-dropdown>
+      </div>
+      <div style="max-width: 300px; width: 100%;" *ngIf="!m_bImpactsAvailable">
+        <div class="alert alert-warning">
+          {{ 'IMPACTS_DIALOG.NO_IMPACTS_AVAILABLE' | translate }}
+        </div>
       </div>
     </div>
 
@@ -26,22 +33,25 @@
       <div class="flex-grow-1">
         <rise-text-input
           [m_bHasTitle]="true"
-          [m_sLocalizationKey]="'Input 1'"
-          [(m_sInputText)]="m_sInput1"
+          [m_sLocalizationKey]="'Population Affected'"
+          [m_bReadonly]=true
+          [(m_sInputText)]="m_oSelectedWidget?.payload['populationCount']"
         ></rise-text-input>
       </div>
       <div class="flex-grow-1">
         <rise-text-input
           [m_bHasTitle]="true"
-          [m_sLocalizationKey]="'Input 2'"
-          [(m_sInputText)]="m_sInput2"
+          [m_sLocalizationKey]="'Exposures Affected'"
+          [m_bReadonly]=true
+          [(m_sInputText)]="m_oSelectedWidget?.payload['exposuresCount']"
         ></rise-text-input>
       </div>
       <div class="flex-grow-1">
         <rise-text-input
           [m_bHasTitle]="true"
-          [m_sLocalizationKey]="'Input 3'"
-          [(m_sInputText)]="m_sInput3"
+          [m_sLocalizationKey]="'Roads Affected'"
+          [m_bReadonly]=true
+          [(m_sInputText)]="m_oSelectedWidget?.payload['roadsCount']"
         ></rise-text-input>
       </div>
     </div>
@@ -53,13 +63,13 @@
         <canvas #doughnutChart1 style="max-width: 150px; max-height: 150px;"></canvas>
         <rise-text-input
           [m_bHasTitle]="true"
-          [m_sLocalizationKey]="'Value 1A'"
-          [(m_sInputText)]="m_sDoughnut1ValueA"
+          [m_sLocalizationKey]="'IMPACTS_DIALOG.ESTIMATED_AREA' | translate"
+          [(m_sInputText)]="m_sCropsTotArea"
         ></rise-text-input>
         <rise-text-input
           [m_bHasTitle]="true"
-          [m_sLocalizationKey]="'Value 1B'"
-          [(m_sInputText)]="m_sDoughnut1ValueB"
+          [m_sLocalizationKey]="'IMPACTS_DIALOG.AFFECTED_AREA' | translate"
+          [(m_sInputText)]="m_sCropsAffectedArea"
         ></rise-text-input>
       </div>
 
@@ -67,13 +77,13 @@
         <canvas #doughnutChart2 style="max-width: 150px; max-height: 150px;"></canvas>
         <rise-text-input
           [m_bHasTitle]="true"
-          [m_sLocalizationKey]="'Value 2A'"
-          [(m_sInputText)]="m_sDoughnut2ValueA"
+          [m_sLocalizationKey]="'IMPACTS_DIALOG.ESTIMATED_AREA' | translate"
+          [(m_sInputText)]="m_sBuiltTotArea"
         ></rise-text-input>
         <rise-text-input
           [m_bHasTitle]="true"
-          [m_sLocalizationKey]="'Value 2B'"
-          [(m_sInputText)]="m_sDoughnut2ValueB"
+          [m_sLocalizationKey]="'IMPACTS_DIALOG.AFFECTED_AREA' | translate"
+          [(m_sInputText)]="m_sBuiltAffectedArea"
         ></rise-text-input>
       </div>
 
@@ -81,13 +91,13 @@
         <canvas #doughnutChart3 style="max-width: 150px; max-height: 150px;"></canvas>
         <rise-text-input
           [m_bHasTitle]="true"
-          [m_sLocalizationKey]="'Value 3A'"
-          [(m_sInputText)]="m_sDoughnut3ValueA"
+          [m_sLocalizationKey]="'IMPACTS_DIALOG.ESTIMATED_AREA' | translate"
+          [(m_sInputText)]="m_sBuiltTotArea"
         ></rise-text-input>
         <rise-text-input
           [m_bHasTitle]="true"
-          [m_sLocalizationKey]="'Value 3B'"
-          [(m_sInputText)]="m_sDoughnut3ValueB"
+          [m_sLocalizationKey]="'IMPACTS_DIALOG.AFFECTED_AREA' | translate"
+          [(m_sInputText)]="m_sBuiltAffectedArea"
         ></rise-text-input>
       </div>
     </div>

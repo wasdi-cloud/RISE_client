@@ -136,7 +136,7 @@
     "ERROR_LAYER": "An error occurred while trying to fetch pixel information."
   },
   "MONITOR": {
-    "SEE_IMPACTS": "See Impacts",
+    "SEE_IMPACTS": "Impacts Evaluation",
     "ADD_EVENT": "Add event",
     "SEARCH_LAYERS_BY_NAME": "Search Layers By Name",
     "MAP_LAYERS": "Visible Layers",
@@ -378,6 +378,19 @@
     "FLOOD_COMPOSITE": "Flood Event Max Extent",
     "LST": "Land Surface Temperature",
     "FLOOD_DEPTH": "Flood Depth Estimation"
+  },
+  "IMPACTS_DIALOG": {
+    "SELECT_LAYER": "Show Impacts based on:",
+    "SELECT_LAYER_PLACEHOLDER": "Select a layer to show impacts",
+    "ESTIMATED_AREA": "Estimated Tot Area",
+    "AFFECTED_AREA": "Estimated Affected Area",
+    "CROPS": "Crops",
+    "BUILT_UP": "Built Up",
+    "GRASSLAND": "Grassland",
+    "TITLE": "Impacts Evaluation",
+    "NO_IMPACTS_AVAILABLE": "No impacts available for this date",
+    "AFFECTED": "Affected",
+    "NOT_AFFECTED": "Not Affected"
   }
 
 }

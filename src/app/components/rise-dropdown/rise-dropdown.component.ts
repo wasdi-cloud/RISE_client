@@ -132,5 +132,11 @@ export class RiseDropdownComponent {
   }
 
 
-
+  getPlaceholder(): string {
+    if (this.m_sPlaceholder) {
+      return this.m_sPlaceholder;
+    } else {
+      return this.m_sLabel;
+    }
+  }
 }

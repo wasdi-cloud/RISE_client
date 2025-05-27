@@ -23,4 +23,8 @@ export class WidgetService {
   getWidgetList(sWidgetId: string, iDate: string | number) {
     return this.m_oHttp.get<WidgetInfoViewModel[]>(this.APIURL + '/widget/listbydate?widget=' + sWidgetId + "&date=" + iDate);
   }
+
+  getDayImpacts(sAreaId: string, sDate: string) {
+    return this.m_oHttp.get<WidgetInfoViewModel[]>(this.APIURL + '/widget/dayimpacts?areaId=' + sAreaId + "&date=" + sDate);
+  }
 }
