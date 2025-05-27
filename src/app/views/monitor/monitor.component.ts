@@ -37,6 +37,7 @@ import {EventViewModel} from "../../models/EventViewModel";
 import {EventType} from "../../models/EventType";
 import {log} from "node:util";
 import {ImpactsDialogComponent} from "../../dialogs/impacts-dialog/impacts-dialog.component";
+import {Subscription} from "rxjs";
 
 
   /**
@@ -162,20 +163,24 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    */
   m_bShowEventInfo:boolean=false;
 
-  /**
+    /**
    * Event information
    */
   m_oSelectedEvent: EventViewModel = {} as EventViewModel;
     /**
+     * Layer analyzer sub pointer
+     */
+  private m_oLayerAnalyzerSubscription: Subscription;
+
+
+
+    /**
      * a flag to distinguish going to event from the event page or click on the event marker
      */
   private m_bIsNavigatedFromEventList = false;
-
-
-
     @ViewChild('btnContainer', { static: false }) btnContainerRef!: ElementRef;
-  @ViewChild('tempFix', { static: false }) tempFixRef!: ElementRef;
-  private m_bIsLive: boolean=true;
+    @ViewChild('tempFix', { static: false }) tempFixRef!: ElementRef;
+    private m_bIsLive: boolean=true;
   constructor(
     private m_oActivatedRoute: ActivatedRoute,
     private m_oAreaService: AreaService,
@@ -243,7 +248,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     this.getActiveAOI();
 
     // Register the event to show layer analyzer
-    this.m_oMapService.m_oLayerAnalyzerDialogEventEmitter.subscribe((bShouldOpenDialog: boolean) => {
+    this.m_oLayerAnalyzerSubscription=this.m_oMapService.m_oLayerAnalyzerDialogEventEmitter.subscribe((bShouldOpenDialog: boolean) => {
       if (bShouldOpenDialog) {
         this.openLayerAnalyzerDialog(); // Your dialog opening method
       }
@@ -279,6 +284,10 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
   ngOnDestroy(): void {
     this.stopLiveTimer();
+    // Unsubscribe when the component is destroyed
+    if (this.m_oLayerAnalyzerSubscription) {
+      this.m_oLayerAnalyzerSubscription.unsubscribe();
+    }
   }
 
   startLiveTimer() {
