@@ -390,7 +390,10 @@
     "TITLE": "Impacts Evaluation",
     "NO_IMPACTS_AVAILABLE": "No impacts available for this date",
     "AFFECTED": "Affected",
-    "NOT_AFFECTED": "Not Affected"
+    "NOT_AFFECTED": "Not Affected",
+    "BARESOIL": "Bare Soil Flood Map",
+    "URBAN": "Urban Flood Map",
+    "MERGED": "Merged Impacts"
   }
 
 }

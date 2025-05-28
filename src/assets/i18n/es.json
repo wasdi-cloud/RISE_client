@@ -363,5 +363,21 @@
     "FLOOD_COMPOSITE": "Extensión Máxima del Evento de Inundación",
     "LST": "Temperatura Superficial Terrestre",
     "FLOOD_DEPTH": "Estimación de Profundidad de Inundación"
+  },
+  "IMPACTS_DIALOG": {
+    "SELECT_LAYER": "Mostrar impactos basados en:",
+    "SELECT_LAYER_PLACEHOLDER": "Seleccione una capa para mostrar los impactos",
+    "ESTIMATED_AREA": "Área total estimada",
+    "AFFECTED_AREA": "Área afectada estimada",
+    "CROPS": "Cultivos",
+    "BUILT_UP": "Zonas urbanizadas",
+    "GRASSLAND": "Pastizales",
+    "TITLE": "Evaluación de impactos",
+    "NO_IMPACTS_AVAILABLE": "No hay impactos disponibles para esta fecha",
+    "AFFECTED": "Afectado",
+    "NOT_AFFECTED": "No afectado",
+    "BARESOIL": "Mapa de inundación de suelo desnudo",
+    "URBAN": "Mapa de inundación urbana",
+    "MERGED": "Impactos combinados"
   }
 }
