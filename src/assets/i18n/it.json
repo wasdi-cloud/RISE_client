@@ -378,7 +378,21 @@
     "FLOOD_COMPOSITE": "Massima Estensione Inondazione",
     "LST": "Temporatura della Superficie della Terra",
     "FLOOD_DEPTH": "Stima della Profondità dell'acqua"
-  }
-
-
+  },
+  "IMPACTS_DIALOG": {
+	"SELECT_LAYER": "Mostra impatti basati su:",
+	"SELECT_LAYER_PLACEHOLDER": "Seleziona un layer per mostrare gli impatti",
+	"ESTIMATED_AREA": "Area totale stimata",
+	"AFFECTED_AREA": "Area colpita stimata",
+	"CROPS": "Colture",
+	"BUILT_UP": "Aree edificate",
+	"GRASSLAND": "Pascoli",
+	"TITLE": "Valutazione degli impatti",
+	"NO_IMPACTS_AVAILABLE": "Nessun impatto disponibile per questa data",
+	"AFFECTED": "Colpito",
+	"NOT_AFFECTED": "Non colpito",
+	"BARESOIL": "Mappa di inondazione su suolo nudo",
+	"URBAN": "Mappa di inondazione urbana",
+	"MERGED": "Impatti combinati"
+ }
 }

@@ -172,6 +172,11 @@ export class ImpactsDialogComponent implements OnInit, AfterViewInit {
     // Can be only bare soil, urban or both.
     this.m_aoDropdownOptions =  [];
 
+
+    let sBareSoilMap = this.m_oTranslateService.instant('IMPACTS_DIALOG.BARESOIL');
+    let sUrbanMap = this.m_oTranslateService.instant('IMPACTS_DIALOG.URBAN');
+    let sMergedMap = this.m_oTranslateService.instant('IMPACTS_DIALOG.MERGED');
+
     // Do we have at least one?
     if (this.m_aoWidgetInfoViewModel.length > 0) {
 
@@ -183,7 +188,7 @@ export class ImpactsDialogComponent implements OnInit, AfterViewInit {
 
           const oOption = {
               id: 1,
-              name: "Bare Soil Flood Map"
+              name: sBareSoilMap
           };
 
           this.m_aoDropdownOptions.push(oOption);
@@ -192,7 +197,7 @@ export class ImpactsDialogComponent implements OnInit, AfterViewInit {
         else if (oWidget.widget === 'impacts_urban') {
           const oOption = {
               id: 2,
-              name: "Urban Flood Map"
+              name: sUrbanMap
           };          
           this.m_aoDropdownOptions.push(oOption);
         }
@@ -203,7 +208,7 @@ export class ImpactsDialogComponent implements OnInit, AfterViewInit {
     if (this.m_aoDropdownOptions.length == 2) {
       const oOption = {
           id: 3,
-          name: "Merge Impacts"
+          name: sMergedMap
       };          
       this.m_aoDropdownOptions.push(oOption);
     }
