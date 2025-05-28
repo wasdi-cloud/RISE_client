@@ -119,6 +119,8 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   m_iMaxZoomInLevel: number = 2;
   m_iMaxZoomOutLevel: number = 0;
   m_sSliderClass: string = ''
+  m_bDisableNextButton: boolean=false;
+  m_bDisablePrevButton: boolean=false;
 
   constructor() {
   }
@@ -357,7 +359,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
 
     this.m_asDates = asDates;
 
-    // 🔥 Pick initial selection based on input date
+    // Pick initial selection based on input date
     if(this.m_iInitialSelectedDate && this.m_iInitialSelectedDate>=this.m_iStartDate && this.m_iInitialSelectedDate<=this.m_iEndDate  ){
       this.m_sSelectedDate = new Date(this.m_iInitialSelectedDate * 1000).toDateString()
       this.m_iSliderValue = this.m_asDates.indexOf(this.m_sSelectedDate);
@@ -372,7 +374,8 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     this.m_bIsLive = this.m_sSelectedDate === this.m_asDates[this.m_asDates.length - 1];
 
     this.m_sSelectedDateTimestamp = this.m_oSelectedDate.valueOf();
-    this.emitSelectedDate(null,bChangedByUser)
+    this.emitSelectedDate(null,bChangedByUser);
+    this.updateButtonsState();
   }
 
   /**
@@ -380,7 +383,6 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    * UC: User can click on a date in the time bar
    * @param oEvent
    * @param bChangedByUser
-   * @param bIsHighlightedDate
    * @returns void
    */
   dateSelected(oEvent,bChangedByUser:boolean): void {
@@ -426,6 +428,8 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     else {
       this.emitSelectedDate(oEvent.target.eventId,bChangedByUser);
     }
+
+    this.updateButtonsState();
   }
 
 
@@ -504,8 +508,18 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
       }
       this.emitSelectedDate();
     }
+    this.updateButtonsState();
   }
 
+  /**
+   * this method update the state of the minus and add button in the time bar
+   *
+   */
+
+  updateButtonsState(){
+    this.m_bDisableNextButton = this.m_sSelectedDate === this.m_asDates[this.m_asDates.length - 1];
+    this.m_bDisablePrevButton = this.m_sSelectedDate === this.m_asDates[0];
+  }
   /**
    * Minus One day to the timebar / time
    *
@@ -523,6 +537,8 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
       this.emitLiveButtonAction();
       this.emitSelectedDate();
     }
+
+    this.updateButtonsState();
   }
 
 
@@ -715,7 +731,4 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
       console.warn('Could not find event date in current timeline:', sFormattedDate);
     }
   }
-
-
-  protected readonly EventType = EventType;
 }
