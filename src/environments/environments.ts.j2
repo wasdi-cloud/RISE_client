@@ -2,8 +2,7 @@ export const environment = {
   CESIUM_BASE_URL: '/assets/cesium/',
   cesiumToken: '{{ sRiseCesiumToken }}',
   esriToken: '{{ sRiseEsriToken }}',
-  riseUrl: "https://test.wasdi.net/rise-api/api",
-  wmsUrl: 'https://test.wasdi.net/geoserver/wms',
+  riseUrl: "{{ aoRiseConfiguration['baseUrl']['apiUrl'] }}/rise-api/api",
+  wmsUrl: '{{ aoRiseConfiguration['baseUrl']['apiUrl'] }}/geoserver/wms',
   isTestEnvironment:false
-
 }
