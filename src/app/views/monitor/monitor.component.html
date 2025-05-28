@@ -89,15 +89,15 @@
         </div>
       </div>
 
-      <div class="button-container  d-flex flex-column gap-3">
+      <div class="button-container  d-flex flex-row gap-3">
         <rise-button
+          class="flex-fill"
           [m_sLabel]="'MONITOR.MANAGE_EVENTS'"
-          [m_sRole]="'primary'"
           (click)="navigateRoute('events')"
         ></rise-button>
         <rise-button
+          class="flex-fill"
           [m_sLabel]="'MONITOR.SEE_IMPACTS'"
-          [m_sRole]="'primary'"
           (click)="openImpacts()"
         ></rise-button>
       </div>
