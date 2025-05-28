@@ -232,6 +232,7 @@ export class MapService {
       layers: [this.m_oDarkGrayArcGIS],
       zoomControl: false,
       zoom: 3,
+      worldCopyJump: true, // This enables the seamless world wrapping for markers
       // center: latLng(0, 0),
       edit: {featureGroup: this.m_oDrawnItems},
       fullscreenControl: true,
@@ -270,7 +271,7 @@ export class MapService {
         maxZoom: MapZoomLevels.STANDARD_MAX_ZOOM,
         minZoom: MapZoomLevels.STANDARD_MIN_ZOOM,
         // this option disables loading tiles outside the world bounds.
-        noWrap: true,
+        // noWrap: true,
       }
     );
 
@@ -282,7 +283,7 @@ export class MapService {
         minZoom: MapZoomLevels.DEFAULT_MIN_ZOOM,
         attribution:
           'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
-        noWrap: true,
+        // noWrap: true,
       }
     );
 
@@ -294,7 +295,7 @@ export class MapService {
         minZoom: MapZoomLevels.STREET_MIN_ZOOM,
         attribution:
           'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
-        noWrap: true,
+        // noWrap: true,
       }
     );
 
@@ -306,7 +307,7 @@ export class MapService {
         minZoom: MapZoomLevels.IMAGERY_MIN_ZOOM,
         attribution:
           'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-        noWrap: true,
+        // noWrap: true,
       }
     );
 
@@ -318,7 +319,7 @@ export class MapService {
         maxZoom: MapZoomLevels.DARK_MAX_ZOOM,
         attribution:
           '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        nowrap: true,
+        // nowrap: true,
         // ext: 'png'
       }
     );
@@ -330,7 +331,7 @@ export class MapService {
         maxZoom: MapZoomLevels.DARK_MAX_ZOOM,
         attribution:
           '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        nowrap: true,
+        // nowrap: true,
         // ext: 'png'
       }
     );
@@ -1526,7 +1527,7 @@ export class MapService {
         }
       });
 
-      // We query the layers one by one 
+      // We query the layers one by one
       let oFullFeatures = null;
 
       for (let i = 0; i < asLayerIds.length; i++) {
@@ -1545,7 +1546,7 @@ export class MapService {
         if (sFeatureInfoUrl) {
           try {
 
-            // Fetch the feature info for the current layer 
+            // Fetch the feature info for the current layer
             const oResponse = await firstValueFrom(this.getFeatureInfo(sFeatureInfoUrl));
 
             for (let i = 0; i < oResponse["features"].length; i++) {
@@ -1559,7 +1560,7 @@ export class MapService {
             else {
               // Merge the features from the current response into oFullFeatures
               oFullFeatures.features = oFullFeatures.features.concat(oResponse["features"]);
-            }            
+            }
           } catch (oEx) {
             console.error('Error fetching feature info:', oEx);
           }
@@ -1568,7 +1569,7 @@ export class MapService {
 
       sErrorMsg = "Error fetching feature info from the server. Please try again later.";
 
-      if (oFullFeatures) {            
+      if (oFullFeatures) {
         try {
           let sContentString = this.formatFeatureJSON(oFullFeatures);
           //handle the case when there are no info
@@ -1600,7 +1601,7 @@ export class MapService {
       }
     });
   }
-  
+
   //todo delete
   buildGetCapabilitiesUrl(oLayer: any): string {
     const sBaseUrl = oLayer._url || oLayer.url;
