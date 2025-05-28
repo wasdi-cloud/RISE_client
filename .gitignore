@@ -43,3 +43,6 @@ Thumbs.db
 
 environments.ts
 package-lock.json
+src/assets/rise-assets/icon-location-hazard-filled_bk.png
+src/assets/rise-assets/icon-location-hazard-filled-public_bk.png
+src/assets/rise-assets/icon-location-hazard-filled-shared_bk.png
