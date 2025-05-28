@@ -239,43 +239,126 @@ export class ImpactsDialogComponent implements OnInit, AfterViewInit {
     }
 
     if (iIndex === 3) {
+
       // If we have both, we combine the two widgets
       if (this.m_aoWidgetInfoViewModel.length >= 2) {
+
+        // Create the combined Widget
         let oCombinedWidget = new WidgetInfoViewModel();
         oCombinedWidget.id = 'impacts_combined';
+
+        // Get the first and second widget
         let oFirst = this.m_aoWidgetInfoViewModel[0];
         let oSecond = this.m_aoWidgetInfoViewModel[1];
 
-        oCombinedWidget.payload = oFirst.payload;
+        // Initialie the payload with the first widget's payload
+        //oCombinedWidget.payload = oFirst.payload;
 
+        // Sum roads, exposures, and population counts
         oCombinedWidget.payload["roadsCount"] = oFirst.payload["roadsCount"] + oSecond.payload["roadsCount"];
         oCombinedWidget.payload["exposuresCount"] = oFirst.payload["exposuresCount"] + oSecond.payload["exposuresCount"];
         oCombinedWidget.payload["populationCount"] = oFirst.payload["populationCount"] + oSecond.payload["populationCount"];
-        oCombinedWidget.payload["affectedLandUse"]['crops']['square_meters'] = oFirst.payload['affectedLandUse']['crops']['square_meters'] + oSecond.payload['affectedLandUse']['crops']['square_meters'];
-        oCombinedWidget.payload["affectedLandUse"]['crops']['tot_area'] = oFirst.payload['affectedLandUse']['crops']['square_meters'] + oSecond.payload['affectedLandUse']['crops']['tot_area'];
-        if (oCombinedWidget.payload["affectedLandUse"]['crops']['tot_area']> 0) {
-          oCombinedWidget.payload["affectedLandUse"]['crops']['percentage'] = oCombinedWidget.payload["affectedLandUse"]['crops']['square_meters']/ oCombinedWidget.payload["affectedLandUse"]['crops']['tot_area'];
-        }
-        else {
-          oCombinedWidget.payload["affectedLandUse"]['crops']['percentage'] = 0;
-        }
 
-        oCombinedWidget.payload["affectedLandUse"]['grass']['tot_area'] = oFirst.payload['affectedLandUse']['grass']['square_meters'] + oSecond.payload['affectedLandUse']['grass']['tot_area'];
-        if (oCombinedWidget.payload["affectedLandUse"]['grass']['tot_area']> 0) {
-          oCombinedWidget.payload["affectedLandUse"]['grass']['percentage'] = oCombinedWidget.payload["affectedLandUse"]['grass']['square_meters']/ oCombinedWidget.payload["affectedLandUse"]['grass']['tot_area'];
+        // Initialize affected land use with default values
+        oCombinedWidget.payload["affectedLandUse"] = {}
+        oCombinedWidget.payload["affectedLandUse"]['crops'] = {};
+        oCombinedWidget.payload["affectedLandUse"]['grass'] = {};
+        oCombinedWidget.payload["affectedLandUse"]['built_up'] = {};
+
+        oCombinedWidget.payload["affectedLandUse"]['crops']['square_meters'] = "N.A.";
+        oCombinedWidget.payload["affectedLandUse"]['crops']['tot_area'] = "N.A.";
+        oCombinedWidget.payload["affectedLandUse"]['crops']['percentage'] = "N.A.";
+
+        oCombinedWidget.payload["affectedLandUse"]['grass']['square_meters'] = "N.A.";
+        oCombinedWidget.payload["affectedLandUse"]['grass']['tot_area'] = "N.A.";
+        oCombinedWidget.payload["affectedLandUse"]['grass']['percentage'] = "N.A.";
+
+        oCombinedWidget.payload["affectedLandUse"]['built_up']['square_meters'] = "N.A.";
+        oCombinedWidget.payload["affectedLandUse"]['built_up']['tot_area'] = "N.A.";
+        oCombinedWidget.payload["affectedLandUse"]['built_up']['percentage'] = "N.A.";
+
+        // Check crops:
+        if (oFirst.payload['affectedLandUse'] && oFirst.payload['affectedLandUse']['crops'] && oSecond.payload['affectedLandUse'] && oSecond.payload['affectedLandUse']['crops']) {
+          // Both available, sum them
+          oCombinedWidget.payload["affectedLandUse"]['crops']['square_meters'] = oFirst.payload['affectedLandUse']['crops']['square_meters'] + oSecond.payload['affectedLandUse']['crops']['square_meters'];
+          oCombinedWidget.payload["affectedLandUse"]['crops']['tot_area'] = oFirst.payload['affectedLandUse']['crops']['tot_area'] + oSecond.payload['affectedLandUse']['crops']['tot_area'];
         }
-        else {
-          oCombinedWidget.payload["affectedLandUse"]['grass']['percentage'] = 0;
+        else if (oFirst.payload['affectedLandUse'] && oFirst.payload['affectedLandUse']['crops']) {
+          // Only first available
+          oCombinedWidget.payload["affectedLandUse"]['crops']['square_meters'] = oFirst.payload['affectedLandUse']['crops']['square_meters'];
+          oCombinedWidget.payload["affectedLandUse"]['crops']['tot_area'] = oFirst.payload['affectedLandUse']['crops']['tot_area'];
+        }
+        else if (oSecond.payload['affectedLandUse'] && oSecond.payload['affectedLandUse']['crops']) {
+          // Only second available
+          oCombinedWidget.payload["affectedLandUse"]['crops']['square_meters'] = oSecond.payload['affectedLandUse']['crops']['square_meters'];
+          oCombinedWidget.payload["affectedLandUse"]['crops']['tot_area'] = oSecond.payload['affectedLandUse']['crops']['tot_area'];
         }
         
-        oCombinedWidget.payload["affectedLandUse"]['built_up']['tot_area'] = oFirst.payload['affectedLandUse']['built_up']['square_meters'] + oSecond.payload['affectedLandUse']['built_up']['tot_area'];
-        if (oCombinedWidget.payload["affectedLandUse"]['built_up']['tot_area']> 0) {
-          oCombinedWidget.payload["affectedLandUse"]['built_up']['percentage'] = oCombinedWidget.payload["affectedLandUse"]['built_up']['square_meters']/ oCombinedWidget.payload["affectedLandUse"]['built_up']['tot_area'];
-        }
-        else {
-          oCombinedWidget.payload["affectedLandUse"]['built_up']['percentage'] = 0;
+        // Compute the percentage for crops
+        if (oCombinedWidget.payload["affectedLandUse"]['crops']['tot_area']!="N.A.") {
+          if (oCombinedWidget.payload["affectedLandUse"]['crops']['tot_area']> 0) {
+            oCombinedWidget.payload["affectedLandUse"]['crops']['percentage'] = oCombinedWidget.payload["affectedLandUse"]['crops']['square_meters']/ oCombinedWidget.payload["affectedLandUse"]['crops']['tot_area'];
+          }
+          else {
+            oCombinedWidget.payload["affectedLandUse"]['crops']['percentage'] = 0;
+          }
         }
 
+
+        // Check grass:
+        if (oFirst.payload['affectedLandUse'] && oFirst.payload['affectedLandUse']['grass'] && oSecond.payload['affectedLandUse'] && oSecond.payload['affectedLandUse']['grass']) {
+          // Both available, sum them
+          oCombinedWidget.payload["affectedLandUse"]['grass']['square_meters'] = oFirst.payload['affectedLandUse']['grass']['square_meters'] + oSecond.payload['affectedLandUse']['grass']['square_meters'];
+          oCombinedWidget.payload["affectedLandUse"]['grass']['tot_area'] = oFirst.payload['affectedLandUse']['grass']['tot_area'] + oSecond.payload['affectedLandUse']['grass']['tot_area'];
+        }
+        else if (oFirst.payload['affectedLandUse'] && oFirst.payload['affectedLandUse']['grass']) {
+          // Only first available
+          oCombinedWidget.payload["affectedLandUse"]['grass']['square_meters'] = oFirst.payload['affectedLandUse']['grass']['square_meters'];
+          oCombinedWidget.payload["affectedLandUse"]['grass']['tot_area'] = oFirst.payload['affectedLandUse']['grass']['tot_area'];
+        }
+        else if (oSecond.payload['affectedLandUse'] && oSecond.payload['affectedLandUse']['grass']) {
+          // Only second available
+          oCombinedWidget.payload["affectedLandUse"]['grass']['square_meters'] = oSecond.payload['affectedLandUse']['grass']['square_meters'];
+          oCombinedWidget.payload["affectedLandUse"]['grass']['tot_area'] = oSecond.payload['affectedLandUse']['grass']['tot_area'];
+        }
+        
+        // Compute the percentage for grass
+        if (oCombinedWidget.payload["affectedLandUse"]['grass']['tot_area']!="N.A.") {
+          if (oCombinedWidget.payload["affectedLandUse"]['grass']['tot_area']> 0) {
+            oCombinedWidget.payload["affectedLandUse"]['grass']['percentage'] = oCombinedWidget.payload["affectedLandUse"]['grass']['square_meters']/ oCombinedWidget.payload["affectedLandUse"]['grass']['tot_area'];
+          }
+          else {
+            oCombinedWidget.payload["affectedLandUse"]['grass']['percentage'] = 0;
+          }
+        }        
+
+
+        // Check built up:
+        if (oFirst.payload['affectedLandUse'] && oFirst.payload['affectedLandUse']['built_up'] && oSecond.payload['affectedLandUse'] && oSecond.payload['affectedLandUse']['built_up']) {
+          // Both available, sum them
+          oCombinedWidget.payload["affectedLandUse"]['built_up']['square_meters'] = oFirst.payload['affectedLandUse']['built_up']['square_meters'] + oSecond.payload['affectedLandUse']['built_up']['square_meters'];
+          oCombinedWidget.payload["affectedLandUse"]['built_up']['tot_area'] = oFirst.payload['affectedLandUse']['built_up']['tot_area'] + oSecond.payload['affectedLandUse']['grasbuilt_ups']['tot_area'];
+        }
+        else if (oFirst.payload['affectedLandUse'] && oFirst.payload['affectedLandUse']['built_up']) {
+          // Only first available
+          oCombinedWidget.payload["affectedLandUse"]['built_up']['square_meters'] = oFirst.payload['affectedLandUse']['built_up']['square_meters'];
+          oCombinedWidget.payload["affectedLandUse"]['built_up']['tot_area'] = oFirst.payload['affectedLandUse']['built_up']['tot_area'];
+        }
+        else if (oSecond.payload['affectedLandUse'] && oSecond.payload['affectedLandUse']['built_up']) {
+          // Only second available
+          oCombinedWidget.payload["affectedLandUse"]['built_up']['square_meters'] = oSecond.payload['affectedLandUse']['built_up']['square_meters'];
+          oCombinedWidget.payload["affectedLandUse"]['built_up']['tot_area'] = oSecond.payload['affectedLandUse']['built_up']['tot_area'];
+        }
+        
+        // Compute the percentage for built up
+        if (oCombinedWidget.payload["affectedLandUse"]['built_up']['tot_area']!="N.A.") {
+          if (oCombinedWidget.payload["affectedLandUse"]['built_up']['tot_area']> 0) {
+            oCombinedWidget.payload["affectedLandUse"]['built_up']['percentage'] = oCombinedWidget.payload["affectedLandUse"]['built_up']['square_meters']/ oCombinedWidget.payload["affectedLandUse"]['built_up']['tot_area'];
+          }
+          else {
+            oCombinedWidget.payload["affectedLandUse"]['built_up']['percentage'] = 0;
+          }
+        }                
         return oCombinedWidget;
       }
     }
@@ -288,13 +371,18 @@ export class ImpactsDialogComponent implements OnInit, AfterViewInit {
 
   }
 
-  private createDoughnutChart(oCanvasElement: HTMLCanvasElement, sTitle: string, afDataValues: number[], asBackgroundColors: string[], asLabels: string[]): Chart {
-    const ctx = oCanvasElement.getContext('2d');
-    if (!ctx) {
+  private createDoughnutChart(oCanvasElement: HTMLCanvasElement, sTitle: string, afDataValues: number[], asBackgroundColors: string[], asLabels: string[], oExistingChart?: Chart): Chart {
+    const oContext = oCanvasElement.getContext('2d');
+    if (!oContext) {
       throw new Error('Failed to get 2D context for canvas');
     }
 
-    return new Chart(ctx, {
+    // Destroy previous chart instance if it exists
+    if (oExistingChart) {
+      oExistingChart.destroy();
+    }    
+
+    return new Chart(oContext, {
       type: 'doughnut', 
       data: {
         labels: asLabels,
@@ -376,9 +464,9 @@ export class ImpactsDialogComponent implements OnInit, AfterViewInit {
 
     // Charts must be created after the view has been initialized,
     // as the canvas elements need to be present in the DOM.
-    this.createDoughnutChart(this.m_oChartCropsRef.nativeElement, sCropsLabel, [1.0-fCropsPerc, fCropsPerc], ['#4BC0C0', '#FF6384'], [sNotAffected, sAffected]);
-    this.createDoughnutChart(this.m_oChartGrassRef.nativeElement, sGrassLabel, [1.0-fGrassPerc, fGrassPerc], ['#4BC0C0', '#FF6384'], [sNotAffected, sAffected]);
-    this.createDoughnutChart(this.m_ChartBuiltUpRef.nativeElement, sBuiltLabel, [1.0-fBuiltPerc, fBuiltPerc], ['#4BC0C0', '#FF6384'], [sNotAffected, sAffected]);
+    this.m_oCropsChart = this.createDoughnutChart(this.m_oChartCropsRef.nativeElement, sCropsLabel, [1.0-fCropsPerc, fCropsPerc], ['#4BC0C0', '#FF6384'], [sNotAffected, sAffected], this.m_oCropsChart);
+    this.m_oGrassLandChart = this.createDoughnutChart(this.m_oChartGrassRef.nativeElement, sGrassLabel, [1.0-fGrassPerc, fGrassPerc], ['#4BC0C0', '#FF6384'], [sNotAffected, sAffected], this.m_oGrassLandChart);
+    this.m_oBuiltUpChart = this.createDoughnutChart(this.m_ChartBuiltUpRef.nativeElement, sBuiltLabel, [1.0-fBuiltPerc, fBuiltPerc], ['#4BC0C0', '#FF6384'], [sNotAffected, sAffected], this.m_oBuiltUpChart);
 
   }
 
