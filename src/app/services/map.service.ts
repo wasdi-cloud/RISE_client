@@ -153,6 +153,15 @@ export class MapService {
    * Area of Interest for Magic Tool
    */
   m_oMagicToolAOI: any = null;
+  /*
+  *this is a custom icon to change the polygon edges while drawing
+   */
+  private oWhiteCircleIcon = new L.DivIcon({
+    iconSize: new L.Point(1, 8), // Size of the icon (width, height)
+    className: 'leaflet-div-icon leaflet-white-circle-marker', // Custom class for styling
+    html: '' // No inner HTML, styling done via CSS
+  });
+
 
   /**
    * Init options for leaflet-draw
@@ -160,15 +169,23 @@ export class MapService {
   m_oDrawOptions: any = {
     position: 'topright',
     draw: {
-      circle: true,
+      circle: { // <--- ADD shapeOptions HERE for circles
+        shapeOptions: { color: '#e1aa07' } // Set the color here
+      },
       circlemarker: false,
       marker: false,
-      polyline: false,
-      polygon: true,
-      rectangle: {shapeOptions: {color: '#4AFF00'}, showArea: false},
+      polyline: { // <--- ADD shapeOptions HERE for polylines (if enabled)
+        shapeOptions: { color: '#e1aa07' } // Set the color here
+      },
+      polygon: {
+        shapeOptions: { color: '#e1aa07' }, // Already set for polygon
+        showArea: false,
+        icon: this.oWhiteCircleIcon
+      },
+      rectangle: { shapeOptions: { color: '#e1aa07' }, showArea: false }, // Already set for rectangle
     },
     edit: {
-      featureGroup: new L.FeatureGroup(),
+      featureGroup: this.m_oDrawnItems,
       edit: false,
       remove: false,
       fullscreenControl: true,
