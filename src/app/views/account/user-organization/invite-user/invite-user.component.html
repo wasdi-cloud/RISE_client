@@ -1,10 +1,22 @@
 <div class="invite-container d-flex flex-column gap-2 p-3">
   <div
-    class="header d-flex flex-row justify-content-between align-items-center" 
+    class="header d-flex flex-row justify-content-between align-items-center"
   >
-    <h3 class="invite-header">
-      {{ "COLLABORATORS.ADD" | translate }}
-    </h3>
+    <div class="d-flex align-items-center">
+      <h3 class="invite-header">
+        {{ "COLLABORATORS.ADD" | translate }}
+      </h3>
+      <span class="info-btn material-symbols-outlined" (click)="openInfoDialog()">
+      info
+    </span>
+    </div>
+<!--    <rise-button-->
+<!--      class="info-button"-->
+<!--      [m_sIconLeft]="'info'"-->
+<!--      [m_sSize]="'small'"-->
+<!--      (click)="openInfoDialog()"-->
+<!--    ></rise-button>-->
+<!--    <span class="info-btn material-symbols-outlined" (click)="openInfoDialog()"> info </span>-->
     <span class="close-btn material-symbols-outlined" (click)="onDismiss()"> close </span>
   </div>
   <rise-text-input

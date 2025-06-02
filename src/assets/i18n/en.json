@@ -95,7 +95,8 @@
     "CHANGE_ROLE": "Change User Role",
     "ROLE": "Role",
     "ROLE_CHANGE_ERROR": "User role could not be changed. Please try again or contact us.",
-    "ROLE_CHANGE_SUCCESS": "User Role successfully changed"
+    "ROLE_CHANGE_SUCCESS": "User Role successfully changed",
+    "ROLE_INFO": "<strong>User Roles:</strong><br/>\n    <ul>\n      <li><strong>ADMIN:</strong> Full system control, user & global settings management.</li>\n      <li><strong>HQ:</strong> Strategic oversight, multi-team reporting & coordination.</li>\n      <li><strong>FIELD:</strong> On-site operations, task execution, data collection.</li>\n      <li><strong>SHARED:</strong> Access to common features & shared resources across specific user groups.</li>\n    </ul>"
   },
   "DASHBOARD": {
     "SEARCH": "Search Map",

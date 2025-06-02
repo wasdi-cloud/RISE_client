@@ -190,4 +190,11 @@ export class InviteUserComponent implements OnInit {
   onDismiss() {
     this.m_oDialogRef.close();
   }
+
+  openInfoDialog() {
+
+    const sMsg = this.m_oTranslate.instant('COLLABORATORS.ROLE_INFO');
+
+    this.m_oNotificationsDialogsService.openInfoDialog(sMsg, 'alert', '');
+  }
 }

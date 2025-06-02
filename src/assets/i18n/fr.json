@@ -123,7 +123,8 @@
     "CHANGE_ROLE": "Changer le rôle de l'utilisateur",
     "ROLE": "Rôle",
     "ROLE_CHANGE_ERROR": "Le rôle de l'utilisateur n'a pas pu être modifié. Veuillez réessayer ou nous contacter.",
-    "ROLE_CHANGE_SUCCESS": "Rôle de l'utilisateur modifié avec succès"
+    "ROLE_CHANGE_SUCCESS": "Rôle de l'utilisateur modifié avec succès",
+    "ROLE_INFO": "<strong>Rôles d'utilisateur:</strong><br/>\n    <ul>\n      <li><strong>ADMIN:</strong> Contrôle total du système, gestion des utilisateurs et des paramètres généraux.</li>\n      <li><strong>HQ:</strong> Supervision stratégique, rapports et coordination multi-équipes.</li>\n      <li><strong>FIELD:</strong> Opérations sur site, exécution des tâches, collecte de données.</li>\n      <li><strong>SHARED:</strong> Accès aux fonctionnalités communes et aux ressources partagées pour des groupes d'utilisateurs spécifiques.</li>\n    </ul>"
   },
   "DASHBOARD": {
     "SEARCH": "Rechercher une carte",
@@ -375,7 +376,7 @@
     "BARESOIL": "Carte d'inondation des sols nus",
     "URBAN": "Carte d'inondation urbaine",
     "MERGED": "Impacts combinés"
-  }  
+  }
 
 
 }

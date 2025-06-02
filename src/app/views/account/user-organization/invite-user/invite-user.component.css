@@ -12,3 +12,26 @@ h3 {
 ::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
   background-color: transparent !important;
 }
+.invite-header {
+  /* Increase this value to create more space between the title and the info button */
+  margin-right: 12px; /* You can try 16px, 20px, etc., until it looks right */
+}
+
+.info-btn {
+  font-size: 20px; /* Adjust icon size as needed */
+  color: #6c757d; /* Default color for the icon (a bit subtle) */
+  cursor: pointer; /* Indicates the element is clickable */
+  transition: color 0.2s ease-in-out, transform 0.2s ease-in-out; /* Smooth transition for hover effects */
+  padding: 4px; /* Add a little padding to make the clickable area larger */
+  border-radius: 50%; /* Makes the clickable area round for a soft feel */
+  transform: translateY(-2px); /* Nudges the icon up by 2 pixels to align it visually with the text */
+  /* Adjust this value (-1px, -2px, 0px, etc.) until it looks perfectly aligned with your specific font sizes */
+}
+
+.info-btn:hover {
+  color: var(--rise-gold); /* Change color on hover (e.g., to your brand's gold color) */
+  transform: scale(1.1) translateY(-2px); /* Keep the vertical adjustment while scaling on hover */
+  background-color: rgba(0, 123, 255, 0.1); /* Subtle background highlight on hover */
+}
+
+

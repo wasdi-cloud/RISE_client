@@ -96,7 +96,8 @@
     "CHANGE_ROLE": "Cambia ruolo utente",
     "ROLE": "Ruolo",
     "ROLE_CHANGE_ERROR": "Impossibile modificare il ruolo dell'utente. Si prega di riprovare o contattarci.",
-    "ROLE_CHANGE_SUCCESS": "Ruolo utente modificato con successo"
+    "ROLE_CHANGE_SUCCESS": "Ruolo utente modificato con successo",
+    "ROLE_INFO": "<strong>Ruoli Utente:</strong><br/>\n    <ul>\n      <li><strong>ADMIN:</strong> Controllo completo del sistema, gestione utenti e impostazioni globali.</li>\n      <li><strong>HQ:</strong> Supervisione strategica, reportistica e coordinamento multi-team.</li>\n      <li><strong>FIELD:</strong> Operazioni sul campo, esecuzione attività, raccolta dati.</li>\n      <li><strong>SHARED:</strong> Accesso a funzionalità comuni e risorse condivise per specifici gruppi di utenti.</li>\n    </ul>"
   },
 	"DASHBOARD": {
 		"SEARCH": "Cerca nella Mappa",

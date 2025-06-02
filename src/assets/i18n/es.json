@@ -99,7 +99,8 @@
     "CHANGE_ROLE": "Cambiar rol de usuario",
     "ROLE": "Rol",
     "ROLE_CHANGE_ERROR": "No se pudo cambiar el rol del usuario. Por favor, inténtelo de nuevo o contáctenos.",
-    "ROLE_CHANGE_SUCCESS": "Rol de usuario cambiado con éxito"
+    "ROLE_CHANGE_SUCCESS": "Rol de usuario cambiado con éxito",
+    "ROLE_INFO": "<strong>Roles de Usuario:</strong><br/>\n    <ul>\n      <li><strong>ADMIN:</strong> Control total del sistema, gestión de usuarios y configuraciones globales.</li>\n      <li><strong>HQ:</strong> Supervisión estratégica, informes y coordinación multi-equipo.</li>\n      <li><strong>FIELD:</strong> Operaciones en sitio, ejecución de tareas, recopilación de datos.</li>\n      <li><strong>SHARED:</strong> Acceso a funciones comunes y recursos compartidos para grupos de usuarios específicos.</li>\n    </ul>"
   },
   "DASHBOARD": {
     "SEARCH": "Buscar mapa",
