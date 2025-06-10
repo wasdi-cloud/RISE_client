@@ -66,3 +66,9 @@
   margin-left: 5px;
   cursor: pointer;
 }
+.flag-icon {
+  width: 24px; /* Adjust size as needed */
+  height: auto;
+  margin-right: 8px; /* Space between flag and text */
+  vertical-align: middle;
+}

@@ -73,6 +73,12 @@ export class RiseDropdownComponent {
   m_sSearchString: string = '';
 
   /**
+   * Optional flag to indicate if this dropdown is specifically for countries,
+   * enabling flag display. Default: false;
+   */
+  @Input() m_bIsCountryDropdown: boolean = false;
+
+  /**
    * Emit selection change to listening parent component
    */
   emitSelectionChange(oEvent) {
@@ -103,9 +109,9 @@ export class RiseDropdownComponent {
     return aoNewValues;
   }
 
-  removePlugin(plugin: any, event: Event) {
+  removeItem(oChosenItem: any, event: Event) {
     event.stopPropagation(); // Prevent dropdown from opening
-    this.m_aoSelectedItems = this.m_aoSelectedItems.filter(item => item !== plugin);
+    this.m_aoSelectedItems = this.m_aoSelectedItems.filter(item => item !== oChosenItem);
     this.emitSelectionChange({ value: this.m_aoSelectedItems }); // Emit updated selection
   }
   toggleSelectAll(): void {

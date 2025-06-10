@@ -45,11 +45,20 @@
             [(m_sInputText)]="m_oOrganization.street"
             [m_sLocalizationKey]="'ORGANIZATION.STREET_ADDRESS'"
           ></rise-text-input>
-          <rise-text-input
+          <rise-dropdown
             [m_bHasTitle]="true"
-            [(m_sInputText)]="m_oOrganization.country"
-            [m_sLocalizationKey]="'ORGANIZATION.COUNTRY'"
-          ></rise-text-input>
+            [m_sLabel]="'ORGANIZATION.COUNTRY'"
+            [m_aoSelectedItems]="m_oOrgCountry"
+            [m_aoDropdownItems]="m_aoCountries"
+            [m_bIsCountryDropdown]="true"
+            (m_oSelectionChange)="setOrganizationCountry($event)"
+          >
+          </rise-dropdown>
+<!--          <rise-text-input-->
+<!--            [m_bHasTitle]="true"-->
+<!--            [(m_sInputText)]="m_oOrganization.country"-->
+<!--            [m_sLocalizationKey]="'ORGANIZATION.COUNTRY'"-->
+<!--          ></rise-text-input>-->
           <div class="d-flex flex-row gap-1">
             <rise-text-input
               [m_bHasTitle]="true"

@@ -1,6 +1,6 @@
 <label *ngIf="m_bHasTitle" class="form-label" for="">{{
-  m_sLabel | translate
-}}</label>
+    m_sLabel | translate
+  }}</label>
 <div class="input-group">
   <mat-select
     class="form-control"
@@ -19,7 +19,6 @@
       <strong>{{ isAllSelected() ? 'Unselect All' : 'Select All' }}</strong>
     </mat-option>
 
-
     <div *ngIf="m_bHasSearch" class="mat-search-container">
       <input
         class="mat-select-search"
@@ -29,25 +28,49 @@
         [(ngModel)]="m_sSearchString"
       />
     </div>
+
     <mat-select-trigger>
       <ng-container *ngIf="m_bShowChips; else defaultDisplay">
         <div class="chip-container">
-          <span *ngFor="let plugin of m_aoSelectedItems" class="chip">
-            {{ plugin.name ? plugin.name : plugin }}
-            <button class="chip-close" (click)="removePlugin(plugin, $event)">×</button>
+          <span *ngFor="let item of m_aoSelectedItems" class="chip">
+            <img
+              *ngIf="m_bIsCountryDropdown && item.code"
+              [src]="'https://flagsapi.com/' + item.code + '/flat/24.png'"
+              alt="flag"
+              class="flag-icon"
+            />
+            {{ item.name ? item.name : item }}
+            <button class="chip-close" (click)="removeItem(item, $event)">×</button>
           </span>
         </div>
       </ng-container>
-      <!-- Default text display if chips are disabled -->
       <ng-template #defaultDisplay>
-        {{ getValues(m_aoSelectedItems) }}
+        <ng-container *ngIf="!m_bIsMultiSelect && m_aoSelectedItems">
+          <img
+            *ngIf="m_bIsCountryDropdown && m_aoSelectedItems.code"
+            [src]="'https://flagsapi.com/' + m_aoSelectedItems.code + '/flat/24.png'"
+            alt="flag"
+            class="flag-icon"
+          />
+          {{ getValues(m_aoSelectedItems) }}
+        </ng-container>
+        <ng-container *ngIf="m_bIsMultiSelect">
+          {{ getValues(m_aoSelectedItems) }}
+        </ng-container>
       </ng-template>
     </mat-select-trigger>
+
     <div *ngIf="m_bHasSearch">
       <mat-option
         *ngFor="let oItem; in: m_aoDropdownItems | filter : m_sSearchString"
         [value]="oItem"
       >
+        <img
+          *ngIf="m_bIsCountryDropdown && oItem.code"
+          [src]="'https://flagsapi.com/' + oItem.code + '/flat/24.png'"
+          alt="flag"
+          class="flag-icon"
+        />
         {{ oItem.name ? oItem.name : oItem }}
       </mat-option>
     </div>
@@ -55,7 +78,14 @@
       <mat-option
         *ngFor="let oItem of m_aoDropdownItems"
         [value]="oItem"
-        >{{ oItem.name ? oItem.name : oItem }}
+      >
+        <img
+          *ngIf="m_bIsCountryDropdown && oItem.code"
+          [src]="'https://flagsapi.com/' + oItem.code + '/flat/24.png'"
+          alt="flag"
+          class="flag-icon"
+        />
+        {{ oItem.name ? oItem.name : oItem }}
       </mat-option>
     </div>
   </mat-select>

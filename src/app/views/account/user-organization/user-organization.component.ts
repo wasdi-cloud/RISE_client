@@ -53,6 +53,10 @@ export class UserOrganizationComponent implements OnInit {
 
   m_bInviteUser: boolean = false;
 
+  m_aoCountries: any[] = [];
+
+  m_oOrgCountry: { name?:string,code?:string }={}
+
   constructor(
     private m_oDialog: MatDialog,
     private m_oNotificationDialogService: NotificationsDialogsService,
@@ -64,6 +68,15 @@ export class UserOrganizationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.m_aoCountries = [
+      { name: 'United States', code: 'US' },
+      { name: 'Canada', code: 'CA' },
+      { name: 'United Kingdom', code: 'GB' },
+      { name: 'Germany', code: 'DE' },
+      { name: 'France', code: 'FR' },
+      { name: 'Luxembourg', code: 'LU' },
+      // ... more countries with their 'code'
+    ];
     this.getOrganization();
     this.getOrgUsers();
   }
@@ -77,6 +90,7 @@ export class UserOrganizationComponent implements OnInit {
       next: (oResponse) => {
         if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           this.m_oOrganization = oResponse;
+          this.fillOrgCountryObject(this.m_oOrganization);
         }
       },
       error: (oError) => {
@@ -154,6 +168,12 @@ export class UserOrganizationComponent implements OnInit {
       });
   }
 
+
+  setOrganizationCountry(event: any) {
+    this.m_oOrgCountry=event.value;
+    this.m_oOrganization.country = event.value.name;
+    console.log('Selected Country:', this.m_oOrganization.country);
+  }
   /**
    * Use Case: Admin can edit the basic information of the Organization inserted at the time of the registration (UC_010)
    * Open confirmation dialog and then save the user's changes (if yes)
@@ -304,5 +324,14 @@ export class UserOrganizationComponent implements OnInit {
     if(sOrgType){
       this.m_oOrganization.type=sOrgType.value
     }
+  }
+
+  private fillOrgCountryObject(oOrganizationVM: OrganizationViewModel) {
+    let sCountryName = oOrganizationVM.country;
+
+    this.m_oOrgCountry = this.m_aoCountries.find(
+      (oCountry) => oCountry.name === sCountryName
+    ) || null;
+    console.log(this.m_oOrgCountry);
   }
 }
