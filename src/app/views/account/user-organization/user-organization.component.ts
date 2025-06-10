@@ -29,6 +29,7 @@ import {AuthService} from "../../../services/api/auth.service";
 import {RiseNumberInputComponent} from "../../../components/rise-number-input/rise-number-input.component";
 import {map} from "rxjs";
 import {HttpClient} from "@angular/common/http";
+import {CountryViewModel} from "../../../models/CountryViewModel";
 
 @Component({
   selector: 'user-organization',
@@ -55,9 +56,9 @@ export class UserOrganizationComponent implements OnInit {
 
   m_bInviteUser: boolean = false;
 
-  m_aoCountries: Country[] = [];
+  m_aoCountries: CountryViewModel[] = [];
 
-  m_oOrgCountry: Country={}
+  m_oOrgCountry: CountryViewModel={}
 
   constructor(
     private m_oDialog: MatDialog,
@@ -332,7 +333,7 @@ export class UserOrganizationComponent implements OnInit {
   }
 
   private loadCountries() {
-    return this.m_oHttp.get<Country[]>('assets/data/countries.json').pipe(
+    return this.m_oHttp.get<CountryViewModel[]>('assets/data/countries.json').pipe(
       map(data => data.sort((a, b) => a.name.localeCompare(b.name))) // Optional: Sort alphabetically
     ).subscribe(
       {
@@ -348,7 +349,4 @@ export class UserOrganizationComponent implements OnInit {
 }
 
 
-interface Country{
-  name?:string,
-  code?:string;
-}
+

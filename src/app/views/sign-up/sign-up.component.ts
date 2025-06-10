@@ -21,6 +21,9 @@ import {OrganizationTypes} from '../../shared/organization-types';
 
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 import {RiseNumberInputComponent} from "../../components/rise-number-input/rise-number-input.component";
+import {map} from "rxjs";
+import {HttpClient} from "@angular/common/http";
+import {CountryViewModel} from "../../models/CountryViewModel";
 
 @Component({
   selector: 'app-sign-up',
@@ -94,15 +97,22 @@ export class SignUpComponent implements OnInit {
 
   m_bIsSubmitted:boolean=false;
 
+  m_aoCountries: CountryViewModel[] = [];
+
+  m_oOrgCountry: CountryViewModel={}
+
   constructor(
     private m_oAuthService: AuthService,
     private m_oNotificationService: NotificationsDialogsService,
     private m_oTranslate: TranslateService,
-    private m_oRouter: Router
+    private m_oRouter: Router,
+    private m_oHttp:HttpClient
   ) {
   }
 
   ngOnInit() {
+
+    this.loadCountries();
     this.resetFormVariables();
   }
 
@@ -440,5 +450,26 @@ export class SignUpComponent implements OnInit {
     if(this.m_oRegisterInput.admin==null) return false;
     if(this.m_oRegisterInput.organization==null) return false;
     return true;
+  }
+
+  private loadCountries() {
+    return this.m_oHttp.get<CountryViewModel[]>('assets/data/countries.json').pipe(
+      map(data => data.sort((a, b) => a.name.localeCompare(b.name))) // Optional: Sort alphabetically
+    ).subscribe(
+      {
+        next:(oValue)=>{
+          this.m_aoCountries=oValue
+
+        },
+        error:(oError)=>{
+          console.error(oError)
+        }
+      }
+    );
+  }
+
+  setOrganizationCountry(event: any) {
+    this.m_oOrgCountry=event.value;
+    this.m_oOrgInfoInput.country = event.value.name;
   }
 }

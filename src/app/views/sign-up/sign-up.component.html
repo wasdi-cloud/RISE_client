@@ -166,13 +166,19 @@
             [(m_sInputText)]="m_oOrgInfoInput.street"
           ></rise-text-input>
           <div class="d-flex flex-row gap-2">
-            <rise-text-input
-              [m_sLocalizationKey]="'Country'"
+            <rise-dropdown
+              class="col-6"
+              [m_sLabel]="'ORGANIZATION.COUNTRY'"
+              [m_bHasSearch]="true"
+              [m_aoSelectedItems]="m_oOrgCountry"
+              [m_aoDropdownItems]="m_aoCountries"
+              [m_bIsCountryDropdown]="true"
               [m_bIsValid]="m_bOrgIsValid"
-              [(m_sInputText)]="m_oOrgInfoInput.country"
-            ></rise-text-input>
+              (m_oSelectionChange)="setOrganizationCountry($event)"
+            >
+            </rise-dropdown>
             <rise-text-input
-              class="flex-fill"
+              class="col-6"
               [m_sLocalizationKey]="'City'"
               [m_bIsValid]="m_bOrgIsValid"
               [(m_sInputText)]="m_oOrgInfoInput.city"
@@ -180,13 +186,13 @@
           </div>
           <div class="d-flex flex-row gap-1">
             <rise-text-input
-              class="flex-fill"
+              class="col-6"
               [m_sLocalizationKey]="'Street Number'"
               [m_bIsValid]="m_bOrgIsValid"
               [(m_sInputText)]="m_oOrgInfoInput.number"
             ></rise-text-input>
             <rise-text-input
-              class="flex-fill"
+              class="col-6"
               [m_sLocalizationKey]="'Postal Code'"
               [m_bIsValid]="m_bOrgIsValid"
               [(m_sInputText)]="m_oOrgInfoInput.postalCode"
