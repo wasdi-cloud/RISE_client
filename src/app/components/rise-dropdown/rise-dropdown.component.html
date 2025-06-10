@@ -62,7 +62,7 @@
 
     <div *ngIf="m_bHasSearch">
       <mat-option
-        *ngFor="let oItem; in: m_aoDropdownItems | filter : m_sSearchString"
+        *ngFor="let oItem; of: m_aoDropdownItems | filter : m_sSearchString"
         [value]="oItem"
       >
         <img

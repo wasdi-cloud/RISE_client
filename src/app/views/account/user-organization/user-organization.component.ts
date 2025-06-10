@@ -27,6 +27,8 @@ import FadeoutUtils from '../../../shared/utilities/FadeoutUtils';
 import {OtpDialogComponent} from "../../../dialogs/otp-dialog/otp-dialog.component";
 import {AuthService} from "../../../services/api/auth.service";
 import {RiseNumberInputComponent} from "../../../components/rise-number-input/rise-number-input.component";
+import {map} from "rxjs";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'user-organization',
@@ -53,9 +55,9 @@ export class UserOrganizationComponent implements OnInit {
 
   m_bInviteUser: boolean = false;
 
-  m_aoCountries: any[] = [];
+  m_aoCountries: Country[] = [];
 
-  m_oOrgCountry: { name?:string,code?:string }={}
+  m_oOrgCountry: Country={}
 
   constructor(
     private m_oDialog: MatDialog,
@@ -63,20 +65,14 @@ export class UserOrganizationComponent implements OnInit {
     private m_oOrganizationsService: OrganizationsService,
     private m_oTranslate: TranslateService,
     private m_oUserService: UserService,
-    private m_oAuthService: AuthService
+    private m_oAuthService: AuthService,
+    private m_oHttp:HttpClient
   ) {
   }
 
   ngOnInit(): void {
-    this.m_aoCountries = [
-      { name: 'United States', code: 'US' },
-      { name: 'Canada', code: 'CA' },
-      { name: 'United Kingdom', code: 'GB' },
-      { name: 'Germany', code: 'DE' },
-      { name: 'France', code: 'FR' },
-      { name: 'Luxembourg', code: 'LU' },
-      // ... more countries with their 'code'
-    ];
+
+    this.loadCountries();
     this.getOrganization();
     this.getOrgUsers();
   }
@@ -334,4 +330,25 @@ export class UserOrganizationComponent implements OnInit {
     ) || null;
     console.log(this.m_oOrgCountry);
   }
+
+  private loadCountries() {
+    return this.m_oHttp.get<Country[]>('assets/data/countries.json').pipe(
+      map(data => data.sort((a, b) => a.name.localeCompare(b.name))) // Optional: Sort alphabetically
+    ).subscribe(
+      {
+        next:(oValue)=>{
+          this.m_aoCountries=oValue
+        },
+        error:(oError)=>{
+          console.error(oError)
+        }
+      }
+    );
+  }
+}
+
+
+interface Country{
+  name?:string,
+  code?:string;
 }

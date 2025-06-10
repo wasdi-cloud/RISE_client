@@ -72,3 +72,50 @@
   margin-right: 8px; /* Space between flag and text */
   vertical-align: middle;
 }
+::ng-deep .mat-search-container {
+  /* Change from 'position: absolute' to 'position: sticky' */
+  position: sticky;
+  top: 0; /* This makes it stick to the top of its scrolling container */
+  left: 0;
+  right: 0;
+  z-index: 10; /* Ensure it stays on top of the options */
+  padding: 8px 12px;
+  background-color: rgba(0, 31, 40, 0.9); /* Slightly darker background for visibility */
+  border-top-left-radius: 8px; /* Match panel border-radius */
+  border-top-right-radius: 8px; /* Match panel border-radius */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  box-sizing: border-box; /* Include padding in width calculation */
+}
+
+/* Now, we need to add padding to the list of options so they don't get hidden
+   behind the sticky search bar when the user scrolls.
+   Angular Material typically puts the options inside an .mdc-list element. */
+::ng-deep .mat-mdc-select-panel .mdc-list {
+  padding-top: 50px; /* Adjust this value: it should be roughly the height of your .mat-search-container
+                      (padding + input height) + desired spacing.
+                      This creates space at the top of the scrollable list. */
+}
+
+/* Actual search input field */
+::ng-deep .mat-select-search {
+  width: 100%; /* Take full width of its container */
+  padding: 8px 12px;
+  border: 1px solid var(--rise-text-dim); /* Match dropdown border */
+  border-radius: 4px; /* Slightly rounded corners for the input field */
+  background-color: var(--surface-glass-interactive); /* Match dropdown background */
+  color: var(--rise-text-bright); /* Match dropdown text color */
+  font-size: 16px; /* Adjust size to your preference */
+  outline: none; /* Remove default focus outline */
+}
+
+/* Placeholder color for the search input */
+::ng-deep .mat-select-search::placeholder {
+  color: var(--rise-text-dim); /* Match general placeholder/dim text */
+  opacity: 0.7; /* Make it slightly transparent */
+}
+
+/* Focus style for the search input */
+::ng-deep .mat-select-search:focus {
+  border-color: var(--rise-gold); /* Highlight border on focus, adjust to your theme */
+  box-shadow: 0 0 0 2px rgba(var(--rise-gold), 0.2); /* Subtle glow on focus */
+}
