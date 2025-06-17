@@ -138,6 +138,11 @@
 		"ERROR_LAYER": "Si è verificato un errore durante il recupero delle informazioni sui pixel."
 	},
 	"MONITOR": {
+    "EVENT_START": "Inizio",
+    "EVENT_PEAK": "Picco",
+    "EVENT_END": "Fine",
+    "DRAG": "Trascina per riordinare",
+    "SEE_IMPACTS": "Valutazione degli Impatti",
 		"ADD_EVENT": "Aggiungi evento",
 		"SEARCH_LAYERS_BY_NAME": "Cerca Layer per Nome",
 		"MAP_LAYERS": "Layers",
@@ -155,6 +160,10 @@
 		"WORK_IN_PROGRESS": "In Rise, ci piace lavorare con immagine satellitari fresche. Stiamo lavorando sulla tua nuova area, passa a trovarci più tardi per favore!",
 		"WORK_IN_PROGRESS_TITLE": "Lavori in Corso"
 	},
+
+  "LAYER_ITEM": {
+    "OPACITY": "Opacità"
+  },
 	"LAYER_ANALYZER": {
 		"FILTER": "Filtra Valori dei Pixel",
 		"TOT_AREA_PIXEL": "Pixel Totali nell'Area",
@@ -394,6 +403,9 @@
 	"NOT_AFFECTED": "Non colpito",
 	"BARESOIL": "Mappa di inondazione su suolo nudo",
 	"URBAN": "Mappa di inondazione urbana",
-	"MERGED": "Impatti combinati"
+	"MERGED": "Impatti combinati",
+  "POP_AFFECTED": "Popolazione Colpita",
+  "EXPO_AFFECTED": "Esposizioni Colpite",
+  "ROADS_AFFECTED": "Strade Colpite"
  }
 }

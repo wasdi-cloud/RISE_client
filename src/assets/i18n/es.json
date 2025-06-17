@@ -231,6 +231,11 @@
     "INVALID_SUB_MSG": "Su suscripción ha caducado o no tiene una suscripción activa. Por favor, adquiera una nueva suscripción para continuar usando esta función."
   },
   "MONITOR": {
+    "EVENT_START": "Inicio",
+    "EVENT_PEAK": "Pico",
+    "EVENT_END": "Fin",
+    "DRAG": "Arrastrar para reorganizar",
+    "SEE_IMPACTS": "Evaluación de Impactos",
     "ADD_EVENT": "Agregar evento",
     "SEARCH_LAYERS_BY_NAME": "Buscar capas por nombre",
     "MAP_LAYERS": "Capas visibles",
@@ -245,6 +250,9 @@
     "MANAGE_EVENTS": "Gestionar Eventos",
     "WORK_IN_PROGRESS": "En RISE, nos gusta gestionar únicamente con datos satelitales recién adquiridos. Actualmente estamos procesando su nueva Área de Operaciones. Por favor, vuelve más tarde.",
     "WORK_IN_PROGRESS_TITLE": "Estamos trabajando en ello"
+  },
+  "LAYER_ITEM": {
+    "OPACITY": "Opacidad"
   },
   "LAYER_ANALYZER": {
     "FILTER": "Filtrar valores de píxeles",
@@ -379,6 +387,9 @@
     "NOT_AFFECTED": "No afectado",
     "BARESOIL": "Mapa de inundación de suelo desnudo",
     "URBAN": "Mapa de inundación urbana",
-    "MERGED": "Impactos combinados"
+    "MERGED": "Impactos combinados",
+    "POP_AFFECTED": "Población Afectada",
+    "EXPO_AFFECTED": "Exposiciones Afectadas",
+    "ROADS_AFFECTED": "Carreteras Afectadas"
   }
 }

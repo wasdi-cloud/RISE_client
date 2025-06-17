@@ -137,6 +137,10 @@
     "ERROR_LAYER": "An error occurred while trying to fetch pixel information."
   },
   "MONITOR": {
+    "EVENT_START": "Start",
+    "EVENT_PEAK": "Peak",
+    "EVENT_END": "End",
+    "DRAG":"Drag to rearrange",
     "SEE_IMPACTS": "Impacts Evaluation",
     "ADD_EVENT": "Add event",
     "SEARCH_LAYERS_BY_NAME": "Search Layers By Name",
@@ -394,7 +398,13 @@
     "NOT_AFFECTED": "Not Affected",
     "BARESOIL": "Bare Soil Flood Map",
     "URBAN": "Urban Flood Map",
-    "MERGED": "Merged Impacts"
+    "MERGED": "Merged Impacts",
+    "POP_AFFECTED": "Population Affected",
+    "EXPO_AFFECTED": "Exposures Affected",
+    "ROADS_AFFECTED": "Roads Affected"
+  },
+  "LAYER_ITEM": {
+    "OPACITY": "Opacity"
   }
 
 }

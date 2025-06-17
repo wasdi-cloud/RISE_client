@@ -37,6 +37,11 @@
     "END_DATE": "Date de fin"
   },
   "MONITOR": {
+    "EVENT_START": "Début",
+    "EVENT_PEAK": "Pic",
+    "EVENT_END": "Fin",
+    "DRAG": "Faire glisser pour réorganiser",
+    "SEE_IMPACTS": "Évaluation des Impacts",
     "ADD_EVENT": "Ajouter un événement",
     "SEARCH_LAYERS_BY_NAME": "Rechercher des couches par nom",
     "MAP_LAYERS": "Couches visibles",
@@ -375,8 +380,13 @@
     "NOT_AFFECTED": "Non affecté",
     "BARESOIL": "Carte d'inondation des sols nus",
     "URBAN": "Carte d'inondation urbaine",
-    "MERGED": "Impacts combinés"
+    "MERGED": "Impacts combinés",
+    "POP_AFFECTED": "Population Affectée",
+    "EXPO_AFFECTED": "Expositions Affectées",
+    "ROADS_AFFECTED": "Routes Affectées"
+  },
+
+  "LAYER_ITEM": {
+    "OPACITY": "Opacité"
   }
-
-
 }
