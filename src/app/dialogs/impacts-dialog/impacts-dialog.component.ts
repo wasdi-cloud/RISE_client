@@ -514,10 +514,11 @@ export class ImpactsDialogComponent implements OnInit, AfterViewInit {
       return 'N.A.';
     }
 
-    if (fSquareMeters < 1000000) {
-      return `${(fSquareMeters / 1000).toFixed(2)} km²`;
-    } else {
-      return `${(fSquareMeters / 1000000).toFixed(2)} km²`;
-    }
+    // if (fSquareMeters < 1000000) {
+    //   return `${(fSquareMeters / 1000).toFixed(2)} km²`;
+    // } else {
+      
+    // }
+    return `${(fSquareMeters / 1000000).toFixed(2)} km²`;
   }
 }
