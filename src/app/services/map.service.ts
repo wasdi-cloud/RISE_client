@@ -249,7 +249,8 @@ export class MapService {
       layers: [this.m_oDarkGrayArcGIS],
       zoomControl: false,
       zoom: 3,
-      worldCopyJump: true, // This enables the seamless world wrapping for markers
+      // worldCopyJump: true, // This enables the seamless world wrapping for markers
+      noWrap:true,
       // center: latLng(0, 0),
       edit: {featureGroup: this.m_oDrawnItems},
       fullscreenControl: true,
@@ -288,7 +289,7 @@ export class MapService {
         maxZoom: MapZoomLevels.STANDARD_MAX_ZOOM,
         minZoom: MapZoomLevels.STANDARD_MIN_ZOOM,
         // this option disables loading tiles outside the world bounds.
-        // noWrap: true,
+        noWrap: true,
       }
     );
 
@@ -300,7 +301,7 @@ export class MapService {
         minZoom: MapZoomLevels.DEFAULT_MIN_ZOOM,
         attribution:
           'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
-        // noWrap: true,
+        noWrap: true,
       }
     );
 
@@ -312,7 +313,7 @@ export class MapService {
         minZoom: MapZoomLevels.STREET_MIN_ZOOM,
         attribution:
           'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
-        // noWrap: true,
+        noWrap: true,
       }
     );
 
@@ -324,7 +325,7 @@ export class MapService {
         minZoom: MapZoomLevels.IMAGERY_MIN_ZOOM,
         attribution:
           'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-        // noWrap: true,
+        noWrap: true,
       }
     );
 
@@ -336,7 +337,7 @@ export class MapService {
         maxZoom: MapZoomLevels.DARK_MAX_ZOOM,
         attribution:
           '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        // nowrap: true,
+        noWrap: true,
         // ext: 'png'
       }
     );
@@ -348,7 +349,7 @@ export class MapService {
         maxZoom: MapZoomLevels.DARK_MAX_ZOOM,
         attribution:
           '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        // nowrap: true,
+        noWrap: true,
         // ext: 'png'
       }
     );
