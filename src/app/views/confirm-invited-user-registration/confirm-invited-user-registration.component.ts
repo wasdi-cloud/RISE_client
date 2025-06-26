@@ -12,7 +12,7 @@ import { RiseUtils } from '../../shared/utilities/RiseUtils';
 import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
 import {RiseNumberInputComponent} from "../../components/rise-number-input/rise-number-input.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {TranslateModule} from "@ngx-translate/core";
+import {TranslateModule, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-confirm-registration',
@@ -48,7 +48,8 @@ export class ConfirmInvitedUserRegistrationComponent implements OnInit {
     private m_oAuthService: AuthService,
     private m_oNotificationService: NotificationsDialogsService,
     private m_oRouter: Router,
-    private m_oRiseUtils: RiseUtils
+    private m_oRiseUtils: RiseUtils,
+    private m_oTranslateService:TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -86,6 +87,9 @@ export class ConfirmInvitedUserRegistrationComponent implements OnInit {
 
 
   register() {
+
+    let sInfoMessage=this.m_oTranslateService.instant('REGISTER.INVITED_USER_SUCCESS')
+    let sErrorMessage=this.m_oTranslateService.instant('REGISTER.INVITED_USER_ERROR')
     if (this.validatePassword()) {
       this.m_oConfirmInviteModel.password = this.m_oPasswordInputs.password;
     }
@@ -96,7 +100,7 @@ export class ConfirmInvitedUserRegistrationComponent implements OnInit {
       this.m_oAuthService.confirmUser(this.m_oConfirmInviteModel).subscribe({
         next: (oResponse) => {
           this.m_oNotificationService.openInfoDialog(
-            'You are successfully registered',
+            sInfoMessage,
             'success',
             'User Registered'
           );
@@ -110,7 +114,7 @@ export class ConfirmInvitedUserRegistrationComponent implements OnInit {
             );
           }else{
             this.m_oNotificationService.openInfoDialog(
-              'There were some problems with your inputted information. Please review your entries',
+              sErrorMessage,
               'alert',
               'Error'
             );

@@ -9,6 +9,7 @@ import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar
 
 import { RiseUtils } from '../../shared/utilities/RiseUtils';
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-confirm-registration',
@@ -26,6 +27,7 @@ export class ConfirmAdminRegistrationComponent implements OnInit {
     private m_oAuthService: AuthService,
     private m_oNotificationService: NotificationsDialogsService,
     private m_oRouter: Router,
+    private m_oTranslateService:TranslateService
   ) {}
 
   ngOnInit() {
@@ -36,6 +38,7 @@ export class ConfirmAdminRegistrationComponent implements OnInit {
   }
 
   confirmRegistration() {
+    let sConfirmationMessage=this.m_oTranslateService.instant('REGISTER.CONFIRM_MSG')
     if (
       !FadeoutUtils.utilsIsStrNullOrEmpty(this.m_sConfirmationCode) &&
       !FadeoutUtils.utilsIsStrNullOrEmpty(this.m_sUserId)
@@ -46,7 +49,7 @@ export class ConfirmAdminRegistrationComponent implements OnInit {
           next: (oResponse) => {
             this.m_oRouter.navigateByUrl('login');
             this.m_oNotificationService.openSnackBar(
-              'Thank you for confirming your email! Your account has been successfully verified. You can now log in and start exploring.',
+              sConfirmationMessage,
               'Success',
               'success'
             );

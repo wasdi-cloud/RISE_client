@@ -72,7 +72,7 @@ export class InviteUserComponent implements OnInit {
     private m_oDialogRef: MatDialogRef<InviteUserComponent>,
     private m_oOrganizationsService: OrganizationsService,
     private m_oNotificationsDialogsService: NotificationsDialogsService,
-    private m_oTranslate:TranslateService
+    private m_oTranslateService:TranslateService
   ) {
   }
 
@@ -128,6 +128,7 @@ export class InviteUserComponent implements OnInit {
    * Execute the invite action, set the user message, show option to invite another or return
    */
   executeInvite() {
+    const sNotificationMsg = this.m_oTranslateService.instant('ORGANIZATION.INVITE_SUCCESS');
     let bValidEmail = this.validateEmail();
 
     if (!bValidEmail || !this.m_sUserRole) {
@@ -144,7 +145,7 @@ export class InviteUserComponent implements OnInit {
             this.m_bShowStatus = true;
             this.m_bSuccess = true;
             this.m_oNotificationsDialogsService.openSnackBar(
-              "Invitation was send successfully",
+              sNotificationMsg,
               "Success",
               "success"
             )
@@ -158,7 +159,7 @@ export class InviteUserComponent implements OnInit {
           let asErrorCodes = Array.isArray(oError?.error?.errorStringCodes)
             ? oError.error.errorStringCodes.map(
               (sCode: string) =>
-                `<li>${this.m_oTranslate.instant('ERROR_MSG.' + sCode)}</li>`
+                `<li>${this.m_oTranslateService.instant('ERROR_MSG.' + sCode)}</li>`
             )
             : [];
           let sErrorMsg = `'There were some issues with your inputted information. Please review your entries'<ul>
@@ -192,9 +193,7 @@ export class InviteUserComponent implements OnInit {
   }
 
   openInfoDialog() {
-
-    const sMsg = this.m_oTranslate.instant('COLLABORATORS.ROLE_INFO');
-
+    const sMsg = this.m_oTranslateService.instant('COLLABORATORS.ROLE_INFO');
     this.m_oNotificationsDialogsService.openInfoDialog(sMsg, 'alert', '');
   }
 }

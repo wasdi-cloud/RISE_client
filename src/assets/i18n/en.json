@@ -180,6 +180,7 @@
     "ERROR_MSG": "Could not fetch organization information",
     "ERROR_DELETE_USER": "Could not remove user from this organization. Please try again",
     "INVITE": "Invite New User",
+    "INVITE_SUCCESS": "Invited New User successfully",
     "MEMBERS": "Collaborators",
     "NAME": "Organization Name",
     "SAVE": "Save Changes",
@@ -200,6 +201,9 @@
     "ENTER_PW": "Please enter your One Time Pass Code"
   },
   "REGISTER": {
+    "INVITED_USER_SUCCESS": "You are successfully registered",
+    "INVITED_USER_ERROR": "There were some problems with your inputted information. Please review your entries",
+    "CONFIRM_MSG": "Thank you for confirming your email! Your account has been successfully verified. You can now log in and start exploring.",
     "SUCCESS_MESSAGE": "User Registered - Check your email for a confirmation link",
     "SUCCESS_TITLE": "User Registered",
     "HEADER": "Register in RISE",

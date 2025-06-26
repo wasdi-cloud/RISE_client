@@ -175,6 +175,7 @@
     "ERROR_MSG": "Impossible de récupérer les informations de l'organisation",
     "ERROR_DELETE_USER": "Impossible de retirer l'utilisateur de cette organisation. Veuillez réessayer",
     "INVITE": "Inviter un nouvel utilisateur",
+    "INVITE_SUCCESS": "Nouvel utilisateur invité avec succès",
     "MEMBERS": "Collaborateurs",
     "NAME": "Nom de l'organisation",
     "SAVE": "Enregistrer les modifications",
@@ -195,6 +196,9 @@
     "ENTER_PW": "Veuillez entrer votre code One Time Pass"
   },
   "REGISTER": {
+    "INVITED_USER_SUCCESS": "Vous êtes inscrit avec succès",
+    "INVITED_USER_ERROR": "Il y a eu des problèmes avec les informations que vous avez saisies. Veuillez vérifier vos entrées.",
+    "CONFIRM_MSG": "Merci d'avoir confirmé votre e-mail ! Votre compte a été vérifié avec succès. Vous pouvez maintenant vous connecter et commencer à explorer.",
     "SUCCESS_MESSAGE": "Utilisateur enregistré - Vérifiez votre e-mail pour un lien de confirmation",
     "SUCCESS_TITLE": "Utilisateur enregistré",
     "HEADER": "S'inscrire dans RISE",

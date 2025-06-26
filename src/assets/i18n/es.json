@@ -146,6 +146,7 @@
     "ERROR_MSG": "No se pudo obtener la información de la organización",
     "ERROR_DELETE_USER": "No se pudo eliminar al usuario de esta organización. Por favor, inténtalo de nuevo",
     "INVITE": "Invitar a un nuevo usuario",
+    "INVITE_SUCCESS": "Usuario nuevo invitado exitosamente",
     "MEMBERS": "Colaboradores",
     "NAME": "Nombre de la organización",
     "SAVE": "Guardar cambios",
@@ -166,6 +167,9 @@
     "ENTER_PW": "Ingrese su código de acceso único"
   },
   "REGISTER": {
+    "INVITED_USER_SUCCESS": "Te has registrado exitosamente",
+    "INVITED_USER_ERROR": "Hubo algunos problemas con la información ingresada. Por favor, revisa tus datos.",
+    "CONFIRM_MSG": "¡Gracias por confirmar tu correo electrónico! Tu cuenta ha sido verificada con éxito. Ahora puedes iniciar sesión y empezar a explorar.",
     "SUCCESS_MESSAGE": "Usuario registrado - Revisa tu correo electrónico para un enlace de confirmación",
     "SUCCESS_TITLE": "Usuario registrado",
     "HEADER": "Registrarse en RISE",
