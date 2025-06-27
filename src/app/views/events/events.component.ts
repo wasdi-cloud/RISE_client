@@ -107,6 +107,12 @@ export class EventsComponent implements OnInit {
 
   onCreateNewEvent() {
     this.m_bCreateNewEvent = true;
+    let oArea=this.m_oConstantsService.getActiveAOI();
+    if(!FadeoutUtils.utilsIsObjectNullOrUndefined(oArea)){
+      setTimeout(()=>{
+        this.m_oMapService.flyToMonitorBounds(oArea.bbox)
+      },50)
+    }
   }
   getEventTypes(){
     this.m_aoEventTypes= Object.values(EventType).map(type => ({
@@ -125,6 +131,12 @@ export class EventsComponent implements OnInit {
     this.loadEventAttachments();
 
     this.m_bUpdatingEvent=true;
+    let oArea=this.m_oConstantsService.getActiveAOI();
+    if(!FadeoutUtils.utilsIsObjectNullOrUndefined(oArea)){
+      setTimeout(()=>{
+        this.m_oMapService.flyToMonitorBounds(oArea.bbox)
+      },50)
+    }
   }
 
   loadEventAttachments() {
@@ -247,7 +259,7 @@ export class EventsComponent implements OnInit {
     if(!FadeoutUtils.utilsIsObjectNullOrUndefined(oArea)){
       setTimeout(()=>{
         this.m_oMapService.flyToMonitorBounds(oArea.bbox)
-      },500)
+      },50)
     }
 
   }
