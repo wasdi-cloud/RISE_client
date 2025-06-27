@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit} from '@angular/core';
 import {NgClass, NgFor, NgIf} from '@angular/common';
 import {ActivatedRoute, NavigationEnd, Router, RouterLink} from '@angular/router';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
@@ -32,78 +32,6 @@ export class RiseUserMenuComponent implements OnInit {
   m_bHasArea:boolean=false;
   m_bAlertShown: boolean = false;
 
-  constructor(
-    private m_oActivatedRoute: ActivatedRoute,
-    private m_oAuthService: AuthService,
-    private m_oConstantsService: ConstantsService,
-    private m_oMapService: MapService,
-    private m_oNotificationService: NotificationsDialogsService,
-    private m_oRouter: Router,
-    private m_oTranslate: TranslateService,
-    private m_oUserService: UserService,
-    private m_oAreaService: AreaService,
-
-  ) {
-    // this.m_aoMenuItems = DefaultMenuItems;
-  }
-
-  ngOnInit(): void {
-    // this.initUserMenu();
-    this.getUserMenu();
-  }
-
-  /**
-   * Click handler for user inputs in dropdown state
-   * @param sName
-   * @param elRef
-   */
-  handleClick(sName, elRef?: HTMLElement): void {
-
-    if (sName === 'language') {
-      this.m_bShowLanguageDropdown = !this.m_bShowLanguageDropdown;
-      return;
-    }
-
-
-    this.m_bShowLanguageDropdown = false; // Close language submenu on other clicks
-    switch (sName) {
-      case 'subscriptions':
-        // let oNavExtra: NavigationExtras = {
-        //   state: { m_sActiveOutlet: sName },
-        // };
-        // this.m_oRouter.navigate(['account'], oNavExtra);
-        this.m_oRouter.navigateByUrl('account/subscriptions');
-        break;
-      case 'area of operations':
-        // let oNavExtra: NavigationExtras = {
-        //   state: { m_sActiveOutlet: sName },
-        // };
-        // this.m_oRouter.navigate(['account'], oNavExtra);
-        this.m_oRouter.navigateByUrl('account/area-of-operations');
-        break;
-      case 'organization':
-        // let oNavExtra: NavigationExtras = {
-        //   state: { m_sActiveOutlet: sName },
-        // };
-        // this.m_oRouter.navigate(['account'], oNavExtra);
-        this.m_oRouter.navigateByUrl('account/organization');
-        break;
-      case 'help':
-        window.open('https://discord.gg/FkRu2GypSg', '_blank');
-        break;
-      case 'logout':
-        this.m_oMapService.clearMarkerSubject(); // Clear the subject
-        this.m_oAuthService.logout();
-        break;
-      case 'dashboard':
-        this.m_oMapService.closeWorkspace();
-        this.m_oRouter.navigateByUrl('dashboard');
-        break;
-      default:
-        this.m_oRouter.navigateByUrl(sName);
-    }
-  }
-
   m_bShowLanguageDropdown: boolean = false;
   m_aoLanguages = [
     {
@@ -127,6 +55,86 @@ export class RiseUserMenuComponent implements OnInit {
       value: 'it'
     }
   ];
+
+
+  constructor(
+    private m_oActivatedRoute: ActivatedRoute,
+    private m_oAuthService: AuthService,
+    private m_oConstantsService: ConstantsService,
+    private m_oMapService: MapService,
+    private m_oNotificationService: NotificationsDialogsService,
+    private m_oRouter: Router,
+    private m_oTranslate: TranslateService,
+    private m_oUserService: UserService,
+    private m_oAreaService: AreaService,
+    private elementRef: ElementRef,
+
+  ) {
+    // this.m_aoMenuItems = DefaultMenuItems;
+  }
+
+  ngOnInit(): void {
+    // this.initUserMenu();
+    this.getUserMenu();
+  }
+
+  /**
+   * Click handler for user inputs in dropdown state
+   * @param sName
+   * @param elRef
+   */
+  handleClick(sName, elRef?: HTMLElement): void {
+
+    if (sName === 'language') {
+      this.m_bShowLanguageDropdown = !this.m_bShowLanguageDropdown;
+      return;
+    }
+    this.m_bShowLanguageDropdown = false; // Close language submenu on other clicks
+    switch (sName) {
+      case 'subscriptions':
+        // let oNavExtra: NavigationExtras = {
+        //   state: { m_sActiveOutlet: sName },
+        // };
+        // this.m_oRouter.navigate(['account'], oNavExtra);
+        this.m_oRouter.navigateByUrl('account/subscriptions');
+        this.m_bShowDropdown = false;
+        break;
+      case 'area of operations':
+        // let oNavExtra: NavigationExtras = {
+        //   state: { m_sActiveOutlet: sName },
+        // };
+        // this.m_oRouter.navigate(['account'], oNavExtra);
+        this.m_oRouter.navigateByUrl('account/area-of-operations');
+        this.m_bShowDropdown = false;
+        break;
+      case 'organization':
+        // let oNavExtra: NavigationExtras = {
+        //   state: { m_sActiveOutlet: sName },
+        // };
+        // this.m_oRouter.navigate(['account'], oNavExtra);
+        this.m_oRouter.navigateByUrl('account/organization');
+        this.m_bShowDropdown = false;
+        break;
+      case 'help':
+        window.open('https://discord.gg/FkRu2GypSg', '_blank');
+        this.m_bShowDropdown = false;
+        break;
+      case 'logout':
+        this.m_bShowDropdown = false;
+        this.m_oMapService.clearMarkerSubject(); // Clear the subject
+        this.m_oAuthService.logout();
+        break;
+      case 'dashboard':
+        this.m_oMapService.closeWorkspace();
+        this.m_oRouter.navigateByUrl('dashboard');
+        this.m_bShowDropdown = false;
+        break;
+      default:
+        this.m_oRouter.navigateByUrl(sName);
+        this.m_bShowDropdown = false;
+    }
+  }
+
 
   /**
    * Retrieve the appropriate menu item set based on user's location and Role
@@ -249,16 +257,19 @@ export class RiseUserMenuComponent implements OnInit {
             next: (oResponse) => {
               this.m_oTranslate.use(this.m_oUser.defaultLanguage);
               this.m_bShowLanguageDropdown = false;
+              this.m_bShowDropdown = false;
             },
             error: (oError) => {
               console.error(oError);
               this.m_bShowLanguageDropdown = false;
+              this.m_bShowDropdown = false;
             },
           });
         },
         error:(oError)=>{
           console.error(oError)
           this.m_bShowLanguageDropdown = false;
+          this.m_bShowDropdown = false;
         }
       })
     } else {
@@ -268,15 +279,30 @@ export class RiseUserMenuComponent implements OnInit {
         next: (oResponse) => {
           this.m_oTranslate.use(this.m_oUser.defaultLanguage);
           this.m_bShowLanguageDropdown = false;
+          this.m_bShowDropdown = false;
+
         },
         error: (oError) => {
           console.error(oError);
           this.m_bShowLanguageDropdown = false;
+          this.m_bShowDropdown = false;
+
         },
       });
     }
 
   }
-
+  /**
+   * Listen for clicks on the document to close the dropdown if the click is outside.
+   * @param event The click event.
+   */
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    // Check if the menu is open and the clicked element is not inside the menu component's element
+    if (this.m_bShowDropdown && !this.elementRef.nativeElement.contains(event.target)) {
+      this.m_bShowDropdown = false;
+      this.m_bShowLanguageDropdown = false; // Also close language dropdown if open
+    }
+  }
   protected readonly UserRole = UserRole;
 }
