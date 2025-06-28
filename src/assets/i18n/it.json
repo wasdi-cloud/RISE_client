@@ -394,6 +394,7 @@
     "FLOOD_DEPTH": "Stima della Profondità dell'acqua"
   },
   "IMPACTS_DIALOG": {
+  "NO_IMPACTS_AVAILABLE_MSG": "RISE non ha trovato dati per la data selezionata in quest'area. Si prega di ricontrollare la data o l'area operativa.",
 	"SELECT_LAYER": "Mostra impatti basati su:",
 	"SELECT_LAYER_PLACEHOLDER": "Seleziona un layer per mostrare gli impatti",
 	"ESTIMATED_AREA": "Area totale stimata",

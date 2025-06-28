@@ -378,6 +378,7 @@
     "FLOOD_DEPTH": "Estimación de Profundidad de Inundación"
   },
   "IMPACTS_DIALOG": {
+    "NO_IMPACTS_AVAILABLE_MSG": "RISE no encontró datos para la fecha seleccionada en esta área. Por favor, verifica la fecha o el área de operación.",
     "SELECT_LAYER": "Mostrar impactos basados en:",
     "SELECT_LAYER_PLACEHOLDER": "Seleccione una capa para mostrar los impactos",
     "ESTIMATED_AREA": "Área total estimada",

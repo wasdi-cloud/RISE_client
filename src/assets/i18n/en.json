@@ -389,6 +389,7 @@
     "FLOOD_DEPTH": "Flood Depth Estimation"
   },
   "IMPACTS_DIALOG": {
+    "NO_IMPACTS_AVAILABLE_MSG": "RISE did not find any data for the selected date in this area of operation",
     "SELECT_LAYER": "Show Impacts based on:",
     "SELECT_LAYER_PLACEHOLDER": "Select a layer to show impacts",
     "ESTIMATED_AREA": "Estimated Tot Area",

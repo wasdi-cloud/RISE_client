@@ -21,8 +21,15 @@
         ></rise-dropdown>
       </div>
       <div style="max-width: 300px; width: 100%;" *ngIf="!m_bImpactsAvailable">
-        <div class="alert alert-warning">
-          {{ 'IMPACTS_DIALOG.NO_IMPACTS_AVAILABLE' | translate }}
+        <div class="invalid-sub  p-3 d-flex flex-row justify-content-between align-items-center">
+          <div>
+            <div class="account-sub-header">
+              {{ 'IMPACTS_DIALOG.NO_IMPACTS_AVAILABLE' | translate }}
+            </div>
+            <p class="my-0">
+              {{ "IMPACTS_DIALOG.NO_IMPACTS_AVAILABLE_MSG" | translate }}
+            </p>
+          </div>
         </div>
       </div>
     </div>
