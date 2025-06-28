@@ -148,7 +148,10 @@ export class RiseUserMenuComponent implements OnInit {
       } else if (sPath.includes('monitor')) {
         if (sRole === UserRole.FIELD) {
           this.m_aoMenuItems = FullMenuItems.filter(oItem => oItem.name !== 'subscriptions' && oItem.name !== 'organization' && oItem.name !== 'area of operations');
-        } else {
+        }else if (sRole === UserRole.HQ) {
+          this.m_aoMenuItems = FullMenuItems.filter(oItem =>  oItem.name !== 'organization');
+        }
+        else {
           this.m_aoMenuItems = FullMenuItems;
         }
       } else {
@@ -156,7 +159,10 @@ export class RiseUserMenuComponent implements OnInit {
           this.m_aoMenuItems = DefaultMenuItems.filter(
             oItem => oItem.name !== 'subscriptions' && oItem.name !== 'organization' && oItem.name !== 'area of operations'
           );
-        } else {
+        }else if (sRole === UserRole.HQ) {
+          this.m_aoMenuItems = DefaultMenuItems.filter(oItem =>  oItem.name !== 'organization');
+        }
+        else {
           this.m_aoMenuItems = DefaultMenuItems;
         }
       }
