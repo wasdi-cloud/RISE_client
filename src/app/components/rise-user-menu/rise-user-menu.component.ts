@@ -224,6 +224,7 @@ export class RiseUserMenuComponent implements OnInit {
    */
   toggleDropdown(): void {
     this.m_bShowDropdown = !this.m_bShowDropdown;
+    this.m_bShowLanguageDropdown=false;
     this.m_bAlertShown = true;
   }
 

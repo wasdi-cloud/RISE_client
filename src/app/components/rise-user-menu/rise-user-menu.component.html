@@ -1,7 +1,7 @@
 <div class="dropdown">
   <div
     class="user-icon"
-    data-bs-toggle="dropdown"
+
     aria-expanded="false"
     aria-haspopup="true"
     (click)="toggleDropdown()"
@@ -25,7 +25,7 @@
         *ngFor="let oItem of m_aoMenuItems"
         #menuItem
         class="d-flex flex-row align-items-center gap-2"
-        (click)="handleClick(oItem.name, menuItem)"
+        (click)="handleClick(oItem.name, menuItem); $event.stopPropagation()"
       >
         <span class="material-symbols-outlined"> {{ oItem.icon }} </span>
         {{ oItem.translation | translate }}
@@ -35,7 +35,7 @@
       <li
         *ngFor="let lang of m_aoLanguages"
         class="d-flex flex-row align-items-center gap-2"
-        (click)="changeLanguage(lang.value)"
+        (click)="changeLanguage(lang.value); $event.stopPropagation();"
       >
         {{ lang.name }}
       </li>
@@ -63,6 +63,5 @@
         }
       </div>
     </div>
-
   </div>
 </div>
