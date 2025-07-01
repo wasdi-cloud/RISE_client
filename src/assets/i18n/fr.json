@@ -37,6 +37,8 @@
     "END_DATE": "Date de fin"
   },
   "MONITOR": {
+    "SHOW_LESS": "Afficher moins",
+    "SHOW_MORE": "+ {{count}} de plus",
     "EVENT_START": "Début",
     "EVENT_PEAK": "Pic",
     "EVENT_END": "Fin",

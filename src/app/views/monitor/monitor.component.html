@@ -125,7 +125,7 @@
         <!-- "+X more" chip -->
         <rise-map-chip
           *ngIf="!m_bShowAllPlugins && m_aoPlugins.length > m_iVisibleCount"
-          [m_sTitle]="'+' + getHiddenPluginsCount() + ' more'"
+          [m_sTitle]="'MONITOR.SHOW_MORE' | translate: { count: getHiddenPluginsCount() }"
           [m_sIcon]="'more'"
           (click)="togglePluginView()"
           [m_sChipType]="'toggle'"
@@ -134,7 +134,7 @@
         <!-- "Show less" chip when expanded -->
         <rise-map-chip
           *ngIf="m_bShowAllPlugins && m_aoPlugins.length > m_iVisibleCount"
-          [m_sTitle]="'Show less'"
+          [m_sTitle]="'MONITOR.SHOW_LESS'|translate"
           [m_sIcon]="'less'"
           [m_sChipType]="'toggle'"
           (click)="togglePluginView()"

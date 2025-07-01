@@ -138,6 +138,8 @@
 		"ERROR_LAYER": "Si è verificato un errore durante il recupero delle informazioni sui pixel."
 	},
 	"MONITOR": {
+    "SHOW_LESS": "Mostra meno",
+    "SHOW_MORE": "+ {{count}} in più",
     "EVENT_START": "Inizio",
     "EVENT_PEAK": "Picco",
     "EVENT_END": "Fine",

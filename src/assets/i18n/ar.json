@@ -230,6 +230,8 @@
     "SIGN_UP": "التسجيل"
   },
   "MONITOR": {
+    "SHOW_LESS": "إظهار أقل",
+    "SHOW_MORE": "+ {{count}} المزيد",
     "EVENT_START": "البداية",
     "EVENT_PEAK": "الذروة",
     "EVENT_END": "النهاية",

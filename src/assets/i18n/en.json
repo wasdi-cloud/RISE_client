@@ -137,6 +137,8 @@
     "ERROR_LAYER": "An error occurred while trying to fetch pixel information."
   },
   "MONITOR": {
+    "SHOW_LESS": "Show less",
+    "SHOW_MORE": "+ {{count}} more",
     "EVENT_START": "Start",
     "EVENT_PEAK": "Peak",
     "EVENT_END": "End",
