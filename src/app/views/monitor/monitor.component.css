@@ -46,6 +46,7 @@ rise-map {
   z-index: 999;
   padding-right: 80px;
   flex-wrap: wrap;
+  gap: 10px;
 }
 .rise-sidebar {
   background-color: rgba(0, 31, 40, 0.8);
@@ -149,6 +150,7 @@ span.cta-text {
   z-index: 999;
   padding-right: 80px;
   flex-wrap: wrap;
+  gap: 15px;
 }
 
 .area-name-text {

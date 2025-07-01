@@ -179,8 +179,11 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
      */
   private m_bIsNavigatedFromEventList = false;
   @ViewChild('btnContainer', { static: false }) btnContainerRef!: ElementRef;
-    @ViewChild('tempFix', { static: false }) tempFixRef!: ElementRef;
-    private m_bIsLive: boolean=true;
+  @ViewChild('tempFix', { static: false }) tempFixRef!: ElementRef;
+  // IMPORTANT: Declare the property to hold the bound function reference
+  private m_oFullscreenChangeListener: () => void;
+  private m_bIsLive: boolean=true;
+
   constructor(
     private m_oActivatedRoute: ActivatedRoute,
     private m_oAreaService: AreaService,
@@ -228,7 +231,11 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
       this.m_iSelectedDate= iFinalTimestampMs;
       this.m_iInitialPeakDate = iFinalTimestampMs/1000;
+
+
     }
+    // Initialize the bound function for fullscreen change
+    this.m_oFullscreenChangeListener = this.handleFullScreenChange.bind(this);
   }
 
   ngOnInit(): void {
@@ -259,27 +266,9 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    document.addEventListener('fullscreenchange', () => {
+    // Add the event listener using the stored reference
+    document.addEventListener('fullscreenchange', this.m_oFullscreenChangeListener);
 
-      const oFullscreenElement = document.fullscreenElement;
-      const oBtnContainer = this.btnContainerRef.nativeElement;
-      const oOriginalParent = this.tempFixRef.nativeElement;
-
-      const sFullscreenClass = 'fullscreen-btn-container'; // This will be the class for fullscreen mode
-      const sNormalClass = 'btn-select-container'; // This will be the class for fullscreen mode
-
-      // Add or remove the fullscreen class based on the fullscreen state
-      if (oFullscreenElement && !oFullscreenElement.contains(oBtnContainer)) {
-        oFullscreenElement.appendChild(oBtnContainer);
-        oBtnContainer.classList.add(sFullscreenClass);
-        oBtnContainer.classList.remove(sNormalClass);
-      }
-      else if (!oFullscreenElement) {
-        oOriginalParent.insertBefore(oBtnContainer, oOriginalParent.firstChild);
-        oBtnContainer.classList.remove(sFullscreenClass);
-        oBtnContainer.classList.add(sNormalClass);
-      }
-    });
   }
 
   ngOnDestroy(): void {
@@ -288,7 +277,48 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     if (this.m_oLayerAnalyzerSubscription) {
       this.m_oLayerAnalyzerSubscription.unsubscribe();
     }
+    console.log("destroyed!")
+    // IMPORTANT: Remove the fullscreenchange event listener
+    document.removeEventListener('fullscreenchange', this.m_oFullscreenChangeListener);
   }
+
+    /**
+     * Handler for the fullscreenchange event.
+     * This method contains the logic to move the button container
+     * in and out of the fullscreen element.
+     */
+    private handleFullScreenChange(): void {
+
+      console.log("hello?")
+      const oFullscreenElement = document.fullscreenElement;
+      const oBtnContainer = this.btnContainerRef.nativeElement;
+      const oOriginalParent = this.tempFixRef.nativeElement;
+
+      const sFullscreenClass = 'fullscreen-btn-container';
+      const sNormalClass = 'btn-select-container';
+
+      // Add or remove the fullscreen class based on the fullscreen state
+      if (oFullscreenElement && !oFullscreenElement.contains(oBtnContainer)) {
+        // If fullscreen is active and the button container is not yet its child, append it
+        oFullscreenElement.appendChild(oBtnContainer);
+        oBtnContainer.classList.add(sFullscreenClass);
+        oBtnContainer.classList.remove(sNormalClass);
+      }
+      else if (!oFullscreenElement) {
+        // If not in fullscreen, return the button container to its original parent
+        // Add a null check for oOriginalParent, as the component might be in a tearing-down phase
+        if (oOriginalParent) {
+          oOriginalParent.insertBefore(oBtnContainer, oOriginalParent.firstChild);
+          oBtnContainer.classList.remove(sFullscreenClass);
+          oBtnContainer.classList.add(sNormalClass);
+        } else {
+          // Fallback: If original parent is somehow not available (e.g., component already partially destroyed)
+          // You might want to log an error or handle this case.
+          console.warn('Original parent for button container not found during fullscreen exit. Element might be detached.');
+          // Consider appending to body or a known global container if this is a critical UI element
+        }
+      }
+    }
 
   startLiveTimer() {
     this.stopLiveTimer(); // clear any existing interval
