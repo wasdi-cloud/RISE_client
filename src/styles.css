@@ -247,6 +247,7 @@ a.leaflet-control-zoom-out {
 }
 .leaflet-control-layers,
 .leaflet-control-geocoder {
+  z-index: 1001 !important;
   background-color: transparent !important;
   color: var(--rise-text-bright);
 }
@@ -272,9 +273,14 @@ a.leaflet-control-zoom-out {
   top: 3.5rem !important;
   right: 0.15rem !important;
 }
+.leaflet-control-container {
+  z-index: 1000 !important; /* Make this explicitly higher than your chip containers (999) */
+  /* Using !important can override Leaflet's default styles.
+     If you have more specific selectors, you might not need !important. */
+}
 
 .leaflet-top {
-  z-index: 998 !important;
+  z-index: 1000 !important;
 }
 
 /* Selector for the Leaflet Geocoder */

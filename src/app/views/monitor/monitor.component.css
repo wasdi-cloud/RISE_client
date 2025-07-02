@@ -44,6 +44,7 @@ rise-map {
   left: 27%;
   position: absolute;
   z-index: 999;
+  max-width: calc(100% - 27% - 150px);
   padding-right: 80px;
   flex-wrap: wrap;
   gap: 10px;
