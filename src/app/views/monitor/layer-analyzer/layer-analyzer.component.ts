@@ -62,6 +62,7 @@ export class LayerAnalyzerComponent implements OnInit{
       if (this.m_aoInputLayers) {
         if (this.m_aoInputLayers.length>0){
           this.m_sActiveLayerName = this.m_aoInputLayers[0].pluginName
+
         }
       }
       this.m_oAOI = this.m_oData.aoiBbox;
@@ -70,11 +71,14 @@ export class LayerAnalyzerComponent implements OnInit{
   }
 
   onRefresh() {
-
+    //todo for now we are only selecting the first one , but in the future this must change
     let oInput = new LayerAnalyzerInputViewModel();
-    oInput.layerIds = this.m_aoInputLayers.map((layer) => layer.id);
+    // oInput.layerIds = this.m_aoInputLayers.map((layer) => layer.id);
+    oInput.layerIds = [this.m_aoInputLayers[0].id];
     oInput.bbox = this.m_sWKTAoi;
-
+    oInput.areaId=this.m_aoInputLayers[0].areaId
+    oInput.pluginId=this.m_aoInputLayers[0].pluginId
+    oInput.mapId=this.m_aoInputLayers[0].mapId
     this.m_bIsLoading = true;
     this.m_bStarted = true;
     this.m_oChangeDetectorRef.detectChanges();

@@ -955,6 +955,10 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
     let aoSelectedLayers = this.m_oMapService.getSelectedLayers();
     let oAOIBbox = this.m_oMapService.getMagicToolAOI();
+    console.log(aoSelectedLayers)
+    let sAreaId=this.m_sAreaId;
+    let sPluginId=""
+    let sMapId=""
 
     this.m_oDialog.open(LayerAnalyzerComponent,
       {
