@@ -53,6 +53,7 @@
     "RESOLUTION": "Résolution",
     "CREATED_DATE": "Date de création",
     "REFERENCE_DATE": "Date de référence",
+    "LAYER_ANALYZER": "Analyseur de couches",
     "INPUT_DATA": "Données d'entrée",
     "FORCE_UPDATE": "Forcer la mise à jour de la couche",
     "MANAGE_EVENTS": "Gérer les Événements",

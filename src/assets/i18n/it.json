@@ -146,7 +146,7 @@
     "DRAG": "Trascina per riordinare",
     "SEE_IMPACTS": "Valutazione degli Impatti",
 		"ADD_EVENT": "Aggiungi evento",
-		"SEARCH_LAYERS_BY_NAME": "Cerca Layer per Nome",
+    "SEARCH_LAYERS_BY_NAME": "Cerca Layer per Nome",
 		"MAP_LAYERS": "Layers",
 		"NO_LAYERS_TO_SHOW": "Nessun layer da mostrare",
 		"LAYER_PROPERTIES": "Proprietà del Layer",

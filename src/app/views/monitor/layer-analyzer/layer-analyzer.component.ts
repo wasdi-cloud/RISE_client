@@ -60,10 +60,11 @@ export class LayerAnalyzerComponent implements OnInit{
     if (this.m_oData) {
       this.m_aoInputLayers = this.m_oData.selectedLayers;
       if (this.m_aoInputLayers) {
-        if (this.m_aoInputLayers.length>0){
-          this.m_sActiveLayerName = this.m_aoInputLayers[0].pluginName
-
-        }
+        this.m_sActiveLayerName = this.m_aoInputLayers[0].pluginName
+        // if (this.m_aoInputLayers.length>0){
+        //   this.m_sActiveLayerName = this.m_aoInputLayers[0].pluginName
+        //
+        // }
       }
       this.m_oAOI = this.m_oData.aoiBbox;
       this.m_sWKTAoi = this.latLngBoundsToWKT(this.m_oAOI);

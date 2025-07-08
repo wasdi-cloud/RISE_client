@@ -240,6 +240,7 @@
     "EVENT_START": "Inicio",
     "EVENT_PEAK": "Pico",
     "EVENT_END": "Fin",
+    "LAYER_ANALYZER": "Analizador de capas",
     "DRAG": "Arrastrar para reorganizar",
     "SEE_IMPACTS": "Evaluación de Impactos",
     "ADD_EVENT": "Agregar evento",
