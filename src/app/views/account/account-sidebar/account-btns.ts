@@ -4,7 +4,7 @@ export const AccountBtns = [
       , "HQ"
       ,"FIELD"]},
   { labelKey: 'ACCOUNT.ORGANIZATION', route: 'organization', icon: 'groups',role:[ "RISE_ADMIN"
-      , "ADMIN"] },
+      , "ADMIN","HQ"] },
   { labelKey: 'ACCOUNT.SUBSCRIPTIONS', route: 'subscriptions', icon: 'paid',role:[ "RISE_ADMIN"
       , "ADMIN","HQ"
       ] },

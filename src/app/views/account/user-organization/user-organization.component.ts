@@ -30,6 +30,8 @@ import {RiseNumberInputComponent} from "../../../components/rise-number-input/ri
 import {map} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {CountryViewModel} from "../../../models/CountryViewModel";
+import {UserRole} from "../../../models/UserRole";
+import {ConstantsService} from "../../../services/constants.service";
 
 @Component({
   selector: 'user-organization',
@@ -58,7 +60,9 @@ export class UserOrganizationComponent implements OnInit {
 
   m_aoCountries: CountryViewModel[] = [];
 
-  m_oOrgCountry: CountryViewModel={}
+  m_oOrgCountry: CountryViewModel={};
+
+  m_oUserRole:UserRole;
 
   constructor(
     private m_oDialog: MatDialog,
@@ -67,15 +71,38 @@ export class UserOrganizationComponent implements OnInit {
     private m_oTranslate: TranslateService,
     private m_oUserService: UserService,
     private m_oAuthService: AuthService,
-    private m_oHttp:HttpClient
+    private m_oHttp:HttpClient,
+    private m_oConstantService:ConstantsService,
   ) {
   }
 
   ngOnInit(): void {
-
+    this.getUserRole();
     this.loadCountries();
-    this.getOrganization();
-    this.getOrgUsers();
+    // this.getOrganization();
+    // this.getOrgUsers();
+  }
+
+  private getUserRole() {
+    let oUserRole = this.m_oConstantService.getUserRole();
+
+    if (FadeoutUtils.utilsIsObjectNullOrUndefined(oUserRole)) {
+      this.m_oUserService.getUser().subscribe({
+        next: (oUser) => {
+          this.m_oUserRole = oUser.role;
+          this.m_oConstantService.setUser(oUser);
+          this.getOrganization();
+          this.getOrgUsers();
+        },
+        error: (oError) => {
+          console.error(oError)
+        }
+      })
+    } else {
+      this.m_oUserRole = oUserRole;
+      this.getOrganization();
+      this.getOrgUsers();
+    }
   }
 
   /**
@@ -346,6 +373,8 @@ export class UserOrganizationComponent implements OnInit {
       }
     );
   }
+
+  protected readonly UserRole = UserRole;
 }
 
 
