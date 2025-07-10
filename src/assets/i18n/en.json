@@ -167,6 +167,7 @@
     "PER_AREA_AFFECTED_PIXEL": "Percentage of Affected Pixel in Area",
     "ESTIMATED_AREA": "Estimated Area",
     "ESTIMATED_AREA_PIXEL_AFFECTED": "Estimated Area Pixel Affected",
+
     "PER_TOT_AREA_AFFECTED_PIXEL": "Percentage of total Affected Pixel in Area",
     "REFRESH": "Refresh",
     "DOWNLOAD": "Download",

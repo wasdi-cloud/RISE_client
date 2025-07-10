@@ -1,13 +1,10 @@
 <div class="dialog-container d-flex flex-column gap-2 p-3">
-  <!-- Header Section -->
   <div class="header d-flex flex-row justify-content-between align-items-center">
     <h3>{{ "MONITOR.LAYER_ANALYZER" | translate }}</h3> - <h3> {{ m_sActiveLayerName }}</h3>
     <span class="close-btn material-symbols-outlined" (click)="onDismiss()">close</span>
   </div>
 
-  <!-- Body Section -->
   <div class="body flex-fill d-flex flex-column gap-3">
-    <!-- First Row: Text Input + Button -->
     <div class="d-flex flex-row gap-3 align-items-end">
       <div class="flex-grow-1 d-flex flex-column justify-content-center">
         <rise-text-input
@@ -36,47 +33,51 @@
     </div>
 
     <div *ngIf="!m_bIsLoading && m_bStarted">
-      <!-- 5 Text Inputs (A A, A A, A) -->
       <div class="d-flex flex-column gap-2">
         <div class="d-flex flex-row gap-3">
-          <rise-text-input
-            class="flex-grow-1"
+          <div class="equal-width-field d-flex flex-column"> <rise-text-input
+            [m_bReadonly]="true"
             [m_bHasTitle]="true"
             [m_sLocalizationKey]="'LAYER_ANALYZER.TOT_AREA_PIXEL'"
             [(m_sInputText)]="m_sTotAreaPixels"
           ></rise-text-input>
-          <rise-text-input
-            class="flex-grow-1"
+          </div>
+          <div class="equal-width-field d-flex flex-column"> <rise-text-input
+            [m_bReadonly]="true"
             [m_bHasTitle]="true"
             [m_sLocalizationKey]="'LAYER_ANALYZER.ESTIMATED_AREA'"
             [(m_sInputText)]="m_sEstimatedArea"
           ></rise-text-input>
+          </div>
         </div>
         <div class="d-flex flex-row gap-3">
-          <rise-text-input
-            class="flex-grow-1"
-            [m_bHasTitle]="true"
-            [m_sLocalizationKey]="'LAYER_ANALYZER.PER_TOT_AREA_AFFECTED_PIXEL'"
-            [(m_sInputText)]="m_sPercentTotAreaAffectedPixels"
-          ></rise-text-input>
-          <rise-text-input
-            class="flex-grow-1"
+          <div class="equal-width-field d-flex flex-column">
+            <rise-text-input
+              [m_bReadonly]="true"
+              [m_bHasTitle]="true"
+              [m_sLocalizationKey]="'LAYER_ANALYZER.ESTIMATED_AREA_PIXEL_AFFECTED'"
+              [(m_sInputText)]="m_sAreaPixelAffected"
+            ></rise-text-input>
+
+          </div>
+          <div class="equal-width-field d-flex flex-column"> <rise-text-input
+            [m_bReadonly]="true"
             [m_bHasTitle]="true"
             [m_sLocalizationKey]="'LAYER_ANALYZER.PER_AREA_AFFECTED_PIXEL'"
             [(m_sInputText)]="m_sPercentAreaAffectedPixels"
           ></rise-text-input>
+          </div>
         </div>
-        <div class="col-6">
+        <div class="equal-width-field">
           <rise-text-input
-            class="flex-grow-1"
+            [m_bReadonly]="true"
             [m_bHasTitle]="true"
-            [m_sLocalizationKey]="'LAYER_ANALYZER.ESTIMATED_AREA_PIXEL_AFFECTED'"
-            [(m_sInputText)]="m_sAreaPixelAffected"
+            [m_sLocalizationKey]="'LAYER_ANALYZER.PER_TOT_AREA_AFFECTED_PIXEL'"
+            [(m_sInputText)]="m_sPercentTotAreaAffectedPixels"
           ></rise-text-input>
         </div>
       </div>
 
-      <!-- Textarea Section -->
       <div>
         <div>
           <rise-histogram [aiPixelValues]="m_aiHistogramPixelValues" sUnit="Pixel Values"></rise-histogram>
@@ -84,18 +85,6 @@
 
       </div>
 
-      <!--div class="align-self-end d-flex gap-2 align-items-center">
-        <rise-button
-          [m_sRole]="'action'"
-          [m_sLabel]="'LAYER_ANALYZER.DOWNLOAD'"
-          (click)="onDownload()"
-        ></rise-button>
-        <rise-button
-          [m_sRole]="'action'"
-          [m_sLabel]="'LAYER_ANALYZER.EXPORT'"
-          (click)="onExport()"
-        ></rise-button>
-      </div-->
     </div>
 
   </div>

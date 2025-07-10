@@ -14,7 +14,7 @@
     name="{{ m_sName }}"
     [readOnly]="m_bReadonly"
     [class.no-left-border]="m_bHasIcon"
-    [class.no-right-border]="m_bSetPassword || (m_sInputText && m_sInputText.length > 0)"
+    [class.no-right-border]="(m_sInputText && m_sInputText.length > 0 && !m_bSetPassword && !m_bReadonly) || m_bSetPassword"
     [class.invalid]="!m_bIsValid"
     [(ngModel)]="m_sInputText"
     (change)="onInputChange()"

@@ -20,3 +20,19 @@ h3 {
 .divider {
   border-bottom: 3px dotted var(--rise-text-dim);
 }
+.equal-width-field {
+  flex-basis: 0; /* Ensures the item starts with 0 width before growing */
+  flex-grow: 1;  /* Allows it to grow to fill available space equally */
+  /* min-width can be useful here if content might shrink too much */
+  min-width: 150px; /* Example: ensure a minimum width even if container is small */
+}
+
+/* For the single field at the bottom, if you want it to align with the others */
+.equal-width-field-single {
+  /* This could be the same as equal-width-field if it works,
+     or you might give it a fixed width or percentage relative to its parent
+     if it's not in a flex row with others.
+     Given it's in col-6, it's already got some responsiveness.
+     You might just let col-6 handle its width.
+  */
+}

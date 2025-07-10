@@ -70,7 +70,8 @@
     "DOWNLOAD": "Télécharger",
     "EXPLANATION": "Le filtre peut être défini sur Aucun pour analyser tous les pixels, ou sur un nombre : dans ce cas, RISE analysera les pixels dont la valeur est supérieure au filtre. Cliquez sur Actualiser pour démarrer l'analyse.",
     "WAIT": "RISE analyse votre couche."    ,
-    "EXPORT": "Exporter"
+    "EXPORT": "Exporter",
+    "ESTIMATED_AREA_PIXEL_AFFECTED": "Zone Estimée des Pixels Affectés"
   },
 
 

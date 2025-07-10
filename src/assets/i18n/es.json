@@ -266,6 +266,7 @@
     "TOT_AREA_PIXEL": "Total de píxeles en el área",
     "PER_AREA_AFFECTED_PIXEL": "Porcentaje de píxeles afectados en el área",
     "ESTIMATED_AREA": "Área estimada",
+    "ESTIMATED_AREA_PIXEL_AFFECTED": "Área Estimada de Píxeles Afectados",
     "PER_TOT_AREA_AFFECTED_PIXEL": "Porcentaje del total de píxeles afectados en el área",
     "REFRESH": "Actualizar",
     "DOWNLOAD": "Descargar",

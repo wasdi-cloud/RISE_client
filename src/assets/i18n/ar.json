@@ -260,6 +260,7 @@
     "PER_AREA_AFFECTED_PIXEL": "نسبة البكسل المتأثر في المنطقة",
     "ESTIMATED_AREA": "المنطقة المقدرة",
     "PER_TOT_AREA_AFFECTED_PIXEL": "النسبة المئوية لإجمالي البكسل المتأثر في المنطقة",
+    "ESTIMATED_AREA_PIXEL_AFFECTED": "المساحة المقدرة للبكسلات المتأثرة",
     "REFRESH": "تحديث",
     "DOWNLOAD": "تنزيل",
     "EXPORT": "تصدير",
