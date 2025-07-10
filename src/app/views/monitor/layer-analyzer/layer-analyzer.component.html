@@ -30,10 +30,11 @@
       Filter can be None to analyze all pixels, or a number: in case RISE will analyze the pixels with a value bigger than filter. Click Refresh to start the analysis.
     </div>
 
-    <div *ngIf="m_bIsLoading && m_bStarted">
-      RISE is analyzing your layer.
+    <div *ngIf="m_bIsLoading && m_bStarted" class="d-flex flex-column align-items-center">
+      <img src="assets/rise-assets/space.gif" alt="My Animated GIF" width="115" height="112">
+      <span>RISE is analyzing your layer.</span>
     </div>
-    
+
     <div *ngIf="!m_bIsLoading && m_bStarted">
       <!-- 5 Text Inputs (A A, A A, A) -->
       <div class="d-flex flex-column gap-2">
