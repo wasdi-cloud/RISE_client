@@ -170,7 +170,9 @@
     "PER_TOT_AREA_AFFECTED_PIXEL": "Percentage of total Affected Pixel in Area",
     "REFRESH": "Refresh",
     "DOWNLOAD": "Download",
-    "EXPORT": "Export"
+    "EXPORT": "Export",
+    "EXPLANATION": "Filter can be None to analyze all pixels, or a number: in case RISE will analyze the pixels with a value bigger than filter. Click Refresh to start the analysis.",
+    "WAIT": "RISE is analyzing your layer."
   },
   "ORGANIZATION": {
     "ADDRESS": "Organization Address",

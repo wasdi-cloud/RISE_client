@@ -27,12 +27,12 @@
     </div>
 
     <div *ngIf="!m_bStarted">
-      Filter can be None to analyze all pixels, or a number: in case RISE will analyze the pixels with a value bigger than filter. Click Refresh to start the analysis.
+      {{"LAYER_ANALYZER.EXPLANATION"|translate}}
     </div>
 
     <div *ngIf="m_bIsLoading && m_bStarted" class="d-flex flex-column align-items-center">
       <img src="assets/rise-assets/space.gif" alt="My Animated GIF" width="115" height="112">
-      <span>RISE is analyzing your layer.</span>
+      <span>{{"LAYER_ANALYZER.WAIT"|translate}}</span>
     </div>
 
     <div *ngIf="!m_bIsLoading && m_bStarted">

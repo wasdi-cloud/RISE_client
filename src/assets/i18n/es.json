@@ -269,7 +269,9 @@
     "PER_TOT_AREA_AFFECTED_PIXEL": "Porcentaje del total de píxeles afectados en el área",
     "REFRESH": "Actualizar",
     "DOWNLOAD": "Descargar",
-    "EXPORT": "Exportar"
+    "EXPORT": "Exportar",
+    "EXPLANATION": "El filtro puede ser Ninguno para analizar todos los píxeles, o un número: en este caso, RISE analizará los píxeles con un valor mayor que el filtro. Haz clic en Actualizar para iniciar el análisis.",
+    "WAIT": "RISE está analizando tu capa."
   },
 
 

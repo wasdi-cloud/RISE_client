@@ -175,7 +175,9 @@
 		"PER_TOT_AREA_AFFECTED_PIXEL": "Percentuale Totale di Pixel Interessati nell'Area",
 		"REFRESH": "Aggiorna",
 		"DOWNLOAD": "Scarica",
-		"EXPORT": "Esporta"
+		"EXPORT": "Esporta",
+    "EXPLANATION": "Il filtro può essere impostato su Nessuno per analizzare tutti i pixel, oppure su un numero: in questo caso, RISE analizzerà i pixel con un valore maggiore del filtro. Clicca su Aggiorna per avviare l'analisi.",
+    "WAIT": "RISE sta analizzando il tuo livello."
 	},
 	"ORGANIZATION": {
 		"ADDRESS": "Indirizzo dell'Organizzazione",
