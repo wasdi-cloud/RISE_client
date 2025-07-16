@@ -42,6 +42,9 @@ const MAX_AREA_POLYGON = 49_284_000_000; // Maximum 2x2 degree in square meters
   styleUrl: './rise-map.component.css',
 })
 export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
+
+  //TODO unsubscribe from the observables
+
   /**
    * Array of Areas of Operations (Dashboard)
    */
@@ -82,6 +85,9 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() m_bMonitorMap: boolean = false;
 
   @Output() m_oMapInputChange = new EventEmitter();
+
+  @Output() m_bPrintButtonClick = new EventEmitter<boolean>(); // Or EventEmitter<any> if you want to pass data
+
 
   m_oMap: L.Map;
 
@@ -218,6 +224,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
 
     if (this.m_bMonitorMap) {
       this.m_oMapService.addPixelInfoToggle(oMap);
+      this.addPrinterButton(oMap);
       this.addMagicTool(oMap);
     }
   }
@@ -609,5 +616,11 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
 
-
+  private addPrinterButton(oMap) {
+    this.m_oMapService.addPrinterButton(oMap).subscribe({
+      next: (sMessage) => {
+        this.m_bPrintButtonClick.emit(true);
+      }
+    });
+  }
 }

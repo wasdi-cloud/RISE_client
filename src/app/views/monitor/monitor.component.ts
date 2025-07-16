@@ -38,6 +38,7 @@ import {EventType} from "../../models/EventType";
 import {log} from "node:util";
 import {ImpactsDialogComponent} from "../../dialogs/impacts-dialog/impacts-dialog.component";
 import {Subscription} from "rxjs";
+import {PrintMapDialogComponent} from "../../dialogs/print-map-dialog/print-map-dialog.component";
 
 
   /**
@@ -946,7 +947,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     this.m_oDialog.open(LayerPropertiesComponent, {
       data: layer
     }).afterClosed().subscribe(() => {
-      //don't know what will we do
+      //nothing to  do
     });
 
   }
@@ -1054,4 +1055,17 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
         }
       )
     }
+
+    onPrintButtonClick(){
+      const oDialogRef = this.m_oDialog.open(PrintMapDialogComponent, {
+        data: { message: 'Ready to print the map view!' }
+      });
+
+      oDialogRef.afterClosed().subscribe(result => {
+        if (result ) {
+          console.log('User confirmed print with options:', result);
+        }
+      });
+    }
+
   }

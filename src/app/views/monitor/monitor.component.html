@@ -141,7 +141,11 @@
         ></rise-map-chip>
       </div>
       <rise-user-menu class="user-menu"></rise-user-menu>
-      <rise-map  #mapElement class="map-section" [m_bMonitorMap]="true" [m_bDashboardMap]="true"></rise-map>
+      <rise-map  #mapElement class="map-section"
+                 [m_bMonitorMap]="true"
+                 [m_bDashboardMap]="true"
+                 (m_bPrintButtonClick)="onPrintButtonClick()"
+      ></rise-map>
       <rise-timebar
         class="timebar"
         [m_iStartDate]="m_oAreaOfOperation.archiveStartDate"

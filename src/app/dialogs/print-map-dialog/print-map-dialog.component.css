@@ -1,0 +1,80 @@
+div.dialog-container {
+  background-color: var(--surface-glass);
+  backdrop-filter: blur(20px);
+  /*height: 420px;*/
+  /*padding: 20px; !* Adjust padding as needed *!*/
+  /*width: 650px;*/
+}
+
+h3 {
+  font-size: 20px;
+}
+
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
+  background-color: transparent !important;
+}
+
+.total-container {
+  font-size: 20px;
+}
+
+.divider {
+  border-bottom: 3px dotted var(--rise-text-dim);
+}
+
+.col-6 {
+  padding-right: 10px; /* Ensure consistent spacing between columns */
+}
+
+.rise-text-input,
+.rise-textarea-input {
+  width: 100%; /* Ensure full width */
+  padding: 10px; /* Add padding for inner spacing */
+  margin-bottom: 10px; /* Space between inputs */
+  border-radius: 5px; /* Optional: rounded corners for better UI */
+  border: 1px solid #ddd; /* Optional: light border for clarity */
+}
+
+.format-selection-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.format-option {
+  width: 80px;
+  height: 80px;
+  border: 2px solid  #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  /*background-color: var(--wasdiBluelight, #f8f8f8);*/
+
+  &:hover {
+    border-color: var(--rise-gold, #007bff);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  &.active {
+    border-color: var(--rise-gold, #28a745);
+    background-color: var(--rise-gold, #e6ffe6);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .format-icon {
+    font-size: 1.5em;
+    color: #ffffff;
+    margin-bottom: 5px;
+  }
+
+  .format-label {
+    font-weight: bold;
+    color: #ffffff;
+  }
+}

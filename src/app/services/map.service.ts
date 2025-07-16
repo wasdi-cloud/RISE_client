@@ -1620,6 +1620,49 @@ export class MapService {
     });
   }
 
+
+  addPrinterButton(oMap: any): Observable<void> {
+    const printButtonClick$ = new Subject<void>(); // Create a Subject to emit when the button is clicked
+
+    let oController = this;
+    const oPrintButton = L.Control.extend({
+      options: {
+        position: 'topright',
+      },
+      onAdd: function (oMap) {
+        let oContainer = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+        let oButton = L.DomUtil.create(
+          'a',
+          'leaflet-control-button',
+          oContainer
+        );
+
+        L.DomEvent.disableClickPropagation(oButton);
+
+        L.DomEvent.on(oButton, 'click', function () {
+          // Emit a value through the Subject when the button is clicked
+          printButtonClick$.next();
+        });
+
+        oButton.innerHTML =
+          '<span class="material-symbols-outlined">print</span>';
+        oContainer.title = 'Print Map View';
+
+        return oContainer;
+      },
+      onRemove: function (map) {
+        // It's good practice to complete the Subject when the control is removed,
+        // especially if this control can be dynamically added/removed.
+        printButtonClick$.complete();
+      },
+    });
+
+    oMap.addControl(new oPrintButton());
+
+    // Return the Subject as an Observable so consumers can subscribe to it
+    return printButtonClick$.asObservable();
+  }
+
   //todo delete
   buildGetCapabilitiesUrl(oLayer: any): string {
     const sBaseUrl = oLayer._url || oLayer.url;
