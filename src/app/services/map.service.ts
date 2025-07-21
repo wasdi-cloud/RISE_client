@@ -762,8 +762,8 @@ export class MapService {
   }
 
 
-  addMeasurementTools(oMap: L.Map): Observable<string> {
-    const oResultSubject = new Subject<string>();
+  addMeasurementTools(oMap: L.Map): Observable<any> {
+    const oResultSubject = new Subject<any>();
     let bMeasurementMode = false;
     let oActiveShape: L.Layer | null = null; // Track the currently drawn shape
     let oDrawControl: any = null; // Declare globally within the function
@@ -836,7 +836,7 @@ export class MapService {
               oResultSubject.next(null)
               if (oDrawControl) {
                 oResultSubject.next(null);
-                this.startDrawing(oMap, oDrawControl, (layer,message) => {
+                this.startDrawing(oMap, oDrawControl, (layer,message,sWkt) => {
                   if (oActiveShape) {
                     oMap.removeLayer(oActiveShape);
                     oActiveShape = null;
@@ -844,7 +844,7 @@ export class MapService {
 
                   // Set the new shape as active
                   oActiveShape = layer;
-                  oResultSubject.next(message);
+                  oResultSubject.next({message:message,wkt: sWkt});
 
                 });
               }
@@ -882,7 +882,7 @@ export class MapService {
             }
 
             // Emit cancel event
-            oResultSubject.next('Measurement cancelled.');
+            oResultSubject.next({message:'Measurement cancelled.',sWkt:null});
           });
 
           oContainer.appendChild(oCancelButton);
@@ -901,7 +901,7 @@ export class MapService {
   startDrawing(
     oMap: L.Map,
     oDrawControl: any,
-    onShapeCreated: (layer: L.Layer,message:string) => void
+    onShapeCreated: (layer: L.Layer,message:string,sWkt:any) => void
   ) {
 
     oDrawControl.enable();
@@ -911,36 +911,57 @@ export class MapService {
 
       // Temporary layer for measurement
       oMap.addLayer(layer);
+
+
       const formatNumber = (num: number) => {
         return new Intl.NumberFormat().format(num); // Adds commas as thousand separators
       };
-      // Calculate and create a notification message
-      let message = '';
+      // Calculate and create a notification sMessage
+      let sMessage = '';
+      let sWkt=''
       if (sLayerType === 'polyline') {
         const distance = this.calculateDistance(layer.getLatLngs());
         // from mm² to km²
         let distanceWithComas=formatNumber(distance)
-        // message = `Distance: ${(distance).toFixed(2)} kilometers`;
-        message = `Distance: ${distanceWithComas} kilometers`;
+        // sMessage = `Distance: ${(distance).toFixed(2)} kilometers`;
+        sMessage = `Distance: ${distanceWithComas} kilometers`;
+        sWkt=this.convertLatLngsToWktLineString(layer.getLatLngs());
       } else if (sLayerType === 'circle') {
         const iRadius = layer.getRadius();
         const area = this.calculateCircleArea(iRadius);
         let areaWithFormat = formatNumber(area/(Math.pow(10,6)));
-        // message = `Circle Area: ${(area / 1000).toFixed(2)} Km²`;
-        message = `Circle Area: ${areaWithFormat} Km²`;
+        // sMessage = `Circle Area: ${(area / 1000).toFixed(2)} Km²`;
+        sMessage = `Circle Area: ${areaWithFormat} Km²`;
+        const oCenter=layer.getLatLng();
+        sWkt=this.convertCircleToWKT(oCenter,iRadius);
       } else {
         const aiLatLngs = layer.getLatLngs()[0];
         const area = this.calculatePolygonArea(aiLatLngs);
         let areaWithFormat = formatNumber(area/(Math.pow(10,6)));
-        // message = `Circle Area: ${(area / 1000).toFixed(2)} Km²`;
-        message = `Area: ${areaWithFormat} Km²`;
-        // message = `Area: ${(area / 1000).toFixed(2)} Km²`;
+        // sMessage = `Circle Area: ${(area / 1000).toFixed(2)} Km²`;
+        sMessage = `Area: ${areaWithFormat} Km²`;
+        // sMessage = `Area: ${(area / 1000).toFixed(2)} Km²`;
+        sWkt=this.convertLatLngsToWktPolygon(aiLatLngs)
       }
-      // Call the callback with the new layer and message
-      onShapeCreated(layer,message)
+      // Call the callback with the new layer and sMessage
+      onShapeCreated(layer,sMessage,sWkt)
 
     });
   }
+  private convertLatLngsToWktLineString(latlngs: L.LatLng[]): string {
+    const coords = latlngs.map(latlng => `${latlng.lng} ${latlng.lat}`).join(', ');
+    return `LINESTRING (${coords})`;
+  }
+  private convertLatLngsToWktPolygon(latlngs: L.LatLng[]): string {
+    // Ensure the polygon is closed (first and last point are the same)
+    let closedLatLngs = [...latlngs];
+    if (latlngs.length > 0 && !(latlngs[0].equals(latlngs[latlngs.length - 1]))) {
+      closedLatLngs.push(latlngs[0]);
+    }
+    const coords = closedLatLngs.map(latlng => `${latlng.lng} ${latlng.lat}`).join(', ');
+    return `POLYGON ((${coords}))`;
+  }
+
   //todo find a better way to write only one drawing method
   startDrawingForMagicTool(
     oMap: L.Map,
@@ -1386,6 +1407,7 @@ export class MapService {
     oMap.addControl(new m_oManualBoxingButton());
     return this.m_oManualBoundingBoxSubscription.asObservable();
   }
+
 
   addManualBboxLayer(oMap, aoBounds) {
     let oLayer = L.rectangle(aoBounds, { color: "#3388ff", weight: 1 });
@@ -2284,6 +2306,45 @@ export class MapService {
 
   cleanMagicToolAOI() {
     this.m_oMagicToolAOI = null;
+  }
+  //todo this might be a repetition with calculate Centreoid method , keep only one of them and also make this map service
+  calculateCenterFromWkt(sBbox: string): L.LatLng | null {
+    if (!sBbox) {
+      return null;
+    }
+
+    // Your existing WKT cleaning logic
+    if (sBbox.includes(')))')) {
+      sBbox = sBbox.slice(0, -1);
+    }
+
+    try {
+      const oGeoJson = wktToGeoJSON(sBbox);
+
+      if (!oGeoJson) {
+        console.warn("Could not convert WKT to GeoJSON.");
+        return null;
+      }
+
+      // Create a Leaflet GeoJSON layer from the GeoJSON object
+      const oGeoJsonLayer = L.geoJSON(oGeoJson);
+
+      // Get the aoBounds of the GeoJSON layer
+      const aoBounds = oGeoJsonLayer.getBounds();
+
+      if (!aoBounds.isValid()) {
+        console.warn("Invalid aoBounds obtained from GeoJSON. Check WKT format.");
+        return null;
+      }
+
+      // Get the oCenter of the aoBounds
+      const oCenter = aoBounds.getCenter();
+
+      return oCenter;
+    } catch (error) {
+      console.error("Error calculating center from WKT:", error);
+      return null;
+    }
   }
 }
 

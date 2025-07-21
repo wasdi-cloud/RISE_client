@@ -39,6 +39,7 @@ import {log} from "node:util";
 import {ImpactsDialogComponent} from "../../dialogs/impacts-dialog/impacts-dialog.component";
 import {Subscription} from "rxjs";
 import {PrintMapDialogComponent} from "../../dialogs/print-map-dialog/print-map-dialog.component";
+import {wktToGeoJSON} from "@terraformer/wkt";
 
 
   /**
@@ -173,6 +174,8 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
      */
   private m_oLayerAnalyzerSubscription: Subscription;
 
+    m_sMeasurementToolWkt:string;
+
 
 
     /**
@@ -290,7 +293,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
      */
     private handleFullScreenChange(): void {
 
-      console.log("hello?")
+
       const oFullscreenElement = document.fullscreenElement;
       const oBtnContainer = this.btnContainerRef.nativeElement;
       const oOriginalParent = this.tempFixRef.nativeElement;
@@ -1055,10 +1058,34 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
         }
       )
     }
-
+    handleMeasurementTool(sWkt:any){
+      console.log(sWkt);
+      if(sWkt){
+        this.m_sMeasurementToolWkt=sWkt;
+        console.log(this.m_sMeasurementToolWkt);
+      }else{
+        this.m_sMeasurementToolWkt=null;
+      }
+    }
     onPrintButtonClick(){
+      //todo add validation
+      let sBbox=this.m_oAreaOfOperation.bbox;
+      let aoLayersForPrint=[];
+      for (let i = 0; i <this.m_aoLayers.length ; i++) {
+        let oLayer = this.m_aoLayers[i];
+        let oLayerToPrint={layerId:oLayer.layerId,wmsUrl:oLayer.geoserverUrl,name:oLayer.mapId}
+        aoLayersForPrint.push(oLayerToPrint);
+      }
+      let oPrintPayload={
+        baseMap:this.m_oMapService.getActiveLayer()._url,
+        zoomLevel:this.m_oMapService.getMap().getZoom(),
+        center:this.m_oMapService.calculateCenterFromWkt(sBbox),
+        format:"",
+        wmsLayers:aoLayersForPrint,
+        wkts:[{name:"drawen area",geom:this.m_sMeasurementToolWkt}]
+      }
       const oDialogRef = this.m_oDialog.open(PrintMapDialogComponent, {
-        data: { message: 'Ready to print the map view!' }
+        data: { payload: oPrintPayload }
       });
 
       oDialogRef.afterClosed().subscribe(result => {
