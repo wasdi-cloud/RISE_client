@@ -35,14 +35,12 @@ import {LayerViewModel} from "../../models/LayerViewModel";
 import {EventService} from "../../services/api/event.service";
 import {EventViewModel} from "../../models/EventViewModel";
 import {EventType} from "../../models/EventType";
-import {log} from "node:util";
 import {ImpactsDialogComponent} from "../../dialogs/impacts-dialog/impacts-dialog.component";
 import {Subscription} from "rxjs";
 import {PrintMapDialogComponent} from "../../dialogs/print-map-dialog/print-map-dialog.component";
-import {wktToGeoJSON} from "@terraformer/wkt";
 
 
-  /**
+/**
    * UC_120 Monitor Area of Operations
    */
   @Component({
