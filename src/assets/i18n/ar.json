@@ -230,6 +230,12 @@
     "SIGN_UP": "التسجيل"
   },
   "MONITOR": {
+    "PRINT_WAIT": "تقوم RISE بطباعة خريطتك",
+    "PRINT": "طباعة",
+    "PRINT_TITLE": "طباعة الخريطة",
+    "PRINT_FORMAT_PDF": "PDF",
+    "PRINT_FORMAT_PNG": "PNG",
+    "SELECT_PRINT_FORMAT": "الرجاء تحديد تنسيق الطباعة",
     "SHOW_LESS": "إظهار أقل",
     "SHOW_MORE": "+ {{count}} المزيد",
     "EVENT_START": "البداية",

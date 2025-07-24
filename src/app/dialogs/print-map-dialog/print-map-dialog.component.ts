@@ -41,6 +41,7 @@ export class PrintMapDialogComponent implements OnInit {
       if(this.m_oData.payload){
         console.log(this.m_oData.payload);
         this.m_oPrintPayload=this.m_oData.payload;
+        this.m_oPrintPayload.format=this.m_sSelectedFormat;
       }
   }
 
@@ -58,6 +59,7 @@ export class PrintMapDialogComponent implements OnInit {
   confirmPrinting(): void {
     // When the user clicks "Print", close the dialog and pass the selected format
     this.m_bIsLoading=true;
+
     this.m_oPrinterService.storeMap(this.m_oPrintPayload).subscribe(
       {
         next: (sUUID: any) => {
@@ -81,11 +83,14 @@ export class PrintMapDialogComponent implements OnInit {
                 link.download = `map.${sFileExtension}`;
                 link.click();
                 this.m_bIsLoading=false;
+                this.m_oDialogRef.close();
 
               },
               error: (err) => {
                 console.error('Error fetching map file:', err);
                 this.m_bIsLoading=false;
+                this.m_oDialogRef.close();
+
               }
             });
           }
@@ -93,6 +98,8 @@ export class PrintMapDialogComponent implements OnInit {
         error: (err) => {
           console.error('Error fetching map file:', err);
           this.m_bIsLoading=false;
+          this.m_oDialogRef.close();
+
         }
       }
     );

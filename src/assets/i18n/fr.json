@@ -37,6 +37,12 @@
     "END_DATE": "Date de fin"
   },
   "MONITOR": {
+    "PRINT_WAIT": "RISE imprime votre carte",
+    "PRINT": "Imprimer",
+    "PRINT_TITLE": "Impression de carte",
+    "PRINT_FORMAT_PDF": "PDF",
+    "PRINT_FORMAT_PNG": "PNG",
+    "SELECT_PRINT_FORMAT": "Veuillez sélectionner le format d'impression",
     "SHOW_LESS": "Afficher moins",
     "SHOW_MORE": "+ {{count}} de plus",
     "EVENT_START": "Début",

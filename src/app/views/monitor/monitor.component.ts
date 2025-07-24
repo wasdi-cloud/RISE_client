@@ -1082,7 +1082,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
         center:this.m_oMapService.calculateCenterFromWkt(sBbox),
         format:"",
         wmsLayers:aoLayersForPrint,
-        wkts:this.m_sMeasurementToolWkt?[{name:"drawen area",geom:this.m_sMeasurementToolWkt}]:[]
+        wkts:this.m_sMeasurementToolWkt?[{name:"drawn area",geom:this.m_sMeasurementToolWkt}]:[]
       }
       const oDialogRef = this.m_oDialog.open(PrintMapDialogComponent, {
         data: { payload: oPrintPayload }

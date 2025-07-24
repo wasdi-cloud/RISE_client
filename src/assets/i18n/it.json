@@ -138,6 +138,12 @@
 		"ERROR_LAYER": "Si è verificato un errore durante il recupero delle informazioni sui pixel."
 	},
 	"MONITOR": {
+    "PRINT_WAIT": "RISE sta stampando la tua mappa",
+    "PRINT": "Stampa",
+    "PRINT_TITLE": "Stampa Mappa",
+    "PRINT_FORMAT_PDF": "PDF",
+    "PRINT_FORMAT_PNG": "PNG",
+    "SELECT_PRINT_FORMAT": "Si prega di selezionare il formato di stampa",
     "SHOW_LESS": "Mostra meno",
     "SHOW_MORE": "+ {{count}} in più",
     "EVENT_START": "Inizio",

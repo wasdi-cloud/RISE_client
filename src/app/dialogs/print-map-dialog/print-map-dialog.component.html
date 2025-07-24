@@ -1,8 +1,7 @@
 <div class="dialog-container d-flex flex-column gap-2 p-3">
   <div class="header d-flex flex-row justify-content-between align-items-center">
     <h3>
-<!--      {{ "MONITOR.LAYER_PROPERTIES" | translate }}-->
-      Map Print
+      {{ "MONITOR.PRINT_TITLE" | translate }}
     </h3>
     <span class="close-btn material-symbols-outlined" (click)="onDismiss()">
       close
@@ -10,8 +9,8 @@
   </div>
 
   <div *ngIf="!m_bIsLoading" class="body flex-fill d-flex flex-column">
-<!--    <p class="mb-3">{{ "MONITOR.SELECT_PRINT_FORMAT" | translate }}</p>-->
-    <p class="mb-3">Please select the print format</p>
+    <p class="mb-3">{{ "MONITOR.SELECT_PRINT_FORMAT" | translate }}</p>
+<!--    <p class="mb-3">Please select the print format</p>-->
 
     <div class="format-selection-container d-flex flex-row gap-3 justify-content-center mb-4">
       <div
@@ -46,7 +45,7 @@
 <!--    ></rise-button>-->
     <rise-button
       (click)="confirmPrinting()"
-      [m_sLabel]="'Print'"
+      [m_sLabel]="'MONITOR.PRINT'"
       [m_sRole]="'action'"
       class="align-self-end mt-3"
     ></rise-button>
@@ -55,6 +54,6 @@
   <div *ngIf="m_bIsLoading" class="loading-indicator d-flex flex-column align-items-center justify-content-center flex-fill">
     <img src="assets/rise-assets/space.gif" alt="Loading" width="115" height="112">
 <!--    <span>{{ "LAYER_ANALYZER.WAIT" | translate }}</span>-->
-    <span>RISE is printing your map</span>
+    <span>{{ "MONITOR.PRINT_WAIT" | translate }}</span>
   </div>
 </div>
