@@ -1066,8 +1066,6 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       }
     }
     onPrintButtonClick(){
-      //todo add validation
-      let sBbox=this.m_oAreaOfOperation.bbox;
       let aoLayersForPrint=[];
       for (let i = 0; i <this.m_aoLayers.length ; i++) {
         let oLayer = this.m_aoLayers[i];
@@ -1077,7 +1075,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       let oPrintPayload={
         baseMap:this.m_oMapService.getActiveLayer()._url,
         zoomLevel:this.m_oMapService.getMap().getZoom(),
-        center:this.m_oMapService.calculateCenterFromWkt(sBbox),
+        center:this.m_oMapService.getMap().getCenter(),
         format:"",
         wmsLayers:aoLayersForPrint,
         wkts:this.m_sMeasurementToolWkt?[{name:"drawn area",geom:this.m_sMeasurementToolWkt}]:[]
