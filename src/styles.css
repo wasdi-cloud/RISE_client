@@ -543,7 +543,7 @@ a.leaflet-control-zoom-fullscreen {
   user-select: none;         /* Standard syntax */
 }
 
-.attachmment-icon-container {
+.attachment-icon-container {
   cursor: pointer;
   display: flex;
   flex-direction: column; /* Stacks items vertically */
