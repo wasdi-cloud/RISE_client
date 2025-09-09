@@ -139,6 +139,8 @@
     "ERROR_LAYER": "An error occurred while trying to fetch pixel information."
   },
   "MONITOR": {
+    "PRINT_PAYLOAD_TITLE": "Title",
+    "PRINT_PAYLOAD_DESCRIPTION": "Description",
     "PRINT_WAIT": "RISE is printing your map",
     "PRINT": "Print",
     "PRINT_TITLE": "Map Print",

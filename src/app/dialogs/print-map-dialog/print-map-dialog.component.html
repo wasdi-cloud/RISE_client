@@ -10,39 +10,42 @@
 
   <div *ngIf="!m_bIsLoading" class="body flex-fill d-flex flex-column">
     <p class="mb-3">{{ "MONITOR.SELECT_PRINT_FORMAT" | translate }}</p>
-<!--    <p class="mb-3">Please select the print format</p>-->
+    <rise-text-input
+      [m_bHasTitle]="true"
+      [m_sLocalizationKey]="'MONITOR.PRINT_PAYLOAD_TITLE'"
+      [(m_sInputText)]="m_oPrintPayload.title"
+    ></rise-text-input>
+    <rise-text-input
+      [m_bHasTitle]="true"
+      [m_sLocalizationKey]="'MONITOR.PRINT_PAYLOAD_DESCRIPTION'"
+      [(m_sInputText)]="m_oPrintPayload.description"
+      class="mb-3"
+    ></rise-text-input>
 
-    <div class="format-selection-container d-flex flex-row gap-3 justify-content-center mb-4">
-      <div
-        class="format-option d-flex flex-column align-items-center justify-content-center p-3"
-        [class.active]="m_sSelectedFormat === 'pdf'"
-        (click)="selectFormat('pdf')"
-        title="{{ 'MONITOR.PRINT_FORMAT_PDF' | translate }}"
-      >
-        <span class="material-symbols-outlined format-icon">picture_as_pdf</span>
-        <span class="format-label">PDF</span>
-      </div>
+    <div class="format-group">
+      <div class="format-selection-container d-flex flex-row gap-3 justify-content-center mb-4">
+        <div
+          class="format-option d-flex flex-column align-items-center justify-content-center p-3"
+          [class.active]="m_sSelectedFormat === 'pdf'"
+          (click)="selectFormat('pdf')"
+          title="{{ 'MONITOR.PRINT_FORMAT_PDF' | translate }}"
+        >
+          <span class="material-symbols-outlined format-icon">picture_as_pdf</span>
+          <span class="format-label">PDF</span>
+        </div>
 
-      <div
-        class="format-option d-flex flex-column align-items-center justify-content-center p-3"
-        [class.active]="m_sSelectedFormat === 'png'"
-        (click)="selectFormat('png')"
-        title="{{ 'MONITOR.PRINT_FORMAT_PNG' | translate }}"
-      >
-        <span class="material-symbols-outlined format-icon">image</span>
-        <span class="format-label">PNG</span>
+        <div
+          class="format-option d-flex flex-column align-items-center justify-content-center p-3"
+          [class.active]="m_sSelectedFormat === 'png'"
+          (click)="selectFormat('png')"
+          title="{{ 'MONITOR.PRINT_FORMAT_PNG' | translate }}"
+        >
+          <span class="material-symbols-outlined format-icon">image</span>
+          <span class="format-label">PNG</span>
+        </div>
       </div>
     </div>
 
-
-
-
-    <!--    <rise-button-->
-<!--      (click)="confirmPrinting()"-->
-<!--      [m_sLabel]="'MONITOR.PRINT'"-->
-<!--      [m_sRole]="'action'"-->
-<!--      class="align-self-end mt-3"-->
-<!--    ></rise-button>-->
     <rise-button
       (click)="confirmPrinting()"
       [m_sLabel]="'MONITOR.PRINT'"
@@ -53,7 +56,6 @@
 
   <div *ngIf="m_bIsLoading" class="loading-indicator d-flex flex-column align-items-center justify-content-center flex-fill">
     <img src="assets/rise-assets/space.gif" alt="Loading" width="115" height="112">
-<!--    <span>{{ "LAYER_ANALYZER.WAIT" | translate }}</span>-->
     <span>{{ "MONITOR.PRINT_WAIT" | translate }}</span>
   </div>
 </div>

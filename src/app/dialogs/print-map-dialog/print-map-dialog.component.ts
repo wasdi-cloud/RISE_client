@@ -8,6 +8,7 @@ import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {PrinterService} from "../../services/api/printer.service";
 import FadeoutUtils from "../../shared/utilities/FadeoutUtils";
 import {log} from "node:util";
+import {RiseTextInputComponent} from "../../components/rise-text-input/rise-text-input.component";
 
 @Component({
   selector: 'app-print-map-dialog',
@@ -15,7 +16,8 @@ import {log} from "node:util";
   imports: [
     RiseButtonComponent,
     TranslateModule,
-    NgIf
+    NgIf,
+    RiseTextInputComponent
   ],
   templateUrl: './print-map-dialog.component.html',
   styleUrl: './print-map-dialog.component.css'

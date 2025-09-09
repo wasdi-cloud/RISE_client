@@ -232,6 +232,8 @@
     "SIGN_UP": "التسجيل"
   },
   "MONITOR": {
+    "PRINT_PAYLOAD_TITLE": "العنوان",
+    "PRINT_PAYLOAD_DESCRIPTION": "الوصف",
     "PRINT_WAIT": "تقوم RISE بطباعة خريطتك",
     "PRINT": "طباعة",
     "PRINT_TITLE": "طباعة الخريطة",

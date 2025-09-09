@@ -38,6 +38,8 @@
     "END_DATE": "Date de fin"
   },
   "MONITOR": {
+    "PRINT_PAYLOAD_TITLE": "Titre",
+    "PRINT_PAYLOAD_DESCRIPTION": "Description",
     "PRINT_WAIT": "RISE imprime votre carte",
     "PRINT": "Imprimer",
     "PRINT_TITLE": "Impression de carte",

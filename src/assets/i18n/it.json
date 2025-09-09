@@ -140,6 +140,8 @@
 		"ERROR_LAYER": "Si è verificato un errore durante il recupero delle informazioni sui pixel."
 	},
 	"MONITOR": {
+    "PRINT_PAYLOAD_TITLE": "Titolo",
+    "PRINT_PAYLOAD_DESCRIPTION": "Descrizione",
     "PRINT_WAIT": "RISE sta stampando la tua mappa",
     "PRINT": "Stampa",
     "PRINT_TITLE": "Stampa Mappa",

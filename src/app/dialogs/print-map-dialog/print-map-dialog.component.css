@@ -78,3 +78,16 @@ h3 {
     color: #ffffff;
   }
 }
+
+.format-group {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--rise-gold);
+  border-radius: 8px;
+
+}
+
+.format-selection-container {
+  margin-bottom: 0 !important; /* Override the default Bootstrap margin to keep it tight within the new container */
+}
