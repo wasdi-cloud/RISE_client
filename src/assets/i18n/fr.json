@@ -22,6 +22,7 @@
     "CREATION_UPLOAD_ALTERNATIVE_TEXT": "Après la création de votre événement, vous pourrez télécharger les images et documents associés lors de son édition."
   },
   "CREATE_NEW_EVENT": {
+    "ON_GOING_EVENT": "Événement en cours",
     "NAME": "Nom",
     "DESCRIPTION": "Description",
     "TYPE": "Type",
@@ -114,6 +115,7 @@
     "BACK": "Retour au Live"
   },
   "CREATE_NEW_AREA_OF_OPERATION": {
+    "SUPPORT_ARCHIVE": "Supporte l'archivage",
     "SUCCESS_AND_PENDING": "Votre zone a été ajoutée avec succès. Les couches sont en cours de génération ; vous recevrez une notification par e-mail lorsqu'elles seront prêtes.",
     "NAME": "Nom",
     "DESCRIPTION": "Description",

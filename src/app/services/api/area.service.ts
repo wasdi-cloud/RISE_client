@@ -118,4 +118,8 @@ export class AreaService {
   deleteAreaOfOperation(sAreaId:string){
     return this.m_oHttp.delete<any>(this.APIURL+'/area/delete-area?id='+sAreaId)
   }
+
+  canAreaSupportArchive() {
+    return this.m_oHttp.get<any>(this.APIURL + '/area/check-archive-area');
+  }
 }

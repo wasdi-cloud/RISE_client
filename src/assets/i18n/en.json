@@ -21,6 +21,7 @@
     "CREATION_UPLOAD_ALTERNATIVE_TEXT": "After the creation of your event, you will be able to upload associated images and documents when editing it."
   },
   "CREATE_NEW_EVENT": {
+    "ON_GOING_EVENT": "On going Event",
     "NAME": "Name",
     "DESCRIPTION": "Description",
     "TYPE": "Type",
@@ -69,6 +70,7 @@
     "BACK": "Back to Live"
   },
   "CREATE_NEW_AREA_OF_OPERATION": {
+    "SUPPORT_ARCHIVE": "Support Archive",
     "SUCCESS_AND_PENDING": "Your area has been added successfully, The layers are being generated , you will receive a notification by email when they are ready",
     "NAME": "Name",
     "DESCRIPTION": "Description",

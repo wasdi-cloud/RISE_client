@@ -25,9 +25,15 @@
             [m_sLocalizationKey]="'CREATE_NEW_AREA_OF_OPERATION.DESCRIPTION'"
           ></rise-textarea-input>
           <rise-checkbox
-          [m_aoOptions]="m_asIsPublic"
-          [m_aoSelectedValues]="m_asSelectedIsPublic"
-          [m_bReadonly]="true"> </rise-checkbox>
+            [m_aoOptions]="m_asIsPublic"
+            [m_aoSelectedValues]="m_asSelectedIsPublic"
+            [m_bReadonly]="true"></rise-checkbox>
+
+          <div *ngIf="m_bIsSupportArchiveArea" class="align-items-md-start d-flex">
+            <span class="toggle-label">{{"CREATE_NEW_AREA_OF_OPERATION.SUPPORT_ARCHIVE" | translate }}</span>
+            <mat-slide-toggle labelPosition="before" (change)="onSwitchFullArchiveButton($event)"
+                              [(ngModel)]="m_oAreaOfOperation.supportArchive" class="custom-toggle"></mat-slide-toggle>
+          </div>
           <div>
             {{ 'CREATE_NEW_AREA_OF_OPERATION.PLUGINS' | translate }}
             <rise-checkbox

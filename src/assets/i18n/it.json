@@ -21,6 +21,7 @@
 		"CREATION_UPLOAD_ALTERNATIVE_TEXT": "Dopo la creazione del tuo evento, potrai caricare immagini e documenti associati durante la modifica."
 	},
 	"CREATE_NEW_EVENT": {
+    "ON_GOING_EVENT": "Evento in corso",
 		"NAME": "Nome",
 		"DESCRIPTION": "Descrizione",
 		"TYPE": "Tipo",
@@ -70,6 +71,7 @@
 		"BACK": "Torna al Live"
 	},
 	"CREATE_NEW_AREA_OF_OPERATION": {
+    "SUPPORT_ARCHIVE": "Supporta l'archiviazione",
     "SUCCESS_AND_PENDING": "La tua area è stata aggiunta con successo. I livelli sono in fase di generazione; riceverai una notifica via email quando saranno pronti.",
 		"NAME": "Nome",
 		"DESCRIPTION": "Descrizione",

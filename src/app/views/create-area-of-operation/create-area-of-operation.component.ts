@@ -24,21 +24,15 @@ import {UserOfAreaViewModel} from '../../models/UserOfAreaViewModel';
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 import {ConstantsService} from "../../services/constants.service";
 import {UserService} from "../../services/api/user.service";
-import {environment} from "../../../environments/environments";
+import {SubscriptionService} from "../../services/api/subscription.service";
+import {MatSlideToggle, MatSlideToggleChange} from "@angular/material/slide-toggle";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-create-area-of-operation',
   standalone: true,
   providers: [],
-  imports: [
-    RiseButtonComponent,
-    RiseCheckboxComponent,
-    RiseMapComponent,
-    RiseTextareaInputComponent,
-    RiseTextInputComponent,
-    TranslateModule,
-    NgIf,
-  ],
+  imports: [RiseButtonComponent, RiseCheckboxComponent, RiseMapComponent, RiseTextareaInputComponent, RiseTextInputComponent, TranslateModule, NgIf, MatSlideToggle, FormsModule,],
   templateUrl: './create-area-of-operation.component.html',
   styleUrl: './create-area-of-operation.component.css',
 })
@@ -46,9 +40,7 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
   /**
    * UC_40 - Add Area of Operations
    */
-  @Output() m_oExitPage: EventEmitter<boolean> = new EventEmitter<boolean>(
-    null
-  );
+  @Output() m_oExitPage: EventEmitter<boolean> = new EventEmitter<boolean>(null);
 
   m_asPlugins: { label: string; value: string }[] = [];
 
@@ -86,11 +78,9 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
    * Error strings for validator output
    */
   m_sAreaOfOperationNameError: string = '';
-  m_sAreaOfOperationDescriptionError: string = '';
   m_sPluginError: string = '';
 
   m_bValidationActive = false;
-  m_bDescriptionIsValid: boolean = true;
   m_bNameIsValid: boolean = true;
   m_bPluginsAreValid: boolean = true;
   m_sOrganizationId: string;
@@ -98,30 +88,22 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
   m_asIsPublic: { label: string; value: string }[] = [];
   m_asSelectedIsPublic: string[] = [];
 
-  constructor(
-    private m_oAreaOfOperationService: AreaService,
-    private m_oDialog: MatDialog,
-    private m_oNotificationService: NotificationsDialogsService,
-    private m_oPluginService: PluginService,
-    private m_oRouter: Router,
-    private m_oTranslate: TranslateService,
-    private m_oMapService: MapService,
-    private m_oConstantService: ConstantsService,
-    private m_oUserService: UserService
-  ) {
+  /**
+   * this is a flag to know if the area can support full archive or no depending on the subscription
+   */
+  m_bIsSupportArchiveArea: boolean = false;
+
+  constructor(private m_oAreaOfOperationService: AreaService, private m_oDialog: MatDialog, private m_oNotificationService: NotificationsDialogsService, private m_oPluginService: PluginService, private m_oRouter: Router, private m_oTranslate: TranslateService, private m_oMapService: MapService, private m_oConstantService: ConstantsService, private m_oUserService: UserService, private m_oSubscriptionService: SubscriptionService) {
   }
 
   ngAfterViewInit() {
   }
 
   ngOnInit() {
-    let sPublic: string = this.m_oTranslate.instant(
-      'AREA_OF_OPERATIONS.IS_PUBLIC'
-    );
+    let sPublic: string = this.m_oTranslate.instant('AREA_OF_OPERATIONS.IS_PUBLIC');
 
     this.m_asIsPublic.push({
-      label: sPublic,
-      value: 'isPublic'
+      label: sPublic, value: 'isPublic'
     });
 
     //used for checking overlapping area
@@ -131,14 +113,9 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
     this.m_oPluginService.getPluginsList().subscribe({
       next: (aoResponse) => {
         for (const aoResponseElement of aoResponse) {
-          if (
-            aoResponseElement != '' &&
-            aoResponseElement.name &&
-            aoResponseElement.id
-          ) {
+          if (aoResponseElement != '' && aoResponseElement.name && aoResponseElement.id) {
             this.m_asPlugins.push({
-              label: aoResponseElement.name,
-              value: aoResponseElement.id,
+              label: aoResponseElement.name, value: aoResponseElement.id,
             });
           }
         }
@@ -149,8 +126,26 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
         this.m_aoAreasOfOperations = aoResponse;
       },
     });
+
+    this.isSupportArchiveArea();
   }
 
+  isSupportArchiveArea() {
+    this.m_oAreaOfOperationService.canAreaSupportArchive().subscribe({
+      next: (bResponse) => {
+        console.log(bResponse)
+        this.m_bIsSupportArchiveArea = bResponse;
+      }
+    })
+
+
+  }
+
+
+
+  onSwitchFullArchiveButton(oToggel: MatSlideToggleChange){
+    this.m_oAreaOfOperation.supportArchive = oToggel.checked;
+  }
   onSelectionChange(selectedValues: any[]) {
     this.m_asPluginsSelected = selectedValues;
     this.m_oAreaOfOperation.plugins = this.m_asPluginsSelected;
@@ -184,21 +179,13 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
       if (shapeInfo.type === 'circle') {
         // Store circle information as before
         this.m_oAreaInfo = {
-          type: 'circle',
-          center: {
-            lat: shapeInfo.center.lat,
-            lng: shapeInfo.center.lng,
-          },
-          radius: shapeInfo.radius,
-          area: shapeInfo.area,
+          type: 'circle', center: {
+            lat: shapeInfo.center.lat, lng: shapeInfo.center.lng,
+          }, radius: shapeInfo.radius, area: shapeInfo.area,
         };
-        this.m_oAreaOfOperation.markerCoordinates =
-          'POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')';
+        this.m_oAreaOfOperation.markerCoordinates = 'POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')';
         // Convert circle to WKT (approximated as a polygon with 64 points)
-        this.m_oAreaOfOperation.bbox = this.m_oMapService.convertCircleToWKT(
-          shapeInfo.center,
-          shapeInfo.radius
-        );
+        this.m_oAreaOfOperation.bbox = this.m_oMapService.convertCircleToWKT(shapeInfo.center, shapeInfo.radius);
       } else if (shapeInfo.type === 'polygon') {
         // Store polygon information as before
         this.m_oAreaInfo = {
@@ -210,8 +197,7 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
         };
         // Convert polygon to WKT
         this.m_oAreaOfOperation.bbox = geojsonToWKT(shapeInfo.geoJson);
-        this.m_oAreaOfOperation.markerCoordinates =
-          'POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')';
+        this.m_oAreaOfOperation.markerCoordinates = 'POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')';
 
 
       }
@@ -237,13 +223,7 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
    * @returns boolean
    */
   enableAOISubmit(): boolean {
-    if (!this.m_oAreaOfOperation.name) {
-      return false;
-    }
-    if (this.m_asPluginsSelected.length < 1) {
-      return false;
-    }
-    if (!this.m_oAreaOfOperation.bbox) {
+    if (!this.m_oAreaOfOperation.name || this.m_asPluginsSelected.length < 1 || !this.m_oAreaOfOperation.bbox) {
       return false;
     }
     return true;
@@ -256,12 +236,8 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
   validateAOIName(): boolean {
     if (!this.m_bValidationActive) return true;
 
-    if (
-      FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oAreaOfOperation.name) ||
-      this.m_oAreaOfOperation.name.length < 3
-    ) {
-      this.m_sAreaOfOperationNameError =
-        'Please enter a valid name of at least 3 characters.';
+    if (FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oAreaOfOperation.name) || this.m_oAreaOfOperation.name.length < 3) {
+      this.m_sAreaOfOperationNameError = 'Please enter a valid name of at least 3 characters.';
       this.m_bNameIsValid = false;
       return false;
     }
@@ -273,30 +249,18 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
 
   private saveAreaOfOperation() {
     let sMessage = this.m_oTranslate.instant("CREATE_NEW_AREA_OF_OPERATION.SUCCESS_AND_PENDING");
-    if (this.m_asSelectedIsPublic.length > 0) {
-      this.m_oAreaOfOperation.publicArea = true;
-    }
-    else {
-      this.m_oAreaOfOperation.publicArea = false;
-    }
+    this.m_oAreaOfOperation.publicArea = this.m_asSelectedIsPublic.length > 0;
 
     this.m_oAreaOfOperationService
       .addArea(this.m_oAreaOfOperation)
       .subscribe({
         next: (oResponse) => {
           //todo send confirmation to HQ operator
-          this.m_oNotificationService.openSnackBar(
-            sMessage,
-            'Success',
-            'success'
-          );
+          this.m_oNotificationService.openSnackBar(sMessage, 'Success', 'success');
           this.exitCreatingAreaOfOperation();
-        },
-        error: (oError) => {
+        }, error: (oError) => {
           // Here handle no valid subscription
-          if (
-            oError.error.errorStringCodes[0] === 'ERROR_API_NO_VALID_SUBSCRIPTION'
-          ) {
+          if (oError.error.errorStringCodes[0] === 'ERROR_API_NO_VALID_SUBSCRIPTION') {
             //open dialog to invite user to buy new subscription
             this.inviteUserToBuyNewSubscription();
           }
@@ -310,8 +274,7 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
    * RISE invites the user to buy a New Subscription (UC_095)
    */
   private inviteUserToBuyNewSubscription(): void {
-    let sMessage =
-      'Your subscription is invalid.<br> Would you like to purchase a new one?';
+    let sMessage = 'Your subscription is invalid.<br> Would you like to purchase a new one?';
     this.m_oNotificationService
       .openConfirmationDialog(sMessage, 'alert')
       .subscribe((oResult) => {
@@ -334,9 +297,7 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
    * @returns boolean
    */
   private validateAOI(): boolean {
-    return !(!this.validateAOIName() ||
-      !this.validateAOIPlugins() ||
-      !this.validateAreaInfo());
+    return !(!this.validateAOIName() || !this.validateAOIPlugins() || !this.validateAreaInfo());
   }
 
   /**
@@ -344,10 +305,7 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
    * @returns boolean
    */
   private validateAOIPlugins(): boolean {
-    if (
-      !this.m_oAreaOfOperation.plugins ||
-      this.m_oAreaOfOperation.plugins.length < 1
-    ) {
+    if (!this.m_oAreaOfOperation.plugins || this.m_oAreaOfOperation.plugins.length < 1) {
       this.m_sPluginError = 'Please select at least one plugin from the list.';
       return false;
     }
@@ -369,11 +327,7 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
   private resetAreaOfOperationForm(): void {
     // Reset the name and description
     this.m_oAreaOfOperation = {
-      bbox: '',
-      description: '',
-      name: '',
-      plugins: [],
-      markerCoordinates: '',
+      bbox: '', description: '', name: '', plugins: [], markerCoordinates: '',
     };
 
     // Reset the map area
@@ -402,52 +356,40 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
     // RISE ask confirmation to the HQ Operator if we really wants to proceed;
     // If the user cancels the operation, RISE clears the form .
     if (this.m_sOrganizationId) {
-      this.m_oAreaOfOperationService.getOverlappingAreas(this.m_sOrganizationId, m_oAreaOfOperation).subscribe(
-        {
-          next: (oResponse) => {
+      this.m_oAreaOfOperationService.getOverlappingAreas(this.m_sOrganizationId, m_oAreaOfOperation).subscribe({
+        next: (oResponse) => {
 
-            /*here we have to check for list of the over lapping area
-              , if it is empty, we are good to go but if it has one or more , we have to tell the user and then he decides ,
-              if he cancels we clear form if he accepts we add it
-             */
-            if(oResponse.length<1){
-              this.saveAreaOfOperation();
-            }else{
-              let sErrorMsg: string = this.m_oTranslate.instant(
-              'AREA_OF_OPERATIONS.CONFIRM_SAME_AREA'
-            );
-            this.m_oNotificationService.openConfirmationDialog(
-              sErrorMsg, 'danger'
-            ).subscribe((bResult=>{
-              if(bResult){
+          /*here we have to check for list of the over lapping area
+            , if it is empty, we are good to go but if it has one or more , we have to tell the user and then he decides ,
+            if he cancels we clear form if he accepts we add it
+           */
+          if (oResponse.length < 1) {
+            this.saveAreaOfOperation();
+          } else {
+            let sErrorMsg: string = this.m_oTranslate.instant('AREA_OF_OPERATIONS.CONFIRM_SAME_AREA');
+            this.m_oNotificationService.openConfirmationDialog(sErrorMsg, 'danger').subscribe((bResult => {
+              if (bResult) {
                 this.saveAreaOfOperation();
               }
             }))
-            }
+          }
 
-          }, error: (oError) => {
-            //here it either an error or there is an area with the same name
-            if (
-              oError?.error?.errorStringCodes[0] === 'ERROR_API_AREA_NAME_ALREADY_EXISTS'
-            ) {
-              let sErrorMsg: string = this.m_oTranslate.instant(
-                'AREA_OF_OPERATIONS.CONFIRM_SAME_NAME'
-              );
-              this.m_oNotificationService.openConfirmationDialog(
-                sErrorMsg, 'danger'
-              ).subscribe((bResult => {
-                if (bResult) {
-                  this.saveAreaOfOperation();
-                }
-              }))
+        }, error: (oError) => {
+          //here it either an error or there is an area with the same name
+          if (oError?.error?.errorStringCodes[0] === 'ERROR_API_AREA_NAME_ALREADY_EXISTS') {
+            let sErrorMsg: string = this.m_oTranslate.instant('AREA_OF_OPERATIONS.CONFIRM_SAME_NAME');
+            this.m_oNotificationService.openConfirmationDialog(sErrorMsg, 'danger').subscribe((bResult => {
+              if (bResult) {
+                this.saveAreaOfOperation();
+              }
+            }))
 
 
-            } else {
-              console.error(oError)
-            }
+          } else {
+            console.error(oError)
           }
         }
-      )
+      })
     }
 
   }

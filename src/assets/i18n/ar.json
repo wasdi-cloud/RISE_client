@@ -21,6 +21,7 @@
     "CREATION_UPLOAD_ALTERNATIVE_TEXT": "بعد إنشاء الحدث الخاص بك، ستتمكن من تحميل الصور والمستندات المرتبطة عند تعديله."
   },
   "CREATE_NEW_EVENT": {
+    "ON_GOING_EVENT": "حدث جارٍ",
     "NAME": "الاسم",
     "DESCRIPTION": " الوص",
     "TYPE": "النوع",
@@ -64,6 +65,7 @@
     "BACK": "العودة إلى الوضع المباشر"
   },
   "CREATE_NEW_AREA_OF_OPERATION": {
+    "SUPPORT_ARCHIVE": "يدعم الأرشفة",
     "SUCCESS_AND_PENDING": "تمت إضافة منطقتك بنجاح، ويتم إنشاء الطبقات، ستتلقى إشعارًا عبر البريد الإلكتروني عندما تكون جاهزة.",
     "NAME": "الاسم",
     "DESCRIPTION": "الوصف",
