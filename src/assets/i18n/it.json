@@ -140,6 +140,7 @@
 		"ERROR_LAYER": "Si è verificato un errore durante il recupero delle informazioni sui pixel."
 	},
 	"MONITOR": {
+    "WIRE_TRANSFER": "se confermi di voler pagare con bonifico bancario, riceverai i dettagli bancari via e-mail",
     "PRINT_PAYLOAD_TITLE": "Titolo",
     "PRINT_PAYLOAD_DESCRIPTION": "Descrizione",
     "PRINT_WAIT": "RISE sta stampando la tua mappa",

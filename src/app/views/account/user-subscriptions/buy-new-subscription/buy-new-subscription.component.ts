@@ -264,7 +264,6 @@ export class BuyNewSubscriptionComponent implements OnInit {
 
   handlePaymentTypeSelect(oPaymentType: any) {
     let sTypeName = oPaymentType.value;
-    console.log(oPaymentType.value);
     this.m_sSelectedPaymentTypeName=oPaymentType.value
 
     this.m_oSelectedPaymentType = this.m_aoPaymentTypes.find(
@@ -410,21 +409,9 @@ export class BuyNewSubscriptionComponent implements OnInit {
     this.initSubscriptionInput();
     // let sMessage = this.m_oTranslate.instant("SUBSCRIPTIONS.STRIPE_MSG");
     // let sTitle = this.m_oTranslate.instant("SUBSCRIPTIONS.STRIPE_TITLE");
-    let sMessage = `
-  <p>
-    These are the bank coordinates for RISE and the exact amount to pay: <strong>${this.m_oSubInput.price} €</strong>.
-    Your subscription will be activated once the wire transfer is received.
-  </p>
-  <p><strong>Bank Details:</strong></p>
-  <ul>
-    <li><strong>Bank Name:</strong> Dummy Bank</li>
-    <li><strong>Account Number:</strong> 1234 5678 9012</li>
-    <li><strong>IBAN:</strong> XX00 1234 5678 9012 3456 7890</li>
-    <li><strong>SWIFT/BIC:</strong> DUMMYBANKXX</li>
-  </ul>
-  <p><strong>Reference Code:</strong> WIRE-123456789</p>
-  <p>Click 'Confirm' to continue or 'CANCEL' to end the payment process.</p>
-`;
+    let sMessage =this.m_oTranslateService.instant(
+      'SUBSCRIPTIONS.WIRE_TRANSFER'
+    );
     //Notification that user will be re-directed to Stripe
     this.m_oNotificationService.openConfirmationDialog(
       sMessage,
@@ -432,6 +419,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
     ).subscribe(oDialogResult => {
       if (oDialogResult === true) {
         this.isCheckoutNow = true;
+        //Here we will email wasdi admins telling them that user wants to do wire transfer
         this.m_oSubscriptionService.saveSubscription(this.m_oSubInput).subscribe({
           next: (oResponse) => {
             this.m_oNotificationService.openSnackBar("Subscription is created successfully", "Subscription created", 'success');
