@@ -2,13 +2,14 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {RiseButtonComponent} from "../../components/rise-button/rise-button.component";
 import {TranslateModule} from "@ngx-translate/core";
-import {NgIf} from "@angular/common";
+import {NgClass, NgIf} from "@angular/common";
 import {catchError, finalize, switchMap, throwError} from "rxjs";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {PrinterService} from "../../services/api/printer.service";
 import FadeoutUtils from "../../shared/utilities/FadeoutUtils";
 import {log} from "node:util";
 import {RiseTextInputComponent} from "../../components/rise-text-input/rise-text-input.component";
+import {MatSlideToggle} from "@angular/material/slide-toggle";
 
 @Component({
   selector: 'app-print-map-dialog',
@@ -17,7 +18,9 @@ import {RiseTextInputComponent} from "../../components/rise-text-input/rise-text
     RiseButtonComponent,
     TranslateModule,
     NgIf,
-    RiseTextInputComponent
+    RiseTextInputComponent,
+    NgClass,
+    MatSlideToggle
   ],
   templateUrl: './print-map-dialog.component.html',
   styleUrl: './print-map-dialog.component.css'
@@ -25,7 +28,13 @@ import {RiseTextInputComponent} from "../../components/rise-text-input/rise-text
 export class PrintMapDialogComponent implements OnInit {
 
   m_bIsLoading:boolean = false;
-  m_oPrintPayload:any
+  m_oPrintPayload:any;
+  /**
+   * This flag is to either show the title and description for the user
+   */
+  m_bShowOptionalInputs: boolean = false;
+  m_sAreaName:string = "";
+
 
 
   constructor(
@@ -41,9 +50,11 @@ export class PrintMapDialogComponent implements OnInit {
 
   ngOnInit(): void {
       if(this.m_oData.payload){
-        console.log(this.m_oData.payload);
         this.m_oPrintPayload=this.m_oData.payload;
         this.m_oPrintPayload.format=this.m_sSelectedFormat;
+      }
+      if(this.m_oData.areaName){
+        this.m_sAreaName=this.m_oData.areaName;
       }
   }
 
@@ -56,6 +67,18 @@ export class PrintMapDialogComponent implements OnInit {
     this.m_sSelectedFormat = format;
     this.m_oPrintPayload.format = format;
     console.log('Selected print format:', this.m_sSelectedFormat);
+  }
+
+  toggleOptionalInputs(): void {
+    this.m_bShowOptionalInputs= !this.m_bShowOptionalInputs;
+    if(this.m_bShowOptionalInputs){
+      let oDate=new Date();
+      this.m_oPrintPayload.title = this.m_sAreaName+" "+oDate.toDateString();
+    }else{
+      this.m_oPrintPayload.title = "";
+      this.m_oPrintPayload.description = "";
+    }
+
   }
 
   confirmPrinting(): void {

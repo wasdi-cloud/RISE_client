@@ -1081,7 +1081,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
         wkts:this.m_sMeasurementToolWkt?[{name:"drawn area",geom:this.m_sMeasurementToolWkt}]:[]
       }
       const oDialogRef = this.m_oDialog.open(PrintMapDialogComponent, {
-        data: { payload: oPrintPayload }
+        data: { payload: oPrintPayload,areaName:this.m_sAreaName }
       });
 
       oDialogRef.afterClosed().subscribe(result => {
