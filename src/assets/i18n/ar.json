@@ -233,6 +233,7 @@
     "SIGN_UP": "التسجيل"
   },
   "MONITOR": {
+    "ADD_TITLE_AND_DESCRIPTION": "إضافة عنوان ووصف",
     "PRINT_PAYLOAD_TITLE": "العنوان",
     "PRINT_PAYLOAD_DESCRIPTION": "الوصف",
     "PRINT_WAIT": "تقوم RISE بطباعة خريطتك",

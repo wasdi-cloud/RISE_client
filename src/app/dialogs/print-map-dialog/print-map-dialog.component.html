@@ -12,7 +12,7 @@
     <p class="mb-3">{{ "MONITOR.SELECT_PRINT_FORMAT" | translate }}</p>
 
     <div class="d-flex align-items-center gap-2 mb-3">
-      <label for="optional-toggle" class="form-label mb-0">Add Title & Description</label>
+      <label for="optional-toggle" class="form-label mb-0">{{"MONITOR.ADD_TITLE_AND_DESCRIPTION" | translate}}</label>
       <span
         (click)="toggleOptionalInputs()"
         [ngClass]="{'active': m_bShowOptionalInputs}"
@@ -23,12 +23,12 @@
     <div *ngIf="m_bShowOptionalInputs">
       <rise-text-input
         [m_bHasTitle]="true"
-        [m_sLocalizationKey]="'MONITOR.PRINT_PAYLOAD_TITLE'"
+        [m_sLocalizationKey]="'MONITOR.PRINT_PAYLOAD_TITLE'|translate"
         [(m_sInputText)]="m_oPrintPayload.title"
       ></rise-text-input>
       <rise-text-input
         [m_bHasTitle]="true"
-        [m_sLocalizationKey]="'MONITOR.PRINT_PAYLOAD_DESCRIPTION'"
+        [m_sLocalizationKey]="'MONITOR.PRINT_PAYLOAD_DESCRIPTION'|translate"
         [(m_sInputText)]="m_oPrintPayload.description"
         class="mb-3"
       ></rise-text-input>

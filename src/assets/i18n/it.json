@@ -140,6 +140,7 @@
 		"ERROR_LAYER": "Si è verificato un errore durante il recupero delle informazioni sui pixel."
 	},
 	"MONITOR": {
+    "ADD_TITLE_AND_DESCRIPTION": "Aggiungi Titolo e Descrizione",
     "WIRE_TRANSFER": "se confermi di voler pagare con bonifico bancario, riceverai i dettagli bancari via e-mail",
     "PRINT_PAYLOAD_TITLE": "Titolo",
     "PRINT_PAYLOAD_DESCRIPTION": "Descrizione",

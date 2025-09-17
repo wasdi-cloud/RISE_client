@@ -238,6 +238,7 @@
     "INVALID_SUB_MSG": "Su suscripción ha caducado o no tiene una suscripción activa. Por favor, adquiera una nueva suscripción para continuar usando esta función."
   },
   "MONITOR": {
+    "ADD_TITLE_AND_DESCRIPTION": "Añadir Título y Descripción",
     "PRINT_PAYLOAD_TITLE": "Título",
     "PRINT_PAYLOAD_DESCRIPTION": "Descripción",
     "PRINT_WAIT": "RISE está imprimiendo tu mapa",

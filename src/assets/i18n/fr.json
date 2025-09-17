@@ -38,6 +38,7 @@
     "END_DATE": "Date de fin"
   },
   "MONITOR": {
+    "ADD_TITLE_AND_DESCRIPTION": "Ajouter un titre et une description",
     "WIRE_TRANSFER": "si vous confirmez vouloir payer par virement bancaire, vous recevrez les coordonnées bancaires par e-mail",
     "PRINT_PAYLOAD_TITLE": "Titre",
     "PRINT_PAYLOAD_DESCRIPTION": "Description",

@@ -3,13 +3,10 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {RiseButtonComponent} from "../../components/rise-button/rise-button.component";
 import {TranslateModule} from "@ngx-translate/core";
 import {NgClass, NgIf} from "@angular/common";
-import {catchError, finalize, switchMap, throwError} from "rxjs";
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {PrinterService} from "../../services/api/printer.service";
 import FadeoutUtils from "../../shared/utilities/FadeoutUtils";
-import {log} from "node:util";
 import {RiseTextInputComponent} from "../../components/rise-text-input/rise-text-input.component";
-import {MatSlideToggle} from "@angular/material/slide-toggle";
 
 @Component({
   selector: 'app-print-map-dialog',
@@ -19,8 +16,7 @@ import {MatSlideToggle} from "@angular/material/slide-toggle";
     TranslateModule,
     NgIf,
     RiseTextInputComponent,
-    NgClass,
-    MatSlideToggle
+    NgClass
   ],
   templateUrl: './print-map-dialog.component.html',
   styleUrl: './print-map-dialog.component.css'
