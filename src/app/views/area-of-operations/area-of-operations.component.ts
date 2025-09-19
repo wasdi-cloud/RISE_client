@@ -114,7 +114,7 @@ export class AreaOfOperationsComponent implements OnInit {
         data: {
           area: oArea,
         },
-        height: "80%"
+        height: "65%"
       })
       .afterClosed()
       .subscribe((oResponse) => {
