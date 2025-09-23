@@ -48,6 +48,8 @@ export class PrintMapDialogComponent implements OnInit {
       if(this.m_oData.payload){
         this.m_oPrintPayload=this.m_oData.payload;
         this.m_oPrintPayload.format=this.m_sSelectedFormat;
+        this.m_oPrintPayload.title="";
+        this.m_oPrintPayload.description="";
       }
       if(this.m_oData.areaName){
         this.m_sAreaName=this.m_oData.areaName;
