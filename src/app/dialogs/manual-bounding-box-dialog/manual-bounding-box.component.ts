@@ -2,7 +2,6 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {MatDialogRef} from "@angular/material/dialog";
 import {RiseButtonComponent} from "../../components/rise-button/rise-button.component";
 import {RiseTextInputComponent} from "../../components/rise-text-input/rise-text-input.component";
-import {RiseTextareaInputComponent} from "../../components/rise-textarea-input/rise-textarea-input.component";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {NgIf} from "@angular/common";
 import {NotificationsDialogsService} from "../../services/notifications-dialogs.service";
@@ -14,7 +13,6 @@ import {JsonEditorService} from "../../services/json-editor.service";
   imports: [
     RiseButtonComponent,
     RiseTextInputComponent,
-    RiseTextareaInputComponent,
     TranslateModule,
     NgIf
   ],
