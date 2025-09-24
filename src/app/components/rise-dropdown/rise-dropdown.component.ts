@@ -85,28 +85,41 @@ export class RiseDropdownComponent {
     this.m_oSelectionChange.emit(oEvent);
   }
 
-  getValues(oValues) {
-    let aoNewValues = [];
-    if (oValues.length > 0) {
-      if (this.m_bIsMultiSelect === true) {
-        oValues.forEach((oElement) => {
-          if (oElement.name) {
-            aoNewValues.push(oElement.name);
-          } else {
-            aoNewValues.push(oElement);
-          }
-        });
-      } else {
-        aoNewValues = oValues.name
-          ? oValues.name
-          : oValues.workspaceName
-          ? oValues.workspaceName
-          : oValues;
-      }
-    } else {
-      oValues.name ? (aoNewValues = oValues.name) : (aoNewValues = oValues);
+  getValues(oValues: any): string {
+    // Check if oValues is an array (for multiselect)
+    if (Array.isArray(oValues)) {
+      return oValues.map((oElement: any) => {
+        // Prioritize label, then name, then workspaceName
+        if (oElement.label) {
+          return oElement.label;
+        } else if (oElement.name) {
+          return oElement.name;
+        } else if (oElement.workspaceName) {
+          return oElement.workspaceName;
+        } else {
+          // Fallback to the string representation if no known property is found
+          return oElement;
+        }
+      }).join(', ');
     }
-    return aoNewValues;
+
+    // Handle single-select case
+    if (oValues) {
+      // Prioritize label, then name, then workspaceName
+      if (oValues.label) {
+        return oValues.label;
+      } else if (oValues.name) {
+        return oValues.name;
+      } else if (oValues.workspaceName) {
+        return oValues.workspaceName;
+      } else {
+        // Fallback to the string representation
+        return oValues;
+      }
+    }
+
+    // Return an empty string if no value is selected
+    return '';
   }
 
   removeItem(oChosenItem: any, event: Event) {

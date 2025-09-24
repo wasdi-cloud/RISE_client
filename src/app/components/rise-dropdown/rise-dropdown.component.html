@@ -32,15 +32,16 @@
     <mat-select-trigger>
       <ng-container *ngIf="m_bShowChips; else defaultDisplay">
         <div class="chip-container">
-          <span *ngFor="let item of m_aoSelectedItems" class="chip">
+          <span *ngFor="let oItem of m_aoSelectedItems" class="chip">
             <img
-              *ngIf="m_bIsCountryDropdown && item.code"
-              [src]="'https://flagsapi.com/' + item.code + '/flat/24.png'"
+              *ngIf="m_bIsCountryDropdown && oItem.code"
+              [src]="'https://flagsapi.com/' + oItem.code + '/flat/24.png'"
               alt="flag"
               class="flag-icon"
             />
-            {{ item.name ? item.name : item }}
-            <button class="chip-close" (click)="removeItem(item, $event)">×</button>
+            {{ oItem.name ? oItem.name : oItem.label?oItem.label:oItem }}
+
+            <button class="chip-close" (click)="removeItem(oItem, $event)">×</button>
           </span>
         </div>
       </ng-container>
@@ -71,7 +72,7 @@
           alt="flag"
           class="flag-icon"
         />
-        {{ oItem.name ? oItem.name : oItem }}
+        {{ oItem.name ? oItem.name : oItem.label?oItem.label:oItem }}
       </mat-option>
     </div>
     <div *ngIf="!m_bHasSearch">
@@ -85,7 +86,8 @@
           alt="flag"
           class="flag-icon"
         />
-        {{ oItem.name ? oItem.name : oItem }}
+<!--        trying to handle all  possibilities-->
+        {{ oItem.name ? oItem.name : oItem.label?oItem.label:oItem }}
       </mat-option>
     </div>
   </mat-select>
