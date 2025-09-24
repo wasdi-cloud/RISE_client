@@ -18,5 +18,10 @@ export class MapAPIService {
       this.APIURL + '/map/by_area?area_id=' + sAreaId
     );
   }
+  byPluginId(sPluginId: string) {
+    return this.m_oHttpClient.get<any>(
+      this.APIURL + '/map/by_plugin?plugin_id=' + sPluginId
+    );
+  }
 
 }

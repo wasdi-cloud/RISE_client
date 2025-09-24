@@ -7,7 +7,7 @@
       close
     </span>
   </div>
-  <div class="body flex-fill d-flex flex-column gap-2">
+  <div *ngIf="!this.m_bIsAdvancedSettingsOn" class="body flex-fill d-flex flex-column gap-2">
     <rise-text-input
       [m_bHasTitle]="true"
       [m_sLocalizationKey]="'CREATE_NEW_AREA_OF_OPERATION.NAME'"
@@ -39,14 +39,56 @@
       [m_sInputDate]="m_oArea.creationDate | date : 'YYYY-MM-dd'"
     ></rise-date-input>
     <rise-checkbox
-      [m_aoOptions]="m_asPlugins"
+      [m_aoOptions]="m_aoPlugins"
       [m_aoSelectedValues]="m_oArea.plugins"
       [m_bReadonly]="true"
     >
     </rise-checkbox>
-    <rise-button
-      [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.SAVE'"
-      (click)="saveAreaOfOperation()"
-    ></rise-button>
+    <div class="d-flex justify-content-between mt-2">
+      <rise-button
+        [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.ADVANCED_SETTINGS'"
+        (click)="openAdvancedSettingsDialog()"
+      ></rise-button>
+      <rise-button
+        [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.SAVE'"
+        (click)="saveAreaOfOperation()"
+        [m_sRole]="'action'"
+      ></rise-button>
+    </div>
   </div>
+  <div *ngIf="this.m_bIsAdvancedSettingsOn" class="body flex-fill d-flex flex-column gap-2">
+    <rise-dropdown
+      [m_bHasTitle]="true"
+      [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.PLUGINS'"
+      [m_sPlaceholder]="''"
+      [m_aoSelectedItems]="m_oSelectedPlugin"
+      [m_aoDropdownItems]="m_aoSelectedPlugins"
+      (m_oSelectionChange)="setSelectedPlugin($event)"
+    ></rise-dropdown>
+
+    <rise-dropdown
+      [m_bHasTitle]="true"
+      [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.MAP_LAYER'"
+      [m_sPlaceholder]="''"
+      [m_aoSelectedItems]="m_oSelectedMap"
+      [m_aoDropdownItems]="m_aoPluginMaps"
+      (m_oSelectionChange)="setSelectedMap($event)"
+    ></rise-dropdown>
+    <div class="JSON-container">
+      <div #editor class="json-editor"  (keyup)="getJsonInput()"
+           (change)="getJsonInput()"></div>
+    </div>
+    <div class="d-flex justify-content-between mt-2">
+      <rise-button
+        [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.RETURN'"
+        (click)="returnToEditPage()"
+      ></rise-button>
+      <rise-button
+        [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.SAVE'"
+        (click)="saveAdvancedSetting()"
+        [m_sRole]="'action'"
+      ></rise-button>
+    </div>
+  </div>
+
 </div>

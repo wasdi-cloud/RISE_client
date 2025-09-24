@@ -73,6 +73,7 @@
     "BACK": "Volver a vivir"
   },
   "CREATE_NEW_AREA_OF_OPERATION": {
+    "MAP_LAYER": "Capa del Mapa",
     "SUPPORT_ARCHIVE": "Soporta el archivo",
     "SUCCESS_AND_PENDING": "Su área ha sido añadida con éxito. Las capas se están generando; recibirá una notificación por correo electrónico cuando estén listas.",
     "NAME": "Nombre",

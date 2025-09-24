@@ -71,6 +71,7 @@
 		"BACK": "Torna al Live"
 	},
 	"CREATE_NEW_AREA_OF_OPERATION": {
+    "MAP_LAYER": "Livello della Mappa",
     "SUPPORT_ARCHIVE": "Supporta l'archiviazione",
     "SUCCESS_AND_PENDING": "La tua area è stata aggiunta con successo. I livelli sono in fase di generazione; riceverai una notifica via email quando saranno pronti.",
 		"NAME": "Nome",
