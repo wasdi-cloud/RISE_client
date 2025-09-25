@@ -15,6 +15,7 @@ import {RiseButtonComponent} from '../../../components/rise-button/rise-button.c
 import {RiseDropdownComponent} from "../../../components/rise-dropdown/rise-dropdown.component";
 import {JsonEditorService} from "../../../services/json-editor.service";
 import {MapAPIService} from "../../../services/api/map.service";
+import {MapParametersService} from "../../../services/api/map-parameters.service";
 
 @Component({
   selector: 'app-area-info',
@@ -37,16 +38,21 @@ export class AreaInfoComponent implements OnInit {
   m_sJSONParam = '{}';
   @ViewChild('editor') m_oEditorRef!: ElementRef;
   m_aoSelectedPlugins = [];
-  m_oSelectedPlugin :any;
+  m_oSelectedPlugin: any;
+
+  m_bIsUpdate:boolean = false;
+  m_bIsAdd:boolean = false;
 
   m_aoPluginMaps = [];
-  m_oSelectedMap :any;
+  m_oSelectedMap: any;
 
 
   m_bIsAdvancedSettingsOn: boolean = false;
 
 
   m_sAreaId: string = '';
+  m_sParamsId: string = '';
+  m_sMapId: string = '';
   m_oArea: AreaViewModel = {} as AreaViewModel;
   m_aoPlugins: { label: string; value: string }[] = [];
   m_asIsPublic: { label: string; value: string }[] = [];
@@ -60,6 +66,7 @@ export class AreaInfoComponent implements OnInit {
     private m_oPluginService: PluginService,
     private m_oMapService: MapAPIService,
     private m_oTranslate: TranslateService,
+    private m_oMapParamsService: MapParametersService,
     private m_oJsonEditorService: JsonEditorService
   ) {
   }
@@ -81,8 +88,34 @@ export class AreaInfoComponent implements OnInit {
 
     this.getPlugins();
   }
+
   setSelectedMap(oEvent: any) {
-      //here we call the getParams
+    //here we call the getParams
+
+    this.m_sMapId = oEvent.value.id;
+    if (!FadeoutUtils.utilsIsStrNullOrEmpty(this.m_sAreaId)) {
+      this.m_oMapParamsService.getParameters(this.m_sAreaId, this.m_sMapId).subscribe({
+          next: (oResponse) => {
+            this.m_sJSONParam = oResponse.payload
+            this.checkJSON();
+            //check if the params are already overloaded or no
+            if(oResponse.id) {
+              this.m_bIsUpdate=true;
+              this.m_sParamsId=oResponse.id;
+              this.m_bIsAdd=false
+            }else{
+              this.m_bIsUpdate=false;
+              this.m_bIsAdd=true;
+            }
+
+          }
+          ,
+          error: (oError) => {
+            console.error(oError);
+          }
+        }
+      )
+    }
   }
 
   setSelectedPlugin(oEvent: any) {
@@ -93,7 +126,7 @@ export class AreaInfoComponent implements OnInit {
         next: (oResponse: any) => {
           //update the maps list
           console.log(oResponse)
-          this.m_aoPluginMaps=oResponse;
+          this.m_aoPluginMaps = oResponse;
         },
         error: (oError) => {
           console.error(oError)
@@ -160,14 +193,65 @@ export class AreaInfoComponent implements OnInit {
 
   returnToEditPage() {
     //here we initialize the values
+    // init json editor
+    this.m_sJSONParam = '{}';
+    //init selected Plugins and map
+    this.m_oSelectedPlugin = null;
+    this.m_oSelectedMap = null;
+
+    //init flags
+    this.m_bIsUpdate = false;
+    this.m_bIsAdd = false;
+    //return
     this.m_bIsAdvancedSettingsOn = false;
   }
 
   saveAdvancedSetting() {
-    //here we initialize the values
-    //save
-    //return
-    this.returnToEditPage()
+    //check json
+    try {
+      let oParsedJson = JSON.parse(this.m_sJSONParam);
+      if(this.m_bIsAdd){
+        let oMapParamVM = {
+          areaId: this.m_sAreaId,
+          mapId: this.m_sMapId,
+          payload: this.m_sJSONParam
+        }
+        this.m_oMapParamsService.addParameters(oMapParamVM).subscribe({
+          next: (oResponse: any) => {
+            this.returnToEditPage()
+
+          },
+          error: (oError) => {
+            console.error('request error:'+oError);
+
+
+          }
+        })
+      }else if(this.m_bIsUpdate){
+        let oMapParamVM = {
+          id: this.m_sParamsId,
+          payload: this.m_sJSONParam
+        }
+        this.m_oMapParamsService.updateParameters(oMapParamVM).subscribe({
+          next: (oResponse: any) => {
+            this.returnToEditPage()
+
+          },
+          error: (oError) => {
+            console.error('request error:'+oError);
+
+
+          }
+        })
+      }
+      //todo differ add or update
+
+
+    } catch (oError) {
+      console.error('catch error:'+oError);
+    }
+
+
   }
 
   saveAreaOfOperation() {
@@ -233,6 +317,20 @@ export class AreaInfoComponent implements OnInit {
       // }
     } catch (error) {
       console.error(error)
+    }
+  }
+
+  checkJSON() {
+    let sErrorMsg = this.m_oTranslate.instant("MANUAL_BBOX.DIALOG_FORMAT_JSON_ERROR");
+    let sErrorHeader = this.m_oTranslate.instant("MANUAL_BBOX.KEY_PHRASES.ERROR");
+    try {
+      let oParsedJson = JSON.parse(this.m_sJSONParam);
+      let sPrettyPrint = JSON.stringify(oParsedJson, null, 2);
+
+      this.m_oJsonEditorService.setText(sPrettyPrint)
+
+    } catch {
+      this.m_oNotificationService.openInfoDialog(sErrorMsg, 'danger', sErrorHeader)
     }
   }
 }

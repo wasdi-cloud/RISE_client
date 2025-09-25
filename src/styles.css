@@ -522,7 +522,7 @@ a.leaflet-control-zoom-fullscreen {
   color: white;
 }
 .json-editor {
-  min-height: 370px !important;
+  min-height: 375px !important;
   height: 100% !important;
   width: 100%;
   border: 1px solid #ccc;

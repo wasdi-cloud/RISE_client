@@ -77,6 +77,8 @@
     <div class="JSON-container">
       <div #editor class="json-editor"  (keyup)="getJsonInput()"
            (change)="getJsonInput()"></div>
+      <rise-button class="json-button" [m_sLabel]="'MANUAL_BBOX.DIALOG_PROCESSOR_UI_APP_FORMAT_JSON' | translate"
+                   [m_sSize]="'small'" (click)="checkJSON()"></rise-button>
     </div>
     <div class="d-flex justify-content-between mt-2">
       <rise-button

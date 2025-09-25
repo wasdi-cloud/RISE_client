@@ -21,3 +21,9 @@ h3 {
   height: 80%;
   position: relative;
 }
+
+.json-button {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+}
