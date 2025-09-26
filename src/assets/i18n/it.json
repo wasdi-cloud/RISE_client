@@ -71,7 +71,11 @@
 		"BACK": "Torna al Live"
 	},
 	"CREATE_NEW_AREA_OF_OPERATION": {
+    "DIALOG_PROCESSOR_UI_APP_FORMAT_JSON": "Formato JSON",
+    "DEFAULT_PARAMS": "Parametri predefiniti",
     "MAP_LAYER": "Livello della Mappa",
+    "RETURN": "Indietro",
+    "ADVANCED_SETTINGS": "Impostazioni avanzate",
     "SUPPORT_ARCHIVE": "Supporta l'archiviazione",
     "SUCCESS_AND_PENDING": "La tua area è stata aggiunta con successo. I livelli sono in fase di generazione; riceverai una notifica via email quando saranno pronti.",
 		"NAME": "Nome",

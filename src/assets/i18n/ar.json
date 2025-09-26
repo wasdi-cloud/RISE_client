@@ -65,6 +65,10 @@
     "BACK": "العودة إلى الوضع المباشر"
   },
   "CREATE_NEW_AREA_OF_OPERATION": {
+    "DIALOG_PROCESSOR_UI_APP_FORMAT_JSON": "صيغة JSON",
+    "DEFAULT_PARAMS": "معاملات افتراضية",
+    "RETURN": "رجوع",
+    "ADVANCED_SETTINGS": "إعدادات متقدمة",
     "MAP_LAYER": "طبقة الخريطة",
     "SUPPORT_ARCHIVE": "يدعم الأرشفة",
     "SUCCESS_AND_PENDING": "تمت إضافة منطقتك بنجاح، ويتم إنشاء الطبقات، ستتلقى إشعارًا عبر البريد الإلكتروني عندما تكون جاهزة.",

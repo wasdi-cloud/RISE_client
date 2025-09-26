@@ -70,6 +70,8 @@
     "BACK": "Back to Live"
   },
   "CREATE_NEW_AREA_OF_OPERATION": {
+    "DIALOG_PROCESSOR_UI_APP_FORMAT_JSON": "Format JSON",
+    "DEFAULT_PARAMS": "Default Parameters",
     "MAP_LAYER": "Map Layer",
     "ADVANCED_SETTINGS": "Advanced Settings",
     "RETURN": "Return",
