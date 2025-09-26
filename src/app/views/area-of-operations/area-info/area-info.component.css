@@ -27,3 +27,8 @@ h3 {
   bottom: 1rem;
   right: 1rem;
 }
+.default-button {
+  position: absolute;
+  bottom: 1rem;
+  right: 8rem;
+}

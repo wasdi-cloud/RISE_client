@@ -93,19 +93,23 @@ export class AreaInfoComponent implements OnInit {
     //here we call the getParams
 
     this.m_sMapId = oEvent.value.id;
+    this.getMapParams();
+  }
+
+  private getMapParams() {
     if (!FadeoutUtils.utilsIsStrNullOrEmpty(this.m_sAreaId)) {
       this.m_oMapParamsService.getParameters(this.m_sAreaId, this.m_sMapId).subscribe({
           next: (oResponse) => {
             this.m_sJSONParam = oResponse.payload
             this.checkJSON();
             //check if the params are already overloaded or no
-            if(oResponse.id) {
-              this.m_bIsUpdate=true;
-              this.m_sParamsId=oResponse.id;
-              this.m_bIsAdd=false
-            }else{
-              this.m_bIsUpdate=false;
-              this.m_bIsAdd=true;
+            if (oResponse.id) {
+              this.m_bIsUpdate = true;
+              this.m_sParamsId = oResponse.id;
+              this.m_bIsAdd = false
+            } else {
+              this.m_bIsUpdate = false;
+              this.m_bIsAdd = true;
             }
 
           }
@@ -332,5 +336,31 @@ export class AreaInfoComponent implements OnInit {
     } catch {
       this.m_oNotificationService.openInfoDialog(sErrorMsg, 'danger', sErrorHeader)
     }
+  }
+
+  deleteParamAndReturnTheDefaultOne(){
+    // the idea here is to delete the params entered by the user either saved or not and then get the default one.
+    //   we need to ensure this is not doable until the user selects a plugin and map id
+    if(!FadeoutUtils.utilsIsStrNullOrEmpty(this.m_sAreaId) && !FadeoutUtils.utilsIsStrNullOrEmpty(this.m_sMapId)){
+      if(this.m_bIsUpdate){
+        //here the user has already saved his own params and now wants to get the default one so we delete his params and  get the default one
+        // safe programming
+        if(!FadeoutUtils.utilsIsStrNullOrEmpty(this.m_sParamsId)){
+          this.m_oMapParamsService.deleteParameters(this.m_sParamsId).subscribe({
+            next: (oResponse) => {
+              //now we call the default param
+              this.getMapParams();
+            },
+            error: (oError) => {
+              console.error('request error:'+oError);
+            }
+          })
+        }
+      }else{
+        //here either the user did not yet saved the map params (cleared the old params, modified and want to undo his changes …ect)
+        this.getMapParams();
+      }
+    }
+
   }
 }
