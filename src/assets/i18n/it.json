@@ -89,6 +89,7 @@
 		"ID": "Id"
 	},
   "COLLABORATORS": {
+    "USER_ID": "ID utente RISE",
     "ORG_EMPTY_TITLE": "La tua organizzazione è vuota",
     "ORG_EMPTY_MESSAGE": "Non ci sono altri utenti nella tua organizzazione. Ti preghiamo di invitarli a diventare collaboratori e poi aggiungerli alle tue aree.",
     "ADD_COLLAB": "Aggiungi collaboratore",
@@ -181,7 +182,20 @@
 	},
 
   "LAYER_ITEM": {
-    "OPACITY": "Opacità"
+    "OPACITY": "Opacità",
+    "REMOVE_LAYER": "Rimuovi livello",
+    "TOGGLE_LEGEND_VISIBILITY": "Attiva/disattiva visibilità legenda",
+    "FOCUS_ON_LAYER": "Metti a fuoco sul livello",
+    "DOWNLOAD_FILE": "Scarica file",
+    "LAYER_PROP": "Proprietà livello"
+  },
+  "IMPORT_SHAPE_FILE": {
+    "IMPORT_FILE": "Importa file",
+    "CANCEL": "Annulla",
+    "IMPORT": "Importa"
+  },
+  "TIMEBAR": {
+    "LIVE": "In diretta"
   },
 	"LAYER_ANALYZER": {
 		"FILTER": "Filtra Valori dei Pixel",
@@ -364,6 +378,10 @@
 		"PAID_STATUS": "Stato"
 	},
 	"MANUAL_BBOX": {
+    "DRAW_AREA": "Disegna Area",
+    "JSON_INPUT": "Input JSON",
+    "INPUT_FIELDS": "Campi di input",
+    "TITLE": "Inserisci le coordinate",
 		"DIALOG_MANUAL_INSERT_BBOX_INFO": "Inserisci JSON nel seguente formato:<br>",
 		"DIALOG_PROCESSOR_UI_APP_FORMAT_JSON": "Formato JSON",
 		"DIALOG_FORMAT_JSON_ERROR": "Impossibile formattare il tuo input JSON. Assicurati che sia un JSON valido",

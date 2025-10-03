@@ -14,7 +14,16 @@
     "MANAGE_EVENTS": "Gestionar eventos"
 
   },
-
+  "MANUAL_BBOX": {
+    "DRAW_AREA": "Dibujar Área",
+    "JSON_INPUT": "Entrada JSON",
+    "INPUT_FIELDS": "Campos de entrada",
+    "TITLE": "Por favor, inserta las coordenadas",
+    "DIALOG_MANUAL_INSERT_BBOX_INFO": "Introduce el JSON en el siguiente formato:<br>",
+    "DIALOG_PROCESSOR_UI_APP_FORMAT_JSON": "Formatear JSON",
+    "DIALOG_FORMAT_JSON_ERROR": "No se pudo formatear tu entrada JSON. Asegúrate de que sea un JSON válido",
+    "DIALOG_PARSE_JSON_ERROR": "Hubo un error al analizar la carga JSON"
+  },
   "MANAGE_EVENTS": {
     "HEADER": "GESTIONAR EVENTOS",
     "CREATE_NEW_EVENT": "Crear nuevo Evento",
@@ -92,6 +101,7 @@
   },
 
   "COLLABORATORS": {
+    "USER_ID": "ID de usuario RISE",
     "ORG_EMPTY_TITLE": "Su organización está vacía",
     "ORG_EMPTY_MESSAGE": "No hay otros usuarios en su organización. Por favor, invítelos a ser colaboradores y luego añádalos a sus áreas.",
     "ADD_COLLAB": "Añadir colaborador",
@@ -275,8 +285,21 @@
     "WORK_IN_PROGRESS": "En RISE, nos gusta gestionar únicamente con datos satelitales recién adquiridos. Actualmente estamos procesando su nueva Área de Operaciones. Por favor, vuelve más tarde.",
     "WORK_IN_PROGRESS_TITLE": "Estamos trabajando en ello"
   },
+  "IMPORT_SHAPE_FILE": {
+    "IMPORT_FILE": "Importar archivo",
+    "CANCEL": "Cancelar",
+    "IMPORT": "Importar"
+  },
   "LAYER_ITEM": {
-    "OPACITY": "Opacidad"
+    "OPACITY": "Opacidad",
+    "REMOVE_LAYER": "Eliminar capa",
+    "TOGGLE_LEGEND_VISIBILITY": "Alternar visibilidad de la leyenda",
+    "FOCUS_ON_LAYER": "Enfocar en la capa",
+    "DOWNLOAD_FILE": "Descargar archivo",
+    "LAYER_PROP": "Propiedades de la capa"
+  },
+  "TIMEBAR": {
+    "LIVE": "En vivo"
   },
   "LAYER_ANALYZER": {
     "FILTER": "Filtrar valores de píxeles",

@@ -13,10 +13,10 @@
       <div style="max-width: 300px; width: 100%;" *ngIf="m_bImpactsAvailable">
         <rise-dropdown
           [m_bHasTitle]="true"
-          [m_sLabel]="'IMPACTS_DIALOG.SELECT_LAYER' | translate"
+          [m_sLabel]="'IMPACTS_DIALOG.SELECT_LAYER'"
           [m_aoDropdownItems]="m_aoDropdownOptions"
           (m_oSelectionChange)="onDropdownSelectionChange($event)"
-          [m_sPlaceholder]="'IMPACTS_DIALOG.SELECT_LAYER_PLACEHOLDER' | translate"
+          [m_sPlaceholder]="'IMPACTS_DIALOG.SELECT_LAYER_PLACEHOLDER'"
 
         ></rise-dropdown>
       </div>

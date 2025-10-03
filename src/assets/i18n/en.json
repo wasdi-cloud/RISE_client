@@ -88,6 +88,7 @@
     "ID": "Id"
   },
   "COLLABORATORS": {
+    "USER_ID": "RISE User Id",
     "ORG_EMPTY_TITLE": "Your Organization is empty",
     "ORG_EMPTY_MESSAGE": "There are no other users in your org. Please invite them to be collaborator then add them to your areas",
     "ADD_COLLAB": "Add Collaborator",
@@ -360,6 +361,10 @@
     "PAID_STATUS": "Status"
   },
   "MANUAL_BBOX":{
+    "DRAW_AREA":"Draw Area",
+    "JSON_INPUT": "JSON Input",
+    "INPUT_FIELDS": "Input Fields",
+    "TITLE":"Please insert The coordination",
     "DIALOG_MANUAL_INSERT_BBOX_INFO": "Input JSON in the following format:<br>",
     "DIALOG_PROCESSOR_UI_APP_FORMAT_JSON": "Format JSON",
     "DIALOG_FORMAT_JSON_ERROR": "Could not format your JSON input. Please ensure it is a valid JSON",
@@ -432,7 +437,21 @@
     "ROADS_AFFECTED": "Roads Affected"
   },
   "LAYER_ITEM": {
-    "OPACITY": "Opacity"
+    "OPACITY": "Opacity",
+    "REMOVE_LAYER": "Remove Layer",
+    "TOGGLE_LEGEND_VISIBILITY":"Toggle legend visibility",
+    "FOCUS_ON_LAYER":"Focus on layer",
+    "DOWNLOAD_FILE":"Download file",
+    "LAYER_PROP":"Layer Properties"
+  },
+  "TIMEBAR": {
+    "LIVE": "Live"
+  },
+  "IMPORT_SHAPE_FILE": {
+    "IMPORT_FILE": "Import File",
+    "CANCEL": "Cancel",
+    "IMPORT": "Import"
   }
+
 
 }

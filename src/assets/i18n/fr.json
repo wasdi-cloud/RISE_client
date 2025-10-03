@@ -14,6 +14,16 @@
     "MANAGE_EVENTS": "Gérer les événements"
 
   },
+  "MANUAL_BBOX": {
+    "DRAW_AREA": "Dessiner une zone",
+    "JSON_INPUT": "Entrée JSON",
+    "INPUT_FIELDS": "Champs de saisie",
+    "TITLE": "Veuillez insérer les coordonnées",
+    "DIALOG_MANUAL_INSERT_BBOX_INFO": "Veuillez saisir le JSON dans le format suivant :<br>",
+    "DIALOG_PROCESSOR_UI_APP_FORMAT_JSON": "Formater JSON",
+    "DIALOG_FORMAT_JSON_ERROR": "Impossible de formater votre entrée JSON. Veuillez vous assurer que c'est un JSON valide",
+    "DIALOG_PARSE_JSON_ERROR": "Une erreur est survenue lors de l'analyse de la charge utile JSON"
+  },
   "MANAGE_EVENTS": {
     "HEADER": "GÉRER LES ÉVÉNEMENTS",
     "CREATE_NEW_EVENT": "Créer un nouvel événement",
@@ -137,6 +147,7 @@
     "ID": "Id"
   },
   "COLLABORATORS": {
+    "USER_ID": "ID utilisateur RISE",
     "ORG_EMPTY_TITLE": "Votre organisation est vide",
     "ORG_EMPTY_MESSAGE": "Il n'y a pas d'autres utilisateurs dans votre organisation. Veuillez les inviter à devenir collaborateurs puis les ajouter à vos zones.",
     "ADD_COLLAB": "Ajouter un collaborateur",
@@ -414,8 +425,21 @@
     "EXPO_AFFECTED": "Expositions Affectées",
     "ROADS_AFFECTED": "Routes Affectées"
   },
+  "IMPORT_SHAPE_FILE": {
+    "IMPORT_FILE": "Importer un fichier",
+    "CANCEL": "Annuler",
+    "IMPORT": "Importer"
+  },
 
   "LAYER_ITEM": {
-    "OPACITY": "Opacité"
+    "OPACITY": "Opacité",
+    "REMOVE_LAYER": "Supprimer la couche",
+    "TOGGLE_LEGEND_VISIBILITY": "Afficher/masquer la visibilité de la légende",
+    "FOCUS_ON_LAYER": "Zoomer sur la couche",
+    "DOWNLOAD_FILE": "Télécharger le fichier",
+    "LAYER_PROP": "Propriétés de la couche"
+  },
+  "TIMEBAR": {
+    "LIVE": "En direct"
   }
 }

@@ -10,6 +10,16 @@
 </div>
 
 <div mat-dialog-actions>
-  <button mat-button (click)="onCancel()">Cancel</button>
-  <button mat-raised-button color="primary" (click)="onSave()">Save</button>
+  <rise-button
+    [m_sLabel]="'CONFIRM_DIALOG.CONFIRM'"
+    (click)="onSave()"
+    [m_sRole]="'action'"
+  ></rise-button>
+  <rise-button
+    [m_sLabel]="'CONFIRM_DIALOG.CANCEL'"
+    [m_sRole]="'primary'"
+    (click)="onCancel()"
+  ></rise-button>
+<!--  <button mat-button (click)="onCancel()">Annuler</button>-->
+<!--  <button mat-raised-button color="primary" (click)="onSave()">Enregistrer</button>-->
 </div>

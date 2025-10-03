@@ -1,11 +1,41 @@
 .dialog-container {
+  /* This is a better starting point for the overall dialog box. */
   /*border-radius: 8px;*/
-  /*border: 1px solid var(--neutral20);*/
+  border: 1px solid var(--rise-teal);
   background-color: var(--rise-teal);
-  /*gap: 16px;*/
-  /*overflow: hidden;*/
-  /*overflow-wrap: break-word;*/
-  /*padding: 16px;*/
-  /*width: 100%;*/
-  /*height: 100%;*/
+  padding: 16px; /* A consistent padding around all content */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.dialog-header {
+  font-weight: bold;
+  padding-bottom: 16px; /* Adds space below the header */
+  border-bottom: 1px solid var(--rise-teal-600); /* A subtle line to separate the header */
+}
+
+.dialog-content {
+  flex-grow: 1; /* Makes sure this section takes up all available space */
+  padding-top: 16px; /* Adds space above the content */
+  padding-bottom: 16px; /* Adds space below the content */
+}
+
+.drag-drop-container {
+  /* Styles for the drag-and-drop area */
+  border: 2px dashed var(--rise-gold); /* Adds the dashed border */
+  border-radius: 8px; /* Rounds the corners of the border */
+  padding: 24px; /* Creates space inside the border for the component */
+  background-color: #0c303c; /* Optional: A slightly different background color for the drop zone */
+}
+
+.dialog-footer {
+  /* This is already a good flex container */
+  padding-top: 16px; /* Adds more space between the content and the buttons */
+  border-top: 1px solid var(--rise-teal-600); /* A subtle line to separate the footer */
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 12px; /* A better, more consistent gap for the buttons */
 }

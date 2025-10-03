@@ -83,6 +83,7 @@
     "ID": "معرف"
   },
   "COLLABORATORS": {
+    "USER_ID": "معرّف مستخدم RISE",
     "ORG_EMPTY_TITLE": "مؤسستك فارغة",
     "ORG_EMPTY_MESSAGE": "لا يوجد مستخدمون آخرون في مؤسستك. يرجى دعوتهم ليكونوا متعاونين ثم إضافتهم إلى مناطقك.",
     "ADD_COLLAB": "إضافة متعاون",
@@ -411,7 +412,30 @@
   "EXPO_AFFECTED": "التعرضات المتأثرة",
   "ROADS_AFFECTED": "الطرق المتأثرة"
 },
+  "MANUAL_BBOX": {
+    "DRAW_AREA": "رسم منطقة",
+    "JSON_INPUT": "إدخال JSON",
+    "INPUT_FIELDS": "حقول الإدخال",
+    "TITLE": "الرجاء إدخال الإحداثيات",
+    "DIALOG_MANUAL_INSERT_BBOX_INFO": "الرجاء إدخال JSON بالتنسيق التالي:<br>",
+    "DIALOG_PROCESSOR_UI_APP_FORMAT_JSON": "تنسيق JSON",
+    "DIALOG_FORMAT_JSON_ERROR": "تعذر تنسيق إدخال JSON الخاص بك. يرجى التأكد من أنه JSON صالح",
+    "DIALOG_PARSE_JSON_ERROR": "حدث خطأ في تحليل حمولة JSON"
+  },
+  "IMPORT_SHAPE_FILE": {
+    "IMPORT_FILE": "استيراد ملف",
+    "CANCEL": "إلغاء",
+    "IMPORT": "استيراد"
+  },
   "LAYER_ITEM": {
-    "OPACITY": "الشفافية"
+    "OPACITY": "الشفافية",
+    "REMOVE_LAYER": "إزالة الطبقة",
+    "TOGGLE_LEGEND_VISIBILITY": "تبديل إظهار/إخفاء مفتاح الخريطة",
+    "FOCUS_ON_LAYER": "التركيز على الطبقة",
+    "DOWNLOAD_FILE": "تنزيل الملف",
+    "LAYER_PROP": "خصائص الطبقة"
+  },
+  "TIMEBAR": {
+    "LIVE": "مباشر"
   }
 }

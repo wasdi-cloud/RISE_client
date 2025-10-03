@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogContent} from '@angular/material/dialog';
 import { ConstantsService } from '../../services/constants.service';
 import { AttachmentService } from '../../services/api/attachment.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -9,7 +9,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-image-dialog',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatDialogContent],
   templateUrl: './image-dialog.component.html',
   styleUrls: ['./image-dialog.component.css']
 })
@@ -17,23 +17,23 @@ export class ImageDialogComponent {
 
   m_oPdfUrl!: SafeResourceUrl;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public m_oData: { oPayload: any }, 
-      private m_oConstantsService: ConstantsService, 
-      private m_oAttachmentService: AttachmentService, 
+  constructor(@Inject(MAT_DIALOG_DATA) public m_oData: { oPayload: any },
+      private m_oConstantsService: ConstantsService,
+      private m_oAttachmentService: AttachmentService,
       private m_oSanitizer: DomSanitizer,
-      private m_oDialogRef: MatDialogRef<ImageDialogComponent>) { 
+      private m_oDialogRef: MatDialogRef<ImageDialogComponent>) {
 
         if (this.m_oData.oPayload.type==="pdf") {
 
           let sToken = this.m_oConstantsService.getSessionId();
 
-          this.m_oAttachmentService.get("event_docs", this.m_oData.oPayload.eventId, 
+          this.m_oAttachmentService.get("event_docs", this.m_oData.oPayload.eventId,
             this.m_oData.oPayload.fileName, sToken).subscribe({
             next: (oResponse) => {
               const sMimeType = 'application/pdf';
               const oBlob = new Blob([oResponse], { type: sMimeType });
               const unsafeUrl = URL.createObjectURL(oBlob); // Generate object URL
-    
+
               this.m_oPdfUrl = this.m_oSanitizer.bypassSecurityTrustResourceUrl(unsafeUrl); // Sanitize
             },
             error: (oError) => {
@@ -51,7 +51,7 @@ export class ImageDialogComponent {
     }
   }
 
-  onDonwloadImage(sFileName: string) { 
+  onDonwloadImage(sFileName: string) {
     if (sFileName) {
 
       let sToken = this.m_oConstantsService.getSessionId();
@@ -74,7 +74,7 @@ export class ImageDialogComponent {
     }
   }
 
-  onDonwloadDoc(sFileName: string) { 
+  onDonwloadDoc(sFileName: string) {
     if (sFileName) {
       let sToken = this.m_oConstantsService.getSessionId();
 
@@ -118,7 +118,7 @@ export class ImageDialogComponent {
       default:
         return 'application/octet-stream'; // Fallback for unknown types
     }
-  }  
+  }
 
   onDeleteAttachment() {
 

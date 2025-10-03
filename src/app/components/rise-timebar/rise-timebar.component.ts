@@ -18,13 +18,14 @@ import {RiseCalendarComponent} from "../rise-calendar/rise-calendar.component";
 import moment from "moment";
 import {EventViewModel} from "../../models/EventViewModel";
 import {EventType} from "../../models/EventType";
+import {TranslateModule} from "@ngx-translate/core";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
 @Component({
   selector: 'rise-timebar',
   standalone: true,
-  imports: [CommonModule, RiseButtonComponent, MatTooltip, RiseCalendarComponent],
+  imports: [CommonModule, RiseButtonComponent, MatTooltip, RiseCalendarComponent, TranslateModule],
   templateUrl: './rise-timebar.component.html',
   styleUrl: './rise-timebar.component.css',
 })

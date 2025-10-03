@@ -11,6 +11,7 @@ import {FormsModule} from "@angular/forms";
 import {MatButton} from "@angular/material/button";
 import {MatInput} from "@angular/material/input";
 import {NgForOf} from "@angular/common";
+import {RiseButtonComponent} from "../../components/rise-button/rise-button.component";
 
 @Component({
   selector: 'app-add-row-dialog',
@@ -23,7 +24,8 @@ import {NgForOf} from "@angular/common";
     MatButton,
     MatDialogContent,
     MatInput,
-    NgForOf
+    NgForOf,
+    RiseButtonComponent
   ],
   templateUrl: './add-row-dialog.component.html',
   styleUrl: './add-row-dialog.component.css'

@@ -28,7 +28,7 @@
           <span
             *ngIf="oUser.role==UserRole.FIELD"
             class="option delete material-symbols-outlined remove"
-            [matTooltip]="'Remove User'"
+            [matTooltip]="'COLLABORATORS.REMOVE_USER'|translate"
             (click)="removeFieldOperator(oUser)"
             style="color: red;cursor: pointer"
           >
@@ -37,7 +37,7 @@
           <span
             *ngIf="oUser.role==UserRole.SHARED"
             class="option delete material-symbols-outlined remove"
-            [matTooltip]="'COLLABORATORS.REMOVE_USER'"
+            [matTooltip]="'COLLABORATORS.REMOVE_USER'|translate"
             (click)="removeExternalOperator(oUser)"
             style="color: red;cursor: pointer"
           >
@@ -58,7 +58,7 @@
         <td>
           <span
             class="option material-symbols-outlined edit"
-            [matTooltip]="'COLLABORATORS.SAVE'"
+            [matTooltip]="'COLLABORATORS.SAVE'|translate"
             (click)="addFieldUser()"
 
             style="color: gold;cursor: pointer"
@@ -68,7 +68,7 @@
           </span>
           <span
             class="option material-symbols-outlined edit"
-            [matTooltip]="'COLLABORATORS.CANCEL_EDITING'"
+            [matTooltip]="'COLLABORATORS.CANCEL_EDITING'|translate"
             (click)="m_bAddingUser = false"
             style="color: red;cursor: pointer"
           >
@@ -81,7 +81,7 @@
         <td>
           <rise-text-input
             [m_bHasTitle]="true"
-            [m_sLocalizationKey]="'Rise User Id'"
+            [m_sLocalizationKey]="'COLLABORATORS.RISE_USER_ID'"
             [(m_sInputText)]="m_sExternalRiseUserId"
           ></rise-text-input>
         </td>
@@ -89,7 +89,7 @@
         <td style="padding-top: 2.25rem;">
     <span
       class="option material-symbols-outlined edit"
-      [matTooltip]="'COLLABORATORS.SAVE'"
+      [matTooltip]="'COLLABORATORS.SAVE'|translate"
       (click)="addExternalUser()"
       style="color: gold; cursor: pointer"
     >
@@ -97,7 +97,7 @@
     </span>
           <span
             class="option material-symbols-outlined edit"
-            [matTooltip]="'COLLABORATORS.CANCEL_EDITING'"
+            [matTooltip]="'COLLABORATORS.CANCEL_EDITING'|translate"
             (click)="m_bAddingExternalUser = false"
             style="color: red; cursor: pointer"
           >

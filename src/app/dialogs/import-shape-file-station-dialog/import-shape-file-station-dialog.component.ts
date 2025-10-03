@@ -4,13 +4,15 @@ import {RiseButtonComponent} from "../../components/rise-button/rise-button.comp
 import {ConstantsService} from "../../services/constants.service";
 import {MatDialogRef} from "@angular/material/dialog";
 import {open} from 'shapefile';
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-import-station-dialog',
   standalone: true,
   imports: [
     RiseDragAndDropComponent,
-    RiseButtonComponent
+    RiseButtonComponent,
+    TranslateModule
   ],
   templateUrl: './import-shape-file-station-dialog.component.html',
   styleUrl: './import-shape-file-station-dialog.component.css'

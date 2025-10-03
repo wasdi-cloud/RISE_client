@@ -3,16 +3,16 @@
     class="header d-flex flex-row justify-content-between align-items-center"
   >
     <h3>
-      Please insert The coordination
+      {{"MANUAL_BBOX.TITLE"|translate}}
     </h3>
     <span class="close-btn material-symbols-outlined" (click)="onDismiss()">
       close
     </span>
   </div>
   <div class="d-flex flex-row justify-content-end">
-    <rise-button *ngIf="!m_bShowJSON" [m_sLabel]="'JSON Input'" [m_sSize]="'small'"
+    <rise-button *ngIf="!m_bShowJSON" [m_sLabel]="'MANUAL_BBOX.JSON_INPUT'" [m_sSize]="'small'"
                 (click)="toggleShowJSON()"></rise-button>
-    <rise-button *ngIf="m_bShowJSON" [m_sLabel]="'Input Fields'" [m_sSize]="'small'"
+    <rise-button *ngIf="m_bShowJSON" [m_sLabel]="'MANUAL_BBOX.INPUT_FIELDS'" [m_sSize]="'small'"
                 (click)="toggleShowJSON()"></rise-button>
   </div>
 
@@ -64,7 +64,7 @@
   <rise-button
     class="align-self-end mt-3"
     [m_sRole]="'action'"
-    [m_sLabel]="'Draw Area'"
+    [m_sLabel]="'MANUAL_BBOX.DRAW_AREA'"
     (click)=" submit()"
   ></rise-button>
 </div>

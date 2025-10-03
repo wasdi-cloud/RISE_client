@@ -17,7 +17,7 @@
       <span
         class="material-symbols-outlined delete"
         (click)="emitAction('remove')"
-        [matTooltip]="'Remove layer'">
+        [matTooltip]="'LAYER_ITEM.REMOVE_LAYER'|translate">
         delete
       </span>
       <input
@@ -60,28 +60,28 @@
       <div class="d-flex flex-row gap-2">
         <span
           class="material-symbols-outlined"
-          [matTooltip]="'Toggle legend visibility'"
+          [matTooltip]="'LAYER_ITEM.TOGGLE_LEGEND_VISIBILITY'|translate"
           (click)="showLegend(m_oLayer)"
         >
           legend_toggle
         </span>
         <span
           class="material-symbols-outlined"
-          [matTooltip]="'Focus on layer'"
+          [matTooltip]="'LAYER_ITEM.FOCUS_ON_LAYER'|translate"
           (click)="emitAction('zoomTo')"
         >
           crop_free
         </span>
         <span
           class="material-symbols-outlined"
-          [matTooltip]="'Download file'"
+          [matTooltip]="'LAYER_ITEM.DOWNLOAD_FILE'|translate"
           (click)="emitAction('download')"
         >
           download
         </span>
         <span
           class="material-symbols-outlined"
-          [matTooltip]="'Layer Properties'"
+          [matTooltip]="'LAYER_ITEM.LAYER_PROP'|translate"
           (click)="emitAction('properties')"
         >
           display_settings
