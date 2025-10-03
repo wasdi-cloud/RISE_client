@@ -361,6 +361,7 @@
     "CANCEL": "Cancelar"
   },
   "PLUGIN_MAP_NAMES": {
+    "ACTIVE_FIRES": "Incendio Activo",
     "HIGH_RES_FLOOD": "Inundación de Alta Resolución",
     "FFM": "Frecuencia de Inundaciones",
     "BUILDINGS": "Edificios",

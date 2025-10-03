@@ -368,7 +368,8 @@
     "POP": "السكان",
     "FLOOD_COMPOSITE": "مركب الفيضان",
     "LST": "درجة الحرارة",
-    "FLOOD_DEPTH": "عمق الفيضان"
+    "FLOOD_DEPTH": "عمق الفيضان",
+    "ACTIVE_FIRES": "حرائق نشطة"
   },
   "PLUGIN_MAP_DESCRIPTIONS": {
     "HIGH_RES_FLOOD": "خريطة فيضان عالية الدقة تعتمد على SAR",

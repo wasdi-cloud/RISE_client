@@ -392,7 +392,8 @@
     "POP": "Popolazione",
     "FLOOD_COMPOSITE": "Massima Estensione Inondazione",
     "LST": "Temperatura",
-    "FLOOD_DEPTH": "Profondità Inondazione"
+    "FLOOD_DEPTH": "Profondità Inondazione",
+    "ACTIVE_FIRES": "Incendio Attivo"
   },
   "PLUGIN_MAP_DESCRIPTIONS": {
     "HIGH_RES_FLOOD": "Mappa di Inondazione ad Alta Risoluzione",

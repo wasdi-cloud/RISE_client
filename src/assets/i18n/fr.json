@@ -371,7 +371,8 @@
     "POP": "Pop",
     "FLOOD_COMPOSITE": "Composite Inondation",
     "LST": "Température",
-    "FLOOD_DEPTH": "Profondeur d'Inondation"
+    "FLOOD_DEPTH": "Profondeur d'Inondation",
+    "ACTIVE_FIRES": "Feu Actif"
   },
   "PLUGIN_MAP_DESCRIPTIONS": {
     "HIGH_RES_FLOOD": "Carte d'inondation haute résolution basée sur le SAR",

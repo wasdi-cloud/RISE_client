@@ -388,7 +388,8 @@
     "POP": "Pop",
     "FLOOD_COMPOSITE": "Flood Composite",
     "LST": "Temperature",
-    "FLOOD_DEPTH": "Flood Depth"
+    "FLOOD_DEPTH": "Flood Depth",
+    "ACTIVE_FIRES": "Active Fire"
   },
   "PLUGIN_MAP_DESCRIPTIONS": {
     "HIGH_RES_FLOOD": "High Resolution SAR based Flood Map",
