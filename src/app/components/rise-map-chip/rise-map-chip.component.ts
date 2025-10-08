@@ -40,6 +40,8 @@ export class RiseMapChipComponent implements OnInit {
       this.m_sIcon = 'chevron_right';
     }else if (sIcon.includes('less')) {
       this.m_sIcon = 'chevron_left';
+    }else if (sIcon.includes('active_fire')) {
+      this.m_sIcon = 'mode_heat';
     } else {
       this.m_sIcon = 'layers';
     }
