@@ -217,6 +217,10 @@
     "UPLOAD_SHAPE_FILE": "Subir archivo de forma"
   },
   "SUBSCRIPTIONS": {
+    "PURCHASE_CONTACT": "Contacto",
+    "CONTACT_MSG": "El equipo de RISE se pondrá en contacto con usted para gestionar el pago. Haga clic en «Confirmar» para continuar o en «CANCELAR» para finalizar el proceso de pago.",
+    "SUCCESS_CONTACT_TITLE": "Suscripción creada",
+    "SUCCESS_CONTACT_Description": "Suscripción creada con éxito",
     "WIRE_TRANSFER": "si confirma que quiere pagar con transferencia bancaria, recibirá los datos bancarios por correo electrónico",
     "AREA_INFO_MESSAGE": "<strong>Tipo de Área:</strong><br/><ul><li><strong>Emergencia:</strong> Monitoreo a corto plazo y alta prioridad (ej. desastres). Datos rápidos, no almacenados a largo plazo.</li><li><strong>Largo Plazo:</strong> Monitoreo continuo o periódico a lo largo del tiempo (ej. ambiente, infraestructura). Datos más lentos pero archivados.</li></ul><br/><strong>Tipo de Suscripción:</strong><br/><ul><li><strong>1 Ubicación:</strong> Monitorear una sola área de operaciones.</li><li><strong>3 Ubicaciones:</strong> Monitorear hasta 3 áreas de operaciones diferentes.</li><li><strong>5 Ubicaciones:</strong> Monitorear hasta cinco áreas diferentes simultáneamente.</li><li><strong>10 Ubicaciones:</strong> Rastrear hasta diez regiones separadas.</li></ul>",
     "AREA_TYPE": "Tipo de Área",

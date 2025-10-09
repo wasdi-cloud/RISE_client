@@ -274,6 +274,10 @@
 		"UPLOAD_SHAPE_FILE": "Carica File di Shape"
 	},
 	"SUBSCRIPTIONS": {
+    "PURCHASE_CONTACT": "Contatto",
+    "CONTACT_MSG": "Il team di RISE ti contatterà per gestire il pagamento. Clicca su \"Conferma\" per continuare o su \"ANNULLA\" per terminare il processo di pagamento.",
+    "SUCCESS_CONTACT_TITLE": "Abbonamento creato",
+    "SUCCESS_CONTACT_Description": "Abbonamento creato con successo",
     "AREA_INFO_MESSAGE": "<strong>Tipo di Area:</strong><br/><ul><li><strong>Emergenza:</strong> Monitoraggio a breve termine e alta priorità (es. disastri). Dati rapidi, non conservati a lungo.</li><li><strong>Lungo Termine:</strong> Monitoraggio continuo o periodico (es. ambiente, infrastrutture). Dati più lenti ma archiviati.</li></ul><br/><strong>Tipo di Abbonamento:</strong><br/><ul><li><strong>1 Posizione:</strong> Monitora una singola area operativa.</li><li><strong>3 Posizioni:</strong> Monitora fino a 3 diverse aree operative.</li><li><strong>5 Posizioni:</strong> Monitora fino a cinque aree diverse simultaneamente.</li><li><strong>10 Posizioni:</strong> Monitora fino a dieci regioni separate.</li></ul>",
 		"AREA_TYPE": "Tipo di Area",
 		"BACK": "Torna agli Abbonamenti",

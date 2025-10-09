@@ -360,26 +360,28 @@ export class BuyNewSubscriptionComponent implements OnInit {
   }
 
   executePurchaseWithContactUs() {
-    let sSuccess: string = this.m_oTranslateService.instant(
-      'SUBSCRIPTIONS.SUCCESS'
+    let sSuccessContactTitle: string = this.m_oTranslateService.instant(
+      'SUBSCRIPTIONS.SUCCESS_CONTACT_TITLE'
+    );
+    let sSuccessContactDescription: string = this.m_oTranslateService.instant(
+      'SUBSCRIPTIONS.SUCCESS_CONTACT_DESCRIPTION'
     );
 
     let sError: string = this.m_oTranslateService.instant(
       'SUBSCRIPTIONS.ERROR'
     );
     this.initSubscriptionInput();
-    // let sMessage = this.m_oTranslate.instant("SUBSCRIPTIONS.STRIPE_MSG");
+    let sMessage = this.m_oTranslate.instant("SUBSCRIPTIONS.CONTACT_MSG");
     // let sTitle = this.m_oTranslate.instant("SUBSCRIPTIONS.STRIPE_TITLE");
-    //Notification that user will be re-directed to Stripe
     this.m_oNotificationService.openConfirmationDialog(
-      "The team of RISE will contact you to handle the payment. Click 'Confirm' to continue or 'CANCEL' to end the payment process.",
+      sMessage,
       'alert'
     ).subscribe(oDialogResult => {
       if (oDialogResult === true) {
         this.isCheckoutNow=true;
         this.m_oSubscriptionService.saveSubscription(this.m_oSubInput).subscribe({
           next: (oResponse) => {
-            this.m_oNotificationService.openSnackBar("Subscription is created successfully","Subscription created",'success');
+            this.m_oNotificationService.openSnackBar(sSuccessContactTitle,sSuccessContactDescription,'success');
             this.onDismiss();
             this.isCheckoutNow = false;
           },
