@@ -174,6 +174,13 @@ export class SignUpComponent implements OnInit {
     return true;
   }
 
+
+  getUserLanguage(sEvent:any){
+    if(!FadeoutUtils.utilsIsStrNullOrEmpty(sEvent)){
+      this.m_oUserInfoInput.defaultLanguage=sEvent
+    }
+  }
+
   /**
    * Check if the organization information is valid - enables registration button
    * UC: Admin inserts the Organization Business Name; Admin selects the type of Organization between; Admin inserts the address of the Organization;

@@ -18,6 +18,7 @@ import { UserCredentialsViewModel } from '../../models/UserCredentialsViewModel'
 
 import { RiseUtils } from '../../shared/utilities/RiseUtils';
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
+import {UserViewModel} from "../../models/UserViewModel";
 
 @Component({
   selector: 'app-login-view',
@@ -44,6 +45,8 @@ export class LoginViewComponent {
   public m_bShowOtp: boolean = false;
 
   public m_sErrorInput: string = '';
+
+  public m_sDefaultLanguage: string = '';
 
   public m_bValidOtp: boolean = true;
 
@@ -88,7 +91,11 @@ export class LoginViewComponent {
       },
     });
   }
-
+  getUserLanguage(sEvent:any){
+    if(!FadeoutUtils.utilsIsStrNullOrEmpty(sEvent)){
+      this.m_sDefaultLanguage=sEvent
+    }
+  }
   /**
    * Verifies the OTP entered by the User
    * UC: If credentials are valid, RISE ask to validate the login with OTP (UC_005)
@@ -132,11 +139,24 @@ export class LoginViewComponent {
               if (FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
                 this.m_oNotificationService.openInfoDialog(sError, 'danger');
               } else {
-                this.m_oConstantsService.setUser(oResponse);
+                oResponse.defaultLanguage=this.m_sDefaultLanguage;
                 if(oResponse.defaultLanguage){
                   this.m_oTranslate.use(oResponse.defaultLanguage.toLowerCase());
                 }
-                this.m_oRouter.navigateByUrl('/dashboard');
+                this.m_oConstantsService.setUser(oResponse);
+                //needs to update user / and default language
+
+                let oUserVm:UserViewModel={
+                  defaultLanguage:this.m_sDefaultLanguage
+                }
+                this.m_oUserService.changeUserLanguageSetting(oUserVm).subscribe({
+                  next: (oResponse) => {
+                    this.m_oRouter.navigateByUrl('/dashboard');
+                  },
+                  error: (oError) => {
+                    console.error(oError);
+                  }
+                });
               }
             },
             error:(oError)=>{

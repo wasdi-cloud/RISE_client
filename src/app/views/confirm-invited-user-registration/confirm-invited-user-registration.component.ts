@@ -58,7 +58,11 @@ export class ConfirmInvitedUserRegistrationComponent implements OnInit {
       this.m_oConfirmInviteModel.confirmationCode = params['code'];
     });
   }
-
+  getUserLanguage(sEvent:any){
+    if(!FadeoutUtils.utilsIsStrNullOrEmpty(sEvent)){
+      this.m_oConfirmInviteModel.defaultLanguage=sEvent
+    }
+  }
   validatePassword(): boolean {
     let sPassword = this.m_oPasswordInputs.password;
     let sConfirmPw = this.m_oPasswordInputs.confirmPw;

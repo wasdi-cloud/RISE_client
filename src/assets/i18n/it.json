@@ -137,6 +137,13 @@
 		"MORE": "Altro"
 	},
 	"LOGIN": {
+    "OTP_VERIFICATION": "Non hai ricevuto una password monouso?",
+    "OTP_TITLE": "Controlla la tua email",
+    "OTP_DESCRIPTION": "Abbiamo inviato una password monouso all'indirizzo email associato al tuo account.\nControlla anche la cartella spam o posta indesiderata se non la vedi.",
+    "NEXT": "Avanti",
+    "OTP_CODE": "Codice di conferma",
+    "OTP_LOGIN_AGAIN": "Prova ad accedere di nuovo",
+    "TITLE": "Bentornato",
 		"USER_ID": "ID Utente",
 		"PASSWORD": "Password",
 		"FORGOT_PASSWORD": "Hai dimenticato la password? Clicca <a class='inner-html-link'>qui</a>",
@@ -240,7 +247,13 @@
 		"SUBMIT": "Invia",
 		"ENTER_PW": "Inserisci il tuo Codice di Accesso Temporaneo"
 	},
+  "CONFIRM_ADMIN_INV": {
+    "TITLE": "Conferma la tua registrazione",
+    "DESCRIPTION": "Grazie per esserti registrato in RISE! Conferma la tua registrazione per poter accedere e iniziare a esplorare.",
+    "CONFIRM": "Conferma"
+  },
 	"REGISTER": {
+    "TITLE": "Crea un account RISE",
     "INVITED_USER_SUCCESS": "Registrazione avvenuta con successo",
     "INVITED_USER_ERROR": "Si sono verificati alcuni problemi con le informazioni inserite. Si prega di rivedere i dati.",
     "CONFIRM_MSG": "Grazie per aver confermato la tua email! Il tuo account è stato verificato con successo. Ora puoi accedere e iniziare a esplorare.",

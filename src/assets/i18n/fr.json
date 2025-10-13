@@ -195,6 +195,13 @@
     "MORE": "Plus"
   },
   "LOGIN": {
+    "OTP_TITLE": "Vérifiez votre e-mail",
+    "OTP_DESCRIPTION": "Nous avons envoyé un mot de passe à usage unique à l'adresse e-mail associée à votre compte.\nVeuillez également vérifier votre dossier de spam ou de courrier indésirable si vous ne le voyez pas.",
+    "NEXT": "Suivant",
+    "OTP_VERIFICATION": "Vous n'avez pas reçu de mot de passe à usage unique ?",
+    "OTP_CODE": "Code de confirmation",
+    "OTP_LOGIN_AGAIN": "Essayez de vous reconnecter",
+    "TITLE": "Bon retour",
     "USER_ID": "Identifiant utilisateur",
     "PASSWORD": "Mot de passe",
     "FORGOT_PASSWORD": "Mot de passe oublié ? Cliquez <a class='inner-html-link'>ici</a>"
@@ -229,7 +236,13 @@
     "SUBMIT": "Soumettre",
     "ENTER_PW": "Veuillez entrer votre code One Time Pass"
   },
+  "CONFIRM_ADMIN_INV": {
+    "TITLE": "Confirmez votre inscription",
+    "DESCRIPTION": "Merci de vous être inscrit(e) sur RISE ! Veuillez confirmer votre inscription pour pouvoir vous connecter et commencer à explorer.",
+    "CONFIRM": "Confirmer"
+  },
   "REGISTER": {
+    "TITLE": "Créer un compte RISE",
     "INVITED_USER_SUCCESS": "Vous êtes inscrit avec succès",
     "INVITED_USER_ERROR": "Il y a eu des problèmes avec les informations que vous avez saisies. Veuillez vérifier vos entrées.",
     "CONFIRM_MSG": "Merci d'avoir confirmé votre e-mail ! Votre compte a été vérifié avec succès. Vous pouvez maintenant vous connecter et commencer à explorer.",

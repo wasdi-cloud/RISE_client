@@ -136,6 +136,13 @@
     "MORE": "More"
   },
   "LOGIN": {
+    "OTP_TITLE": "Check your email",
+    "OTP_DESCRIPTION": "We have sent a one-time password to the email address associated with your account.\nPlease also check your spam or junk folder if you don't see it.",
+    "NEXT": "Next",
+    "OTP_VERIFICATION": "Didn't receive a one time password?",
+    "OTP_CODE": "Confirmation Code",
+    "OTP_LOGIN_AGAIN": "Try logging in again",
+    "TITLE": "Welcome back",
     "USER_ID": "User Id",
     "PASSWORD": "Password",
     "FORGOT_PASSWORD": "Forgot password? Click <a class='inner-html-link'>here</a>",
@@ -222,7 +229,13 @@
     "SUBMIT": "Submit",
     "ENTER_PW": "Please enter your One Time Pass Code"
   },
+  "CONFIRM_ADMIN_INV": {
+    "TITLE":"Confirm your registration",
+    "DESCRIPTION": "Thank you for signing up in RISE! Please confirm your registration so you can log in and start exploring",
+    "CONFIRM": "Confirm"
+  },
   "REGISTER": {
+    "TITLE": "Create a RISE account",
     "INVITED_USER_SUCCESS": "You are successfully registered",
     "INVITED_USER_ERROR": "There were some problems with your inputted information. Please review your entries",
     "CONFIRM_MSG": "Thank you for confirming your email! Your account has been successfully verified. You can now log in and start exploring.",

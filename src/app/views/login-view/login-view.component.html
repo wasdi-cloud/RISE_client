@@ -1,5 +1,5 @@
 <main class="d-flex flex-column">
-  <rise-toolbar [m_bUserIsSigned]="false"></rise-toolbar>
+  <rise-toolbar (m_oCurrentLanguageChange)="getUserLanguage($event)" [m_bUserIsSigned]="false"></rise-toolbar>
   <div
     class="outlet-container flex-fill d-flex flex-column align-items-center justify-content-center"
   >
@@ -9,7 +9,7 @@
         *ngIf="!m_bShowOtp"
         class="slider-content flex-fill d-flex flex-column justify-content-between gap-4 my-2"
       >
-        <h2 class="space-mono-regular">Welcome back</h2>
+        <h2 class="space-mono-regular">{{'LOGIN.TITLE'|translate}}</h2>
         <div class="inputs-container d-flex flex-column flex-fill gap-2">
           <rise-text-input
             [m_sLocalizationKey]="'LOGIN.USER_ID'"
@@ -48,16 +48,15 @@
         *ngIf="m_bShowOtp"
         class="slider-content flex-fill d-flex flex-column justify-content-between gap-3 mt-2"
       >
-        <h2 class="space-mono-regular">Check your email</h2>
+        <h2 class="space-mono-regular">{{'LOGIN.OTP_TITLE'|translate}}</h2>
         <p>
-          We have sent a one-time password to the email address associated with your account.
-          Please also check your spam or junk folder if you don't see it.
+          {{'LOGIN.OTP_DESCRIPTION'|translate}}
           <strong>{{ m_oUserInput.userId }}</strong
           >.
         </p>
         <div class="inputs-container d-flex flex-column flex-fill gap-3">
           <rise-text-input
-            [m_sLocalizationKey]="'Confirmation Code'"
+            [m_sLocalizationKey]="'LOGIN.OTP_CODE'"
             [m_sName]="'one time password'"
             [(m_sInputText)]="m_oOTPVerifyVM.userProvidedCode"
             [m_bIsValidatorInput]="true"
@@ -68,13 +67,13 @@
         <div class="d-flex flex-column gap-2">
           <rise-button
             [m_bDisabled]="m_bIsOtpSubmitted"
-            [m_sLabel]="'Next'"
+            [m_sLabel]="'LOGIN.NEXT'"
             [m_sRole]="'primary'"
             (click)="!m_bIsOtpSubmitted?verifyOtp():''"
           ></rise-button>
           <p class="retry-text">
-            Didn't receive a one time password?
-            <a (click)="backToLogin()">Try logging in again</a>.
+            {{'LOGIN.OTP_VERIFICATION'|translate}}
+            <a (click)="backToLogin()">{{'LOGIN.OTP_LOGIN_AGAIN'|translate}}</a>.
           </p>
         </div>
       </div>

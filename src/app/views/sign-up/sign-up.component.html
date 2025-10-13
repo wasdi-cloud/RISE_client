@@ -1,5 +1,5 @@
 <main class="d-flex flex-column">
-  <rise-toolbar></rise-toolbar>
+  <rise-toolbar (m_oCurrentLanguageChange)="getUserLanguage($event)" ></rise-toolbar>
   <div
     class="outlet-container flex-fill d-flex flex-column align-items-center justify-content-center"
   >
@@ -8,7 +8,7 @@
       *ngIf="m_sCurrentPg === 'username'"
       class="login-container pg-1 d-flex flex-column gap-3"
     >
-      <h2 class="space-mono-regular">Create a RISE account</h2>
+      <h2 class="space-mono-regular">{{'REGISTER.TITLE'|translate}}</h2>
       <div class="d-flex flex-column gap-1">
         <rise-text-input
           [m_sLocalizationKey]="'REGISTER.USER_ID'"

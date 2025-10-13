@@ -9,12 +9,12 @@ import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar
 
 import { RiseUtils } from '../../shared/utilities/RiseUtils';
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
-import {TranslateService} from "@ngx-translate/core";
+import {TranslateModule, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-confirm-registration',
   standalone: true,
-  imports: [RiseButtonComponent, RiseToolbarComponent],
+  imports: [RiseButtonComponent, RiseToolbarComponent, TranslateModule],
   templateUrl: './confirm-admin-registration.component.html',
   styleUrl: './confirm-admin-registration.component.css',
 })

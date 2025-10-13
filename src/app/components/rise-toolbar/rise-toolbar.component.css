@@ -17,3 +17,41 @@ nav.navbar-container.opaque {
   transform: scale(1.1); /* Slightly enlarge the image */
   opacity: 0.8; /* Reduce opacity */
 }
+div.dropdown {
+  position: relative;
+}
+
+.material-symbols-outlined {
+  font-size: 26px;
+}
+
+ul.dropdown-list {
+  backdrop-filter: blur(20px);
+  background-color: rgba(0, 31, 40, 0.5);
+  border-radius: 16px 16px 16px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--rise-text-dim);
+  padding: 16px;
+  position: absolute;
+  top: 2.5rem;
+  width: 200px;
+  z-index: 999999;
+}
+
+li {
+  background-color: rgba(0, 31, 40, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  cursor: pointer;
+  list-style: none;
+  padding: 8px;
+}
+
+li:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+  transition: 300ms;
+}
+
+li > span.material-symbols-outlined {
+  font-size: 16px;
+}

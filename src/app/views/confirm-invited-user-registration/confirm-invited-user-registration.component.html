@@ -1,5 +1,5 @@
 <main class="d-flex flex-column">
-  <rise-toolbar [m_bUserIsSigned]="false"></rise-toolbar>
+  <rise-toolbar (m_oCurrentLanguageChange)="getUserLanguage($event)" [m_bUserIsSigned]="false"></rise-toolbar>
   <div
     class="outlet-container d-flex flex-fill flex-column align-items-center justify-content-center"
   >

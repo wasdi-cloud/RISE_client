@@ -149,6 +149,13 @@
     "MORE": "Más"
   },
   "LOGIN": {
+    "OTP_VERIFICATION": "¿No recibió una contraseña de un solo uso?",
+    "OTP_TITLE": "Revise su correo electrónico",
+    "OTP_DESCRIPTION": "Hemos enviado una contraseña de un solo uso a la dirección de correo electrónico asociada a su cuenta.\nCompruebe también su carpeta de spam o correo no deseado si no la encuentra.",
+    "NEXT": "Siguiente",
+    "OTP_CODE": "Código de confirmación",
+    "OTP_LOGIN_AGAIN": "Intente iniciar sesión de nuevo",
+    "TITLE": "Bienvenido de nuevo",
     "USER_ID": "Identificación de usuario",
     "PASSWORD": "Contraseña",
     "FORGOT_PASSWORD": "¿Olvidaste tu contraseña? Haz clic <a class='inner-html-link'>aquí</a>"
@@ -183,7 +190,13 @@
     "SUBMIT": "Enviar",
     "ENTER_PW": "Ingrese su código de acceso único"
   },
+  "CONFIRM_ADMIN_INV": {
+    "TITLE": "Confirme su registro",
+    "DESCRIPTION": "¡Gracias por registrarse en RISE! Por favor, confirme su registro para poder iniciar sesión y empezar a explorar.",
+    "CONFIRM": "Confirmar"
+  },
   "REGISTER": {
+    "TITLE": "Crear una cuenta RISE",
     "INVITED_USER_SUCCESS": "Te has registrado exitosamente",
     "INVITED_USER_ERROR": "Hubo algunos problemas con la información ingresada. Por favor, revisa tus datos.",
     "CONFIRM_MSG": "¡Gracias por confirmar tu correo electrónico! Tu cuenta ha sido verificada con éxito. Ahora puedes iniciar sesión y empezar a explorar.",

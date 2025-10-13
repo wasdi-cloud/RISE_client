@@ -1,9 +1,37 @@
 <nav class="navbar-container px-3" [class.opaque]="m_bUserIsSigned">
   <div class="navbar d-flex flex-row justify-content-between">
-    <div (click)="m_bUserIsSigned ? navigateRoute('dashboard') : ''">
-      <img src="/assets/rise-assets/logo-white-horizontal.svg" alt="" class="logo-img" />
+
+    <div class="d-flex align-items-center gap-3">
+
+      <div (click)="m_bUserIsSigned ? navigateRoute('dashboard') : ''">
+        <img src="/assets/rise-assets/logo-white-horizontal.svg" alt="" class="logo-img" />
+      </div>
+
+      <div class="dropdown">
+        <button
+          class="btn btn-outline-light d-flex align-items-center gap-1"
+          type="button"
+          (click)="toggleLanguageDropdown()"
+        >
+          <span class="material-symbols-outlined"> language </span>
+          <span>{{ m_sCurrentLanguageName }}</span>
+        </button>
+
+        <ul *ngIf="m_bShowLanguageDropdown" class="dropdown-list dropdown-menu show">
+          <li
+            *ngFor="let lang of m_aoLanguages"
+            class="d-flex flex-row align-items-center gap-2"
+            (click)="changeLanguage(lang.value); $event.stopPropagation();"
+          >
+            {{ lang.name }}
+          </li>
+        </ul>
+      </div>
+
     </div>
-    <!-- Login and Sign Up buttons if the user is NOT signed in -->
+
+    <rise-user-menu *ngIf="m_bUserIsSigned"></rise-user-menu>
+
     <div *ngIf="!userIsSigned" class="d-flex flex-row gap-3">
       <rise-button
         [m_sLabel]="'TOOLBAR.SIGN_UP' | translate"
@@ -15,7 +43,6 @@
         (click)="navigateRoute('login')"
       ></rise-button>
     </div>
-    <!-- Button options for if the user has an account AND is signed in -->
-    <rise-user-menu *ngIf="m_bUserIsSigned"></rise-user-menu>
+
   </div>
 </nav>

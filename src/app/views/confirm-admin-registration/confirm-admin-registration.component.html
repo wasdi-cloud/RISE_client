@@ -8,13 +8,13 @@
       <div
         class="slider-content flex-fill d-flex flex-column justify-content-between gap-4 my-2"
       >
-        <h2 class="space-mono-regular">Confirm your registration</h2>
+        <h2 class="space-mono-regular">{{'CONFIRM_ADMIN_INV.TITLE' | translate}}</h2>
         <div class="inputs-container d-flex flex-column flex-fill gap-2">
           <p>
-            Thank you for signing up in RISE! Please confirm your registration so you can log in and start exploring
+            {{'CONFIRM_ADMIN_INV.DESCRIPTION' | translate}}
           </p>
           <rise-button
-            [m_sLabel]="'Confirm'"
+            [m_sLabel]="'CONFIRM_ADMIN_INV.CONFIRM'"
             [m_sRole]="'primary'"
             (click)="confirmRegistration()"
           ></rise-button>

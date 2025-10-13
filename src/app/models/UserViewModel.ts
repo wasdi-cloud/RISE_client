@@ -3,34 +3,34 @@ import {RiseViewModel} from "./RiseViewModel";
 
 
 export class UserViewModel extends RiseViewModel {
-  userId:string;
+  userId?:string;
 
-  email:string;
+  email?:string;
 
-  name:string;
+  name?:string;
 
-  surname:string;
+  surname?:string;
 
-  mobile:string;
+  mobile?:string;
 
-  role:UserRole;
+  role?:UserRole;
 
-  acceptedTermsAndConditions:boolean;
+  acceptedTermsAndConditions?:boolean;
 
-  acceptedPrivacy:boolean;
+  acceptedPrivacy?:boolean;
 
-  lastLoginDate:number;
+  lastLoginDate?:number;
 
-  notifyNewsletter:boolean;
+  notifyNewsletter?:boolean;
 
-  notifyMaintenance:boolean;
+  notifyMaintenance?:boolean;
 
-  notifyActivities:boolean;
+  notifyActivities?:boolean;
 
-  defaultLanguage:string;
+  defaultLanguage?:string;
 
-  organizationId:string;
+  organizationId?:string;
 
-  internationalPrefix:string
+  internationalPrefix?:string
 
 }
