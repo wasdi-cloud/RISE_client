@@ -66,6 +66,10 @@
     "AREA_NOT_FOUND_MSG_FIELD": "Il tuo account non è attualmente collegato a nessuna area operativa. Si prega di contattare l'amministratore della tua organizzazione "
 
   },
+  "PUBLIC": {
+    "TITLE": "La gestione del rischio di catastrofi inizia da te",
+    "DESCRIPTION": "Sii consapevole. Resta preparato. Per qualsiasi cosa. Da qualsiasi luogo."
+  },
 	"BANNER": {
 		"LIVE_SIT": "Situazione in diretta",
 		"BACK": "Torna al Live"
@@ -253,6 +257,13 @@
     "CONFIRM": "Conferma"
   },
 	"REGISTER": {
+    "PERSONAL_INFO": "Inserisci le tue informazioni personali",
+    "ORG_INFO": "Inserisci le informazioni della tua organizzazione",
+    "STREET_ADDRESS": "Indirizzo",
+    "STREET_NUMBER": "Numero civico",
+    "POSTAL_CODE": "Codice postale",
+    "BUTTON": "Registrati",
+    "PREV_BUTTON": "Precedente",
     "TITLE": "Crea un account RISE",
     "INVITED_USER_SUCCESS": "Registrazione avvenuta con successo",
     "INVITED_USER_ERROR": "Si sono verificati alcuni problemi con le informazioni inserite. Si prega di rivedere i dati.",

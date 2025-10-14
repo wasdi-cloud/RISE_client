@@ -102,7 +102,12 @@ export class RiseToolbarComponent implements OnInit {
       this.m_sCurrentLanguageName = sCurrentLang ? sCurrentLang.name : this.m_sCurrentLanguage.toUpperCase();
       console.log(this.m_sCurrentLanguageName)
     }else{
-      this.m_sCurrentLanguage='en';
+      if(FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oTranslate.currentLang)){
+        this.m_sCurrentLanguage='en';
+      }else{
+        this.m_sCurrentLanguage=this.m_oTranslate.currentLang;
+      }
+
       const sCurrentLang = this.m_aoLanguages.find(lang => lang.value === this.m_sCurrentLanguage);
       this.m_sCurrentLanguageName = sCurrentLang ? sCurrentLang.name : this.m_sCurrentLanguage.toUpperCase();
     }
@@ -150,7 +155,11 @@ export class RiseToolbarComponent implements OnInit {
         });
       }
     }else{
+      this.m_bShowLanguageDropdown=false
       this.m_oTranslate.use(value);
+      this.m_sCurrentLanguage=value
+      const sCurrentLang = this.m_aoLanguages.find(lang => lang.value === this.m_sCurrentLanguage);
+      this.m_sCurrentLanguageName = sCurrentLang ? sCurrentLang.name : this.m_sCurrentLanguage.toUpperCase();
       this.m_oCurrentLanguageChange.emit(value);
       //here its either login or sign up, so it's a good thing to send this to the the other comp and from there we save the default language
     }

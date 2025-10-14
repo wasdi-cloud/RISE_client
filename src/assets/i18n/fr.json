@@ -241,7 +241,18 @@
     "DESCRIPTION": "Merci de vous être inscrit(e) sur RISE ! Veuillez confirmer votre inscription pour pouvoir vous connecter et commencer à explorer.",
     "CONFIRM": "Confirmer"
   },
+  "PUBLIC": {
+    "TITLE": "La gestion des risques de catastrophe commence avec vous",
+    "DESCRIPTION": "Soyez conscient. Restez préparé. Pour tout. De n'importe où."
+  },
   "REGISTER": {
+    "PERSONAL_INFO": "Entrez vos informations personnelles",
+    "ORG_INFO": "Entrez les informations de votre organisation",
+    "STREET_ADDRESS": "Adresse",
+    "STREET_NUMBER": "Numéro de rue",
+    "POSTAL_CODE": "Code postal",
+    "BUTTON": "S'inscrire",
+    "PREV_BUTTON": "Précédent",
     "TITLE": "Créer un compte RISE",
     "INVITED_USER_SUCCESS": "Vous êtes inscrit avec succès",
     "INVITED_USER_ERROR": "Il y a eu des problèmes avec les informations que vous avez saisies. Veuillez vérifier vos entrées.",

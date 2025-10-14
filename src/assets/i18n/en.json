@@ -128,6 +128,10 @@
     "CONFIRM": "Confirm the email of your invitee",
     "SELECT_ROLE": "Assign a role"
   },
+  "PUBLIC": {
+    "TITLE": "Disaster Risk Management starts with you",
+    "DESCRIPTION": "Be aware. Stay prepared. For anything. From anywhere."
+  },
   "LAYER_TYPES": {
     "FLOOD": "Flood",
     "DROUGHT": "Drought",
@@ -235,7 +239,14 @@
     "CONFIRM": "Confirm"
   },
   "REGISTER": {
+    "PERSONAL_INFO":"Enter your Personal Information",
+    "ORG_INFO": "Enter your Organization's Information",
+    "STREET_ADDRESS":"Street Address",
     "TITLE": "Create a RISE account",
+    "STREET_NUMBER": "Street Number",
+    "POSTAL_CODE":"Postal Code",
+    "BUTTON": "Register",
+    "PREV_BUTTON": "Previous",
     "INVITED_USER_SUCCESS": "You are successfully registered",
     "INVITED_USER_ERROR": "There were some problems with your inputted information. Please review your entries",
     "CONFIRM_MSG": "Thank you for confirming your email! Your account has been successfully verified. You can now log in and start exploring.",

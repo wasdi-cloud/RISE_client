@@ -1,5 +1,5 @@
 <main class="d-flex flex-column justify-content-between">
-  <rise-toolbar></rise-toolbar>
+  <rise-toolbar [m_bUserIsSigned]="false" (m_oCurrentLanguageChange)="handleLanguageChange($event)"></rise-toolbar>
   <div
     class="flex-fill d-flex flex-row justify-content-center align-items-ceonter"
   >
@@ -9,9 +9,9 @@
         class="rise-info-container d-flex flex-column gap-2 justify-content-start"
       >
         <h2 class="space-mono-regular">
-          Disaster Risk Management starts with you
+          {{'PUBLIC.TITLE' | translate}}
         </h2>
-        <p>Be aware. Stay prepared. For anything. From anywhere.</p>
+        <p>{{'PUBLIC.DESCRIPTION' | translate}}</p>
         <rise-button
           class="align-self-start"
           [m_sIconRight]="'arrow_forward'"

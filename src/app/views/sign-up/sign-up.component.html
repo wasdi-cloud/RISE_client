@@ -79,7 +79,7 @@
         </div>
         <div class="d-flex flex-column gap-1">
           <rise-button
-            [m_sLabel]="'Next'"
+            [m_sLabel]="'REGISTER.NEXT'"
             [m_sRole]="'primary'"
             [m_bDisabled]="!enableUserInfo()"
             (click)="enableUserInfo() ? setPage('personal') : ''"
@@ -91,7 +91,7 @@
       *ngIf="m_sCurrentPg === 'personal'"
       class="login-container pg-2 d-flex flex-column gap-3"
     >
-      <h2 class="space-mono-regular">Enter your Personal Information</h2>
+      <h2 class="space-mono-regular">{{'REGISTER.PERSONAL_INFO' | translate}}</h2>
       <div class="d-flex flex-column gap-1">
         <rise-text-input
           [m_sLocalizationKey]="'REGISTER.NAME'"
@@ -142,7 +142,7 @@
       *ngIf="m_sCurrentPg === 'organization'"
       class="login-container pg-3 d-flex flex-column gap-3"
     >
-      <h2 class="space-mono-regular">Enter your Organization's Information</h2>
+      <h2 class="space-mono-regular">{{'REGISTER.ORG_INFO' | translate}}</h2>
       <div class="d-flex flex-column">
         <div class="d-flex flex-column gap-2">
           <rise-text-input
@@ -161,7 +161,7 @@
         </div>
         <div class="org-address-info my-2">
           <rise-text-input
-            [m_sLocalizationKey]="'Street Address'"
+            [m_sLocalizationKey]="'REGISTER.STREET_ADDRESS'"
             [m_bIsValid]="m_bOrgIsValid"
             [(m_sInputText)]="m_oOrgInfoInput.street"
           ></rise-text-input>
@@ -179,7 +179,7 @@
             </rise-dropdown>
             <rise-text-input
               class="col-6"
-              [m_sLocalizationKey]="'City'"
+              [m_sLocalizationKey]="'REGISTER.CITY'"
               [m_bIsValid]="m_bOrgIsValid"
               [(m_sInputText)]="m_oOrgInfoInput.city"
             ></rise-text-input>
@@ -187,13 +187,13 @@
           <div class="d-flex flex-row gap-1">
             <rise-text-input
               class="col-6"
-              [m_sLocalizationKey]="'Street Number'"
+              [m_sLocalizationKey]="'REGISTER.STREET_NUMBER'"
               [m_bIsValid]="m_bOrgIsValid"
               [(m_sInputText)]="m_oOrgInfoInput.number"
             ></rise-text-input>
             <rise-text-input
               class="col-6"
-              [m_sLocalizationKey]="'Postal Code'"
+              [m_sLocalizationKey]="'REGISTER.POSTAL_CODE'"
               [m_bIsValid]="m_bOrgIsValid"
               [(m_sInputText)]="m_oOrgInfoInput.postalCode"
             ></rise-text-input>
@@ -212,13 +212,13 @@
 
       <div class="d-flex flex-column gap-1">
         <rise-button
-          [m_sLabel]="'Register'"
+          [m_sLabel]="'REGISTER.BUTTON'"
           [m_sRole]="'primary'"
           [m_bDisabled]="!checkOrgInfo(true) && !m_bIsSubmitted"
           (click)="m_bOrgIsValid && !m_bIsSubmitted? register() : ''"
         ></rise-button>
         <rise-button
-          [m_sLabel]="'Previous'"
+          [m_sLabel]="'REGISTER.PREV_BUTTON'"
           [m_sRole]="'regular'"
           (click)="setPage('personal')"
         ></rise-button>

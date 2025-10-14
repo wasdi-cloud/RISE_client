@@ -190,12 +190,23 @@
     "SUBMIT": "Enviar",
     "ENTER_PW": "Ingrese su código de acceso único"
   },
+  "PUBLIC": {
+    "TITLE": "La gestión del riesgo de desastres empieza por usted",
+    "DESCRIPTION": "Esté atento. Manténgase preparado. Para cualquier cosa. Desde cualquier lugar."
+  },
   "CONFIRM_ADMIN_INV": {
     "TITLE": "Confirme su registro",
     "DESCRIPTION": "¡Gracias por registrarse en RISE! Por favor, confirme su registro para poder iniciar sesión y empezar a explorar.",
     "CONFIRM": "Confirmar"
   },
   "REGISTER": {
+    "PERSONAL_INFO": "Ingrese su información personal",
+    "ORG_INFO": "Ingrese la información de su organización",
+    "STREET_ADDRESS": "Dirección",
+    "STREET_NUMBER": "Número de calle",
+    "POSTAL_CODE": "Código postal",
+    "BUTTON": "Registrarse",
+    "PREV_BUTTON": "Anterior",
     "TITLE": "Crear una cuenta RISE",
     "INVITED_USER_SUCCESS": "Te has registrado exitosamente",
     "INVITED_USER_ERROR": "Hubo algunos problemas con la información ingresada. Por favor, revisa tus datos.",
