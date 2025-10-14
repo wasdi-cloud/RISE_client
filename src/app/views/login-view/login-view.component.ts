@@ -134,12 +134,13 @@ export class LoginViewComponent {
         if (oResponse.token) {
           //Set user Token and login
           this.m_oAuthService.saveToken(oResponse.token);
+          this.m_oRouter.navigateByUrl('/dashboard');
           this.m_oUserService.getUser().subscribe({
             next: (oResponse) => {
               if (FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
                 this.m_oNotificationService.openInfoDialog(sError, 'danger');
               } else {
-                oResponse.defaultLanguage=this.m_sDefaultLanguage;
+                this.m_sDefaultLanguage=oResponse.defaultLanguage
                 if(oResponse.defaultLanguage){
                   this.m_oTranslate.use(oResponse.defaultLanguage.toLowerCase());
                 }
@@ -151,7 +152,7 @@ export class LoginViewComponent {
                 }
                 this.m_oUserService.changeUserLanguageSetting(oUserVm).subscribe({
                   next: (oResponse) => {
-                    this.m_oRouter.navigateByUrl('/dashboard');
+                    console.log(oResponse);
                   },
                   error: (oError) => {
                     console.error(oError);
