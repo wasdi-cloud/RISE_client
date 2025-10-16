@@ -239,6 +239,7 @@
     "CONFIRM": "Confirm"
   },
   "REGISTER": {
+    "NEXT": "Next",
     "PERSONAL_INFO":"Enter your Personal Information",
     "ORG_INFO": "Enter your Organization's Information",
     "STREET_ADDRESS":"Street Address",

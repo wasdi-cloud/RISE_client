@@ -257,6 +257,7 @@
     "CONFIRM": "Conferma"
   },
 	"REGISTER": {
+    "NEXT": "Avanti",
     "PERSONAL_INFO": "Inserisci le tue informazioni personali",
     "ORG_INFO": "Inserisci le informazioni della tua organizzazione",
     "STREET_ADDRESS": "Indirizzo",

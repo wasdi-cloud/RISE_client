@@ -200,6 +200,7 @@
     "CONFIRM": "Confirmar"
   },
   "REGISTER": {
+    "NEXT": "Siguiente",
     "PERSONAL_INFO": "Ingrese su información personal",
     "ORG_INFO": "Ingrese la información de su organización",
     "STREET_ADDRESS": "Dirección",

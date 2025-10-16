@@ -246,6 +246,7 @@
     "DESCRIPTION": "Soyez conscient. Restez préparé. Pour tout. De n'importe où."
   },
   "REGISTER": {
+    "NEXT": "Suivant",
     "PERSONAL_INFO": "Entrez vos informations personnelles",
     "ORG_INFO": "Entrez les informations de votre organisation",
     "STREET_ADDRESS": "Adresse",
