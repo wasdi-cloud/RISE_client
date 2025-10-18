@@ -431,6 +431,9 @@
     "POP": "Población",
     "FLOOD_COMPOSITE": "Composición de Inundación",
     "LST": "Temperatura",
+    "LST_MAX": "Temperatura Máxima",
+    "LST_MIN": "Temperatura Mínima",
+    "LST_AVG": "Temperatura Promedio",
     "FLOOD_DEPTH": "Profundidad de Inundación"
   },
   "PLUGIN_MAP_DESCRIPTIONS": {

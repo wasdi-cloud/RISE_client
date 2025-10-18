@@ -411,6 +411,9 @@
     "POP": "Pop",
     "FLOOD_COMPOSITE": "Composite Inondation",
     "LST": "Température",
+    "LST_MAX": "Température Maximale",
+    "LST_MIN": "Température Minimale",
+    "LST_AVG": "Température Moyenne",
     "FLOOD_DEPTH": "Profondeur d'Inondation",
     "ACTIVE_FIRES": "Feu Actif"
   },
