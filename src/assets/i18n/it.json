@@ -439,9 +439,9 @@
     "POP": "Popolazione",
     "FLOOD_COMPOSITE": "Massima Estensione Inondazione",
     "LST": "Temperatura",
-    "LST_MIN": "Temperatura minima",
-    "LST_AVG": "Temperatura media",
-    "LST_MAX": "Temperatura massima",
+    "LST_MAX": "Temperatura Massima",
+    "LST_MIN": "Temperatura Minima",
+    "LST_AVG": "Temperatura Media",
     "FLOOD_DEPTH": "Profondità Inondazione",
     "ACTIVE_FIRES": "Incendio Attivo"
   },
