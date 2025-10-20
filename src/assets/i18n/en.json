@@ -405,6 +405,7 @@
     "CANCEL": "Cancel"
   },
   "PLUGIN_MAP_NAMES": {
+
     "HIGH_RES_FLOOD": "High Res Flood",
     "FFM": "Flood Frequency",
     "BUILDINGS": "Buildings",
@@ -422,6 +423,9 @@
     "POP": "Pop",
     "FLOOD_COMPOSITE": "Flood Composite",
     "LST": "Temperature",
+    "LST_MIN": "Minimum Temperature",
+    "LST_AVG": "Average Temperature",
+    "LST_MAX": "Maximum Temperature",
     "FLOOD_DEPTH": "Flood Depth",
     "ACTIVE_FIRES": "Active Fire"
   },
