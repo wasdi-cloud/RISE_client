@@ -170,7 +170,7 @@
     "ERROR_MSG": "No se pudo obtener la información de la organización",
     "ERROR_DELETE_USER": "No se pudo eliminar al usuario de esta organización. Por favor, inténtalo de nuevo",
     "INVITE": "Invitar a un nuevo usuario",
-    "INVITE_SUCCESS": "Usuario nuevo invitado exitosamente",
+    "INVITE_SUCCESS": "Nuevo usuario invitado con éxito. La invitación caducará en 7 días.",
     "MEMBERS": "Colaboradores",
     "NAME": "Nombre de la organización",
     "SAVE": "Guardar cambios",

@@ -216,7 +216,7 @@
     "ERROR_MSG": "Impossible de récupérer les informations de l'organisation",
     "ERROR_DELETE_USER": "Impossible de retirer l'utilisateur de cette organisation. Veuillez réessayer",
     "INVITE": "Inviter un nouvel utilisateur",
-    "INVITE_SUCCESS": "Nouvel utilisateur invité avec succès",
+    "INVITE_SUCCESS": "Nouvel utilisateur invité avec succès. L'invitation expirera dans 7 jours.",
     "MEMBERS": "Collaborateurs",
     "NAME": "Nom de l'organisation",
     "SAVE": "Enregistrer les modifications",
