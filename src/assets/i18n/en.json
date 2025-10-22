@@ -483,6 +483,13 @@
     "IMPORT_FILE": "Import File",
     "CANCEL": "Cancel",
     "IMPORT": "Import"
+  },
+  "FORGET_PASSWORD_REQUEST": {
+    "TITLE": "Reset Your Password",
+    "DESCRIPTION": "Please enter your User ID to proceed with the password recovery process.",
+    "USER_ID": "User Id",
+    "CONFIRM": "Confirm",
+    "SUBMIT_MESSAGE": "Your password recovery request has been submitted successfully. Please check your email for further instructions."
   }
 
 

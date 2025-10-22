@@ -436,6 +436,13 @@
     "LST_AVG": "Temperatura Promedio",
     "FLOOD_DEPTH": "Profundidad de Inundación"
   },
+  "FORGET_PASSWORD_REQUEST": {
+    "TITLE": "Restablecer su contraseña",
+    "DESCRIPTION": "Por favor, ingrese su ID de usuario para continuar con el proceso de recuperación de contraseña.",
+    "USER_ID": "ID de usuario",
+    "CONFIRM": "Confirmar",
+    "SUBMIT_MESSAGE": "Su solicitud de recuperación de contraseña ha sido enviada con éxito. Por favor, revise su correo electrónico para obtener más instrucciones."
+  },
   "PLUGIN_MAP_DESCRIPTIONS": {
     "HIGH_RES_FLOOD": "Mapa de Inundación basado en SAR de Alta Resolución",
     "FFM": "Mapa de Frecuencia de Inundaciones",

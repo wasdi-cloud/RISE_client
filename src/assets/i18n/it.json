@@ -445,6 +445,13 @@
     "FLOOD_DEPTH": "Profondità Inondazione",
     "ACTIVE_FIRES": "Incendio Attivo"
   },
+  "FORGET_PASSWORD_REQUEST": {
+    "TITLE": "Reimposta la tua password",
+    "DESCRIPTION": "Inserisci il tuo ID utente per procedere con il processo di recupero della password.",
+    "USER_ID": "ID utente",
+    "CONFIRM": "Conferma",
+    "SUBMIT_MESSAGE": "La tua richiesta di recupero password è stata inviata con successo. Controlla la tua email per ulteriori istruzioni."
+  },
   "PLUGIN_MAP_DESCRIPTIONS": {
     "HIGH_RES_FLOOD": "Mappa di Inondazione ad Alta Risoluzione",
     "FFM": "Mappa di Frequenza Inondazioni",
