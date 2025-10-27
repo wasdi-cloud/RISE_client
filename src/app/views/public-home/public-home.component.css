@@ -23,3 +23,670 @@ div#hero-img {
 .rise-info-container > p {
   color: var(--rise-text-dim);
 }
+
+
+
+
+
+
+
+.landing-page-desktop {
+  padding-top: 60px;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: black;
+  justify-content: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top;
+  text-align: center;
+  font-size: 36px;
+  color: #fafafa;
+  font-family: 'Space Mono';
+}
+.hero-section {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100px;
+  font-size: 45px;
+}
+.hero-content {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+}
+.logo-small-bianco-1 {
+  width: 500px;
+  position: relative;
+  max-height: 100%;
+}
+.hero-text-container {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+.hero-title {
+  align-self: stretch;
+  position: relative;
+  line-height: 65px;
+}
+.hero-subtitle {
+  align-self: stretch;
+  position: relative;
+  font-size: 20px;
+  line-height: 150%;
+  font-family: Lato;
+}
+.hero-buttons {
+  display: flex;
+  align-items: center;
+  gap: 19px;
+  font-size: 18px;
+}
+.buttonprimary {
+  border-radius: 5px;
+  background-color: #284e59;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+}
+.text {
+  position: relative;
+  text-transform: uppercase;
+}
+.buttonsecondary {
+  border-radius: 5px;
+  background-color: #efb840;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+}
+.rise-platform-preview-1-icon {
+  width: 840px;
+  position: relative;
+  max-height: 100%;
+  object-fit: cover;
+}
+.intro-section {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px 100px 100px;
+}
+.features-container {
+  align-self: stretch;
+  backdrop-filter: blur(40px);
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 50px;
+  gap: 50px;
+}
+.features-header {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 30px;
+}
+.header {
+  align-self: stretch;
+  position: relative;
+  line-height: 50px;
+}
+.paragraph {
+  align-self: stretch;
+  position: relative;
+  font-size: 18px;
+  font-family: 'Satoshi';
+}
+.features-cards-container {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #284e59;
+  font-family: 'Satoshi';
+}
+.features-cards-row {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 20px;
+}
+.card-large {
+  height: 333px;
+  flex: 1;
+  border-radius: 10px;
+  background-color: #fafafa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.feature-card-content {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.building-05 {
+  width: 50px;
+  height: 50px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.icon {
+  position: absolute;
+  top: calc(50% - 21px);
+  left: calc(50% - 20px);
+  width: 38px;
+  height: 40px;
+}
+.title {
+  align-self: stretch;
+  position: relative;
+  font-size: 25px;
+  font-family: 'Space Mono';
+}
+.landing-page-paragraph {
+  align-self: stretch;
+  position: relative;
+}
+.landing-page-icon {
+  position: absolute;
+  height: 75%;
+  width: 83.4%;
+  top: 12.5%;
+  right: 8.27%;
+  bottom: 12.5%;
+  left: 8.33%;
+  max-width: 100%;
+  overflow: hidden;
+  max-height: 100%;
+}
+.building-052 {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+.zap-fast-icon {
+  width: 50px;
+  position: relative;
+  max-height: 100%;
+}
+.cta-section {
+  align-self: stretch;
+  background-color: #efb840;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 150px 100px;
+  gap: 30px;
+  font-size: 18px;
+  color: #284e59;
+  font-family: 'Satoshi';
+}
+.cta-container {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+.landing-page-header {
+  align-self: stretch;
+  position: relative;
+  font-size: 36px;
+  line-height: 50px;
+  font-family: 'Space Mono';
+}
+.critical-events-are {
+  white-space: pre-wrap;
+}
+.span {
+  font-size: 16px;
+  white-space: pre-wrap;
+}
+.cta-button {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #fafafa;
+  font-family: 'Space Mono';
+}
+.landing-page-buttonprimary {
+  border-radius: 5px;
+  background-color: #284e59;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  flex-shrink: 0;
+}
+.landing-page-buttonsecondary {
+  height: 47px;
+  width: 129px;
+  border-radius: 5px;
+  background-color: #efb840;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+.features-section {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100px;
+  gap: 40px;
+}
+.discover-header {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+.discover-features-container {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  text-align: left;
+  font-size: 20px;
+  color: #284e59;
+}
+.discover-features-row {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.feature-card-content3 {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 30px;
+}
+.feature-card-openclose {
+  flex: 1;
+  border-radius: 10px;
+  background-color: #f2f5f7;
+  border: 2px solid #284e59;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  gap: 10px;
+}
+.feature-card-title {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.title4 {
+  position: relative;
+}
+.title5 {
+  align-self: stretch;
+  position: relative;
+  font-size: 18px;
+  font-family: 'Satoshi';
+  text-align: center;
+}
+.plugins-container {
+  align-self: stretch;
+  backdrop-filter: blur(40px);
+  border-radius: 10px;
+  background: linear-gradient(180.88deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px 50px 50px 40px;
+  gap: 20px;
+  text-align: center;
+  color: #fafafa;
+}
+.paragraph7 {
+  align-self: stretch;
+  height: 50px;
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.specialized {
+  font-weight: 700;
+}
+.plugins-row {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 10px;
+  font-size: 18px;
+  font-family: 'Satoshi';
+}
+.riseplatform-1-icon {
+  width: 765px;
+  position: relative;
+  max-height: 100%;
+  object-fit: cover;
+}
+.plugins-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+.div {
+  align-self: stretch;
+  border-radius: 10px;
+  background-color: #284e59;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 30px;
+}
+.plugin-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+.plugin-checkbox-icon {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.paragraph8 {
+  align-self: stretch;
+  position: relative;
+  font-weight: 700;
+}
+.case-study-section {
+  align-self: stretch;
+  background-color: rgba(40, 78, 89, 0.6);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 150px 100px;
+  gap: 30px;
+  font-size: 18px;
+}
+.results-container {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  font-size: 36px;
+}
+.results-cards-row {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  text-align: left;
+  font-size: 25px;
+  color: #284e59;
+}
+.card {
+  height: 206px;
+  width: 363.3px;
+  backdrop-filter: blur(4px);
+  border-radius: 10px;
+  background: linear-gradient(180deg, #fafafa, rgba(255, 255, 255, 0.5));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+  box-sizing: border-box;
+  position: relative;
+  gap: 10px;
+}
+.result-card-content {
+  width: 238px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  z-index: 0;
+}
+.b {
+  width: 111px;
+  height: 267px;
+  position: absolute;
+  margin: 0 !important;
+  top: calc(50% - 134px);
+  left: calc(50% - 55.65px);
+  font-size: 180px;
+  display: inline-block;
+  color: rgba(40, 78, 89, 0.2);
+  text-align: center;
+  filter: blur(4px);
+  mix-blend-mode: normal;
+  z-index: 1;
+}
+.title26 {
+  align-self: stretch;
+  height: 44px;
+  position: relative;
+  font-family: 'Satoshi';
+  display: inline-block;
+  flex-shrink: 0;
+}
+.testimonial-container {
+  align-self: stretch;
+  backdrop-filter: blur(40px);
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 10px;
+  font-size: 20px;
+}
+.title27 {
+  width: 1140px;
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.rise-shows-very-positive-resul {
+  margin: 0;
+}
+.aicrl-shelter-research-unit {
+  margin: 0;
+  font-size: 18px;
+  font-family: 'Satoshi';
+}
+.footer {
+  align-self: stretch;
+  background-color: #fafafa;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 100px;
+  text-align: left;
+  font-size: 14px;
+  color: #284e59;
+  font-family: 'Satoshi';
+}
+.landing-page-footer {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.footer-column {
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+.logo {
+  /* Existing dimensions */
+  height: 41px;
+  width: 151px;
+
+  /* New: Use Flexbox to center content */
+  display: flex;
+  align-items: center;       /* Vertically centers the content */
+  justify-content: center;   /* Horizontally centers the content */
+
+  /* Existing properties */
+  position: relative;
+  border-radius: 5px;
+  background-color: #284e59;
+  z-index: 0;
+}
+
+/* The original .logo-placeholder already uses Flexbox and should
+   center the .logo element itself. The problem is inside .logo.
+*/
+.logo-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  gap: 10px;
+}
+.logo-orizzontale-colori-1 {
+  height: 30px;
+  width: 118px;
+  position: absolute;
+  margin: 0 !important;
+  top: calc(50% - 14.5px);
+  left: calc(50% - 58.5px);
+  overflow: hidden;
+  flex-shrink: 0;
+  z-index: 1;
+}
+.group {
+  position: absolute;
+  height: 51%;
+  width: 64.32%;
+  top: 24.5%;
+  right: 0.04%;
+  bottom: 24.5%;
+  left: 35.64%;
+}
+.vector-icon {
+  position: absolute;
+  height: 100%;
+  width: 2.24%;
+  top: 0%;
+  right: 64.07%;
+  bottom: 0%;
+  left: 33.69%;
+  max-width: 100%;
+  overflow: hidden;
+  max-height: 100%;
+}
+.landing-page-vector-icon {
+  position: absolute;
+  height: 100%;
+  width: 26.09%;
+  top: 0%;
+  right: 30.72%;
+  bottom: 0%;
+  left: 43.19%;
+  max-width: 100%;
+  overflow: hidden;
+  max-height: 100%;
+}
+.vector-icon2 {
+  position: absolute;
+  height: 100%;
+  width: 26.09%;
+  top: 0%;
+  right: -0.08%;
+  bottom: 0%;
+  left: 73.99%;
+  max-width: 100%;
+  overflow: hidden;
+  max-height: 100%;
+}
+.vector-icon3 {
+  position: absolute;
+  height: 100%;
+  width: 26.48%;
+  top: 0%;
+  right: 73.52%;
+  bottom: 0%;
+  left: 0%;
+  max-width: 100%;
+  overflow: hidden;
+  max-height: 100%;
+}
+.group-icon {
+  position: absolute;
+  height: 100%;
+  width: 25.42%;
+  top: 0%;
+  right: 74.58%;
+  bottom: 0%;
+  left: 0%;
+  max-width: 100%;
+  overflow: hidden;
+  max-height: 100%;
+}
+.footer-text {
+  width: 330px;
+  position: relative;
+  display: inline-block;
+}
+.text4 {
+  position: relative;
+  font-size: 15px;
+  font-family: Ubuntu;
+  text-align: center;
+}
+

@@ -1,4 +1,8 @@
-<nav class="navbar-container px-3" [class.opaque]="m_bUserIsSigned">
+<nav class="navbar-container px-3"
+     [class.public-home-nav]="m_bIsPublicHome"
+     [class.opaque]="m_bUserIsSigned"
+     [class.blurry-scrolled]="m_bShouldBeBlurred"
+>
   <div class="navbar d-flex flex-row justify-content-between">
 
     <div class="d-flex align-items-center gap-3">

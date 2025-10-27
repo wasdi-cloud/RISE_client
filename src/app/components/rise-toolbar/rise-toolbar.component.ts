@@ -23,6 +23,9 @@ import FadeoutUtils from "../../shared/utilities/FadeoutUtils";
   styleUrl: './rise-toolbar.component.css',
 })
 export class RiseToolbarComponent implements OnInit {
+
+  @Input() m_bIsPublicHome: boolean = false;
+  @Input() m_bShouldBeBlurred: boolean = false;
   @Input() public m_bUserIsSigned: boolean = false;
   m_oUser: UserViewModel;
   m_bShowLanguageDropdown: boolean = false;

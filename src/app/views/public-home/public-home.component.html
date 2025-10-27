@@ -1,25 +1,306 @@
-<main class="d-flex flex-column justify-content-between">
-  <rise-toolbar [m_bUserIsSigned]="false" (m_oCurrentLanguageChange)="handleLanguageChange($event)"></rise-toolbar>
-  <div
-    class="flex-fill d-flex flex-row justify-content-center align-items-ceonter"
-  >
-    <div class="rise-container flex-fill d-flex flex-row align-items-center">
-      <div id="hero-img"></div>
-      <div
-        class="rise-info-container d-flex flex-column gap-2 justify-content-start"
-      >
-        <h2 class="space-mono-regular">
-          {{'PUBLIC.TITLE' | translate}}
-        </h2>
-        <p>{{'PUBLIC.DESCRIPTION' | translate}}</p>
-        <rise-button
-          class="align-self-start"
-          [m_sIconRight]="'arrow_forward'"
-          [m_sRole]="'action'"
-          [m_sLabel]="'Get started for free'"
-          (click)="navigateRoute('sign-up')"
-        ></rise-button>
+<!--<main class="d-flex flex-column justify-content-between">-->
+<!--  <rise-toolbar [m_bUserIsSigned]="false" (m_oCurrentLanguageChange)="handleLanguageChange($event)"></rise-toolbar>-->
+<!--  <div-->
+<!--    class="flex-fill d-flex flex-row justify-content-center align-items-ceonter"-->
+<!--  >-->
+<!--    <div class="rise-container flex-fill d-flex flex-row align-items-center">-->
+<!--      <div id="hero-img"></div>-->
+<!--      <div-->
+<!--        class="rise-info-container d-flex flex-column gap-2 justify-content-start"-->
+<!--      >-->
+<!--        <h2 class="space-mono-regular">-->
+<!--          {{'PUBLIC.TITLE' | translate}}-->
+<!--        </h2>-->
+<!--        <p>{{'PUBLIC.DESCRIPTION' | translate}}</p>-->
+<!--        <rise-button-->
+<!--          class="align-self-start"-->
+<!--          [m_sIconRight]="'arrow_forward'"-->
+<!--          [m_sRole]="'action'"-->
+<!--          [m_sLabel]="'Get started for free'"-->
+<!--          (click)="navigateRoute('sign-up')"-->
+<!--        ></rise-button>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</main>-->
+
+<div class="landing-page-desktop">
+  <rise-toolbar
+    [m_bUserIsSigned]="false"
+    [m_bIsPublicHome]="true"
+    [m_bShouldBeBlurred]="m_bIsScrolled"
+  ></rise-toolbar>
+  <div class="hero-section">
+    <div class="hero-content">
+      <img  src="assets/rise-assets/Logo%20Small%20Bianco%201.png" class="logo-small-bianco-1" alt="">
+
+      <div class="hero-text-container">
+        <b class="hero-title">Direct Access to Geospatial Intelligence</b>
+        <div class="hero-subtitle">Overwhelmed by complex satellite data and reports? Turn it into clear, actionable insights to accelerate decision-making and relief efforts.</div>
+        <div class="hero-buttons">
+          <div class="buttonprimary">
+            <b class="text">Contact Us</b>
+          </div>
+          <div class="buttonsecondary">
+            <b class="text">Register Your Organization</b>
+          </div>
+        </div>
+      </div>
+      <img src="assets/rise-assets/RISE_Platform_preview%201.png" class="rise-platform-preview-1-icon" alt="">
+
+    </div>
+  </div>
+  <div class="intro-section">
+    <div class="features-container">
+      <div class="features-header">
+        <b class="header">Empowering action with near real-time insights.</b>
+        <div class="paragraph">RISE is a cloud-based platform that provides near real-time monitoring of natural hazards worldwide, combining Earth Observation (EO) data and advanced analytics to help organizations detect, analyze, and respond to disasters faster.</div>
+      </div>
+      <div class="features-cards-container">
+        <div class="features-cards-row">
+          <div class="card-large">
+            <div class="feature-card-content">
+              <div class="building-05">
+                <img src="assets/rise-assets/building1.png" class="icon" alt="">
+
+              </div>
+              <b class="title">What is Rise?</b>
+              <b class="landing-page-paragraph">Instant Insights From Satellite Data</b>
+              <div class="landing-page-paragraph">RISE is a cloud-based platform that provides near real-time monitoring of natural hazards worldwide, combining Earth Observation (EO) data and advanced analytics to help detect, analyze, and respond to disasters faster.</div>
+            </div>
+          </div>
+          <div class="card-large">
+            <div class="feature-card-content">
+              <div class="building-05">
+                <img src="assets/rise-assets/building2.svg" class="landing-page-icon" alt="">
+
+              </div>
+              <b class="title">Who is RISE for?</b>
+              <b class="landing-page-paragraph">For Organizations That Need Results</b>
+              <div class="landing-page-paragraph">NGOs, environmental agencies, agribusinesses, and insurers rely on RISE to respond faster, track changes, and secure supply chains, all without middlemen or delays.</div>
+            </div>
+          </div>
+          <div class="card-large">
+            <div class="feature-card-content">
+              <div class="building-052">
+                <img src="assets/rise-assets/building3.png" class="zap-fast-icon" alt="">
+
+              </div>
+              <b class="title">Why choose RISE?</b>
+              <b class="landing-page-paragraph">Faster. Smarter. More Effective.</b>
+              <div class="landing-page-paragraph">Gain real-time monitoring, proven accuracy, and seamless workflow integration. Optimize resources, accelerate decisions, and maximize impact when it matters most.</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</main>
+  <div class="cta-section">
+    <div class="cta-container">
+      <b class="landing-page-header">Manual Processes Are Holding You Back!</b>
+      <div class="landing-page-paragraph">Traditional monitoring and assessment methods are holding you back. Waiting for official reports or chasing scattered data slows decision-making and prevents timely action. The old way keeps your teams reactive, relying on guesswork rather than clear insights, leaving lives and resources exposed to unnecessary danger.</div>
+      <b class="landing-page-paragraph">
+        <span class="critical-events-are">Critical events are detected too late  </span>
+        <span class="span">•  </span>
+        <span class="critical-events-are">Data is scattered and hard to analyze  • Decision-making is slow and uncertain  •  Resource allocation is inefficient and costly</span>
+      </b>
+    </div>
+    <div class="cta-button">
+      <div class="landing-page-buttonprimary">
+        <b class="text">contact us today</b>
+      </div>
+      <div class="landing-page-buttonsecondary">
+      </div>
+    </div>
+  </div>
+  <div class="features-section">
+    <div class="discover-header">
+      <b class="header">Discover RISE Features</b>
+      <div class="paragraph">Discover how RISE empowers your organization with advanced tools for smarter, faster decision-making:</div>
+    </div>
+    <div class="discover-features-container">
+      <div class="discover-features-row">
+        <div class="feature-card-content3">
+          <div class="feature-card-openclose">
+            <div class="feature-card-title">
+              <b class="title4">Near Real-Time Monitoring</b>
+            </div>
+            <div class="title5">The system continuously query for new Satellite Data to elaborate and provide the faster possibile environmental monitoring service.</div>
+          </div>
+          <div class="feature-card-openclose">
+            <div class="feature-card-title">
+              <b class="title4">Intuitive User Interface</b>
+            </div>
+            <div class="title5">The system continuously query for new Satellite Data to elaborate and provide the faster possibile environmental monitoring service.</div>
+          </div>
+          <div class="feature-card-openclose">
+            <div class="feature-card-title">
+              <b class="title4">Historical Data Analysis</b>
+            </div>
+            <div class="title5">The system continuously query for new Satellite Data to elaborate and provide the faster possibile environmental monitoring service.</div>
+          </div>
+        </div>
+        <div class="feature-card-content3">
+          <div class="feature-card-openclose">
+            <div class="feature-card-title">
+              <b class="title4">Impacts Evaluation</b>
+            </div>
+            <div class="title5">The system continuously query for new Satellite Data to elaborate and provide the faster possibile environmental monitoring service.</div>
+          </div>
+          <div class="feature-card-openclose">
+            <div class="feature-card-title">
+              <b class="title4">Multi Language</b>
+            </div>
+            <div class="title5">The system continuously query for new Satellite Data to elaborate and provide the faster possibile environmental monitoring service.</div>
+          </div>
+          <div class="feature-card-openclose">
+            <div class="feature-card-title">
+              <b class="title4">Tailored User Profiles</b>
+            </div>
+            <div class="title5">The system continuously query for new Satellite Data to elaborate and provide the faster possibile environmental monitoring service.</div>
+          </div>
+        </div>
+      </div>
+      <div class="plugins-container">
+        <div class="paragraph7">
+          <b>You can customize RISE with </b>
+          <i class="specialized">specialized</i>
+          <b> plugins tailored to your needs:</b>
+        </div>
+        <div class="plugins-row">
+          <img src="assets/rise-assets/RISE_Platform_preview%201.png" class="riseplatform-1-icon" alt="">
+
+          <div class="plugins-list">
+            <div class="div">
+              <div class="plugin-item">
+                <img src="assets/rise-assets/Plugin%20Checkbox.svg" class="plugin-checkbox-icon" alt="">
+
+                <b class="title4">Floods</b>
+              </div>
+            </div>
+            <div class="div">
+              <div class="plugin-item">
+                <img src="assets/rise-assets/Plugin%20Checkbox.svg" class="plugin-checkbox-icon" alt="">
+
+                <b class="title4">Droughts</b>
+              </div>
+            </div>
+            <div class="div">
+              <div class="plugin-item">
+                <img src="assets/rise-assets/Plugin%20Checkbox.svg" class="plugin-checkbox-icon" alt="">
+
+                <b class="title4">Buildings</b>
+              </div>
+            </div>
+            <div class="div">
+              <div class="plugin-item">
+                <img src="assets/rise-assets/Plugin%20Checkbox.svg" class="plugin-checkbox-icon" alt="">
+
+                <b class="title4">Impacts</b>
+              </div>
+            </div>
+            <div class="div">
+              <div class="plugin-item">
+                <img src="assets/rise-assets/Plugin%20Checkbox.svg" class="plugin-checkbox-icon" alt="">
+
+                <b class="title4">Rain Observations</b>
+              </div>
+            </div>
+            <div class="div">
+              <div class="plugin-item">
+                <img src="assets/rise-assets/Plugin%20Checkbox.svg" class="plugin-checkbox-icon" alt="">
+
+                <b class="title4">Land Surface Temperature</b>
+              </div>
+            </div>
+            <div class="div">
+              <div class="plugin-item">
+                <img src="assets/rise-assets/Plugin%20Checkbox.svg" class="plugin-checkbox-icon" alt="">
+
+                <b class="title4">Wildfires (coming soon!)</b>
+              </div>
+            </div>
+          </div>
+        </div>
+        <i class="paragraph8">More plugins are on the way!</i>
+      </div>
+    </div>
+  </div>
+  <div class="case-study-section">
+    <div class="results-container">
+      <b class="header">Real Results, Real Impact</b>
+      <div class="paragraph">RISE gave the Luxembourg Red Cross and Malagasy teams a powerful advantage during Cyclone Cheneso. By combining historical archives with near real-time imagery, teams assessed flood severity, identified vulnerable populations, and evaluated infrastructure damage faster and more accurately than traditional methods, demonstrating the transformative potential of actionable geospatial intelligence.</div>
+    </div>
+    <div class="results-cards-row">
+      <div class="card">
+        <div class="result-card-content">
+          <b class="landing-page-paragraph">84.6% Faster</b>
+          <div class="paragraph">RISE slashed assessment time, enabling quicker decision-making in emergencies. </div>
+        </div>
+        <b class="b">1</b>
+      </div>
+      <div class="card">
+        <div class="result-card-content">
+          <b class="landing-page-paragraph">89.9% Cost Reduction</b>
+          <div class="paragraph">By minimizing field visits and transportation, RISE drastically cut operational costs.</div>
+        </div>
+        <b class="b">2</b>
+      </div>
+      <div class="card">
+        <div class="result-card-content">
+          <b class="landing-page-paragraph">Greater Accuracy</b>
+          <div class="paragraph">RISE provided detailed flood maps, depth analysis, and infrastructure impact data</div>
+        </div>
+        <b class="b">3</b>
+      </div>
+    </div>
+    <div class="title26">Feedback from the Red Cross teams highlighted RISE’s potential to revolutionize how humanitarians prepare for and respond to disasters. The platform’s modular plugins (flood monitoring, impact assessment, and risk zone mapping) provided actionable insights that standard methods couldn’t match.</div>
+    <div class="testimonial-container">
+      <div class="title27">
+        <p class="rise-shows-very-positive-resul">
+            						<span>
+              							<i>"RISE shows very positive results, making needs assessment and crisis management more accurate, time-efficient, cost-effective, and safe."</i>
+            						</span>
+        </p>
+        <p class="rise-shows-very-positive-resul">
+            						<span>
+              							<i class="specialized">&nbsp;</i>
+            						</span>
+        </p>
+        <p class="aicrl-shelter-research-unit">
+          <b>AICRL Shelter Research Unit</b>
+        </p>
+      </div>
+    </div>
+    <div class="buttonsecondary">
+      <b class="text">register your organization</b>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="landing-page-footer">
+      <div class="footer-column">
+        <div class="logo-placeholder">
+          <div class="logo">
+            <img src="assets/rise-assets/Logo%20Orizzontale%20Colori%201.png" alt="Logo">
+          </div>
+          <!--                    <div class="logo-orizzontale-colori-1">-->
+          <!--                        <div class="group">-->
+          <!--                            <img src="Vector.png" class="vector-icon" alt="">-->
+
+          <!--                            <img src="Vector-1.png" class="landing-page-vector-icon" alt="">-->
+
+          <!--                            <img src="Vector-2.png" class="vector-icon2" alt="">-->
+
+          <!--                            <img src="Vector-3.png" class="vector-icon3" alt="">-->
+
+          <!--                        </div>-->
+          <!--                        <img class="group-icon" alt="">-->
+
+          <!--                    </div>-->
+        </div>
+        <div class="footer-text">RISE. Remote Imaging Support for Emergencies</div>
+      </div>
+      <div class="text4">email&#64;email.com</div>
+    </div>
+  </div>
+</div>

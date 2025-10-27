@@ -1,7 +1,42 @@
 img {
   height: 24px;
 }
+nav.navbar-container.public-home-nav {
+  /* Make it fixed to stay on screen when scrolling */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
 
+  /* Make it invisible/transparent */
+  background-color: transparent !important; /* Override .opaque if present */
+  border-bottom: none !important; /* Remove the border if it's there */
+
+  /* Ensure it is above other content */
+  z-index: 1000;
+}
+/* New: Styling for the blurry effect when the user has scrolled */
+nav.navbar-container.public-home-nav.blurry-scrolled {
+  /* A subtle, translucent background when blurred */
+  background-color: rgba(0, 0, 0, 0.9) !important;
+
+  /* The magic for the blur effect */
+  backdrop-filter: blur(8px);
+
+  /* Bring back a subtle border */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+
+  /* Smooth transition for when the blur is toggled */
+  transition: background-color 300ms ease, backdrop-filter 300ms ease, border-bottom 300ms ease;
+}
+
+/* Ensure the language dropdown list remains blurry */
+ul.dropdown-list {
+  /* This is already good in your existing CSS, but ensure its backdrop filter is strong enough */
+  backdrop-filter: blur(20px);
+  /* ... other existing styles for dropdown-list ... */
+}
 nav.navbar-container {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
