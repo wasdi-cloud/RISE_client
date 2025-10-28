@@ -37,7 +37,15 @@ div#hero-img {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: black;
+
+  /* UPDATED: Add a transparent-to-black gradient layer
+     * The gradient goes first (on top)
+     * Then your image URL goes last (on the bottom)
+  */
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.9)),
+    url('/assets/rise-assets/background.avif');
+
   justify-content: center;
   background-size: cover;
   background-repeat: no-repeat;
