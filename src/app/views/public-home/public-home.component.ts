@@ -7,13 +7,14 @@ import {TranslateModule} from "@ngx-translate/core";
 @Component({
   selector: 'app-public-home',
   standalone: true,
-  imports: [RiseToolbarComponent, TranslateModule],
+  imports: [RiseToolbarComponent, TranslateModule, RiseButtonComponent],
   templateUrl: './public-home.component.html',
   styleUrl: './public-home.component.css',
 })
 export class PublicHomeComponent {
   constructor(private m_oRouter: Router) {}
   m_bIsScrolled: boolean = false;
+  m_sEmail:string="info@wasdi.cloud"
 
   // Set the threshold for when the blur should be applied (e.g., after 50 pixels of scrolling)
   private readonly SCROLL_THRESHOLD = 50;
@@ -32,5 +33,23 @@ export class PublicHomeComponent {
   }
   handleLanguageChange(sEvent){
     console.log(sEvent);
+  }
+
+  contactUs() {
+    // Define the target email address
+    const sRecipient = this.m_sEmail;
+
+    // Optional: Add a sSubject line for better user experience
+    const sSubject = 'Contact request ';
+
+    // Optional: Add some default sBody text
+    const sBody = 'Hello, I am contacting you regarding...';
+
+    // Construct the full mailto: URL.
+    // We use encodeURIComponent to handle spaces and special characters correctly.
+    const sMailtoLink = `mailto:${sRecipient}?subject=${encodeURIComponent(sSubject)}&body=${encodeURIComponent(sBody)}`;
+
+    // Use the window object to open the mail application
+    window.location.href = sMailtoLink;
   }
 }

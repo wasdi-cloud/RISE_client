@@ -18,7 +18,7 @@ export class RiseButtonComponent {
   /**
    * What is the role of the button? (Colour)
    */
-  @Input() m_sRole?: 'action' | 'danger' | 'muted' | 'primary' | 'regular' =
+  @Input() m_sRole?: 'action' | 'danger' | 'muted' | 'primary' | 'regular' | 'secondary' =
     'regular';
 
   @Input() m_sSize?: 'small' | '' = '';

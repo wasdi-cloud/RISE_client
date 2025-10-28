@@ -60,3 +60,19 @@
 .danger:active {
   background-color: #661800;
 }
+/* Call to secondary button styling */
+.secondary {
+  background-color: var(--rise-teal-600);
+  color: var(--rise-text-bright);
+  font-weight: 400;
+}
+
+.action > span {
+  font-size: 24px;
+}
+
+.action:hover {
+}
+
+.action:active {
+}

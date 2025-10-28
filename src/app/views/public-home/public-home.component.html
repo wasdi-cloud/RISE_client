@@ -38,12 +38,25 @@
         <b class="hero-title">Direct Access to Geospatial Intelligence</b>
         <div class="hero-subtitle">Overwhelmed by complex satellite data and reports? Turn it into clear, actionable insights to accelerate decision-making and relief efforts.</div>
         <div class="hero-buttons">
-          <div class="buttonprimary">
-            <b class="text">Contact Us</b>
-          </div>
-          <div class="buttonsecondary">
-            <b class="text">Register Your Organization</b>
-          </div>
+          <rise-button
+            [m_sLabel]="'Contact Us'"
+            (click)="contactUs()"
+            [m_sRole]="'secondary'"
+          >
+          </rise-button>
+          <rise-button
+            [m_sLabel]="'Register Your Organization'"
+            (click)="navigateRoute('sign-up')"
+            [m_sRole]="'action'"
+          >
+          </rise-button>
+
+<!--          <div class="buttonprimary">-->
+<!--            <b class="text">Contact Us</b>-->
+<!--          </div>-->
+<!--          <div class="buttonsecondary">-->
+<!--            <b class="text">Register Your Organization</b>-->
+<!--          </div>-->
         </div>
       </div>
       <img src="assets/rise-assets/RISE_Platform_preview%201.png" class="rise-platform-preview-1-icon" alt="">
@@ -106,9 +119,12 @@
       </b>
     </div>
     <div class="cta-button">
-      <div class="landing-page-buttonprimary">
-        <b class="text">contact us today</b>
-      </div>
+      <rise-button
+        [m_sLabel]="'CONTACT US TODAY'"
+        (click)="contactUs()"
+        [m_sRole]="'secondary'"
+      >
+      </rise-button>
       <div class="landing-page-buttonsecondary">
       </div>
     </div>
@@ -272,9 +288,12 @@
         </p>
       </div>
     </div>
-    <div class="buttonsecondary">
-      <b class="text">register your organization</b>
-    </div>
+    <rise-button
+      [m_sLabel]="'Register Your Organization'"
+      (click)="navigateRoute('sign-up')"
+      [m_sRole]="'action'"
+    >
+    </rise-button>
   </div>
   <div class="footer">
     <div class="landing-page-footer">
@@ -300,7 +319,7 @@
         </div>
         <div class="footer-text">RISE. Remote Imaging Support for Emergencies</div>
       </div>
-      <div class="text4">email&#64;email.com</div>
+      <div class="text4">{{this.m_sEmail}}</div>
     </div>
   </div>
 </div>
