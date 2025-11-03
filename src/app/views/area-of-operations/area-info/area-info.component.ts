@@ -123,6 +123,8 @@ export class AreaInfoComponent implements OnInit {
   }
 
   setSelectedPlugin(oEvent: any) {
+    this.m_sJSONParam='{}'
+    this.m_oJsonEditorService.setText(this.m_sJSONParam);
     this.m_oSelectedPlugin = oEvent.value;
     let sPluginId = oEvent.value.value;
     this.m_oMapService.byPluginId(sPluginId).subscribe(
