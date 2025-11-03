@@ -9,7 +9,7 @@
     [multiple]="m_bIsMultiSelect"
     [placeholder]="getPlaceholder() | translate"
     (selectionChange)="emitSelectionChange($event)"
-    [(value)]="m_aoSelectedItems"
+    [(value)]="m_aoSelectedItems "
   >
     <mat-option
       *ngIf="m_bIsMultiSelect && m_bEnableSelectAll"
@@ -53,7 +53,7 @@
             alt="flag"
             class="flag-icon"
           />
-          {{ getValues(m_aoSelectedItems) }}
+          {{ getValues(m_aoSelectedItems) | translate }}
         </ng-container>
         <ng-container *ngIf="m_bIsMultiSelect">
           {{ getValues(m_aoSelectedItems) }}
@@ -72,7 +72,7 @@
           alt="flag"
           class="flag-icon"
         />
-        {{ oItem.name ? oItem.name : oItem.label?oItem.label:oItem }}
+        {{ (oItem.name ? oItem.name : oItem.label?oItem.label:oItem) |translate}}
       </mat-option>
     </div>
     <div *ngIf="!m_bHasSearch">
@@ -87,7 +87,7 @@
           class="flag-icon"
         />
 <!--        trying to handle all  possibilities-->
-        {{ oItem.name ? oItem.name : oItem.label?oItem.label:oItem }}
+        {{ (oItem.name ? oItem.name : oItem.label?oItem.label:oItem)  | translate}}
       </mat-option>
     </div>
   </mat-select>
