@@ -272,7 +272,7 @@
     "SUCCESS_MESSAGE": "Utente registrato - Controlla la tua email per un link di conferma",
     "SUCCESS_TITLE": "Utente registrato",
 		"HEADER": "Registrati su RISE",
-		"USER_ID": "ID Utente (il tuo nome di accesso, es. johndoe o john.doe ..ecc)",
+		"USER_ID": "ID Utente (il tuo nome di accesso, es. smithalex o john.doe ..ecc)",
 		"PASSWORD": "Password",
 		"CONFIRM_PW": "Conferma Password",
 		"NAME": "Nome",
