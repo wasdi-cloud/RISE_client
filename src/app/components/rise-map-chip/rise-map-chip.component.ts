@@ -44,6 +44,8 @@ export class RiseMapChipComponent implements OnInit {
       this.m_sIcon = 'chevron_right';
     } else if (sIcon.includes('less')) {
       this.m_sIcon = 'chevron_left';
+    } else if (sIcon.includes('pollutant')) {
+      this.m_sIcon = 'airwave';
     } else {
       this.m_sIcon = 'layers';
     }

@@ -402,7 +402,8 @@
     "LST_MIN": "الحد الأدنى لدرجة الحرارة",
     "LST_AVG": "متوسط درجة الحرارة",
     "FLOOD_DEPTH": "عمق الفيضان",
-    "ACTIVE_FIRES": "حرائق نشطة"
+    "ACTIVE_FIRES": "حرائق نشطة",
+    "POLLUTANT": "مُلَوِّث"
   },
   "FORGET_PASSWORD_REQUEST": {
     "TITLE": "إعادة تعيين كلمة المرور الخاصة بك",

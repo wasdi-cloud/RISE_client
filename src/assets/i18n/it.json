@@ -443,6 +443,7 @@
     "LST_MIN": "Temperatura Minima",
     "LST_AVG": "Temperatura Media",
     "FLOOD_DEPTH": "Profondità Inondazione",
+    "POLLUTANT": "inquinante",
     "ACTIVE_FIRES": "Incendio Attivo"
   },
   "FORGET_PASSWORD_REQUEST": {

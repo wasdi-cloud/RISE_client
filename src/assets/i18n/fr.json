@@ -414,6 +414,7 @@
     "LST_MAX": "Température Maximale",
     "LST_MIN": "Température Minimale",
     "LST_AVG": "Température Moyenne",
+    "POLLUTANT": "Polluant",
     "FLOOD_DEPTH": "Profondeur d'Inondation",
     "ACTIVE_FIRES": "Feu Actif"
   },

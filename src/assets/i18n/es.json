@@ -434,6 +434,7 @@
     "LST_MAX": "Temperatura Máxima",
     "LST_MIN": "Temperatura Mínima",
     "LST_AVG": "Temperatura Promedio",
+    "POLLUTANT": "contaminante",
     "FLOOD_DEPTH": "Profundidad de Inundación"
   },
   "FORGET_PASSWORD_REQUEST": {

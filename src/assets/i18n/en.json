@@ -426,7 +426,8 @@
     "LST_MIN": "Min Temperature",
     "LST_AVG": "Avg Temperature",
     "FLOOD_DEPTH": "Flood Depth",
-    "ACTIVE_FIRES": "Active Fire"
+    "ACTIVE_FIRES": "Active Fire",
+    "POLLUTANT": "Pollutant"
   },
   "PLUGIN_MAP_DESCRIPTIONS": {
     "HIGH_RES_FLOOD": "High Resolution SAR based Flood Map",
