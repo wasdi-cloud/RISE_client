@@ -200,6 +200,12 @@
     "CONFIRM": "Confirmar"
   },
   "REGISTER": {
+    "PASSWORD_ERROR_MESSAGE_CONDITIONS": "Una buena contraseña contiene: <br><ul><li>Mínimo 8 caracteres</li><li>Al menos 1 letra minúscula</li><li>Al menos 1 letra mayúscula</li><li>Al menos 1 número</li><li>Al menos 1 carácter especial (@,$,!,%,*,#,?,&)</li></ul>",
+    "PASSWORD_ERROR_MESSAGE_MISSMATCH": "Las contraseñas no coinciden",
+    "EMAIL_ERROR_MESSAGE": "Asegúrese de que los correos electrónicos introducidos sean válidos y coincidan",
+    "USERNAME_ERROR_MESSAGE_LENGTH": "Asegúrese de que la ID de usuario tenga más de 8 caracteres",
+    "USERNAME_ERROR_MESSAGE_SPACES": "La ID de usuario no puede contener espacios",
+    "USERNAME_ERROR_MESSAGE_LOWERCASE": "La ID de usuario debe estar completamente en minúsculas",
     "NEXT": "Siguiente",
     "PERSONAL_INFO": "Ingrese su información personal",
     "ORG_INFO": "Ingrese la información de su organización",

@@ -239,6 +239,12 @@
     "CONFIRM": "Confirm"
   },
   "REGISTER": {
+    "PASSWORD_ERROR_MESSAGE_CONDITIONS": "A good password contains: <br><ul><li>Minimum 8 characters</li><li>At least 1 lowercase letter</li><li>At least 1 capital letter</li><li>At least 1 number</li><li>At least 1 special character (@,$,!,%,*,#,?,&)</li></ul>",
+    "PASSWORD_ERROR_MESSAGE_MISSMATCH": "The passwords do not match",
+    "EMAIL_ERROR_MESSAGE": "Please ensure the inputted emails are valid emails and match",
+    "USERNAME_ERROR_MESSAGE_LENGTH": "Please ensure that user id is longer than 8 characters",
+    "USERNAME_ERROR_MESSAGE_SPACES": "User ID cannot contain spaces",
+    "USERNAME_ERROR_MESSAGE_LOWERCASE": "User ID must be all lowercase",
     "NEXT": "Next",
     "PERSONAL_INFO":"Enter your Personal Information",
     "ORG_INFO": "Enter your Organization's Information",

@@ -314,6 +314,8 @@ export class SignUpComponent implements OnInit {
    * @returns boolean
    */
   validatePassword(): boolean {
+    let sPasswordErrorRegex=this.m_oTranslate.instant("REGISTER.PASSWORD_ERROR_MESSAGE_CONDITIONS");
+    let sPasswordErrorMissmatch=this.m_oTranslate.instant("REGISTER.PASSWORD_ERROR_MESSAGE_MISSMATCH");
     let sPassword = this.m_oPasswordInputs.password;
     let sConfirmPw = this.m_oPasswordInputs.confirmPw;
     // Minimum 8 Characters, at least one letter, one number, and one special character:
@@ -324,11 +326,10 @@ export class SignUpComponent implements OnInit {
     if (sPassword && sConfirmPw) {
       //If the first password doesn't pass regex OR the pw's don't match
       if (!sPasswordRegex.test(sPassword)) {
-        this.m_sPasswordError =
-          'A good password contains: <br><ul><li>Minimum 8 characters</li><li>At least 1 lowercase letter</li><li>At least 1 capital letter</li><li>At least 1 number</li><li>At least 1 special character (@,$,!,%,*,#,?,&)</li></ul>';
+        this.m_sPasswordError =sPasswordErrorRegex;
         return false;
       } else if (sPassword !== sConfirmPw) {
-        this.m_sPasswordError = 'The passwords do not match';
+        this.m_sPasswordError =sPasswordErrorMissmatch;
         return false;
       } else {
         return true;
@@ -345,6 +346,7 @@ export class SignUpComponent implements OnInit {
    * @returns boolean
    */
   validateEmail(): boolean {
+    let sEmailError=this.m_oTranslate.instant("REGISTER.EMAIL_ERROR_MESSAGE");
 
     // Standard email regex:
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -354,8 +356,7 @@ export class SignUpComponent implements OnInit {
       this.m_oEmailInputs.confirmEmail = this.m_oEmailInputs.confirmEmail.trim();
       // if the first email doesn't pass Regex OR the emails don't match
       if (!emailRegex.test(this.m_oEmailInputs.email) || this.m_oEmailInputs.email !== this.m_oEmailInputs.confirmEmail) {
-        this.m_sEmailError =
-          'Please ensure the inputted emails are valid emails and match';
+        this.m_sEmailError =sEmailError;
         return false;
       } else {
         return true;
@@ -371,21 +372,24 @@ export class SignUpComponent implements OnInit {
    * @returns boolean
    */
   validateUserName(): boolean {
+    let sUserNameErrorLength=this.m_oTranslate.instant("REGISTER.USERNAME_ERROR_MESSAGE_LENGTH");
+    let sUserNameErrorSpace=this.m_oTranslate.instant("REGISTER.USERNAME_ERROR_MESSAGE_SPACES");
+    let sUserNameErrorLowercase=this.m_oTranslate.instant("REGISTER.USERNAME_ERROR_MESSAGE_LOWERCASE");
+
     if (this.m_oUserInfoInput.userId) {
       this.m_oUserInfoInput.userId= this.m_oUserInfoInput.userId.trim();
       if (this.m_oUserInfoInput.userId.length < 8) {
-        this.m_sUsernameError =
-          'Please ensure that user id is longer than 8 characters';
+        this.m_sUsernameError =sUserNameErrorLength;
         return false;
       }
 
       if (/\s/.test(this.m_oUserInfoInput.userId)) {
-        this.m_sUsernameError = 'User ID cannot contain spaces';
+        this.m_sUsernameError = sUserNameErrorSpace;
         return false;
       }
 
       if (this.m_oUserInfoInput.userId !== this.m_oUserInfoInput.userId.toLowerCase()) {
-        this.m_sUsernameError = 'User ID must be all lowercase';
+        this.m_sUsernameError = sUserNameErrorLowercase;
         return false;
       }
     }

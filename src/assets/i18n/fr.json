@@ -246,6 +246,12 @@
     "DESCRIPTION": "Soyez conscient. Restez préparé. Pour tout. De n'importe où."
   },
   "REGISTER": {
+    "PASSWORD_ERROR_MESSAGE_CONDITIONS": "Un bon mot de passe contient : <br><ul><li>Minimum 8 caractères</li><li>Au moins 1 lettre minuscule</li><li>Au moins 1 lettre majuscule</li><li>Au moins 1 chiffre</li><li>Au moins 1 caractère spécial (@,$,!,%,*,#,?,&)</li></ul>",
+    "PASSWORD_ERROR_MESSAGE_MISSMATCH": "Les mots de passe ne correspondent pas",
+    "EMAIL_ERROR_MESSAGE": "Veuillez vous assurer que les adresses e-mail saisies sont valides et correspondent",
+    "USERNAME_ERROR_MESSAGE_LENGTH": "Veuillez vous assurer que l'identifiant utilisateur contient plus de 8 caractères",
+    "USERNAME_ERROR_MESSAGE_SPACES": "L'identifiant utilisateur ne peut pas contenir d'espaces",
+    "USERNAME_ERROR_MESSAGE_LOWERCASE": "L'identifiant utilisateur doit être entièrement en minuscules",
     "NEXT": "Suivant",
     "PERSONAL_INFO": "Entrez vos informations personnelles",
     "ORG_INFO": "Entrez les informations de votre organisation",
