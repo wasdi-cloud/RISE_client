@@ -19,5 +19,8 @@
     <div class="affected-total space-mono-regular">
       {{ m_iAffectedPpl ? (m_iAffectedPpl | number:'1.0-0':'en') : ("WIDGET.NO_AFFECTED" | translate) }}
     </div>
+    <div>
+      {{ m_oWidgetInfo ? m_oWidgetInfo.referenceDate : ""}}
+    </div>
   </div>
 </div>
