@@ -187,7 +187,7 @@ export class MapService {
     edit: {
       featureGroup: this.m_oDrawnItems,
       edit: false,
-      remove: false,
+      remove: true,
       fullscreenControl: true,
       fullscreenControlOptions: {
         position: 'topleft',
@@ -553,6 +553,60 @@ export class MapService {
     this.m_oMarkerSubject.next(null);
   }
 
+  public setupInstantDelete(oMap: L.Map): void {
+    // Timeout to ensure the DOM is ready and controls are rendered
+    setTimeout(() => {
+      const trashButton = document.querySelector('a.leaflet-draw-edit-remove');
+
+      if (trashButton) {
+        // Remove previous listeners if any (though unlikely if done in onMapReady)
+        // Note: Directly accessing and removing the native listener is hard, so we focus on
+        // stopping propagation and overriding the functionality.
+
+        trashButton.addEventListener('click', (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+
+          const aoLayers = this.m_oDrawnItems.getLayers();
+          if (aoLayers && aoLayers.length > 0) {
+            const oLayer = aoLayers[0];
+
+            // // 1. Disable the layer's edit mode (removes handles)
+            // if (oLayer.editing && oLayer.editing.disable) {
+            //   oLayer.editing.disable();
+            // }
+
+            // 2. Remove the layer from the feature group and the map
+            this.m_oDrawnItems.removeLayer(oLayer);
+
+            // 3. Clear the centroid marker
+            this.clearPreviousDrawings(oMap);
+
+            // 4. Fire the DELETED event for the component to update state
+            oMap.fire(L.Draw.Event.DELETED, {
+              layers: new L.LayerGroup([oLayer])
+            });
+
+            // 5. *** THE FIX: Forcefully dismiss the lingering edit toolbar dialog ***
+            // We simulate a click on the Save button (the checkmark icon)
+            const saveButton = document.querySelector('.leaflet-draw-actions a.leaflet-draw-actions-bottom:first-child');
+
+            if (saveButton instanceof HTMLElement) {
+              // The button needs to be clicked/triggered to dismiss the control pane
+              saveButton.click();
+            }
+            // } else {
+            //   // Fallback: If we can't find the save button, try to manually stop all editing.
+            //   // This relies on the internal structure of Leaflet Draw's map instance.
+            //   if (oMap.editTools && oMap.editTools.stopDrawing) {
+            //     oMap.editTools.stopDrawing();
+            //   }
+            // }
+          }
+        }, true); // Use 'true' to capture the event in the capturing phase, ensuring we run first.
+      }
+    }, 100);
+  }
 
   /****** MAP BUTTONS ******/
   /**

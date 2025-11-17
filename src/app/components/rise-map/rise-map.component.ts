@@ -227,6 +227,12 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       this.addPrinterButton(oMap);
       this.addMagicTool(oMap);
     }
+    this.m_oMapService.setupInstantDelete(oMap);
+    oMap.on(L.Draw.Event.DELETED, (oEvent) => {
+      console.log("pressed")
+      this.onDrawDeleted(oEvent);
+    });
+
   }
 
   addCircleButton(oMap: L.Map): void {
@@ -629,5 +635,12 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
         this.m_bPrintButtonClick.emit(true);
       }
     });
+  }
+
+  onDrawDeleted(oEvent) {
+    // When a shape is deleted, clear the marker and emit a null/empty area to the parent.
+    this.m_oMapService.clearPreviousDrawings(this.m_oMap);
+    this.m_oMapInputChange.emit(null);
+    console.log('Shape deleted. Area selection cleared.');
   }
 }

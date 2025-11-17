@@ -268,6 +268,33 @@ a.leaflet-control-zoom-out {
   align-items: center;
   margin-top: 8px;
 }
+/* Targets the Cancel/Remove button icon in the edit toolbar */
+a.leaflet-draw-edit-remove {
+  /* 1. Resetting the default icon properties */
+
+  color: #ffffff !important;
+  background-image: url('assets/rise-assets/trash.svg') !important;
+  background-position: center !important;
+  background-size: 25px !important;
+  border-radius: 8px;
+
+  /* 2. Positioning and sizing your icon */
+  background-repeat: no-repeat !important;
+
+
+
+  /* 3. Customizing the button size if necessary */
+  width: 26px !important;
+  height: 26px !important;
+}
+
+/* Optional: Customize hover state */
+a.leaflet-draw-edit-remove:hover {
+  background-color: #f44336 !important; /* Example: a red hover color */
+  border-radius: 3px;
+}
+
+
 
 .dashboard-map > .leaflet-control-container > .leaflet-top.leaflet-right {
   top: 3.5rem !important;
