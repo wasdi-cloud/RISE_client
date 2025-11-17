@@ -433,7 +433,13 @@
     "LST_AVG": "Avg Temperature",
     "FLOOD_DEPTH": "Flood Depth",
     "ACTIVE_FIRES": "Active Fire",
-    "POLLUTANT": "Pollutant"
+    "POLLUTANT": "Pollutant",
+    "NO2":"NO2",
+    "HCHO":"HCHO",
+    "CO":"CO",
+    "O3":"O3",
+    "CH4":"CH4",
+    "SO2":"SO2"
   },
   "PLUGIN_MAP_DESCRIPTIONS": {
     "HIGH_RES_FLOOD": "High Resolution SAR based Flood Map",
@@ -453,7 +459,14 @@
     "POP": "Population Impacts Map",
     "FLOOD_COMPOSITE": "Flood Event Max Extent",
     "LST": "Land Surface Temperature",
-    "FLOOD_DEPTH": "Flood Depth Estimation"
+    "FLOOD_DEPTH": "Flood Depth Estimation",
+    "POLLUTANT": "Pollutant",
+    "NO2":"NO2",
+    "HCHO":"HCHO",
+    "CO":"CO",
+    "O3":"O3",
+    "CH4":"CH4",
+    "SO2":"SO2"
   },
   "IMPACTS_DIALOG": {
     "NO_IMPACTS_AVAILABLE_MSG": "RISE did not find any data for the selected date in this area of operation",

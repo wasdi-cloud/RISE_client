@@ -449,8 +449,14 @@
     "LST_MIN": "Temperatura Minima",
     "LST_AVG": "Temperatura Media",
     "FLOOD_DEPTH": "Profondità Inondazione",
+    "ACTIVE_FIRES": "Incendio Attivo",
     "POLLUTANT": "inquinante",
-    "ACTIVE_FIRES": "Incendio Attivo"
+    "NO2":"NO2",
+    "HCHO":"HCHO",
+    "CO":"CO",
+    "O3":"O3",
+    "CH4":"CH4",
+    "SO2":"SO2"
   },
   "FORGET_PASSWORD_REQUEST": {
     "TITLE": "Reimposta la tua password",
@@ -477,7 +483,14 @@
     "POP": "Mappa della Popolazione Colpita",
     "FLOOD_COMPOSITE": "Massima Estensione Inondazione",
     "LST": "Temporatura della Superficie della Terra",
-    "FLOOD_DEPTH": "Stima della Profondità dell'acqua"
+    "FLOOD_DEPTH": "Stima della Profondità dell'acqua",
+    "POLLUTANT": "inquinante",
+    "NO2":"NO2",
+    "HCHO":"HCHO",
+    "CO":"CO",
+    "O3":"O3",
+    "CH4":"CH4",
+    "SO2":"SO2"
   },
   "IMPACTS_DIALOG": {
   "NO_IMPACTS_AVAILABLE_MSG": "RISE non ha trovato dati per la data selezionata in quest'area. Si prega di ricontrollare la data o l'area operativa.",
