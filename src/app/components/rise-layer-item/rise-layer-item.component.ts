@@ -52,6 +52,10 @@ export class RiseLayerItemComponent implements OnChanges{
   }
   toggleExpandedContent() {
     this.m_bShowExpanded = !this.m_bShowExpanded;
+
+    if(!this.m_bShowExpanded) {
+      this.toggleLegend(false);
+    }
   }
 
   emitVisibility() {
