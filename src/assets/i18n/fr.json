@@ -402,6 +402,8 @@
   "PLUGIN_MAP_NAMES": {
     "HIGH_RES_FLOOD": "Inondation Haute Résolution",
     "FFM": "Fréquence des Inondations",
+    "FFM_DATA": "Données de Fréquence des Inondations",
+    "FFM_PERC": "Pourcentage de Fréquence des Inondations",    
     "BUILDINGS": "Bâtiments",
     "ROADS": "Routes",
     "DROUGHT": "Sécheresse",
@@ -440,6 +442,8 @@
   "PLUGIN_MAP_DESCRIPTIONS": {
     "HIGH_RES_FLOOD": "Carte d'inondation haute résolution basée sur le SAR",
     "FFM": "Carte de fréquence des inondations",
+    "FFM_DATA": "Carte de Données de Fréquence des Inondations",
+    "FFM_PERC": "Carte de Pourcentage de Fréquence des Inondations",
     "BUILDINGS": "Carte des bâtiments",
     "ROADS": "Carte des impacts sur les routes",
     "DROUGHT": "Carte de la sécheresse",

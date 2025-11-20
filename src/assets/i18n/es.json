@@ -422,6 +422,8 @@
     "ACTIVE_FIRES": "Incendio Activo",
     "HIGH_RES_FLOOD": "Inundación de Alta Resolución",
     "FFM": "Frecuencia de Inundaciones",
+    "FFM_DATA": "Datos de Frecuencia de Inundaciones",
+    "FFM_PERC": "Porcentaje de Frecuencia de Inundaciones",    
     "BUILDINGS": "Edificios",
     "ROADS": "Carreteras",
     "DROUGHT": "Sequía",
@@ -459,6 +461,8 @@
   "PLUGIN_MAP_DESCRIPTIONS": {
     "HIGH_RES_FLOOD": "Mapa de Inundación basado en SAR de Alta Resolución",
     "FFM": "Mapa de Frecuencia de Inundaciones",
+    "FFM_DATA": "Mapa de Datos de Frecuencia de Inundaciones",
+    "FFM_PERC": "Mapa de Porcentaje de Frecuencia de Inundaciones",
     "BUILDINGS": "Mapa de Edificios",
     "ROADS": "Mapa de Impactos en Carreteras",
     "DROUGHT": "Mapa de Sequía",

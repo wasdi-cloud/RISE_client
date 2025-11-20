@@ -412,7 +412,9 @@
   },
   "PLUGIN_MAP_NAMES": {
     "HIGH_RES_FLOOD": "High Res Flood",
-    "FFM": "Flood Frequency",
+    "FFM": "Flood Frequency Count",
+    "FFM_DATA": "Flood Frequency Data",
+    "FFM_PERC": "Flood Frequency Percentage",
     "BUILDINGS": "Buildings",
     "ROADS": "Roads",
     "DROUGHT": "Drought",
@@ -444,6 +446,8 @@
   "PLUGIN_MAP_DESCRIPTIONS": {
     "HIGH_RES_FLOOD": "High Resolution SAR based Flood Map",
     "FFM": "Flood Frequency Map",
+    "FFM_DATA": "Flood Frequency Data Map",
+    "FFM_PERC": "Flood Frequency Percentage Map",
     "BUILDINGS": "Building Map",
     "ROADS": "Roads Impacts Map",
     "DROUGHT": "Drought Map",
