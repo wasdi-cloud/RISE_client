@@ -430,6 +430,8 @@
   "PLUGIN_MAP_NAMES": {
     "HIGH_RES_FLOOD": "Aree Inondate (HR)",
     "FFM": "Frequenza Inondazioni",
+    "FFM_DATA": "Dati di Frequenza delle Inondazioni",
+    "FFM_PERC": "Percentuale di Frequenza delle Inondazioni",	
     "BUILDINGS": "Edifici",
     "ROADS": "Strade",
     "DROUGHT": "Siccità",
@@ -468,6 +470,8 @@
   "PLUGIN_MAP_DESCRIPTIONS": {
     "HIGH_RES_FLOOD": "Mappa di Inondazione ad Alta Risoluzione",
     "FFM": "Mappa di Frequenza Inondazioni",
+    "FFM_DATA": "Mappa di Dati di Frequenza delle Inondazioni",
+    "FFM_PERC": "Mappa di Percentuale di Frequenza delle Inondazioni",
     "BUILDINGS": "Mappa degli Edifici",
     "ROADS": "Mappa delle Strade Colpite",
     "DROUGHT": "Mappa di Siccità",
