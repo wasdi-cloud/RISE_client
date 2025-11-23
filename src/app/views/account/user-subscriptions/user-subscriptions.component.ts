@@ -146,7 +146,14 @@ export class UserSubscriptionsComponent implements OnInit {
    */
   openBuyNewSub(bInput: boolean) {
     if(this.canBuyNewSub()){
-      this.m_oDialog.open(BuyNewSubscriptionComponent).afterClosed().subscribe(() => {
+      this.m_oDialog.open(BuyNewSubscriptionComponent, {
+        maxWidth: '90vw',
+        maxHeight: '90vh',
+        width: '90vw',
+        height: '80vh',
+        disableClose: true,
+        panelClass: 'full-screen-dialog'
+      }).afterClosed().subscribe(() => {
         this.getSubscriptions();
       });
     }
