@@ -12,7 +12,8 @@ import {PluginViewModel} from '../../../../models/PluginViewModel';
 import {NotificationsDialogsService} from '../../../../services/notifications-dialogs.service';
 import {SubscriptionViewModel} from '../../../../models/SubscriptionViewModel';
 import {ConstantsService} from '../../../../services/constants.service';
-
+import { forkJoin, of } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {UserService} from '../../../../services/api/user.service';
 import {FormsModule} from "@angular/forms";
@@ -26,7 +27,6 @@ import FadeoutUtils from "../../../../shared/utilities/FadeoutUtils";
     TranslateModule,
     RiseButtonComponent,
     RiseTextInputComponent,
-    RiseTextareaInputComponent,
     RiseDropdownComponent,
     FormsModule,
   ],
@@ -90,28 +90,53 @@ export class BuyNewSubscriptionComponent implements OnInit {
 
   ngOnInit(): void {
     let oDate=new Date()
-    this.m_oSubInput.name="Subscription - "+oDate.toDateString()
-    this.getSubTypes();
-    this.getPlugins();
+    this.m_oSubInput.name="Subscription - " + oDate.toDateString()
     this.getPaymentTypes();
     this.m_sOrganizationId = this.getOrganizationId();
-  }
 
-  getSubTypes() {
-    this.m_oSubscriptionService.getSubscriptionTypes().subscribe({
-      next: (oResponse) => {
-        this.m_aoSubTypes = oResponse;
-        this.initSubTypeNames();
+    // Use forkJoin to wait for all API calls to complete
+    forkJoin([
+      this.getSubTypes(),
+      this.getPlugins()
+    ]).subscribe({
+      next: () => {
+        // This block executes ONLY after BOTH getSubTypes and getPlugins have completed successfully.
+        console.log('All initial data has arrived!');
+
+        // Now that we have all the data and defaults are set, we can compute the price.
+        if (this.enableComputePrice()) {
+          this.getComputedPrice();
+        }
       },
-      error: (oError) => {
-        console.error(oError);
-      },
+      error: (err) => {
+        // This will be called if any of the API calls in forkJoin fail.
+        console.error('An error occurred during initialization:', err);
+        this.m_oNotificationService.openInfoDialog('Failed to initialize subscription options.', 'danger');
+      }
     });
   }
 
+  getSubTypes() {
+    // Return the observable stream
+    return this.m_oSubscriptionService.getSubscriptionTypes().pipe(
+      tap(oResponse => {
+        // Perform side-effects inside tap
+        this.m_aoSubTypes = oResponse;
+        this.initSubTypeNames();
+      }),
+      catchError(oError => {
+        console.error(oError);
+        // Return an empty array or a default value to allow forkJoin to complete
+        return of([]);
+      })
+    );
+  }
+
   getPlugins() {
-    this.m_oPluginService.getPluginsList().subscribe({
-      next: (oResponse) => {
+    // Return the observable stream
+    return this.m_oPluginService.getPluginsList().pipe(
+      tap(oResponse => {
+        // Perform side-effects inside tap
         if (!oResponse) {
           this.m_oNotificationService.openInfoDialog(
             'Could not load plugins',
@@ -122,23 +147,34 @@ export class BuyNewSubscriptionComponent implements OnInit {
           this.m_aoPluginTypes = oResponse;
           this.initPluginNames();
         }
-      },
-      error: (oError) => {
+      }),
+      catchError(oError => {
         console.error(oError);
-      },
-    });
+        // Return an empty array or a default value to allow forkJoin to complete
+        return of([]);
+      })
+    );
   }
 
-  initSubTypeNames() {
-    console.log(this.m_aoSubTypes)
+   initSubTypeNames() {
     this.m_aoSubTypes.sort((a, b) => a.allowedAreas - b.allowedAreas);
     this.m_asSubTypeNames = this.m_aoSubTypes.map(
-      (oSubType) => oSubType.stringCode.slice(8) + ' Location(s)'
+      (oSubType) => oSubType.stringCode.slice(8) + ' Area'
     );
+
+    for (let i = 0; i < this.m_aoSubTypes.length; i++) {
+      let oSubscriptionType = this.m_aoSubTypes[i];
+      if (oSubscriptionType.allowedAreas === 1) {
+        this.m_sSelectedSubType = oSubscriptionType.stringCode.slice(8) + ' Area';
+        this.m_oSelectedType = oSubscriptionType;
+      }
+    }
   }
 
   initPluginNames() {
     this.m_aoPluginNames = this.m_aoPluginTypes.map((oPlugin) => oPlugin.name);
+    this.m_asSelectedPluginsDisplay = [...this.m_aoPluginNames];
+    this.m_asSelectedPlugins = this.m_aoPluginTypes.map((oPlugin) => oPlugin.id);
   }
 
   handleSubTypeSelect(oEvent) {
@@ -168,7 +204,6 @@ export class BuyNewSubscriptionComponent implements OnInit {
     });
 
     this.m_oSubInput.plugins = this.m_asSelectedPlugins;
-
   }
 
 
@@ -278,8 +313,11 @@ export class BuyNewSubscriptionComponent implements OnInit {
   getPaymentTypes() {
     this.m_aoPaymentTypes = [
       { name: 'Year', value: 'YEAR' },
-      { name: '3 Months', value: 'MONTH' },
+      { name: '1 Month', value: 'MONTH' },
     ];
+
+    this.m_sSelectedPaymentTypeName = '1 Month';
+    this.m_oSelectedPaymentType = this.m_aoPaymentTypes[1];
 
     this.m_asPaymentTypeNames = this.m_aoPaymentTypes.map(
       (oType) => oType.name

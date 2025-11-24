@@ -1,54 +1,36 @@
 <div class="dialog-container d-flex flex-column gap-2 p-3">
   <div class="header d-flex flex-row justify-content-between align-items-center">
-    <h3>{{ "SUBSCRIPTIONS.BUY_BUTTON" | translate }}</h3>
+    <div class="d-flex flex-row align-items-center gap-2">
+      <h3><span class="material-symbols-outlined">paid</span>{{ "SUBSCRIPTIONS.BUY_BUTTON" | translate }}</h3>
+      <!-- Info Button -->
+      <rise-button
+        class="info-button"
+        [m_sIconLeft]="'info'"
+        [m_sSize]="'small'"
+        (click)="openInfoDialog()"
+      ></rise-button>
+    </div>
     <span class="close-btn material-symbols-outlined" (click)="onDismiss()">
       close
     </span>
   </div>
 
+
   <div class="body flex-fill d-flex flex-column gap-3">
     <!-- Step 1: Subscription Details -->
-    <ng-container *ngIf="m_iStep === 1">
-      <div class="d-flex flex-row gap-3 flex-fill">
+    <ng-container *ngIf="m_iStep > 0">
+      <div class="d-flex flex-row flex-fill" style="gap: 45px;">
         <div class="d-flex flex-column gap-2 col-6">
           <rise-text-input
             [m_bHasTitle]="true"
             [m_sLocalizationKey]="'SUBSCRIPTIONS.NAME'"
             [(m_sInputText)]="m_oSubInput.name"
           ></rise-text-input>
-          <rise-textarea-input
+          <!--rise-textarea-input
             [m_bHasTitle]="true"
             [m_sLocalizationKey]="'SUBSCRIPTIONS.DESCRIPTION'"
             [(m_sInputText)]="m_oSubInput.description"
-          ></rise-textarea-input>
-
-          <div class="radio-options d-flex flex-column">
-            {{ "SUBSCRIPTIONS.AREA_TYPE" | translate }}
-            <label class="d-flex flex-row gap-2" for="emergency">
-              <input
-                type="radio"
-                name="area_type"
-                id="emergency"
-                [checked]="!m_oSubInput.supportsArchive"
-                (change)="m_oSubInput.supportsArchive = false"
-              />
-              {{ "SUBSCRIPTIONS.EMERGENCY" | translate }}
-            </label>
-            <label class="d-flex flex-row gap-2" for="archive">
-              <input
-                type="radio"
-                name="area_type"
-                id="archive"
-                [checked]="m_oSubInput.supportsArchive"
-                (change)="m_oSubInput.supportsArchive = true"
-              />
-              {{ "SUBSCRIPTIONS.LONG_TERM" | translate }}
-            </label>
-          </div>
-
-        </div>
-
-        <div class="d-flex flex-column gap-2 col-6 pe-3">
+          ></rise-textarea-input-->
           <rise-dropdown
             [m_bHasTitle]="true"
             [m_sLabel]="'SUBSCRIPTIONS.TYPE'"
@@ -66,37 +48,50 @@
             (m_oSelectionChange)="handlePluginSelect($event)"
             [m_bShowChips]="true"
           ></rise-dropdown>
+          
+          <rise-dropdown
+            [m_bHasTitle]="true"
+            [m_sLabel]="'SUBSCRIPTIONS.PAYMENT_TYPE'"
+            [m_aoDropdownItems]="m_asPaymentTypeNames"
+            [m_aoSelectedItems]="m_sSelectedPaymentTypeName"
+            (m_oSelectionChange)="handlePaymentTypeSelect($event)"
+          ></rise-dropdown>
         </div>
-      </div>
-      <!-- Step Footer -->
-      <div class="d-flex justify-content-between mt-3">
-        <!-- Left Info Button -->
-        <rise-button
-          class="info-button"
-          [m_sIconLeft]="'info'"
-          [m_sSize]="'small'"
-          (click)="openInfoDialog()"
-        ></rise-button>
 
-        <!-- Right Next Button -->
-        <rise-button
-          [m_sRole]="'action'"
-          [m_sLabel]="'Next'"
-          [m_bDisabled]="!enableNextBtn()"
-          (click)="enableNextBtn()?goToNextStep():''"
-        ></rise-button>
-      </div>
+        <div class="d-flex flex-column gap-2 col-6 pe-3">
 
-    </ng-container>
+          <fieldset class="group-box" style="margin-top: 5px;">
+            <legend class="group-box-legend">{{ "SUBSCRIPTIONS.AREA_TYPE" | translate }}</legend>
+            <br>
+            <div class="group-box-content">
+              <label class="d-flex flex-row align-items-center" style="gap: 8px;" for="emergency">
+              <input
+                type="radio"
+                name="area_type"
+                id="emergency"
+                [checked]="!m_oSubInput.supportsArchive"
+                (change)="m_oSubInput.supportsArchive = false"
+              />
+              {{ "SUBSCRIPTIONS.EMERGENCY" | translate }}
+            </label>
+              <label class="d-flex flex-row align-items-center" style="gap: 8px;" for="archive">
+              <input
+                type="radio"
+                name="area_type"
+                id="archive"
+                [checked]="m_oSubInput.supportsArchive"
+                (change)="m_oSubInput.supportsArchive = true"
+              />
+              {{ "SUBSCRIPTIONS.LONG_TERM" | translate }}
+              </label>
+            </div>
+          </fieldset>
 
-    <!-- Step 2: Payment Selection -->
-    <ng-container *ngIf="m_iStep === 2">
-      <div class="d-flex flex-row gap-3 flex-fill">
-        <div class="d-flex flex-column gap-2 col-6">
-          <div class="radio-options d-flex flex-column">
-            {{ "SUBSCRIPTIONS.PAYMENT" | translate }}
-
-            <label for="credit" class="d-flex flex-row gap-2">
+          <fieldset class="group-box">
+            <legend class="group-box-legend">{{ "SUBSCRIPTIONS.PAYMENT" | translate }}</legend>
+            <br>
+            <div class="group-box-content">
+              <label for="credit" class="d-flex flex-row align-items-center" style="gap: 8px;">
               <input
                 type="radio"
                 name="payment"
@@ -107,18 +102,18 @@
               {{ "SUBSCRIPTIONS.CREDIT" | translate }}
             </label>
 
-            <label for="wire" class="d-flex flex-row gap-2">
-              <input
-                type="radio"
-                name="payment"
-                id="wire"
-                [(ngModel)]="m_sPaymentMethod"
-                value="wire"
-              />
-              {{ "SUBSCRIPTIONS.WIRE" | translate }}
-            </label>
+              <label for="wire" class="d-flex flex-row align-items-center" style="gap: 8px;">
+                <input
+                  type="radio"
+                  name="payment"
+                  id="wire"
+                  [(ngModel)]="m_sPaymentMethod"
+                  value="wire"
+                />
+                {{ "SUBSCRIPTIONS.WIRE" | translate }}
+              </label>
 
-            <label for="contact" class="d-flex flex-row gap-2">
+              <label for="contact" class="d-flex flex-row align-items-center" style="gap: 8px;">
               <input
                 type="radio"
                 name="payment"
@@ -127,19 +122,9 @@
                 value="contact"
               />
               {{ "SUBSCRIPTIONS.CONTACT" | translate }}
-            </label>
-          </div>
-        </div>
-
-
-        <div class="d-flex flex-column gap-2 col-6 pe-3">
-          <rise-dropdown
-            [m_bHasTitle]="true"
-            [m_sLabel]="'SUBSCRIPTIONS.PAYMENT_TYPE'"
-            [m_aoDropdownItems]="m_asPaymentTypeNames"
-            [m_aoSelectedItems]="m_sSelectedPaymentTypeName"
-            (m_oSelectionChange)="handlePaymentTypeSelect($event)"
-          ></rise-dropdown>
+              </label>
+            </div>
+          </fieldset>
         </div>
       </div>
 
@@ -169,13 +154,13 @@
       </div>
 
       <!-- Back & Purchase Buttons -->
-      <div class="d-flex flex-row justify-content-between">
-        <rise-button
+      <div class="d-flex flex-row justify-content-end">
+        <!--rise-button
           class="align-self-start"
           [m_sRole]="'primary'"
           [m_sLabel]="'Back'"
           (click)="goToPreviousStep()"
-        ></rise-button>
+        ></rise-button-->
 <!--        Handle the case of Credit Card-->
         <rise-button
           *ngIf="m_sPaymentMethod=='credit'"
@@ -188,7 +173,7 @@
 <!--        Handle the case of Wire-->
         <rise-button
           *ngIf="m_sPaymentMethod=='wire'"
-          class="align-self-end"
+          class="align-self-start"
           [m_bDisabled]="!enablePurchaseBtn()"
           [m_sRole]="'action'"
           [m_sLabel]="'SUBSCRIPTIONS.PURCHASE'"
@@ -197,7 +182,7 @@
 <!--        Handle the case of Contact Us-->
         <rise-button
           *ngIf="m_sPaymentMethod=='contact'"
-          class="align-self-end"
+          class="align-self-start"
           [m_bDisabled]="!enablePurchaseBtn()"
           [m_sRole]="'action'"
           [m_sLabel]="'SUBSCRIPTIONS.PURCHASE_CONTACT'"
