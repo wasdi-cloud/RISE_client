@@ -319,7 +319,6 @@ export class SignUpComponent implements OnInit {
     let sPassword = this.m_oPasswordInputs.password;
     let sConfirmPw = this.m_oPasswordInputs.confirmPw;
     // Minimum 8 Characters, at least one letter, one number, and one special character:
-    //const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*#?&,\.])[A-Za-z\d@$!%*#?&,\.]{8,}$/;
 
     const sPasswordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*#?&,.]).{8,}$/;
 
