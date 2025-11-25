@@ -10,8 +10,8 @@
       [max]="m_asDates.length - 1"
       [(value)]="m_iSliderValue"
       (change)="dateSelected($event,true)"
-      (mouseenter)="onMouseEnter()"
-      (mouseleave)="onMouseLeave()"
+      (mouseenter)="onMouseEnter($event)"
+      (mouseleave)="onMouseLeave($event)"
     />
 
     <!-- Ticks -->

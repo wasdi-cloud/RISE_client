@@ -184,12 +184,12 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
 
 
   @HostListener('mouseenter', ['$event'])
-  onMouseEnter() {
+  onMouseEnter(oEvent: MouseEvent) {
     this.updateSliderCursor();
   }
 
   @HostListener('mouseleave', ['$event'])
-  onMouseLeave() {
+  onMouseLeave(oEvent: MouseEvent) {
     this.m_sSliderClass = ''; // Reset cursor when leaving
   }
 
