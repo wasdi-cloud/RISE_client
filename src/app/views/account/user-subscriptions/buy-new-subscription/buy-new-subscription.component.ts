@@ -267,6 +267,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
 
   getComputedPrice() {
     this.initSubscriptionInput();
+    console.log(this.m_oSubInput);
     this.m_oSubscriptionService
       .getSubscriptionPrice(this.m_oSubInput)
       .subscribe({
@@ -279,6 +280,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
             );
             return;
           } else {
+            console.log(oResponse);
             this.m_iComputedPrice = oResponse.price;
           }
         },

@@ -1035,7 +1035,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       this.m_oLayerService.findAvailableLayers(sMapIds,this.m_sAreaId,this.m_iSelectedDate).subscribe({
         next:(oResponse)=>{
           for (const oResponseEle of oResponse) {
-            asAvailableMapIds.push(oResponseEle.mapId);
+            asAvailableMapIds.push(oResponseEle);
           }
           for (const oPlugin of aoPlugins) {
             oPlugin.disabled=!asAvailableMapIds.includes(oPlugin.id)
