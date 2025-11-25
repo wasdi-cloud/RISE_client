@@ -39,7 +39,10 @@ import {ImpactsDialogComponent} from "../../dialogs/impacts-dialog/impacts-dialo
 import {Subscription} from "rxjs";
 import {PrintMapDialogComponent} from "../../dialogs/print-map-dialog/print-map-dialog.component";
 
-
+/**
+ * TODO THERE IS A BIG NAMING PROBLEM HERE, plugin, maps, layers, plugins here in the client is
+ * TODO the maps in server side, we need to fix this, for more code readability
+ */
 /**
    * UC_120 Monitor Area of Operations
    */
@@ -437,12 +440,8 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     this.m_oMapAPIService.byArea(sAreaId).subscribe({
       next: (oResponse) => {
         if (oResponse.length > 0) {
+
           this.m_aoPlugins = oResponse;
-          // this.m_aoPlugins.forEach((oPlugin) => {
-          //   if (this.m_aoPlugins[0].name === oPlugin.name) {
-          //     this.m_oActivePlugin = this.m_aoPlugins[0];
-          //   }
-          // });
           this.initPluginsButtons(this.m_aoPlugins);
         }
       },
@@ -1028,15 +1027,23 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    */
 
   initPluginsButtons(aoPlugins: any[]){
-
-    for (const oPlugin of aoPlugins) {
-      this.m_oLayerService.findLayer(oPlugin.id,this.m_sAreaId,this.m_iSelectedDate).subscribe({
+    let asAvailableMapIds=[]
+    const asMapIds = aoPlugins.map(oPlugin => oPlugin.id);
+    const sMapIds = asMapIds.join(","); // e.g., "map1,map2,map3"
+    console.log(sMapIds);
+    if(sMapIds){
+      this.m_oLayerService.findAvailableLayers(sMapIds,this.m_sAreaId,this.m_iSelectedDate).subscribe({
         next:(oResponse)=>{
-          oPlugin.disabled = FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse);
+          for (const oResponseEle of oResponse) {
+            asAvailableMapIds.push(oResponseEle.mapId);
+          }
+          for (const oPlugin of aoPlugins) {
+            oPlugin.disabled=!asAvailableMapIds.includes(oPlugin.id)
+          }
         }
       })
-
     }
+
   }
     /*
      Given an area id and selected date , we show Impacts
