@@ -179,10 +179,12 @@ export class BuyNewSubscriptionComponent implements OnInit {
 
   handleSubTypeSelect(oEvent) {
     let sSelectedType = oEvent.value;
+
+    let sCleanedType = sSelectedType.split(" ")[0];
     this.m_aoSubTypes.forEach((oType) => {
-      if (oType.stringCode.includes(sSelectedType.slice(0, -12))) {
+      if (oType.stringCode.includes(sCleanedType)) {
         this.m_oSelectedType = oType;
-        this.m_sSelectedSubType=sSelectedType;
+        this.m_sSelectedSubType=sCleanedType+" Area";
       }
     });
 
@@ -256,6 +258,8 @@ export class BuyNewSubscriptionComponent implements OnInit {
       }
     });
   }
+
+
   initSubscriptionInput() {
     this.m_oSubInput.type = this.m_oSelectedType.stringCode;
     this.m_oSubInput.plugins = this.m_asSelectedPlugins;
@@ -267,7 +271,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
 
   getComputedPrice() {
     this.initSubscriptionInput();
-    console.log(this.m_oSubInput);
+
     this.m_oSubscriptionService
       .getSubscriptionPrice(this.m_oSubInput)
       .subscribe({
@@ -280,7 +284,6 @@ export class BuyNewSubscriptionComponent implements OnInit {
             );
             return;
           } else {
-            console.log(oResponse);
             this.m_iComputedPrice = oResponse.price;
           }
         },
