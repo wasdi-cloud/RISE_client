@@ -442,7 +442,7 @@
     "O3":"O3",
     "CH4":"CH4",
     "SO2":"SO2"
-  },
+  },  
   "PLUGIN_MAP_DESCRIPTIONS": {
     "HIGH_RES_FLOOD": "High Resolution SAR based Flood Map",
     "FFM": "Flood Frequency Map",
@@ -514,7 +514,15 @@
     "USER_ID": "User Id",
     "CONFIRM": "Confirm",
     "SUBMIT_MESSAGE": "Your password recovery request has been submitted successfully. Please check your email for further instructions."
+  },
+  "PLUGIN_NAMES": {
+    "PLUGIN_FLOOD": "Floods",
+    "PLUGIN_DROUGHT": "Drought",
+    "PLUGIN_BUILDINGS": "Buildings",
+    "PLUGIN_IMPACTS": "Impacts",
+    "PLUGIN_RAIN": "Rain",
+    "PLUGIN_LST": "Temperature",
+    "PLUGIN_ACTIVE_FIRE": "Fire",
+    "PLUGIN_POLLUTANT": "Air Quality"
   }
-
-
 }

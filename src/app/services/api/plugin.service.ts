@@ -23,4 +23,14 @@ export class PluginService {
   getPluginsList() {
     return this.m_oHttp.get<any>(this.APIURL + '/plugins/list');
   }
+
+  /**
+   * Get the list of plugins associated to an area
+   * @param sAreaId Area ID
+   * @returns 
+   */
+  getPluginsByArea(sAreaId: string) {
+    return this.m_oHttp.get<any>(this.APIURL + '/plugins/by_area?area_id=' + sAreaId);
+  }  
+  
 }

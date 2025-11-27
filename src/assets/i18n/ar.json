@@ -491,5 +491,15 @@
   },
   "TIMEBAR": {
     "LIVE": "مباشر"
+  },
+  "PLUGIN_NAMES": {
+    "PLUGIN_FLOOD": "Floods",
+    "PLUGIN_DROUGHT": "Drought",
+    "PLUGIN_BUILDINGS": "Buildings",
+    "PLUGIN_IMPACTS": "Impacts",
+    "PLUGIN_RAIN": "Rain",
+    "PLUGIN_LST": "Temperature",
+    "PLUGIN_ACTIVE_FIRE": "Fire",
+    "PLUGIN_POLLUTANT": "Air Quality"
   }
 }

@@ -16,6 +16,7 @@ import {DefaultMenuItems, FullMenuItems, ReducedMenuItems,} from './menu-items';
 import {AreaService} from "../../services/api/area.service";
 import FadeoutUtils from "../../shared/utilities/FadeoutUtils";
 import {filter} from "rxjs";
+import e from 'express';
 
 @Component({
   selector: 'rise-user-menu',
@@ -235,10 +236,18 @@ export class RiseUserMenuComponent implements OnInit {
   }
 
   private checkIfUserHasAreas() {
-    this.m_oAreaService.getAreaList().subscribe({
+    this.m_oAreaService.getAreaCount().subscribe({
       next:(oResponse)=>{
-        this.m_bHasArea = !(oResponse == null || oResponse.length == 0);
+        this.m_bHasArea = false;
+        if (oResponse!=null) {
+          if (oResponse > 0) {
+            this.m_bHasArea = true;
+          }
+          else {
+            this.m_bHasArea = false;
+        }
       }
+    }
     })
   }
 

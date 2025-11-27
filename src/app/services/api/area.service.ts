@@ -16,16 +16,31 @@ export class AreaService {
   ) {}
 
   /**
-   * Get a list of areas
+   * Get a list of areas of an organization
    * @param sSessionId
    * @return
    */
   getAreaList() {
     return this.m_oHttp.get<any>(this.APIURL + '/area/list');
   }
+
+  /**
+   * Get the count  of areas of an organization
+   * @param sSessionId
+   * @return
+   */
+  getAreaCount() {
+    return this.m_oHttp.get<any>(this.APIURL + '/area/count');
+  }  
+
+  /**
+   * Get a list of areas accessible by a specific user
+   * @returns 
+   */
   getAreaListByUser() {
     return this.m_oHttp.get<any>(this.APIURL + '/area/list-by-user');
   }
+
   getFieldOperators() {
     return this.m_oHttp.get<any>(this.APIURL + '/area/field');
   }

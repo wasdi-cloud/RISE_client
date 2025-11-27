@@ -13,11 +13,22 @@ export class MapAPIService {
     private m_oHttpClient: HttpClient
   ) {}
 
+  /**
+   * Get all the maps enabled in an area
+   * @param sAreaId Area Id
+   * @returns 
+   */
   byArea(sAreaId: string) {
     return this.m_oHttpClient.get<any>(
       this.APIURL + '/map/by_area?area_id=' + sAreaId
     );
   }
+
+  /**
+   * Get all the maps enabled for a plugin
+   * @param sPluginId Plugin Id
+   * @returns 
+   */
   byPluginId(sPluginId: string) {
     return this.m_oHttpClient.get<any>(
       this.APIURL + '/map/by_plugin?plugin_id=' + sPluginId

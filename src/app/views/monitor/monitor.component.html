@@ -106,39 +106,57 @@
     <div  class=" flex-fill temp-fix" #tempFix>
       <div
         #btnContainer
-        *ngIf="m_aoPlugins.length > 0"
-        class="btn-select-container d-flex flex-row flex-wrap gap-2 align-items-center"
+        *ngIf="m_aoAreaPlugins.length > 0"
+        class="btn-select-container d-flex flex-column gap-3"
       >
+        <!-- FIRST LEVEL: Real Plugins (from m_aoAreaPlugins) -->
+        <div class="plugin-level d-flex flex-row flex-wrap gap-2 align-items-center">
+          <rise-map-chip
+            *ngFor="let oAreaPlugin of m_aoAreaPlugins"
+            [m_sTitle]="'PLUGIN_NAMES.' + oAreaPlugin.stringCode | translate"
+            [m_sIcon]="oAreaPlugin.icon"
+            [m_bIsActive]="m_oSelectedPlugin?.id === oAreaPlugin.id"
+            (click)="selectPlugin(oAreaPlugin)"
+            [m_sTooltip]="oAreaPlugin.stringCode | translate"
+            [m_sChipType]="'default'"
+          ></rise-map-chip>
+        </div>
 
-        <!-- Show visible plugins or all if expanded -->
-        <rise-map-chip
-          *ngFor="let oPlugin of getVisiblePlugins()"
-          [m_sTitle]="oPlugin.name | translate"
-          [m_sIcon]="oPlugin.icon"
-          [m_bIsActive]="oPlugin.loaded"
-          [m_bDisabled]="oPlugin.disabled"
-          (click)="switchPluginButton(oPlugin)"
-          [m_sTooltip]="oPlugin.description | translate"
-          [m_sChipType]="'default'"
-        ></rise-map-chip>
+        <!-- SECOND LEVEL: Maps (from m_aoVisibleMapLayersButtons) - Only shown when a plugin is selected -->
+        <div 
+          *ngIf="m_oSelectedPlugin" 
+          class="maps-level d-flex flex-row flex-wrap gap-2 align-items-center"
+        >
+          <!-- Show visible plugins or all if expanded -->
+          <rise-map-chip
+            *ngFor="let oMapButton of getVisibleMapButtons()"
+            [m_sTitle]="oMapButton.name | translate"
+            [m_sIcon]="oMapButton.icon"
+            [m_bIsActive]="oMapButton.loaded"
+            [m_bDisabled]="oMapButton.disabled"
+            (click)="switchMapButton(oMapButton)"
+            [m_sTooltip]="oMapButton.description | translate"
+            [m_sChipType]="'default'"
+          ></rise-map-chip>
 
-        <!-- "+X more" chip -->
-        <rise-map-chip
-          *ngIf="!m_bShowAllPlugins && m_aoPlugins.length > m_iVisibleCount"
-          [m_sTitle]="'MONITOR.SHOW_MORE' | translate: { count: getHiddenPluginsCount() }"
-          [m_sIcon]="'more'"
-          (click)="togglePluginView()"
-          [m_sChipType]="'toggle'"
-        ></rise-map-chip>
+          <!-- "+X more" chip -->
+          <rise-map-chip
+            *ngIf="!m_bShowAllMaps && m_aoVisibleMapLayersButtons.length > m_iVisibleCount"
+            [m_sTitle]="'MONITOR.SHOW_MORE' | translate: { count: getHiddenMapButtonsCount() }"
+            [m_sIcon]="'more'"
+            (click)="togglePluginView()"
+            [m_sChipType]="'toggle'"
+          ></rise-map-chip>
 
-        <!-- "Show less" chip when expanded -->
-        <rise-map-chip
-          *ngIf="m_bShowAllPlugins && m_aoPlugins.length > m_iVisibleCount"
-          [m_sTitle]="'MONITOR.SHOW_LESS'|translate"
-          [m_sIcon]="'less'"
-          [m_sChipType]="'toggle'"
-          (click)="togglePluginView()"
-        ></rise-map-chip>
+          <!-- "Show less" chip when expanded -->
+          <rise-map-chip
+            *ngIf="m_bShowAllMaps && m_aoVisibleMapLayersButtons.length > m_iVisibleCount"
+            [m_sTitle]="'MONITOR.SHOW_LESS'|translate"
+            [m_sIcon]="'less'"
+            [m_sChipType]="'toggle'"
+            (click)="togglePluginView()"
+          ></rise-map-chip>
+        </div>
       </div>
       <rise-user-menu class="user-menu"></rise-user-menu>
       <rise-map  #mapElement class="map-section"

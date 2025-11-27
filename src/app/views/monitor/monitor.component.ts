@@ -38,6 +38,8 @@ import {EventType} from "../../models/EventType";
 import {ImpactsDialogComponent} from "../../dialogs/impacts-dialog/impacts-dialog.component";
 import {Subscription} from "rxjs";
 import {PrintMapDialogComponent} from "../../dialogs/print-map-dialog/print-map-dialog.component";
+import { PluginService } from '../../services/api/plugin.service';
+import e from 'express';
 
 /**
  * TODO THERE IS A BIG NAMING PROBLEM HERE, plugin, maps, layers, plugins here in the client is
@@ -94,21 +96,6 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   m_aoReversedLayers: Array<LayerViewModel> = [];
 
   /**
-   * Button objects corresponding to possible plugin layers
-   */
-  m_aoButtons = LayerTypes;
-
-  /**
-   * Archive start date
-   */
-  m_sStartDate: any = null;
-
-  /**
-   * Archive end date
-   */
-  m_sEndDate: any = null;
-
-  /**
    * User's selected date (initialized as most recent date then passed from TIMEBAR COMPONENT)
    */
   m_iSelectedDate: any = '';
@@ -121,12 +108,17 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   /**
    * Available plugins for the workspace
    */
-  m_aoPlugins: Array<any> = [];
+  m_aoAreaPlugins: Array<any> = [];
+
+    /**
+   * Selected plugin for the two-level menu (first level selection)
+   */
+  m_oSelectedPlugin: any = null;
 
   /**
-   * Active Plugin Object
+   * Visible map buttons for the selected plugin
    */
-  m_oActivePlugin: any = null;
+  m_aoVisibleMapLayersButtons: Array<any> = [];
 
   /**
    * Search string for users to search for Layer items based on their MAP ID
@@ -148,9 +140,20 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    */
   m_asEventDocs: string[] = [];
 
+  /**
+   * Initial peak date passed from event list navigation
+   */
   m_iInitialPeakDate: number;
+
+  /**
+   * Number of visible plugins in the list
+   */
   m_iVisibleCount = 5;
-  m_bShowAllPlugins = false;
+
+  /**
+   * Flag to show all plugins or only a limited number
+   */
+  m_bShowAllMaps = false;
 
   /**
    * Name of the area of operations
@@ -161,32 +164,50 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    * Timer to update the current date
    */
   private m_oLiveTimer: any;
+
   /**
    * Flag to show the event info box
    */
   m_bShowEventInfo:boolean=false;
 
-    /**
+  /**
    * Event information
    */
   m_oSelectedEvent: EventViewModel = {} as EventViewModel;
-    /**
-     * Layer analyzer sub pointer
-     */
+
+  /**
+   * Layer analyzer sub pointer
+   */
   private m_oLayerAnalyzerSubscription: Subscription;
 
-    m_sMeasurementToolWkt:string;
+  /**
+   * WKT of the measurement tool
+   */
+  m_sMeasurementToolWkt:string;
 
-
-
-    /**
-     * a flag to distinguish going to event from the event page or click on the event marker
-     */
+  /**
+   * a flag to distinguish going to event from the event page or click on the event marker
+   */
   private m_bIsNavigatedFromEventList = false;
+
+  /**
+   * 
+   */
   @ViewChild('btnContainer', { static: false }) btnContainerRef!: ElementRef;
+
+  /**
+   * 
+   */
   @ViewChild('tempFix', { static: false }) tempFixRef!: ElementRef;
-  // IMPORTANT: Declare the property to hold the bound function reference
+
+  /**
+   * // IMPORTANT: Declare the property to hold the bound function reference
+   */
   private m_oFullscreenChangeListener: () => void;
+
+  /**
+   * Flag to indicate if live mode is active
+   */
   private m_bIsLive: boolean=true;
 
   constructor(
@@ -195,6 +216,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     private m_oConstantsService: ConstantsService,
     private m_oLayerService: LayerService,
     private m_oMapAPIService: MapAPIService,
+    private m_oPluginAPIService: PluginService,
     private m_oMapService: MapService,
     private m_oNotificationService: NotificationsDialogsService,
     private m_oRouter: Router,
@@ -207,6 +229,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     const navigation = this.m_oRouter.getCurrentNavigation();
     const state = navigation?.extras?.state as { id?:string, peakDate?: string,name?:string,type?:EventType,startDate:string,endDate?:string };
 
+    // Check if navigated from event list with state
     if (state?.peakDate) {
       this.m_bIsNavigatedFromEventList=true;
       this.m_oSelectedEvent.endDate=(Number(state?.endDate));
@@ -236,9 +259,8 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
       this.m_iSelectedDate= iFinalTimestampMs;
       this.m_iInitialPeakDate = iFinalTimestampMs/1000;
-
-
     }
+
     // Initialize the bound function for fullscreen change
     this.m_oFullscreenChangeListener = this.handleFullScreenChange.bind(this);
   }
@@ -262,7 +284,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     // Register the event to show layer analyzer
     this.m_oLayerAnalyzerSubscription=this.m_oMapService.m_oLayerAnalyzerDialogEventEmitter.subscribe((bShouldOpenDialog: boolean) => {
       if (bShouldOpenDialog) {
-        this.openLayerAnalyzerDialog(); // Your dialog opening method
+        this.openLayerAnalyzerDialog();
       }
     });
 
@@ -293,7 +315,6 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
      * in and out of the fullscreen element.
      */
     private handleFullScreenChange(): void {
-
 
       const oFullscreenElement = document.fullscreenElement;
       const oBtnContainer = this.btnContainerRef.nativeElement;
@@ -332,7 +353,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       if (this.m_bIsLive) {
         this.m_iCurrentDate = this.getCurrentDate();
       }
-    }, 0.5 * 60 * 1000); // every 5 minutes
+    }, 1 * 60 * 1000); // every minute
   }
 
   stopLiveTimer() {
@@ -377,16 +398,27 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    * @param sAreaId
    */
   openAOI(sAreaId: string): void {
+    // Get the main Area information from the server
     this.m_oAreaService.getAreaById(sAreaId).subscribe({
+
       next: (oResponse) => {
+        // We need a response
         if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
+
+          // Save the area
           this.m_oAreaOfOperation = oResponse;
+          // Covenient variable for the name
           this.m_sAreaName = this.m_oAreaOfOperation.name;
+          // Save the area in the constants service
           this.m_oConstantsService.setActiveArea(this.m_oAreaOfOperation);
 
-          this.getMapsByArea(oResponse.id, oResponse.startDate);
+          // Get the plugins active in the area
+          this.getPluginsByArea(oResponse.id);
+
+          // Fly to the area bounds
           this.m_oMapService.flyToMonitorBounds(oResponse.bbox);
 
+          // Check if there is at least some maps to show
           if (!this.m_oAreaOfOperation.firstShortArchivesReady) {
 
             let sWorkingOnIt: string = this.m_oTranslate.instant(
@@ -401,18 +433,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
               'alert',
               sWorkingOnItTitle
             );
-
-
-
           }
-
-          this.m_oEventService.getEvents(sAreaId).subscribe(
-            {
-              next:(oResponse)=>{
-                this.m_aoEvents=oResponse;
-              }
-            }
-          )
         }
       },
       error: (oError) => {
@@ -427,22 +448,17 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   }
 
   /**
-   * Retrieve the plugin details from the server
+   * Retrieve the list of the plugins active in the area
    * UC: RISE shows the Monitor Section containing options to show/hide the available layers
    * @param sAreaId
-   * @param iAreaDate
    * @returns void
    */
-  getMapsByArea(sAreaId: string, iAreaDate?: string | number): void {
-    if (!iAreaDate) {
-      iAreaDate = '';
-    }
-    this.m_oMapAPIService.byArea(sAreaId).subscribe({
+  getPluginsByArea(sAreaId: string): void {
+
+    this.m_oPluginAPIService.getPluginsByArea(sAreaId).subscribe({
       next: (oResponse) => {
         if (oResponse.length > 0) {
-
-          this.m_aoPlugins = oResponse;
-          this.initPluginsButtons(this.m_aoPlugins);
+          this.m_aoAreaPlugins = oResponse;
         }
       },
       error: (oError) => {
@@ -456,52 +472,57 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   }
 
   /**
-   * Get the layer for the selected type from the button execution
-   * UC: RISE shows the Monitor Section containing options to show/hide the available layers
-   * @param oPlugin
-   * @param sAreaId
-   * @param iDate
+   * Method called to show/update a new layer on the map
+   * @param oLayerMapViewModel 
+   * @returns 
    */
-  getLayer(oPlugin: any, sAreaId: string, iDate: string | number) {
+  private showLayer(oLayerMapViewModel: any) {
 
-    this.m_oLayerService.findLayer(oPlugin.id, sAreaId, this.m_iSelectedDate).subscribe({
-        next: (oLayerVM:LayerViewModel) => {
+    const oLeafLetMap = this.m_oMapService.getMap();
+    const iIndex = this.m_aoLayers.findIndex(layer => layer.mapId === oLayerMapViewModel.mapId);
+    let oExistingLayer = this.m_aoLayers.find(l => l.layerId === oLayerMapViewModel.layerId);
 
-          if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oLayerVM)) {
-            this.fillPluginsAndLayers(oPlugin, oLayerVM);
-          }
-          else {
-            oPlugin.loaded = false;
-            const oMap = this.m_oMapService.getMap();
-            oPlugin.layers.forEach(layer => {
-              oMap.eachLayer(oMapLayer => {
-                if (oMapLayer.options.layers === layer.layerId) {
-                  oMap.removeLayer(oMapLayer);
-                }
-              });
+    //  Preserve opacity if it existed before
+    oLayerMapViewModel.opacity = (typeof oExistingLayer?.opacity === 'number') ? oExistingLayer.opacity : 100;
 
-              // Remove from this.m_aoLayers
-              this.m_aoLayers = this.m_aoLayers.filter(l => l.layerId !== layer.layerId);
-              this.m_aoReversedLayers = [...this.m_aoLayers]
-            });
-            oPlugin.layers=[]
+    const bIsSameLayer = oExistingLayer &&
+      oExistingLayer.layerId === oLayerMapViewModel.layerId &&
+      oExistingLayer.referenceDate === oLayerMapViewModel.referenceDate &&
+      oExistingLayer.geoserverUrl === oLayerMapViewModel.geoserverUrl;
 
-            // this.m_oActivePlugin=null;
-          }
-        },
-        error: (oError) => {
-          let sError: string = this.m_oTranslate.instant(
-            'ERROR_MSG.ERROR_LAYER_FAILURE'
-          );
-          let sErrorMessage=sError.concat(oPlugin.name?oPlugin.name:"this plugin");
+    if (bIsSameLayer) {
+      // Nothing changed: skip re-adding to the map so we can avoid the reorder issue
+      return;
+    }
 
-          this.m_oNotificationService.openInfoDialog(sErrorMessage, 'error', 'Error');
-        },
+    if (iIndex !== -1) {
+      oLeafLetMap.eachLayer((oMapLayer) => {
+        let sOldLayerId = this.m_aoLayers[iIndex].layerId;
+        if (sOldLayerId === oMapLayer.options.layers) {
+          oLeafLetMap.removeLayer(oMapLayer);
+        }
       });
+
+      this.m_aoLayers[iIndex] = oLayerMapViewModel;  // Replace existing
+    }
+    else {
+      this.m_aoLayers.push(oLayerMapViewModel);     // Add new if not found
+    }
+
+    this.m_aoReversedLayers = [...this.m_aoLayers].reverse();
+
+    this.m_oMapService.addLayerMap2DByServer(
+      oLayerMapViewModel.layerId,
+      oLayerMapViewModel.geoserverUrl,
+      oLayerMapViewModel.opacity,
+
+    );
+    // Update the selected layers
+    this.m_oMapService.setSelectedLayers(this.m_aoLayers)    
   }
 
   private fillPluginsAndLayers(oPlugin: any, oLayer:LayerViewModel) {
-    const oMap = this.m_oMapService.getMap();
+    const oLeafLetMap = this.m_oMapService.getMap();
     const iIndex = this.m_aoLayers.findIndex(layer => layer.mapId === oLayer.mapId);
     let oExistingLayer = this.m_aoLayers.find(l => l.layerId === oLayer.layerId);
     oLayer.pluginName=oPlugin.name;
@@ -520,10 +541,10 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     }
 
     if (iIndex !== -1) {
-      oMap.eachLayer((oMapLayer) => {
+      oLeafLetMap.eachLayer((oMapLayer) => {
         let sOldLayerId = this.m_aoLayers[iIndex].layerId;
         if (sOldLayerId === oMapLayer.options.layers) {
-          oMap.removeLayer(oMapLayer);
+          oLeafLetMap.removeLayer(oMapLayer);
         }
       });
 
@@ -567,54 +588,92 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     }else if(!this.m_bIsNavigatedFromEventList){
         this.cleanEventPanel();
     }
-    this.initPluginsButtons(this.m_aoPlugins);
 
-    this.m_aoPlugins.forEach((oPlugin) => {
-      if (oPlugin.loaded) {
-        this.getLayer(oPlugin, this.m_sAreaId, this.m_iSelectedDate);
-      }
-    });
-
+    // TODO: Update the layers based on the new date
+    //this.initMapButtons(this.m_aoVisibleMapLayersButtons);
   }
 
-  switchPluginButton(oPlugin:any) {
+  /**
+   * Handle selection of a plugin in the first level menu
+   * @param oPlugin - The plugin selected by the user
+   */
+  selectPlugin(oPlugin: any) {
+    // Is it selected already?
+    if (this.m_oSelectedPlugin) {
+      // It is, toggle selection
+      if (this.m_oSelectedPlugin.id === oPlugin.id) {
+        this.m_oSelectedPlugin = null;
+      }
+      else {
+        this.m_oSelectedPlugin = oPlugin;
+      }
+    }
+    else {
+      // It is not selected, select it
+      this.m_oSelectedPlugin = oPlugin;
+    }
+
+    // Do we have a selected plugin?
+    if (this.m_oSelectedPlugin) {
+      // Get the plugins maps
+      this.m_oLayerService.findAvailableLayers("",this.m_sAreaId,this.m_iSelectedDate,this.m_oSelectedPlugin.id).subscribe({ 
+        next: (oResponse) => {
+
+          for (let i=0;i<oResponse.length;i++) {
+            // Fix the loaded flag
+            for (let j=0;j<this.m_aoLayers.length;j++) {
+              if (this.m_aoLayers[j].mapId === oResponse[i].mapId) {
+                oResponse[i].loaded = true;
+              }
+            }
+          }
+            
+          this.m_aoVisibleMapLayersButtons = oResponse;
+        },
+        error: (oError) => {
+          this.m_oNotificationService.openInfoDialog(
+            'Could not retrieve the information about the selected plugin.',
+            'danger',
+            'Error'
+          );
+        }
+      });
+    }
+    else {
+      // No selected plugin, clear visible maps
+      this.m_aoVisibleMapLayersButtons = [];
+    }
+  }
+
+  switchMapButton(oMapButton:any) {
     //was active,turn it to inactive
-    if(oPlugin.disabled){
+    if(oMapButton.disabled){
       return;
     }
 
-    // Check if the plugin (Map indeed) is already loaded
-    if(oPlugin.loaded) {
+    // Check if the Map is already shown 
+    if(oMapButton.loaded) {
       // Remove the layers from the map
-      oPlugin.loaded = false;
-      let oMap=this.m_oMapService.getMap();
+      oMapButton.loaded = false;
+      let oLeafLetMap=this.m_oMapService.getMap();
 
-      for (let i=0;i<oPlugin.layers.length;i++) {
+      oLeafLetMap.eachLayer((oMapLayer) => {
+        let sLayerId = oMapButton.layerId;
+        if (sLayerId === oMapLayer.options.layers) {
+          oLeafLetMap.removeLayer(oMapLayer);
+          let iIndex = this.m_aoLayers.findIndex(
+            (oLayer) => oLayer.layerId === sLayerId
+          );
+          this.m_aoLayers.splice(iIndex, 1);
+          this.m_aoReversedLayers=this.m_aoLayers;
+        }
+      });
 
-        oMap.eachLayer((oMapLayer) => {
-          let sLayerId = oPlugin.layers[i].layerId;
-          if (sLayerId === oMapLayer.options.layers) {
-            oMap.removeLayer(oMapLayer);
-            let iIndex = this.m_aoLayers.findIndex(
-              (oLayer) => oLayer.layerId === sLayerId
-            );
-            this.m_aoLayers.splice(iIndex, 1);
-            this.m_aoReversedLayers=this.m_aoLayers;
-          }
-        });
-      }
-      oPlugin.layers=[]
     }
     else {
       //was inactive,turn it to active
-
-      oPlugin.loaded = true;
-
-      if (!oPlugin.layers || oPlugin.layers.length < 1) {
-        oPlugin.layers = []; //Init layers array in plugin to hold it after loading
-        this.getLayer(oPlugin, this.m_sAreaId, '');
-
-      }
+      oMapButton.loaded = true;
+      this.showLayer(oMapButton);
     }
 
   }
@@ -755,7 +814,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   }
 
   emptyPluginLayers(sPluginId: string) {
-    this.m_aoPlugins.forEach((oPlugin) => {
+    this.m_aoVisibleMapLayersButtons.forEach((oPlugin) => {
       if(oPlugin.id === sPluginId ){
         if(oPlugin.loaded){
           oPlugin.loaded = false;
@@ -873,9 +932,8 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       // Re-start the timer
       this.startLiveTimer();
 
-      // Update current date and end date immediately
+      // Update current date immediately
       this.m_iCurrentDate = this.getCurrentDate();
-      this.m_sEndDate = new Date(this.m_iCurrentDate * 1000).toISOString(); // Store as ISO string if expected
 
       // Show closest layer to live date
       if (this.m_aoLayers && this.m_aoLayers.length > 0) {
@@ -956,10 +1014,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
     let aoSelectedLayers = this.m_oMapService.getSelectedLayers();
     let oAOIBbox = this.m_oMapService.getMagicToolAOI();
-    console.log(aoSelectedLayers)
-    let sAreaId=this.m_sAreaId;
-    let sPluginId=""
-    let sMapId=""
+    //console.log(aoSelectedLayers)
 
     this.m_oDialog.open(LayerAnalyzerComponent,
       {
@@ -996,7 +1051,6 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     if(this.m_sAreaId){
       this.m_oEventService.getEvents(this.m_sAreaId).subscribe({
         next:(aoEventsVM)=>{
-
             this.m_aoEvents=aoEventsVM
         },
         error:(oError)=>{
@@ -1007,34 +1061,67 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
   }
 
-  getVisiblePlugins() {
-    return this.m_bShowAllPlugins
-      ? this.m_aoPlugins
-      : this.m_aoPlugins.slice(0, this.m_iVisibleCount);
+  getVisibleMapButtons() {
+    return this.m_bShowAllMaps
+      ? this.m_aoVisibleMapLayersButtons
+      : this.m_aoVisibleMapLayersButtons.slice(0, this.m_iVisibleCount);
   }
 
-  getHiddenPluginsCount(): number {
-    const visiblePlugins = this.getVisiblePlugins();
-    return this.m_aoPlugins.length - visiblePlugins.length;
+  getHiddenMapButtonsCount(): number {
+    const visiblePlugins = this.getVisibleMapButtons();
+    return this.m_aoVisibleMapLayersButtons.length - visiblePlugins.length;
   }
-
 
   togglePluginView() {
-    this.m_bShowAllPlugins = !this.m_bShowAllPlugins;
+    this.m_bShowAllMaps = !this.m_bShowAllMaps;
   }
-  /*
-  this method is made to enable/disable the plugins button
-   */
 
-  initPluginsButtons(aoPlugins: any[]){
+  /**
+   * this method is made to enable/disable the plugins button
+   * @param aoMaps 
+   */
+  initMapButtons(aoMaps: any[]){
+
     let asAvailableMapIds=[]
-    const asMapIds = aoPlugins.map(oPlugin => oPlugin.id);
+
+    const asMapIds = aoMaps.map(oMap => oMap.id);
     const sMapIds = asMapIds.join(","); // e.g., "map1,map2,map3"
-    console.log(sMapIds);
+
     if(sMapIds){
-      this.m_oLayerService.findAvailableLayers(sMapIds,this.m_sAreaId,this.m_iSelectedDate).subscribe({
+      
+      this.m_oLayerService.findAvailableLayers(sMapIds,this.m_sAreaId,this.m_iSelectedDate, "").subscribe({
+
         next:(oResponse)=>{
           for (const oResponseEle of oResponse) {
+            this.fillPluginsAndLayers(aoMaps.find(oPlugin=>oPlugin.id===oResponseEle.mapId), oResponseEle);
+            asAvailableMapIds.push(oResponseEle);
+          }
+          for (const oPlugin of aoMaps) {
+            oPlugin.disabled=!asAvailableMapIds.includes(oPlugin.id)
+          }
+        }
+      })
+    }
+  }
+
+    /**
+   * this method is made to enable/disable the plugins button
+   * @param aoPlugins 
+   */
+  initAreaPluginsButtons(aoPlugins: any[]){
+
+    let asAvailableMapIds=[]
+
+    const asMapIds = aoPlugins.map(oPlugin => oPlugin.id);
+    const sMapIds = asMapIds.join(","); // e.g., "map1,map2,map3"
+
+    if(sMapIds){
+      
+      this.m_oLayerService.findAvailableLayers(sMapIds,this.m_sAreaId,this.m_iSelectedDate, "").subscribe({
+
+        next:(oResponse)=>{
+          for (const oResponseEle of oResponse) {
+            this.fillPluginsAndLayers(aoPlugins.find(oPlugin=>oPlugin.id===oResponseEle.mapId), oResponseEle);
             asAvailableMapIds.push(oResponseEle);
           }
           for (const oPlugin of aoPlugins) {
@@ -1043,59 +1130,60 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
         }
       })
     }
-
   }
-    /*
-     Given an area id and selected date , we show Impacts
-     */
-    openImpacts() {
 
-      const oDialogData = {
-        areaId: this.m_sAreaId,
-        selectedDate: this.m_iSelectedDate,
-        areaName: this.m_sAreaName
-      }
+  /*
+    Given an area id and selected date , we show Impacts
+    */
+  openImpacts() {
 
-      this.m_oDialog.open(ImpactsDialogComponent, {
-        data: oDialogData
-      }).afterClosed().subscribe(()=>{
-          console.log("imapcts works")
-        }
-      )
-    }
-    handleMeasurementTool(sWkt:any){
-      console.log(sWkt);
-      if(sWkt){
-        this.m_sMeasurementToolWkt=sWkt;
-        console.log(this.m_sMeasurementToolWkt);
-      }else{
-        this.m_sMeasurementToolWkt=null;
-      }
-    }
-    onPrintButtonClick(){
-      let aoLayersForPrint=[];
-      for (let i = 0; i <this.m_aoLayers.length ; i++) {
-        let oLayer = this.m_aoLayers[i];
-        let oLayerToPrint={layerId:oLayer.layerId,wmsUrl:oLayer.geoserverUrl,name:oLayer.mapId}
-        aoLayersForPrint.push(oLayerToPrint);
-      }
-      let oPrintPayload={
-        baseMap:this.m_oMapService.getActiveLayer()._url,
-        zoomLevel:this.m_oMapService.getMap().getZoom(),
-        center:this.m_oMapService.getMap().getCenter(),
-        format:"",
-        wmsLayers:aoLayersForPrint,
-        wkts:this.m_sMeasurementToolWkt?[{name:"drawn area",geom:this.m_sMeasurementToolWkt}]:[]
-      }
-      const oDialogRef = this.m_oDialog.open(PrintMapDialogComponent, {
-        data: { payload: oPrintPayload,areaName:this.m_sAreaName }
-      });
-
-      oDialogRef.afterClosed().subscribe(result => {
-        if (result ) {
-          console.log('User confirmed print with options:', result);
-        }
-      });
+    const oDialogData = {
+      areaId: this.m_sAreaId,
+      selectedDate: this.m_iSelectedDate,
+      areaName: this.m_sAreaName
     }
 
+    this.m_oDialog.open(ImpactsDialogComponent, {
+      data: oDialogData
+    }).afterClosed().subscribe(()=>{
+        console.log("imapcts works")
+      }
+    )
   }
+
+  handleMeasurementTool(sWkt:any){
+    console.log(sWkt);
+    if(sWkt){
+      this.m_sMeasurementToolWkt=sWkt;
+      console.log(this.m_sMeasurementToolWkt);
+    }else{
+      this.m_sMeasurementToolWkt=null;
+    }
+  }
+
+  onPrintButtonClick(){
+    let aoLayersForPrint=[];
+    for (let i = 0; i <this.m_aoLayers.length ; i++) {
+      let oLayer = this.m_aoLayers[i];
+      let oLayerToPrint={layerId:oLayer.layerId,wmsUrl:oLayer.geoserverUrl,name:oLayer.mapId}
+      aoLayersForPrint.push(oLayerToPrint);
+    }
+    let oPrintPayload={
+      baseMap:this.m_oMapService.getActiveLayer()._url,
+      zoomLevel:this.m_oMapService.getMap().getZoom(),
+      center:this.m_oMapService.getMap().getCenter(),
+      format:"",
+      wmsLayers:aoLayersForPrint,
+      wkts:this.m_sMeasurementToolWkt?[{name:"drawn area",geom:this.m_sMeasurementToolWkt}]:[]
+    }
+    const oDialogRef = this.m_oDialog.open(PrintMapDialogComponent, {
+      data: { payload: oPrintPayload,areaName:this.m_sAreaName }
+    });
+
+    oDialogRef.afterClosed().subscribe(result => {
+      if (result ) {
+        console.log('User confirmed print with options:', result);
+      }
+    });
+  }
+}
