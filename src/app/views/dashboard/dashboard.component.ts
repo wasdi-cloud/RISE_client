@@ -1,6 +1,6 @@
 import {Component, NgZone, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {Subscription} from 'rxjs';
+import {Subject, Subscription, takeUntil} from 'rxjs';
 
 import {RiseAffectedWidgetComponent} from './rise-affected-widget/rise-affected-widget.component';
 import {RiseAlertsWidgetComponent} from './rise-alerts-widget/rise-alerts-widget.component';
@@ -33,6 +33,9 @@ import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   public m_aoOngoingEvents: Array<EventViewModel> = [];
+
+
+  private m_oDestroy$ = new Subject<void>();
 
   /**
    * TODO: add appropriate typing
@@ -68,6 +71,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.m_oActiveAOI?.unsubscribe();
+    this.m_oDestroy$.next();
+    this.m_oDestroy$.complete();
   }
 
   /**
@@ -94,7 +99,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * TODO fetch the user's areas of interest
    */
   getUsersAOI() {
-    this.m_oAreaService.getAreaListByUser().subscribe({
+    this.m_oAreaService.getAreaListByUser().pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse) => {
         if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           this.m_aoAreas = oResponse;
