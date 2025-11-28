@@ -390,7 +390,7 @@
     "HIGH_RES_FLOOD": "فيضان عالي الدقة",
     "FFM": "تكرار الفيضان",
     "FFM_DATA": "بيانات تكرار الفيضان",
-    "FFM_PERC": "نسبة تكرار الفيضان",    
+    "FFM_PERC": "نسبة تكرار الفيضان",
     "BUILDINGS": "المباني",
     "ROADS": "الطرق",
     "DROUGHT": "الجفاف",
@@ -493,13 +493,13 @@
     "LIVE": "مباشر"
   },
   "PLUGIN_NAMES": {
-    "PLUGIN_FLOOD": "Floods",
-    "PLUGIN_DROUGHT": "Drought",
-    "PLUGIN_BUILDINGS": "Buildings",
-    "PLUGIN_IMPACTS": "Impacts",
-    "PLUGIN_RAIN": "Rain",
-    "PLUGIN_LST": "Temperature",
-    "PLUGIN_ACTIVE_FIRE": "Fire",
-    "PLUGIN_POLLUTANT": "Air Quality"
+    "PLUGIN_FLOOD": "فيضانات",
+    "PLUGIN_DROUGHT": "جفاف",
+    "PLUGIN_BUILDINGS": "مبانٍ",
+    "PLUGIN_IMPACTS": "تأثيرات",
+    "PLUGIN_RAIN": "مطر",
+    "PLUGIN_LST": "درجة الحرارة",
+    "PLUGIN_ACTIVE_FIRE": "حرائق",
+    "PLUGIN_POLLUTANT": "جودة الهواء"
   }
 }

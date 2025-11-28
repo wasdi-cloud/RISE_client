@@ -423,7 +423,7 @@
     "HIGH_RES_FLOOD": "Inundación de Alta Resolución",
     "FFM": "Frecuencia de Inundaciones",
     "FFM_DATA": "Datos de Frecuencia de Inundaciones",
-    "FFM_PERC": "Porcentaje de Frecuencia de Inundaciones",    
+    "FFM_PERC": "Porcentaje de Frecuencia de Inundaciones",
     "BUILDINGS": "Edificios",
     "ROADS": "Carreteras",
     "DROUGHT": "Sequía",
@@ -508,13 +508,13 @@
     "ROADS_AFFECTED": "Carreteras Afectadas"
   },
   "PLUGIN_NAMES": {
-    "PLUGIN_FLOOD": "Floods",
-    "PLUGIN_DROUGHT": "Drought",
-    "PLUGIN_BUILDINGS": "Buildings",
-    "PLUGIN_IMPACTS": "Impacts",
-    "PLUGIN_RAIN": "Rain",
-    "PLUGIN_LST": "Temperature",
-    "PLUGIN_ACTIVE_FIRE": "Fire",
-    "PLUGIN_POLLUTANT": "Air Quality"
+    "PLUGIN_FLOOD": "Inundaciones",
+    "PLUGIN_DROUGHT": "Sequ\u00eda",
+    "PLUGIN_BUILDINGS": "Edificios",
+    "PLUGIN_IMPACTS": "Impactos",
+    "PLUGIN_RAIN": "Lluvia",
+    "PLUGIN_LST": "Temperatura",
+    "PLUGIN_ACTIVE_FIRE": "Incendio",
+    "PLUGIN_POLLUTANT": "Calidad del aire"
   }
 }
