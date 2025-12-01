@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {TranslateModule} from '@ngx-translate/core';
 
@@ -19,6 +19,7 @@ import {RiseDropdownComponent} from "../../../components/rise-dropdown/rise-drop
 import {UserRole} from "../../../models/UserRole";
 import {environment} from "../../../../environments/environments";
 import {UserService} from "../../../services/api/user.service";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'user-subscriptions',
@@ -34,9 +35,9 @@ import {UserService} from "../../../services/api/user.service";
   templateUrl: './user-subscriptions.component.html',
   styleUrl: './user-subscriptions.component.css',
 })
-export class UserSubscriptionsComponent implements OnInit {
+export class UserSubscriptionsComponent implements OnInit,OnDestroy {
   @Input() m_sOrganizationId: string = '';
-
+  private m_oDestroy$ = new Subject<void>();
   m_bShowBuySub: boolean = false;
 
 
@@ -60,15 +61,20 @@ export class UserSubscriptionsComponent implements OnInit {
     this.getSubscriptions();
   }
 
+  ngOnDestroy() {
+    this.m_oDestroy$.next();
+    this.m_oDestroy$.complete();
+  }
+
   /**
    * RISE show by default a list of the active subscriptions
    */
   getSubscriptions() {
-    this.m_oSubscriptionService.getSubscriptionsList(false).subscribe({
+    this.m_oSubscriptionService.getSubscriptionsList(false).pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse) => {
         if (!oResponse) {
           return;
-        } 
+        }
         else {
           this.m_aoSubscriptionsToShow = oResponse;
           this.m_aoAllSubscriptions = this.m_aoSubscriptionsToShow;
@@ -98,7 +104,7 @@ export class UserSubscriptionsComponent implements OnInit {
   }
 
   getSubTypes() {
-    this.m_oSubscriptionService.getSubscriptionTypes().subscribe({
+    this.m_oSubscriptionService.getSubscriptionTypes().pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse) => {
         if (FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           return;
@@ -220,7 +226,7 @@ export class UserSubscriptionsComponent implements OnInit {
 
   getInvoice(oSubscription: SubscriptionViewModel) {
     if(oSubscription.id){
-      this.m_oSubscriptionService.getStripeInvoice(oSubscription.id).subscribe({
+      this.m_oSubscriptionService.getStripeInvoice(oSubscription.id).pipe(takeUntil(this.m_oDestroy$)).subscribe({
         next:(oResponse)=>{
           const link = document.createElement('a');
           link.href = oResponse;

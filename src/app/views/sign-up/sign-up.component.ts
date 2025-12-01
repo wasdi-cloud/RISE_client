@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
@@ -21,7 +21,7 @@ import {OrganizationTypes} from '../../shared/organization-types';
 
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 import {RiseNumberInputComponent} from "../../components/rise-number-input/rise-number-input.component";
-import {map} from "rxjs";
+import {map, Subject, takeUntil} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {CountryViewModel} from "../../models/CountryViewModel";
 
@@ -41,10 +41,16 @@ import {CountryViewModel} from "../../models/CountryViewModel";
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.css',
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent implements OnInit,OnDestroy {
+
+
+
   /**
    * UC_010 - Registration
    */
+
+
+  private m_oDestroy$: Subject<void> = new Subject<void>();
   m_oRegisterInput: RegisterViewModel = {} as RegisterViewModel;
 
   m_oUserInfoInput: UserViewModel = {} as UserViewModel;
@@ -114,6 +120,11 @@ export class SignUpComponent implements OnInit {
 
     this.loadCountries();
     this.resetFormVariables();
+  }
+
+  ngOnDestroy() {
+    this.m_oDestroy$.next();
+    this.m_oDestroy$.complete();
   }
 
   /**
@@ -246,7 +257,7 @@ export class SignUpComponent implements OnInit {
 
     if (this.validateRegisterInputs()) {
       this.m_bIsSubmitted=true;
-      this.m_oAuthService.registerUser(this.m_oRegisterInput).subscribe({
+      this.m_oAuthService.registerUser(this.m_oRegisterInput).pipe(takeUntil(this.m_oDestroy$)).subscribe({
         next: (oResponse) => {
 
           if (oResponse.status === 200) {

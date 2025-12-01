@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, OnInit, Output,} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output,} from '@angular/core';
 import {NgIf} from '@angular/common';
 import {Router} from '@angular/router';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
@@ -8,11 +8,10 @@ import {MatDialog} from '@angular/material/dialog';
 
 import {RiseButtonComponent} from '../../components/rise-button/rise-button.component';
 import {RiseCheckboxComponent} from '../../components/rise-checkbox/rise-checkbox.component';
-// import { RiseCrudTableComponent } from '../../components/rise-crud-table/rise-crud-table.component';
+
 import {RiseMapComponent} from '../../components/rise-map/rise-map.component';
 import {RiseTextareaInputComponent} from '../../components/rise-textarea-input/rise-textarea-input.component';
 import {RiseTextInputComponent} from '../../components/rise-text-input/rise-text-input.component';
-// import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar.component';
 import {AreaService} from '../../services/api/area.service';
 import {MapService} from '../../services/map.service';
 import {NotificationsDialogsService} from '../../services/notifications-dialogs.service';
@@ -27,6 +26,7 @@ import {UserService} from "../../services/api/user.service";
 import {SubscriptionService} from "../../services/api/subscription.service";
 import {MatSlideToggle, MatSlideToggleChange} from "@angular/material/slide-toggle";
 import {FormsModule} from "@angular/forms";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-create-area-of-operation',
@@ -36,11 +36,14 @@ import {FormsModule} from "@angular/forms";
   templateUrl: './create-area-of-operation.component.html',
   styleUrl: './create-area-of-operation.component.css',
 })
-export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
+export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit,OnDestroy {
   /**
    * UC_40 - Add Area of Operations
    */
   @Output() m_oExitPage: EventEmitter<boolean> = new EventEmitter<boolean>(null);
+
+
+  private m_oDestroy$: Subject<void> = new Subject<void>();
 
   m_asPlugins: { label: string; value: string }[] = [];
 
@@ -130,8 +133,13 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
     this.isSupportArchiveArea();
   }
 
+  ngOnDestroy() {
+    this.m_oDestroy$.next();
+    this.m_oDestroy$.complete();
+  }
+
   isSupportArchiveArea() {
-    this.m_oAreaOfOperationService.canAreaSupportArchive().subscribe({
+    this.m_oAreaOfOperationService.canAreaSupportArchive().pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (bResponse) => {
         console.log(bResponse)
         this.m_bIsSupportArchiveArea = bResponse;
@@ -142,10 +150,10 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
   }
 
 
-
-  onSwitchFullArchiveButton(oToggel: MatSlideToggleChange){
+  onSwitchFullArchiveButton(oToggel: MatSlideToggleChange) {
     this.m_oAreaOfOperation.supportArchive = oToggel.checked;
   }
+
   onSelectionChange(selectedValues: any[]) {
     this.m_asPluginsSelected = selectedValues;
     this.m_oAreaOfOperation.plugins = this.m_asPluginsSelected;
@@ -253,6 +261,7 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
 
     this.m_oAreaOfOperationService
       .addArea(this.m_oAreaOfOperation)
+      .pipe(takeUntil(this.m_oDestroy$))
       .subscribe({
         next: (oResponse) => {
           //todo send confirmation to HQ operator
@@ -356,7 +365,7 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit {
     // RISE ask confirmation to the HQ Operator if we really wants to proceed;
     // If the user cancels the operation, RISE clears the form .
     if (this.m_sOrganizationId) {
-      this.m_oAreaOfOperationService.getOverlappingAreas(this.m_sOrganizationId, m_oAreaOfOperation).subscribe({
+      this.m_oAreaOfOperationService.getOverlappingAreas(this.m_sOrganizationId, m_oAreaOfOperation).pipe(takeUntil(this.m_oDestroy$)).subscribe({
         next: (oResponse) => {
 
           /*here we have to check for list of the over lapping area

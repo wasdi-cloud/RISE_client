@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
 
 import {RiseButtonComponent} from '../../components/rise-button/rise-button.component';
@@ -23,6 +23,7 @@ import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 import {environment} from "../../../environments/environments";
 import {SubscriptionService} from "../../services/api/subscription.service";
 import {Router} from "@angular/router";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'area-of-operations',
@@ -39,7 +40,11 @@ import {Router} from "@angular/router";
   templateUrl: './area-of-operations.component.html',
   styleUrl: './area-of-operations.component.css',
 })
-export class AreaOfOperationsComponent implements OnInit {
+export class AreaOfOperationsComponent implements OnInit,OnDestroy {
+
+
+
+  private m_oDestroy$ = new Subject<void>();
   m_aoAreasOfOperations: AreaViewModel[] = [];
   m_bShowNewArea: boolean = false;
   m_bShouldBuySub: boolean = false;
@@ -61,8 +66,13 @@ export class AreaOfOperationsComponent implements OnInit {
     this.hasValidSubscription()
   }
 
+  ngOnDestroy() {
+    this.m_oDestroy$.next();
+    this.m_oDestroy$.complete();
+  }
+
   getAreas() {
-    this.m_oAreaService.getAreaList().subscribe({
+    this.m_oAreaService.getAreaList().pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (aoResponse) => {
         this.m_aoAreasOfOperations = [...aoResponse];
       },
@@ -86,7 +96,7 @@ export class AreaOfOperationsComponent implements OnInit {
     let sErrorMsg: string = this.m_oTranslate.instant(
       'AREA_OF_OPERATIONS.ERROR_GET_USERS'
     );
-    this.m_oAreaService.getUsersFromArea(oArea.id).subscribe({
+    this.m_oAreaService.getUsersFromArea(oArea.id).pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse) => {
         if (FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           return;
@@ -133,13 +143,14 @@ export class AreaOfOperationsComponent implements OnInit {
     sConfirm += `<ul><li>${oArea.name}</li></ul>`;
     this.m_oNotificationService
       .openConfirmationDialog(sConfirm, 'danger')
+      .pipe(takeUntil(this.m_oDestroy$))
       .subscribe((bResult) => {
         if (!bResult) {
           return;
         }
         this.m_bDeleting = true;
 
-        this.m_oAreaService.deleteAreaOfOperation(oArea.id).subscribe({
+        this.m_oAreaService.deleteAreaOfOperation(oArea.id).pipe(takeUntil(this.m_oDestroy$)).subscribe({
           next: (oResponse) => {
             this.m_bDeleting = false;
             this.getAreas();
@@ -168,7 +179,7 @@ export class AreaOfOperationsComponent implements OnInit {
 
   }
   hasValidSubscription(){
-    this.m_oSubService.getSubscriptionsList(true).subscribe(
+    this.m_oSubService.getSubscriptionsList(true).pipe(takeUntil(this.m_oDestroy$)).subscribe(
       {
         next:(oResponse)=>{
           if(oResponse==null || oResponse.length==0){

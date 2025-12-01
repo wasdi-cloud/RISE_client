@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnDestroy, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {OrganizationsService} from '../../../../services/api/organizations.service';
@@ -12,6 +12,7 @@ import {UserRole} from '../../../../models/UserRole';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {NotificationsDialogsService} from "../../../../services/notifications-dialogs.service";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'invite-user',
@@ -26,14 +27,13 @@ import {NotificationsDialogsService} from "../../../../services/notifications-di
   templateUrl: './invite-user.component.html',
   styleUrl: './invite-user.component.css',
 })
-export class InviteUserComponent implements OnInit {
+export class InviteUserComponent implements OnInit, OnDestroy {
+
   /**
    * Organization Id (Received from User Organization Component)
    */
   @Input() m_sOrganizationId: string = '';
-
   @Input() m_sOrganizationName: string = '';
-
   /**
    * Email Inputs - evaluated by email validator
    */
@@ -41,38 +41,34 @@ export class InviteUserComponent implements OnInit {
     email: '',
     confirmEmail: '',
   };
-
   /**
    * Selected Role from dropdown
    */
   m_sUserRole: string = '';
-
   /**
    * Possible User Roles import
    */
   m_oUserRoles = UserRole;
-
   /**
    * Possible user roles as array for the dropdown
    */
   m_asRoles = [];
-
   /**
    * Flag to know when to show the outcome of the invitation
    */
   m_bShowStatus = false;
-
   /**
    * Was the invitation successful?
    */
   m_bSuccess = false;
+  private m_oDestroy$ = new Subject<void>();
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private m_oData: any,
     private m_oDialogRef: MatDialogRef<InviteUserComponent>,
     private m_oOrganizationsService: OrganizationsService,
     private m_oNotificationsDialogsService: NotificationsDialogsService,
-    private m_oTranslateService:TranslateService
+    private m_oTranslateService: TranslateService
   ) {
   }
 
@@ -80,6 +76,12 @@ export class InviteUserComponent implements OnInit {
 
     this.initRoles();
     this.m_sOrganizationId = this.m_oData.organizationId;
+  }
+
+
+  ngOnDestroy() {
+    this.m_oDestroy$.next();
+    this.m_oDestroy$.complete();
   }
 
   /**
@@ -139,7 +141,7 @@ export class InviteUserComponent implements OnInit {
         role: this.m_sUserRole,
         organizationId: this.m_sOrganizationId,
       };
-      this.m_oOrganizationsService.inviteUser(oInvite).subscribe({
+      this.m_oOrganizationsService.inviteUser(oInvite).pipe(takeUntil(this.m_oDestroy$)).subscribe({
         next: (oResponse) => {
           if (oResponse.status === 200) {
             this.m_bShowStatus = true;

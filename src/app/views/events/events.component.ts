@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {RiseToolbarComponent} from "../../components/rise-toolbar/rise-toolbar.component";
 import {DatePipe, NgForOf, NgIf, TitleCasePipe} from "@angular/common";
 import {RiseButtonComponent} from "../../components/rise-button/rise-button.component";
@@ -30,6 +30,7 @@ import {AreaService} from '../../services/api/area.service';
 import {MatDialog} from "@angular/material/dialog";
 import {ImageDialogComponent} from '../../dialogs/image-dialog/image-dialog.component';
 import {UserRole} from "../../models/UserRole";
+import {Subject, takeUntil} from "rxjs";
 
 
 @Component({
@@ -59,7 +60,8 @@ import {UserRole} from "../../models/UserRole";
   templateUrl: './events.component.html',
   styleUrl: './events.component.css'
 })
-export class EventsComponent implements OnInit {
+export class EventsComponent implements OnInit, OnDestroy {
+
   m_sSortField: string = '';
   m_sSortDirection: 'asc' | 'desc' | '' = '';
   m_aoOriginalEvents: EventViewModel[] = []; // Backup the original order
@@ -73,10 +75,10 @@ export class EventsComponent implements OnInit {
   m_sPeakDate: any;
   m_sEndDate: any;
   m_aoEventTypes: { name: string; value: EventType }[];
-  m_sEventNameError: string ="";
-  m_bEventNameIsValid:boolean=true;
-  m_bIsDateInvalid: boolean=false;
-  m_sDateErrorText: string="";
+  m_sEventNameError: string = "";
+  m_bEventNameIsValid: boolean = true;
+  m_bIsDateInvalid: boolean = false;
+  m_sDateErrorText: string = "";
   m_sUploadDocName: any;
   m_oUploadDocFile: any;
   m_sUploadImageName: any;
@@ -85,7 +87,7 @@ export class EventsComponent implements OnInit {
   m_sAreaName: string = null;
   m_asEventImages: string[] = [];
   m_asEventDocs: string[] = [];
-
+  private m_oDestroy$: Subject<void> = new Subject<void>();
 
   constructor(
     private m_oEventService: EventService,
@@ -105,42 +107,49 @@ export class EventsComponent implements OnInit {
     this.getActiveAOI()
   }
 
+  ngOnDestroy() {
+    this.m_oDestroy$.next();
+    this.m_oDestroy$.complete();
+  }
+
   onCreateNewEvent() {
     this.m_bCreateNewEvent = true;
-    let oArea=this.m_oConstantsService.getActiveAOI();
-    if(!FadeoutUtils.utilsIsObjectNullOrUndefined(oArea)){
-      setTimeout(()=>{
+    let oArea = this.m_oConstantsService.getActiveAOI();
+    if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oArea)) {
+      setTimeout(() => {
         this.m_oMapService.flyToMonitorBounds(oArea.bbox)
-      },50)
+      }, 50)
     }
   }
-  getEventTypes(){
-    this.m_aoEventTypes= Object.values(EventType).map(type => ({
+
+  getEventTypes() {
+    this.m_aoEventTypes = Object.values(EventType).map(type => ({
       name: type.toLowerCase().replace('_', ' '), // Formatting name for display
       value: type
     }));
 
 
   }
+
   editEvent(oEvent: EventViewModel) {
-    this.m_oEvent=oEvent;
-    this.m_sStartDate=this.formatEpochToDate(this.m_oEvent.startDate*1000);
-    this.m_sPeakDate=this.formatEpochToDate(this.m_oEvent.peakDate*1000);
-    this.m_sEndDate=this.formatEpochToDate(this.m_oEvent.endDate*1000);
+    this.m_oEvent = oEvent;
+    this.m_sStartDate = this.formatEpochToDate(this.m_oEvent.startDate * 1000);
+    this.m_sPeakDate = this.formatEpochToDate(this.m_oEvent.peakDate * 1000);
+    this.m_sEndDate = this.formatEpochToDate(this.m_oEvent.endDate * 1000);
 
     this.loadEventAttachments();
 
-    this.m_bUpdatingEvent=true;
-    let oArea=this.m_oConstantsService.getActiveAOI();
-    if(!FadeoutUtils.utilsIsObjectNullOrUndefined(oArea)){
-      setTimeout(()=>{
+    this.m_bUpdatingEvent = true;
+    let oArea = this.m_oConstantsService.getActiveAOI();
+    if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oArea)) {
+      setTimeout(() => {
         this.m_oMapService.flyToMonitorBounds(oArea.bbox)
-      },50)
+      }, 50)
     }
   }
 
   loadEventAttachments() {
-    this.m_oAttachmentService.list("event_images", this.m_oEvent.id).subscribe({
+    this.m_oAttachmentService.list("event_images", this.m_oEvent.id).pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse) => {
         this.m_asEventImages = oResponse.files;
       },
@@ -149,7 +158,7 @@ export class EventsComponent implements OnInit {
       }
     });
 
-    this.m_oAttachmentService.list("event_docs", this.m_oEvent.id).subscribe({
+    this.m_oAttachmentService.list("event_docs", this.m_oEvent.id).pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse) => {
         this.m_asEventDocs = oResponse.files;
       },
@@ -166,9 +175,9 @@ export class EventsComponent implements OnInit {
       this.m_oNotificationServiceDialog.openConfirmationDialog(
         "Are you sure you want to delete this event",
         'alert',
-      ).subscribe((oResponse)=>{
-        if(oResponse){
-          this.m_oEventService.deleteEvent(oEvent.id).subscribe({
+      ).subscribe((oResponse) => {
+        if (oResponse) {
+          this.m_oEventService.deleteEvent(oEvent.id).pipe(takeUntil(this.m_oDestroy$)).subscribe({
             next: (oResponse) => {
               this.getEventsList();
               this.m_oNotificationServiceDialog.openSnackBar("Event deleted successfully", "Success", "success")
@@ -185,8 +194,8 @@ export class EventsComponent implements OnInit {
   }
 
 
-  updateEvent(){
-    this.m_oEventService.updateEvent(this.m_oEvent).subscribe(
+  updateEvent() {
+    this.m_oEventService.updateEvent(this.m_oEvent).pipe(takeUntil(this.m_oDestroy$)).subscribe(
       {
         next: (oResponse) => {
           this.m_oNotificationServiceDialog.openSnackBar(
@@ -220,7 +229,7 @@ export class EventsComponent implements OnInit {
       return true;
     }
 
-    if(oUser.role!=UserRole.FIELD){
+    if (oUser.role != UserRole.FIELD) {
       return true;
     }
 
@@ -228,7 +237,7 @@ export class EventsComponent implements OnInit {
   }
 
   addNewEvent() {
-    this.m_oEventService.addEvent(this.m_sAreaId, this.m_oEvent).subscribe(
+    this.m_oEventService.addEvent(this.m_sAreaId, this.m_oEvent).pipe(takeUntil(this.m_oDestroy$)).subscribe(
       {
         next: (oResponse) => {
           this.m_oNotificationServiceDialog.openSnackBar(
@@ -255,11 +264,11 @@ export class EventsComponent implements OnInit {
     this.m_bCreateNewEvent = false;
     this.m_bUpdatingEvent = false;
     this.getEventsList();
-    let oArea=this.m_oConstantsService.getActiveAOI();
-    if(!FadeoutUtils.utilsIsObjectNullOrUndefined(oArea)){
-      setTimeout(()=>{
+    let oArea = this.m_oConstantsService.getActiveAOI();
+    if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oArea)) {
+      setTimeout(() => {
         this.m_oMapService.flyToMonitorBounds(oArea.bbox)
-      },50)
+      }, 50)
     }
 
   }
@@ -274,15 +283,14 @@ export class EventsComponent implements OnInit {
 
   executeEventSaving() {
     if (this.validateEvent()) {
-      if(this.m_bCreateNewEvent){
+      if (this.m_bCreateNewEvent) {
 
         // this.m_oEvent.startDate /= 1000;
         // this.m_oEvent.peakDate /= 1000;
         // this.m_oEvent.endDate /= 1000;
 
         this.addNewEvent()
-      }
-      else if (this.m_bUpdatingEvent){
+      } else if (this.m_bUpdatingEvent) {
         this.updateEvent();
       }
 
@@ -303,7 +311,7 @@ export class EventsComponent implements OnInit {
           area: shapeInfo.area,
         };
         // Convert circle to WKT (approximated as a polygon with 64 points)
-        this.m_oEvent.markerCoordinates='POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')';
+        this.m_oEvent.markerCoordinates = 'POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')';
         this.m_oEvent.bbox = this.m_oMapService.convertCircleToWKT(
           shapeInfo.center,
           shapeInfo.radius
@@ -336,7 +344,7 @@ export class EventsComponent implements OnInit {
     const oFormData = new FormData();
     oFormData.append("file", this.m_oUploadImageFile);
 
-    this.m_oAttachmentService.upload("event_images", this.m_oEvent.id, this.m_sUploadImageName, oFormData).subscribe({
+    this.m_oAttachmentService.upload("event_images", this.m_oEvent.id, this.m_sUploadImageName, oFormData).pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: oResponse => {
         console.log("Image uploaded successfully", oResponse);
         this.m_oUploadImageFile = null;
@@ -366,7 +374,7 @@ export class EventsComponent implements OnInit {
     const oFormData = new FormData();
     oFormData.append("file", this.m_oUploadDocFile);
 
-    this.m_oAttachmentService.upload("event_docs", this.m_oEvent.id, this.m_sUploadDocName, oFormData).subscribe({
+    this.m_oAttachmentService.upload("event_docs", this.m_oEvent.id, this.m_sUploadDocName, oFormData).pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: oResponse => {
         console.log("Doc uploaded successfully", oResponse);
         this.m_oUploadDocFile = null;
@@ -389,6 +397,7 @@ export class EventsComponent implements OnInit {
   onSwitchOnGoingButton(toggel: MatSlideToggleChange) {
     this.m_oEvent.inGoing = toggel.checked;
   }
+
   onSwitchPublicButton(toggel: MatSlideToggleChange) {
     this.m_oEvent.publicEvent = toggel.checked;
   }
@@ -425,17 +434,17 @@ export class EventsComponent implements OnInit {
     const oEpoch = this.convertDateToEpoch(sDateString);
 
     if (oEpoch !== null) {
-      this.m_oEvent[sProperty] = oEpoch/1000; // Dynamically update the specified property
+      this.m_oEvent[sProperty] = oEpoch / 1000; // Dynamically update the specified property
     } else {
       console.warn(`Invalid date format for ${sProperty}. Expected mm-dd-yyyy.`);
-      this.m_sDateErrorText="Invalid date format"
+      this.m_sDateErrorText = "Invalid date format"
     }
   }
 
   // Validate the date
   isValidDate(mm: number, dd: number, yyyy: number): boolean {
     if (!mm || !dd || !yyyy) return false;
-    if(yyyy>=2200 || yyyy<=0) return false;
+    if (yyyy >= 2200 || yyyy <= 0) return false;
     const date = new Date(yyyy, mm - 1, dd);
     return (
       date.getFullYear() === yyyy &&
@@ -446,24 +455,6 @@ export class EventsComponent implements OnInit {
 
   // Handle user input: validate and convert to epoch
 
-
-
-  private getEventsList() {
-    if (FadeoutUtils.utilsIsStrNullOrEmpty(this.m_sAreaId)) {
-      return;
-    }
-
-    this.m_oEventService.getEvents(this.m_sAreaId).subscribe({
-      next: (aoEvents) => {
-        this.m_aoEvents = aoEvents;
-        this.m_aoOriginalEvents = [...this.m_aoEvents];
-
-      },
-      error: (oError) => {
-        console.error(oError);
-      }
-    })
-  }
   sortBy(sField: string) {
     if (this.m_sSortField !== sField) {
       // New field clicked, start with ascending
@@ -500,27 +491,6 @@ export class EventsComponent implements OnInit {
     });
   }
 
-  private getActiveAOI() {
-    this.m_oActiveRoute.paramMap.subscribe(params => {
-      this.m_sAreaId = params.get('aoiId');
-
-      this.m_oAreaService.getAreaById(this.m_sAreaId).subscribe({
-        next: (oArea: AreaViewModel) => {
-          this.m_oArea = oArea;
-
-          this.m_oMapService.flyToMonitorBounds(oArea.bbox);
-          this.m_sAreaName = oArea.name;
-
-          if (this.m_oConstantsService.getActiveAOI()==null) {
-            this.m_oConstantsService.setActiveArea(oArea);
-          }
-        }
-      });
-
-      this.getEventsList();
-    });
-  }
-
   enableSubmit() {
     if (!this.m_oEvent) {
       return false;
@@ -531,7 +501,7 @@ export class EventsComponent implements OnInit {
       !this.m_oEvent.endDate ||
       !this.m_oEvent.peakDate ||
       !this.m_oEvent.type
-    ){
+    ) {
       return false;
     }
     return true;
@@ -552,29 +522,6 @@ export class EventsComponent implements OnInit {
     return nameMap[type] || 'Unknown'; // Default to "Unknown" if type is undefined
   }
 
-  private validateEvent() {
-    //validate if dates aligns
-    if(
-      (this.m_oEvent.peakDate<this.m_oEvent.startDate) ||
-      (this.m_oEvent.peakDate>this.m_oEvent.endDate) ||
-      (this.m_oEvent.startDate>this.m_oEvent.endDate)
-    ){
-      this.m_bIsDateInvalid=true;
-      this.m_sDateErrorText="Please ensure the dates are aligned";
-      return false;
-    }
-    //validate if area is created
-    if(!this.m_oEvent.bbox){
-      this.m_oNotificationServiceDialog.openSnackBar(
-        "Please create area for your event",
-        "Error",
-        "danger"
-      );
-      return false;
-    }
-    return true;
-  }
-
   onReturn() {
     this.m_oRouter.navigateByUrl(`monitor/${this.m_sAreaId}`)
   }
@@ -582,7 +529,14 @@ export class EventsComponent implements OnInit {
   goToMonitorWithEventPeakDate(oEvent: EventViewModel) {
     if (oEvent.peakDate) {
       this.m_oRouter.navigate([`monitor/${this.m_sAreaId}`], {
-        state: { id: oEvent.id, peakDate: oEvent.peakDate,name:oEvent.name,type:oEvent.type,startDate:oEvent.startDate,endDate:oEvent.endDate}
+        state: {
+          id: oEvent.id,
+          peakDate: oEvent.peakDate,
+          name: oEvent.name,
+          type: oEvent.type,
+          startDate: oEvent.startDate,
+          endDate: oEvent.endDate
+        }
       });
     }
   }
@@ -593,16 +547,16 @@ export class EventsComponent implements OnInit {
       let sLink = this.m_oAttachmentService.getAttachmentLink("event_images", this.m_oEvent.id, sFileName)
 
       let oPayload =
-      {
-        fileName: sFileName,
-        link: sLink,
-        type: "image",
-        eventId: this.m_oEvent.id
-      }
+        {
+          fileName: sFileName,
+          link: sLink,
+          type: "image",
+          eventId: this.m_oEvent.id
+        }
 
       // Open the Material Dialog with the image
       const oPreviewDialogRef = this.m_oImageDialog.open(ImageDialogComponent, {
-        data: { oPayload },
+        data: {oPayload},
         width: '90vw'
       });
 
@@ -626,16 +580,16 @@ export class EventsComponent implements OnInit {
       }
 
       let oPayload =
-      {
-        fileName: sFileName,
-        link: sLink,
-        type: sType,
-        eventId: this.m_oEvent.id
-      }
+        {
+          fileName: sFileName,
+          link: sLink,
+          type: sType,
+          eventId: this.m_oEvent.id
+        }
 
       // Open the Material Dialog with the image
       const oPreviewDialogRef = this.m_oImageDialog.open(ImageDialogComponent, {
-        data: { oPayload },
+        data: {oPayload},
         width: '90vw'
       });
 
@@ -644,6 +598,67 @@ export class EventsComponent implements OnInit {
         this.loadEventAttachments();
       });
     }
+  }
+
+  private getEventsList() {
+    if (FadeoutUtils.utilsIsStrNullOrEmpty(this.m_sAreaId)) {
+      return;
+    }
+
+    this.m_oEventService.getEvents(this.m_sAreaId).pipe(takeUntil(this.m_oDestroy$)).subscribe({
+      next: (aoEvents) => {
+        this.m_aoEvents = aoEvents;
+        this.m_aoOriginalEvents = [...this.m_aoEvents];
+
+      },
+      error: (oError) => {
+        console.error(oError);
+      }
+    })
+  }
+
+  private getActiveAOI() {
+    this.m_oActiveRoute.paramMap.subscribe(params => {
+      this.m_sAreaId = params.get('aoiId');
+
+      this.m_oAreaService.getAreaById(this.m_sAreaId).pipe(takeUntil(this.m_oDestroy$)).subscribe({
+        next: (oArea: AreaViewModel) => {
+          this.m_oArea = oArea;
+
+          this.m_oMapService.flyToMonitorBounds(oArea.bbox);
+          this.m_sAreaName = oArea.name;
+
+          if (this.m_oConstantsService.getActiveAOI() == null) {
+            this.m_oConstantsService.setActiveArea(oArea);
+          }
+        }
+      });
+
+      this.getEventsList();
+    });
+  }
+
+  private validateEvent() {
+    //validate if dates aligns
+    if (
+      (this.m_oEvent.peakDate < this.m_oEvent.startDate) ||
+      (this.m_oEvent.peakDate > this.m_oEvent.endDate) ||
+      (this.m_oEvent.startDate > this.m_oEvent.endDate)
+    ) {
+      this.m_bIsDateInvalid = true;
+      this.m_sDateErrorText = "Please ensure the dates are aligned";
+      return false;
+    }
+    //validate if area is created
+    if (!this.m_oEvent.bbox) {
+      this.m_oNotificationServiceDialog.openSnackBar(
+        "Please create area for your event",
+        "Error",
+        "danger"
+      );
+      return false;
+    }
+    return true;
   }
 
 }

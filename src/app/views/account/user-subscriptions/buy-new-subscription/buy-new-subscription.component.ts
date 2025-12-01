@@ -1,10 +1,9 @@
-import {Component, EventEmitter, Inject, Input, OnInit, Output,} from '@angular/core';
+import {Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output,} from '@angular/core';
 import {SubscriptionService} from '../../../../services/api/subscription.service';
 import {SubscriptionTypeViewModel} from '../../../../models/SubscriptionTypeViewModel';
 import {RiseDropdownComponent} from '../../../../components/rise-dropdown/rise-dropdown.component';
 import {RiseButtonComponent} from '../../../../components/rise-button/rise-button.component';
 import {RiseTextInputComponent} from '../../../../components/rise-text-input/rise-text-input.component';
-import {RiseTextareaInputComponent} from '../../../../components/rise-textarea-input/rise-textarea-input.component';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import {CommonModule} from '@angular/common';
 import {PluginService} from '../../../../services/api/plugin.service';
@@ -12,10 +11,9 @@ import {PluginViewModel} from '../../../../models/PluginViewModel';
 import {NotificationsDialogsService} from '../../../../services/notifications-dialogs.service';
 import {SubscriptionViewModel} from '../../../../models/SubscriptionViewModel';
 import {ConstantsService} from '../../../../services/constants.service';
-import { forkJoin, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import {forkJoin, of, Subject, takeUntil} from 'rxjs';
+import {catchError, tap} from 'rxjs/operators';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {UserService} from '../../../../services/api/user.service';
 import {FormsModule} from "@angular/forms";
 import FadeoutUtils from "../../../../shared/utilities/FadeoutUtils";
 
@@ -33,49 +31,29 @@ import FadeoutUtils from "../../../../shared/utilities/FadeoutUtils";
   templateUrl: './buy-new-subscription.component.html',
   styleUrl: './buy-new-subscription.component.css',
 })
-export class BuyNewSubscriptionComponent implements OnInit {
+export class BuyNewSubscriptionComponent implements OnInit, OnDestroy {
   @Input() m_sOrganizationId: string = '';
-
   @Output() m_oEmitBack: EventEmitter<boolean> = new EventEmitter<boolean>(
     null
   );
   m_oSubInput: SubscriptionViewModel = {} as SubscriptionViewModel;
-
   m_aoSubTypes: Array<SubscriptionTypeViewModel> = [];
-
   m_asSubTypeNames: Array<string> = [];
-
-  m_sSelectedSubType:string=""
-
+  m_sSelectedSubType: string = ""
   m_oSelectedType: SubscriptionTypeViewModel = null;
-
   m_aoPluginTypes: Array<PluginViewModel> = [];
-
   m_aoPluginNames: Array<string> = [];
-
   m_asSelectedPlugins: Array<string> = [];
-
   m_asSelectedPluginsDisplay: Array<string> = [];
-
   m_iComputedPrice: number = 0;
-
   m_aoPaymentTypes: Array<{ name: string; value: string }> = [];
-
   m_asPaymentTypeNames: Array<string> = [];
-
-  m_sPaymentMethod:string='credit';
+  m_sPaymentMethod: string = 'credit';
   m_oSelectedPaymentType = null;
-  m_sSelectedPaymentTypeName:string = "";
+  m_sSelectedPaymentTypeName: string = "";
   isCheckoutNow: boolean = false;
   m_iStep: number = 1; // Step 1 initially
-
-  goToNextStep() {
-    this.m_iStep = 2;
-  }
-
-  goToPreviousStep() {
-    this.m_iStep = 1;
-  }
+  private m_oDestroy$ = new Subject<void>();
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private m_oData: any,
@@ -86,11 +64,20 @@ export class BuyNewSubscriptionComponent implements OnInit {
     private m_oTranslate: TranslateService,
     private m_oSubscriptionService: SubscriptionService,
     private m_oTranslateService: TranslateService,
-  ) {}
+  ) {
+  }
+
+  goToNextStep() {
+    this.m_iStep = 2;
+  }
+
+  goToPreviousStep() {
+    this.m_iStep = 1;
+  }
 
   ngOnInit(): void {
-    let oDate=new Date()
-    this.m_oSubInput.name="Subscription - " + oDate.toDateString()
+    let oDate = new Date()
+    this.m_oSubInput.name = "Subscription - " + oDate.toDateString()
     this.getPaymentTypes();
     this.m_sOrganizationId = this.getOrganizationId();
 
@@ -98,7 +85,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
     forkJoin([
       this.getSubTypes(),
       this.getPlugins()
-    ]).subscribe({
+    ]).pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: () => {
         // This block executes ONLY after BOTH getSubTypes and getPlugins have completed successfully.
         console.log('All initial data has arrived!');
@@ -114,6 +101,11 @@ export class BuyNewSubscriptionComponent implements OnInit {
         this.m_oNotificationService.openInfoDialog('Failed to initialize subscription options.', 'danger');
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.m_oDestroy$.next();
+    this.m_oDestroy$.complete();
   }
 
   getSubTypes() {
@@ -156,7 +148,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
     );
   }
 
-   initSubTypeNames() {
+  initSubTypeNames() {
     this.m_aoSubTypes.sort((a, b) => a.allowedAreas - b.allowedAreas);
     this.m_asSubTypeNames = this.m_aoSubTypes.map(
       (oSubType) => oSubType.stringCode.slice(8) + ' Area'
@@ -184,11 +176,11 @@ export class BuyNewSubscriptionComponent implements OnInit {
     this.m_aoSubTypes.forEach((oType) => {
       if (oType.stringCode.includes(sCleanedType)) {
         this.m_oSelectedType = oType;
-        this.m_sSelectedSubType=sCleanedType+" Area";
+        this.m_sSelectedSubType = sCleanedType + " Area";
       }
     });
 
-    if(this.enableComputePrice()){
+    if (this.enableComputePrice()) {
       this.getComputedPrice();
     }
   }
@@ -226,14 +218,14 @@ export class BuyNewSubscriptionComponent implements OnInit {
       'alert'
     ).subscribe(oDialogResult => {
       if (oDialogResult === true) {
-        this.isCheckoutNow=true;
+        this.isCheckoutNow = true;
 
-        this.m_oSubscriptionService.saveSubscription(this.m_oSubInput).subscribe({
+        this.m_oSubscriptionService.saveSubscription(this.m_oSubInput).pipe(takeUntil(this.m_oDestroy$)).subscribe({
           next: (oResponse) => {
             this.getStripePaymentUrl(oResponse.body.id);
           },
           error: (oError) => {
-            this.isCheckoutNow=false;
+            this.isCheckoutNow = false;
             this.m_oNotificationService.openInfoDialog(sError, 'danger');
           },
         });
@@ -244,7 +236,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
   }
 
   getStripePaymentUrl(subscriptionId: string) {
-    this.m_oSubscriptionService.getStripePaymentUrl(subscriptionId).subscribe({
+    this.m_oSubscriptionService.getStripePaymentUrl(subscriptionId).pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse) => {
         if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           // this.m_oNotificationService.openSnackBar(this.m_oTranslate.instant("USER_SUBSCRIPTION_URL"), '', 'success-snackbar');
@@ -254,7 +246,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
       },
       error: (oError) => {
         this.m_oNotificationService.openSnackBar(this.m_oTranslate.instant("USER_SUBSCRIPTION_URL_ERROR"), this.m_oTranslate.instant("KEY_PHRASES.GURU_MEDITATION"), 'alert');
-        this.isCheckoutNow=false;
+        this.isCheckoutNow = false;
       }
     });
   }
@@ -274,6 +266,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
 
     this.m_oSubscriptionService
       .getSubscriptionPrice(this.m_oSubInput)
+      .pipe(takeUntil(this.m_oDestroy$))
       .subscribe({
         next: (oResponse) => {
           if (!oResponse) {
@@ -304,12 +297,12 @@ export class BuyNewSubscriptionComponent implements OnInit {
 
   handlePaymentTypeSelect(oPaymentType: any) {
     let sTypeName = oPaymentType.value;
-    this.m_sSelectedPaymentTypeName=oPaymentType.value
+    this.m_sSelectedPaymentTypeName = oPaymentType.value
 
     this.m_oSelectedPaymentType = this.m_aoPaymentTypes.find(
       (oType) => oType.name === sTypeName
     );
-    if(this.enableComputePrice()){
+    if (this.enableComputePrice()) {
       this.getComputedPrice();
     }
 
@@ -317,8 +310,8 @@ export class BuyNewSubscriptionComponent implements OnInit {
 
   getPaymentTypes() {
     this.m_aoPaymentTypes = [
-      { name: 'Year', value: 'YEAR' },
-      { name: '1 Month', value: 'MONTH' },
+      {name: 'Year', value: 'YEAR'},
+      {name: '1 Month', value: 'MONTH'},
     ];
 
     this.m_sSelectedPaymentTypeName = '1 Month';
@@ -339,7 +332,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
     if (
       !this.m_oSelectedType ||
       !this.m_asSelectedPlugins ||
-      !this.m_oSelectedPaymentType||
+      !this.m_oSelectedPaymentType ||
       FadeoutUtils.utilsIsStrNullOrEmpty(this.m_sPaymentMethod)
     ) {
       return false;
@@ -354,16 +347,6 @@ export class BuyNewSubscriptionComponent implements OnInit {
 
   onDismiss() {
     this.m_oDialogRef.close();
-  }
-
-  private getOrganizationId() {
-    let sOrganizationId: string = '';
-    if (this.m_oData?.organizationId) {
-      sOrganizationId = this.m_oData.organizationId;
-    } else {
-      sOrganizationId = this.m_oConstantsService.getUser()?.organizationId;
-    }
-    return sOrganizationId;
   }
 
   enableNextBtn() {
@@ -421,15 +404,15 @@ export class BuyNewSubscriptionComponent implements OnInit {
       'alert'
     ).subscribe(oDialogResult => {
       if (oDialogResult === true) {
-        this.isCheckoutNow=true;
-        this.m_oSubscriptionService.saveSubscription(this.m_oSubInput).subscribe({
+        this.isCheckoutNow = true;
+        this.m_oSubscriptionService.saveSubscription(this.m_oSubInput).pipe(takeUntil(this.m_oDestroy$)).subscribe({
           next: (oResponse) => {
-            this.m_oNotificationService.openSnackBar(sSuccessContactTitle,sSuccessContactDescription,'success');
+            this.m_oNotificationService.openSnackBar(sSuccessContactTitle, sSuccessContactDescription, 'success');
             this.onDismiss();
             this.isCheckoutNow = false;
           },
           error: (oError) => {
-            this.isCheckoutNow=false;
+            this.isCheckoutNow = false;
             this.m_oNotificationService.openInfoDialog(sError, 'danger');
           },
         });
@@ -454,7 +437,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
     this.initSubscriptionInput();
     // let sMessage = this.m_oTranslate.instant("SUBSCRIPTIONS.STRIPE_MSG");
     // let sTitle = this.m_oTranslate.instant("SUBSCRIPTIONS.STRIPE_TITLE");
-    let sMessage =this.m_oTranslateService.instant(
+    let sMessage = this.m_oTranslateService.instant(
       'SUBSCRIPTIONS.WIRE_TRANSFER'
     );
     //Notification that user will be re-directed to Stripe
@@ -465,7 +448,7 @@ export class BuyNewSubscriptionComponent implements OnInit {
       if (oDialogResult === true) {
         this.isCheckoutNow = true;
         //Here we will email wasdi admins telling them that user wants to do wire transfer
-        this.m_oSubscriptionService.saveSubscription(this.m_oSubInput).subscribe({
+        this.m_oSubscriptionService.saveSubscription(this.m_oSubInput).pipe(takeUntil(this.m_oDestroy$)).subscribe({
           next: (oResponse) => {
             this.m_oNotificationService.openSnackBar("Subscription is created successfully", "Subscription created", 'success');
             this.onDismiss();
@@ -487,25 +470,19 @@ export class BuyNewSubscriptionComponent implements OnInit {
   }
 
   openInfoDialog() {
-  //   const sMsg = `
-  //   <strong>Area Type:</strong><br/>
-  //   <ul>
-  //     <li><strong>Emergency:</strong> Best suited for short-term, high-priority monitoring (e.g., natural disasters, ongoing incidents). Data is delivered quickly, but not stored for long.</li>
-  //     <li><strong>Long-Term:</strong> Designed for continuous or periodic monitoring over time (e.g., environmental studies, infrastructure tracking). Data may arrive slower but is archived for future access.</li>
-  //   </ul>
-  //   <br/>
-  //   <strong>Subscription Type:</strong><br/>
-  //   <ul>
-  //     <li><strong>1 Location:</strong> Monitor a single area of operations.</li>
-  //     <li><strong>3 Location:</strong> Monitor up to 3 different areas of operations.</li>
-  //     <li><strong>5 Locations:</strong> Monitor up to five different areas simultaneously.</li>
-  //     <li><strong>10 Locations:</strong> Ideal for broader monitoring needs — track up to ten separate regions.</li>
-  //   </ul>
-  // `;
-
     const sMsg = this.m_oTranslateService.instant('SUBSCRIPTIONS.AREA_INFO_MESSAGE');
 
     this.m_oNotificationService.openInfoDialog(sMsg, 'alert', '');
+  }
+
+  private getOrganizationId() {
+    let sOrganizationId: string = '';
+    if (this.m_oData?.organizationId) {
+      sOrganizationId = this.m_oData.organizationId;
+    } else {
+      sOrganizationId = this.m_oConstantsService.getUser()?.organizationId;
+    }
+    return sOrganizationId;
   }
 
 }

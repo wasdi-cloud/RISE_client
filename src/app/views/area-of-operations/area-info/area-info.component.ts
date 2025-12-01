@@ -1,4 +1,4 @@
-import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import {AreaViewModel} from '../../../models/AreaViewModel';
@@ -16,6 +16,7 @@ import {RiseDropdownComponent} from "../../../components/rise-dropdown/rise-drop
 import {JsonEditorService} from "../../../services/json-editor.service";
 import {MapAPIService} from "../../../services/api/map.service";
 import {MapParametersService} from "../../../services/api/map-parameters.service";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-area-info',
@@ -34,7 +35,9 @@ import {MapParametersService} from "../../../services/api/map-parameters.service
   templateUrl: './area-info.component.html',
   styleUrl: './area-info.component.css',
 })
-export class AreaInfoComponent implements OnInit {
+export class AreaInfoComponent implements OnInit,OnDestroy {
+
+  private m_oDestroy$ = new Subject<void>();
   m_sJSONParam = '{}';
   @ViewChild('editor') m_oEditorRef!: ElementRef;
   m_aoSelectedPlugins = [];
@@ -89,6 +92,11 @@ export class AreaInfoComponent implements OnInit {
     this.getPlugins();
   }
 
+  ngOnDestroy() {
+    this.m_oDestroy$.next();
+    this.m_oDestroy$.complete();
+  }
+
   setSelectedMap(oEvent: any) {
     //here we call the getParams
 
@@ -98,7 +106,7 @@ export class AreaInfoComponent implements OnInit {
 
   private getMapParams() {
     if (!FadeoutUtils.utilsIsStrNullOrEmpty(this.m_sAreaId)) {
-      this.m_oMapParamsService.getParameters(this.m_sAreaId, this.m_sMapId).subscribe({
+      this.m_oMapParamsService.getParameters(this.m_sAreaId, this.m_sMapId).pipe(takeUntil(this.m_oDestroy$)).subscribe({
           next: (oResponse) => {
             this.m_sJSONParam = oResponse.payload
             this.checkJSON();
@@ -145,7 +153,7 @@ export class AreaInfoComponent implements OnInit {
     let sError: string = this.m_oTranslate.instant(
       'AREA_OF_OPERATIONS.ERROR_GET_INFO'
     );
-    this.m_oAreaService.getAreaById(this.m_sAreaId).subscribe({
+    this.m_oAreaService.getAreaById(this.m_sAreaId).pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse) => {
         if (FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           this.m_oNotificationService.openInfoDialog(sError, 'alert', 'Error');
@@ -171,7 +179,7 @@ export class AreaInfoComponent implements OnInit {
     let sError: string = this.m_oTranslate.instant(
       'AREA_OF_OPERATIONS.ERROR_PLUGINS'
     );
-    this.m_oPluginService.getPluginsList().subscribe({
+    this.m_oPluginService.getPluginsList().pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (aoResponse) => {
         for (const aoResponseElement of aoResponse) {
           if (
@@ -222,7 +230,7 @@ export class AreaInfoComponent implements OnInit {
           mapId: this.m_sMapId,
           payload: this.m_sJSONParam
         }
-        this.m_oMapParamsService.addParameters(oMapParamVM).subscribe({
+        this.m_oMapParamsService.addParameters(oMapParamVM).pipe(takeUntil(this.m_oDestroy$)).subscribe({
           next: (oResponse: any) => {
             this.returnToEditPage()
 
@@ -238,7 +246,7 @@ export class AreaInfoComponent implements OnInit {
           id: this.m_sParamsId,
           payload: this.m_sJSONParam
         }
-        this.m_oMapParamsService.updateParameters(oMapParamVM).subscribe({
+        this.m_oMapParamsService.updateParameters(oMapParamVM).pipe(takeUntil(this.m_oDestroy$)).subscribe({
           next: (oResponse: any) => {
             this.returnToEditPage()
 
@@ -274,7 +282,7 @@ export class AreaInfoComponent implements OnInit {
       this.m_oArea.publicArea = false;
     }
 
-    this.m_oAreaService.updateArea(this.m_oArea).subscribe({
+    this.m_oAreaService.updateArea(this.m_oArea).pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse) => {
         this.m_oNotificationService.openSnackBar(
           sSuccess,
@@ -348,7 +356,7 @@ export class AreaInfoComponent implements OnInit {
         //here the user has already saved his own params and now wants to get the default one so we delete his params and  get the default one
         // safe programming
         if(!FadeoutUtils.utilsIsStrNullOrEmpty(this.m_sParamsId)){
-          this.m_oMapParamsService.deleteParameters(this.m_sParamsId).subscribe({
+          this.m_oMapParamsService.deleteParameters(this.m_sParamsId).pipe(takeUntil(this.m_oDestroy$)).subscribe({
             next: (oResponse) => {
               //now we call the default param
               this.getMapParams();

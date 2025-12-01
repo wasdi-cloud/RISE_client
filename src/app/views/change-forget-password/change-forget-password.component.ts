@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {NotificationsDialogsService} from "../../services/notifications-dialogs.service";
 import FadeoutUtils from "../../shared/utilities/FadeoutUtils";
@@ -7,6 +7,8 @@ import {RiseButtonComponent} from "../../components/rise-button/rise-button.comp
 import {RiseToolbarComponent} from "../../components/rise-toolbar/rise-toolbar.component";
 import {UserService} from "../../services/api/user.service";
 import {ConfirmForgetPasswordViewModel} from "../../models/ConfirmForgetPasswordViewModel";
+import {Subject, takeUntil} from "rxjs";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-change-forget-password',
@@ -19,7 +21,8 @@ import {ConfirmForgetPasswordViewModel} from "../../models/ConfirmForgetPassword
   templateUrl: './change-forget-password.component.html',
   styleUrl: './change-forget-password.component.css'
 })
-export class ChangeForgetPasswordComponent implements OnInit {
+export class ChangeForgetPasswordComponent implements OnInit, OnDestroy {
+
   m_sConfirmationCode: string;
   m_sUserId: string;
   m_oPasswordInputs = {
@@ -27,10 +30,12 @@ export class ChangeForgetPasswordComponent implements OnInit {
     confirmPw: '',
   };
   m_sPasswordError: string = '';
+  private m_oDestroy$ = new Subject<void>();
 
   constructor(
     private m_oActiveRoute: ActivatedRoute,
     private m_oUserService: UserService,
+    private m_oTranslate: TranslateService,
     private m_oNotificationService: NotificationsDialogsService,
     private m_oRouter: Router,
   ) {
@@ -41,6 +46,11 @@ export class ChangeForgetPasswordComponent implements OnInit {
       this.m_sConfirmationCode = params['code'];
       this.m_sUserId = params['userId'];
     });
+  }
+
+  ngOnDestroy() {
+    this.m_oDestroy$.next();
+    this.m_oDestroy$.complete();
   }
 
   confirmRequest() {
@@ -54,7 +64,7 @@ export class ChangeForgetPasswordComponent implements OnInit {
         confirmationCode: this.m_sConfirmationCode,
         userId: this.m_sUserId
       }
-      this.m_oUserService.confirmForgetPassword(oConfirmVM).subscribe({
+      this.m_oUserService.confirmForgetPassword(oConfirmVM).pipe(takeUntil(this.m_oDestroy$)).subscribe({
         next: (oResponse) => {
           this.m_oNotificationService.openSnackBar(
             "Password updated successfully",
@@ -73,6 +83,7 @@ export class ChangeForgetPasswordComponent implements OnInit {
       })
     }
   }
+
   enableSubmit() {
     if (!this.m_oPasswordInputs.password) {
       return false;
@@ -80,12 +91,15 @@ export class ChangeForgetPasswordComponent implements OnInit {
     if (!this.m_oPasswordInputs.confirmPw) {
       return false;
     }
-    if(!this.validatePassword()){
+    if (!this.validatePassword()) {
       return false;
     }
     return true;
   }
+
   validatePassword(): boolean {
+    let sPasswordErrorRegex = this.m_oTranslate.instant("REGISTER.PASSWORD_ERROR_MESSAGE_CONDITIONS");
+    let sPasswordErrorMissmatch = this.m_oTranslate.instant("REGISTER.PASSWORD_ERROR_MESSAGE_MISSMATCH");
     let sPassword = this.m_oPasswordInputs.password;
     let sConfirmPw = this.m_oPasswordInputs.confirmPw;
     // Minimum 8 Characters, at least one letter, one number, and one special character:
@@ -95,11 +109,10 @@ export class ChangeForgetPasswordComponent implements OnInit {
     if (sPassword && sConfirmPw) {
       //If the first password doesn't pass regex OR the pw's don't match
       if (!passwordRegex.test(sPassword)) {
-        this.m_sPasswordError =
-          'A good password contains: <br><ul><li>Minimum 8 characters</li><li>At least 1 lowercase letter</li><li>At least 1 capital letter</li><li>At least one number</li><li>At least one special character</li></ul>';
+        this.m_sPasswordError = sPasswordErrorRegex;
         return false;
       } else if (sPassword !== sConfirmPw) {
-        this.m_sPasswordError = 'The passwords do not match';
+        this.m_sPasswordError = sPasswordErrorMissmatch;
         return false;
       } else {
         return true;

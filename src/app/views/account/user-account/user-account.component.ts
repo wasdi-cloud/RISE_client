@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {CommonModule} from '@angular/common';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
@@ -29,6 +29,7 @@ import {NotificationOptions} from '../../../shared/notification-options/notifica
 import FadeoutUtils from '../../../shared/utilities/FadeoutUtils';
 import {MapService} from "../../../services/map.service";
 import {RiseNumberInputComponent} from "../../../components/rise-number-input/rise-number-input.component";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'user-account',
@@ -45,7 +46,7 @@ import {RiseNumberInputComponent} from "../../../components/rise-number-input/ri
   templateUrl: './user-account.component.html',
   styleUrl: './user-account.component.css',
 })
-export class UserAccountComponent implements OnInit {
+export class UserAccountComponent implements OnInit,OnDestroy {
   /**
    * UC_060 - Manage User Account
    */
@@ -54,6 +55,8 @@ export class UserAccountComponent implements OnInit {
    * User account information
    */
   m_oUser: UserViewModel = {} as UserViewModel;
+  private m_oDestroy$ = new Subject<void>();
+
   m_oOriginalUser: UserViewModel = {} as UserViewModel;
 
   /**
@@ -151,12 +154,18 @@ export class UserAccountComponent implements OnInit {
     this.translateNotifications();
   }
 
+
+  ngOnDestroy() {
+    this.m_oDestroy$.next();
+    this.m_oDestroy$.complete();
+  }
+
   /**
    * Get user information from the server and set the user object
    */
   getUserInfo() {
     let sError = this.m_oTranslate.instant('ACCOUNT.ERROR_INFO');
-    this.m_oUserService.getUser().subscribe({
+    this.m_oUserService.getUser().pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse) => {
         if (FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           return;
@@ -170,7 +179,7 @@ export class UserAccountComponent implements OnInit {
         this.initCheckboxOptions();
       },
     });
-    this.m_oOrganizationService.getByUser().subscribe({
+    this.m_oOrganizationService.getByUser().pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse) => {
         if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           this.m_oOrganization = oResponse;
@@ -228,7 +237,7 @@ export class UserAccountComponent implements OnInit {
         "success"
       ).subscribe((oDialogResult)=>{
         if(oDialogResult){
-          this.m_oUserService.updateUser(oBody).subscribe({
+          this.m_oUserService.updateUser(oBody).pipe(takeUntil(this.m_oDestroy$)).subscribe({
             next: (oResponse) => {
               this.m_oNotificationDialogService.openSnackBar(
                 "Information Saved",
@@ -248,7 +257,7 @@ export class UserAccountComponent implements OnInit {
         }
       })
     }else{
-      this.m_oUserService.updateUser(oBody).subscribe({
+      this.m_oUserService.updateUser(oBody).pipe(takeUntil(this.m_oDestroy$)).subscribe({
         next: (oResponse) => {
           this.m_oNotificationDialogService.openSnackBar(
             "Information Saved",
@@ -283,7 +292,7 @@ export class UserAccountComponent implements OnInit {
       )
       .subscribe((bResult) => {
         if (bResult) {
-          this.m_oUserService.deleteAccount().subscribe({
+          this.m_oUserService.deleteAccount().pipe(takeUntil(this.m_oDestroy$)).subscribe({
             next: (oResponse) => {
               let oOTPVerifyVM = oResponse;
               this.m_oDialog
@@ -293,6 +302,7 @@ export class UserAccountComponent implements OnInit {
                   },
                 })
                 .afterClosed()
+                .pipe(takeUntil(this.m_oDestroy$))
                 .subscribe((sDialogResult) => {
                   oOTPVerifyVM.userProvidedCode = sDialogResult;
                   this.m_oAuthService.verifyOTP(oOTPVerifyVM).subscribe({
@@ -304,6 +314,7 @@ export class UserAccountComponent implements OnInit {
                       if (oResponse.status === 200) {
                         this.m_oUserService
                           .verifyDeleteAccount(oOtpVm)
+                          .pipe(takeUntil(this.m_oDestroy$))
                           .subscribe({
                             next: (oResponse) => {
                               this.m_oAuthService.logout();
@@ -338,7 +349,7 @@ export class UserAccountComponent implements OnInit {
   getOrganizationName() {
     let sOrganizationName = '';
     let sErrorMsg = this.m_oTranslate.instant('ORGANIZATION.ERROR_MSG');
-    this.m_oOrganizationService.getByUser().subscribe({
+    this.m_oOrganizationService.getByUser().pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse) => {
         if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           sOrganizationName = oResponse.name;
@@ -358,7 +369,7 @@ export class UserAccountComponent implements OnInit {
       oldEmail: this.m_oUser.email,
       newEmail: this.m_oEmailInputs.newEmail,
     };
-    this.m_oUserService.updateEmail(oEmailVM).subscribe({
+    this.m_oUserService.updateEmail(oEmailVM).pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse) => {
         this.m_oNotificationDialogService.openSnackBar(
           sSuccessMsg,
@@ -377,14 +388,14 @@ export class UserAccountComponent implements OnInit {
     this.m_oNotificationDialogService.openConfirmationDialog(
       "If you want to change your Password, you will have to log in again, Do you want to proceed?",
       "success"
-    ).subscribe((oDialogResult)=>{
+    ).pipe(takeUntil(this.m_oDestroy$)).subscribe((oDialogResult)=>{
       if(oDialogResult){
         let sError = this.m_oTranslate.instant('USER.PW_ERROR');
         let oChangePasswordRequest: ChangePasswordRequestViewModel = {
           oldPassword: this.m_oPasswordInputs.currentPW,
           newPassword: this.m_oPasswordInputs.newPw,
         };
-        this.m_oUserService.updatePassword(oChangePasswordRequest).subscribe({
+        this.m_oUserService.updatePassword(oChangePasswordRequest).pipe(takeUntil(this.m_oDestroy$)).subscribe({
           next: (oResponse) => {
             this.confirmChangePassword(oResponse);
           },
@@ -447,7 +458,7 @@ export class UserAccountComponent implements OnInit {
 
   saveNotifications() {
     let sError: string = this.m_oTranslate.instant('USER.NOTIFICATIONS_ERROR');
-    this.m_oUserService.updateNotifications(this.m_oUser).subscribe({
+    this.m_oUserService.updateNotifications(this.m_oUser).pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse) => {
         this.m_oNotificationDialogService.openSnackBar(
           'Notification Settings Saved',
@@ -542,7 +553,7 @@ export class UserAccountComponent implements OnInit {
 
   saveUserLanguagesSetting() {
     if (this.m_oUser.defaultLanguage) {
-      this.m_oUserService.changeUserLanguageSetting(this.m_oUser).subscribe({
+      this.m_oUserService.changeUserLanguageSetting(this.m_oUser).pipe(takeUntil(this.m_oDestroy$)).subscribe({
         next: (oResponse) => {
           this.getUserInfo();
           this.m_oTranslate.use(this.m_oUser.defaultLanguage);
@@ -567,6 +578,7 @@ export class UserAccountComponent implements OnInit {
         },
       })
       .afterClosed()
+      .pipe(takeUntil(this.m_oDestroy$))
       .subscribe((sDialogResult) => {
         oOtpViewModel.userProvidedCode = sDialogResult;
         this.m_oAuthService.verifyOTP(oOtpViewModel).subscribe({
@@ -576,7 +588,7 @@ export class UserAccountComponent implements OnInit {
               userId: oOtpViewModel.userId,
             };
             if (oResponse.status === 200) {
-              this.m_oUserService.confirmNewPassword(oOtpVm).subscribe({
+              this.m_oUserService.confirmNewPassword(oOtpVm).pipe(takeUntil(this.m_oDestroy$)).subscribe({
                 next: (oResponse) => {
                   this.getUserInfo();
                   this.m_oNotificationDialogService.openSnackBar(

@@ -191,12 +191,12 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   private m_bIsNavigatedFromEventList = false;
 
   /**
-   * 
+   *
    */
   @ViewChild('btnContainer', { static: false }) btnContainerRef!: ElementRef;
 
   /**
-   * 
+   *
    */
   @ViewChild('tempFix', { static: false }) tempFixRef!: ElementRef;
 
@@ -473,8 +473,8 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
   /**
    * Method called to show/update a new layer on the map
-   * @param oLayerMapViewModel 
-   * @returns 
+   * @param oLayerMapViewModel
+   * @returns
    */
   private showLayer(oLayerMapViewModel: any) {
 
@@ -518,7 +518,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
     );
     // Update the selected layers
-    this.m_oMapService.setSelectedLayers(this.m_aoLayers)    
+    this.m_oMapService.setSelectedLayers(this.m_aoLayers)
   }
 
   private fillPluginsAndLayers(oPlugin: any, oLayer:LayerViewModel) {
@@ -590,7 +590,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     }
 
     // TODO: Update the layers based on the new date
-    //this.initMapButtons(this.m_aoVisibleMapLayersButtons);
+    // this.initMapButtons(this.m_aoVisibleMapLayersButtons);
   }
 
   /**
@@ -616,7 +616,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     // Do we have a selected plugin?
     if (this.m_oSelectedPlugin) {
       // Get the plugins maps
-      this.m_oLayerService.findAvailableLayers("",this.m_sAreaId,this.m_iSelectedDate,this.m_oSelectedPlugin.id).subscribe({ 
+      this.m_oLayerService.findAvailableLayers("",this.m_sAreaId,this.m_iSelectedDate,this.m_oSelectedPlugin.id).subscribe({
         next: (oResponse) => {
 
           for (let i=0;i<oResponse.length;i++) {
@@ -627,7 +627,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
               }
             }
           }
-            
+
           this.m_aoVisibleMapLayersButtons = oResponse;
         },
         error: (oError) => {
@@ -651,7 +651,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       return;
     }
 
-    // Check if the Map is already shown 
+    // Check if the Map is already shown
     if(oMapButton.loaded) {
       // Remove the layers from the map
       oMapButton.loaded = false;
@@ -1078,7 +1078,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
   /**
    * this method is made to enable/disable the plugins button
-   * @param aoMaps 
+   * @param aoMaps
    */
   initMapButtons(aoMaps: any[]){
 
@@ -1088,7 +1088,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     const sMapIds = asMapIds.join(","); // e.g., "map1,map2,map3"
 
     if(sMapIds){
-      
+
       this.m_oLayerService.findAvailableLayers(sMapIds,this.m_sAreaId,this.m_iSelectedDate, "").subscribe({
 
         next:(oResponse)=>{
@@ -1106,7 +1106,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
     /**
    * this method is made to enable/disable the plugins button
-   * @param aoPlugins 
+   * @param aoPlugins
    */
   initAreaPluginsButtons(aoPlugins: any[]){
 
@@ -1116,7 +1116,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     const sMapIds = asMapIds.join(","); // e.g., "map1,map2,map3"
 
     if(sMapIds){
-      
+
       this.m_oLayerService.findAvailableLayers(sMapIds,this.m_sAreaId,this.m_iSelectedDate, "").subscribe({
 
         next:(oResponse)=>{

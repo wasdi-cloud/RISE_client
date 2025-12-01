@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
@@ -27,7 +27,7 @@ import FadeoutUtils from '../../../shared/utilities/FadeoutUtils';
 import {OtpDialogComponent} from "../../../dialogs/otp-dialog/otp-dialog.component";
 import {AuthService} from "../../../services/api/auth.service";
 import {RiseNumberInputComponent} from "../../../components/rise-number-input/rise-number-input.component";
-import {map} from "rxjs";
+import {map, Subject, takeUntil} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {CountryViewModel} from "../../../models/CountryViewModel";
 import {UserRole} from "../../../models/UserRole";
@@ -49,7 +49,9 @@ import {ConstantsService} from "../../../services/constants.service";
   templateUrl: './user-organization.component.html',
   styleUrl: './user-organization.component.css',
 })
-export class UserOrganizationComponent implements OnInit {
+export class UserOrganizationComponent implements OnInit,OnDestroy {
+
+  private m_oDestroy$ = new Subject<void>();
   m_oOrganization: OrganizationViewModel = null;
 
   m_aoOrgTypes = OrganizationTypes;
@@ -83,11 +85,17 @@ export class UserOrganizationComponent implements OnInit {
     // this.getOrgUsers();
   }
 
+
+  ngOnDestroy() {
+    this.m_oDestroy$.next();
+    this.m_oDestroy$.complete();
+  }
+
   private getUserRole() {
     let oUserRole = this.m_oConstantService.getUserRole();
 
     if (FadeoutUtils.utilsIsObjectNullOrUndefined(oUserRole)) {
-      this.m_oUserService.getUser().subscribe({
+      this.m_oUserService.getUser().pipe(takeUntil(this.m_oDestroy$)).subscribe({
         next: (oUser) => {
           this.m_oUserRole = oUser.role;
           this.m_oConstantService.setUser(oUser);
@@ -110,7 +118,7 @@ export class UserOrganizationComponent implements OnInit {
    */
   getOrganization(): void {
     let sErrorMsg = this.m_oTranslate.instant('ORGANIZATION.ERROR_MSG');
-    this.m_oOrganizationsService.getByUser().subscribe({
+    this.m_oOrganizationsService.getByUser().pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse) => {
         if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           this.m_oOrganization = oResponse;
@@ -133,7 +141,7 @@ export class UserOrganizationComponent implements OnInit {
    */
   getOrgUsers(): void {
     let sErrorMsg = this.m_oTranslate.instant('ORGANIZATION.USERS_ERROR');
-    this.m_oOrganizationsService.getOrganizationUsers().subscribe({
+    this.m_oOrganizationsService.getOrganizationUsers().pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse) => {
         this.m_aoOrgUsers = oResponse;
       },
@@ -170,6 +178,7 @@ export class UserOrganizationComponent implements OnInit {
           if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oUser.userId)) {
             this.m_oOrganizationsService
               .deleteUsersFromOrganization(aoUsersToDelete)
+              .pipe(takeUntil(this.m_oDestroy$))
               .subscribe({
                 next: (oResponse) => {
                   this.getOrgUsers();
@@ -209,6 +218,7 @@ export class UserOrganizationComponent implements OnInit {
     if (this.isOrgValid()) {
       this.m_oOrganizationsService
         .updateOrganization(this.m_oOrganization)
+        .pipe(takeUntil(this.m_oDestroy$))
         .subscribe({
           next: (oResponse) => {
             this.m_oNotificationDialogService.openSnackBar(
@@ -301,6 +311,7 @@ export class UserOrganizationComponent implements OnInit {
         'Are you sure you want to delete your Organization? This is a destructive action and cannot be undone and it will automatically delete your account and the organisation users accounts.',
         'danger'
       )
+      .pipe(takeUntil(this.m_oDestroy$))
       .subscribe((bResult) => {
         if (bResult) {
           this.m_oOrganizationsService.deleteOrganization().subscribe({

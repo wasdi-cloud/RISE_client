@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {RiseButtonComponent} from "../../components/rise-button/rise-button.component";
 import {RiseToolbarComponent} from "../../components/rise-toolbar/rise-toolbar.component";
 import {ActivatedRoute, Router} from "@angular/router";
-import {AuthService} from "../../services/api/auth.service";
 import {NotificationsDialogsService} from "../../services/notifications-dialogs.service";
 import FadeoutUtils from "../../shared/utilities/FadeoutUtils";
 import {SubscriptionService} from "../../services/api/subscription.service";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-subscription-buy-success',
@@ -17,9 +17,12 @@ import {SubscriptionService} from "../../services/api/subscription.service";
   templateUrl: './subscription-buy-success.component.html',
   styleUrl: './subscription-buy-success.component.css'
 })
-export class SubscriptionBuySuccessComponent implements OnInit {
-  m_sCheckoutCode:string;
-  m_bCanProceed:boolean=false;
+export class SubscriptionBuySuccessComponent implements OnInit, OnDestroy {
+
+
+  m_sCheckoutCode: string;
+  m_bCanProceed: boolean = false;
+  private m_oDestroy$: Subject<void> = new Subject<void>();
 
   constructor(
     private m_oActiveRoute: ActivatedRoute,
@@ -35,7 +38,7 @@ export class SubscriptionBuySuccessComponent implements OnInit {
       this.m_sCheckoutCode = params.get('CHECKOUT_SESSION_ID'); // Fetch from route params
 
       if (!FadeoutUtils.utilsIsStrNullOrEmpty(this.m_sCheckoutCode)) {
-        this.m_oSubscriptionService.confirmSubscription(this.m_sCheckoutCode).subscribe(
+        this.m_oSubscriptionService.confirmSubscription(this.m_sCheckoutCode).pipe(takeUntil(this.m_oDestroy$)).subscribe(
           {
             next: (oResponse) => {
               this.m_bCanProceed = true;
@@ -55,6 +58,10 @@ export class SubscriptionBuySuccessComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this.m_oDestroy$.next();
+    this.m_oDestroy$.complete();
+  }
 
   navigateToDashboard() {
     this.m_oRouter.navigateByUrl('/dashboard')

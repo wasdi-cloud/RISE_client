@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SubscriptionService } from '../../../../services/api/subscription.service';
 import { SubscriptionViewModel } from '../../../../models/SubscriptionViewModel';
@@ -11,6 +11,7 @@ import { SubscriptionTypeViewModel } from '../../../../models/SubscriptionTypeVi
 import { NotificationsDialogsService } from '../../../../services/notifications-dialogs.service';
 import FadeoutUtils from '../../../../shared/utilities/FadeoutUtils';
 import { RiseDateInputComponent } from '../../../../components/rise-date-input/rise-date-input.component';
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-subscription-editor',
@@ -27,11 +28,12 @@ import { RiseDateInputComponent } from '../../../../components/rise-date-input/r
   templateUrl: './subscription-editor.component.html',
   styleUrl: './subscription-editor.component.css',
 })
-export class SubscriptionEditorComponent implements OnInit {
+export class SubscriptionEditorComponent implements OnInit,OnDestroy {
   m_bIsEditing: boolean = false;
   m_sSubscriptionHeader: string = '';
   m_aoSubTypes: Array<SubscriptionTypeViewModel> = [];
   m_sPrice: string = '';
+  private m_oDestroy$ = new Subject<void>();
 
   m_oSubscription: SubscriptionViewModel = {} as SubscriptionViewModel;
 
@@ -54,9 +56,14 @@ export class SubscriptionEditorComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    this.m_oDestroy$.next();
+    this.m_oDestroy$.complete();
+  }
+
   getSubscriptionTypes() {
     let sError = this.m_oTranslate.instant('SUBSCRIPTIONS.TYPE_ERROR');
-    this.m_oSubscriptionService.getSubscriptionTypes().subscribe({
+    this.m_oSubscriptionService.getSubscriptionTypes().pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse) => {
         if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           this.m_aoSubTypes = oResponse;
@@ -70,7 +77,7 @@ export class SubscriptionEditorComponent implements OnInit {
 
   getSubscriptionVM(sSubscriptionId: string) {
     let sError = this.m_oTranslate.instant('SUBSCRIPTIONS.ERROR_INFO');
-    this.m_oSubscriptionService.getSubscriptionById(sSubscriptionId).subscribe({
+    this.m_oSubscriptionService.getSubscriptionById(sSubscriptionId).pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse) => {
         if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           this.m_oSubscription = oResponse;
@@ -86,6 +93,7 @@ export class SubscriptionEditorComponent implements OnInit {
   updateSubscription() {
     this.m_oSubscriptionService
       .updateSubscription(this.m_oSubscription)
+      .pipe(takeUntil(this.m_oDestroy$))
       .subscribe({
         next: (oResponse) => {
           if (oResponse.status === 200) {

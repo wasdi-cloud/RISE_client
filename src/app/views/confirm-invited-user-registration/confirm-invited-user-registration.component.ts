@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { RiseTextInputComponent } from '../../components/rise-text-input/rise-text-input.component';
 import { UserViewModel } from '../../models/UserViewModel';
 import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
@@ -13,6 +13,7 @@ import { RiseToolbarComponent } from '../../components/rise-toolbar/rise-toolbar
 import {RiseNumberInputComponent} from "../../components/rise-number-input/rise-number-input.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-confirm-registration',
@@ -29,7 +30,9 @@ import {TranslateModule, TranslateService} from "@ngx-translate/core";
   templateUrl: './confirm-invited-user-registration.component.html',
   styleUrl: './confirm-invited-user-registration.component.css',
 })
-export class ConfirmInvitedUserRegistrationComponent implements OnInit {
+export class ConfirmInvitedUserRegistrationComponent implements OnInit,OnDestroy {
+
+  private m_oDestroy$: Subject<void> = new Subject<void>();
   m_oPasswordInputs = {
     password: '',
     confirmPw: '',
@@ -58,6 +61,12 @@ export class ConfirmInvitedUserRegistrationComponent implements OnInit {
       this.m_oConfirmInviteModel.confirmationCode = params['code'];
     });
   }
+
+ngOnDestroy() {
+    this.m_oDestroy$.next();
+    this.m_oDestroy$.complete();
+}
+
   getUserLanguage(sEvent:any){
     if(!FadeoutUtils.utilsIsStrNullOrEmpty(sEvent)){
       this.m_oConfirmInviteModel.defaultLanguage=sEvent
@@ -101,7 +110,7 @@ export class ConfirmInvitedUserRegistrationComponent implements OnInit {
       this.m_oConfirmInviteModel.userId=this.m_oUserInfoInput.userId.trim()
     }
     if (this.verifyInputs()) {
-      this.m_oAuthService.confirmUser(this.m_oConfirmInviteModel).subscribe({
+      this.m_oAuthService.confirmUser(this.m_oConfirmInviteModel).pipe(takeUntil(this.m_oDestroy$)).subscribe({
         next: (oResponse) => {
           this.m_oNotificationService.openInfoDialog(
             sInfoMessage,
@@ -155,21 +164,24 @@ export class ConfirmInvitedUserRegistrationComponent implements OnInit {
   }
 
   validateUserName(): boolean {
+
+    let sUserNameErrorLength=this.m_oTranslateService.instant("REGISTER.USERNAME_ERROR_MESSAGE_LENGTH");
+    let sUserNameErrorSpace=this.m_oTranslateService.instant("REGISTER.USERNAME_ERROR_MESSAGE_SPACES");
+    let sUserNameErrorLowercase=this.m_oTranslateService.instant("REGISTER.USERNAME_ERROR_MESSAGE_LOWERCASE");
     if (this.m_oUserInfoInput.userId) {
       this.m_oUserInfoInput.userId= this.m_oUserInfoInput.userId.trim();
       if (this.m_oUserInfoInput.userId.length < 8) {
-        this.m_sUsernameError =
-          'Please ensure that user id is longer than 8 characters';
+        this.m_sUsernameError =sUserNameErrorLength;
         return false;
       }
 
       if (/\s/.test(this.m_oUserInfoInput.userId)) {
-        this.m_sUsernameError = 'User ID cannot contain spaces';
+        this.m_sUsernameError = sUserNameErrorSpace
         return false;
       }
 
       if (this.m_oUserInfoInput.userId !== this.m_oUserInfoInput.userId.toLowerCase()) {
-        this.m_sUsernameError = 'User ID must be all lowercase';
+        this.m_sUsernameError =sUserNameErrorLowercase;
         return false;
       }
     }
