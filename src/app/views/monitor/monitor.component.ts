@@ -304,7 +304,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     if (this.m_oLayerAnalyzerSubscription) {
       this.m_oLayerAnalyzerSubscription.unsubscribe();
     }
-    console.log("destroyed!")
+    
     // IMPORTANT: Remove the fullscreenchange event listener
     document.removeEventListener('fullscreenchange', this.m_oFullscreenChangeListener);
   }
@@ -521,58 +521,65 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     this.m_oMapService.setSelectedLayers(this.m_aoLayers)
   }
 
-  private fillPluginsAndLayers(oPlugin: any, oLayer:LayerViewModel) {
-    const oLeafLetMap = this.m_oMapService.getMap();
-    const iIndex = this.m_aoLayers.findIndex(layer => layer.mapId === oLayer.mapId);
-    let oExistingLayer = this.m_aoLayers.find(l => l.layerId === oLayer.layerId);
-    oLayer.pluginName=oPlugin.name;
 
-    //  Preserve opacity if it existed before
-    oLayer.opacity = (typeof oExistingLayer?.opacity === 'number') ? oExistingLayer.opacity : 100;
+  private updateLayerList(oLayerMapVM:any) {
+    
+    // Check if it a layer already shown in the map
+    let oExistingLayer = this.m_aoLayers.find(oThisLayer => oThisLayer.mapId === oLayerMapVM.mapId);
 
-    const bIsSameLayer = oExistingLayer &&
-      oExistingLayer.layerId === oLayer.layerId &&
-      oExistingLayer.referenceDate === oLayer.referenceDate &&
-      oExistingLayer.geoserverUrl === oLayer.geoserverUrl;
+    // We do have it
+    if (oExistingLayer) { 
+      // Double check also reference date and geoserver url
+      const bIsSameLayer = oExistingLayer.referenceDate === oLayerMapVM.referenceDate 
+                        && oExistingLayer.geoserverUrl === oLayerMapVM.geoserverUrl
+                        && oExistingLayer.layerId === oLayerMapVM.layerId;
 
-    if (bIsSameLayer) {
-      // Nothing changed: skip re-adding to the map so we can avoid the reorder issue
-      return;
-    }
+      if (bIsSameLayer) {
+        // Nothing changed: skip re-adding to the map so we can avoid the reorder issue
+        return;
+      }
 
-    if (iIndex !== -1) {
-      oLeafLetMap.eachLayer((oMapLayer) => {
-        let sOldLayerId = this.m_aoLayers[iIndex].layerId;
-        if (sOldLayerId === oMapLayer.options.layers) {
-          oLeafLetMap.removeLayer(oMapLayer);
+      //  Preserve opacity if it existed before
+      oLayerMapVM.opacity = (typeof oExistingLayer?.opacity === 'number') ? oExistingLayer.opacity : 100;
+
+      // Do we have a layer of the same map already shown?
+      const iIndex = this.m_aoLayers.findIndex(oThisLayer => oThisLayer.mapId === oLayerMapVM.mapId);
+
+      if (iIndex !== -1) {
+        const oLeafLetMap = this.m_oMapService.getMap();
+
+        // Yes, we have this layer and is changed: remove old one from map
+        oLeafLetMap.eachLayer((oMapLayer) => {
+          let sOldLayerId = this.m_aoLayers[iIndex].layerId;
+          if (sOldLayerId === oMapLayer.options.layers) {
+            oLeafLetMap.removeLayer(oMapLayer);
+          }
+        });
+
+
+        if (oLayerMapVM.disabled) {
+          // The new one is disabled, remove from our active list
+          this.m_aoLayers.splice(iIndex, 1);
         }
-      });
+        else {
+          // Replace existing in our active list
+          this.m_aoLayers[iIndex] = oLayerMapVM;  
 
-      this.m_aoLayers[iIndex] = oLayer;  // Replace existing
+          // Add the layer again to the map
+          this.m_oMapService.addLayerMap2DByServer(
+            oLayerMapVM.layerId,
+            oLayerMapVM.geoserverUrl,
+            oLayerMapVM.opacity,
+          );
+        }
+
+        this.m_aoReversedLayers = [...this.m_aoLayers].reverse();
+        // Update the selected layers
+        this.m_oMapService.setSelectedLayers(this.m_aoLayers)      
+
+      }      
     }
-    else {
-      this.m_aoLayers.push(oLayer);     // Add new if not found
-    }
 
-    // Check if oPlugin.layers already contains the object
-    //todo so ugly , and must be one layer not layers and also get rid of the any type :'(
-    if (!oPlugin.layers.some(oPluginLayer => oPluginLayer.layerId === oLayer.layerId)) {
-      oPlugin.layers[0]=oLayer;
-    }
-
-    //sort the layers
-    //this.m_aoLayers = this.m_aoLayers.sort((a, b) => a.referenceDate - b.referenceDate);
-
-    this.m_aoReversedLayers = [...this.m_aoLayers].reverse();
-
-    this.m_oMapService.addLayerMap2DByServer(
-      oLayer.layerId,
-      oLayer.geoserverUrl,
-      oLayer.opacity,
-
-    );
-    // Update the selected layers
-    this.m_oMapService.setSelectedLayers(this.m_aoLayers)
   }
 
   /**
@@ -589,9 +596,45 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
         this.cleanEventPanel();
     }
 
-    // TODO: Update the layers based on the new date
-    // this.initMapButtons(this.m_aoVisibleMapLayersButtons);
+    // Update the layers based on the new date
+    this.updateMapAndLayerButtons();
   }
+
+  /**
+   * this method is made to enable/disable the plugins button
+   * @param aoMaps
+   */
+  updateMapAndLayerButtons(){
+
+    // Get the list of the map id of the layers currently shown on the map
+    const asMapIds = this.m_aoLayers.map(oLayer => oLayer.mapId);
+    const sMapIds = asMapIds.join(",");
+    const sSelectedPluginId= this.m_oSelectedPlugin ? this.m_oSelectedPlugin.id : "";
+
+    if(sMapIds!="" || sSelectedPluginId!=""){
+
+      this.m_oLayerService.findAvailableLayers(sMapIds,this.m_sAreaId,this.m_iSelectedDate, sSelectedPluginId).subscribe({
+        next:(oResponse)=>{
+          for (const oLayerMapVM of oResponse) {
+            this.updateLayerList(oLayerMapVM);
+          }
+
+          // If we have a plugin selected, update the list of visible buttons
+          if (sSelectedPluginId!="") {
+            let aoNewVisibleButtons = [];
+            for (let i=0;i<this.m_aoVisibleMapLayersButtons.length;i++) {
+              for (let j=0;j<oResponse.length;j++) {
+                if (this.m_aoVisibleMapLayersButtons[i].mapId === oResponse[j].mapId) {
+                  aoNewVisibleButtons.push(oResponse[j]);
+                }
+              }
+            }
+            this.m_aoVisibleMapLayersButtons = aoNewVisibleButtons;
+          }
+        }
+      });
+    }
+  }  
 
   /**
    * Handle selection of a plugin in the first level menu
@@ -765,6 +808,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       }
     });
   }
+
   getOpacity(sLayerId): number {
     let oMap = this.m_oMapService.getMap();
     let opacity = 0; // Default opacity
@@ -1037,7 +1081,8 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     if(sLocation==='events'){
       if(this.m_sAreaId){
         this.m_oRouter.navigateByUrl(`/events/${this.m_sAreaId}`)
-      }else{
+      }
+      else{
         console.error("Area id is missing")
         //todo show notification
       }
@@ -1076,62 +1121,6 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     this.m_bShowAllMaps = !this.m_bShowAllMaps;
   }
 
-  /**
-   * this method is made to enable/disable the plugins button
-   * @param aoMaps
-   */
-  initMapButtons(aoMaps: any[]){
-
-    let asAvailableMapIds=[]
-
-    const asMapIds = aoMaps.map(oMap => oMap.id);
-    const sMapIds = asMapIds.join(","); // e.g., "map1,map2,map3"
-
-    if(sMapIds){
-
-      this.m_oLayerService.findAvailableLayers(sMapIds,this.m_sAreaId,this.m_iSelectedDate, "").subscribe({
-
-        next:(oResponse)=>{
-          for (const oResponseEle of oResponse) {
-            this.fillPluginsAndLayers(aoMaps.find(oPlugin=>oPlugin.id===oResponseEle.mapId), oResponseEle);
-            asAvailableMapIds.push(oResponseEle);
-          }
-          for (const oPlugin of aoMaps) {
-            oPlugin.disabled=!asAvailableMapIds.includes(oPlugin.id)
-          }
-        }
-      })
-    }
-  }
-
-    /**
-   * this method is made to enable/disable the plugins button
-   * @param aoPlugins
-   */
-  initAreaPluginsButtons(aoPlugins: any[]){
-
-    let asAvailableMapIds=[]
-
-    const asMapIds = aoPlugins.map(oPlugin => oPlugin.id);
-    const sMapIds = asMapIds.join(","); // e.g., "map1,map2,map3"
-
-    if(sMapIds){
-
-      this.m_oLayerService.findAvailableLayers(sMapIds,this.m_sAreaId,this.m_iSelectedDate, "").subscribe({
-
-        next:(oResponse)=>{
-          for (const oResponseEle of oResponse) {
-            this.fillPluginsAndLayers(aoPlugins.find(oPlugin=>oPlugin.id===oResponseEle.mapId), oResponseEle);
-            asAvailableMapIds.push(oResponseEle);
-          }
-          for (const oPlugin of aoPlugins) {
-            oPlugin.disabled=!asAvailableMapIds.includes(oPlugin.id)
-          }
-        }
-      })
-    }
-  }
-
   /*
     Given an area id and selected date , we show Impacts
     */
@@ -1146,7 +1135,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     this.m_oDialog.open(ImpactsDialogComponent, {
       data: oDialogData
     }).afterClosed().subscribe(()=>{
-        console.log("imapcts works")
+
       }
     )
   }

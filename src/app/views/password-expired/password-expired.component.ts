@@ -50,13 +50,13 @@ export class PasswordExpiredComponent implements OnInit, OnDestroy {
   }
 
   confirmRequest() {
-    if (
-      this.validatePassword()
-    ) {
+    if ( this.validatePassword()) {
+
       let oRequestVM: ChangeExpiredPasswordRequestViewModel = {
         password: this.m_oPasswordInputs.password,
         userId: this.m_sUserId
       }
+      
       this.m_oUserService.changeExpiredPassword(oRequestVM).pipe(takeUntil(this.m_oDestroy$)).subscribe({
         next: (oResponse) => {
           this.m_oNotificationService.openSnackBar(
