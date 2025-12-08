@@ -7,7 +7,9 @@ import {UserService} from "../../services/api/user.service";
 import {NotificationsDialogsService} from "../../services/notifications-dialogs.service";
 import {ChangeExpiredPasswordRequestViewModel} from "../../models/ChangeExpiredPasswordRequestViewModel";
 import {Subject, takeUntil} from "rxjs";
-import {TranslateService} from "@ngx-translate/core";
+import {TranslateModule, TranslateService} from "@ngx-translate/core";
+import {AuthService} from "../../services/api/auth.service";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-password-expired',
@@ -15,13 +17,19 @@ import {TranslateService} from "@ngx-translate/core";
   imports: [
     RiseButtonComponent,
     RiseTextInputComponent,
-    RiseToolbarComponent
+    RiseToolbarComponent,
+    NgIf,
+    TranslateModule
   ],
   templateUrl: './password-expired.component.html',
   styleUrl: './password-expired.component.css'
 })
 export class PasswordExpiredComponent implements OnInit, OnDestroy {
-
+  m_bShowOtp:boolean=false;
+  m_bIsOtpSubmitted:boolean=false;
+  public m_oOTPVerifyVM: any = {};
+  m_bIsRequestSubmitted:boolean=false;
+  m_sOneTimePW:string=""
   m_sConfirmationCode: string;
   m_sUserId: string;
   m_oPasswordInputs = {
@@ -35,6 +43,7 @@ export class PasswordExpiredComponent implements OnInit, OnDestroy {
     private m_oActiveRoute: ActivatedRoute,
     private m_oTranslate: TranslateService,
     private m_oUserService: UserService,
+    private m_oAuthService: AuthService,
     private m_oNotificationService: NotificationsDialogsService,
     private m_oRouter: Router,
   ) {
@@ -49,6 +58,7 @@ export class PasswordExpiredComponent implements OnInit, OnDestroy {
     this.m_oDestroy$.complete();
   }
 
+
   confirmRequest() {
     if (
       this.validatePassword()
@@ -59,14 +69,12 @@ export class PasswordExpiredComponent implements OnInit, OnDestroy {
       }
       this.m_oUserService.changeExpiredPassword(oRequestVM).pipe(takeUntil(this.m_oDestroy$)).subscribe({
         next: (oResponse) => {
-          this.m_oNotificationService.openSnackBar(
-            "Password updated successfully",
-            "Update",
-            "success"
-          );
-          this.m_oRouter.navigateByUrl('/login')
+          this.m_oOTPVerifyVM = oResponse;
+          this.m_bShowOtp=true;
+          this.m_bIsRequestSubmitted = false;
         },
         error: (oError) => {
+          this.m_bShowOtp=false;
           this.m_oNotificationService.openSnackBar(
             "Something went wrong",
             "Error",
@@ -75,6 +83,28 @@ export class PasswordExpiredComponent implements OnInit, OnDestroy {
         }
       })
     }
+  }
+
+  /**
+   * Verifies the OTP entered by the User
+   * UC: If credentials are valid, RISE ask to validate the login with OTP (UC_005)
+   */
+  verifyOtp(): void {
+    this.m_bIsOtpSubmitted = true;
+    this.m_oAuthService.verifyOTP(this.m_oOTPVerifyVM).pipe(takeUntil(this.m_oDestroy$)).subscribe({
+      next: (oResponse) => {
+        if (oResponse.status === 200) {
+          this.verifyExpiredPasswordChange();
+
+        }
+      },
+      error: (oError) => {
+        // this.m_oRiseUtils.handleNotificationError(
+        //   oError.error.errorStringCodes
+        // );
+        this.m_bIsOtpSubmitted = false;
+      },
+    });
   }
 
   validatePassword(): boolean {
@@ -113,6 +143,39 @@ export class PasswordExpiredComponent implements OnInit, OnDestroy {
     if (!this.validatePassword()) {
       return false;
     }
+
     return true;
+  }
+
+  verifyExpiredPasswordChange(){
+    let oOtpVerify = {
+      id: this.m_oOTPVerifyVM.id,
+      userId: this.m_oOTPVerifyVM.userId,
+    };
+
+    this.m_oUserService.verifyExpiredPasswordChange(oOtpVerify).pipe(takeUntil(this.m_oDestroy$)).subscribe({
+      next: (oResponse) => {
+        this.m_oNotificationService.openSnackBar(
+          "Password updated successfully",
+          "Update",
+          "success"
+        );
+        this.m_oRouter.navigateByUrl('/login')
+      },
+      error: (oError) => {
+        this.m_oNotificationService.openSnackBar(
+          "Something went wrong",
+          "Error",
+          "danger"
+        );
+      }
+    })
+  }
+
+  executeRequestAgain(){
+    //send the same changed password again
+    if(this.enableSubmit()){
+      this.confirmRequest();
+    }
   }
 }

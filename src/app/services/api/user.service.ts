@@ -109,4 +109,9 @@ export class UserService {
       this.APIURL + '/usr/confirm-forget-password', oConfirmVM
     )
   }
+  verifyExpiredPasswordChange(oOTPVerifyVM: OTPVerifyViewModel) {
+    return this.m_oHttp.post<any>(
+      this.APIURL + '/usr/change_expired_password_verify', oOTPVerifyVM
+    )
+  }
 }
