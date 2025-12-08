@@ -33,6 +33,16 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   /**
    * UC_190 Browse Time
    */
+
+  /**
+   * Available time range options
+   */
+  m_asTimeRanges: string[] = ['Auto', '1Y', '1M', '1W', '1D'];
+
+  /**
+   * The currently selected time range. Defaults to 'Auto'
+   */
+  m_sSelectedTimeRange: string = 'Auto';
   /**
    * element ref for the slider
    */
@@ -188,9 +198,21 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     this.updateSliderCursor();
   }
 
+  /**
+   * NEW: Handle clicking on a time range option
+   * @param sRange The range string selected (e.g., '1Y')
+   */
+  onTimeRangeSelected(sRange: string): void {
+    this.m_sSelectedTimeRange = sRange;
+
+    console.log(`Time Range Selected: ${this.m_sSelectedTimeRange}`);
+
+    // TODO: Logic for zooming/filtering ticks will go here later
+  }
+
   @HostListener('mouseleave', ['$event'])
   onMouseLeave(oEvent: MouseEvent) {
-    this.m_sSliderClass = ''; // Reset cursor when leaving
+    this.m_sSliderClass = ''; // Reset the cursor when leaving
   }
 
   updateSliderCursor() {

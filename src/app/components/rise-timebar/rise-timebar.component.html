@@ -57,12 +57,17 @@
       </rise-button>
     </div>
 
-    <!-- Right-aligned chip menu -->
-<!--    <rise-chip-menu-->
-<!--      [m_sSelectedItem]="m_oSelectedDate"-->
-<!--      [m_asItems]="m_asDates"-->
-<!--      (m_oSelectedItem)="dateSelected($event)"-->
-<!--    ></rise-chip-menu>-->
+    <div class="range-selector d-flex flex-row align-items-center gap-2">
+      <ng-container *ngFor="let sRange of m_asTimeRanges; let i = index">
+        <span
+          class="range-option cursor-pointer"
+          [class.active]="m_sSelectedTimeRange === sRange"
+          (click)="onTimeRangeSelected(sRange)">
+          {{ sRange }}
+        </span>
+        <span *ngIf="i < m_asTimeRanges.length - 1" class="range-separator">|</span>
+      </ng-container>
+    </div>
     <rise-calendar
       [m_oSelectedDate]="m_oSelectedDate"
       [m_oStartDate]="m_oMomentStartDate"

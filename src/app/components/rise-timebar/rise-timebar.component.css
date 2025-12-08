@@ -152,3 +152,33 @@
 .material-symbols-outlined:not(.disabled-button):hover {
   color: var(--rise-gold); /* Example hover color */
 }
+
+
+/* NEW Styles for Time Range Selector */
+
+.range-selector {
+  font-size: 0.9rem; /* Adjust to match your app font size */
+  color: #a0a0a0;    /* Default subtle color */
+}
+
+.range-option {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 2px 4px;
+}
+
+.range-option:hover {
+  color: #ffffff; /* Brighter on hover */
+}
+
+.range-option.active {
+  color: #ffffff;      /* Active color (White or your Primary Color) */
+  font-weight: bold;
+  border-bottom: 2px solid #ffffff; /* Optional: Underline effect */
+}
+
+.range-separator {
+  color: #555; /* Subtle separator color */
+  font-size: 0.8rem;
+  user-select: none;
+}
