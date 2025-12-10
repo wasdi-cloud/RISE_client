@@ -12,6 +12,7 @@ import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule} fro
 import {FormsModule} from "@angular/forms";
 import {MomentDateAdapter} from "@angular/material-moment-adapter";
 import moment from "moment";
+import {DatePipe, NgIf} from "@angular/common";
 
 export const CUSTOM_DATE_FORMATS = {
   parse: { dateInput: 'ddd MMM DD YYYY' }, // Parsing format
@@ -34,7 +35,9 @@ export const CUSTOM_DATE_FORMATS = {
     MatNativeDateModule,
     MatFormFieldModule,
     MatInputModule,
-    FormsModule
+    FormsModule,
+    DatePipe,
+    NgIf
   ],
   providers: [
     // provideNativeDateAdapter()
@@ -55,6 +58,10 @@ export class RiseCalendarComponent implements OnInit{
    *
    */
   @Input() m_oSelectedDate:Date ;
+  /**
+   * Flag to display time alongside the date (Useful for 1D mode)
+   */
+  @Input() m_bShowTime: boolean = false;
 
   /**
    * Highlighted / important dates to show in calendar

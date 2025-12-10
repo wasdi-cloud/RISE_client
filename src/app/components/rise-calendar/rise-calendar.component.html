@@ -1,4 +1,5 @@
-<div class="custom-calendar-container">
+<div class="custom-calendar-container d-flex flex-row align-items-center gap-2">
+
   <input (dateChange)="emitDate($event)"
          [(ngModel)]="m_oSelectedDate"
          class="custom-small"
@@ -6,8 +7,13 @@
          [matDatepicker]="picker"
          [matDatepickerFilter]="dateFilter"
          disabled>
+
+  <div *ngIf="m_bShowTime" class="time-display">
+    {{ m_oSelectedDate | date:'HH:mm' }}
+  </div>
+
   <mat-datepicker-toggle [disableRipple]="true" style="color:#f0f0f0;" matIconSuffix [for]="picker">
-<!--    <mat-icon matDatepickerToggleIcon>keyboard_arrow_up</mat-icon>-->
   </mat-datepicker-toggle>
+
   <mat-datepicker [dateClass]="dateClass" disabled="false" #picker></mat-datepicker>
 </div>

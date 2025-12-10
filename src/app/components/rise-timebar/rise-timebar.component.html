@@ -33,9 +33,9 @@
         class="event-icon"
         [style.left]="getEventMarkerPosition(event.peakDate * 1000)"
         [matTooltip]="event.description"
-        (click)="goToEvent(event,true)"
+        (click)="goToEvent(event, true)"
       >
-      <span class="material-symbols-outlined">flag</span>
+        <span class="material-symbols-outlined">flag</span>
       </div>
     </div>
   </div>
@@ -46,8 +46,19 @@
     <!-- Left-aligned options -->
     <div class="time-options d-flex flex-row align-items-center gap-4">
       <!--span class="material-symbols-outlined" (click)="onPlayButtonClick()"> play_arrow </span-->
-      <span class="material-symbols-outlined"  [class.disabled-button]="m_bDisablePrevButton" (click)="minusOneDayFromDate()">history </span>
-      <span class="material-symbols-outlined" [class.disabled-button]="m_bDisableNextButton" (click)="addOneDayToDate()"> update </span>
+      <span
+        class="material-symbols-outlined"
+        [class.disabled-button]="m_bDisablePrevButton"
+        (click)="changeTimeStep(-1)">
+        history
+      </span>
+
+      <span
+        class="material-symbols-outlined"
+        [class.disabled-button]="m_bDisableNextButton"
+        (click)="changeTimeStep(1)">
+        update
+      </span>
       <rise-button
         [m_sLabel]="'TIMEBAR.LIVE'"
         [m_sIconLeft]="'radio_button_checked'"
@@ -69,6 +80,7 @@
       </ng-container>
     </div>
     <rise-calendar
+      [m_bShowTime]="m_sSelectedTimeRange === '1D'"
       [m_oSelectedDate]="m_oSelectedDate"
       [m_oStartDate]="m_oMomentStartDate"
       (m_oSelectedDateFromCalendar)="dateSelected($event,true)"

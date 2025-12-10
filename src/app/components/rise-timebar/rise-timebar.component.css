@@ -114,9 +114,9 @@
 
 
 .tick {
-  position: absolute;
   transform: translateX(-50%);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
+  position: absolute;
   white-space: nowrap;
 }
 .tick:first-child {
