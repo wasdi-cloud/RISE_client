@@ -231,34 +231,25 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
     // Check if navigated from event list with state
     if (state?.peakDate) {
-      this.m_bIsNavigatedFromEventList=true;
-      this.m_oSelectedEvent.endDate=(Number(state?.endDate));
-      this.m_oSelectedEvent.startDate=(Number(state?.startDate));
-      this.m_oSelectedEvent.peakDate=(Number(state?.peakDate));
-      this.m_oSelectedEvent.type=state?.type;
-      this.m_oSelectedEvent.name=state?.name;
-      this.m_oSelectedEvent.id=state?.id;
+      // ... setup ...
+      this.m_bShowEventInfo = true;
 
-      this.loadEventAttachments(this.m_oSelectedEvent.id);
-
-      this.m_bShowEventInfo=true;
-
-      // Convert peakDate to milliseconds and create a Date object
+      // 1. Get Peak Date from Timestamp
       const iPeakDateInSeconds = Number(state?.peakDate);
       const oPeakDate = new Date(iPeakDateInSeconds * 1000);
 
-      // Ensure the date is at the end of the day
-      const oAdjustedDate = new Date(
-        oPeakDate.getFullYear(),
-        oPeakDate.getMonth(),
-        oPeakDate.getDate(),
+      // 2. FORCE UTC END OF DAY
+      // We use Date.UTC() to get a timestamp for the specific UTC Day at 23:59:59
+      const iAdjustedTimestamp = Date.UTC(
+        oPeakDate.getUTCFullYear(),
+        oPeakDate.getUTCMonth(),
+        oPeakDate.getUTCDate(),
         23, 59, 59, 0
       );
 
-      let iFinalTimestampMs = oAdjustedDate.getTime(); // Convert to seconds
-
-      this.m_iSelectedDate= iFinalTimestampMs;
-      this.m_iInitialPeakDate = iFinalTimestampMs/1000;
+      // 3. Set Component Variables
+      this.m_iSelectedDate = iAdjustedTimestamp;
+      this.m_iInitialPeakDate = iAdjustedTimestamp / 1000;
     }
 
     // Initialize the bound function for fullscreen change
@@ -580,6 +571,8 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    *  UC: RISE shows the Monitor Section containing a timeline to change the reference time of the viewer
    */
   getReferenceTime(oSelecteDateInfo:any): void {
+    // oSelecteDateInfo.iReferenceTime is a Millisecond Timestamp.
+    // This is safe to use directly.
     this.m_iSelectedDate = oSelecteDateInfo.iReferenceTime;
     this.m_bIsNavigatedFromEventList=!oSelecteDateInfo.bChangedByUser;
     if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oSelecteDateInfo?.eventId)) {

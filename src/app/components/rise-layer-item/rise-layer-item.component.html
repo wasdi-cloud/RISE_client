@@ -9,7 +9,7 @@
           {{ m_oLayer.name | translate }}
         </div>
         <div class="ref-date">
-          {{ m_oLayer.referenceDate * 1000 | date : "dd/MM/YYYY hh:mm:ss a" }}
+          {{ m_oLayer.referenceDate * 1000 | date : "dd/MM/YYYY hh:mm:ss a": 'UTC' }} UTC
         </div>
       </div>
     </div>

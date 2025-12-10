@@ -65,9 +65,9 @@
         <!-- Scrollable Event Details -->
         <div class="event-details-scroll mt-2 flex-grow-1 overflow-auto">
           <!--p><strong>Event:</strong> {{ m_oSelectedEvent.name }} - <strong>Type:</strong> {{ m_oSelectedEvent.type }}</p-->
-          <p>{{"MONITOR.EVENT_START"|translate}} : {{ m_oSelectedEvent.startDate * 1000 | date: 'medium' }}</p>
-          <p>{{"MONITOR.EVENT_PEAK"|translate}} : {{ m_oSelectedEvent.peakDate * 1000 | date: 'medium' }}</p>
-          <p>{{"MONITOR.EVENT_END"|translate}} : {{ m_oSelectedEvent.endDate * 1000 | date: 'medium' }}</p>
+          <p>{{"MONITOR.EVENT_START"|translate}} : {{ m_oSelectedEvent.startDate * 1000 | date: 'medium' : 'UTC' }}</p>
+          <p>{{"MONITOR.EVENT_PEAK"|translate}} : {{ m_oSelectedEvent.peakDate * 1000 | date: 'medium' : 'UTC' }}</p>
+          <p>{{"MONITOR.EVENT_END"|translate}} : {{ m_oSelectedEvent.endDate * 1000 | date: 'medium' : 'UTC' }}</p>
           <div class="drag-drop-container d-flex flex-row justify-content-between mt-3">
             <div class="attachments-zone">
             <div *ngFor="let sFile of m_asEventImages" class="file-item" (click)="onPreviewImage(sFile)">
@@ -123,8 +123,8 @@
         </div>
 
         <!-- SECOND LEVEL: Maps (from m_aoVisibleMapLayersButtons) - Only shown when a plugin is selected -->
-        <div 
-          *ngIf="m_oSelectedPlugin" 
+        <div
+          *ngIf="m_oSelectedPlugin"
           class="maps-level d-flex flex-row flex-wrap gap-2 align-items-center"
         >
           <!-- Show visible plugins or all if expanded -->

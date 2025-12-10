@@ -229,17 +229,13 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   onTimeRangeSelected(sRange: string): void {
     this.m_sSelectedTimeRange = sRange;
 
-    // 1. Handle "Auto"
     if (sRange === 'Auto') {
       this.initDates(false);
       this.generateTicks();
       return;
     }
 
-    // 2. Handle Zoomed Ranges
     let oBaseDate = new Date(this.m_oSelectedDate);
-
-    // Global End (Now) for comparison
     const iGlobalEndTimestamp = this.m_iEndDate * 1000;
 
     let oStartDate = new Date(oBaseDate);
@@ -247,41 +243,30 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
 
     switch (sRange) {
       case '1Y':
-        oStartDate.setFullYear(oStartDate.getFullYear() - 1);
+        oStartDate.setUTCFullYear(oStartDate.getUTCFullYear() - 1);
         break;
       case '1M':
-        oStartDate.setMonth(oStartDate.getMonth() - 1);
+        oStartDate.setUTCMonth(oStartDate.getUTCMonth() - 1);
         break;
       case '1W':
-        oStartDate.setDate(oStartDate.getDate() - 7);
+        oStartDate.setUTCDate(oStartDate.getUTCDate() - 7);
         break;
-
       case '1D':
-        // HYBRID LOGIC
-
-        // Check if we are "Live" or looking at "Today"
-        // (i.e. is the selected date within the last 24 hours of Real Time?)
         const iDiffFromNow = Math.abs(iGlobalEndTimestamp - oBaseDate.getTime());
         const bIsToday = iDiffFromNow < (24 * 60 * 60 * 1000) && oBaseDate.getTime() <= iGlobalEndTimestamp;
 
         if (this.m_bIsLive || bIsToday) {
-          // SCENARIO A: LIVE / TODAY
-          // Rolling Window: From "Now" back 24 hours
-          // This prevents showing future empty hours
+          // Rolling Window (UTC)
           oEndDate = new Date(iGlobalEndTimestamp);
-
-          // Clean up minutes to avoid :59 issues, snap to current hour
-          oEndDate.setMinutes(0,0,0);
-
+          oEndDate.setUTCMinutes(0, 0, 0);
           oStartDate = new Date(oEndDate);
-          oStartDate.setDate(oStartDate.getDate() - 1);
+          oStartDate.setUTCDate(oStartDate.getUTCDate() - 1);
         }
         else {
-          // SCENARIO B: HISTORY
-          // Calendar Day: 00:00 to 23:00 of that specific day
-          oStartDate.setHours(0, 0, 0, 0);
+          // Calendar Day (UTC)
+          oStartDate.setUTCHours(0, 0, 0, 0);
           oEndDate = new Date(oStartDate);
-          oEndDate.setHours(23, 0, 0, 0);
+          oEndDate.setUTCHours(23, 0, 0, 0);
         }
         break;
     }
@@ -333,29 +318,23 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
 
   generateZoomedTicks(oStartDate: Date, oEndDate: Date, sRange: string) {
     this.m_aiTicks = [];
-
-    // CLONE the start date
     let oIterDate = new Date(oStartDate);
 
-    // CRITICAL FIX:
-    // If we are NOT in 1D mode, we must snap the Tick Generator to Midnight
-    // so it aligns exactly with the Slider's m_asDates (which are just Date Strings).
+    // SNAP TO UTC MIDNIGHT for non-hourly modes
     if (sRange !== '1D') {
-      oIterDate.setHours(0, 0, 0, 0);
+      oIterDate.setUTCHours(0, 0, 0, 0);
     }
 
     if (sRange === '1Y') {
       // Logic: Show Month names
       // Ensure we start at the beginning of the month so ticks don't land on "8th of Dec, 8th of Jan"
-      oIterDate.setDate(1);
-
+      oIterDate.setUTCDate(1);
       while (oIterDate <= oEndDate) {
         this.m_aiTicks.push({
-          value: MONTHS[oIterDate.getMonth()],
+          value: MONTHS[oIterDate.getUTCMonth()],
           timestamp: oIterDate.getTime()
         });
-        oIterDate.setMonth(oIterDate.getMonth() + 1);
-        // Date is already set to 1, so no need to reset
+        oIterDate.setUTCMonth(oIterDate.getUTCMonth() + 1);
       }
     }
 
@@ -366,7 +345,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
           value: oIterDate.getDate(),
           timestamp: oIterDate.getTime()
         });
-        oIterDate.setDate(oIterDate.getDate() + 7);
+        oIterDate.setUTCDate(oIterDate.getDate() + 7);
       }
     }
 
@@ -377,7 +356,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
           value: oIterDate.getDate(),
           timestamp: oIterDate.getTime()
         });
-        oIterDate.setDate(oIterDate.getDate() + 1);
+        oIterDate.setUTCDate(oIterDate.getDate() + 1);
       }
     }
 
@@ -387,16 +366,10 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
       // It should already be at XX:00:00 due to step 1
 
       while (oIterDate <= oEndDate) {
-        // Format: HH:00
-        const sHour = oIterDate.getHours().toString().padStart(2, '0') + ':00';
-
-        this.m_aiTicks.push({
-          value: sHour,
-          timestamp: oIterDate.getTime()
-        });
-
-        // Add 4 Hours
-        oIterDate.setHours(oIterDate.getHours() + 1);
+        // UTC Hour
+        const sHour = oIterDate.getUTCHours().toString().padStart(2, '0') + ':00';
+        this.m_aiTicks.push({ value: sHour, timestamp: oIterDate.getTime() });
+        oIterDate.setUTCHours(oIterDate.getUTCHours() + 4);
       }
     }
   }
@@ -610,13 +583,13 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     // 3. FORCE TIME LOGIC
     this.m_oSelectedDate = new Date(this.m_sSelectedDate);
 
+
+    //NOTE: This made like that for readability
     if (this.m_sSelectedTimeRange === '1D') {
-      // DO NOTHING.
-      // Trust the slider string which is now "HH:00:00"
-    }
-    else {
-      // For 1M, 1W, Auto -> Set to End of Day
-      this.m_oSelectedDate.setHours(23, 59, 59, 0);
+      // Trust the specific UTC hour from the ISO string
+    } else {
+      // Force End of UTC Day
+      this.m_oSelectedDate.setUTCHours(23, 59, 59, 999);
     }
 
     // 4. Update Timestamp
@@ -929,31 +902,30 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    * Generates the array of dates for the slider.
    * Added bHighResolution for '1D' mode to include hours.
    */
+  // rise-timebar.component.ts
+
   generateDateArray(oStartDate: Date, oEndDate: Date, bHighResolution: boolean = false): void {
     let asDates = [];
+    // Clone and force UTC
     let oIterDate = new Date(oStartDate);
 
     // Safety: prevent infinite loops
-    if (oIterDate > oEndDate) return;
+    if (oIterDate.getTime() > oEndDate.getTime()) return;
 
-    while (oIterDate <= oEndDate) {
+    while (oIterDate.getTime() <= oEndDate.getTime()) {
       if (bHighResolution) {
-        // 1D MODE:
-        // Force clean string generation
-        asDates.push(oIterDate.toString());
-
-        // Add exactly 1 Hour
-        oIterDate.setHours(oIterDate.getHours() + 1);
+        // 1D Mode: Use ISO String (e.g., "2025-12-08T14:00:00.000Z")
+        asDates.push(oIterDate.toISOString());
+        oIterDate.setUTCHours(oIterDate.getUTCHours() + 1);
       } else {
-        // STANDARD MODE:
-        asDates.push(oIterDate.toDateString());
-        oIterDate.setDate(oIterDate.getDate() + 1);
+        // Standard Mode: Use YYYY-MM-DD
+        asDates.push(oIterDate.toISOString().split('T')[0]);
+        oIterDate.setUTCDate(oIterDate.getUTCDate() + 1);
       }
     }
 
-    // Ensure last date is included if missing
-    // (Logic unchanged, but crucial for 1D to catch the last hour)
-    let sLastVal = bHighResolution ? oEndDate.toString() : oEndDate.toDateString();
+    // Handle last value
+    let sLastVal = bHighResolution ? oEndDate.toISOString() : oEndDate.toISOString().split('T')[0];
     if (asDates.length > 0 && asDates[asDates.length - 1] !== sLastVal) {
       asDates.push(sLastVal);
     }

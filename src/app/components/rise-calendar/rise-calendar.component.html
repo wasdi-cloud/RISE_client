@@ -9,7 +9,7 @@
          disabled>
 
   <div *ngIf="m_bShowTime" class="time-display">
-    {{ m_oSelectedDate | date:'HH:mm' }}
+    {{ m_oSelectedDate | date:'HH:mm' : 'UTC'}}
   </div>
 
   <mat-datepicker-toggle [disableRipple]="true" style="color:#f0f0f0;" matIconSuffix [for]="picker">
