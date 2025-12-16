@@ -12,4 +12,8 @@ export class AttachmentListViewModel extends RiseViewModel {
 
   files?: string[];
 
+  lats?: number[];
+
+  lngs?: number[];
+
 }

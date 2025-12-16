@@ -40,6 +40,7 @@ import {Subscription} from "rxjs";
 import {PrintMapDialogComponent} from "../../dialogs/print-map-dialog/print-map-dialog.component";
 import { PluginService } from '../../services/api/plugin.service';
 import e from 'express';
+import L from 'leaflet';
 
 /**
  * TODO THERE IS A BIG NAMING PROBLEM HERE, plugin, maps, layers, plugins here in the client is
@@ -134,6 +135,16 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    * List of Event images
    */
   m_asEventImages: string[] = [];
+
+  /**
+   * List of Event image markers
+   */
+  m_aoEventImageMarkers: Array<{fileName: string, lat: number, lon: number}> = [];
+
+  /**
+   * Layer group for image markers
+   */
+  private m_oImageMarkersLayer: any = null;  
 
   /**
    * List of Event documents
@@ -592,8 +603,10 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oSelecteDateInfo?.eventId)) {
       this.fillEventPanel(oSelecteDateInfo.eventId);
 
-    }else if(!this.m_bIsNavigatedFromEventList){
+    }
+    else if(!this.m_bIsNavigatedFromEventList){
         this.cleanEventPanel();
+        this.clearImageMarkers();
     }
 
     // Update the layers based on the new date
@@ -891,6 +904,20 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     this.m_oAttachmentService.list("event_images", sEventId).subscribe({
       next: (oResponse) => {
         this.m_asEventImages = oResponse.files;
+        this.m_aoEventImageMarkers = [];
+
+        for (let i = 0; i < oResponse.files.length; i++) {
+          if (oResponse.lats[i] != -9999.0 && oResponse.lngs[i] != -9999.0) {
+            this.m_aoEventImageMarkers.push({
+              fileName: oResponse.files[i],
+              lat: oResponse.lats[i],
+              lon: oResponse.lngs[i]
+            });
+          }
+        }
+        
+        // Add markers to the map
+        this.addImageMarkersToMap();        
       },
       error: (oError) => {
         console.error("Error loading image attachment", oError);
@@ -906,6 +933,65 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       }
     });
   }
+
+  clearImageMarkers(): void {
+    if (this.m_oImageMarkersLayer) {
+      const oMap = this.m_oMapService.getMap();
+      oMap.removeLayer(this.m_oImageMarkersLayer);
+      this.m_oImageMarkersLayer = null;
+    }
+  }
+
+ /**
+   * Add image markers to the map
+   */
+  addImageMarkersToMap(): void {
+    // Remove existing markers if any
+    this.clearImageMarkers();
+
+    if (this.m_aoEventImageMarkers.length === 0)  {
+      return;
+    }
+
+    const oMap = this.m_oMapService.getMap();
+    
+    // Create a layer group for image markers
+    this.m_oImageMarkersLayer = L.layerGroup().addTo(oMap);
+
+    // Add each marker
+    this.m_aoEventImageMarkers.forEach(oImageMarker => {
+      // Create custom icon using Material Icons (no PNG needed)
+      const oIcon = L.divIcon({
+        html: '<span class="material-icons" style="color: #efba35; font-size: 24px;">photo_camera</span>',
+        className: 'custom-image-marker',
+        iconSize: [24, 24],
+        iconAnchor: [12, 24],
+        popupAnchor: [0, -24]
+      });
+
+      // Create marker
+      const oImageMarkerLeaflet = L.marker([oImageMarker.lat, oImageMarker.lon], {
+        icon: oIcon,
+        title: oImageMarker.fileName
+      });
+
+      // Add click event
+      oImageMarkerLeaflet.on('click', () => {
+        this.onPreviewImage(oImageMarker.fileName);
+      });
+
+      // Optional: Add tooltip
+      oImageMarkerLeaflet.bindTooltip(oImageMarker.fileName, {
+        permanent: false,
+        direction: 'top',
+        offset: [0, -10]
+      });
+
+      // Add to layer group
+      this.m_oImageMarkersLayer.addLayer(oImageMarkerLeaflet);
+    });
+
+  }  
 
   onPreviewImage(sFileName: string) {
     if (sFileName) {
@@ -926,8 +1012,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
         width: '98vw',
         height: '98vh',
         maxWidth: '98vw',
-        maxHeight: '98vh',
-        backdropClass: 'transparent-backdrop'
+        maxHeight: '98vh'
       });
 
       // Handle dialog close event
@@ -963,8 +1048,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
         width: '98vw',
         height: '98vh',
         maxWidth: '98vw',
-        maxHeight: '98vh',
-        backdropClass: 'transparent-backdrop'
+        maxHeight: '98vh'
       });
 
       // Handle dialog close event
@@ -980,6 +1064,9 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     if(this.m_bIsLive){
       // Clean the event panel if we go live
       this.cleanEventPanel();
+
+      // Clear image markers when going live
+      this.clearImageMarkers();      
 
       // Re-start the timer
       this.startLiveTimer();

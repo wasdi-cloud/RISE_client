@@ -630,8 +630,3 @@ a.leaflet-control-zoom-fullscreen {
   width: 6px !important;
   height: 6px !important;
 }
-
-/* Transparent backdrop for image dialog */
-.transparent-backdrop {
-  background-color: transparent !important;
-}
