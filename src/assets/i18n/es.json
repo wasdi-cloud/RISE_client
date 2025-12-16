@@ -156,7 +156,7 @@
     "OTP_CODE": "Código de confirmación",
     "OTP_LOGIN_AGAIN": "Intente iniciar sesión de nuevo",
     "TITLE": "Bienvenido de nuevo",
-    "USER_ID": "Identificación de usuario",
+    "USER_ID": "Identificación de usuario o correo electrónico",
     "PASSWORD": "Contraseña",
     "FORGOT_PASSWORD": "¿Olvidaste tu contraseña? Haz clic <a class='inner-html-link'>aquí</a>"
   },

@@ -202,7 +202,7 @@
     "OTP_CODE": "Code de confirmation",
     "OTP_LOGIN_AGAIN": "Essayez de vous reconnecter",
     "TITLE": "Bon retour",
-    "USER_ID": "Identifiant utilisateur",
+    "USER_ID": "Identifiant utilisateur ou adresse e-mail",
     "PASSWORD": "Mot de passe",
     "FORGOT_PASSWORD": "Mot de passe oublié ? Cliquez <a class='inner-html-link'>ici</a>"
   },
