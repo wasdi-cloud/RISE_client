@@ -923,7 +923,11 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       // Open the Material Dialog with the image
       const oPreviewDialogRef = this.m_oImageDialog.open(ImageDialogComponent, {
         data: { oPayload },
-        width: '90vw'
+        width: '98vw',
+        height: '98vh',
+        maxWidth: '98vw',
+        maxHeight: '98vh',
+        backdropClass: 'transparent-backdrop'
       });
 
       // Handle dialog close event
@@ -956,7 +960,11 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       // Open the Material Dialog with the image
       const oPreviewDialogRef = this.m_oImageDialog.open(ImageDialogComponent, {
         data: { oPayload },
-        width: '90vw'
+        width: '98vw',
+        height: '98vh',
+        maxWidth: '98vw',
+        maxHeight: '98vh',
+        backdropClass: 'transparent-backdrop'
       });
 
       // Handle dialog close event

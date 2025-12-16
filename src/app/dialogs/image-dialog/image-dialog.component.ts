@@ -21,7 +21,7 @@ export class ImageDialogComponent {
       private m_oConstantsService: ConstantsService,
       private m_oAttachmentService: AttachmentService,
       private m_oSanitizer: DomSanitizer,
-      private m_oDialogRef: MatDialogRef<ImageDialogComponent>) {
+      public m_oDialogRef: MatDialogRef<ImageDialogComponent>) {
 
         if (this.m_oData.oPayload.type==="pdf") {
 
