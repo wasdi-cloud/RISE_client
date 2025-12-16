@@ -2,6 +2,7 @@ import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from
 import {CommonModule} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
+import {Subject, Subscription, takeUntil} from 'rxjs';
 
 import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray,} from '@angular/cdk/drag-drop';
 
@@ -36,7 +37,6 @@ import {EventService} from "../../services/api/event.service";
 import {EventViewModel} from "../../models/EventViewModel";
 import {EventType} from "../../models/EventType";
 import {ImpactsDialogComponent} from "../../dialogs/impacts-dialog/impacts-dialog.component";
-import {Subscription} from "rxjs";
 import {PrintMapDialogComponent} from "../../dialogs/print-map-dialog/print-map-dialog.component";
 import { PluginService } from '../../services/api/plugin.service';
 import e from 'express';
@@ -221,6 +221,11 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    */
   private m_bIsLive: boolean=true;
 
+  /**
+   * Subject to handle unsubscription on component destroy
+   */
+  private m_oDestroy$ = new Subject<void>();
+
   constructor(
     private m_oActivatedRoute: ActivatedRoute,
     private m_oAreaService: AreaService,
@@ -315,6 +320,9 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     if (this.m_oLayerAnalyzerSubscription) {
       this.m_oLayerAnalyzerSubscription.unsubscribe();
     }
+
+    this.m_oDestroy$.next();
+    this.m_oDestroy$.complete();
     
     // IMPORTANT: Remove the fullscreenchange event listener
     document.removeEventListener('fullscreenchange', this.m_oFullscreenChangeListener);
@@ -410,7 +418,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    */
   openAOI(sAreaId: string): void {
     // Get the main Area information from the server
-    this.m_oAreaService.getAreaById(sAreaId).subscribe({
+    this.m_oAreaService.getAreaById(sAreaId).pipe(takeUntil(this.m_oDestroy$)).subscribe({
 
       next: (oResponse) => {
         // We need a response
@@ -466,7 +474,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    */
   getPluginsByArea(sAreaId: string): void {
 
-    this.m_oPluginAPIService.getPluginsByArea(sAreaId).subscribe({
+    this.m_oPluginAPIService.getPluginsByArea(sAreaId).pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse) => {
         if (oResponse.length > 0) {
           this.m_aoAreaPlugins = oResponse;
@@ -600,6 +608,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   getReferenceTime(oSelecteDateInfo:any): void {
     this.m_iSelectedDate = oSelecteDateInfo.iReferenceTime;
     this.m_bIsNavigatedFromEventList=!oSelecteDateInfo.bChangedByUser;
+
     if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oSelecteDateInfo?.eventId)) {
       this.fillEventPanel(oSelecteDateInfo.eventId);
 
@@ -626,7 +635,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
     if(sMapIds!="" || sSelectedPluginId!=""){
 
-      this.m_oLayerService.findAvailableLayers(sMapIds,this.m_sAreaId,this.m_iSelectedDate, sSelectedPluginId).subscribe({
+      this.m_oLayerService.findAvailableLayers(sMapIds,this.m_sAreaId,this.m_iSelectedDate, sSelectedPluginId).pipe(takeUntil(this.m_oDestroy$)).subscribe({
         next:(oResponse)=>{
           for (const oLayerMapVM of oResponse) {
             this.updateLayerList(oLayerMapVM);
@@ -672,7 +681,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     // Do we have a selected plugin?
     if (this.m_oSelectedPlugin) {
       // Get the plugins maps
-      this.m_oLayerService.findAvailableLayers("",this.m_sAreaId,this.m_iSelectedDate,this.m_oSelectedPlugin.id).subscribe({
+      this.m_oLayerService.findAvailableLayers("",this.m_sAreaId,this.m_iSelectedDate,this.m_oSelectedPlugin.id).pipe(takeUntil(this.m_oDestroy$)).subscribe({
         next: (oResponse) => {
 
           for (let i=0;i<oResponse.length;i++) {
@@ -862,11 +871,6 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   }
 
   zoomToLayer(oEvent) {
-    //TODO: Add Geoserver bounding box to response (?)
-    // this.m_oMapService.zoomBandImageOnGeoserverBoundingBox()
-
-    let oMap = this.m_oMapService.getMap();
-
     this.m_oMapService.flyToMonitorBounds(this.m_oAreaOfOperation.bbox);
   }
 
@@ -1123,7 +1127,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   }
 
   private downloadLayer(sLayerId, sFormat: string) {
-    this.m_oLayerService.downloadLayer(sLayerId, sFormat).subscribe({
+    this.m_oLayerService.downloadLayer(sLayerId, sFormat).pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse: Blob) => {
         const blob = new Blob([oResponse], {type: oResponse.type});
         const url = window.URL.createObjectURL(blob);
@@ -1189,7 +1193,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
   private getEvents() {
     if(this.m_sAreaId){
-      this.m_oEventService.getEvents(this.m_sAreaId).subscribe({
+      this.m_oEventService.getEvents(this.m_sAreaId).pipe(takeUntil(this.m_oDestroy$)).subscribe({
         next:(aoEventsVM)=>{
             this.m_aoEvents=aoEventsVM
         },

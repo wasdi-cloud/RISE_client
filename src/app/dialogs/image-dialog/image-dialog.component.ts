@@ -1,10 +1,11 @@
-import { Component, Inject } from '@angular/core';
+import { Component, OnDestroy, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {MAT_DIALOG_DATA, MatDialogContent} from '@angular/material/dialog';
 import { ConstantsService } from '../../services/constants.service';
 import { AttachmentService } from '../../services/api/attachment.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MatDialogRef } from '@angular/material/dialog';
+import {Subject, Subscription, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'app-image-dialog',
@@ -13,9 +14,14 @@ import { MatDialogRef } from '@angular/material/dialog';
   templateUrl: './image-dialog.component.html',
   styleUrls: ['./image-dialog.component.css']
 })
-export class ImageDialogComponent {
+export class ImageDialogComponent implements OnDestroy {
 
   m_oPdfUrl!: SafeResourceUrl;
+
+  /**
+   * Subject to handle unsubscription on component destroy
+   */
+  private m_oDestroy$ = new Subject<void>();
 
   constructor(@Inject(MAT_DIALOG_DATA) public m_oData: { oPayload: any },
       private m_oConstantsService: ConstantsService,
@@ -28,7 +34,7 @@ export class ImageDialogComponent {
           let sToken = this.m_oConstantsService.getSessionId();
 
           this.m_oAttachmentService.get("event_docs", this.m_oData.oPayload.eventId,
-            this.m_oData.oPayload.fileName, sToken).subscribe({
+            this.m_oData.oPayload.fileName, sToken).pipe(takeUntil(this.m_oDestroy$)).subscribe({
             next: (oResponse) => {
               const sMimeType = 'application/pdf';
               const oBlob = new Blob([oResponse], { type: sMimeType });
@@ -56,7 +62,7 @@ export class ImageDialogComponent {
 
       let sToken = this.m_oConstantsService.getSessionId();
 
-      this.m_oAttachmentService.get("event_images", this.m_oData.oPayload.eventId, sFileName, sToken).subscribe({
+      this.m_oAttachmentService.get("event_images", this.m_oData.oPayload.eventId, sFileName, sToken).pipe(takeUntil(this.m_oDestroy$)).subscribe({
         next: (oResponse) => {
           const sMimeType = this.getMimeTypeFromFileName(sFileName);
           const oBlob = new Blob([oResponse], { type: sMimeType });
@@ -78,7 +84,7 @@ export class ImageDialogComponent {
     if (sFileName) {
       let sToken = this.m_oConstantsService.getSessionId();
 
-      this.m_oAttachmentService.get("event_docs", this.m_oData.oPayload.eventId, sFileName, sToken).subscribe({
+      this.m_oAttachmentService.get("event_docs", this.m_oData.oPayload.eventId, sFileName, sToken).pipe(takeUntil(this.m_oDestroy$)).subscribe({
         next: (oResponse) => {
           const sMimeType = this.getMimeTypeFromFileName(sFileName);
           const oBlob = new Blob([oResponse], { type: sMimeType });
@@ -105,6 +111,8 @@ export class ImageDialogComponent {
         return 'image/png';
       case 'gif':
         return 'image/gif';
+      case 'mp4':
+        return 'video/mp4';
       case 'pdf':
         return 'application/pdf';
       case 'doc':
@@ -123,7 +131,7 @@ export class ImageDialogComponent {
   onDeleteAttachment() {
 
     let sType = this.m_oData.oPayload.type==="image" ? "event_images" : "event_docs";
-    this.m_oAttachmentService.delete(sType, this.m_oData.oPayload.eventId, this.m_oData.oPayload.fileName).subscribe({
+    this.m_oAttachmentService.delete(sType, this.m_oData.oPayload.eventId, this.m_oData.oPayload.fileName).pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse) => {
         console.log("Attachment deleted successfully", oResponse);
         this.m_oDialogRef.close();
@@ -133,4 +141,10 @@ export class ImageDialogComponent {
       }
     });
   }
+
+  ngOnDestroy(): void {
+    this.m_oDestroy$.next();
+    this.m_oDestroy$.complete();
+  }
+
 }

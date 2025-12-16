@@ -34,7 +34,6 @@ import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 export class DashboardComponent implements OnInit, OnDestroy {
   public m_aoOngoingEvents: Array<EventViewModel> = [];
 
-
   private m_oDestroy$ = new Subject<void>();
 
   /**
