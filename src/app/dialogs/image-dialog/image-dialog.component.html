@@ -8,10 +8,23 @@
                 <span class="material-icons file-icon" style="cursor: pointer;" (click)="onDeleteAttachment()">delete</span>
             </div>
       </div>
+      <div>
+        <span class="material-icons file-icon" style="cursor: pointer;" (click)="m_oDialogRef.close()">close</span>
+      </div>
     </div>    
-    <div *ngIf="m_oData.oPayload.type === 'image'">
+
+    <!-- Check if link contains .mp4 for video -->
+    <div *ngIf="m_oData.oPayload.type === 'image' && m_oData.oPayload.link?.toLowerCase().includes('.mp4')">
+        <video [src]="m_oData.oPayload.link" controls style="width: 90vw; height: 80vh;">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    
+    <!-- Otherwise show as image -->
+    <div *ngIf="m_oData.oPayload.type === 'image' && !m_oData.oPayload.link?.toLowerCase().includes('.mp4')">
         <img [src]="m_oData.oPayload.link" alt="Preview" class="image-preview">
     </div>
+
     <div *ngIf="m_oData.oPayload.type === 'pdf'">
         <iframe  [src]="m_oPdfUrl" style="width: 90vw; height: 80vh; "></iframe>
     </div>

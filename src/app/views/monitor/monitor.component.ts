@@ -2,6 +2,7 @@ import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from
 import {CommonModule} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
+import {Subject, Subscription, takeUntil} from 'rxjs';
 
 import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray,} from '@angular/cdk/drag-drop';
 
@@ -36,10 +37,10 @@ import {EventService} from "../../services/api/event.service";
 import {EventViewModel} from "../../models/EventViewModel";
 import {EventType} from "../../models/EventType";
 import {ImpactsDialogComponent} from "../../dialogs/impacts-dialog/impacts-dialog.component";
-import {Subscription} from "rxjs";
 import {PrintMapDialogComponent} from "../../dialogs/print-map-dialog/print-map-dialog.component";
 import { PluginService } from '../../services/api/plugin.service';
 import e from 'express';
+import L from 'leaflet';
 
 /**
  * TODO THERE IS A BIG NAMING PROBLEM HERE, plugin, maps, layers, plugins here in the client is
@@ -136,6 +137,16 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   m_asEventImages: string[] = [];
 
   /**
+   * List of Event image markers
+   */
+  m_aoEventImageMarkers: Array<{fileName: string, lat: number, lon: number}> = [];
+
+  /**
+   * Layer group for image markers
+   */
+  private m_oImageMarkersLayer: any = null;  
+
+  /**
    * List of Event documents
    */
   m_asEventDocs: string[] = [];
@@ -209,6 +220,11 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    * Flag to indicate if live mode is active
    */
   private m_bIsLive: boolean=true;
+
+  /**
+   * Subject to handle unsubscription on component destroy
+   */
+  private m_oDestroy$ = new Subject<void>();
 
   constructor(
     private m_oActivatedRoute: ActivatedRoute,
@@ -295,7 +311,10 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     if (this.m_oLayerAnalyzerSubscription) {
       this.m_oLayerAnalyzerSubscription.unsubscribe();
     }
-    console.log("destroyed!")
+
+    this.m_oDestroy$.next();
+    this.m_oDestroy$.complete();
+    
     // IMPORTANT: Remove the fullscreenchange event listener
     document.removeEventListener('fullscreenchange', this.m_oFullscreenChangeListener);
   }
@@ -390,7 +409,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    */
   openAOI(sAreaId: string): void {
     // Get the main Area information from the server
-    this.m_oAreaService.getAreaById(sAreaId).subscribe({
+    this.m_oAreaService.getAreaById(sAreaId).pipe(takeUntil(this.m_oDestroy$)).subscribe({
 
       next: (oResponse) => {
         // We need a response
@@ -446,7 +465,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    */
   getPluginsByArea(sAreaId: string): void {
 
-    this.m_oPluginAPIService.getPluginsByArea(sAreaId).subscribe({
+    this.m_oPluginAPIService.getPluginsByArea(sAreaId).pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse) => {
         if (oResponse.length > 0) {
           this.m_aoAreaPlugins = oResponse;
@@ -512,58 +531,65 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     this.m_oMapService.setSelectedLayers(this.m_aoLayers)
   }
 
-  private fillPluginsAndLayers(oPlugin: any, oLayer:LayerViewModel) {
-    const oLeafLetMap = this.m_oMapService.getMap();
-    const iIndex = this.m_aoLayers.findIndex(layer => layer.mapId === oLayer.mapId);
-    let oExistingLayer = this.m_aoLayers.find(l => l.layerId === oLayer.layerId);
-    oLayer.pluginName=oPlugin.name;
 
-    //  Preserve opacity if it existed before
-    oLayer.opacity = (typeof oExistingLayer?.opacity === 'number') ? oExistingLayer.opacity : 100;
+  private updateLayerList(oLayerMapVM:any) {
+    
+    // Check if it a layer already shown in the map
+    let oExistingLayer = this.m_aoLayers.find(oThisLayer => oThisLayer.mapId === oLayerMapVM.mapId);
 
-    const bIsSameLayer = oExistingLayer &&
-      oExistingLayer.layerId === oLayer.layerId &&
-      oExistingLayer.referenceDate === oLayer.referenceDate &&
-      oExistingLayer.geoserverUrl === oLayer.geoserverUrl;
+    // We do have it
+    if (oExistingLayer) { 
+      // Double check also reference date and geoserver url
+      const bIsSameLayer = oExistingLayer.referenceDate === oLayerMapVM.referenceDate 
+                        && oExistingLayer.geoserverUrl === oLayerMapVM.geoserverUrl
+                        && oExistingLayer.layerId === oLayerMapVM.layerId;
 
-    if (bIsSameLayer) {
-      // Nothing changed: skip re-adding to the map so we can avoid the reorder issue
-      return;
-    }
+      if (bIsSameLayer) {
+        // Nothing changed: skip re-adding to the map so we can avoid the reorder issue
+        return;
+      }
 
-    if (iIndex !== -1) {
-      oLeafLetMap.eachLayer((oMapLayer) => {
-        let sOldLayerId = this.m_aoLayers[iIndex].layerId;
-        if (sOldLayerId === oMapLayer.options.layers) {
-          oLeafLetMap.removeLayer(oMapLayer);
+      //  Preserve opacity if it existed before
+      oLayerMapVM.opacity = (typeof oExistingLayer?.opacity === 'number') ? oExistingLayer.opacity : 100;
+
+      // Do we have a layer of the same map already shown?
+      const iIndex = this.m_aoLayers.findIndex(oThisLayer => oThisLayer.mapId === oLayerMapVM.mapId);
+
+      if (iIndex !== -1) {
+        const oLeafLetMap = this.m_oMapService.getMap();
+
+        // Yes, we have this layer and is changed: remove old one from map
+        oLeafLetMap.eachLayer((oMapLayer) => {
+          let sOldLayerId = this.m_aoLayers[iIndex].layerId;
+          if (sOldLayerId === oMapLayer.options.layers) {
+            oLeafLetMap.removeLayer(oMapLayer);
+          }
+        });
+
+
+        if (oLayerMapVM.disabled) {
+          // The new one is disabled, remove from our active list
+          this.m_aoLayers.splice(iIndex, 1);
         }
-      });
+        else {
+          // Replace existing in our active list
+          this.m_aoLayers[iIndex] = oLayerMapVM;  
 
-      this.m_aoLayers[iIndex] = oLayer;  // Replace existing
+          // Add the layer again to the map
+          this.m_oMapService.addLayerMap2DByServer(
+            oLayerMapVM.layerId,
+            oLayerMapVM.geoserverUrl,
+            oLayerMapVM.opacity,
+          );
+        }
+
+        this.m_aoReversedLayers = [...this.m_aoLayers].reverse();
+        // Update the selected layers
+        this.m_oMapService.setSelectedLayers(this.m_aoLayers)      
+
+      }      
     }
-    else {
-      this.m_aoLayers.push(oLayer);     // Add new if not found
-    }
 
-    // Check if oPlugin.layers already contains the object
-    //todo so ugly , and must be one layer not layers and also get rid of the any type :'(
-    if (!oPlugin.layers.some(oPluginLayer => oPluginLayer.layerId === oLayer.layerId)) {
-      oPlugin.layers[0]=oLayer;
-    }
-
-    //sort the layers
-    //this.m_aoLayers = this.m_aoLayers.sort((a, b) => a.referenceDate - b.referenceDate);
-
-    this.m_aoReversedLayers = [...this.m_aoLayers].reverse();
-
-    this.m_oMapService.addLayerMap2DByServer(
-      oLayer.layerId,
-      oLayer.geoserverUrl,
-      oLayer.opacity,
-
-    );
-    // Update the selected layers
-    this.m_oMapService.setSelectedLayers(this.m_aoLayers)
   }
 
   /**
@@ -575,16 +601,55 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     // This is safe to use directly.
     this.m_iSelectedDate = oSelecteDateInfo.iReferenceTime;
     this.m_bIsNavigatedFromEventList=!oSelecteDateInfo.bChangedByUser;
+
     if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oSelecteDateInfo?.eventId)) {
       this.fillEventPanel(oSelecteDateInfo.eventId);
 
-    }else if(!this.m_bIsNavigatedFromEventList){
+    }
+    else if(!this.m_bIsNavigatedFromEventList){
         this.cleanEventPanel();
+        this.clearImageMarkers();
     }
 
-    // TODO: Update the layers based on the new date
-    // this.initMapButtons(this.m_aoVisibleMapLayersButtons);
+    // Update the layers based on the new date
+    this.updateMapAndLayerButtons();
   }
+
+  /**
+   * this method is made to enable/disable the plugins button
+   * @param aoMaps
+   */
+  updateMapAndLayerButtons(){
+
+    // Get the list of the map id of the layers currently shown on the map
+    const asMapIds = this.m_aoLayers.map(oLayer => oLayer.mapId);
+    const sMapIds = asMapIds.join(",");
+    const sSelectedPluginId= this.m_oSelectedPlugin ? this.m_oSelectedPlugin.id : "";
+
+    if(sMapIds!="" || sSelectedPluginId!=""){
+
+      this.m_oLayerService.findAvailableLayers(sMapIds,this.m_sAreaId,this.m_iSelectedDate, sSelectedPluginId).pipe(takeUntil(this.m_oDestroy$)).subscribe({
+        next:(oResponse)=>{
+          for (const oLayerMapVM of oResponse) {
+            this.updateLayerList(oLayerMapVM);
+          }
+
+          // If we have a plugin selected, update the list of visible buttons
+          if (sSelectedPluginId!="") {
+            let aoNewVisibleButtons = [];
+            for (let i=0;i<this.m_aoVisibleMapLayersButtons.length;i++) {
+              for (let j=0;j<oResponse.length;j++) {
+                if (this.m_aoVisibleMapLayersButtons[i].mapId === oResponse[j].mapId) {
+                  aoNewVisibleButtons.push(oResponse[j]);
+                }
+              }
+            }
+            this.m_aoVisibleMapLayersButtons = aoNewVisibleButtons;
+          }
+        }
+      });
+    }
+  }  
 
   /**
    * Handle selection of a plugin in the first level menu
@@ -609,7 +674,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     // Do we have a selected plugin?
     if (this.m_oSelectedPlugin) {
       // Get the plugins maps
-      this.m_oLayerService.findAvailableLayers("",this.m_sAreaId,this.m_iSelectedDate,this.m_oSelectedPlugin.id).subscribe({
+      this.m_oLayerService.findAvailableLayers("",this.m_sAreaId,this.m_iSelectedDate,this.m_oSelectedPlugin.id).pipe(takeUntil(this.m_oDestroy$)).subscribe({
         next: (oResponse) => {
 
           for (let i=0;i<oResponse.length;i++) {
@@ -758,6 +823,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       }
     });
   }
+
   getOpacity(sLayerId): number {
     let oMap = this.m_oMapService.getMap();
     let opacity = 0; // Default opacity
@@ -798,11 +864,6 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   }
 
   zoomToLayer(oEvent) {
-    //TODO: Add Geoserver bounding box to response (?)
-    // this.m_oMapService.zoomBandImageOnGeoserverBoundingBox()
-
-    let oMap = this.m_oMapService.getMap();
-
     this.m_oMapService.flyToMonitorBounds(this.m_oAreaOfOperation.bbox);
   }
 
@@ -840,6 +901,20 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     this.m_oAttachmentService.list("event_images", sEventId).subscribe({
       next: (oResponse) => {
         this.m_asEventImages = oResponse.files;
+        this.m_aoEventImageMarkers = [];
+
+        for (let i = 0; i < oResponse.files.length; i++) {
+          if (oResponse.lats[i] != -9999.0 && oResponse.lngs[i] != -9999.0) {
+            this.m_aoEventImageMarkers.push({
+              fileName: oResponse.files[i],
+              lat: oResponse.lats[i],
+              lon: oResponse.lngs[i]
+            });
+          }
+        }
+        
+        // Add markers to the map
+        this.addImageMarkersToMap();        
       },
       error: (oError) => {
         console.error("Error loading image attachment", oError);
@@ -855,6 +930,65 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       }
     });
   }
+
+  clearImageMarkers(): void {
+    if (this.m_oImageMarkersLayer) {
+      const oMap = this.m_oMapService.getMap();
+      oMap.removeLayer(this.m_oImageMarkersLayer);
+      this.m_oImageMarkersLayer = null;
+    }
+  }
+
+ /**
+   * Add image markers to the map
+   */
+  addImageMarkersToMap(): void {
+    // Remove existing markers if any
+    this.clearImageMarkers();
+
+    if (this.m_aoEventImageMarkers.length === 0)  {
+      return;
+    }
+
+    const oMap = this.m_oMapService.getMap();
+    
+    // Create a layer group for image markers
+    this.m_oImageMarkersLayer = L.layerGroup().addTo(oMap);
+
+    // Add each marker
+    this.m_aoEventImageMarkers.forEach(oImageMarker => {
+      // Create custom icon using Material Icons (no PNG needed)
+      const oIcon = L.divIcon({
+        html: '<span class="material-icons" style="color: #efba35; font-size: 24px;">photo_camera</span>',
+        className: 'custom-image-marker',
+        iconSize: [24, 24],
+        iconAnchor: [12, 24],
+        popupAnchor: [0, -24]
+      });
+
+      // Create marker
+      const oImageMarkerLeaflet = L.marker([oImageMarker.lat, oImageMarker.lon], {
+        icon: oIcon,
+        title: oImageMarker.fileName
+      });
+
+      // Add click event
+      oImageMarkerLeaflet.on('click', () => {
+        this.onPreviewImage(oImageMarker.fileName);
+      });
+
+      // Optional: Add tooltip
+      oImageMarkerLeaflet.bindTooltip(oImageMarker.fileName, {
+        permanent: false,
+        direction: 'top',
+        offset: [0, -10]
+      });
+
+      // Add to layer group
+      this.m_oImageMarkersLayer.addLayer(oImageMarkerLeaflet);
+    });
+
+  }  
 
   onPreviewImage(sFileName: string) {
     if (sFileName) {
@@ -872,7 +1006,10 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       // Open the Material Dialog with the image
       const oPreviewDialogRef = this.m_oImageDialog.open(ImageDialogComponent, {
         data: { oPayload },
-        width: '90vw'
+        width: '98vw',
+        height: '98vh',
+        maxWidth: '98vw',
+        maxHeight: '98vh'
       });
 
       // Handle dialog close event
@@ -905,7 +1042,10 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       // Open the Material Dialog with the image
       const oPreviewDialogRef = this.m_oImageDialog.open(ImageDialogComponent, {
         data: { oPayload },
-        width: '90vw'
+        width: '98vw',
+        height: '98vh',
+        maxWidth: '98vw',
+        maxHeight: '98vh'
       });
 
       // Handle dialog close event
@@ -921,6 +1061,9 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     if(this.m_bIsLive){
       // Clean the event panel if we go live
       this.cleanEventPanel();
+
+      // Clear image markers when going live
+      this.clearImageMarkers();      
 
       // Re-start the timer
       this.startLiveTimer();
@@ -977,7 +1120,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   }
 
   private downloadLayer(sLayerId, sFormat: string) {
-    this.m_oLayerService.downloadLayer(sLayerId, sFormat).subscribe({
+    this.m_oLayerService.downloadLayer(sLayerId, sFormat).pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse: Blob) => {
         const blob = new Blob([oResponse], {type: oResponse.type});
         const url = window.URL.createObjectURL(blob);
@@ -1030,7 +1173,8 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     if(sLocation==='events'){
       if(this.m_sAreaId){
         this.m_oRouter.navigateByUrl(`/events/${this.m_sAreaId}`)
-      }else{
+      }
+      else{
         console.error("Area id is missing")
         //todo show notification
       }
@@ -1042,7 +1186,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
   private getEvents() {
     if(this.m_sAreaId){
-      this.m_oEventService.getEvents(this.m_sAreaId).subscribe({
+      this.m_oEventService.getEvents(this.m_sAreaId).pipe(takeUntil(this.m_oDestroy$)).subscribe({
         next:(aoEventsVM)=>{
             this.m_aoEvents=aoEventsVM
         },
@@ -1069,62 +1213,6 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     this.m_bShowAllMaps = !this.m_bShowAllMaps;
   }
 
-  /**
-   * this method is made to enable/disable the plugins button
-   * @param aoMaps
-   */
-  initMapButtons(aoMaps: any[]){
-
-    let asAvailableMapIds=[]
-
-    const asMapIds = aoMaps.map(oMap => oMap.id);
-    const sMapIds = asMapIds.join(","); // e.g., "map1,map2,map3"
-
-    if(sMapIds){
-
-      this.m_oLayerService.findAvailableLayers(sMapIds,this.m_sAreaId,this.m_iSelectedDate, "").subscribe({
-
-        next:(oResponse)=>{
-          for (const oResponseEle of oResponse) {
-            this.fillPluginsAndLayers(aoMaps.find(oPlugin=>oPlugin.id===oResponseEle.mapId), oResponseEle);
-            asAvailableMapIds.push(oResponseEle);
-          }
-          for (const oPlugin of aoMaps) {
-            oPlugin.disabled=!asAvailableMapIds.includes(oPlugin.id)
-          }
-        }
-      })
-    }
-  }
-
-    /**
-   * this method is made to enable/disable the plugins button
-   * @param aoPlugins
-   */
-  initAreaPluginsButtons(aoPlugins: any[]){
-
-    let asAvailableMapIds=[]
-
-    const asMapIds = aoPlugins.map(oPlugin => oPlugin.id);
-    const sMapIds = asMapIds.join(","); // e.g., "map1,map2,map3"
-
-    if(sMapIds){
-
-      this.m_oLayerService.findAvailableLayers(sMapIds,this.m_sAreaId,this.m_iSelectedDate, "").subscribe({
-
-        next:(oResponse)=>{
-          for (const oResponseEle of oResponse) {
-            this.fillPluginsAndLayers(aoPlugins.find(oPlugin=>oPlugin.id===oResponseEle.mapId), oResponseEle);
-            asAvailableMapIds.push(oResponseEle);
-          }
-          for (const oPlugin of aoPlugins) {
-            oPlugin.disabled=!asAvailableMapIds.includes(oPlugin.id)
-          }
-        }
-      })
-    }
-  }
-
   /*
     Given an area id and selected date , we show Impacts
     */
@@ -1139,7 +1227,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     this.m_oDialog.open(ImpactsDialogComponent, {
       data: oDialogData
     }).afterClosed().subscribe(()=>{
-        console.log("imapcts works")
+
       }
     )
   }

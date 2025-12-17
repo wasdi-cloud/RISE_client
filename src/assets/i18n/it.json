@@ -148,7 +148,7 @@
     "OTP_CODE": "Codice di conferma",
     "OTP_LOGIN_AGAIN": "Prova ad accedere di nuovo",
     "TITLE": "Bentornato",
-		"USER_ID": "ID Utente",
+		"USER_ID": "ID Utente o email",
 		"PASSWORD": "Password",
 		"FORGOT_PASSWORD": "Hai dimenticato la password? Clicca <a class='inner-html-link'>qui</a>",
 		"ERROR": "RISE non è riuscito ad effettuare l'accesso. Riprova o contattaci."
