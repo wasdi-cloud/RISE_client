@@ -1,15 +1,20 @@
 <div class="custom-calendar-container d-flex flex-row align-items-center gap-2">
 
-  <input (dateChange)="emitDate($event)"
-         [(ngModel)]="m_oSelectedDate"
-         class="custom-small"
-         matInput
-         [matDatepicker]="picker"
-         [matDatepickerFilter]="dateFilter"
-         disabled>
+  <input
+    [value]="m_oSelectedDate | date:'mediumDate':'UTC'"
+    (dateChange)="emitDate($event)"
+    class="custom-small"
+    matInput
+    [matDatepicker]="picker"
+    [matDatepickerFilter]="dateFilter"
+    disabled
+  >
 
   <div *ngIf="m_bShowTime" class="time-display">
     {{ m_oSelectedDate | date:'HH:mm' : 'UTC'}}
+  </div>
+  <div class="date-text">
+    {{ m_oSelectedDate | date:'dd MMM yyyy' : 'UTC' }}
   </div>
 
   <mat-datepicker-toggle [disableRipple]="true" style="color:#f0f0f0;" matIconSuffix [for]="picker">

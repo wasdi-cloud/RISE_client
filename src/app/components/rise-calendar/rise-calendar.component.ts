@@ -1,4 +1,13 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInput, MatInputModule} from "@angular/material/input";
 import {
@@ -48,7 +57,7 @@ export const CUSTOM_DATE_FORMATS = {
   templateUrl: './rise-calendar.component.html',
   styleUrl: './rise-calendar.component.css'
 })
-export class RiseCalendarComponent implements OnInit{
+export class RiseCalendarComponent implements OnInit,OnChanges{
 
 
 
@@ -58,6 +67,9 @@ export class RiseCalendarComponent implements OnInit{
    *
    */
   @Input() m_oSelectedDate:Date ;
+
+
+  m_oDisplayDate: Date | null = null;
   /**
    * Flag to display time alongside the date (Useful for 1D mode)
    */
@@ -83,7 +95,36 @@ export class RiseCalendarComponent implements OnInit{
 
 
   ngOnInit() {
+    this.updateDisplayDate();
+  }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    // if (changes['m_oSelectedDate']) {
+    //   this.updateDisplayDate();
+    // }
+  }
+
+  // 4. The safe calculation logic
+  updateDisplayDate() {
+    if (!this.m_oSelectedDate) {
+      this.m_oDisplayDate = null;
+      return;
+    }
+
+    // Safety: Ensure it's a real Date object (handles strings just in case)
+    let oSafeDate = this.m_oSelectedDate;
+    if (typeof oSafeDate === 'string') {
+      oSafeDate = new Date(oSafeDate);
+    }
+
+    // Create the "Shadow Date" for the visual input
+    // Takes UTC components -> Creates Local Date
+    this.m_oDisplayDate = new Date(
+      oSafeDate.getUTCFullYear(),
+      oSafeDate.getUTCMonth(),
+      oSafeDate.getUTCDate(),
+      12, 0, 0 // Noon Local
+    );
   }
 
 
@@ -128,23 +169,36 @@ export class RiseCalendarComponent implements OnInit{
   };
 
 
-  /**
-   * emit selected date back to timebar
-   *
-   */
-  emitDate(event: any): void {
-    this.m_oSelectedDate = event.value.toDate(); // Update selected date as Date
 
+
+  emitDate(event: any): void {
+    // 1. Get the LOCAL date from the picker (e.g., July 1st 00:00 Local)
+    const oLocalDate = event.value.toDate();
+
+    // 2. CONVERT TO STRICT UTC
+    // We take the Year, Month, Day from local, and force them into UTC.
+    // This turns "July 1st Midnight Local" into "July 1st 00:00:00 UTC"
+    const oUtcDate = new Date(Date.UTC(
+      oLocalDate.getFullYear(),
+      oLocalDate.getMonth(),
+      oLocalDate.getDate(),
+      0, 0, 0, 0
+    ));
+
+    this.m_oSelectedDate = oUtcDate;
+
+    // 3. Highlight Check (Using UTC methods)
     const isHighlighted = this.m_aoHighlightDates.some(d =>
-      d.getFullYear() === this.m_oSelectedDate.getFullYear() &&
-      d.getMonth() === this.m_oSelectedDate.getMonth() &&
-      d.getDate() === this.m_oSelectedDate.getDate()
+      d.getUTCFullYear() === this.m_oSelectedDate.getUTCFullYear() &&
+      d.getUTCMonth() === this.m_oSelectedDate.getUTCMonth() &&
+      d.getUTCDate() === this.m_oSelectedDate.getUTCDate()
     );
 
-    console.log('Selected date is highlighted:', isHighlighted);
-
+    // 4. EMIT ISO STRING
+    // This sends "2024-07-01T00:00:00.000Z"
+    // The Timebar will read this exact time, ignoring your local timezone.
     this.m_oSelectedDateFromCalendar.emit({
-      date: this.m_oSelectedDate.toDateString(),
+      date: this.m_oSelectedDate.toISOString(),
       isHighlighted: isHighlighted
     });
   }

@@ -141,37 +141,6 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     this.generateTicks();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    // If m_iEndDate changes (Live update from parent)
-    if (changes['m_iEndDate'] && !changes['m_iEndDate'].firstChange) {
-
-      // CASE 1: Auto Mode - Always reset to full scope
-      if (this.m_sSelectedTimeRange === 'Auto') {
-        this.initDates(false);
-      }
-      // CASE 2: Zoom Mode (1D, 1W, etc.)
-      else {
-        // CRITICAL FIX: Only jump to the new "Live" time if we were ALREADY Live.
-        if (this.m_bIsLive) {
-          // 1. Update internal selected date to the new live time
-          this.m_oSelectedDate = new Date(this.m_iEndDate * 1000);
-          // 2. Shift the window
-          this.onTimeRangeSelected(this.m_sSelectedTimeRange);
-        }
-        else {
-          // If NOT live (user is looking at history), do NOT move the cursor.
-          // We optionally regenerate the array to include the new data at the end,
-          // but we keep m_oSelectedDate exactly where the user put it.
-          // For now, doing nothing is safer to prevent jumping.
-        }
-      }
-
-    } else {
-      // First load
-      this.initDates(false);
-      this.generateTicks();
-    }
-  }
 
   /**
    * detect the wheel movement on the slider
@@ -226,6 +195,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     this.updateSliderCursor();
   }
 
+
   onTimeRangeSelected(sRange: string): void {
     this.m_sSelectedTimeRange = sRange;
 
@@ -235,84 +205,116 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
       return;
     }
 
+    // 1. Get the cursor date
     let oBaseDate = new Date(this.m_oSelectedDate);
+
+    // 2. Define Global Limits
     const iGlobalEndTimestamp = this.m_iEndDate * 1000;
+    const iGlobalStartTimestamp = this.m_iStartDate * 1000;
 
-    let oStartDate = new Date(oBaseDate);
-    let oEndDate = new Date(oBaseDate);
+    let oStartDate: Date;
+    let oEndDate: Date;
 
-    switch (sRange) {
-      case '1Y':
-        oStartDate.setUTCFullYear(oStartDate.getUTCFullYear() - 1);
-        break;
-      case '1M':
-        oStartDate.setUTCMonth(oStartDate.getUTCMonth() - 1);
-        break;
-      case '1W':
-        oStartDate.setUTCDate(oStartDate.getUTCDate() - 7);
-        break;
-      case '1D':
-        const iDiffFromNow = Math.abs(iGlobalEndTimestamp - oBaseDate.getTime());
-        const bIsToday = iDiffFromNow < (24 * 60 * 60 * 1000) && oBaseDate.getTime() <= iGlobalEndTimestamp;
+    if (sRange === '1D') {
+      // --- LOGIC FOR 1 DAY VIEW ---
 
-        if (this.m_bIsLive || bIsToday) {
-          // Rolling Window (UTC)
-          oEndDate = new Date(iGlobalEndTimestamp);
-          oEndDate.setUTCMinutes(0, 0, 0);
-          oStartDate = new Date(oEndDate);
-          oStartDate.setUTCDate(oStartDate.getUTCDate() - 1);
-        }
-        else {
-          // Calendar Day (UTC)
-          oStartDate.setUTCHours(0, 0, 0, 0);
-          oEndDate = new Date(oStartDate);
-          oEndDate.setUTCHours(23, 0, 0, 0);
-        }
-        break;
+      // Determine if we should be in "Live Rolling Window" mode
+      const iDiffFromNow = Math.abs(iGlobalEndTimestamp - oBaseDate.getTime());
+      // Only use rolling window if we are very close to the global end AND explicitly live
+      // This prevents the "Mode Jump" when scrolling back
+      const bUseRollingWindow = this.m_bIsLive && (iDiffFromNow < 4 * 60 * 60 * 1000);
+
+      if (bUseRollingWindow) {
+        // Mode A: LIVE (Rolling 24h Window)
+        oEndDate = new Date(iGlobalEndTimestamp);
+        oEndDate.setUTCMinutes(0, 0, 0);
+        oStartDate = new Date(oEndDate);
+        oStartDate.setUTCDate(oStartDate.getUTCDate() - 1);
+      }
+      else {
+        // Mode B: HISTORY (Strict UTC Calendar Day)
+
+        // CRITICAL FIX IS HERE -----------------------------------------
+        // We do NOT use oBaseDate.getDate() (Local).
+        // We use oBaseDate.getUTCDate() (Absolute).
+        // This ensures 21:00 UTC and 22:00 UTC both map to the SAME day,
+        // even if 22:00 is technically "Tomorrow" in your Local Timezone.
+        // --------------------------------------------------------------
+
+        const iUTCMidnight = Date.UTC(
+          oBaseDate.getUTCFullYear(),
+          oBaseDate.getUTCMonth(),
+          oBaseDate.getUTCDate(),
+          0, 0, 0, 0
+        );
+
+        oStartDate = new Date(iUTCMidnight); // 00:00 UTC
+
+        oEndDate = new Date(oStartDate);
+        oEndDate.setUTCHours(23, 0, 0, 0);   // 23:00 UTC
+      }
+    }
+    else {
+      // --- LOGIC FOR 1W / 1M / 1Y ---
+      // Clone base date
+      oStartDate = new Date(oBaseDate);
+
+      // Ensure we modify UTC components to prevent DST shifts
+      switch (sRange) {
+        case '1Y': oStartDate.setUTCFullYear(oStartDate.getUTCFullYear() - 1); break;
+        case '1M': oStartDate.setUTCMonth(oStartDate.getUTCMonth() - 1); break;
+        case '1W': oStartDate.setUTCDate(oStartDate.getUTCDate() - 7); break;
+      }
+      oEndDate = new Date(oBaseDate);
     }
 
-    // Boundary Check (Global Start)
-    const iGlobalStartTimestamp = this.m_iStartDate * 1000;
+    // 3. Clamp to Global Boundaries
     if (oStartDate.getTime() < iGlobalStartTimestamp) {
       oStartDate = new Date(iGlobalStartTimestamp);
     }
-
-    // Boundary Check (Global End)
-    // If our calculation pushed us into the future (e.g. 1M from today?), clamp it.
     if (oEndDate.getTime() > iGlobalEndTimestamp) {
       oEndDate = new Date(iGlobalEndTimestamp);
     }
 
-    // 3. REGENERATE SLIDER ARRAY
+    // 4. Regenerate Dates Array
     const bIsHourly = sRange === '1D';
     this.generateDateArray(oStartDate, oEndDate, bIsHourly);
 
-    // 4. Update Slider Position
+    // 5. Restore Slider Position
+    // Now that m_asDates is generated correctly (UTC), we find where our hour fits.
     if (sRange === '1D') {
-      if (this.m_bIsLive || (oBaseDate.getTime() >= oEndDate.getTime())) {
-        // If we are live, or the selected time was clamped, go to end
-        this.m_iSliderValue = this.m_asDates.length - 1;
-      } else {
-        // History: Try to find the matching hour
-        // Since we start at 00:00, the index is usually the hour
-        const iTargetHour = oBaseDate.getHours();
-        this.m_iSliderValue = iTargetHour;
+      // Create a search string for the hour: "YYYY-MM-DDTHH"
+      const sTargetIso = oBaseDate.toISOString().substring(0, 13);
 
-        // Safety clamp
-        if(this.m_iSliderValue >= this.m_asDates.length) {
-          this.m_iSliderValue = this.m_asDates.length - 1;
-        }
+      const iMatchIndex = this.m_asDates.findIndex(d => d.startsWith(sTargetIso));
+
+      if (iMatchIndex !== -1) {
+        this.m_iSliderValue = iMatchIndex;
+      } else {
+        // If exact match not found (e.g. we just switched days),
+        // determine if we should be at Start or End based on context
+        const iBaseTime = oBaseDate.getTime();
+        const iStartTime = oStartDate.getTime();
+        const iEndTime = oEndDate.getTime();
+
+        // If our time is AFTER this window, go to End
+        if (iBaseTime >= iEndTime) this.m_iSliderValue = this.m_asDates.length - 1;
+        // If our time is BEFORE this window, go to Start
+        else if (iBaseTime <= iStartTime) this.m_iSliderValue = 0;
+        // Default
+        else this.m_iSliderValue = this.m_asDates.length - 1;
       }
-    }
-    else {
+    } else {
       this.m_iSliderValue = this.m_asDates.length - 1;
     }
 
+    // 6. Final Sync
     this.m_sSelectedDate = this.m_asDates[this.m_iSliderValue];
+    if(this.m_sSelectedDate) {
+      this.m_oSelectedDate = new Date(this.m_sSelectedDate);
+    }
 
-    // 5. Generate Ticks
     this.generateZoomedTicks(oStartDate, oEndDate, sRange);
-
     this.updateButtonsState();
   }
 
@@ -361,15 +363,14 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     }
 
     else if (sRange === '1D') {
-      // 1D Logic
-      // Ensure we start iterating from the clean oStartDate calculated previously
-      // It should already be at XX:00:00 due to step 1
-
-      while (oIterDate <= oEndDate) {
-        // UTC Hour
+      while (oIterDate.getTime() <= oEndDate.getTime()) {
+        // USE UTC HOURS for the label
         const sHour = oIterDate.getUTCHours().toString().padStart(2, '0') + ':00';
+
         this.m_aiTicks.push({ value: sHour, timestamp: oIterDate.getTime() });
-        oIterDate.setUTCHours(oIterDate.getUTCHours() + 4);
+
+        // STRICT UTC INCREMENT
+        oIterDate.setUTCHours(oIterDate.getUTCHours() + 1);
       }
     }
   }
@@ -393,25 +394,24 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    * Based on difference between start date and  end date , generate the ticks for the timebar
    */
   generateTicks() {
-    //this is for alpha only
+    this.m_iStartDate = this.m_iStartDate == -1 ? 1420130166 : this.m_iStartDate;
 
-    this.m_iStartDate = this.m_iStartDate == -1 ? 1420130166 : this.m_iStartDate
-    // this.m_iStartDate=1420130166
-    // const iStartYear =2015
+    // USE UTC METHODS
     const iStartDate = new Date(this.m_iStartDate * 1000);
-    const iStartYear = iStartDate.getFullYear();
-    const iStartMonth = iStartDate.getMonth();
-    const iStartDay = iStartDate.getDate();
+    const iStartYear = iStartDate.getUTCFullYear();
+    const iStartMonth = iStartDate.getUTCMonth();
+    const iStartDay = iStartDate.getUTCDate();
 
     const iEndDate = new Date(this.m_iEndDate * 1000);
-    const iEndYear = iEndDate.getFullYear();
-    const iEndMonth = iEndDate.getMonth();
-    const iEndDay = iEndDate.getDate();
+    const iEndYear = iEndDate.getUTCFullYear();
+    const iEndMonth = iEndDate.getUTCMonth();
+    const iEndDay = iEndDate.getUTCDate();
+
     const iYearRange = iEndYear - iStartYear;
     this.m_aiTicks = [];
 
-    let iCurrentYear = new Date().getFullYear();
-    let iCurrentMonth = new Date().getMonth();
+    // Use UTC for current year reference too
+    let iCurrentYear = new Date().getUTCFullYear();
 
     // If the range is more than one year
     if (iYearRange > 1) {
@@ -436,13 +436,13 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
         if (iEndMonth - iStartMonth >= 1) {
 
           for (let iMonth = iStartMonth; iMonth <= iEndMonth; iMonth++) {
-            this.m_aiTicks.push({value: MONTHS[iMonth], timestamp: new Date(iCurrentYear, iMonth, 1).getTime()});
+            this.m_aiTicks.push({value: MONTHS[iMonth], timestamp: Date.UTC(iCurrentYear, iMonth, 1)});
           }
 
         }
         else {
           for (let iDay = iStartDay; iDay <= iEndDay; iDay++) {
-            this.m_aiTicks.push({value: iDay, timestamp: new Date(iCurrentYear, iCurrentMonth, iDay).getTime()});
+            this.m_aiTicks.push({value: iDay, timestamp: Date.UTC(iCurrentYear, iEndMonth, iDay)});
           }
 
         }
@@ -451,16 +451,16 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
       else {
         if (Math.abs(iEndMonth - iStartMonth) >= 1) {
           for (let iMonth = iStartMonth; iMonth < 12; iMonth++) {
-            this.m_aiTicks.push({value: MONTHS[iMonth], timestamp: new Date(iStartYear, iMonth, 1).getTime()});
+            this.m_aiTicks.push({value: MONTHS[iMonth], timestamp: Date.UTC(iStartYear, iMonth, 1)});
           }
           for (let iMonth = 0; iMonth <= iEndMonth; iMonth++) {
-            this.m_aiTicks.push({value: MONTHS[iMonth], timestamp: new Date(iEndYear, iMonth, 1).getTime()});
+            this.m_aiTicks.push({value: MONTHS[iMonth], timestamp: Date.UTC(iEndYear, iMonth, 1)});
           }
 
         }
         else {
           for (let iDay = iStartDay; iDay <= iEndDay; iDay++) {
-            this.m_aiTicks.push({value: iDay, timestamp: new Date(iEndYear, iEndMonth, iDay).getTime()});
+            this.m_aiTicks.push({value: iDay, timestamp: Date.UTC(iEndYear, iEndMonth, iDay)});
           }
 
 
@@ -514,9 +514,6 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     return `${fPercentage}%`;
   }
 
-  /**
-   * UPDATED: InitDates now uses the helper
-   */
   initDates(bChangedByUser: boolean): void {
     if (
       FadeoutUtils.utilsIsObjectNullOrUndefined(this.m_iStartDate) ||
@@ -526,18 +523,48 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     }
 
     this.m_oMomentStartDate = moment(this.m_iStartDate * 1000);
+
+    // 1. Raw Objects (Correct Timestamp)
     let oStartDate = new Date(this.m_iStartDate * 1000);
     let oEndDate = new Date(this.m_iEndDate * 1000);
 
-    // Use the new helper
+    // 2. Generate the Master Array (Strictly UTC)
+    // Make sure generateDateArray is using .toISOString() internally!
     this.generateDateArray(oStartDate, oEndDate);
 
-    // Logic for selection remains the same...
+    // 3. Handle Initial Selection (Strictly UTC)
     if (this.m_iInitialSelectedDate && this.m_iInitialSelectedDate >= this.m_iStartDate && this.m_iInitialSelectedDate <= this.m_iEndDate) {
-      this.m_sSelectedDate = new Date(this.m_iInitialSelectedDate * 1000).toDateString();
-      this.m_iSliderValue = this.m_asDates.indexOf(this.m_sSelectedDate);
-      this.m_oSelectedDate = new Date(this.m_iInitialSelectedDate * 1000);
+
+      let oInitDate = new Date(this.m_iInitialSelectedDate * 1000);
+
+
+      this.m_oSelectedDate = oInitDate;
+
+      // Convert to the string format used in m_asDates (YYYY-MM-DD or ISO)
+      // Assuming m_asDates stores "YYYY-MM-DD" for non-1D modes:
+      const sIsoDate = oInitDate.toISOString().split('T')[0];
+
+      // Try to find the date in our array
+      // Note: If 1D mode, m_asDates might have hours, so we might need fuzzy matching
+      let iIdx = this.m_asDates.indexOf(sIsoDate);
+
+      if (iIdx === -1) {
+        // Fallback for 1D mode (where array has T00, T01...)
+        // Find the entry that starts with our date
+        iIdx = this.m_asDates.findIndex(d => d.startsWith(sIsoDate));
+      }
+
+      if (iIdx !== -1) {
+        this.m_iSliderValue = iIdx;
+        this.m_sSelectedDate = this.m_asDates[iIdx];
+      } else {
+        // Safety Fallback
+        this.m_iSliderValue = this.m_asDates.length - 1;
+        this.m_sSelectedDate = this.m_asDates[this.m_iSliderValue];
+      }
+
     } else {
+      // Default to End (Live)
       this.m_sSelectedDate = this.m_asDates[this.m_asDates.length - 1];
       this.m_iSliderValue = this.m_asDates.length - 1;
       this.m_oSelectedDate = oEndDate;
@@ -546,9 +573,26 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     this.m_bIsLive = this.m_sSelectedDate === this.m_asDates[this.m_asDates.length - 1];
     this.m_sSelectedDateTimestamp = this.m_oSelectedDate.valueOf();
 
-    // Only emit if necessary (logic unchanged)
     this.emitSelectedDate(null, bChangedByUser);
     this.updateButtonsState();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['m_iEndDate'] && !changes['m_iEndDate'].firstChange) {
+      if (this.m_sSelectedTimeRange === 'Auto') {
+        this.initDates(false);
+      }
+      else {
+        if (this.m_bIsLive) {
+          // STRICT UTC Update
+          this.m_oSelectedDate = new Date(this.m_iEndDate * 1000);
+          this.onTimeRangeSelected(this.m_sSelectedTimeRange);
+        }
+      }
+    } else {
+      this.initDates(false);
+      this.generateTicks();
+    }
   }
 
   /**
@@ -563,87 +607,158 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    */
   dateSelected(oEvent, bChangedByUser: boolean): void {
 
-    // 1. Get the String from Slider/Event
+    // 1. Get String/Value from Slider or Input
     if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oEvent.target)) {
-      this.m_sSelectedDate = this.m_asDates[oEvent.target.value];
       this.m_iSliderValue = Number(oEvent.target.value);
+      this.m_oSelectedDate = new Date(this.m_asDates[this.m_iSliderValue]); // ONE conversion only
+      this.m_sSelectedDate = this.m_oSelectedDate.toISOString();
     }
     else {
-      // Handle input from Calendar or external sources
-      this.m_sSelectedDate = oEvent.date;
+      // Calendar gives a LOCAL date — normalize it to UTC DAY
+      const oLocalDate = new Date(oEvent.date);
 
-      // If coming from Calendar, m_asDates might not contain this specific date string (if it stripped time)
-      // So we rely on creating a new Date object below.
-      this.m_iSliderValue = this.m_asDates.indexOf(this.m_sSelectedDate);
+      const oUTCDate = new Date(Date.UTC(
+        oLocalDate.getFullYear(),   // intentionally LOCAL getters
+        oLocalDate.getMonth(),
+        oLocalDate.getDate(),
+        0, 0, 0, 0
+      ));
+
+      this.m_oSelectedDate = oUTCDate;
+      this.m_sSelectedDate = oUTCDate.toISOString();
     }
 
-    // 2. Create the Date Object
-    this.m_oSelectedDate = new Date(this.m_sSelectedDate);
-
-    // 3. FORCE TIME LOGIC
-    this.m_oSelectedDate = new Date(this.m_sSelectedDate);
 
 
-    //NOTE: This made like that for readability
+    // 3. FORCE UTC TIME SNAPPING
     if (this.m_sSelectedTimeRange === '1D') {
-      // Trust the specific UTC hour from the ISO string
-    } else {
-      // Force End of UTC Day
+      // CRITICAL FIX:
+      // Even if the source was 23:59, we snap to 23:00:00.000
+      this.m_oSelectedDate.setUTCMinutes(0, 0, 0);
+    }
+    else {
+      // 1Y, 1M, Auto: Snap to End of Day
       this.m_oSelectedDate.setUTCHours(23, 59, 59, 999);
     }
+
+    // -----------------------------------------------------------
+    //UPDATE SLIDER POSITION (For Calendar Input)
+    // -----------------------------------------------------------
+    if (FadeoutUtils.utilsIsObjectNullOrUndefined(oEvent.target)) {
+      // We modified m_oSelectedDate (snapped). Now find where it fits in the array.
+
+      // Convert our snapped object back to ISO string for comparison
+      const s_SnappedIso = this.m_oSelectedDate.toISOString();
+
+      // Try exact match first
+      let iIdx = this.m_asDates.indexOf(s_SnappedIso);
+
+      // If exact match fails (e.g. 1D mode has T00, T01... but we snapped to T00)
+      if (iIdx === -1 && this.m_sSelectedTimeRange === '1D') {
+        // Match by Year-Month-Day-Hour
+        const sSearch = s_SnappedIso.substring(0, 13); // "2024-10-30T12"
+        iIdx = this.m_asDates.findIndex(d => d.startsWith(sSearch));
+      }
+      else if (iIdx === -1) {
+        // Match by Year-Month-Day
+        const sSearch = s_SnappedIso.substring(0, 10); // "2024-10-30"
+        iIdx = this.m_asDates.findIndex(d => d.startsWith(sSearch));
+      }
+
+      if (iIdx !== -1) {
+        this.m_iSliderValue = iIdx;
+        // Sync the string to the array value just in case
+        this.m_sSelectedDate = this.m_asDates[iIdx];
+      }
+    }
+    // -----------------------------------------------------------
 
     // 4. Update Timestamp
     this.m_sSelectedDateTimestamp = this.m_oSelectedDate.valueOf();
 
-    // 5. CRITICAL FIX: Smart Live Detection
-    // We are only live if:
-    // A. The slider is at the very last position
-    // B. AND The date at that position is actually close to the Global End Date (Real Time)
-
+    // 5. Live Logic
+    // Only Live if we are at the very last step of the slider
     const bAtSliderEnd = this.m_iSliderValue === this.m_asDates.length - 1;
 
     if (bAtSliderEnd) {
       const iGlobalEndTimestamp = this.m_iEndDate * 1000;
       const iDiff = Math.abs(iGlobalEndTimestamp - this.m_sSelectedDateTimestamp);
-
-      // Define a "Live Threshold".
-      // If we are in 1D mode (hours), the difference should be small (e.g., < 4 hours).
-      // If we are in 1M/1Y mode (days), the difference can be up to 24 hours.
+      // If we are within 4 hours of "Real Time", consider it Live
       const iThreshold = (this.m_sSelectedTimeRange === '1D') ? (4 * 60 * 60 * 1000) : (24 * 60 * 60 * 1000);
-
-      // If the difference is huge (e.g., selected is 2023, global is 2025), this will be FALSE.
       this.m_bIsLive = iDiff < iThreshold;
-    }
-    else {
+    } else {
       this.m_bIsLive = false;
     }
 
     this.emitLiveButtonAction();
 
-    // 6. Highlight Logic (Unchanged)
-    if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oEvent.isHighlighted) && oEvent.isHighlighted) {
+    // // 6. Highlight Logic (Unchanged)
+    // if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oEvent.isHighlighted) && oEvent.isHighlighted) {
+    //   for (let i = 0; i < this.m_aoEvents.length; i++) {
+    //     const oEventDate = new Date(this.m_aoEvents[i].peakDate * 1000);
+    //     if (this.compareDatesByDay(oEventDate, this.m_oSelectedDate)) {
+    //       this.emitSelectedDate(this.m_aoEvents[i].id, bChangedByUser)
+    //       break;
+    //     }
+    //   }
+    // } else if (FadeoutUtils.utilsIsObjectNullOrUndefined(oEvent.target?.eventId)) {
+    //   this.emitSelectedDate(null, bChangedByUser);
+    // } else {
+    //   this.emitSelectedDate(oEvent.target.eventId, bChangedByUser);
+    // }
+    //
+    // this.updateButtonsState();
+    // -----------------------------------------------------------------------
+    // FIX IS HERE: UNIFIED EVENT LOOKUP
+    // -----------------------------------------------------------------------
+    let sEventIdToEmit = null;
+
+    // Case A: User clicked a Flag (Explicit ID)
+    if (oEvent.target?.eventId) {
+      sEventIdToEmit = oEvent.target.eventId;
+    }
+    // Case B: User moved Slider or Calendar (Implicit Lookup)
+    else {
+      // Search our events array: Does the new m_oSelectedDate match any event?
       for (let i = 0; i < this.m_aoEvents.length; i++) {
         const oEventDate = new Date(this.m_aoEvents[i].peakDate * 1000);
+
+        // Use your UTC comparator
         if (this.compareDatesByDay(oEventDate, this.m_oSelectedDate)) {
-          this.emitSelectedDate(this.m_aoEvents[i].id, bChangedByUser)
-          break;
+          sEventIdToEmit = this.m_aoEvents[i].id;
+          break; // Found it!
         }
       }
-    } else if (FadeoutUtils.utilsIsObjectNullOrUndefined(oEvent.target?.eventId)) {
-      this.emitSelectedDate(null, bChangedByUser);
-    } else {
-      this.emitSelectedDate(oEvent.target.eventId, bChangedByUser);
     }
+
+    // Emit the found ID (or null if none found)
+    this.emitSelectedDate(sEventIdToEmit, bChangedByUser);
+    // -----------------------------------------------------------------------
 
     this.updateButtonsState();
   }
 
 
-  private compareDatesByDay(date1: Date, date2: Date): boolean {
+  // Add this helper to your RiseCalendarComponent class
+
+  get m_oDisplayDate(): Date | null {
+    if (!this.m_oSelectedDate) return null;
+
+    // TRICK: Construct a Local Date using the UTC values.
+    // This forces the Local Calendar to display the same day as the UTC timestamp.
+    return new Date(
+      this.m_oSelectedDate.getUTCFullYear(),
+      this.m_oSelectedDate.getUTCMonth(),
+      this.m_oSelectedDate.getUTCDate(),
+      12, 0, 0 // Noon Local (Safe middle of day)
+    );
+  }
+
+  compareDatesByDay(date1: Date, date2: Date) {
     return (
-      date1.getFullYear() === date2.getFullYear() &&
-      date1.getMonth() === date2.getMonth() &&
-      date1.getDate() === date2.getDate()
+      date1.getUTCFullYear() === date2.getUTCFullYear() &&
+      date1.getUTCMonth() === date2.getUTCMonth() &&
+      date1.getUTCDate() === date2.getUTCDate()
     );
   }
 
@@ -670,12 +785,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     this.m_bLiveButtonPressed.emit(this.m_bIsLive);
   }
 
-  /**
-   * Handle play click
-   */
-  onPlayButtonClick() {
-    this.m_sPlayButtonPressed.emit(this.m_sSelectedDate);
-  }
+
 
   /**
    * Emit the selected date to the parent which will align the monitor page with new info
@@ -694,66 +804,22 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     this.m_oSelectedDateEmitter.emit(oSelecteDateInfo);
 
   }
-  //todo make one function for add / minus day
-  /**
-   * add One day to the timebar / time
-   *
-   */
-  addOneDayToDate() {
-    const oSelectedDate = new Date(this.m_sSelectedDate);
-    const oLastDate = new Date(this.m_asDates[this.m_asDates.length-1]);
-    if (this.m_sSelectedDate && oSelectedDate<oLastDate) {
-      oSelectedDate.setDate(oSelectedDate.getDate() + 1)
-      this.m_sSelectedDate = oSelectedDate.toDateString();
-      this.m_iSliderValue = this.m_asDates.indexOf(this.m_sSelectedDate);
-      this.m_sSelectedDateTimestamp = oSelectedDate.valueOf();
-      this.m_oSelectedDate = oSelectedDate;
-      if(oSelectedDate.getTime()===oLastDate.getTime()){
-        this.m_bIsLive=true;
-        this.emitLiveButtonAction();
-      }
-      this.emitSelectedDate();
-    }
-    this.updateButtonsState();
-  }
+
 
   /**
    * this method update the state of the minus and add button in the time bar
    *
    */
-
   updateButtonsState() {
-    // Convert current selected to timestamp
-    const iCurrent = this.m_oSelectedDate.getTime();
-    const iGlobalEnd = this.m_iEndDate * 1000;
-    const iGlobalStart = this.m_iStartDate * 1000;
+    // NEW LOGIC: strictly based on the slider position
 
-    // Disable Next if we are effectively at "Now" (or within 1 step)
-    this.m_bDisableNextButton = iCurrent >= iGlobalEnd;
+    // 1. Disable "Prev" if the slider is at the very beginning (Index 0)
+    this.m_bDisablePrevButton = this.m_iSliderValue <= 0;
 
-    // Disable Prev if we are at Start
-    this.m_bDisablePrevButton = iCurrent <= iGlobalStart;
+    // 2. Disable "Next" if the slider is at the very end (Last Index)
+    this.m_bDisableNextButton = this.m_iSliderValue >= this.m_asDates.length - 1;
   }
-  /**
-   * Minus One day to the timebar / time
-   *
-   */
-  minusOneDayFromDate() {
-    const oSelectedDate = new Date(this.m_sSelectedDate);
-    const oFirstDate = new Date(this.m_asDates[0]);
-    if (this.m_sSelectedDate && oSelectedDate > oFirstDate) {
-      oSelectedDate.setDate(oSelectedDate.getDate() - 1);
-      this.m_sSelectedDate = oSelectedDate.toDateString();
-      this.m_iSliderValue = this.m_asDates.indexOf(this.m_sSelectedDate);
-      this.m_sSelectedDateTimestamp = oSelectedDate.valueOf();
-      this.m_oSelectedDate = oSelectedDate;
-      this.m_bIsLive=false;
-      this.emitLiveButtonAction();
-      this.emitSelectedDate();
-    }
 
-    this.updateButtonsState();
-  }
 
 
   convertEventToDates() {
@@ -771,69 +837,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     return [];
   }
 
-  generateDayTicks(oSelectedDate: string) {
-    const oDate = new Date(oSelectedDate);
-    const oSelectedYear = oDate.getFullYear();
-    const oSelectedMonth = oDate.getMonth();
-    const iDayInMonth = new Date(oSelectedYear, oSelectedMonth + 1, 0).getDate();
 
-    this.m_aiTicks = [];
-    this.m_asDates = []; // Reset slider values
-
-    for (let iDay = 1; iDay <= iDayInMonth; iDay++) {
-      const sDateString = `${oSelectedYear}-${oSelectedMonth + 1}-${iDay}`;
-      this.m_aiTicks.push({value: `${iDay} ${MONTHS[oSelectedMonth]}`, timestamp: new Date(oSelectedYear, oSelectedMonth, iDay).getTime()});
-    }
-
-
-    // Keep the selected date if possible
-    const selectedDay = oDate.getDate();
-
-    this.m_iSliderValue = selectedDay - 1; // Adjust index for zero-based array
-    this.m_sSelectedDate = this.m_asDates[this.m_iSliderValue];
-
-    // 👇 Zoom window for selected month
-    this.m_oZoomWindow = {
-      start: new Date(oSelectedYear, oSelectedMonth, 1).getTime(),
-      end: new Date(oSelectedYear, oSelectedMonth + 1, 1).getTime(),
-    };
-
-  }
-
-  generateMonthTicks(oDate: string) {
-    const oDateObj = new Date(oDate);
-    const iSelectedYear = oDateObj.getFullYear();
-
-    this.m_aiTicks = [];
-    this.m_asDates = []; // Reset slider values
-
-    for (let iMonth = 0; iMonth < 12; iMonth++) {
-      const sDateString = `${iSelectedYear}-${iMonth + 1}-01`;
-      this.m_aiTicks.push({value: MONTHS[iMonth], timestamp: new Date(iSelectedYear, iMonth, 1).getTime() }); // Display months as labels
-      this.m_asDates.push(sDateString); // Store full date string
-    }
-
-
-    // Keep the selected month if possible
-    const iSelectedMonth = oDateObj.getMonth();
-    this.m_iSliderValue = iSelectedMonth; // Since months are zero-based
-    this.m_sSelectedDate = this.m_asDates[this.m_iSliderValue];
-    this.m_oZoomWindow = {
-      start: new Date(iSelectedYear, 0, 1).getTime(),
-      end: new Date(iSelectedYear + 1, 0, 1).getTime(),
-    };
-  }
-
-  private isMouseOverSlider(event: WheelEvent): boolean {
-    const sliderElement = this.slider.nativeElement;
-    const rect = sliderElement.getBoundingClientRect();
-    return (
-      event.clientX >= rect.left &&
-      event.clientX <= rect.right &&
-      event.clientY >= rect.top &&
-      event.clientY <= rect.bottom
-    );
-  }
 
 
 
@@ -854,7 +858,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
 
   private generateYearTicks(iStartYear:number,iEndYear:number,interval:number) {
     for (let iYear = iStartYear; iYear <= iEndYear; iYear += interval) {
-      this.m_aiTicks.push({value: iYear, timestamp: new Date(iYear, 0, 1).getTime()});
+      this.m_aiTicks.push({value: iYear, timestamp: Date.UTC(iYear, 0, 1)});
     }
 
     this.m_oZoomWindow = {
@@ -863,38 +867,37 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     };
   }
 
-  goToEvent(oEvent: any,bChangedByUser): void {
+  goToEvent(oEvent: any, bChangedByUser: boolean): void {
     const iEventTimestamp = oEvent.peakDate * 1000;
-
-    // Check if the event is within the current zoom window
-    // const bIsInWindow = this.m_oZoomWindow &&
-    //   iEventTimestamp >= this.m_oZoomWindow.start &&
-    //   iEventTimestamp < this.m_oZoomWindow.end;
-    //
-    // if (!bIsInWindow && this.m_iZoomLevel < this.m_iMaxZoomInLevel) {
-    //   // Event is outside current view — zoom in around it
-    //   const sEventDateString = new Date(iEventTimestamp).toISOString().split("T")[0];
-    //   this.handleZoomingIn(sEventDateString); // will regenerate m_asDates
-    // }
-
-    // Find the closest matching date string (since m_asDates is string-based)
     const oEventDate = new Date(iEventTimestamp);
-    const sFormattedDate = `${oEventDate.getFullYear()}-${oEventDate.getMonth() + 1}-${oEventDate.getDate()}`;
 
+    // FIX: Compare using UTC components, because m_asDates are strict UTC ISO strings
     const iIndex = this.m_asDates.findIndex(sDateStr => {
       const oDate = new Date(sDateStr);
-      return (
-        oDate.getFullYear() === oEventDate.getFullYear() &&
-        oDate.getMonth() === oEventDate.getMonth() &&
-        oDate.getDate() === oEventDate.getDate()
-      );
+
+      // Strict UTC comparison
+      if (this.m_sSelectedTimeRange === '1D') {
+        // In 1D, match the Hour
+        // (Note: This assumes your event matches the hour exactly,
+        // if not, we might need to check if it falls within the hour)
+        return Math.abs(oDate.getTime() - iEventTimestamp) < 3600000; // Within 1 hour
+      } else {
+        // In other modes, match the Day
+        return (
+          oDate.getUTCFullYear() === oEventDate.getUTCFullYear() &&
+          oDate.getUTCMonth() === oEventDate.getUTCMonth() &&
+          oDate.getUTCDate() === oEventDate.getUTCDate()
+        );
+      }
     });
 
     if (iIndex >= 0) {
       this.m_iSliderValue = iIndex;
-      this.dateSelected({ target: { value: iIndex, eventId: oEvent.id } } as any,bChangedByUser); // simulate slider input
+      this.m_sSelectedDate = this.m_asDates[iIndex]; // Sync the string
+      // Pass true to simulate user interaction
+      this.dateSelected({ target: { value: iIndex, eventId: oEvent.id } } as any, bChangedByUser);
     } else {
-      console.warn('Could not find event date in current timeline:', sFormattedDate);
+      console.warn('Could not find event date in current timeline');
     }
   }
 
@@ -902,7 +905,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    * Generates the array of dates for the slider.
    * Added bHighResolution for '1D' mode to include hours.
    */
-  // rise-timebar.component.ts
+
 
   generateDateArray(oStartDate: Date, oEndDate: Date, bHighResolution: boolean = false): void {
     let asDates = [];
@@ -934,97 +937,24 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   }
 
 
+  // rise-timebar.component.ts
+
   /**
    * UNIFIED STEP HANDLER
-   * Handles Next/Prev clicks with context-aware steps
+   * Strictly moves the slider cursor. Does NOT change the day/window.
    * @param iSign  1 for Next, -1 for Previous
    */
   changeTimeStep(iSign: number) {
+    const iNewIndex = this.m_iSliderValue + iSign;
 
-    // 1. Calculate the New Date based on the Range
-    // Clone the current date to avoid mutation side effects until we are ready
-    const oNewDate = new Date(this.m_oSelectedDate);
-
-    // Apply the logic requested:
-    // Auto -> 1 Day (Default)
-    // 1Y   -> 1 Month
-    // 1M   -> 1 Week
-    // 1W   -> 1 Day
-    // 1D   -> 1 Hour
-
-    switch (this.m_sSelectedTimeRange) {
-      case 'Auto':
-        oNewDate.setDate(oNewDate.getDate() + iSign);
-        break;
-      case '1Y':
-        oNewDate.setMonth(oNewDate.getMonth() + iSign);
-        break;
-      case '1M':
-        oNewDate.setDate(oNewDate.getDate() + (iSign * 7));
-        break;
-      case '1W':
-        oNewDate.setDate(oNewDate.getDate() + iSign);
-        break;
-      case '1D':
-        oNewDate.setHours(oNewDate.getHours() + iSign);
-        break;
-      default:
-        // Fallback
-        oNewDate.setDate(oNewDate.getDate() + iSign);
-        break;
-    }
-
-    // 2. Boundary Checks
-    // Ensure we don't go before the global start or after the global end (Now)
-    const iGlobalStart = this.m_iStartDate * 1000;
-    const iGlobalEnd = this.m_iEndDate * 1000;
-
-    if (oNewDate.getTime() < iGlobalStart) {
-      // console.log("Cannot go before start date");
+    if (iNewIndex < 0 || iNewIndex >= this.m_asDates.length) {
       return;
     }
 
-    // Optional: Allow going slightly into the future? Usually no.
-    // If you want to stop exactly at "Now":
-    if (oNewDate.getTime() > iGlobalEnd) {
-      // Check if we are already live, if so, do nothing.
-      // Or just clamp it.
-      // console.log("Cannot go into the future");
-      return;
-    }
+    this.m_iSliderValue = iNewIndex;
+    this.m_sSelectedDate = this.m_asDates[iNewIndex];
 
-
-    // 3. EXECUTE THE CHANGE
-    this.m_oSelectedDate = oNewDate;
-
-    // Case A: AUTO MODE
-    // We don't need to regenerate the view/ticks. We just move the slider cursor.
-    if (this.m_sSelectedTimeRange === 'Auto') {
-      this.m_sSelectedDate = this.m_oSelectedDate.toDateString();
-      // Find new index
-      const iNewIndex = this.m_asDates.indexOf(this.m_sSelectedDate);
-
-      if (iNewIndex !== -1) {
-        this.m_iSliderValue = iNewIndex;
-        // Trigger the standard selection logic to emit events and update UI
-        // We simulate an event object
-        this.dateSelected({ target: { value: iNewIndex } }, true);
-      }
-    }
-
-      // Case B: ZOOM MODE (1Y, 1M, 1W, 1D)
-      // We need to shift the whole window.
-      // Calling onTimeRangeSelected will recalculate the Start/End window
-    // centered around our new m_oSelectedDate and regenerate ticks.
-    else {
-      this.onTimeRangeSelected(this.m_sSelectedTimeRange);
-
-      // Manually trigger emit since onTimeRangeSelected mostly updates UI
-      this.m_sSelectedDateTimestamp = this.m_oSelectedDate.valueOf();
-      this.emitSelectedDate(null, true);
-    }
-
-    // 4. Update Button States (Disable if at end/start)
-    this.updateButtonsState();
+    this.dateSelected({ target: { value: iNewIndex } }, true);
   }
+
 }
