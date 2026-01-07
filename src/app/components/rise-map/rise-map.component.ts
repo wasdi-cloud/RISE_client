@@ -279,31 +279,31 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       'AREA_OF_OPERATIONS.AREA_HEADER_TOO_SMALL'
     );
     if (layerType === 'rectangle') {
-      const bounds = layer.getBounds(); // Get the bounds of the rectangle
-      const southWest = bounds.getSouthWest();
-      const northEast = bounds.getNorthEast();
+      const asBounds = layer.getBounds(); // Get the asBounds of the rectangle
+      const oSouthWest = asBounds.getSouthWest();
+      const oNorthEast = asBounds.getNorthEast();
 
       // Accurate distance calculation using Leaflet's distanceTo
-      const width = L.latLng(southWest.lat, southWest.lng).distanceTo(
-        L.latLng(southWest.lat, northEast.lng)
+      const dWidth = L.latLng(oSouthWest.lat, oSouthWest.lng).distanceTo(
+        L.latLng(oSouthWest.lat, oNorthEast.lng)
       );
-      const height = L.latLng(southWest.lat, southWest.lng).distanceTo(
-        L.latLng(northEast.lat, southWest.lng)
+      const dHeight = L.latLng(oSouthWest.lat, oSouthWest.lng).distanceTo(
+        L.latLng(oNorthEast.lat, oSouthWest.lng)
       );
 
 
 
-      // Adjust if width or height are out of bounds
+      // Adjust if dWidth or dHeight are out of asBounds
       if (
-        (width > MAX_WIDTH ||
-        height > MAX_HEIGHT ||
-        width < MIN_WIDTH ||
-        height < MIN_HEIGHT) && this.m_bCheckAreaSize
+        (dWidth > MAX_WIDTH ||
+        dHeight > MAX_HEIGHT ||
+        dWidth < MIN_WIDTH ||
+        dHeight < MIN_HEIGHT) && this.m_bCheckAreaSize
       ) {
         let sErrorMsg = '';
-        if (width > MAX_WIDTH || height > MAX_HEIGHT) {
+        if (dWidth > MAX_WIDTH || dHeight > MAX_HEIGHT) {
           sErrorMsg = sErrorHeaderForTooBig;
-        } else if (width < MIN_WIDTH || height < MIN_HEIGHT) {
+        } else if (dWidth < MIN_WIDTH || dHeight < MIN_HEIGHT) {
           sErrorMsg = sErrorHeaderForTooSmall;
         }
         this.m_oNotificationService
@@ -314,8 +314,8 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
                 // Adjust dimensions dynamically
                 this.m_oMapService.adjustRectangleDimensions(
                   layer,
-                  width,
-                  height
+                  dWidth,
+                  dHeight
                 );
                 this.m_oMapService.onDrawCreated(oEvent, this.m_oMap);
                 this.m_bIsDrawCreated = true;
@@ -333,20 +333,22 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     }
 
     if (layerType === 'polygon') {
-      const latlngs = layer.getLatLngs()[0]; // Use the first array of latlngs
-      const area = this.m_oMapService.calculatePolygonArea(latlngs); // Area in square meters
-      const bounds = layer.getBounds();
-      const center = bounds.getCenter();
-      const latitudeFactor = Math.cos(center.lat * (Math.PI / 180)); // Scale for latitude
-      const adjustedArea = area * latitudeFactor;
+      const asLatlngs = layer.getLatLngs()[0]; // Use the first array of asLatlngs
+      const dArea = this.m_oMapService.calculatePolygonArea(asLatlngs); // Area in square meters
+      const asBounds = layer.getBounds();
+      const oCenter = asBounds.getCenter();
+      const dLatitudeFactor = Math.cos(oCenter.lat * (Math.PI / 180)); // Scale for latitude
+      //todo here we need to think about it more , because right now we are using the dArea value but its not actually true always , for more precision
+      // we need to take into consideration the dLatitudeFactor
+      const dAdjustedArea = dArea * dLatitudeFactor;
 
-      if ( (area < MIN_AREA_POLYGON || area > MAX_AREA_POLYGON) && this.m_bCheckAreaSize) {
+      if ( (dArea < MIN_AREA_POLYGON || dArea > MAX_AREA_POLYGON) && this.m_bCheckAreaSize) {
         let sErrorHeader = '';
 
-        if (area < MIN_AREA_POLYGON) {
+        if (dArea < MIN_AREA_POLYGON) {
           sErrorHeader = sErrorHeaderForTooSmall;
         }
-        else if (area > MAX_AREA_POLYGON) {
+        else if (dArea > MAX_AREA_POLYGON) {
           sErrorHeader = sErrorHeaderForTooBig;
         }
         this.m_oNotificationService.openInfoDialog(
@@ -360,13 +362,13 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       }
     }
     if (layerType === 'circle') {
-      const radius = layer.getRadius(); // Radius in meters
-      const area = Math.PI * radius * radius; // Circle area
-      if ( (area < MIN_AREA_CIRCLE || area > MAX_AREA_CIRCLE) && this.m_bCheckAreaSize) {
+      const dRadius = layer.getRadius(); // Radius in meters
+      const dArea = Math.PI * dRadius * dRadius; // Circle dArea
+      if ( (dArea < MIN_AREA_CIRCLE || dArea > MAX_AREA_CIRCLE) && this.m_bCheckAreaSize) {
         let sErrorMsg = '';
-        if (area > MAX_AREA_CIRCLE) {
+        if (dArea > MAX_AREA_CIRCLE) {
           sErrorMsg = sErrorMsgToBig;
-        } else if (area < MIN_AREA_CIRCLE) {
+        } else if (dArea < MIN_AREA_CIRCLE) {
           sErrorMsg = sErrorMsgToSmall;
         }
         this.m_oNotificationService
@@ -374,7 +376,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
           .subscribe({
             next: (oResponse) => {
               if (oResponse) {
-                this.m_oMapService.adjustCircleArea(layer, radius);
+                this.m_oMapService.adjustCircleArea(layer, dRadius);
                 this.m_oMapService.onDrawCreated(oEvent, this.m_oMap);
                 this.m_bIsDrawCreated = true;
                 this.emitInsertedArea(oEvent);
@@ -482,37 +484,37 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
 
     // Check if it's a circle
     if (oEvent.layer instanceof L.Circle) {
-      const center = oEvent.layer.getLatLng();
-      const radius = oEvent.layer.getRadius();
-      iSelectedArea = Math.PI * Math.pow(radius, 2); // Calculate area of the circle
+      const oCenter = oEvent.layer.getLatLng();
+      const dRadius = oEvent.layer.getRadius();
+      iSelectedArea = Math.PI * Math.pow(dRadius, 2); // Calculate area of the circle
 
       oShapeInfo = {
         type: 'circle',
         center: {
-          lat: center.lat,
-          lng: center.lng,
+          lat: oCenter.lat,
+          lng: oCenter.lng,
         },
-        radius: radius,
+        radius: dRadius,
         area: iSelectedArea,
       };
     }
     // Check if it's a polygon (including rectangles)
     else if (oEvent.layer instanceof L.Polygon) {
-      const latLngs = oEvent.layer.getLatLngs()[0]; // Get the array of points (vertices)
+      const asLatLngs = oEvent.layer.getLatLngs()[0]; // Get the array of asPoints (vertices)
 
-      iSelectedArea = L.GeometryUtil.geodesicArea(latLngs); // Get the area of the polygon
+      iSelectedArea = L.GeometryUtil.geodesicArea(asLatLngs); // Get the area of the polygon
 
-      // Collect all points (vertices) of the polygon
-      const points = latLngs.map((point: L.LatLng) => {
+      // Collect all asPoints (vertices) of the polygon
+      const asPoints = asLatLngs.map((point: L.LatLng) => {
         return {lat: point.lat, lng: point.lng};
       });
-      // Calculate the centroid (center) of the polygon
-      const centroid = this.calculateCentroid(points);
+      // Calculate the dCentroid (center) of the polygon
+      const dCentroid = this.calculateCentroid(asPoints);
       oShapeInfo = {
         type: 'polygon',
-        points: points,
+        points: asPoints,
         area: iSelectedArea,
-        center: centroid,
+        center: dCentroid,
         geoJson: oEvent.layer.toGeoJSON().geometry,
       };
     }
@@ -533,40 +535,57 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     this.m_oMapInputChange.emit(oShapeInfo);
   }
 
-  private emitGeoJSONShapeInfo(geoJson: any) {
-    let oShapeInfo = {};
-    let iSelectedArea = 0;
+  private emitGeoJSONShapeInfo(oGeoJson: any) {
+    let oShapeInfo: any = {};
 
-    if (geoJson.geometry.type === 'Polygon') {
-      // GeoJSON coordinates are in [lng, lat] format, need to convert to [lat, lng]
-      const latLngs = geoJson.geometry.coordinates[0].map(
-        (point: [number, number]) => {
-          return L.latLng(point[1], point[0]); // Convert [lng, lat] to [lat, lng]
-        }
-      );
+    // 1. Convert GeoJSON to a Leaflet Layer to use Leaflet's powerful utility methods
+    const oTempLayer = L.geoJSON(oGeoJson);
+    const aoLayers = oTempLayer.getLayers();
 
-      // Calculate the area of the polygon using Leaflet GeometryUtil
+    if (aoLayers.length === 0) return;
 
-      iSelectedArea = L.GeometryUtil.geodesicArea(latLngs);
+    // We take the first layer (assuming the import is one primary area)
+    const oLayer: any = aoLayers[0];
 
-      // Prepare the points data
-      const points = latLngs.map((point: L.LatLng) => {
-        return {lat: point.lat, lng: point.lng};
-      });
-      // Calculate the centroid (center) of the polygon
-      const centroid = this.calculateCentroid(points);
+    // 2. Handle Polygons (this includes Rectangles and 'Circle-like' polygons from Shapefiles)
+    if (oLayer instanceof L.Polygon) {
+      // getLatLngs() for Polygons can be nested (for holes), flat(Infinity) ensures we get all points
+      const asLatLngs = oLayer.getLatLngs() as any;
+      const asFlatLatLngs = asLatLngs.flat(Infinity);
+
+      // Calculate Area & Center using Leaflet's tools
+      const iArea = L.GeometryUtil.geodesicArea(asFlatLatLngs);
+      const oBounds = oLayer.getBounds();
+      const oCenter = oBounds.getCenter();
+
+      const adPoints = asFlatLatLngs.map((oCoord: L.LatLng) => ({
+        lat: oCoord.lat,
+        lng: oCoord.lng
+      }));
+
       oShapeInfo = {
         type: 'polygon',
-        points: points,
-        area: iSelectedArea,
-        center: centroid,
-        geoJson: geoJson,
+        points: adPoints,
+        area: iArea,
+        center: { lat: oCenter.lat, lng: oCenter.lng },
+        geoJson: oGeoJson
       };
-    } else if (geoJson.type === 'circle') {
-      //todo will have to test with file to verify
     }
 
-    // Emit the shape information to the parent component
+      // 3. Special Case: Actual GeoJSON Circles
+    // (Rare in standard Shapefiles, but possible in some GeoJSON extensions)
+    else if (oLayer instanceof L.Circle) {
+      const oCenter = oLayer.getLatLng();
+      const fRadius = oLayer.getRadius();
+      oShapeInfo = {
+        type: 'circle',
+        center: { lat: oCenter.lat, lng: oCenter.lng },
+        radius: fRadius,
+        area: Math.PI * Math.pow(fRadius, 2),
+        geoJson: oGeoJson
+      };
+    }
+
     this.m_oMapInputChange.emit(oShapeInfo);
   }
 
