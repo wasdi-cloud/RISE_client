@@ -8,7 +8,7 @@ import Geocoder from 'leaflet-control-geocoder';
 import {geoJSON, Map as LeafletMap, Marker} from 'leaflet';
 import 'leaflet-draw';
 import 'leaflet-mouse-position';
-import {BehaviorSubject, buffer, Observable, Subject} from 'rxjs';
+import {BehaviorSubject, buffer, Observable, Subject, Subscription} from 'rxjs';
 import {wktToGeoJSON} from '@terraformer/wkt';
 import {ManualBoundingBoxComponent} from '../dialogs/manual-bounding-box-dialog/manual-bounding-box.component';
 import {
@@ -153,6 +153,23 @@ export class MapService {
    * Area of Interest for Magic Tool
    */
   m_oMagicToolAOI: any = null;
+
+  /**
+   * Flag to enable/disable tile caching
+   */
+  m_bEnableTileCache: boolean = false;
+
+  /**
+   * Subscriptions for feature info requests
+   */
+  private m_oFeatureInfoSubscriptions: Subscription[] = [];
+
+  /**
+   * Pixel Info Click Handler
+   */
+  private m_oPixelInfoClickHandler: ((e: L.LeafletMouseEvent) => void) | null = null;
+
+
   /*
   *this is a custom icon to change the polygon edges while drawing
    */
@@ -371,65 +388,80 @@ export class MapService {
 
 
   setActiveLayer(oMap: L.Map, oMapLayer: L.TileLayer) {
-    if (this.m_oActiveBaseLayer !== oMapLayer) {
-      this.m_oActiveBaseLayer = oMapLayer;
-      oMap.addLayer(oMapLayer);
+
+    // Is there an active base layer?
+    if (this.m_oActiveBaseLayer) {
+      // Is it different from the requested one?
+      if (this.m_oActiveBaseLayer !== oMapLayer) {
+        // Clean the existing one and set the new one
+        oMap.removeLayer(this.m_oActiveBaseLayer);
+        this.m_oActiveBaseLayer = oMapLayer;
+        oMap.addLayer(oMapLayer);
+      }
+    }
+    else {
+        this.m_oActiveBaseLayer = oMapLayer;
+        oMap.addLayer(oMapLayer);
     }
 
-    const activeLayer = this.getActiveLayer();
 
-    // Clear existing tileloadstart listeners
-    activeLayer.off('tileloadstart');
-    activeLayer.off('tileload');
+    if (this.m_bEnableTileCache) {
+      const oActiveLayer = this.getActiveLayer();
 
-    // Handle tile loading
-    activeLayer.on('tileloadstart', async (event: { tile: any }) => {
-      const url = event.tile.src;
-      const cachedObjectUrl = this.m_oObjectUrlCache.get(url);
+      // Clear existing tileloadstart listeners
+      oActiveLayer.off('tileloadstart');
+      oActiveLayer.off('tileload');
 
-      if (cachedObjectUrl) {
-        // Use the cached ObjectURL
-        event.tile.src = cachedObjectUrl;
-        return;
-      }
+      // Handle tile loading
+      oActiveLayer.on('tileloadstart', async (oEvent: { tile: any }) => {
+        const sUrl = oEvent.tile.src;
+        const oCachedObjectUrl = this.m_oObjectUrlCache.get(sUrl);
 
-      try {
-        const cachedTile = await this.getTileFromCache(url);
-        if (cachedTile) {
-          const objectUrl = URL.createObjectURL(cachedTile);
-          this.m_oObjectUrlCache.set(url, objectUrl); // Cache the ObjectURL
-          event.tile.src = objectUrl;
-        }else {
-          // Tile is not in the cache, fetch it from the network
-          const response = await fetch(url);
-          if (!response.ok) {
-            throw new Error(`Failed to fetch tile from network: ${response.statusText}`);
-          }
-
-          const blob = await response.blob();
-
-          // Cache the fetched tile
-          await this.cacheTiles(url, blob);
-
-          // Update the tile's source
-          const objectUrl = URL.createObjectURL(blob);
-          this.m_oObjectUrlCache.set(url, objectUrl); // Cache the ObjectURL
-          event.tile.src = objectUrl;
+        if (oCachedObjectUrl) {
+          // Use the cached ObjectURL
+          oEvent.tile.src = oCachedObjectUrl;
+          return;
         }
-      } catch (error) {
-        console.error('Error during tile load:', error);
-      }
-    });
 
-    // Cleanup ObjectURLs when tiles are removed
-    activeLayer.on('tileunload', (event: { tile: any }) => {
-      const url = event.tile.src;
-      const objectUrl = this.m_oObjectUrlCache.get(url);
-      if (objectUrl) {
-        URL.revokeObjectURL(objectUrl); // Revoke the ObjectURL
-        this.m_oObjectUrlCache.delete(url); // Remove it from the cache
-      }
-    });
+        try {
+          const oCachedTile = await this.getTileFromCache(sUrl);
+          if (oCachedTile) {
+            const oObjectUrl = URL.createObjectURL(oCachedTile);
+            this.m_oObjectUrlCache.set(sUrl, oObjectUrl); // Cache the ObjectURL
+            oEvent.tile.src = oObjectUrl;
+          }
+          else {
+            // Tile is not in the cache, fetch it from the network
+            const oResponse = await fetch(sUrl);
+            if (!oResponse.ok) {
+              throw new Error(`Failed to fetch tile from network: ${oResponse.statusText}`);
+            }
+
+            const oBlob = await oResponse.blob();
+
+            // Cache the fetched tile
+            await this.cacheTiles(sUrl, oBlob);
+
+            // Update the tile's source
+            const oObjectUrl = URL.createObjectURL(oBlob);
+            this.m_oObjectUrlCache.set(sUrl, oObjectUrl); // Cache the ObjectURL
+            oEvent.tile.src = oObjectUrl;
+          }
+        } catch (error) {
+          console.error('Error during tile load:', error);
+        }
+      });
+
+      // Cleanup ObjectURLs when tiles are removed
+      oActiveLayer.on('tileunload', (event: { tile: any }) => {
+        const sUrl = event.tile.src;
+        const oObjectUrl = this.m_oObjectUrlCache.get(sUrl);
+        if (oObjectUrl) {
+          URL.revokeObjectURL(oObjectUrl); // Revoke the ObjectURL
+          this.m_oObjectUrlCache.delete(sUrl); // Remove it from the cache
+        }
+      });
+    }
   }
 
   getActiveLayer() {
@@ -461,29 +493,26 @@ export class MapService {
   }
 
 
-  convertCircleToWKT(
-    center: { lat: number; lng: number },
-    radius: number
-  ): string {
-    const numPoints = 64; // Number of points to approximate the circle
-    const points = [];
-    const earthRadius = 6371000; // Radius of the Earth in meters
+  convertCircleToWKT( center: { lat: number; lng: number }, radius: number ): string {
+    const iNumPoints = 64; // Number of points to approximate the circle
+    const aiPoints = [];
+    const iEarthRadius = 6371000; // Radius of the Earth in meters
 
-    for (let i = 0; i < numPoints; i++) {
-      const angle = (((i * 360) / numPoints) * Math.PI) / 180; // Convert to radians
-      const latOffset =
-        ((radius * Math.cos(angle)) / earthRadius) * (180 / Math.PI);
-      const lngOffset =
+    for (let i = 0; i < iNumPoints; i++) {
+      const angle = (((i * 360) / iNumPoints) * Math.PI) / 180; // Convert to radians
+      const fLatOffset =
+        ((radius * Math.cos(angle)) / iEarthRadius) * (180 / Math.PI);
+      const fLngOffset =
         ((radius * Math.sin(angle)) /
-          (earthRadius * Math.cos((center.lat * Math.PI) / 180))) *
+          (iEarthRadius * Math.cos((center.lat * Math.PI) / 180))) *
         (180 / Math.PI);
-      const lat = center.lat + latOffset;
-      const lng = center.lng + lngOffset;
-      points.push([lng, lat]);
+      const fLat = center.lat + fLatOffset;
+      const fLng = center.lng + fLngOffset;
+      aiPoints.push([fLng, fLat]);
     }
     // Close the polygon by repeating the first point at the end
-    points.push([points[0][0], points[0][1]]);
-    return `POLYGON((${points.map((p) => `${p[0]} ${p[1]}`).join(', ')}))`;
+    aiPoints.push([aiPoints[0][0], aiPoints[0][1]]);
+    return `POLYGON((${aiPoints.map((p) => `${p[0]} ${p[1]}`).join(', ')}))`;
   }
 
   /**
@@ -497,10 +526,7 @@ export class MapService {
     if (!sLayerId) {
       return false;
     }
-    //TODO: add default server
-    // if(!sServer) {
-    //   sServer
-    // }
+
     let oMap = this.getMap();
 
     let oWmsLayer = L.tileLayer.wms(sServer, {
@@ -511,11 +537,9 @@ export class MapService {
       opacity:iOpacity!=null?iOpacity/100:100
     });
 
-    // if (!FadeoutUtils.utilsIsObjectNullOrUndefined(iZIndex)){
-    //   oWmsLayer.setZIndex(1000+iZIndex);
-    // }
     oWmsLayer.setZIndex(1000)
     oWmsLayer.addTo(oMap);
+
     // Store the layer in the map for later reference
     this.m_oLayerMap[sLayerId] = oWmsLayer;
     return true;
@@ -523,24 +547,24 @@ export class MapService {
 
   /**
    * zoom B and Image On Geoserver Bounding Box
-   * @param geoserverBoundingBox
+   * @param oGeoserverBoundingBox
    */
-  zoomBandImageOnGeoserverBoundingBox(geoserverBoundingBox) {
+  zoomBandImageOnGeoserverBoundingBox(oGeoserverBoundingBox) {
     try {
-      if (!geoserverBoundingBox) {
+      if (!oGeoserverBoundingBox) {
         console.log('MapService.zoomBandImageOnGeoserverBoundingBox: geoserverBoundingBox is null or empty ');
         return;
       }
 
-      geoserverBoundingBox = geoserverBoundingBox.replace(/\n/g, '');
-      let oBounds = JSON.parse(geoserverBoundingBox);
+      oGeoserverBoundingBox = oGeoserverBoundingBox.replace(/\n/g, '');
+      let oBounds = JSON.parse(oGeoserverBoundingBox);
 
       //Zoom on layer
-      let corner1 = L.latLng(oBounds.maxy, oBounds.maxx),
-        corner2 = L.latLng(oBounds.miny, oBounds.minx),
-        bounds = L.latLngBounds(corner1, corner2);
+      let oCorner1 = L.latLng(oBounds.maxy, oBounds.maxx),
+        oCorner2 = L.latLng(oBounds.miny, oBounds.minx),
+        aoBounds = L.latLngBounds(oCorner1, oCorner2);
 
-      this.m_oRiseMap.flyToBounds(bounds, {maxZoom: 8});
+      this.m_oRiseMap.flyToBounds(aoBounds, {maxZoom: 8});
     } catch (e) {
       console.error(e);
     }
@@ -563,9 +587,9 @@ export class MapService {
         // Note: Directly accessing and removing the native listener is hard, so we focus on
         // stopping propagation and overriding the functionality.
 
-        trashButton.addEventListener('click', (event) => {
-          event.preventDefault();
-          event.stopPropagation();
+        trashButton.addEventListener('click', (oEvent) => {
+          oEvent.preventDefault();
+          oEvent.stopPropagation();
 
           const aoLayers = this.m_oDrawnItems.getLayers();
           if (aoLayers && aoLayers.length > 0) {
@@ -589,11 +613,11 @@ export class MapService {
 
             // 5. *** THE FIX: Forcefully dismiss the lingering edit toolbar dialog ***
             // We simulate a click on the Save button (the checkmark icon)
-            const saveButton = document.querySelector('.leaflet-draw-actions a.leaflet-draw-actions-bottom:first-child');
+            const oSaveButton = document.querySelector('.leaflet-draw-actions a.leaflet-draw-actions-bottom:first-child');
 
-            if (saveButton instanceof HTMLElement) {
+            if (oSaveButton instanceof HTMLElement) {
               // The button needs to be clicked/triggered to dismiss the control pane
-              saveButton.click();
+              oSaveButton.click();
             }
             // } else {
             //   // Fallback: If we can't find the save button, try to manually stop all editing.
@@ -966,34 +990,36 @@ export class MapService {
       // Temporary layer for measurement
       oMap.addLayer(layer);
 
-
-      const formatNumber = (num: number) => {
-        return new Intl.NumberFormat().format(num); // Adds commas as thousand separators
+      const oFormatNumber = (oNum: number) => {
+        return new Intl.NumberFormat().format(oNum); // Adds commas as thousand separators
       };
       // Calculate and create a notification sMessage
       let sMessage = '';
       let sWkt=''
+
       if (sLayerType === 'polyline') {
-        const distance = this.calculateDistance(layer.getLatLngs());
+        const fDistance = this.calculateDistance(layer.getLatLngs());
         // from mm² to km²
-        let distanceWithComas=formatNumber(distance)
-        // sMessage = `Distance: ${(distance).toFixed(2)} kilometers`;
-        sMessage = `Distance: ${distanceWithComas} kilometers`;
+        let sDistanceWithComas = oFormatNumber(fDistance)
+        
+        sMessage = `Distance: ${sDistanceWithComas} kilometers`;
         sWkt=this.convertLatLngsToWktLineString(layer.getLatLngs());
-      } else if (sLayerType === 'circle') {
+      } 
+      else if (sLayerType === 'circle') {
         const iRadius = layer.getRadius();
-        const area = this.calculateCircleArea(iRadius);
-        let areaWithFormat = formatNumber(area/(Math.pow(10,6)));
+        const fArea = this.calculateCircleArea(iRadius);
+        let fAreaWithFormat = oFormatNumber(fArea/(Math.pow(10,6)));
         // sMessage = `Circle Area: ${(area / 1000).toFixed(2)} Km²`;
-        sMessage = `Circle Area: ${areaWithFormat} Km²`;
+        sMessage = `Circle Area: ${fAreaWithFormat} Km²`;
         const oCenter=layer.getLatLng();
         sWkt=this.convertCircleToWKT(oCenter,iRadius);
-      } else {
+      } 
+      else {
         const aiLatLngs = layer.getLatLngs()[0];
         const area = this.calculatePolygonArea(aiLatLngs);
-        let areaWithFormat = formatNumber(area/(Math.pow(10,6)));
+        let fAreaWithFormat = oFormatNumber(area/(Math.pow(10,6)));
         // sMessage = `Circle Area: ${(area / 1000).toFixed(2)} Km²`;
-        sMessage = `Area: ${areaWithFormat} Km²`;
+        sMessage = `Area: ${fAreaWithFormat} Km²`;
         // sMessage = `Area: ${(area / 1000).toFixed(2)} Km²`;
         sWkt=this.convertLatLngsToWktPolygon(aiLatLngs)
       }
@@ -1002,26 +1028,24 @@ export class MapService {
 
     });
   }
+
   private convertLatLngsToWktLineString(latlngs: L.LatLng[]): string {
-    const coords = latlngs.map(latlng => `${latlng.lng} ${latlng.lat}`).join(', ');
-    return `LINESTRING (${coords})`;
+    const aoCoords = latlngs.map(latlng => `${latlng.lng} ${latlng.lat}`).join(', ');
+    return `LINESTRING (${aoCoords})`;
   }
+
   private convertLatLngsToWktPolygon(latlngs: L.LatLng[]): string {
     // Ensure the polygon is closed (first and last point are the same)
     let closedLatLngs = [...latlngs];
     if (latlngs.length > 0 && !(latlngs[0].equals(latlngs[latlngs.length - 1]))) {
       closedLatLngs.push(latlngs[0]);
     }
-    const coords = closedLatLngs.map(latlng => `${latlng.lng} ${latlng.lat}`).join(', ');
-    return `POLYGON ((${coords}))`;
+    const aoCoords = closedLatLngs.map(latlng => `${latlng.lng} ${latlng.lat}`).join(', ');
+    return `POLYGON ((${aoCoords}))`;
   }
 
   //todo find a better way to write only one drawing method
-  startDrawingForMagicTool(
-    oMap: L.Map,
-    oDrawControl: any,
-    onShapeCreated: (layer: L.Layer) => void
-  ) {
+  startDrawingForMagicTool(oMap: L.Map, oDrawControl: any, onShapeCreated: (layer: L.Layer) => void) {
     oDrawControl.enable();
     oMap.once('draw:created', (e: any) => {
       const {layerType: sLayerType, layer: oLayer} = e;
@@ -1131,6 +1155,7 @@ export class MapService {
 
     return L.latLngBounds(L.latLng(south, west), L.latLng(north, east));
   }
+
   private getLayerBounds(oLayer: L.TileLayer.WMS): L.LatLngBounds | null {
     //TODO layer should have bounding box in entity
     const minx = 1.4998625311991;  // Longitude (West)
@@ -1142,8 +1167,7 @@ export class MapService {
     return L.latLngBounds([L.latLng(miny, minx), L.latLng(maxy, maxx)]);
   }
 
-
-    // Function to parse WKT POLYGON string into an array of LatLng
+  // Function to parse WKT POLYGON string into an array of LatLng
   parseWKTPolygon(sWkt) {
     // Remove 'POLYGON ((' and '))' from the string
     const asCoordsString = sWkt.replace(/^POLYGON \(\(/, "").replace(/\)\)$/, "");
@@ -1496,6 +1520,9 @@ export class MapService {
       document.head.appendChild(style);
     }
 
+    // Initialize pixel info handler once
+    this.getPixelInfo();
+
     let oPixelButton = L.Control.extend({
       options: {
         position: 'topright',
@@ -1537,8 +1564,6 @@ export class MapService {
                 );
               });
             }
-
-            this.getPixelInfo();
           }
         });
 
@@ -1584,10 +1609,17 @@ export class MapService {
 
     let sErrorMsg: string = this.m_oTranslate.instant('MAP.ERROR_LAYER');
 
-    this.m_oRiseMap.on('click', async  (oClickEvent) => {
+    // Remove previous click handler if exists
+    if (this.m_oPixelInfoClickHandler) {
+      this.m_oRiseMap.off('click', this.m_oPixelInfoClickHandler);
+    }
 
+    this.m_oPixelInfoClickHandler = async (oClickEvent: L.LeafletMouseEvent) => {
       //flag is false , button is not clicked
       if(!this.m_bPixelInfoOn) return;
+
+      // Cancel all previous pending requests
+      this.cancelFeatureInfoRequests();
 
       //there are not layer selected
       if (!this.m_aoSelectedLayers || this.m_aoSelectedLayers.length === 0) {
@@ -1599,18 +1631,19 @@ export class MapService {
         window.dispatchEvent(new Event('resize'));
         return;
       }
+
       let sWmsUrl = '';
       let asMapIds :string[]= [];
       let asLayerIds :string[]= [];
 
       this.m_oRiseMap.eachLayer( (oLayer) => {
+
         if (oLayer.options.layers) {
           let sLayerId = oLayer.options.layers;
 
           // Find the selected layer by its ID
           let oSelectedLayer = this.m_aoSelectedLayers.find(layer => layer.layerId === sLayerId);
           asMapIds.push(oSelectedLayer?.mapId || 'Unknown');
-
 
           //todo maybe this is the reason why pixel info does not work on the shape files
           if (FadeoutUtils.utilsIsStrNullOrEmpty(oLayer._url)) {
@@ -1623,6 +1656,8 @@ export class MapService {
 
       // We query the layers one by one
       let oFullFeatures = null;
+      let iCompletedRequests = 0;
+      const iTotalRequests = asLayerIds.length;
 
       for (let i = 0; i < asLayerIds.length; i++) {
         // Get the layer id
@@ -1639,62 +1674,91 @@ export class MapService {
 
         if (sFeatureInfoUrl) {
           try {
+            // Store subscription for cancellation
+            const subscription = this.getFeatureInfo(sFeatureInfoUrl).subscribe({
+              next: (oResponse) => {
+                for (let j = 0; j < oResponse["features"].length; j++) {
+                  oResponse["features"][j].id = sMapId;
+                }
 
-            // Fetch the feature info for the current layer
-            const oResponse = await firstValueFrom(this.getFeatureInfo(sFeatureInfoUrl));
+                if (oFullFeatures == null) {
+                  oFullFeatures = oResponse;
+                } else {
+                  oFullFeatures.features = oFullFeatures.features.concat(oResponse["features"]);
+                }
 
-            for (let i = 0; i < oResponse["features"].length; i++) {
-              oResponse["features"][i].id = sMapId;
-            }
+                iCompletedRequests++;
+                // If this was the last request, show popup
+                if (iCompletedRequests === iTotalRequests) {
+                  this.showFeatureInfoPopup(oFullFeatures, oClickEvent, sErrorMsg);
+                }
+              },
+              error: (oEx) => {
+                console.error('Error fetching feature info:', oEx);
+                iCompletedRequests++;
+                if (iCompletedRequests === iTotalRequests) {
+                  this.m_oNotificationService.openSnackBar(sErrorMsg, '', 'danger');
+                }
+              }
+            });
 
-            if (oFullFeatures== null) {
-              // Initialize oFullFeatures with the first response
-              oFullFeatures = oResponse;
-            }
-            else {
-              // Merge the features from the current response into oFullFeatures
-              oFullFeatures.features = oFullFeatures.features.concat(oResponse["features"]);
-            }
+            this.m_oFeatureInfoSubscriptions.push(subscription);
+
           } catch (oEx) {
             console.error('Error fetching feature info:', oEx);
           }
         }
       }
+    };
 
-      sErrorMsg = "Error fetching feature info from the server. Please try again later.";
+    // Add the new handler
+    this.m_oRiseMap.on('click', this.m_oPixelInfoClickHandler);
+  }
 
-      if (oFullFeatures) {
-        try {
-          let sContentString = this.formatFeatureJSON(oFullFeatures);
-          //handle the case when there are no info
-          if(sContentString==='<ul></ul>'){
-            sContentString='<ul>No Information Found</ul>'
-          }
-          this.m_oFeatureInfoMarker = L.popup()
-            .setLatLng([
-              oClickEvent.latlng.lat,
-              oClickEvent.latlng.lng,
-            ])
-            .setContent(sContentString)
-            .openOn(this.m_oRiseMap);
-        } catch (error) {
-          this.m_oNotificationService.openSnackBar(
-            sErrorMsg,
-            '',
-            'danger'
-          );
+  // Helper method to show popup
+  private showFeatureInfoPopup(oFullFeatures: any, oClickEvent: L.LeafletMouseEvent, sErrorMsg: string) {
+    if (oFullFeatures) {
+      try {
+        let sContentString = this.formatFeatureJSON(oFullFeatures);
+        if (sContentString === '<ul></ul>') {
+          sContentString = '<ul>No Information Found</ul>';
         }
+        this.m_oFeatureInfoMarker = L.popup()
+          .setLatLng([oClickEvent.latlng.lat, oClickEvent.latlng.lng])
+          .setContent(sContentString)
+          .openOn(this.m_oRiseMap);
+      } catch (error) {
+        this.m_oNotificationService.openSnackBar(sErrorMsg, '', 'danger');
       }
-      else {
-        this.m_oNotificationService.openSnackBar(
-          sErrorMsg,
-          '',
-          'danger'
-        );
-        window.dispatchEvent(new Event("resize"))
+    } else {
+      this.m_oNotificationService.openSnackBar(sErrorMsg, '', 'danger');
+      window.dispatchEvent(new Event("resize"));
+    }
+  }
+
+  // Cancel all pending feature info requests
+  private cancelFeatureInfoRequests(): void {
+    this.m_oFeatureInfoSubscriptions.forEach(oSub => {
+      if (oSub && !oSub.closed) {
+        oSub.unsubscribe();
       }
     });
+    this.m_oFeatureInfoSubscriptions = [];
   }
+
+  // Update cleanupPixelInfo to cancel requests and remove handler
+  private cleanupPixelInfo() {
+    this.m_bPixelInfoOn = false;
+    
+    // Cancel pending requests
+    this.cancelFeatureInfoRequests();
+    
+    // Remove click handler
+    if (this.m_oPixelInfoClickHandler) {
+      this.m_oRiseMap.off('click', this.m_oPixelInfoClickHandler);
+      this.m_oPixelInfoClickHandler = null;
+    }
+  }  
 
 
   addPrinterButton(oMap: any): Observable<void> {
@@ -1744,51 +1808,15 @@ export class MapService {
     const sBaseUrl = oLayer._url || oLayer.url;
     return `${sBaseUrl}?service=WMS&version=1.3.0&request=GetCapabilities`;
   }
-  //todo delete
-  async isClickInsideLayer(oLayer: any, oLatLng: L.LatLng): Promise<boolean> {
-    const sLayerId = oLayer.options.layers.replace(/^rise:/, '');
-    const sUrl = this.buildGetCapabilitiesUrl(oLayer);
-
-    const xmlText = await fetch(sUrl).then(res => res.text());
-    const oXml = new DOMParser().parseFromString(xmlText, "text/xml");
-
-    const oLayerElems = oXml.querySelectorAll("Layer");
-
-    for (const oElem of Array.from(oLayerElems)) {
-      const oNameNode = oElem.querySelector("Name");
-      if (oNameNode?.textContent === sLayerId) {
-        // Try <BoundingBox CRS="EPSG:4326" ... />
-        const oBBox = oElem.querySelector("BoundingBox[CRS='CRS:84']");
-        if (oBBox) {
-          const minx = parseFloat(oBBox.getAttribute("minx") || "0");
-          const miny = parseFloat(oBBox.getAttribute("miny") || "0");
-          const maxx = parseFloat(oBBox.getAttribute("maxx") || "0");
-          const maxy = parseFloat(oBBox.getAttribute("maxy") || "0");
-
-          const oBounds = L.latLngBounds(
-            L.latLng(miny, minx),
-            L.latLng(maxy, maxx)
-          );
-
-          return oBounds.contains(oLatLng);
-        }
-
-      }
-    }
-
-    return false; // If no matching layer or bbox found
-  }
 
   /**
    * Select a point in map and rise draw a circle with minimum radius
    * @param oMap
    */
-  addCircleButton(
-    oMap: L.Map
-  ): Observable<{ center: { lat: number; lng: number }; radius: number }> {
+  addCircleButton( oMap: L.Map): Observable<{ center: { lat: number; lng: number }; radius: number }> {
     let bIsDrawing = false;
 
-    const circleButton = L.Control.extend({
+    const oCircleButton = L.Control.extend({
       options: {position: 'topright'},
       onAdd: () => {
         const oContainer = L.DomUtil.create(
@@ -1842,7 +1870,7 @@ export class MapService {
       },
     });
 
-    oMap.addControl(new circleButton());
+    oMap.addControl(new oCircleButton());
 
     // Return the Subject as an Observable to subscribe in the component
     return this.m_oCircleDrawnSubject.asObservable();
@@ -1864,11 +1892,7 @@ export class MapService {
     oMap.addControl(new oMagicToolButton());
     return this.m_oMagicToolResultSubject.asObservable();
   }
-  cleanupPixelInfo() {
-    // Disable pixel info functionality
-    this.m_bPixelInfoOn = false;
 
-  }
   /**
    * Initializes the Draw button in the container.
    */
@@ -1942,10 +1966,10 @@ export class MapService {
   /**
    * Handles the click event for a specific tool button.
    */
-  private handleToolClick(oMap: L.Map, toolType: string): void {
+  private handleToolClick(oMap: L.Map, sToolType: string): void {
     let oDrawControl: any;
 
-    switch (toolType) {
+    switch (sToolType) {
       case 'rectangle':
         oDrawControl = new L.Draw.Rectangle(oMap, this.m_oDrawOptions.draw.rectangle);
         break;
@@ -1970,8 +1994,6 @@ export class MapService {
 
         // Set the new shape as active
         this.m_oActiveShapeForMagicTool = layer;
-
-
       });
     }
   }
@@ -2026,10 +2048,6 @@ export class MapService {
 
     let sGeoserverUrl: string = oLayer.geoserverUrl;
 
-    // if (!sGeoserverUrl) {
-    //   sGeoserverUrl = this.m_oConstantsService.getWmsUrlGeoserver();
-    // }
-
     if (sGeoserverUrl.endsWith('?')) {
       sGeoserverUrl = sGeoserverUrl.replace('ows?', 'wms?');
     } else {
@@ -2044,11 +2062,7 @@ export class MapService {
     return sGeoserverUrl;
   }
 
-  getWMSLayerInfoUrl(
-    sWmsUrl: string,
-    oPoint: L.LatLng,
-    sLayerIdList: string[]
-  ): string {
+  getWMSLayerInfoUrl(sWmsUrl: string, oPoint: L.LatLng, sLayerIdList: string[]): string {
     const sLayerIds = sLayerIdList.join(',');
     const oLat = oPoint.lat;
     const oLng = oPoint.lng;
@@ -2175,14 +2189,14 @@ export class MapService {
   }
 
   async getTileFromCache(url: string): Promise<Blob | null> {
-    const db = await this.openIndexedDb();
+    const oDb = await this.openIndexedDb();
     return new Promise((resolve, reject) => {
-      const transaction = db.transaction('tileStore', 'readonly');
-      const store = transaction.objectStore('tileStore');
-      const request = store.get(url);
+      const oTransaction = oDb.transaction('tileStore', 'readonly');
+      const oStore = oTransaction.objectStore('tileStore');
+      const oRequest = oStore.get(url);
 
-      request.onsuccess = () => resolve(request.result?.blob || null);
-      request.onerror = () => reject('Error retrieving tile from cache');
+      oRequest.onsuccess = () => resolve(oRequest.result?.blob || null);
+      oRequest.onerror = () => reject('Error retrieving tile from cache');
     });
   }
 
@@ -2238,33 +2252,6 @@ export class MapService {
       };
     });
   }
-
-  /**
-   * Evict the oldest tiles to free the storage
-   * @param url
-   */
-  // async getTileFromCache(url: string): Promise<Blob | null> {
-  //   const db = await this.openIndexedDb();
-  //
-  //   return new Promise((resolve, reject) => {
-  //     const transaction = db.transaction('tileStore', 'readonly');
-  //     const store = transaction.objectStore('tileStore');
-  //     const request = store.get(url); // Use 'url' as the key
-  //
-  //     request.onsuccess = (event) => {
-  //       const result = request.result;
-  //       if (result) {
-  //         resolve(result.blob); // Return the tile's blob data
-  //       } else {
-  //         resolve(null); // Tile not found in cache
-  //       }
-  //     };
-  //
-  //     request.onerror = () => {
-  //       reject('Error retrieving tile from cache');
-  //     };
-  //   });
-  // }
 
   async openIndexedDb(): Promise<IDBDatabase> {
     return new Promise((resolve, reject) => {
