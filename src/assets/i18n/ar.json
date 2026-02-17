@@ -189,6 +189,7 @@
     "USERNAME_ERROR_MESSAGE_LENGTH": "يرجى التأكد من أن معرّف المستخدم أطول من 8 أحرف",
     "USERNAME_ERROR_MESSAGE_SPACES": "لا يمكن أن يحتوي معرّف المستخدم على مسافات",
     "USERNAME_ERROR_MESSAGE_LOWERCASE": "يجب أن يكون معرّف المستخدم بأحرف صغيرة فقط",
+    "USERNAME_ERROR_MESSAGE_AT_SYMBOL": "لا يمكن أن يحتوي معرف المستخدم على الرمز '@' (ليس بريدًا إلكترونيًا).",
     "NEXT": "التالي",
     "PERSONAL_INFO": "أدخل معلوماتك الشخصية",
     "ORG_INFO": "أدخل معلومات مؤسستك",

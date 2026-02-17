@@ -253,6 +253,7 @@
     "USERNAME_ERROR_MESSAGE_LENGTH": "Veuillez vous assurer que l'identifiant utilisateur contient plus de 8 caractères",
     "USERNAME_ERROR_MESSAGE_SPACES": "L'identifiant utilisateur ne peut pas contenir d'espaces",
     "USERNAME_ERROR_MESSAGE_LOWERCASE": "L'identifiant utilisateur doit être entièrement en minuscules",
+    "USERNAME_ERROR_MESSAGE_AT_SYMBOL": "L'identifiant ne peut pas contenir le symbole '@' (ce n'est pas un e-mail).",
     "NEXT": "Suivant",
     "PERSONAL_INFO": "Entrez vos informations personnelles",
     "ORG_INFO": "Entrez les informations de votre organisation",

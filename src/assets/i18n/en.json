@@ -246,6 +246,7 @@
     "USERNAME_ERROR_MESSAGE_LENGTH": "Please ensure that user id is longer than 8 characters",
     "USERNAME_ERROR_MESSAGE_SPACES": "User ID cannot contain spaces",
     "USERNAME_ERROR_MESSAGE_LOWERCASE": "User ID must be all lowercase",
+    "USERNAME_ERROR_MESSAGE_AT_SYMBOL": "User ID cannot contain the '@' symbol (it is not an email).",
     "NEXT": "Next",
     "PERSONAL_INFO":"Enter your Personal Information",
     "ORG_INFO": "Enter your Organization's Information",

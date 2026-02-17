@@ -386,6 +386,7 @@ export class SignUpComponent implements OnInit,OnDestroy {
     let sUserNameErrorLength=this.m_oTranslate.instant("REGISTER.USERNAME_ERROR_MESSAGE_LENGTH");
     let sUserNameErrorSpace=this.m_oTranslate.instant("REGISTER.USERNAME_ERROR_MESSAGE_SPACES");
     let sUserNameErrorLowercase=this.m_oTranslate.instant("REGISTER.USERNAME_ERROR_MESSAGE_LOWERCASE");
+    let sUserNameErrorAtSymbol = this.m_oTranslate.instant("REGISTER.USERNAME_ERROR_MESSAGE_AT_SYMBOL");
 
     if (this.m_oUserInfoInput.userId) {
       this.m_oUserInfoInput.userId= this.m_oUserInfoInput.userId.trim();
@@ -403,7 +404,14 @@ export class SignUpComponent implements OnInit,OnDestroy {
         this.m_sUsernameError = sUserNameErrorLowercase;
         return false;
       }
+
+      // NEW CHECK: Prevent the use of @ symbol
+      if (this.m_oUserInfoInput.userId.includes('@')) {
+        this.m_sUsernameError = sUserNameErrorAtSymbol;
+        return false;
+      }
     }
+    this.m_sUsernameError = "";
     return true;
   }
 
