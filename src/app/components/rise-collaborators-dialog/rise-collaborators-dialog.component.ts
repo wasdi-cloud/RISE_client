@@ -31,7 +31,7 @@ export class RiseCollaboratorsDialogComponent implements OnInit {
   m_oFieldOperatorOfArea: UserOfAreaViewModel
   protected readonly UserRole = UserRole;
   m_oFieldOperatorOfAreaUserId: string="";
-  m_sExternalRiseUserId: string = "";
+  m_sExternalRiseUserIdOrEmail: string = "";
   m_oEntity = null;
   m_bNoUserExists: boolean=false;
 
@@ -104,9 +104,9 @@ export class RiseCollaboratorsDialogComponent implements OnInit {
   }
 
   addExternalUser() {
-    if (this.m_sExternalRiseUserId) {
+    if (this.m_sExternalRiseUserIdOrEmail) {
 
-      this.m_oPermissionService.add("area", this.m_sResourceId,this.m_sExternalRiseUserId,"read").subscribe({
+      this.m_oPermissionService.add("area", this.m_sResourceId,this.m_sExternalRiseUserIdOrEmail,"read").subscribe({
         next: () => {
           this.m_bAddingExternalUser=false;
 
