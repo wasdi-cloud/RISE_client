@@ -249,6 +249,7 @@ export class MapService {
       layers: [this.m_oDarkGrayArcGIS],
       zoomControl: false,
       zoom: 3,
+      minZoom:3,
       // worldCopyJump: true, // This enables the seamless world wrapping for markers
       noWrap:true,
       // center: latLng(0, 0),

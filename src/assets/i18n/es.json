@@ -101,6 +101,7 @@
   },
 
   "COLLABORATORS": {
+    "ALL_USERS_ADDED": "Todos los colaboradores disponibles de su organización ya han sido añadidos.",
     "USER_ID": "ID de usuario RISE",
     "ORG_EMPTY_TITLE": "Su organización está vacía",
     "ORG_EMPTY_MESSAGE": "No hay otros usuarios en su organización. Por favor, invítelos a ser colaboradores y luego añádalos a sus áreas.",

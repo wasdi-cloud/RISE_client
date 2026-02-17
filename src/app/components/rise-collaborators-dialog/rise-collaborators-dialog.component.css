@@ -26,3 +26,12 @@ h3 {
   justify-content: flex-end; /* or center / start */
   gap: 0.5rem;
 }
+
+.bottom-buttons div[matTooltip] {
+  display: inline-block;
+}
+
+/* Optional: Show a "not-allowed" cursor when hovering the disabled button area */
+.bottom-buttons div[matTooltip]:has(rise-button[m_bDisabled="true"]) {
+  cursor: not-allowed;
+}

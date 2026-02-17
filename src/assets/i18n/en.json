@@ -88,6 +88,7 @@
     "ID": "Id"
   },
   "COLLABORATORS": {
+    "ALL_USERS_ADDED": "All available collaborators from your organization have already been added.",
     "USER_ID": "RISE User Id",
     "ORG_EMPTY_TITLE": "Your Organization is empty",
     "ORG_EMPTY_MESSAGE": "There are no other users in your org. Please invite them to be collaborator then add them to your areas",
@@ -442,7 +443,7 @@
     "O3":"O3",
     "CH4":"CH4",
     "SO2":"SO2"
-  },  
+  },
   "PLUGIN_MAP_DESCRIPTIONS": {
     "HIGH_RES_FLOOD": "High Resolution SAR based Flood Map",
     "FFM": "Flood Frequency Map",

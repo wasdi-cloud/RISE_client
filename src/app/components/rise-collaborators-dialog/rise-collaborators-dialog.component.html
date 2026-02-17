@@ -81,7 +81,7 @@
         <td>
           <rise-text-input
             [m_bHasTitle]="true"
-            [m_sLocalizationKey]="'COLLABORATORS.RISE_USER_ID'"
+            [m_sLocalizationKey]="'COLLABORATORS.USER_ID'"
             [(m_sInputText)]="m_sExternalRiseUserId"
           ></rise-text-input>
         </td>
@@ -106,25 +106,6 @@
         </td>
       </tr>
 
-<!--      <tr *ngIf="!m_bNoUserExists">-->
-<!--        <td colspan="4">-->
-<!--          <div class="d-flex flex-row gap-2">-->
-<!--            <rise-button-->
-<!--              *ngIf="m_sResourceType !== 'organization'"-->
-<!--              [m_sLabel]="'Add Collaborator'"-->
-<!--              [m_sRole]="'primary'"-->
-<!--              (click)="m_bAddingUser = true"-->
-<!--            ></rise-button>-->
-
-<!--            <rise-button-->
-<!--              *ngIf="m_sResourceType !== 'organization'"-->
-<!--              [m_sLabel]="'Add External Collaborator'"-->
-<!--              [m_sRole]="'primary'"-->
-<!--              (click)="m_bAddingExternalUser = true"-->
-<!--            ></rise-button>-->
-<!--          </div>-->
-<!--        </td>-->
-<!--      </tr>-->
       </tbody>
     </table>
 
@@ -132,12 +113,17 @@
       *ngIf="!m_bNoUserExists && m_sResourceType !== 'organization'"
       class="bottom-buttons"
     >
-      <rise-button
-        [m_sLabel]="'COLLABORATORS.ADD_COLLAB'"
-        [m_sRole]="'primary'"
-        (click)="!isAddFieldOperatorDisabled()?m_bAddingUser = true:''"
-        [m_bDisabled]="isAddFieldOperatorDisabled()"
-      ></rise-button>
+      <div
+        [matTooltip]="isAddFieldOperatorDisabled() ? ('COLLABORATORS.ALL_USERS_ADDED' | translate) : ''"
+        matTooltipPosition="above"
+      >
+        <rise-button
+          [m_sLabel]="'COLLABORATORS.ADD_COLLAB'"
+          [m_sRole]="'primary'"
+          (click)="!isAddFieldOperatorDisabled() ? m_bAddingUser = true : ''"
+          [m_bDisabled]="isAddFieldOperatorDisabled()"
+        ></rise-button>
+      </div>
 
       <rise-button
         [m_sLabel]="'COLLABORATORS.ADD_EXT_COLLAB'"

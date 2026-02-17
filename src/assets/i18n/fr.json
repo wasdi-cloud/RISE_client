@@ -147,6 +147,7 @@
     "ID": "Id"
   },
   "COLLABORATORS": {
+    "ALL_USERS_ADDED": "Tous les collaborateurs disponibles de votre organisation ont déjà été ajoutés.",
     "USER_ID": "ID utilisateur RISE",
     "ORG_EMPTY_TITLE": "Votre organisation est vide",
     "ORG_EMPTY_MESSAGE": "Il n'y a pas d'autres utilisateurs dans votre organisation. Veuillez les inviter à devenir collaborateurs puis les ajouter à vos zones.",
