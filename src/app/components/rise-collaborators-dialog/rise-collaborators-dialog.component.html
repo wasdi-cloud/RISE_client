@@ -120,15 +120,15 @@
         <rise-button
           [m_sLabel]="'COLLABORATORS.ADD_COLLAB'"
           [m_sRole]="'primary'"
-          (click)="!isAddFieldOperatorDisabled() ? m_bAddingUser = true : ''"
+          (click)="!isAddFieldOperatorDisabled() ?setUpAddingFieldOperator(): ''"
           [m_bDisabled]="isAddFieldOperatorDisabled()"
         ></rise-button>
       </div>
 
       <rise-button
-        [m_sLabel]="'COLLABORATORS.ADD_EXT_COLLAB'"
+        [m_sLabel]="m_bAddingExternalUser?'COLLABORATORS.SAVE':'COLLABORATORS.ADD_EXT_COLLAB'"
         [m_sRole]="'primary'"
-        (click)="m_bAddingExternalUser = true"
+        (click)="setUpAddingExternalUser()"
       ></rise-button>
     </div>
     <div

@@ -89,7 +89,7 @@
   },
   "COLLABORATORS": {
     "ALL_USERS_ADDED": "All available collaborators from your organization have already been added.",
-    "USER_ID": "RISE User Id",
+    "USER_ID": "RISE User Id or Email",
     "ORG_EMPTY_TITLE": "Your Organization is empty",
     "ORG_EMPTY_MESSAGE": "There are no other users in your org. Please invite them to be collaborator then add them to your areas",
     "ADD_COLLAB": "Add Collaborator",

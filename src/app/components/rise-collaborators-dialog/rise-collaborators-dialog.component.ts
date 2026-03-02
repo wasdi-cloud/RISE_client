@@ -29,11 +29,11 @@ export class RiseCollaboratorsDialogComponent implements OnInit {
   m_bAddingUser: boolean = false;
   m_bAddingExternalUser: boolean = false;
   m_oFieldOperatorOfArea: UserOfAreaViewModel
-  protected readonly UserRole = UserRole;
-  m_oFieldOperatorOfAreaUserId: string="";
+  m_oFieldOperatorOfAreaUserId: string = "";
   m_sExternalRiseUserIdOrEmail: string = "";
   m_oEntity = null;
-  m_bNoUserExists: boolean=false;
+  m_bNoUserExists: boolean = false;
+  protected readonly UserRole = UserRole;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public m_oData: any,
@@ -60,9 +60,9 @@ export class RiseCollaboratorsDialogComponent implements OnInit {
   }
 
   updateUsersList(aoUserList: Array<UserViewModel>) {
-    for (let iUsers=0; iUsers < aoUserList.length; iUsers++) {
+    for (let iUsers = 0; iUsers < aoUserList.length; iUsers++) {
       let oUser = aoUserList[iUsers];
-      if (this.m_oEntity!=null) {
+      if (this.m_oEntity != null) {
         if (this.m_oEntity.organizationId != oUser.organizationId) {
           oUser.role = UserRole.SHARED;
         }
@@ -74,7 +74,7 @@ export class RiseCollaboratorsDialogComponent implements OnInit {
   }
 
   onDismiss() {
-    this.m_bAddingUser=false;
+    this.m_bAddingUser = false;
     this.m_oDialogRef.close();
   }
 
@@ -82,7 +82,7 @@ export class RiseCollaboratorsDialogComponent implements OnInit {
     if (this.m_oFieldOperatorOfArea) {
       this.m_oAreaService.addUserToArea(this.m_sResourceId, this.m_oFieldOperatorOfArea).subscribe({
         next: () => {
-          this.m_bAddingUser=false;
+          this.m_bAddingUser = false;
           this.m_oAreaService.getUsersFromArea(this.m_sResourceId).subscribe({
             next: (oResponse) => {
               this.updateUsersList(oResponse);
@@ -97,18 +97,37 @@ export class RiseCollaboratorsDialogComponent implements OnInit {
           console.error(oError)
         }
       })
-    }
-    else{
+    } else {
       console.log("please add field operator")
     }
   }
 
+  setUpAddingFieldOperator() {
+    this.m_bAddingUser = true
+    this.m_bAddingExternalUser = false
+  }
+
+  setUpAddingExternalUser() {
+
+    //here we will handle two cases
+    if (this.m_bAddingExternalUser != true) {
+      this.m_bAddingUser = false
+      this.m_bAddingExternalUser = true
+    } else {
+      this.addExternalUser()
+    }
+
+
+  }
+
   addExternalUser() {
+    console.log("here")
+    console.log(this.m_sExternalRiseUserIdOrEmail)
     if (this.m_sExternalRiseUserIdOrEmail) {
 
-      this.m_oPermissionService.add("area", this.m_sResourceId,this.m_sExternalRiseUserIdOrEmail,"read").subscribe({
+      this.m_oPermissionService.add("area", this.m_sResourceId, this.m_sExternalRiseUserIdOrEmail, "read").subscribe({
         next: () => {
-          this.m_bAddingExternalUser=false;
+          this.m_bAddingExternalUser = false;
 
           this.m_oAreaService.getUsersFromArea(this.m_sResourceId).subscribe({
             next: (oResponse) => {
@@ -126,24 +145,23 @@ export class RiseCollaboratorsDialogComponent implements OnInit {
       })
 
 
-    }
-    else{
+    } else {
       console.log("please add field operator")
     }
   }
 
   removeFieldOperator(oFieldOP: UserViewModel) {
-    if(oFieldOP){
-      let oUserToDelete:UserOfAreaViewModel={
-        areaId:this.m_sResourceId,
-        userId:oFieldOP.userId,
-        role:oFieldOP.role,
-        surname:oFieldOP.surname,
-        name:oFieldOP.name,
-        email:oFieldOP.email,
-        organizationId:""
+    if (oFieldOP) {
+      let oUserToDelete: UserOfAreaViewModel = {
+        areaId: this.m_sResourceId,
+        userId: oFieldOP.userId,
+        role: oFieldOP.role,
+        surname: oFieldOP.surname,
+        name: oFieldOP.name,
+        email: oFieldOP.email,
+        organizationId: ""
       }
-      this.m_oAreaService.deleteUserFromArea(this.m_sResourceId,oUserToDelete).subscribe({
+      this.m_oAreaService.deleteUserFromArea(this.m_sResourceId, oUserToDelete).subscribe({
         next: () => {
           this.m_oAreaService.getUsersFromArea(this.m_sResourceId).subscribe({
             next: (oResponse) => {
@@ -163,8 +181,8 @@ export class RiseCollaboratorsDialogComponent implements OnInit {
   }
 
   removeExternalOperator(oUser: UserViewModel) {
-    if(oUser){
-      this.m_oPermissionService.delete("area", this.m_sResourceId,oUser.userId).subscribe({
+    if (oUser) {
+      this.m_oPermissionService.delete("area", this.m_sResourceId, oUser.userId).subscribe({
         next: () => {
           this.m_oAreaService.getUsersFromArea(this.m_sResourceId).subscribe({
             next: (oResponse) => {
@@ -194,29 +212,10 @@ export class RiseCollaboratorsDialogComponent implements OnInit {
           userId: oFieldOp.userId ? oFieldOp.userId : "",
           areaId: this.m_sResourceId ? this.m_sResourceId : "",
           role: UserRole.FIELD,
-          organizationId:""
+          organizationId: ""
         }
     }
   }
-
-  private getFieldOperators() {
-    this.m_oOrgService.getOrganizationUsers().subscribe({
-      next: (oResponse) => {
-        this.m_aoFieldOperators = oResponse
-        //if no users exists , show a message to the user to tell him to invite
-
-        if(!this.m_aoFieldOperators || this.m_aoFieldOperators.length==0){
-          this.m_bNoUserExists=true;
-        }
-        this.fillMap()
-        this.isAddFieldOperatorDisabled()
-      },
-      error: (oError) => {
-        console.error(oError)
-      }
-    })
-  }
-
 
   getFieldOperatorKeys() {
     return Array.from(this.m_aoFieldOperatorsMap.entries())
@@ -238,6 +237,23 @@ export class RiseCollaboratorsDialogComponent implements OnInit {
     return aoAllFieldOpIds.every(id => aoAddedFieldOpIds.includes(id));
   }
 
+  private getFieldOperators() {
+    this.m_oOrgService.getOrganizationUsers().subscribe({
+      next: (oResponse) => {
+        this.m_aoFieldOperators = oResponse
+        //if no users exists , show a message to the user to tell him to invite
+
+        if (!this.m_aoFieldOperators || this.m_aoFieldOperators.length == 0) {
+          this.m_bNoUserExists = true;
+        }
+        this.fillMap()
+        this.isAddFieldOperatorDisabled()
+      },
+      error: (oError) => {
+        console.error(oError)
+      }
+    })
+  }
 
   private fillMap() {
     this.m_aoFieldOperatorsMap.clear();
