@@ -308,6 +308,8 @@ export class MapService {
         minZoom: MapZoomLevels.STANDARD_MIN_ZOOM,
         // this option disables loading tiles outside the world bounds.
         noWrap: true,
+        // send the origin as Referer to avoid OSM 403 Access Blocked errors
+        referrerPolicy: 'origin'
       }
     );
 
