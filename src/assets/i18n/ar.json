@@ -478,6 +478,16 @@
     "DIALOG_FORMAT_JSON_ERROR": "تعذر تنسيق إدخال JSON الخاص بك. يرجى التأكد من أنه JSON صالح",
     "DIALOG_PARSE_JSON_ERROR": "حدث خطأ في تحليل حمولة JSON"
   },
+  "LAT_LNG_SEARCH": {
+    "TITLE": "البحث بالإحداثيات",
+    "LATITUDE": "خط العرض",
+    "LONGITUDE": "خط الطول",
+    "LATITUDE_PLACEHOLDER": "مثال: 44.4056",
+    "LONGITUDE_PLACEHOLDER": "مثال: 8.9463",
+    "GO_TO_LOCATION": "الانتقال إلى الموقع",
+    "INVALID_COORDINATES": "إحداثيات غير صالحة. يجب أن يكون خط العرض بين -90 و 90، وخط الطول بين -180 و 180.",
+    "ERROR": "خطأ"
+  },
   "IMPORT_SHAPE_FILE": {
     "IMPORT_FILE": "استيراد ملف",
     "CANCEL": "إلغاء",

@@ -1,0 +1,35 @@
+<div class="dialog-container d-flex flex-column gap-2 p-3">
+  <div
+    class="header d-flex flex-row justify-content-between align-items-center"
+  >
+    <h3>
+      {{"LAT_LNG_SEARCH.TITLE"|translate}}
+    </h3>
+    <span class="close-btn material-symbols-outlined" (click)="onDismiss()">
+      close
+    </span>
+  </div>
+
+  <div class="body flex-fill d-flex flex-column">
+    <div class="d-flex flex-column mb-2">
+      <rise-text-input
+        [m_bHasTitle]="true"
+        [m_sLocalizationKey]="'LAT_LNG_SEARCH.LATITUDE'"
+        [(m_sInputText)]="m_oCoordinates.latitude"
+      ></rise-text-input>
+      
+      <rise-text-input
+        [m_bHasTitle]="true"
+        [m_sLocalizationKey]="'LAT_LNG_SEARCH.LONGITUDE'"
+        [(m_sInputText)]="m_oCoordinates.longitude"
+      ></rise-text-input>
+    </div>
+  </div>
+
+  <rise-button
+    class="align-self-end mt-3"
+    [m_sRole]="'action'"
+    [m_sLabel]="'LAT_LNG_SEARCH.GO_TO_LOCATION'"
+    (click)="submit()"
+  ></rise-button>
+</div>

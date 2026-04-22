@@ -203,6 +203,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     this.m_oMapService.addZoom();
     this.m_oMapService.m_oLayersControl.addTo(oMap);
     this.m_oMapService.initGeoSearchPluginForOpenStreetMap(oMap);
+    this.addLatLngSearch(oMap);
     if (!this.m_bIsSelectingArea) {
       for (let oArea of this.m_aoAreas) {
         this.m_oMapService.addAreaMarker(oArea, oMap);
@@ -251,6 +252,15 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
         this.m_bIsManualBBoxInsert=true;
         const { geoJson,center}=bboxData;
         this.emitInsertedArea(null,null,center.lat,center.lng,geoJson)
+      }
+    });
+  }
+
+  //Search and fly to coordinates
+  addLatLngSearch(oMap: any) {
+    this.m_oMapService.addLatLngSearch(oMap).subscribe((coordsData) => {
+      if (coordsData) {
+        console.log('Flying to coordinates:', coordsData.lat, coordsData.lng);
       }
     });
   }

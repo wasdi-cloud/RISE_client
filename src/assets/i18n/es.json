@@ -24,6 +24,16 @@
     "DIALOG_FORMAT_JSON_ERROR": "No se pudo formatear tu entrada JSON. Asegúrate de que sea un JSON válido",
     "DIALOG_PARSE_JSON_ERROR": "Hubo un error al analizar la carga JSON"
   },
+  "LAT_LNG_SEARCH": {
+    "TITLE": "Buscar por coordenadas",
+    "LATITUDE": "Latitud",
+    "LONGITUDE": "Longitud",
+    "LATITUDE_PLACEHOLDER": "ej. 44.4056",
+    "LONGITUDE_PLACEHOLDER": "ej. 8.9463",
+    "GO_TO_LOCATION": "Ir a la ubicación",
+    "INVALID_COORDINATES": "Coordenadas inválidas. La latitud debe estar entre -90 y 90, y la longitud entre -180 y 180.",
+    "ERROR": "Error"
+  },
   "MANAGE_EVENTS": {
     "HEADER": "GESTIONAR EVENTOS",
     "CREATE_NEW_EVENT": "Crear nuevo Evento",

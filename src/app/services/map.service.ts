@@ -11,6 +11,7 @@ import 'leaflet-mouse-position';
 import {BehaviorSubject, buffer, Observable, Subject, Subscription} from 'rxjs';
 import {wktToGeoJSON} from '@terraformer/wkt';
 import {ManualBoundingBoxComponent} from '../dialogs/manual-bounding-box-dialog/manual-bounding-box.component';
+import {LatLngSearchComponent} from '../dialogs/lat-lng-search-dialog/lat-lng-search.component';
 import {
   ImportShapeFileStationDialogComponent
 } from '../dialogs/import-shape-file-station-dialog/import-shape-file-station-dialog.component';
@@ -242,6 +243,10 @@ export class MapService {
    * Manual Bounding Box Event Listener
    */
   m_oManualBoundingBoxSubscription: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  /**
+   * Lat/Lng Search Event Listener
+   */
+  m_oLatLngSearchSubscription: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   m_oMarkerSubject$ = this.m_oMarkerSubject.asObservable();
   m_oObjectUrlCache = new Map<string,string>; // Map to store ObjectURLs for cached tiles
   m_oCircleDrawnSubject = new Subject<{
@@ -1502,6 +1507,98 @@ export class MapService {
     this.zoomOnBounds(aoBounds);
     //Emit bounding box to listening component:
     return aoBounds
+  }
+
+  addLatLngSearch(oMap: any) {
+    const m_oLatLngSearchButton = L.Control.extend({
+      options: {
+        position: 'topright',
+      },
+      onAdd: (oMap) => {
+        // Create the container for the control
+        let oContainer = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+        // Create the button to add to leaflet
+        let oButton = L.DomUtil.create(
+          'a',
+          'leaflet-control-button',
+          oContainer
+        );
+
+        // Click stops on our button
+        L.DomEvent.disableClickPropagation(oButton);
+
+        // And here we decide what to do with our button
+        L.DomEvent.on(oButton, 'click', () => {
+          // Open the Lat/Lng Search Dialog
+          let oDialog = this.m_oDialog.open(LatLngSearchComponent);
+          // Once is closed...
+          oDialog.afterClosed().subscribe((oResult) => {
+            if (oResult != null) {
+              if (
+                oResult.latitude == null ||
+                oResult.longitude == null ||
+                oResult.latitude === '' ||
+                oResult.longitude === ''
+              ) {
+                return;
+              } else {
+                let fLat = parseFloat(oResult.latitude);
+                let fLng = parseFloat(oResult.longitude);
+
+                // Validate coordinates
+                if (
+                  isNaN(fLat) ||
+                  isNaN(fLng) ||
+                  fLat < -90 ||
+                  fLat > 90 ||
+                  fLng < -180 ||
+                  fLng > 180
+                ) {
+                  this.m_oNotificationService.openInfoDialog(
+                    this.m_oTranslate.instant('LAT_LNG_SEARCH.INVALID_COORDINATES'),
+                    'danger',
+                    this.m_oTranslate.instant('LAT_LNG_SEARCH.ERROR')
+                  );
+                  return;
+                }
+
+                // Clear previous marker if exists
+                if (this.m_oGeocoderMarker) {
+                  oMap.removeLayer(this.m_oGeocoderMarker);
+                }
+
+                // Add marker at the specified location
+                this.m_oGeocoderMarker = L.marker([fLat, fLng], {
+                  icon: oGeoCoderIcon,
+                }).addTo(oMap);
+
+                // Fly to the location with zoom level 12
+                oMap.flyTo([fLat, fLng], 12, {
+                  duration: 1.5, // Animation duration in seconds
+                });
+
+                // Emit the coordinates
+                this.m_oLatLngSearchSubscription.next({
+                  lat: fLat,
+                  lng: fLng,
+                });
+              }
+            }
+          });
+        });
+
+        // This is the "icon" of the button added to Leaflet
+        oButton.innerHTML =
+          '<span class="material-symbols-outlined">travel_explore</span>';
+
+        oContainer.title = 'Search by Coordinates';
+
+        return oContainer;
+      },
+      onRemove: function (map) {},
+    });
+    oMap.addControl(new m_oLatLngSearchButton());
+    return this.m_oLatLngSearchSubscription.asObservable();
   }
 
   addPixelInfoToggle(oMap: any) {

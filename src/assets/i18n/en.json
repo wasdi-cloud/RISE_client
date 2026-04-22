@@ -407,6 +407,16 @@
     "DIALOG_FORMAT_JSON_ERROR": "Could not format your JSON input. Please ensure it is a valid JSON",
     "DIALOG_PARSE_JSON_ERROR": "There was an error in parsing the JSON payload"
   },
+  "LAT_LNG_SEARCH": {
+    "TITLE": "Search by Coordinates",
+    "LATITUDE": "Latitude",
+    "LONGITUDE": "Longitude",
+    "LATITUDE_PLACEHOLDER": "e.g., 44.4056",
+    "LONGITUDE_PLACEHOLDER": "e.g., 8.9463",
+    "GO_TO_LOCATION": "Go to Location",
+    "INVALID_COORDINATES": "Invalid coordinates. Latitude must be between -90 and 90, and Longitude must be between -180 and 180.",
+    "ERROR": "Error"
+  },
   "CONFIRM_DIALOG": {
     "ACTION":"Confirm Action",
     "CONFIRM": "Yes",
