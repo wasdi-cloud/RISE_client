@@ -24,9 +24,19 @@ import {UserAccountComponent} from "./views/account/user-account/user-account.co
 import {UserOrganizationComponent} from "./views/account/user-organization/user-organization.component";
 import {UserSubscriptionsComponent} from "./views/account/user-subscriptions/user-subscriptions.component";
 import {AreaOfOperationsComponent} from "./views/area-of-operations/area-of-operations.component";
+import {PlatformComponent} from "./views/platform/platform.component";
+import {ImpactStoriesComponent} from "./views/impact-stories/impact-stories.component";
+import {PricingComponent} from "./views/pricing/pricing.component";
+import {AboutComponent} from "./views/about/about.component";
+import {ContactComponent} from "./views/contact/contact.component";
 
 export const routes: Routes = [
   {path: '', component: PublicHomeComponent, canActivate: [isLoggedGuard]},
+  {path: 'platform', component: PlatformComponent},
+  {path: 'impact-stories', component: ImpactStoriesComponent},
+  {path: 'pricing', component: PricingComponent},
+  {path: 'about', component: AboutComponent},
+  {path: 'contact', component: ContactComponent},
   {
     path: 'account',
     component: AccountComponent, // layout component with toolbar + sidebar + <router-outlet>

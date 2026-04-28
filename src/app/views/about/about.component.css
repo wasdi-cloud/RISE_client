@@ -1,0 +1,238 @@
+:host { display: block; }
+
+.about-page {
+  padding-top: 60px;
+  font-family: 'Satoshi Variable', sans-serif;
+}
+
+/* HERO */
+.about-hero {
+  background: url('/assets/rise-assets/carles-rabada-Efy2uzA3Css-unsplash.jpg') center/cover no-repeat;
+  position: relative;
+  padding: 100px 24px 80px;
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+}
+
+.about-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 31, 40, 0.65);
+}
+
+.about-hero__content {
+  position: relative;
+  z-index: 1;
+  max-width: 680px;
+  color: #fff;
+}
+
+.about-hero__content h1 {
+  font-family: 'Space Mono', monospace;
+  font-size: 40px;
+  font-weight: 700;
+  margin: 0 0 20px;
+}
+
+.about-hero__content p {
+  font-size: 16px;
+  line-height: 1.75;
+  margin: 0 0 28px;
+  color: rgba(255,255,255,0.85);
+}
+
+.btn-cta {
+  display: inline-block;
+  background: #efba35;
+  color: #1c3d4a;
+  border: none;
+  border-radius: 6px;
+  padding: 14px 32px;
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-cta:hover {
+  background: #d9a826;
+}
+
+/* MISSION */
+.mission-section {
+  background: #fff;
+  padding: 72px 24px;
+}
+
+.mission-inner {
+  max-width: 780px;
+  margin: 0 auto;
+  color: #4a6672;
+  line-height: 1.8;
+}
+
+.mission-inner h2 {
+  font-family: 'Space Mono', monospace;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1c3d4a;
+  margin: 0 0 24px;
+}
+
+.mission-inner p {
+  font-size: 15px;
+  margin-bottom: 18px;
+}
+
+.mission-inner a {
+  color: #274d59;
+  font-weight: 600;
+}
+
+.wasdi-logo-container {
+  margin: 32px 0;
+  display: flex;
+  align-items: center;
+}
+
+.wasdi-logo-text {
+  font-family: 'Space Mono', monospace;
+  font-size: 24px;
+  font-weight: 700;
+  color: #274d59;
+  letter-spacing: 3px;
+  border: 3px solid #274d59;
+  padding: 6px 16px;
+  border-radius: 4px;
+}
+
+/* TESTIMONIALS */
+.testimonials-section {
+  background: #1c3d4a;
+  padding: 72px 24px;
+  text-align: center;
+  color: #fff;
+}
+
+.testimonials-section h2 {
+  font-family: 'Space Mono', monospace;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.testimonials-sub {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,0.5);
+  margin: 0 0 40px;
+}
+
+.testimonial-card {
+  max-width: 640px;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 36px 40px;
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.testimonial-avatar img {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: rgba(255,255,255,0.1);
+}
+
+.testimonial-avatar {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+blockquote {
+  margin: 0;
+}
+
+blockquote p {
+  font-size: 15px;
+  line-height: 1.75;
+  color: rgba(255,255,255,0.85);
+  margin: 0 0 12px;
+  font-style: italic;
+}
+
+blockquote footer {
+  font-size: 13px;
+  font-weight: 700;
+  color: #efba35;
+}
+
+/* LOCATION */
+.location-section {
+  background: #f4f7f8;
+  padding: 64px 24px;
+}
+
+.location-map-placeholder {
+  max-width: 900px;
+  margin: 0 auto;
+  min-height: 340px;
+  background: #d4dee2;
+  border-radius: 12px;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  padding: 24px;
+}
+
+.location-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  z-index: 1;
+}
+
+.location-label {
+  font-size: 13px;
+  color: #7a9ba8;
+  margin: 0 0 6px;
+}
+
+.location-name {
+  color: #1c3d4a;
+  font-size: 16px;
+  margin: 0 0 6px;
+}
+
+.location-card p {
+  font-size: 14px;
+  color: #4a6672;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.location-pin {
+  position: absolute;
+  font-size: 36px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.5;
+}

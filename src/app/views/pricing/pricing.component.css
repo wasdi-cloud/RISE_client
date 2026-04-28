@@ -1,0 +1,289 @@
+:host { display: block; }
+
+.pricing-page {
+  padding-top: 60px;
+  font-family: 'Satoshi Variable', sans-serif;
+  color: #1c3d4a;
+}
+
+/* PRICING SECTION */
+.pricing-section {
+  background: #f4f7f8;
+  padding: 64px 24px 48px;
+  text-align: center;
+}
+
+.pricing-section h1 {
+  font-family: 'Space Mono', monospace;
+  font-size: 36px;
+  font-weight: 700;
+  color: #1c3d4a;
+  margin: 0 0 16px;
+}
+
+.pricing-intro {
+  font-size: 15px;
+  color: #4a6672;
+  max-width: 600px;
+  margin: 0 auto 28px;
+}
+
+/* TOGGLE LABELS */
+.pricing-toggle-labels {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.toggle-label {
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: 1px solid rgba(39, 77, 89, 0.15);
+  background: #fff;
+  font-size: 14px;
+  color: #4a6672;
+  max-width: 300px;
+}
+
+.toggle-label--active {
+  background: #274d59;
+  color: #fff;
+  border-color: #274d59;
+}
+
+.pricing-note {
+  font-size: 14px;
+  color: #1c3d4a;
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+
+/* BILLING TOGGLE */
+.billing-toggle {
+  display: inline-flex;
+  background: #fff;
+  border: 1px solid rgba(39, 77, 89, 0.15);
+  border-radius: 30px;
+  padding: 4px;
+  margin-bottom: 12px;
+}
+
+.billing-toggle__btn {
+  padding: 8px 28px;
+  border-radius: 26px;
+  border: none;
+  background: transparent;
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: #4a6672;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.billing-toggle__btn--active {
+  background: #efba35;
+  color: #1c3d4a;
+}
+
+.billing-hint {
+  font-size: 13px;
+  color: #7a9ba8;
+  margin-bottom: 32px;
+}
+
+/* PRICING TABLE */
+.pricing-table-wrapper {
+  max-width: 640px;
+  margin: 0 auto 32px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(39, 77, 89, 0.1);
+  background: #fff;
+}
+
+.pricing-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pricing-table thead tr {
+  background: #fff;
+}
+
+.pricing-table th {
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: #1c3d4a;
+  padding: 18px 24px;
+  text-align: center;
+  border-bottom: 1px solid rgba(39, 77, 89, 0.1);
+}
+
+.pricing-table th:first-child {
+  text-align: left;
+}
+
+.pricing-table tbody tr:not(:last-child) {
+  border-bottom: 1px solid rgba(39, 77, 89, 0.07);
+}
+
+.pricing-table td {
+  padding: 16px 24px;
+  text-align: center;
+  font-size: 15px;
+  color: #4a6672;
+}
+
+.pricing-table td:first-child {
+  text-align: left;
+  font-weight: 500;
+  color: #1c3d4a;
+}
+
+.ngo-col {
+  background: rgba(39, 77, 89, 0.04);
+}
+
+.price-value {
+  font-weight: 700;
+  color: #1c3d4a;
+  font-size: 16px;
+}
+
+.price-value--ngo {
+  color: #274d59;
+}
+
+.price-suffix {
+  font-size: 12px;
+  color: #7a9ba8;
+  margin-left: 3px;
+}
+
+.area-definition {
+  font-size: 13px;
+  color: #7a9ba8;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+  text-align: left;
+}
+
+/* CUSTOM PLAN */
+.custom-plan-section {
+  background: #1c3d4a;
+  padding: 64px 24px;
+  color: #fff;
+}
+
+.custom-plan-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  gap: 60px;
+  align-items: flex-start;
+}
+
+.custom-plan-left {
+  flex: 1;
+}
+
+.custom-plan-left h2 {
+  font-family: 'Space Mono', monospace;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+
+.custom-plan-tagline {
+  font-size: 16px;
+  color: rgba(255,255,255,0.8);
+  margin-bottom: 16px;
+}
+
+.custom-plan-left ul {
+  padding-left: 20px;
+  margin: 0 0 20px;
+}
+
+.custom-plan-left ul li {
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.75);
+  margin-bottom: 4px;
+}
+
+.custom-plan-left > p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.75);
+  margin: 0;
+}
+
+.custom-plan-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.custom-plan-input,
+.custom-plan-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 6px;
+  padding: 12px 16px;
+  color: #fff;
+  font-family: 'Satoshi Variable', sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.custom-plan-input::placeholder,
+.custom-plan-textarea::placeholder {
+  color: rgba(255,255,255,0.4);
+}
+
+.custom-plan-input:focus,
+.custom-plan-textarea:focus {
+  border-color: rgba(255,255,255,0.5);
+}
+
+.custom-plan-textarea {
+  resize: vertical;
+}
+
+.btn-cta {
+  display: block;
+  width: 100%;
+  background: #efba35;
+  color: #1c3d4a;
+  border: none;
+  border-radius: 6px;
+  padding: 14px;
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background 0.15s;
+}
+
+.btn-cta:hover {
+  background: #d9a826;
+}
+
+@media (max-width: 768px) {
+  .custom-plan-inner {
+    flex-direction: column;
+    gap: 32px;
+  }
+}

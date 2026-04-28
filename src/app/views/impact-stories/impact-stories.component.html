@@ -1,0 +1,155 @@
+<public-navbar></public-navbar>
+
+<div class="impact-page">
+
+  <!-- HERO -->
+  <section class="impact-hero">
+    <div class="impact-hero__content">
+      <h1>RISE in Action</h1>
+      <p>RISE turns satellite data into real-time insights, helping <strong>organizations respond faster</strong>, <strong>reduce costs</strong>, and make data-driven decisions.</p>
+      <p class="impact-hero__sub"><strong>Here's how it's making an impact today</strong></p>
+    </div>
+  </section>
+
+  <!-- CASE STUDY CARD -->
+  <section class="case-study-section">
+    <div class="case-study-card">
+      <div class="case-study-card__body">
+        <div class="case-study-card__text">
+          <h2>RISE &amp; Luxembourg Red Cross:</h2>
+          <p class="case-study-card__subtitle">TRANSFORMING DISASTER RESPONSE IN MADAGASCAR</p>
+          <p>
+            From 2023 to 2025, WASDI participated in the Humanitarian Innovation Accelerator Programme,
+            backed by the WFP Innovation Accelerator, the Government of the Grand-Duchy of Luxembourg,
+            and the Austrian Development Cooperation (ADC). The program supports innovative solutions to
+            address the urgent challenges faced by vulnerable populations and humanitarian actors.
+          </p>
+          <p>
+            In collaboration with the Luxembourg Institute of Science and Technology (LIST) and the
+            Luxembourg Red Cross (AICRL), WASDI developed RISE and tested its effectiveness in real-world
+            disaster response. Partnering with the Malagasy Red Cross Society (CRM), the team chose
+            <strong>Madagascar</strong> — a country frequently hit by cyclones, floods, and droughts — as the testing ground.
+          </p>
+          <p>
+            The project focused on Maroantsetra, a region devastated by Cyclone Cheneso in 2023, to
+            evaluate how RISE could enhance rapid needs assessments compared to traditional methods.
+          </p>
+          <button class="btn-cta-outline" (click)="openStory()">OPEN TO READ MORE</button>
+        </div>
+        <img src="/assets/rise-assets/cover.png" alt="RISE Madagascar case study" class="case-study-card__img" />
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUSTED BY -->
+  <section class="trusted-section">
+    <h2>Trusted By</h2>
+    <div class="trusted-logos">
+      <div class="trusted-logo-item">
+        <span class="trusted-logo-text">LUXEMBOURG INSTITUTE OF SCIENCE AND TECHNOLOGY — <strong>LIST</strong></span>
+      </div>
+      <div class="trusted-divider"></div>
+      <div class="trusted-logo-item">
+        <span class="trusted-logo-text"><strong>croix-rouge luxembourgeoise</strong><br><em>Menschen helfen.</em></span>
+      </div>
+      <div class="trusted-divider"></div>
+      <div class="trusted-logo-item">
+        <span class="trusted-logo-text">UN WFP World Food Programme — <strong>INNOVATION ACCELERATOR</strong></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section class="cta-banner">
+    <div class="cta-banner__text">
+      <h2>Interested in seeing how RISE can support your organization?</h2>
+    </div>
+    <div class="cta-banner__actions">
+      <button class="btn-dark" (click)="navigateTo('contact')">GET IN TOUCH</button>
+      <button class="btn-cta" (click)="navigateTo('platform')">EXPLORE RISE FEATURES</button>
+    </div>
+  </section>
+
+</div>
+
+<!-- STORY DETAIL OVERLAY -->
+<div class="story-overlay" *ngIf="m_bStoryOpen">
+  <div class="story-modal">
+    <button class="story-modal__close" (click)="closeStory()">✕</button>
+
+    <div class="story-modal__header">
+      <h2>RISE &amp; Luxembourg Red Cross:</h2>
+      <p class="story-modal__subtitle">TRANSFORMING DISASTER RESPONSE IN MADAGASCAR</p>
+    </div>
+
+    <div class="story-modal__body">
+      <div class="story-modal__text">
+        <p>From 2023 to 2025, WASDI participated in the Humanitarian Innovation Accelerator Programme, backed by the WFP Innovation Accelerator, the Government of the Grand-Duchy of Luxembourg, and the Austrian Development Cooperation (ADC).</p>
+        <p>In collaboration with the Luxembourg Institute of Science and Technology (LIST) and the Luxembourg Red Cross (AICRL), WASDI developed RISE and tested its effectiveness in real-world disaster response. Partnering with the Malagasy Red Cross Society (CRM), the team chose <strong>Madagascar</strong> — a country frequently hit by cyclones, floods, and droughts — as the testing ground.</p>
+        <p>The project focused on Maroantsetra, a region devastated by Cyclone Cheneso in 2023, to evaluate how RISE could enhance rapid needs assessments compared to traditional methods.</p>
+      </div>
+      <img src="/assets/rise-assets/cover.png" alt="Madagascar project" class="story-modal__img" />
+    </div>
+
+    <div class="story-highlights">
+      <h3>Project Highlights</h3>
+      <p class="story-highlights__sub">TRANSFORMING DISASTER RESPONSE IN MADAGASCAR</p>
+      <div class="story-highlights__grid">
+        <div class="highlight-card">
+          <h4>Collaborative Innovation</h4>
+          <p>WASDI built the technical core of RISE, while LIST provided scientific expertise — including the development of drought and settlement monitoring tools. AICRL led real-world validation, ensuring RISE met the demands of disaster response through field testing and practical guidance.</p>
+        </div>
+        <div class="highlight-card">
+          <h4>User-Driven Refinement</h4>
+          <p>RISE evolved through iterative testing, focus groups, and training with AICRL and Malagasy Red Cross (CRM) teams. This process guaranteed the platform was user-friendly, efficient, and fully aligned with humanitarian operations.</p>
+        </div>
+        <div class="highlight-card">
+          <h4>Field Validation Success</h4>
+          <p>In a head-to-head test during Cyclone Cheneso, two teams — one using traditional methods (field visits, interviews, and secondary data) and the other using RISE — assessed flood impact, population needs, and infrastructure damage.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="story-results">
+      <h3>Validation Exercise Results &amp; Impact</h3>
+      <p class="story-results__sub">THE NUMBERS TOLD THE STORY:</p>
+      <p>RISE delivered faster, safer, and more cost-effective disaster response</p>
+      <div class="story-results__grid">
+        <div class="result-card result-card--dark">
+          <h4>Faster Response</h4>
+          <p>RISE slashed assessment time, enabling quicker decision-making in emergencies.</p>
+        </div>
+        <div class="result-card result-card--teal">
+          <h4>89.9% Cost Reduction</h4>
+          <p>By minimizing field visits and transportation, RISE drastically cut operational costs.</p>
+        </div>
+        <div class="result-card result-card--dark">
+          <h4>Precision You Can Trust</h4>
+          <p>RISE delivers high-resolution flood maps, depth analysis, and infrastructure impact data, insights traditional methods simply cannot match.</p>
+        </div>
+        <div class="result-card result-card--teal">
+          <h4>Safer Operations</h4>
+          <p>Teams using RISE avoided exposure to hazardous areas, reducing risks for humanitarian workers.</p>
+        </div>
+        <div class="result-card result-card--dark">
+          <h4>Scalable &amp; Adaptable</h4>
+          <p>The exercise demonstrated that RISE could be easily integrated into existing disaster response protocols, even in low-resource settings.</p>
+        </div>
+      </div>
+    </div>
+
+    <blockquote class="story-quote">
+      <p>"RISE shows very positive results, making needs assessment and crisis management more accurate, time-efficient, cost-effective, and safe."</p>
+      <footer>AICRL Shelter Research Unit</footer>
+    </blockquote>
+
+    <div class="story-whats-next">
+      <h3>What's Next?</h3>
+      <p>This pilot in Madagascar is just the beginning. As we expand, we'll continue to refine RISE based on user feedback and real-world testing, ensuring it meets the evolving needs of disaster response teams worldwide.</p>
+      <button class="btn-cta" (click)="closeStory()">CLOSE</button>
+    </div>
+
+  </div>
+</div>
+
+<public-footer></public-footer>

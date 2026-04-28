@@ -1,0 +1,28 @@
+import { Component, HostListener } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+
+@Component({
+  selector: 'public-navbar',
+  standalone: true,
+  imports: [CommonModule, RouterLink, RouterLinkActive],
+  templateUrl: './public-navbar.component.html',
+  styleUrl: './public-navbar.component.css',
+})
+export class PublicNavbarComponent {
+  m_bScrolled: boolean = false;
+  m_bMenuOpen: boolean = false;
+
+  @HostListener('window:scroll', [])
+  onScroll(): void {
+    this.m_bScrolled = window.scrollY > 10;
+  }
+
+  toggleMenu(): void {
+    this.m_bMenuOpen = !this.m_bMenuOpen;
+  }
+
+  closeMenu(): void {
+    this.m_bMenuOpen = false;
+  }
+}

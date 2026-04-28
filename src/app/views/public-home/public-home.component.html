@@ -25,11 +25,7 @@
 <!--</main>-->
 
 <div class="landing-page-desktop">
-  <rise-toolbar
-    [m_bUserIsSigned]="false"
-    [m_bIsPublicHome]="true"
-    [m_bShouldBeBlurred]="m_bIsScrolled"
-  ></rise-toolbar>
+  <public-navbar></public-navbar>
   <div class="hero-section">
     <div class="hero-content">
       <img  src="assets/rise-assets/Logo%20Small%20Bianco%201.png" class="logo-small-bianco-1" alt="">
@@ -295,31 +291,5 @@
     >
     </rise-button>
   </div>
-  <div class="footer">
-    <div class="landing-page-footer">
-      <div class="footer-column">
-        <div class="logo-placeholder">
-          <div class="logo">
-            <img src="assets/rise-assets/Logo%20Orizzontale%20Colori%201.png" alt="Logo">
-          </div>
-          <!--                    <div class="logo-orizzontale-colori-1">-->
-          <!--                        <div class="group">-->
-          <!--                            <img src="Vector.png" class="vector-icon" alt="">-->
-
-          <!--                            <img src="Vector-1.png" class="landing-page-vector-icon" alt="">-->
-
-          <!--                            <img src="Vector-2.png" class="vector-icon2" alt="">-->
-
-          <!--                            <img src="Vector-3.png" class="vector-icon3" alt="">-->
-
-          <!--                        </div>-->
-          <!--                        <img class="group-icon" alt="">-->
-
-          <!--                    </div>-->
-        </div>
-        <div class="footer-text">RISE. Remote Imaging Support for Emergencies</div>
-      </div>
-      <div class="text4">{{this.m_sEmail}}</div>
-    </div>
-  </div>
+  <public-footer></public-footer>
 </div>

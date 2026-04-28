@@ -1,0 +1,182 @@
+<public-navbar></public-navbar>
+
+<div class="platform-page">
+
+  <!-- HERO -->
+  <section class="platform-hero">
+    <div class="platform-hero__content">
+      <h1>RISE Platform</h1>
+      <p>The RISE Web App brings the power of satellite intelligence to your fingertips. Access near real-time data, visualize environmental changes, and generate instant reports, all in one intuitive platform designed to help you make smarter, faster decisions.</p>
+      <button class="btn-cta" (click)="navigateTo('sign-up')">GET STARTED TODAY</button>
+    </div>
+  </section>
+
+  <!-- 4 STEPS -->
+  <section class="steps-section">
+    <h2>Get Started with RISE in 4 Simple Steps:</h2>
+    <div class="steps-grid">
+      <div class="step-card">
+        <span class="step-label">Step 1</span>
+        <h3>Register Your Team</h3>
+        <p>Create your organization account. Use Admin, Analyst, Viewer roles to manage your team.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-label">Step 2</span>
+        <h3>Set Up Your Monitoring Area</h3>
+        <p>Define the geographic areas your organization needs to monitor. RISE will configure the right plugins and data sources for your needs.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-label">Step 3</span>
+        <h3>Receive Near Real-Time Updates</h3>
+        <p>RISE processes satellite data automatically. Get a daily overview of all your plugin (e.g., floods, droughts) for each area.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-label">Step 4</span>
+        <h3>Explore &amp; Analyse</h3>
+        <p>Click on an area to open an interactive map. Explore RISE data, export reports, analyse changes over time.</p>
+      </div>
+    </div>
+    <button class="btn-cta" (click)="navigateTo('sign-up')">START FOR FREE</button>
+  </section>
+
+  <!-- STAY CONNECTED -->
+  <section class="connected-section">
+    <h2>Stay Connected Anywhere</h2>
+    <p>Download and use the RISE Telegram Bot to connect the RISE platform to your messaging app. Get RISE Telegram updates for your area via Telegram so that Critical information is always within reach!</p>
+    <p class="connected-note"><strong>Critical information is always within reach!</strong></p>
+  </section>
+
+  <!-- PLUGINS DETAIL -->
+  <section class="plugins-section">
+    <div class="plugins-header">
+      <h2>Discover RISE Plugins in Details</h2>
+      <p>Customize RISE with specialized plugins tailored to your needs:</p>
+    </div>
+
+    <div class="plugin-block">
+      <div class="plugin-block__content">
+        <h3 class="plugin-block__title plugin-block__title--gold">Flood</h3>
+        <ul>
+          <li><strong>Flood Monitoring:</strong> Near real-time mapping of open floods in urban and rural areas.</li>
+          <li><strong>Flood Archive:</strong> Access historical flood data via an interactive timeline for trend analysis, short-events monitoring.</li>
+          <li><strong>Flood-prone areas:</strong> Identify high-risk areas showing flood frequency and vulnerability.</li>
+        </ul>
+      </div>
+      <img src="/assets/rise-assets/RISE-platform 1.png" alt="Flood plugin" class="plugin-block__img" />
+    </div>
+
+    <div class="plugin-block plugin-block--alt">
+      <img src="/assets/rise-assets/RISE-platform 1.png" alt="Droughts plugin" class="plugin-block__img" />
+      <div class="plugin-block__content">
+        <h3 class="plugin-block__title plugin-block__title--gold">Droughts</h3>
+        <ul>
+          <li>Early warning system for droughts.</li>
+          <li>Drought Risk Monitoring.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="plugin-block">
+      <div class="plugin-block__content">
+        <h3 class="plugin-block__title plugin-block__title--gold">Buildings</h3>
+        <ul>
+          <li>Near real-time monitoring of your area and cities.</li>
+        </ul>
+      </div>
+      <img src="/assets/rise-assets/RISE-platform 1.png" alt="Buildings plugin" class="plugin-block__img" />
+    </div>
+
+    <div class="plugin-block plugin-block--alt">
+      <img src="/assets/rise-assets/RISE-platform 1.png" alt="Impacts plugin" class="plugin-block__img" />
+      <div class="plugin-block__content">
+        <h3 class="plugin-block__title plugin-block__title--gold">Impacts</h3>
+        <ul>
+          <li>Data migration and recovery effort (e.g. assessing the effects of natural disaster on key assets).</li>
+          <li><strong>Population:</strong> Indicates the number of affected people, their locations, and age-density, ink zones.</li>
+          <li><strong>Critical infrastructure:</strong> Identify new or affected essential facilities.</li>
+          <li><strong>Crops:</strong> Review agriculture status vulnerable to or affected by disasters, supporting food security assessments.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="plugin-block">
+      <div class="plugin-block__content">
+        <h3 class="plugin-block__title plugin-block__title--gold">Rain</h3>
+        <ul>
+          <li>Get Near Real-Time Rainfall Measurements.</li>
+          <li>Up to 91 and 24-hour Cumulative Rainfall Observation.</li>
+        </ul>
+      </div>
+      <img src="/assets/rise-assets/RISE-platform 1.png" alt="Rain plugin" class="plugin-block__img" />
+    </div>
+
+    <div class="plugin-block plugin-block--alt">
+      <img src="/assets/rise-assets/RISE-platform 1.png" alt="Urban Mapping plugin" class="plugin-block__img" />
+      <div class="plugin-block__content">
+        <h3 class="plugin-block__title plugin-block__title--gold">Urban Mapping</h3>
+        <ul>
+          <li>Near real-time mapping of your area and cities.</li>
+          <li>Detect and map urban zones to assist urban planning, disaster preparedness, and resilience efforts.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="plugin-block">
+      <div class="plugin-block__content">
+        <h3 class="plugin-block__title plugin-block__title--gold">Wildfires</h3>
+        <ul>
+          <li>Early detection of wildfires that may be real (Coming Soon!).</li>
+          <li>Mapping of active wildfires.</li>
+          <li>Burned area mapping.</li>
+        </ul>
+      </div>
+      <img src="/assets/rise-assets/RISE-platform 1.png" alt="Wildfires plugin" class="plugin-block__img" />
+    </div>
+
+    <button class="btn-outline" (click)="navigateTo('sign-up')">SIGN UP</button>
+  </section>
+
+  <!-- FUTURE READY -->
+  <section class="future-section">
+    <h2>Future-ready design</h2>
+    <p>RISE is built to scale with you. Here is what it provides with each design profile that allows you to easily tap to directly and smoothly.</p>
+    <div class="future-grid">
+      <div class="future-card">
+        <h4>Unlimited Users</h4>
+        <p>Invite unlimited teammates. No per-user pricing, no gated features — every team member gets full access to platform insights.</p>
+      </div>
+      <div class="future-card">
+        <h4>Scalable Cloud Infrastructure</h4>
+        <p>Powered by WASDI's cloud infrastructure — built to handle massive EO datasets without performance degradation.</p>
+      </div>
+      <div class="future-card">
+        <h4>Always Up-To-Date</h4>
+        <p>RISE continuously updates its algorithms and satellite data sources. New plugins and features are pushed automatically.</p>
+      </div>
+      <div class="future-card">
+        <h4>Cross-Device Access</h4>
+        <p>Access RISE from any device — desktop, tablet, or mobile. Your data is always available whenever you need it.</p>
+      </div>
+    </div>
+    <p class="future-tagline"><em>Always expanding. Always reliable. Always improving.</em></p>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <h2>F.A.Q.</h2>
+    <div class="faq-list">
+      <div class="faq-item" *ngFor="let faq of m_aoFaqs; let i = index">
+        <button class="faq-item__question" (click)="toggleFaq(i)" [class.faq-item__question--open]="faq.open">
+          <span>{{ faq.question }}</span>
+          <span class="faq-item__icon">{{ faq.open ? '−' : '+' }}</span>
+        </button>
+        <div class="faq-item__answer" [class.faq-item__answer--visible]="faq.open">
+          {{ faq.answer }}
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<public-footer></public-footer>

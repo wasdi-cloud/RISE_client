@@ -1,0 +1,39 @@
+<nav class="public-nav" [class.public-nav--scrolled]="m_bScrolled">
+  <div class="public-nav__inner">
+
+    <a class="public-nav__logo" routerLink="/" (click)="closeMenu()">
+      <img src="/assets/rise-assets/Logo Orizzontale Colori 1.png" alt="RISE" />
+    </a>
+
+    <ul class="public-nav__links" [class.public-nav__links--open]="m_bMenuOpen">
+      <li>
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeMenu()">
+          Homepage
+        </a>
+      </li>
+      <li>
+        <a routerLink="/platform" routerLinkActive="active" (click)="closeMenu()">Platform</a>
+      </li>
+      <li>
+        <a routerLink="/impact-stories" routerLinkActive="active" (click)="closeMenu()">Impact Stories</a>
+      </li>
+      <li>
+        <a routerLink="/pricing" routerLinkActive="active" (click)="closeMenu()">Pricing</a>
+      </li>
+      <li>
+        <a routerLink="/about" routerLinkActive="active" (click)="closeMenu()">About Us</a>
+      </li>
+      <li>
+        <a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">Contact Us</a>
+      </li>
+    </ul>
+
+    <div class="public-nav__actions">
+      <a routerLink="/login" class="public-nav__cta" (click)="closeMenu()">SIGN UP / SIGN IN</a>
+      <button class="public-nav__burger" (click)="toggleMenu()" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+  </div>
+</nav>

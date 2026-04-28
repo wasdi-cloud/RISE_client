@@ -1,0 +1,105 @@
+<public-navbar></public-navbar>
+
+<div class="pricing-page">
+
+  <!-- PRICING TABLE SECTION -->
+  <section class="pricing-section">
+    <h1>Our Pricing Plans</h1>
+    <p class="pricing-intro">RISE offers flexible subscription plans tailored to your needs. You can customize your plan based on:</p>
+
+    <div class="pricing-toggle-labels">
+      <div class="toggle-label toggle-label--active">
+        <strong>Number of Areas*</strong> you want to monitor
+      </div>
+      <div class="toggle-label">
+        <strong>Subscription duration</strong> <em>(choose between 1 month or 1 year)</em>
+      </div>
+    </div>
+
+    <p class="pricing-note">
+      <strong>Every plan includes ALL RISE plugins – no restrictions, no hidden costs.<br>
+      Whether you choose 1 AREA or 10 AREAS, you get the full power of RISE</strong>
+    </p>
+
+    <!-- BILLING TOGGLE -->
+    <div class="billing-toggle">
+      <button
+        class="billing-toggle__btn"
+        [class.billing-toggle__btn--active]="m_sBillingCycle === 'month'"
+        (click)="m_sBillingCycle = 'month'"
+      >MONTH</button>
+      <button
+        class="billing-toggle__btn"
+        [class.billing-toggle__btn--active]="m_sBillingCycle === 'year'"
+        (click)="m_sBillingCycle = 'year'"
+      >YEAR</button>
+    </div>
+    <p class="billing-hint">Select your preferred duration to instantly update the pricing table and see the best value option</p>
+
+    <!-- PRICING TABLE -->
+    <div class="pricing-table-wrapper">
+      <table class="pricing-table">
+        <thead>
+          <tr>
+            <th>Subscription</th>
+            <th>Price</th>
+            <th class="ngo-col">NGO Discount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of m_aoPricingRows">
+            <td>{{ row.label }}</td>
+            <td>
+              <span class="price-value">{{ getPrice(row.monthly) }}</span>
+              <span class="price-suffix" *ngIf="row.monthly !== null">{{ getPriceSuffix(row.monthly) }}</span>
+            </td>
+            <td class="ngo-col">
+              <span class="price-value price-value--ngo">{{ getPrice(row.ngoMonthly) }}</span>
+              <span class="price-suffix" *ngIf="row.ngoMonthly !== null">{{ getPriceSuffix(row.ngoMonthly) }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="area-definition">
+      <strong>*What does "AREA" mean?</strong>
+      An "AREA" in RISE refers to an Area of Operations (AoO) – a geographic zone that your organization defines and monitors using
+      satellite data and RISE's plugins. / From 1 AREA to 10 AREAS, RISE adapts to your needs and project size, whether you're starting small or scaling globally.
+    </p>
+  </section>
+
+  <!-- CUSTOM PLAN SECTION -->
+  <section class="custom-plan-section">
+    <div class="custom-plan-inner">
+      <div class="custom-plan-left">
+        <h2>Custom Plan</h2>
+        <p class="custom-plan-tagline">Looking for a tailored solution?</p>
+        <ul>
+          <li>Need a longer subscription duration?</li>
+          <li>Want to monitor more areas?</li>
+          <li>Interested in a personalized demo session?</li>
+        </ul>
+        <p>We're here to help. Connect with our team today, we'll work with you to design the right plan and pricing for your needs.</p>
+      </div>
+      <div class="custom-plan-right">
+        <input
+          type="email"
+          placeholder="Email"
+          [(ngModel)]="m_sEmail"
+          class="custom-plan-input"
+        />
+        <textarea
+          placeholder="Write something"
+          [(ngModel)]="m_sMessage"
+          class="custom-plan-textarea"
+          rows="5"
+        ></textarea>
+        <button class="btn-cta" (click)="sendCustomPlan()">CONTACT US</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<public-footer></public-footer>

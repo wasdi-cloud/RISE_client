@@ -1,0 +1,42 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { PublicNavbarComponent } from '../../components/public-navbar/public-navbar.component';
+import { PublicFooterComponent } from '../../components/public-footer/public-footer.component';
+
+@Component({
+  selector: 'app-pricing',
+  standalone: true,
+  imports: [CommonModule, FormsModule, PublicNavbarComponent, PublicFooterComponent],
+  templateUrl: './pricing.component.html',
+  styleUrl: './pricing.component.css',
+})
+export class PricingComponent {
+  m_sBillingCycle: 'month' | 'year' = 'month';
+  m_sEmail: string = '';
+  m_sMessage: string = '';
+
+  readonly m_aoPricingRows = [
+    { label: 'Only Public Areas', monthly: null, ngoMonthly: null },
+    { label: '1 Area',  monthly: 200,  ngoMonthly: 100  },
+    { label: '3 Areas', monthly: 400,  ngoMonthly: 200  },
+    { label: '5 Areas', monthly: 600,  ngoMonthly: 300  },
+    { label: '10 Areas', monthly: 1000, ngoMonthly: 500 },
+  ];
+
+  getPrice(monthly: number | null): string {
+    if (monthly === null) return 'FREE';
+    const value = this.m_sBillingCycle === 'year' ? Math.round(monthly * 10) : monthly;
+    return `€ ${value}`;
+  }
+
+  getPriceSuffix(monthly: number | null): string {
+    if (monthly === null) return '';
+    return this.m_sBillingCycle === 'year' ? '/ yr' : '/ mo';
+  }
+
+  sendCustomPlan(): void {
+    const link = `mailto:info@wasdi.cloud?subject=${encodeURIComponent('Custom Plan Request')}&body=${encodeURIComponent(this.m_sMessage)}`;
+    window.location.href = link;
+  }
+}
