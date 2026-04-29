@@ -54,10 +54,22 @@ div#hero-img {
   background-image:
     linear-gradient(rgba(40, 78, 89, 0.8), rgba(40, 78, 89, 0.8)),
     url('/assets/rise-assets/carles-rabada-Efy2uzA3Css-unsplash.jpg');
-  background-size: cover;
+  background-size: 115%;
   background-repeat: no-repeat;
-  background-position: top;
+  background-position: top center;
   color: #fafafa;
+  animation: cinematicPan 40s ease-in-out infinite alternate;
+}
+
+@keyframes cinematicPan {
+  0% {
+    background-position: top center;
+    background-size: 115%;
+  }
+  100% {
+    background-position: bottom center;
+    background-size: 125%;
+  }
 }
 .hero-content {
   align-self: stretch;
