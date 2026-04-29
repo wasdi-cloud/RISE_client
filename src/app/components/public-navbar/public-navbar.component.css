@@ -6,7 +6,7 @@
   z-index: 1000;
   background: #ffffff;
   border-bottom: 1px solid rgba(0, 0, 0, 0.07);
-  height: 60px;
+  height: 68px;
   transition: box-shadow 0.2s;
 }
 
@@ -32,7 +32,7 @@
 }
 
 .public-nav__logo img {
-  height: 34px;
+  height: 44px;
   display: block;
   object-fit: contain;
 }
@@ -125,7 +125,7 @@
   .public-nav__links {
     display: none;
     position: absolute;
-    top: 60px;
+    top: 68px;
     left: 0;
     right: 0;
     background: #ffffff;
