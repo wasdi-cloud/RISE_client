@@ -630,3 +630,54 @@ a.leaflet-control-zoom-fullscreen {
   width: 6px !important;
   height: 6px !important;
 }
+
+/* Primary Buttons */
+.btn-primary-green {
+  background-color: #284E59;
+  color: #FAFAFA;
+  border-radius: 5px;
+  font-size: 18px;
+  padding: 10px 20px 20px 20px;
+  gap: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #284E59;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  font-family: inherit;
+}
+
+.btn-primary-green:hover {
+  background-color: #FAFAFA;
+  color: #284E59;
+  border-radius: 5px;
+  border: 2px solid #284E59;
+  text-decoration: none;
+}
+
+.btn-primary-yellow {
+  background-color: #EFB840;
+  color: #FAFAFA;
+  border-radius: 5px;
+  font-size: 18px;
+  padding: 10px 20px 20px 20px;
+  gap: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #EFB840;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  font-family: inherit;
+}
+
+.btn-primary-yellow:hover {
+  background-color: #FAFAFA;
+  color: #EFB840;
+  border-radius: 5px;
+  border: 2px solid #EFB840;
+  text-decoration: none;
+}

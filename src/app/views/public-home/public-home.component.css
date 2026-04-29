@@ -37,22 +37,11 @@ div#hero-img {
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  /* UPDATED: Add a transparent-to-black gradient layer
-     * The gradient goes first (on top)
-     * Then your image URL goes last (on the bottom)
-  */
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.9)),
-    url('/assets/rise-assets/carles-rabada-Efy2uzA3Css-unsplash.jpg');
-
+  background-color: #FFFFFF;
   justify-content: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: top;
   text-align: center;
   font-size: 36px;
-  color: #fafafa;
+  color: #284E59;
   font-family: 'Space Mono';
 }
 .hero-section {
@@ -60,8 +49,15 @@ div#hero-img {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 100px;
+  padding: 220px 100px 100px 100px;
   font-size: 45px;
+  background-image:
+    linear-gradient(rgba(40, 78, 89, 0.8), rgba(40, 78, 89, 0.8)),
+    url('/assets/rise-assets/carles-rabada-Efy2uzA3Css-unsplash.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top;
+  color: #fafafa;
 }
 .hero-content {
   align-self: stretch;
