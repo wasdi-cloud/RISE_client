@@ -637,7 +637,8 @@ a.leaflet-control-zoom-fullscreen {
   color: #FAFAFA;
   border-radius: 5px;
   font-size: 18px;
-  padding: 10px 20px 20px 20px;
+  font-weight: bold;
+  padding: 10px 20px;
   gap: 10px;
   display: inline-flex;
   align-items: center;
@@ -662,7 +663,8 @@ a.leaflet-control-zoom-fullscreen {
   color: #FAFAFA;
   border-radius: 5px;
   font-size: 18px;
-  padding: 10px 20px 20px 20px;
+  font-weight: bold;
+  padding: 10px 20px;
   gap: 10px;
   display: inline-flex;
   align-items: center;

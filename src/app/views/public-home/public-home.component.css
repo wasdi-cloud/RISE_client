@@ -52,23 +52,32 @@ div#hero-img {
   padding: 220px 100px 100px 100px;
   font-size: 45px;
   background-image:
-    linear-gradient(rgba(40, 78, 89, 0.8), rgba(40, 78, 89, 0.8)),
+    linear-gradient(rgba(40, 78, 89, 0.9), rgba(40, 78, 89, 0.9)),
     url('/assets/rise-assets/carles-rabada-Efy2uzA3Css-unsplash.jpg');
-  background-size: 115%;
+  background-size: 125%;
   background-repeat: no-repeat;
-  background-position: top center;
+  background-position: center center;
   color: #fafafa;
-  animation: cinematicPan 40s ease-in-out infinite alternate;
+  animation: fadeIn 0.6s ease-out forwards, cinematicPan 80s linear infinite alternate;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @keyframes cinematicPan {
   0% {
-    background-position: top center;
-    background-size: 115%;
+    background-position: center center;
+    background-size: 125%;
   }
   100% {
-    background-position: bottom center;
-    background-size: 125%;
+    background-position: center bottom;
+    background-size: 135%;
   }
 }
 .hero-content {
@@ -140,17 +149,15 @@ div#hero-img {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0px 100px 100px;
+  padding: 100px;
+  background-color: #284E59;
+  color: #FAFAFA;
 }
 .features-container {
   align-self: stretch;
-  backdrop-filter: blur(40px);
-  border-radius: 10px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1));
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 50px;
   gap: 50px;
 }
 .features-header {
@@ -164,6 +171,7 @@ div#hero-img {
   align-self: stretch;
   position: relative;
   line-height: 50px;
+  font-size: 36px;
 }
 .paragraph {
   align-self: stretch;
@@ -184,29 +192,28 @@ div#hero-img {
 .features-cards-row {
   align-self: stretch;
   display: flex;
-  align-items: flex-start;
+  align-items: stretch;
   justify-content: center;
   gap: 20px;
 }
 .card-large {
-  height: 333px;
   flex: 1;
   border-radius: 10px;
   background-color: #fafafa;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 40px;
   box-sizing: border-box;
 }
 .feature-card-content {
   align-self: stretch;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 15px;
 }
 .building-05 {
   width: 50px;
@@ -231,6 +238,7 @@ div#hero-img {
 .landing-page-paragraph {
   align-self: stretch;
   position: relative;
+  font-size: 16px;
 }
 .landing-page-icon {
   position: absolute;
@@ -706,3 +714,37 @@ div#hero-img {
   text-align: center;
 }
 
+/* Card Icons (using CSS Mask to colorize black PNGs) */
+.card-icon {
+  width: 48px;
+  height: 48px;
+  background-color: #284E59;
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center bottom;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center bottom;
+  margin-bottom: 20px;
+  align-self: center;
+  transition: transform 0.3s ease;
+}
+.card-large:hover .card-icon {
+  transform: scale(1.15);
+}
+.icon-satellite {
+  width: 38px;
+  height: 48px;
+  -webkit-mask-size: 38px;
+  mask-size: 38px;
+  -webkit-mask-image: url('/assets/rise-assets/satellite-icon.png');
+  mask-image: url('/assets/rise-assets/satellite-icon.png');
+}
+.icon-company {
+  -webkit-mask-image: url('/assets/rise-assets/company-enterprise-icon.png');
+  mask-image: url('/assets/rise-assets/company-enterprise-icon.png');
+}
+.icon-thumbs-up {
+  -webkit-mask-image: url('/assets/rise-assets/five-stars-thumbs-up-icon.png');
+  mask-image: url('/assets/rise-assets/five-stars-thumbs-up-icon.png');
+}

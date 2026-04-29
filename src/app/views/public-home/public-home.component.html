@@ -34,25 +34,7 @@
         <b class="hero-title">Direct Access to Geospatial Intelligence</b>
         <div class="hero-subtitle">Overwhelmed by complex satellite data and reports? Turn it into clear, actionable insights to accelerate decision-making and relief efforts.</div>
         <div class="hero-buttons">
-          <rise-button
-            [m_sLabel]="'Contact Us'"
-            (click)="contactUs()"
-            [m_sRole]="'secondary'"
-          >
-          </rise-button>
-          <rise-button
-            [m_sLabel]="'Register Your Organization'"
-            (click)="navigateRoute('sign-up')"
-            [m_sRole]="'action'"
-          >
-          </rise-button>
-
-<!--          <div class="buttonprimary">-->
-<!--            <b class="text">Contact Us</b>-->
-<!--          </div>-->
-<!--          <div class="buttonsecondary">-->
-<!--            <b class="text">Register Your Organization</b>-->
-<!--          </div>-->
+          <button class="btn-primary-yellow" (click)="navigateRoute('sign-up')">GET STARTED TODAY</button>
         </div>
       </div>
       <img src="assets/rise-assets/RISE-platform%201.png" class="rise-platform-preview-1-icon" alt="">
@@ -62,42 +44,33 @@
   <div class="intro-section">
     <div class="features-container">
       <div class="features-header">
-        <b class="header">Empowering action with near real-time insights.</b>
-        <div class="paragraph">RISE is a cloud-based platform that provides near real-time monitoring of natural hazards worldwide, combining Earth Observation (EO) data and advanced analytics to help organizations detect, analyze, and respond to disasters faster.</div>
+        <b class="header">Empowering action with <span style="color: #EFB840; text-transform: uppercase;">near real-time</span> insights.</b>
+        <div class="paragraph">RISE is a cloud‑based platform that integrates Earth Observation (EO) data with advanced analytics to deliver near real‑time intelligence on natural hazards worldwide. It provides the technology organizations need to anticipate risks and strengthen resilience.</div>
       </div>
       <div class="features-cards-container">
         <div class="features-cards-row">
           <div class="card-large">
             <div class="feature-card-content">
-              <div class="building-05">
-                <img src="assets/rise-assets/building1.png" class="icon" alt="">
-
-              </div>
+              <div class="card-icon icon-satellite"></div>
               <b class="title">What is Rise?</b>
-              <b class="landing-page-paragraph">Instant Insights From Satellite Data</b>
-              <div class="landing-page-paragraph">RISE is a cloud-based platform that provides near real-time monitoring of natural hazards worldwide, combining Earth Observation (EO) data and advanced analytics to help detect, analyze, and respond to disasters faster.</div>
+              <b class="landing-page-paragraph">Science‑driven innovation for disaster resilience</b>
+              <div class="landing-page-paragraph">Built in collaboration with the WFP Innovation Accelerator, LIST, and the Luxembourg Red Cross, RISE transforms cutting‑edge geospatial technology into decision‑ready intelligence. helping organizations transform complex hazard data into clear, decision‑ready insights that drive smarter action.</div>
             </div>
           </div>
           <div class="card-large">
             <div class="feature-card-content">
-              <div class="building-05">
-                <img src="assets/rise-assets/building2.svg" class="landing-page-icon" alt="">
-
-              </div>
+              <div class="card-icon icon-company"></div>
               <b class="title">Who is RISE for?</b>
-              <b class="landing-page-paragraph">For Organizations That Need Results</b>
-              <div class="landing-page-paragraph">NGOs, environmental agencies, agribusinesses, and insurers rely on RISE to respond faster, track changes, and secure supply chains, all without middlemen or delays.</div>
+              <b class="landing-page-paragraph">Tailored to those who safeguard communities and manage risk</b>
+              <div class="landing-page-paragraph">RISE is built for NGOs, environmental agencies, agribusinesses, and insurance companies that need to respond to disasters, track environmental changes, or secure supply chains. By eliminating intermediaries, it delivers scalable, cloud-based solutions tailored to operational needs.</div>
             </div>
           </div>
           <div class="card-large">
             <div class="feature-card-content">
-              <div class="building-052">
-                <img src="assets/rise-assets/building3.png" class="zap-fast-icon" alt="">
-
-              </div>
+              <div class="card-icon icon-thumbs-up"></div>
               <b class="title">Why choose RISE?</b>
               <b class="landing-page-paragraph">Faster. Smarter. More Effective.</b>
-              <div class="landing-page-paragraph">Gain real-time monitoring, proven accuracy, and seamless workflow integration. Optimize resources, accelerate decisions, and maximize impact when it matters most.</div>
+              <div class="landing-page-paragraph">With RISE, organizations gain real-time monitoring, field-tested accuracy, and seamless integration into existing workflows. It’s designed to accelerate response times, optimize resources, and maximize impact, empowering teams to make smarter decisions under pressure.</div>
             </div>
           </div>
         </div>
