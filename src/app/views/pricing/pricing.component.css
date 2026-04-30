@@ -9,8 +9,13 @@
 /* PRICING SECTION */
 .pricing-section {
   background: #f4f7f8;
-  padding: 64px 24px 48px;
+  padding: 84px 24px 64px; /* Increased top padding by 20px */
   text-align: center;
+}
+
+.pricing-container {
+  max-width: 1000px; /* Increased max-width */
+  margin: 0 auto;
 }
 
 .pricing-section h1 {
@@ -24,8 +29,8 @@
 .pricing-intro {
   font-size: 15px;
   color: #4a6672;
-  max-width: 600px;
-  margin: 0 auto 28px;
+  max-width: 700px;
+  margin: 0 auto 36px;
 }
 
 /* TOGGLE LABELS */
@@ -33,18 +38,24 @@
   display: flex;
   gap: 16px;
   justify-content: center;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
   flex-wrap: wrap;
 }
 
 .toggle-label {
-  padding: 12px 24px;
+  height: 44px; /* Fixed height as requested */
+  width: 420px; /* Uniform width for both blocks */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
   border-radius: 8px;
   border: 1px solid rgba(39, 77, 89, 0.15);
   background: #fff;
   font-size: 14px;
   color: #4a6672;
-  max-width: 300px;
+  white-space: nowrap; /* Force one line */
+  box-sizing: border-box;
 }
 
 .toggle-label--active {
@@ -57,7 +68,9 @@
   font-size: 14px;
   color: #1c3d4a;
   line-height: 1.7;
-  margin-bottom: 28px;
+  margin-bottom: 36px;
+  max-width: 100%; /* Allow single line */
+  text-align: center;
 }
 
 /* BILLING TOGGLE */
@@ -91,17 +104,18 @@
 .billing-hint {
   font-size: 13px;
   color: #7a9ba8;
-  margin-bottom: 32px;
+  margin-bottom: 40px;
 }
 
 /* PRICING TABLE */
 .pricing-table-wrapper {
-  max-width: 640px;
-  margin: 0 auto 32px;
+  max-width: 800px; /* Increased width */
+  margin: 0 auto 40px;
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid rgba(39, 77, 89, 0.1);
   background: #fff;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.04);
 }
 
 .pricing-table {
@@ -109,37 +123,29 @@
   border-collapse: collapse;
 }
 
-.pricing-table thead tr {
-  background: #fff;
-}
-
 .pricing-table th {
   font-family: 'Space Mono', monospace;
   font-size: 13px;
   font-weight: 700;
   color: #1c3d4a;
-  padding: 18px 24px;
+  padding: 20px 24px;
   text-align: center;
   border-bottom: 1px solid rgba(39, 77, 89, 0.1);
 }
 
 .pricing-table th:first-child {
-  text-align: left;
-}
-
-.pricing-table tbody tr:not(:last-child) {
-  border-bottom: 1px solid rgba(39, 77, 89, 0.07);
+  text-align: center; /* Centralized header */
 }
 
 .pricing-table td {
-  padding: 16px 24px;
+  padding: 18px 24px;
   text-align: center;
   font-size: 15px;
   color: #4a6672;
 }
 
 .pricing-table td:first-child {
-  text-align: left;
+  text-align: center; /* Centralized cell */
   font-weight: 500;
   color: #1c3d4a;
 }
@@ -151,139 +157,147 @@
 .price-value {
   font-weight: 700;
   color: #1c3d4a;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .price-value--ngo {
   color: #274d59;
 }
 
-.price-suffix {
-  font-size: 12px;
-  color: #7a9ba8;
-  margin-left: 3px;
-}
-
 .area-definition {
   font-size: 13px;
   color: #7a9ba8;
-  max-width: 700px;
+  max-width: 900px;
   margin: 0 auto;
   line-height: 1.6;
-  text-align: left;
+  text-align: center; /* Centralized area definition */
 }
 
 /* CUSTOM PLAN */
 .custom-plan-section {
-  background: #1c3d4a;
-  padding: 64px 24px;
+  background: #284E59; /* Branded teal */
+  padding: 100px 24px;
   color: #fff;
+  text-align: center; /* Centralized section */
 }
 
 .custom-plan-inner {
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto;
   display: flex;
-  gap: 60px;
-  align-items: flex-start;
+  gap: 80px;
+  align-items: center;
 }
 
 .custom-plan-left {
   flex: 1;
+  text-align: left; /* Keep text readable but centralized container */
 }
 
 .custom-plan-left h2 {
   font-family: 'Space Mono', monospace;
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 700;
-  margin: 0 0 12px;
+  margin: 0 0 16px;
 }
 
 .custom-plan-tagline {
   font-size: 16px;
-  color: rgba(255,255,255,0.8);
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
 
 .custom-plan-left ul {
   padding-left: 20px;
-  margin: 0 0 20px;
+  margin: 0 0 24px;
 }
 
 .custom-plan-left ul li {
-  font-size: 14px;
-  line-height: 1.7;
-  color: rgba(255,255,255,0.75);
-  margin-bottom: 4px;
+  font-size: 15px;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 8px;
 }
 
 .custom-plan-left > p {
-  font-size: 14px;
-  line-height: 1.7;
-  color: rgba(255,255,255,0.75);
-  margin: 0;
+  font-size: 15px;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.9);
 }
 
 .custom-plan-right {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
+}
+
+.input-with-icon {
+  position: relative;
+  width: 100%;
+}
+
+.input-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #284E59;
+  font-size: 18px;
+}
+
+.custom-plan-input {
+  padding-left: 48px !important;
 }
 
 .custom-plan-input,
 .custom-plan-textarea {
   width: 100%;
   box-sizing: border-box;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 6px;
-  padding: 12px 16px;
-  color: #fff;
-  font-family: 'Satoshi Variable', sans-serif;
+  background: #FAFAFA;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 20px;
+  color: #284E59;
+  font-family: inherit;
   font-size: 14px;
   outline: none;
-  transition: border-color 0.15s;
 }
 
 .custom-plan-input::placeholder,
 .custom-plan-textarea::placeholder {
-  color: rgba(255,255,255,0.4);
+  color: #284E59;
+  opacity: 0.6;
 }
 
-.custom-plan-input:focus,
-.custom-plan-textarea:focus {
-  border-color: rgba(255,255,255,0.5);
+.btn-slim {
+  padding: 12px !important; /* Slimmer button */
+  font-size: 14px !important;
 }
 
-.custom-plan-textarea {
-  resize: vertical;
-}
-
-.btn-cta {
+.btn-primary-yellow {
   display: block;
   width: 100%;
-  background: #efba35;
-  color: #1c3d4a;
+  background: #F2B84B;
+  color: #FFF;
   border: none;
-  border-radius: 6px;
-  padding: 14px;
+  border-radius: 8px;
   font-family: 'Space Mono', monospace;
-  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
   cursor: pointer;
   text-transform: uppercase;
-  transition: background 0.15s;
+  transition: opacity 0.2s;
 }
 
-.btn-cta:hover {
-  background: #d9a826;
-}
-
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .custom-plan-inner {
     flex-direction: column;
-    gap: 32px;
+    gap: 40px;
+    text-align: center;
+  }
+  
+  .custom-plan-left ul {
+    display: inline-block;
+    text-align: left;
   }
 }
