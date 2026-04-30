@@ -7,7 +7,7 @@
 
 /* HERO */
 .about-hero {
-  background: url('/assets/rise-assets/carles-rabada-Efy2uzA3Css-unsplash.jpg') center/cover no-repeat;
+  background: url('/assets/rise-assets/about-hero-v3.png') right center / 140% no-repeat;
   position: relative;
   padding: 100px 24px 80px;
   min-height: 420px;
@@ -21,7 +21,61 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(0, 31, 40, 0.65);
+  background: rgba(40, 78, 89, 0.8);
+}
+
+/* LOCATION MAP */
+.location-section {
+  background: #F2F5F7;
+  padding: 0;
+  text-align: center;
+}
+
+.location-map-container {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  background: #ddd;
+  overflow: hidden;
+}
+
+.location-map-container iframe {
+  display: block;
+}
+
+.location-card {
+  position: absolute;
+  bottom: 55px; /* Moved 15px higher as requested */
+  left: 40px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  text-align: left;
+  z-index: 10;
+  max-width: 280px;
+}
+
+.location-label {
+  font-size: 12px;
+  color: #EFB840;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.location-name {
+  color: #284E59;
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.location-card p {
+  font-size: 14px;
+  color: #4a6672;
+  margin: 0;
+  line-height: 1.6;
 }
 
 .about-hero__content {
@@ -149,74 +203,8 @@ blockquote footer {
   letter-spacing: 1px;
 }
 
-/* LOCATION */
-.location-section {
-  background: #F2F5F7;
-  padding: 0; /* Full width map, no section padding */
-  text-align: center;
-}
-
-.location-map-container {
-  position: relative;
-  width: 100%;
-  height: 500px;
-  background: #ddd;
-  overflow: hidden;
-}
-
-.location-map-container iframe {
-  display: block;
-}
-
-.location-card {
-  position: absolute;
-  top: 40px;
-  left: 40px;
-  background: #fff;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-  text-align: left;
-  z-index: 10;
-  max-width: 280px;
-}
-
-.location-label {
-  font-size: 12px;
-  color: #efba35;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 8px;
-}
-
-.location-name {
-  color: #284E59;
-  font-size: 18px;
-  margin-bottom: 8px;
-}
-
-.location-card p {
-  font-size: 14px;
-  color: #4a6672;
-  margin: 0;
-  line-height: 1.6;
-}
-
 @media (max-width: 768px) {
   .testimonial-card {
     padding: 32px 24px;
-  }
-  
-  .location-card {
-    position: relative;
-    top: 0;
-    left: 0;
-    margin: 20px auto;
-    max-width: 90%;
-  }
-  
-  .location-map-container {
-    height: auto;
   }
 }
