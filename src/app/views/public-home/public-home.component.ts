@@ -17,6 +17,40 @@ export class PublicHomeComponent {
   m_bIsScrolled: boolean = false;
   m_sEmail:string="info@wasdi.cloud"
 
+  // Plugin interactive laptop state
+  m_sSelectedPluginImage: string = 'assets/rise-assets/RISE_Platform_preview 1.png';
+  m_sSelectedPlugin: string = 'Floods';
+
+  selectPluginImage(pluginName: string) {
+    this.m_sSelectedPlugin = pluginName;
+    const basePath = 'assets/rise-assets/';
+    switch (pluginName) {
+      case 'Floods':
+        this.m_sSelectedPluginImage = basePath + 'plugin_floods.png';
+        break;
+      case 'Droughts':
+        this.m_sSelectedPluginImage = basePath + 'plugin_droughts.png';
+        break;
+      case 'Buildings':
+        this.m_sSelectedPluginImage = basePath + 'plugin_buildings.jpg';
+        break;
+      case 'Impacts':
+        this.m_sSelectedPluginImage = basePath + 'plugin_impacts.png';
+        break;
+      case 'Rain Observations':
+        this.m_sSelectedPluginImage = basePath + 'plugin_rain.png';
+        break;
+      case 'Land Surface Temperature':
+        this.m_sSelectedPluginImage = basePath + 'plugin_temperature.png';
+        break;
+      case 'Wildfires':
+        this.m_sSelectedPluginImage = basePath + 'plugin_wildfires.png';
+        break;
+      default:
+        this.m_sSelectedPluginImage = basePath + 'RISE_Platform_preview 1.png';
+    }
+  }
+
   // Set the threshold for when the blur should be applied (e.g., after 50 pixels of scrolling)
   private readonly SCROLL_THRESHOLD = 50;
 
@@ -30,7 +64,9 @@ export class PublicHomeComponent {
     this.m_bIsScrolled = scrollY > this.SCROLL_THRESHOLD;
   }
   navigateRoute(sRouter: string) {
-    this.m_oRouter.navigateByUrl(sRouter);
+    this.m_oRouter.navigateByUrl(sRouter).then(() => {
+      window.scrollTo(0, 0);
+    });
   }
   handleLanguageChange(sEvent){
     console.log(sEvent);

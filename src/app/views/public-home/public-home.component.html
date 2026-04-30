@@ -90,7 +90,7 @@
     <div class="cta-button">
       <rise-button
         [m_sLabel]="'CONTACT US TODAY'"
-        (click)="contactUs()"
+        (click)="navigateRoute('/contact')"
         [m_sRole]="'secondary'"
       >
       </rise-button>
@@ -106,44 +106,44 @@
     <div class="discover-features-container">
       <div class="discover-features-row">
         <div class="feature-card-content3">
-          <div class="feature-card-openclose">
-            <div class="feature-card-title">
+          <details class="feature-card-openclose">
+            <summary class="feature-card-title">
               <b class="title4">Near Real-Time Monitoring</b>
-            </div>
+            </summary>
             <div class="title5">The system continuously query for new Satellite Data to elaborate and provide the faster possibile environmental monitoring service.</div>
-          </div>
-          <div class="feature-card-openclose">
-            <div class="feature-card-title">
+          </details>
+          <details class="feature-card-openclose">
+            <summary class="feature-card-title">
               <b class="title4">Intuitive User Interface</b>
-            </div>
+            </summary>
             <div class="title5">The system continuously query for new Satellite Data to elaborate and provide the faster possibile environmental monitoring service.</div>
-          </div>
-          <div class="feature-card-openclose">
-            <div class="feature-card-title">
+          </details>
+          <details class="feature-card-openclose">
+            <summary class="feature-card-title">
               <b class="title4">Historical Data Analysis</b>
-            </div>
+            </summary>
             <div class="title5">The system continuously query for new Satellite Data to elaborate and provide the faster possibile environmental monitoring service.</div>
-          </div>
+          </details>
         </div>
         <div class="feature-card-content3">
-          <div class="feature-card-openclose">
-            <div class="feature-card-title">
+          <details class="feature-card-openclose">
+            <summary class="feature-card-title">
               <b class="title4">Impacts Evaluation</b>
-            </div>
+            </summary>
             <div class="title5">The system continuously query for new Satellite Data to elaborate and provide the faster possibile environmental monitoring service.</div>
-          </div>
-          <div class="feature-card-openclose">
-            <div class="feature-card-title">
+          </details>
+          <details class="feature-card-openclose">
+            <summary class="feature-card-title">
               <b class="title4">Multi Language</b>
-            </div>
+            </summary>
             <div class="title5">The system continuously query for new Satellite Data to elaborate and provide the faster possibile environmental monitoring service.</div>
-          </div>
-          <div class="feature-card-openclose">
-            <div class="feature-card-title">
+          </details>
+          <details class="feature-card-openclose">
+            <summary class="feature-card-title">
               <b class="title4">Tailored User Profiles</b>
-            </div>
+            </summary>
             <div class="title5">The system continuously query for new Satellite Data to elaborate and provide the faster possibile environmental monitoring service.</div>
-          </div>
+          </details>
         </div>
       </div>
       <div class="plugins-container">
@@ -153,54 +153,54 @@
           <b> plugins tailored to your needs:</b>
         </div>
         <div class="plugins-row">
-          <img src="assets/rise-assets/RISE_Platform_preview%201.png" class="riseplatform-1-icon" alt="">
+          <img [src]="m_sSelectedPluginImage" class="riseplatform-1-icon" alt="">
 
           <div class="plugins-list">
-            <div class="div">
+            <div class="div" (click)="selectPluginImage('Floods')" [class.active-plugin]="m_sSelectedPlugin === 'Floods'">
               <div class="plugin-item">
-                <img src="assets/rise-assets/Plugin%20Checkbox.svg" class="plugin-checkbox-icon" alt="">
+                <div class="plugin-checkbox-icon"></div>
 
                 <b class="title4">Floods</b>
               </div>
             </div>
-            <div class="div">
+            <div class="div" (click)="selectPluginImage('Droughts')" [class.active-plugin]="m_sSelectedPlugin === 'Droughts'">
               <div class="plugin-item">
-                <img src="assets/rise-assets/Plugin%20Checkbox.svg" class="plugin-checkbox-icon" alt="">
+                <div class="plugin-checkbox-icon"></div>
 
                 <b class="title4">Droughts</b>
               </div>
             </div>
-            <div class="div">
+            <div class="div" (click)="selectPluginImage('Buildings')" [class.active-plugin]="m_sSelectedPlugin === 'Buildings'">
               <div class="plugin-item">
-                <img src="assets/rise-assets/Plugin%20Checkbox.svg" class="plugin-checkbox-icon" alt="">
+                <div class="plugin-checkbox-icon"></div>
 
                 <b class="title4">Buildings</b>
               </div>
             </div>
-            <div class="div">
+            <div class="div" (click)="selectPluginImage('Impacts')" [class.active-plugin]="m_sSelectedPlugin === 'Impacts'">
               <div class="plugin-item">
-                <img src="assets/rise-assets/Plugin%20Checkbox.svg" class="plugin-checkbox-icon" alt="">
+                <div class="plugin-checkbox-icon"></div>
 
                 <b class="title4">Impacts</b>
               </div>
             </div>
-            <div class="div">
+            <div class="div" (click)="selectPluginImage('Rain Observations')" [class.active-plugin]="m_sSelectedPlugin === 'Rain Observations'">
               <div class="plugin-item">
-                <img src="assets/rise-assets/Plugin%20Checkbox.svg" class="plugin-checkbox-icon" alt="">
+                <div class="plugin-checkbox-icon"></div>
 
                 <b class="title4">Rain Observations</b>
               </div>
             </div>
-            <div class="div">
+            <div class="div" (click)="selectPluginImage('Land Surface Temperature')" [class.active-plugin]="m_sSelectedPlugin === 'Land Surface Temperature'">
               <div class="plugin-item">
-                <img src="assets/rise-assets/Plugin%20Checkbox.svg" class="plugin-checkbox-icon" alt="">
+                <div class="plugin-checkbox-icon"></div>
 
                 <b class="title4">Land Surface Temperature</b>
               </div>
             </div>
-            <div class="div">
+            <div class="div" (click)="selectPluginImage('Wildfires')" [class.active-plugin]="m_sSelectedPlugin === 'Wildfires'">
               <div class="plugin-item">
-                <img src="assets/rise-assets/Plugin%20Checkbox.svg" class="plugin-checkbox-icon" alt="">
+                <div class="plugin-checkbox-icon"></div>
 
                 <b class="title4">Wildfires (coming soon!)</b>
               </div>
