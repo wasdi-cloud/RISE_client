@@ -5,48 +5,7 @@
   font-family: 'Satoshi Variable', sans-serif;
 }
 
-/* HERO */
-.platform-hero {
-  background: url('/assets/rise-assets/platform-hero.png') center top / cover no-repeat;
-  position: relative;
-  padding: 140px 24px;
-  min-height: 650px; /* Increased height to show more image */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: #fff;
-}
-
-.platform-hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(40, 78, 89, 0.8); /* 80% opacity as requested */
-}
-
-.platform-hero__content {
-  position: relative;
-  z-index: 2;
-  max-width: 1100px; /* Wider to fit text in 2 lines */
-}
-
-.platform-hero h1 {
-  font-family: 'Space Mono', monospace;
-  font-size: 52px;
-  font-weight: 700;
-  margin: 0 0 24px;
-  letter-spacing: 2px;
-}
-
-.platform-hero p {
-  font-size: 18px;
-  line-height: 1.6;
-  margin-bottom: 48px;
-  opacity: 1;
-}
-
-/* 4 STEPS SECTION */
+/* CONCISE STEPS SECTION */
 .steps-section {
   background: #284E59;
   padding: 100px 24px;
@@ -55,11 +14,30 @@
 }
 
 .steps-inner {
-  max-width: 1400px; /* Wider container for balance */
+  max-width: 1400px;
   margin: 0 auto;
 }
 
-.steps-section h2 {
+.platform-intro {
+  margin-bottom: 80px;
+}
+
+.platform-intro h1 {
+  font-family: 'Space Mono', monospace;
+  font-size: 52px;
+  font-weight: 700;
+  margin: 0 0 24px;
+  letter-spacing: 2px;
+}
+
+.platform-intro p {
+  font-size: 18px;
+  line-height: 1.6;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.steps-heading {
   font-family: 'Space Mono', monospace;
   font-size: 36px;
   font-weight: 700;
@@ -74,21 +52,21 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 32px;
-  margin-bottom: 80px;
+  margin-bottom: 60px; /* Spacing for the button */
 }
 
 .step-card {
   background: #fff;
   border-radius: 12px;
-  padding: 48px 32px;
+  padding: 32px;
   color: #284E59;
   position: relative;
   overflow: hidden;
   text-align: left;
-  min-height: 420px;
   display: flex;
   flex-direction: column;
   box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  height: 100%; /* Ensure cards are same height if in grid */
 }
 
 .step-bg-number {
@@ -107,26 +85,22 @@
 .step-content {
   position: relative;
   z-index: 2;
-  display: flex;
-  flex-direction: column;
 }
 
 .step-title {
   font-family: 'Space Mono', monospace;
-  font-size: 28px; /* Bigger than subtitle */
+  font-size: 28px;
   color: #F2B84B;
   margin: 0 0 16px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
 }
 
 .step-card h4 {
-  font-size: 18px; /* Smaller as requested */
+  font-size: 18px;
   font-weight: 700;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
   line-height: 1.3;
-  min-height: 48px; /* Balanced title height */
 }
 
 .step-card ul {
@@ -142,63 +116,72 @@
   color: #4a6672;
 }
 
-.btn-bottom {
-  max-width: 300px;
-  margin: 0 auto;
+.steps-cta {
+  margin-top: 20px;
 }
 
-/* STAY CONNECTED */
+/* STAY CONNECTED (Updated with map image and 60% gold overlay) */
 .connected-section {
-  background: #fff;
-  padding: 80px 24px;
+  background: linear-gradient(rgba(239, 184, 64, 0.7), rgba(239, 184, 64, 0.7)), url('/assets/rise-assets/connected-map.png') center/cover no-repeat;
+  padding: 100px 24px;
   text-align: center;
   color: #284E59;
 }
 
+.connected-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.15); /* Subtle white lift */
+  backdrop-filter: blur(4px); /* Glass effect to settle the background map */
+  padding: 32px 40px; /* Reduced vertical padding */
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
 .connected-section h2 {
   font-family: 'Space Mono', monospace;
-  font-size: 32px;
-  margin-bottom: 24px;
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 32px;
 }
 
 .connected-section p {
-  max-width: 800px;
-  margin: 0 auto 24px;
-  font-size: 16px;
+  font-size: 20px;
   line-height: 1.6;
+  margin-bottom: 24px;
 }
 
 .connected-note {
-  font-size: 18px;
-  color: #F2B84B;
+  font-size: 22px;
+  font-weight: 700;
 }
 
-/* PLUGINS SECTION */
+/* PLUGINS SECTION (White background) */
 .plugins-section {
-  padding: 80px 24px;
-  background: #f4f7f8;
+  padding: 100px 24px;
+  background: #fff;
   text-align: center;
 }
 
 .plugins-header h2 {
   font-family: 'Space Mono', monospace;
-  font-size: 32px;
+  font-size: 36px;
   color: #284E59;
   margin-bottom: 16px;
 }
 
 .plugins-header p {
-  font-size: 16px;
+  font-size: 18px;
   color: #4a6672;
-  margin-bottom: 60px;
+  margin-bottom: 80px;
 }
 
 .plugin-block {
   display: flex;
   align-items: center;
-  gap: 60px;
-  max-width: 1000px;
-  margin: 0 auto 80px;
+  gap: 80px;
+  max-width: 1100px;
+  margin: 0 auto 100px;
   text-align: left;
 }
 
@@ -212,8 +195,8 @@
 
 .plugin-block__title {
   font-family: 'Space Mono', monospace;
-  font-size: 28px;
-  margin-bottom: 20px;
+  font-size: 32px;
+  margin-bottom: 24px;
 }
 
 .plugin-block__title--gold {
@@ -225,84 +208,131 @@
 }
 
 .plugin-block li {
-  font-size: 15px;
-  line-height: 1.7;
-  margin-bottom: 10px;
+  font-size: 16px;
+  line-height: 1.8;
+  margin-bottom: 12px;
   color: #4a6672;
 }
 
 .plugin-block__img {
-  width: 450px;
+  width: 500px;
   height: auto;
   border-radius: 12px;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+  box-shadow: 0 12px 48px rgba(40, 78, 89, 0.1);
 }
 
-/* FUTURE READY */
+.plugins-cta {
+  margin-top: 40px;
+}
+
+/* FUTURE READY (Gold Section) */
 .future-section {
-  background: #284E59;
-  padding: 80px 24px;
-  color: #fff;
+  background: #F2B84B;
+  padding: 100px 24px;
+  color: #284E59;
   text-align: center;
+}
+
+.future-inner {
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .future-section h2 {
   font-family: 'Space Mono', monospace;
-  font-size: 32px;
-  margin-bottom: 16px;
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 32px;
 }
 
-.future-section p {
-  max-width: 800px;
-  margin: 0 auto 48px;
-  opacity: 0.8;
+.future-sub1 {
+  font-size: 20px;
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+.future-sub2 {
+  max-width: 1100px;
+  margin: 0 auto 60px;
+  font-size: 17px;
+  line-height: 1.6;
+  opacity: 0.9;
 }
 
 .future-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 32px;
-  max-width: 900px;
-  margin: 0 auto 48px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-bottom: 48px;
 }
 
 .future-card {
-  background: rgba(255,255,255,0.05);
-  padding: 32px;
+  background: #fff;
+  padding: 32px 24px;
   border-radius: 12px;
   text-align: left;
-  border: 1px solid rgba(255,255,255,0.1);
+  position: relative;
+  overflow: hidden;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+.future-card--dark {
+  background: #284E59;
+  color: #F2B84B;
+}
+
+.future-card--dark p {
+  color: #fff;
 }
 
 .future-card h4 {
   font-family: 'Space Mono', monospace;
-  font-size: 20px;
-  color: #F2B84B;
+  font-size: 22px;
   margin-bottom: 16px;
+  position: relative;
+  z-index: 2;
 }
 
 .future-card p {
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.6;
-  margin: 0;
-  opacity: 1;
+  position: relative;
+  z-index: 2;
+}
+
+.future-bg-number {
+  position: absolute;
+  right: 10px;
+  bottom: -10px;
+  font-family: 'Space Mono', monospace;
+  font-size: 120px;
+  font-weight: 700;
+  color: rgba(40, 78, 89, 0.05);
+  line-height: 1;
+}
+
+.future-card--dark .future-bg-number {
+  color: rgba(255, 255, 255, 0.05);
 }
 
 .future-tagline {
-  font-size: 16px;
-  color: #F2B84B;
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 40px;
 }
 
-/* FAQ */
+/* FAQ (White) */
 .faq-section {
-  padding: 80px 24px;
+  padding: 100px 24px;
   background: #fff;
 }
 
 .faq-section h2 {
   text-align: center;
   font-family: 'Space Mono', monospace;
-  font-size: 32px;
+  font-size: 36px;
   color: #284E59;
   margin-bottom: 48px;
 }
@@ -350,32 +380,33 @@
   padding-bottom: 24px;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .steps-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+  .future-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
   .plugin-block {
     flex-direction: column;
     text-align: center;
   }
-  
   .plugin-block__img {
     width: 100%;
-    max-width: 450px;
   }
 }
 
 @media (max-width: 600px) {
-  .platform-hero h1 {
-    font-size: 32px;
-  }
-  
   .steps-grid {
     grid-template-columns: 1fr;
   }
-  
   .future-grid {
     grid-template-columns: 1fr;
+  }
+  .platform-intro h1 {
+    font-size: 36px;
   }
 }

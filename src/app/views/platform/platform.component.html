@@ -2,26 +2,19 @@
 
 <div class="platform-page">
 
-  <!-- HERO -->
-  <section class="platform-hero">
-    <div class="platform-hero__content">
-      <h1>RISE Platform</h1>
-      <p>The RISE Web App brings the power of satellite intelligence to your fingertips. Access near real-time data, visualize environmental changes, and generate instant reports, all in one intuitive platform designed to help you make smarter, faster decisions.</p>
-      <a href="https://rise.wasdi.net/" target="_blank" rel="noopener">
-        <button class="btn-primary-yellow">GET STARTED TODAY</button>
-      </a>
-    </div>
-  </section>
-
-  <!-- 4 STEPS -->
+  <!-- CONCISE STEPS SECTION -->
   <section class="steps-section">
     <div class="steps-inner">
-      <h2>Get Started with RISE in <span class="text-gold">4 Simple Steps:</span></h2>
+      <div class="platform-intro">
+        <h1>RISE Platform</h1>
+        <p>The RISE Web App brings the power of satellite intelligence to your fingertips. Access near real-time data, visualize environmental changes, and generate instant reports, all in one intuitive platform designed to help you make smarter, faster decisions.</p>
+      </div>
+
+      <h2 class="steps-heading">Get Started with RISE in <span class="text-gold">4 Simple Steps:</span></h2>
       
       <div class="steps-grid">
         <!-- STEP 1 -->
         <div class="step-card">
-          <div class="step-bg-number">1</div>
           <div class="step-content">
             <h3 class="step-title">Step 1</h3>
             <h4>Register & Invite Your Team</h4>
@@ -34,7 +27,6 @@
 
         <!-- STEP 2 -->
         <div class="step-card">
-          <div class="step-bg-number">2</div>
           <div class="step-content">
             <h3 class="step-title">Step 2</h3>
             <h4>Set Up Your Monitoring Area</h4>
@@ -47,7 +39,6 @@
 
         <!-- STEP 3 -->
         <div class="step-card">
-          <div class="step-bg-number">3</div>
           <div class="step-content">
             <h3 class="step-title">Step 3</h3>
             <h4>Receive Real-Time Updates</h4>
@@ -60,7 +51,6 @@
 
         <!-- STEP 4 -->
         <div class="step-card">
-          <div class="step-bg-number">4</div>
           <div class="step-content">
             <h3 class="step-title">Step 4</h3>
             <h4>Explore & Analyze</h4>
@@ -73,17 +63,24 @@
         </div>
       </div>
 
+      <div class="steps-cta">
+        <a href="https://rise.wasdi.net/" target="_blank" rel="noopener">
+          <button class="btn-primary-yellow">GET STARTED NOW</button>
+        </a>
+      </div>
     </div>
   </section>
 
-  <!-- STAY CONNECTED -->
+  <!-- STAY CONNECTED (Updated style) -->
   <section class="connected-section">
-    <h2>Stay Connected Anywhere</h2>
-    <p>Download and use the RISE Telegram Bot to connect the RISE platform to your messaging app. Get RISE Telegram updates for your area via Telegram so that Critical information is always within reach!</p>
-    <p class="connected-note"><strong>Critical information is always within reach!</strong></p>
+    <div class="connected-inner">
+      <h2>Stay Connected Anywhere</h2>
+      <p>Internet issues? Use the <strong>RISE Telegram Bot</strong> for updates in your chat. <br> No connectivity? Print maps for <strong>offline use</strong> in the field.</p>
+      <p class="connected-note">Critical information is always within reach!</p>
+    </div>
   </section>
 
-  <!-- PLUGINS DETAIL -->
+  <!-- PLUGINS DETAIL (Clean white style) -->
   <section class="plugins-section">
     <div class="plugins-header">
       <h2>Discover RISE Plugins in Details</h2>
@@ -170,32 +167,47 @@
       <img src="/assets/rise-assets/RISE-platform 1.png" alt="Wildfires plugin" class="plugin-block__img" />
     </div>
 
-    <button class="btn-primary-green" (click)="navigateTo('sign-up')">SIGN UP</button>
+    <div class="plugins-cta">
+      <button class="btn-primary-green" (click)="navigateTo('sign-up')">SIGN UP</button>
+    </div>
   </section>
 
-  <!-- FUTURE READY -->
+  <!-- FUTURE READY (Gold style) -->
   <section class="future-section">
-    <h2>Future-ready design</h2>
-    <p>RISE is built to scale with you. Here is what it provides with each design profile that allows you to easily tap to directly and smoothly.</p>
-    <div class="future-grid">
-      <div class="future-card">
-        <h4>Unlimited Users</h4>
-        <p>Invite unlimited teammates. No per-user pricing, no gated features — every team member gets full access to platform insights.</p>
+    <div class="future-inner">
+      <h2>Future-ready design</h2>
+      <p class="future-sub1">RISE is built to scale with your needs and evolve with technology, ensuring you're always equipped for what's next.</p>
+      <p class="future-sub2">We continuously invest in innovation, expanding features, and smarter tools, always moving ahead with you. With a future-proof design, scalable infrastructure, and cross-device access, the platform adapts seamlessly to your mission today and evolves with the challenges of tomorrow.</p>
+      
+      <div class="future-grid">
+        <!-- Card 1 (Dark) -->
+        <div class="future-card future-card--dark">
+          <div class="future-bg-number">1</div>
+          <h4>Unlimited Users</h4>
+          <p>Invite your entire team - no extra costs or user limits - so everyone can access critical insights.</p>
+        </div>
+        <!-- Card 2 (White) -->
+        <div class="future-card">
+          <div class="future-bg-number">2</div>
+          <h4>Scalable Cloud Infrastructure</h4>
+          <p>Expand your monitoring effortlessly as your organization grows, with no hardware constraints.</p>
+        </div>
+        <!-- Card 3 (White) -->
+        <div class="future-card">
+          <div class="future-bg-number">3</div>
+          <h4>Always Up-to-Date</h4>
+          <p>Automatic updates and new features keep RISE at the forefront of geospatial intelligence.</p>
+        </div>
+        <!-- Card 4 (White) -->
+        <div class="future-card">
+          <div class="future-bg-number">4</div>
+          <h4>Cross-Device Access</h4>
+          <p>Use RISE on desktop or tablet for real-time monitoring and analysis, wherever you are.</p>
+        </div>
       </div>
-      <div class="future-card">
-        <h4>Scalable Cloud Infrastructure</h4>
-        <p>Powered by WASDI's cloud infrastructure — built to handle massive EO datasets without performance degradation.</p>
-      </div>
-      <div class="future-card">
-        <h4>Always Up-To-Date</h4>
-        <p>RISE continuously updates its algorithms and satellite data sources. New plugins and features are pushed automatically.</p>
-      </div>
-      <div class="future-card">
-        <h4>Cross-Device Access</h4>
-        <p>Access RISE from any device — desktop, tablet, or mobile. Your data is always available whenever you need it.</p>
-      </div>
+      
+      <p class="future-tagline">Always expanding. Always portable. Always improving.</p>
     </div>
-    <p class="future-tagline"><em>Always expanding. Always reliable. Always improving.</em></p>
   </section>
 
   <!-- FAQ -->
