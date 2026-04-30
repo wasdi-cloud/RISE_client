@@ -13,15 +13,32 @@ import { PublicFooterComponent } from '../../components/public-footer/public-foo
 })
 export class ImpactStoriesComponent {
   m_bStoryOpen: boolean = false;
+  m_iCurrentImageIndex: number = 0;
+  m_asScreenshots: string[] = [
+    '/assets/rise-assets/modal_screenshot_1.jpg',
+    '/assets/rise-assets/modal_screenshot_2.jpg',
+    '/assets/rise-assets/modal_screenshot_3.jpg',
+    '/assets/rise-assets/modal_screenshot_4.jpg',
+    '/assets/rise-assets/modal_screenshot_5.jpg'
+  ];
 
   constructor(private m_oRouter: Router) {}
 
   openStory(): void {
     this.m_bStoryOpen = true;
+    this.m_iCurrentImageIndex = 0;
   }
 
   closeStory(): void {
     this.m_bStoryOpen = false;
+  }
+
+  nextImage(): void {
+    this.m_iCurrentImageIndex = (this.m_iCurrentImageIndex + 1) % this.m_asScreenshots.length;
+  }
+
+  prevImage(): void {
+    this.m_iCurrentImageIndex = (this.m_iCurrentImageIndex - 1 + this.m_asScreenshots.length) % this.m_asScreenshots.length;
   }
 
   navigateTo(path: string): void {
