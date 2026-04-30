@@ -36,7 +36,15 @@ export class PricingComponent {
   }
 
   sendCustomPlan(): void {
-    const link = `mailto:info@wasdi.cloud?subject=${encodeURIComponent('Custom Plan Request')}&body=${encodeURIComponent(this.m_sMessage)}`;
-    window.location.href = link;
+    if (!this.m_sEmail || !this.m_sMessage) {
+      alert('Please fill in both your email and your message.');
+      return;
+    }
+    const subject = encodeURIComponent('RISE Custom Plan Request');
+    const body = encodeURIComponent(
+      `User Email: ${this.m_sEmail}\n\n` +
+      `Message:\n${this.m_sMessage}`
+    );
+    window.location.href = `mailto:info@wasdi.cloud?subject=${subject}&body=${body}`;
   }
 }

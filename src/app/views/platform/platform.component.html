@@ -7,36 +7,73 @@
     <div class="platform-hero__content">
       <h1>RISE Platform</h1>
       <p>The RISE Web App brings the power of satellite intelligence to your fingertips. Access near real-time data, visualize environmental changes, and generate instant reports, all in one intuitive platform designed to help you make smarter, faster decisions.</p>
-      <button class="btn-primary-yellow" (click)="navigateTo('sign-up')">GET STARTED TODAY</button>
+      <a href="https://rise.wasdi.net/" target="_blank" rel="noopener">
+        <button class="btn-primary-yellow">GET STARTED TODAY</button>
+      </a>
     </div>
   </section>
 
   <!-- 4 STEPS -->
   <section class="steps-section">
-    <h2>Get Started with RISE in 4 Simple Steps:</h2>
-    <div class="steps-grid">
-      <div class="step-card">
-        <span class="step-label">Step 1</span>
-        <h3>Register Your Team</h3>
-        <p>Create your organization account. Use Admin, Analyst, Viewer roles to manage your team.</p>
+    <div class="steps-inner">
+      <h2>Get Started with RISE in <span class="text-gold">4 Simple Steps:</span></h2>
+      
+      <div class="steps-grid">
+        <!-- STEP 1 -->
+        <div class="step-card">
+          <div class="step-bg-number">1</div>
+          <div class="step-content">
+            <h3 class="step-title">Step 1</h3>
+            <h4>Register & Invite Your Team</h4>
+            <ul>
+              <li>Sign up and create your organization's account.</li>
+              <li>Invite colleagues and assign roles (e.g., Admin, Analyst, Viewer) to manage access.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="step-card">
+          <div class="step-bg-number">2</div>
+          <div class="step-content">
+            <h3 class="step-title">Step 2</h3>
+            <h4>Set Up Your Monitoring Area</h4>
+            <ul>
+              <li>Define the geographic area you want to monitor.</li>
+              <li>Select plugins (e.g., Floods, Droughts) to activate for your needs.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="step-card">
+          <div class="step-bg-number">3</div>
+          <div class="step-content">
+            <h3 class="step-title">Step 3</h3>
+            <h4>Receive Real-Time Updates</h4>
+            <ul>
+              <li>RISE processes satellite imagery and publishes updated maps automatically.</li>
+              <li>Get a quick overview of all areas and active events in your dashboard. Select plugins (e.g., Floods, Droughts) to activate for your needs.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="step-card">
+          <div class="step-bg-number">4</div>
+          <div class="step-content">
+            <h3 class="step-title">Step 4</h3>
+            <h4>Explore & Analyze</h4>
+            <ul>
+              <li>Click on an area to open the monitoring view.</li>
+              <li>Toggle maps on/off, browse historical data, and track changes over time.</li>
+              <li>Evaluate impacts with visual maps and chart-based analytics.</li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <div class="step-card">
-        <span class="step-label">Step 2</span>
-        <h3>Set Up Your Monitoring Area</h3>
-        <p>Define the geographic areas your organization needs to monitor. RISE will configure the right plugins and data sources for your needs.</p>
-      </div>
-      <div class="step-card">
-        <span class="step-label">Step 3</span>
-        <h3>Receive Near Real-Time Updates</h3>
-        <p>RISE processes satellite data automatically. Get a daily overview of all your plugin (e.g., floods, droughts) for each area.</p>
-      </div>
-      <div class="step-card">
-        <span class="step-label">Step 4</span>
-        <h3>Explore &amp; Analyse</h3>
-        <p>Click on an area to open an interactive map. Explore RISE data, export reports, analyse changes over time.</p>
-      </div>
+
     </div>
-    <button class="btn-primary-yellow" (click)="navigateTo('sign-up')">START FOR FREE</button>
   </section>
 
   <!-- STAY CONNECTED -->
