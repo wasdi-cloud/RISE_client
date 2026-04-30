@@ -5,48 +5,40 @@
   <!-- CONTACT FORM SECTION -->
   <section class="contact-form-section">
     <div class="contact-form-inner">
-      <h1>Contact Us to Get in Touch with the RISE Team</h1>
+      <h1>Get in Touch with the RISE Team</h1>
       <p class="contact-form-sub">Fill in the form and we'll get back to you as soon as possible.</p>
 
       <div class="contact-form-card">
         <div class="form-row">
           <div class="form-group">
-            <label>First Name</label>
             <input type="text" placeholder="First Name" [(ngModel)]="m_sFirstName" />
           </div>
           <div class="form-group">
-            <label>Last Name</label>
             <input type="text" placeholder="Last Name" [(ngModel)]="m_sLastName" />
           </div>
         </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" placeholder="Email" [(ngModel)]="m_sEmail" />
-          </div>
-          <div class="form-group">
-            <label>Company</label>
-            <input type="text" placeholder="Company" [(ngModel)]="m_sCompany" />
-          </div>
+        <div class="form-group form-group--full">
+          <input type="email" placeholder="Email" [(ngModel)]="m_sEmail" />
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label>Role</label>
-            <input type="text" placeholder="Role / Job title" [(ngModel)]="m_sRole" />
+            <input type="text" placeholder="Company" [(ngModel)]="m_sCompany" />
           </div>
           <div class="form-group">
-            <label>How did you hear about RISE?</label>
-            <select [(ngModel)]="m_sHowHeard">
-              <option value="" disabled selected>How did you hear about RISE?</option>
-              <option *ngFor="let opt of m_aoHowHeardOptions" [value]="opt">{{ opt }}</option>
-            </select>
+            <input type="text" placeholder="Role / Job title" [(ngModel)]="m_sRole" />
           </div>
         </div>
 
         <div class="form-group form-group--full">
-          <label>Subject</label>
+          <select [(ngModel)]="m_sHowHeard">
+            <option value="" disabled selected>How did you hear about RISE?</option>
+            <option *ngFor="let opt of m_aoHowHeardOptions" [value]="opt">{{ opt }}</option>
+          </select>
+        </div>
+
+        <div class="form-group form-group--full">
           <select [(ngModel)]="m_sSubject">
             <option value="" disabled selected>Select Subject</option>
             <option *ngFor="let opt of m_aoSubjectOptions" [value]="opt">{{ opt }}</option>
@@ -54,8 +46,7 @@
         </div>
 
         <div class="form-group form-group--full">
-          <label>Message</label>
-          <textarea placeholder="Message" [(ngModel)]="m_sMessage" rows="4"></textarea>
+          <textarea placeholder="Message" [(ngModel)]="m_sMessage" rows="5"></textarea>
         </div>
 
         <button class="btn-send" (click)="sendMessage()">SEND</button>
@@ -67,55 +58,40 @@
   <section class="contact-info-section">
     <div class="contact-info-inner">
       <h2>Contact Information</h2>
-      <div class="contact-info-grid">
-        <div class="contact-info-card">
-          <div class="info-icon">✉</div>
-          <p class="info-label">Email</p>
-          <a href="mailto:info&#64;wasdi.cloud">info&#64;wasdi.cloud</a>
-        </div>
-        
-        <div class="contact-info-card">
-          <div class="info-icon">📍</div>
-          <p class="info-label">Address</p>
-          <p>Rue de Volmerange 100,<br>Dudelange, Luxembourg</p>
-        </div>
-
-        <div class="contact-info-card">
-          <div class="info-icon-container">
-            <a href="https://www.wasdi.cloud" target="_blank" rel="noopener">
-              <img src="/assets/rise-assets/wasdi-logo.png" alt="WASDI Website" class="social-logo" />
-            </a>
+      
+      <div class="contact-info-list">
+        <!-- Email: No icon, only title and email -->
+        <div class="contact-info-item contact-info-item--email">
+          <div class="info-content">
+            <p class="info-label">Email</p>
+            <a href="mailto:info&#64;wasdi.cloud">info&#64;wasdi.cloud</a>
           </div>
-          <p class="info-label">Website</p>
         </div>
 
-        <div class="contact-info-card">
-          <div class="info-icon-container">
-            <a href="https://www.linkedin.com/company/wasdi" target="_blank" rel="noopener">
-              <img src="/assets/rise-assets/linkedin-icon.png" alt="LinkedIn" class="social-logo social-logo--linkedin" />
-            </a>
+        <!-- Website & LinkedIn -->
+        <div class="contact-info-socials">
+          <div class="contact-info-item contact-info-item--vertical">
+            <div class="info-icon-container">
+              <a href="https://www.wasdi.cloud" target="_blank" rel="noopener">
+                <img src="/assets/rise-assets/wasdi-logo.png" alt="WASDI Website" class="social-logo" />
+              </a>
+            </div>
+            <div class="info-content">
+              <p class="info-label">Website</p>
+            </div>
           </div>
-          <p class="info-label">LinkedIn</p>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- LOCATION MAP -->
-  <section class="location-section">
-    <div class="location-map-container">
-      <iframe 
-        width="100%" 
-        height="500" 
-        frameborder="0" 
-        style="border:0;" 
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2594.463242093557!2d6.0827773!3d49.4444444!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4795493030303031%3A0x3030303030303030!2s100%20Rue%20de%20Volmerange%2C%203593%20Dudelange%2C%20Luxembourg!5e0!3m2!1sen!2slu!4v1700000000000" 
-        allowfullscreen>
-      </iframe>
-      <div class="location-card">
-        <p class="location-label">We are here!</p>
-        <p class="location-name"><strong>WASDI Sarl</strong></p>
-        <p>Rue de Volmerange 100,<br>Dudelange, Luxembourg</p>
+          <div class="contact-info-item contact-info-item--vertical">
+            <div class="info-icon-container">
+              <a href="https://www.linkedin.com/company/wasdi" target="_blank" rel="noopener">
+                <img src="/assets/rise-assets/linkedin-icon.png" alt="LinkedIn" class="social-logo social-logo--linkedin" />
+              </a>
+            </div>
+            <div class="info-content">
+              <p class="info-label">LinkedIn</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>

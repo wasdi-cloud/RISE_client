@@ -30,9 +30,15 @@ export class ContactComponent {
   ];
 
   sendMessage(): void {
+    if (!this.m_sFirstName || !this.m_sLastName || !this.m_sEmail) {
+      alert('Please fill in all mandatory fields (First Name, Last Name, and Email).');
+      return;
+    }
+
     const subject = encodeURIComponent(this.m_sSubject || 'Contact from RISE website');
     const body = encodeURIComponent(
       `Name: ${this.m_sFirstName} ${this.m_sLastName}\n` +
+      `Email: ${this.m_sEmail}\n` +
       `Company: ${this.m_sCompany}\n` +
       `Role: ${this.m_sRole}\n` +
       `How heard: ${this.m_sHowHeard}\n\n` +

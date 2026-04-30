@@ -9,8 +9,8 @@
 .about-hero {
   background: url('/assets/rise-assets/about-hero-v3.png') right center / 140% no-repeat;
   position: relative;
-  padding: 100px 24px 80px;
-  min-height: 420px;
+  padding: 100px 24px 100px;
+  min-height: 440px;
   display: flex;
   align-items: center;
   justify-content: center;

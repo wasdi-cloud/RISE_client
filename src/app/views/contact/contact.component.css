@@ -7,112 +7,105 @@
 
 /* FORM SECTION */
 .contact-form-section {
-  background: #284E59;
+  background: #284E59; /* Section background matches template */
   padding: 80px 24px;
   color: #fff;
   text-align: center;
 }
 
 .contact-form-inner {
-  max-width: 800px;
+  max-width: 700px;
   margin: 0 auto;
 }
 
 .contact-form-inner h1 {
   font-family: 'Space Mono', monospace;
-  font-size: 32px;
+  font-size: 38px;
   font-weight: 700;
-  margin: 0 0 16px;
-  line-height: 1.3;
+  margin: 0 0 40px;
+  line-height: 1.2;
+  letter-spacing: 1px;
 }
 
 .contact-form-sub {
-  font-size: 15px;
-  color: rgba(255,255,255,0.7);
-  margin: 0 0 48px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 32px;
+  text-transform: capitalize;
 }
 
 .contact-form-card {
-  background: #FAFAFA;
-  border-radius: 12px;
-  padding: 40px;
-  color: #284E59;
   text-align: left;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.15);
 }
 
 .form-row {
   display: flex;
-  gap: 24px;
-  margin-bottom: 24px;
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
 .form-group {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
 }
 
 .form-group--full {
   width: 100%;
-  margin-bottom: 24px;
-}
-
-label {
-  font-size: 13px;
-  font-weight: 700;
-  color: #284E59;
-  opacity: 0.8;
+  margin-bottom: 16px;
 }
 
 input,
 select,
 textarea {
-  background: #fff;
-  border: 1px solid rgba(40, 78, 89, 0.2);
-  border-radius: 8px;
+  background: #FAFAFA;
+  border: none;
+  border-radius: 6px;
   padding: 14px 18px;
   color: #284E59;
   font-family: inherit;
   font-size: 14px;
   outline: none;
-  transition: all 0.2s;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 input::placeholder,
 textarea::placeholder {
-  color: rgba(40, 78, 89, 0.4);
+  color: #284E59;
+  opacity: 0.6;
 }
 
-input:focus,
-select:focus,
-textarea:focus {
-  border-color: #EFB840;
-  box-shadow: 0 0 0 3px rgba(239, 184, 64, 0.1);
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23284E59' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 18px center;
+  padding-right: 40px;
+}
+
+textarea {
+  resize: vertical;
 }
 
 .btn-send {
   display: block;
   width: 100%;
-  background: #EFB840;
-  color: #FAFAFA;
+  background: #F2B84B; /* Matches the template orange/yellow */
+  color: #FFF;
   border: none;
-  border-radius: 8px;
-  padding: 16px;
+  border-radius: 6px;
+  padding: 14px;
   font-family: 'Space Mono', monospace;
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 2px;
   cursor: pointer;
   text-transform: uppercase;
-  transition: transform 0.2s, background 0.2s;
-  margin-top: 12px;
+  margin-top: 24px;
+  transition: opacity 0.2s;
 }
 
 .btn-send:hover {
-  background: #d9a826;
-  transform: translateY(-2px);
+  opacity: 0.9;
 }
 
 /* INFO SECTION */
@@ -123,7 +116,7 @@ textarea:focus {
 }
 
 .contact-info-inner {
-  max-width: 1000px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
@@ -135,17 +128,38 @@ textarea:focus {
   margin: 0 0 48px;
 }
 
-.contact-info-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 32px;
-}
-
-.contact-info-card {
+.contact-info-list {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 48px;
+  text-align: center;
+}
+
+.contact-info-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   gap: 12px;
+  text-align: center;
+}
+
+.contact-info-item--email {
+  width: 100%;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgba(40, 78, 89, 0.1);
+}
+
+.contact-info-item--vertical {
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contact-info-socials {
+  display: flex;
+  gap: 80px;
+  justify-content: center;
 }
 
 .info-icon {
@@ -172,7 +186,6 @@ textarea:focus {
 .social-logo {
   height: 48px;
   width: auto;
-  object-fit: contain;
   transition: transform 0.2s;
 }
 
@@ -180,117 +193,33 @@ textarea:focus {
   height: 40px;
 }
 
-.social-logo:hover {
-  transform: scale(1.1);
-}
-
 .info-label {
-  font-size: 12px;
-  color: #EFB840;
+  font-size: 13px;
+  color: #F2B84B;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
-  margin: 8px 0 4px;
 }
 
-.contact-info-card p, 
-.contact-info-card a {
-  font-size: 14px;
+.info-content a {
+  font-size: 18px;
   color: #284E59;
   text-decoration: none;
-  line-height: 1.6;
-}
-
-.contact-info-card a:hover {
-  text-decoration: underline;
-}
-
-@media (max-width: 992px) {
-  .contact-info-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  font-weight: 600;
 }
 
 @media (max-width: 600px) {
+  .contact-form-inner h1 {
+    font-size: 28px;
+  }
+  
   .form-row {
     flex-direction: column;
     gap: 16px;
   }
   
-  .contact-form-card {
-    padding: 24px;
-  }
-  
-  .contact-info-grid {
-    grid-template-columns: 1fr;
+  .contact-info-socials {
+    flex-direction: column;
     gap: 40px;
-  }
-}
-
-/* LOCATION MAP */
-.location-section {
-  background: #F2F5F7;
-  padding: 0;
-  text-align: center;
-}
-
-.location-map-container {
-  position: relative;
-  width: 100%;
-  height: 500px;
-  background: #ddd;
-  overflow: hidden;
-}
-
-.location-map-container iframe {
-  display: block;
-}
-
-.location-card {
-  position: absolute;
-  bottom: 40px; /* Positioned at the bottom */
-  left: 40px;
-  background: #fff;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-  text-align: left;
-  z-index: 10;
-  max-width: 280px;
-}
-
-.location-label {
-  font-size: 12px;
-  color: #EFB840;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 8px;
-}
-
-.location-name {
-  color: #284E59;
-  font-size: 18px;
-  margin-bottom: 8px;
-}
-
-.location-card p {
-  font-size: 14px;
-  color: #4a6672;
-  margin: 0;
-  line-height: 1.6;
-}
-
-@media (max-width: 768px) {
-  .location-card {
-    position: relative;
-    bottom: 0;
-    left: 0;
-    margin: 20px auto;
-    max-width: 90%;
-  }
-  
-  .location-map-container {
-    height: auto;
   }
 }
