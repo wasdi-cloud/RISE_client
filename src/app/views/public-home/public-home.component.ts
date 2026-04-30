@@ -38,7 +38,7 @@ export class PublicHomeComponent {
         this.m_sSelectedPluginImage = basePath + 'plugin_impacts.png';
         break;
       case 'Rain Observations':
-        this.m_sSelectedPluginImage = basePath + 'plugin_rain.png';
+        this.m_sSelectedPluginImage = basePath + 'plugin_rain.jpg';
         break;
       case 'Land Surface Temperature':
         this.m_sSelectedPluginImage = basePath + 'plugin_temperature.png';

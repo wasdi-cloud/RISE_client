@@ -515,6 +515,7 @@ details[open] summary.feature-card-title::after {
   position: relative;
   max-height: 100%;
   object-fit: cover;
+  border-radius: 10px;
 }
 
 .plugins-list {
@@ -575,6 +576,7 @@ details[open] summary.feature-card-title::after {
   align-self: stretch;
   position: relative;
   font-weight: 700;
+  color: #284e59;
 }
 
 .case-study-section {

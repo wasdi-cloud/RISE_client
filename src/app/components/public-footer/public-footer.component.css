@@ -1,6 +1,6 @@
 .public-footer {
-  background-color: #1c3d4a;
-  color: rgba(255, 255, 255, 0.8);
+  background-color: #ffffff;
+  color: #284e59;
   font-family: 'Satoshi Variable', sans-serif;
   font-size: 14px;
 }
@@ -8,8 +8,9 @@
 .public-footer__inner {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 60px 24px 40px;
+  padding: 60px 12px 40px;
   display: flex;
+  justify-content: space-between;
   gap: 48px;
   align-items: flex-start;
 }
@@ -17,19 +18,22 @@
 .public-footer__brand {
   flex-shrink: 0;
   max-width: 220px;
+  text-align: left;
 }
 
 .public-footer__logo {
-  height: 36px;
+  height: 28px;
   margin-bottom: 16px;
   display: block;
+  object-fit: contain;
 }
 
 .public-footer__brand p {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.55);
+  color: #284e59;
   line-height: 1.5;
   margin: 0;
+  text-align: left;
 }
 
 /* COLUMNS */
@@ -38,6 +42,11 @@
   gap: 48px;
   flex: 1;
   justify-content: flex-end;
+  align-items: stretch;
+}
+
+.public-footer__col {
+  text-align: left;
 }
 
 .public-footer__col h4 {
@@ -46,7 +55,7 @@
   font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.45);
+  color: #284e59;
   margin: 0 0 16px;
 }
 
@@ -61,11 +70,11 @@
 
 .public-footer__col ul li {
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.75);
+  color: #284e59;
 }
 
 .public-footer__col ul li a {
-  color: rgba(255, 255, 255, 0.75);
+  color: #284e59;
   text-decoration: none;
   transition: color 0.15s;
 }
@@ -74,16 +83,23 @@
   color: #efba35;
 }
 
+/* VERTICAL DIVIDERS */
+.public-footer__divider {
+  width: 2px;
+  background-color: #424b5a;
+  align-self: stretch;
+}
+
 /* BOTTOM */
 .public-footer__bottom {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(40, 78, 89, 0.15);
   padding: 16px 24px;
   text-align: center;
 }
 
 .public-footer__bottom p {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.4);
+  color: #284e59;
   margin: 0;
 }
 
@@ -97,5 +113,9 @@
     flex-wrap: wrap;
     gap: 32px;
     justify-content: flex-start;
+  }
+
+  .public-footer__divider {
+    display: none;
   }
 }
