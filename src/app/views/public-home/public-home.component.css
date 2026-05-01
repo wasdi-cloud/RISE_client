@@ -163,7 +163,7 @@ div#hero-img {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 100px;
+  padding: 100px 100px 40px 100px;
   background-color: #284E59;
   color: #FAFAFA;
 }
@@ -236,7 +236,7 @@ div#hero-img {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  gap: 10px;
+  gap: 20px;
   text-align: center;
 }
 
@@ -267,6 +267,7 @@ div#hero-img {
   align-self: stretch;
   position: relative;
   font-size: 16px;
+  text-align: justify;
 }
 
 b.landing-page-paragraph {
@@ -425,6 +426,12 @@ details.feature-card-openclose {
   border: 1px solid #efb840;
   cursor: pointer;
   box-sizing: border-box;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  overflow: hidden;
+}
+
+details.feature-card-openclose[open] {
+  background-color: #ffffff;
 }
 
 summary.feature-card-title {
@@ -448,10 +455,13 @@ summary.feature-card-title::after {
   font-size: 24px;
   color: #284e59;
   font-weight: 300;
+  transition: transform 0.3s ease;
+  display: inline-block;
 }
 
 details[open] summary.feature-card-title::after {
-  content: "−";
+  transform: rotate(45deg);
+  color: #efb840;
 }
 
 .title4 {
@@ -472,6 +482,21 @@ details[open] summary.feature-card-title::after {
   font-family: 'Satoshi';
   text-align: left;
   color: #284e59;
+  animation: reveal-content 0.4s ease-out forwards;
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+@keyframes reveal-content {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .plugins-container {
@@ -494,6 +519,11 @@ details[open] summary.feature-card-title::after {
   position: relative;
   display: inline-block;
   flex-shrink: 0;
+}
+
+.paragraph8 {
+  margin-top: 20px;
+  display: block;
 }
 
 .specialized {
@@ -585,39 +615,55 @@ details[open] summary.feature-card-title::after {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 60px 100px;
-  gap: 24px;
+  padding: 75px 100px 120px 100px;
+  gap: 40px;
   color: #FFFFFF;
 }
 
-.results-container {
+.case-study-header-row {
   align-self: stretch;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  gap: 16px;
-  font-size: 28px;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  gap: 40px;
 }
 
-.results-container .paragraph {
+.case-study-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: 12px;
+}
+
+.case-study-text .header {
+  font-size: 28px;
+  color: #FFFFFF;
+}
+
+.case-study-text .paragraph {
+  font-size: 16px;
   color: #FFFFFF;
 }
 
 .results-highlights {
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
   width: 100%;
   max-width: 1200px;
-  margin-top: 10px;
-  gap: 24px;
+  gap: 60px;
+  margin: 0;
+  padding: 0;
 }
 
 .result-highlight-item {
   position: relative;
-  flex: 1;
-  text-align: center;
-  padding: 10px;
+  text-align: left;
+  margin: 0;
+  padding: 0;
 }
 
 .result-highlight-content {
@@ -628,11 +674,12 @@ details[open] summary.feature-card-title::after {
 .result-highlight-value {
   display: block;
   font-family: 'Space Mono', monospace;
-  font-size: 26px;
+  font-size: 20px;
   font-weight: 700;
   color: #FFFFFF;
-  margin-bottom: 12px;
 }
+
+.results-action {}
 
 .result-highlight-text {
   font-family: 'Satoshi', sans-serif;
@@ -645,6 +692,53 @@ details[open] summary.feature-card-title::after {
 
 .results-action {
   margin-top: 32px;
+}
+
+/* Scroll Reveal Animations */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered delay for cards */
+.card-large.reveal-on-scroll:nth-child(1) {
+  transition-delay: 0.1s;
+}
+
+.card-large.reveal-on-scroll:nth-child(2) {
+  transition-delay: 0.4s;
+}
+
+.card-large.reveal-on-scroll:nth-child(3) {
+  transition-delay: 0.7s;
+}
+
+/* Typing Cursor */
+.typing-cursor {
+  display: inline-block;
+  margin-left: 4px;
+  color: #EFB840;
+  font-weight: 300;
+  animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
 }
 
 .footer {
@@ -695,6 +789,23 @@ details[open] summary.feature-card-title::after {
   border-radius: 5px;
   background-color: #284e59;
   z-index: 0;
+}
+
+.landing-page-buttonsecondary {
+  position: relative;
+  border-radius: 5px;
+  border: 1px solid #284e59;
+  box-sizing: border-box;
+  width: 133px;
+  height: 44px;
+}
+
+.features-section {
+  align-self: stretch;
+  padding: 40px 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* The original .logo-placeholder already uses Flexbox and should

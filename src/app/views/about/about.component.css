@@ -1,4 +1,6 @@
-:host { display: block; }
+:host {
+  display: block;
+}
 
 .about-page {
   padding-top: 60px;
@@ -7,10 +9,10 @@
 
 /* HERO */
 .about-hero {
-  background: url('/assets/rise-assets/about-hero-v3.png') right center / 140% no-repeat;
+  background: url('/assets/rise-assets/about-hero-v3.png') right center / 135% no-repeat;
   position: relative;
-  padding: 100px 24px 100px;
-  min-height: 440px;
+  padding: 140px 24px 140px;
+  min-height: 540px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -45,12 +47,13 @@
 
 .location-card {
   position: absolute;
-  bottom: 55px; /* Moved 15px higher as requested */
+  bottom: 55px;
+  /* Moved 15px higher as requested */
   left: 40px;
   background: #fff;
   border-radius: 12px;
   padding: 24px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   text-align: left;
   z-index: 10;
   max-width: 280px;
@@ -81,7 +84,7 @@
 .about-hero__content {
   position: relative;
   z-index: 1;
-  max-width: 800px;
+  max-width: 1100px;
   color: #fff;
 }
 
@@ -96,7 +99,8 @@
   font-size: 16px;
   line-height: 1.75;
   margin: 0 0 28px;
-  color: rgba(255,255,255,0.85);
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 700;
 }
 
 /* MISSION */
@@ -133,7 +137,8 @@
 }
 
 .wasdi-logo-container {
-  margin: 12px 0; /* Tightened margin as requested */
+  margin: 12px 0;
+  /* Tightened margin as requested */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -168,7 +173,7 @@
 .testimonials-sub {
   font-size: 11px;
   letter-spacing: 2px;
-  color: rgba(255,255,255,0.6);
+  color: rgba(255, 255, 255, 0.6);
   margin: 0 0 48px;
   text-transform: uppercase;
 }
@@ -176,11 +181,12 @@
 .testimonial-card {
   max-width: 720px;
   margin: 0 auto;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 16px;
   padding: 48px;
-  text-align: center; /* Centralized text as requested */
+  text-align: center;
+  /* Centralized text as requested */
 }
 
 blockquote {

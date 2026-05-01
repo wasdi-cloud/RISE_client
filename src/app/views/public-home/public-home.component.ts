@@ -1,4 +1,4 @@
-import {Component, HostListener} from '@angular/core';
+import {Component, HostListener, AfterViewInit} from '@angular/core';
 import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
 import { Router } from '@angular/router';
 import {TranslateModule} from "@ngx-translate/core";
@@ -12,13 +12,79 @@ import { PublicFooterComponent } from '../../components/public-footer/public-foo
   templateUrl: './public-home.component.html',
   styleUrl: './public-home.component.css',
 })
-export class PublicHomeComponent {
+export class PublicHomeComponent implements AfterViewInit {
   constructor(private m_oRouter: Router) {}
+
+  ngAfterViewInit(): void {
+    const oObserverOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.15
+    };
+
+    const oObserver = new IntersectionObserver((oEntries) => {
+      oEntries.forEach(oEntry => {
+        if (oEntry.isIntersecting) {
+          oEntry.target.classList.add('is-visible');
+        }
+      });
+    }, oObserverOptions);
+
+    const aRevealElements = document.querySelectorAll('.reveal-on-scroll');
+    aRevealElements.forEach(oEl => oObserver.observe(oEl));
+
+    this.startTypingEffect();
+  }
+
+  private startTypingEffect(): void {
+    let i = 0;
+    const nSpeed = 40; // typing speed in ms
+
+    const type1 = () => {
+      if (i < this.m_sFullPart1.length) {
+        this.m_sTypedPart1 += this.m_sFullPart1.charAt(i);
+        i++;
+        setTimeout(type1, nSpeed);
+      } else {
+        i = 0;
+        type2();
+      }
+    };
+
+    const type2 = () => {
+      if (i < this.m_sFullPart2.length) {
+        this.m_sTypedPart2 += this.m_sFullPart2.charAt(i);
+        i++;
+        setTimeout(type2, nSpeed);
+      } else {
+        i = 0;
+        type3();
+      }
+    };
+
+    const type3 = () => {
+      if (i < this.m_sFullPart3.length) {
+        this.m_sTypedPart3 += this.m_sFullPart3.charAt(i);
+        i++;
+        setTimeout(type3, nSpeed);
+      }
+    };
+
+    type1();
+  }
   m_bIsScrolled: boolean = false;
   m_sEmail:string="info@wasdi.cloud"
 
+  // Typing effect variables
+  m_sTypedPart1: string = '';
+  m_sTypedPart2: string = '';
+  m_sTypedPart3: string = '';
+  private m_sFullPart1: string = 'Empowering action with ';
+  private m_sFullPart2: string = 'near real-time';
+  private m_sFullPart3: string = ' insights.';
+
   // Plugin interactive laptop state
-  m_sSelectedPluginImage: string = 'assets/rise-assets/RISE_Platform_preview 1.png';
+  m_sSelectedPluginImage: string = 'assets/rise-assets/plugin_floods.png';
   m_sSelectedPlugin: string = 'Floods';
 
   selectPluginImage(pluginName: string) {
@@ -32,13 +98,13 @@ export class PublicHomeComponent {
         this.m_sSelectedPluginImage = basePath + 'plugin_droughts.png';
         break;
       case 'Buildings':
-        this.m_sSelectedPluginImage = basePath + 'plugin_buildings.jpg';
+        this.m_sSelectedPluginImage = basePath + 'plugin_buildings.png';
         break;
       case 'Impacts':
         this.m_sSelectedPluginImage = basePath + 'plugin_impacts.png';
         break;
       case 'Rain Observations':
-        this.m_sSelectedPluginImage = basePath + 'plugin_rain.jpg';
+        this.m_sSelectedPluginImage = basePath + 'plugin_rain.png';
         break;
       case 'Land Surface Temperature':
         this.m_sSelectedPluginImage = basePath + 'plugin_temperature.png';

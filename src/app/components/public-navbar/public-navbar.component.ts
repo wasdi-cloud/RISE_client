@@ -1,4 +1,5 @@
 import { Component, HostListener } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
@@ -12,6 +13,8 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 export class PublicNavbarComponent {
   m_bScrolled: boolean = false;
   m_bMenuOpen: boolean = false;
+  
+  constructor(private m_oRouter: Router) {}
 
   @HostListener('window:scroll', [])
   onScroll(): void {
@@ -24,5 +27,12 @@ export class PublicNavbarComponent {
 
   closeMenu(): void {
     this.m_bMenuOpen = false;
+  }
+
+  navigateToHome(): void {
+    this.closeMenu();
+    this.m_oRouter.navigate(['/']).then(() => {
+      window.scrollTo(0, 0);
+    });
   }
 }
