@@ -1,3 +1,8 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
 .public-footer {
   background-color: #ffffff;
   color: #284e59;
@@ -6,9 +11,9 @@
 }
 
 .public-footer__inner {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 60px 12px 40px;
+  padding: 60px 24px 40px;
   display: flex;
   justify-content: space-between;
   gap: 48px;
@@ -17,7 +22,7 @@
 
 .public-footer__brand {
   flex-shrink: 0;
-  max-width: 220px;
+  max-width: 300px;
   text-align: left;
 }
 

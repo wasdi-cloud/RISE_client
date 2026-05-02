@@ -762,36 +762,6 @@ details[open] summary.feature-card-title::after {
   }
 }
 
-.footer {
-  align-self: stretch;
-  background-color: #fafafa;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 30px 100px;
-  text-align: center;
-  font-size: 14px;
-  color: #284e59;
-  font-family: 'Satoshi';
-}
-
-.landing-page-footer {
-  align-self: stretch;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 30px;
-}
-
-.footer-column {
-  width: 350px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 30px;
-}
 
 .logo {
   /* Existing dimensions */
