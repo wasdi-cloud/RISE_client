@@ -86,8 +86,8 @@
 </div>
 
 <!-- STORY DETAIL OVERLAY -->
-<div class="story-overlay" *ngIf="m_bStoryOpen">
-  <div class="story-modal">
+<div class="story-overlay" *ngIf="m_bStoryOpen" (click)="closeStory()">
+  <div class="story-modal" (click)="$event.stopPropagation()">
     <button class="story-modal__close" (click)="closeStory()">✕</button>
 
     <!-- Modal Header -->

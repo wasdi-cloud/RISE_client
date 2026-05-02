@@ -335,11 +335,24 @@
   flex-direction: column;
   align-items: center;
 }
-.highlight-card__icon img {
-  width: 54px;
-  height: 54px;
-  filter: brightness(0) saturate(100%) invert(80%) sepia(35%) saturate(1034%) hue-rotate(345deg) brightness(98%) contrast(92%); /* Gold #EFB840 */
+.highlight-card__icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 24px;
+  padding: 8px; /* Added padding to normalize visual size */
+}
+.highlight-card__icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: brightness(0) saturate(100%) invert(80%) sepia(35%) saturate(1034%) hue-rotate(345deg) brightness(98%) contrast(92%); /* Gold #EFB840 */
+  transition: transform 0.3s ease;
+}
+.highlight-card:hover .highlight-card__icon img {
+  transform: scale(1.15);
 }
 .highlight-card h4 {
   font-family: 'Space Mono', monospace;
