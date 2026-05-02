@@ -84,7 +84,7 @@
   <section class="plugins-section">
     <div class="plugins-header">
       <h2>Discover RISE Plugins in Details</h2>
-      <p>Customize RISE with specialized plugins tailored to your needs:</p>
+      <p>Customize RISE with specialized plugins tailored to your needs: <span class="text-yellow"><strong>Have a glimpse on what RISE can do</strong></span></p>
     </div>
 
     <div class="plugin-block">
@@ -98,7 +98,15 @@
           <li><strong>Flood-prone areas:</strong> Identify high-risk areas showing flood frequency and vulnerability.</li>
         </ul>
       </div>
-      <img src="/assets/rise-assets/plugin_floods.png" alt="Flood plugin" class="plugin-block__img" />
+      <div class="plugin-block__media">
+        <video class="plugin-block__img" autoplay loop muted playsinline>
+          <source src="/assets/rise-assets/plugins/Floods.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay" (click)="openVideo('/assets/rise-assets/plugins/Floods.mp4')">
+          <span class="play-icon">▶</span>
+          <span>WATCH FULL SCREEN</span>
+        </div>
+      </div>
     </div>
 
     <div class="plugin-block">
@@ -109,7 +117,15 @@
           <li>Drought Risk Monitoring</li>
         </ul>
       </div>
-      <img src="/assets/rise-assets/plugin_droughts.png" alt="Droughts plugin" class="plugin-block__img" />
+      <div class="plugin-block__media">
+        <video class="plugin-block__img" autoplay loop muted playsinline>
+          <source src="/assets/rise-assets/plugins/droughts.mkv" type="video/x-matroska">
+        </video>
+        <div class="video-overlay" (click)="openVideo('/assets/rise-assets/plugins/droughts.mkv')">
+          <span class="play-icon">▶</span>
+          <span>WATCH FULL SCREEN</span>
+        </div>
+      </div>
     </div>
 
     <div class="plugin-block">
@@ -119,7 +135,15 @@
           <li>Near real-time monitoring of your area and cities.</li>
         </ul>
       </div>
-      <img src="/assets/rise-assets/plugin_buildings.jpg" alt="Buildings plugin" class="plugin-block__img" />
+      <div class="plugin-block__media">
+        <video class="plugin-block__img" autoplay loop muted playsinline>
+          <source src="/assets/rise-assets/plugins/Buildings.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay" (click)="openVideo('/assets/rise-assets/plugins/Buildings.mp4')">
+          <span class="play-icon">▶</span>
+          <span>WATCH FULL SCREEN</span>
+        </div>
+      </div>
     </div>
 
     <div class="plugin-block">
@@ -133,7 +157,15 @@
           <li><strong>Crops:</strong> Review agriculture status vulnerable to or affected by disasters, supporting food security assessments.</li>
         </ul>
       </div>
-      <img src="/assets/rise-assets/plugin_impacts.png" alt="Impacts plugin" class="plugin-block__img" />
+      <div class="plugin-block__media">
+        <video class="plugin-block__img" autoplay loop muted playsinline>
+          <source src="/assets/rise-assets/plugins/impacts.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay" (click)="openVideo('/assets/rise-assets/plugins/impacts.mp4')">
+          <span class="play-icon">▶</span>
+          <span>WATCH FULL SCREEN</span>
+        </div>
+      </div>
     </div>
 
     <div class="plugin-block">
@@ -144,32 +176,27 @@
           <li>Up to 91 and 24-hour Cumulative Rainfall Observation.</li>
         </ul>
       </div>
-      <img src="/assets/rise-assets/plugin_rain_v2.png" alt="Rain plugin" class="plugin-block__img" />
+      <div class="plugin-block__media">
+        <video class="plugin-block__img" autoplay loop muted playsinline>
+          <source src="/assets/rise-assets/plugins/Rain.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay" (click)="openVideo('/assets/rise-assets/plugins/Rain.mp4')">
+          <span class="play-icon">▶</span>
+          <span>WATCH FULL SCREEN</span>
+        </div>
+      </div>
     </div>
 
-    <div class="plugin-block">
+    <div class="plugin-block plugin-block--centered">
       <div class="plugin-block__content">
-        <h3 class="plugin-block__title plugin-block__title--gold">Urban Mapping</h3>
-        <p>Understand the urban landscape:</p>
-        <ul>
-          <li>Near real-time mapping of your area and cities.</li>
-          <li>Detect and map urban zones to assist urban planning, disaster preparedness, and resilience efforts.</li>
-        </ul>
+        <h3 class="plugin-block__title plugin-block__title--gold">AND MUCH MORE...</h3>
+        <p>RISE is constantly expanding with new intelligence plugins and features tailored to global humanitarian and environmental needs.</p>
+        <div class="plugin-block__action">
+          <button class="btn-primary-yellow" (click)="navigateTo('sign-up')">TEST A PLUGIN NOW</button>
+        </div>
       </div>
-      <img src="/assets/rise-assets/plugin_extra.jpg" alt="Urban Mapping plugin" class="plugin-block__img" />
     </div>
 
-    <div class="plugin-block">
-      <div class="plugin-block__content">
-        <h3 class="plugin-block__title plugin-block__title--gold">Wildfires</h3>
-        <ul>
-          <li>Early detection of wildfires that may be real (Coming Soon!).</li>
-          <li>Mapping of active wildfires.</li>
-          <li>Burned area mapping.</li>
-        </ul>
-      </div>
-      <img src="/assets/rise-assets/plugin_wildfires.png" alt="Wildfires plugin" class="plugin-block__img" />
-    </div>
 
   </section>
 
@@ -229,3 +256,15 @@
 </div>
 
 <public-footer></public-footer>
+<!-- VIDEO MODAL -->
+<div class="video-modal-overlay" *ngIf="m_bVideoOpen" (click)="closeVideo()">
+  <div class="video-modal-content" (click)="$event.stopPropagation()">
+    <button class="video-modal-close" (click)="closeVideo()">✕</button>
+    <div class="video-container">
+      <video *ngIf="m_sCurrentVideoUrl" controls autoplay muted loop class="video-player">
+        <source [src]="m_sCurrentVideoUrl" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+</div>

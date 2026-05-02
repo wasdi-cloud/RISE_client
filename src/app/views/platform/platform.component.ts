@@ -49,7 +49,20 @@ export class PlatformComponent implements AfterViewInit {
     },
   ];
 
+  m_bVideoOpen = false;
+  m_sCurrentVideoUrl = '';
+
   constructor(private m_oRouter: Router, private m_oElementRef: ElementRef) {}
+
+  openVideo(videoUrl: string): void {
+    this.m_sCurrentVideoUrl = videoUrl;
+    this.m_bVideoOpen = true;
+  }
+
+  closeVideo(): void {
+    this.m_bVideoOpen = false;
+    this.m_sCurrentVideoUrl = '';
+  }
 
   ngAfterViewInit(): void {
     // Observer for Stay Connected section
