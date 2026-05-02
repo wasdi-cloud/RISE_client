@@ -6,7 +6,12 @@
   <section class="impact-hero">
     <div class="impact-hero__content">
       <h1>Impact Stories</h1>
-      <p class="impact-hero__subtitle">RISE turns satellite data into <span class="text-yellow">real-time insights</span>, helping organizations <span class="text-yellow">respond faster</span>, <span class="text-yellow">reduce costs</span>, and make data‑driven decisions.</p>
+      <p class="impact-hero__subtitle">
+        RISE turns satellite data into <span class="text-yellow" [class.typing-text]="m_bTyping1">{{ m_sTyped1 }}</span>, 
+        helping organizations <span class="text-yellow" [class.typing-text]="m_bTyping2">{{ m_sTyped2 }}</span>, 
+        <span class="text-yellow" [class.typing-text]="m_bTyping3">{{ m_sTyped3 }}</span>, 
+        and make data‑driven decisions.
+      </p>
       <p class="impact-hero__highlight">Here’s how it’s making an impact today</p>
     </div>
   </section>
@@ -53,15 +58,15 @@
   <section class="trusted-section">
     <h2>Trusted By</h2>
     <div class="trusted-logos">
-      <div class="trusted-logo-item">
+      <div class="trusted-logo-item" [class.animate-zoom]="m_bLogosVisible">
         <img src="/assets/rise-assets/logo_list.png" alt="LIST" class="trusted-logo-img" />
       </div>
       <div class="trusted-divider"></div>
-      <div class="trusted-logo-item">
+      <div class="trusted-logo-item" [class.animate-zoom]="m_bLogosVisible">
         <img src="/assets/rise-assets/logo_red_cross.jpg" alt="Luxembourg Red Cross" class="trusted-logo-img" />
       </div>
       <div class="trusted-divider"></div>
-      <div class="trusted-logo-item">
+      <div class="trusted-logo-item" [class.animate-zoom]="m_bLogosVisible">
         <img src="/assets/rise-assets/logo_wfp.png" alt="WFP Innovation Accelerator" class="trusted-logo-img trusted-logo-img--dark-bg" />
       </div>
     </div>

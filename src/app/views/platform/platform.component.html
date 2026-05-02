@@ -64,7 +64,7 @@
       </div>
 
       <div class="steps-cta">
-        <a href="https://rise.wasdi.net/" target="_blank" rel="noopener">
+        <a href="https://rise.wasdi.net/sign-up" target="_blank" rel="noopener">
           <button class="btn-primary-yellow">GET STARTED NOW</button>
         </a>
       </div>
@@ -73,7 +73,7 @@
 
   <!-- STAY CONNECTED (Updated style) -->
   <section class="connected-section">
-    <div class="connected-inner">
+    <div class="connected-inner" [class.animate-zoom]="m_bIsConnectedVisible">
       <h2>Stay Connected Anywhere</h2>
       <p>Internet issues? Use the <strong>RISE Telegram Bot</strong> for updates in your chat. <br> No connectivity? Print maps for <strong>offline use</strong> in the field.</p>
       <p class="connected-note">Critical information is always within reach!</p>
@@ -206,7 +206,7 @@
         </div>
       </div>
       
-      <p class="future-tagline">Always expanding. Always portable. Always improving.</p>
+      <p class="future-tagline">{{ m_sVisibleTagline }}</p>
     </div>
   </section>
 
