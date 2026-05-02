@@ -302,6 +302,10 @@
 }
 
 @media (max-width: 900px) {
+  .pricing-section { padding: 60px 20px; }
+  .pricing-section h1 { font-size: 28px; }
+  .toggle-label { width: 100%; max-width: 420px; font-size: 13px; padding: 0 16px; }
+  
   .custom-plan-inner {
     flex-direction: column;
     gap: 40px;
@@ -312,6 +316,12 @@
     display: inline-block;
     text-align: left;
   }
+}
+
+@media (max-width: 600px) {
+  .pricing-toggle-labels { gap: 12px; }
+  .billing-toggle__btn { padding: 8px 16px; font-size: 13px; }
+  .custom-plan-section { padding: 60px 20px; }
 }
 
 @keyframes bounceIn {

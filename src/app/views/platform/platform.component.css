@@ -614,9 +614,24 @@
   .plugin-block {
     flex-direction: column;
     text-align: center;
+    gap: 40px;
+    padding: 40px 24px;
+  }
+  .plugin-block__media {
+    width: 100%;
+    order: -1; /* Video on top of text on mobile */
   }
   .plugin-block__img {
     width: 100%;
+  }
+  .connected-section {
+    padding: 60px 24px;
+  }
+  .platform-intro h1 {
+    font-size: 32px;
+  }
+  .steps-heading {
+    font-size: 26px;
   }
 }
 
@@ -628,7 +643,13 @@
     grid-template-columns: 1fr;
   }
   .platform-intro h1 {
-    font-size: 36px;
+    font-size: 28px;
+  }
+  .future-section h2 {
+    font-size: 28px;
+  }
+  .video-modal-overlay {
+    padding: 10px;
   }
 }
 

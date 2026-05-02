@@ -942,3 +942,39 @@ details[open] summary.feature-card-title::after {
   -webkit-mask-image: url('/assets/rise-assets/five-stars-thumbs-up-icon.png');
   mask-image: url('/assets/rise-assets/five-stars-thumbs-up-icon.png');
 }
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 1200px) {
+  .hero-section { padding: 180px 40px 100px; background-size: cover; }
+  .logo-small-bianco-1 { width: 400px; }
+  .rise-platform-preview-1-icon { width: 90%; }
+  .features-cards-row { flex-wrap: wrap; gap: 24px; }
+  .card-large { flex: 0 0 calc(50% - 24px); min-width: 300px; }
+  .plugins-row { flex-direction: column; gap: 40px; }
+  .riseplatform-1-icon { width: 100%; max-width: 800px; }
+  .plugins-list { width: 100%; max-width: 500px; }
+}
+
+@media (max-width: 768px) {
+  .landing-page-desktop { font-size: 28px; }
+  .hero-section { padding: 140px 20px 80px; }
+  .logo-small-bianco-1 { width: 80%; max-width: 320px; }
+  .hero-title { font-size: 32px; line-height: 1.2; }
+  .hero-subtitle { font-size: 16px; }
+  .rise-platform-preview-1-icon { width: 100%; }
+  .intro-section, .cta-section, .features-section, .case-study-section { padding: 80px 20px; }
+  .header { font-size: 28px; line-height: 1.3; }
+  .features-cards-row { flex-direction: column; padding: 0; }
+  .card-large { flex: 1 1 100%; min-width: 0; padding: 32px 24px; }
+  .landing-page-header { font-size: 26px; line-height: 1.3; }
+  .feature-card-content3 { flex-direction: column; gap: 20px; }
+  details.feature-card-openclose { max-width: 100%; }
+  .plugins-container { padding: 40px 0 0; }
+  .plugins-row { gap: 30px; }
+  .case-study-header-row { flex-direction: column; text-align: center; }
+  .case-study-text { align-items: center; text-align: center; }
+  .case-study-text .header { font-size: 24px; }
+  .results-highlights { flex-direction: column; align-items: center; gap: 32px; }
+  .result-highlight-item { text-align: center; }
+  .div { max-width: 100%; }
+}
