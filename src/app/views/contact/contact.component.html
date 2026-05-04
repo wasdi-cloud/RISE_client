@@ -11,15 +11,15 @@
       <div class="contact-form-card">
         <div class="form-row">
           <div class="form-group">
-            <input type="text" placeholder="First Name" [(ngModel)]="m_sFirstName" />
+            <input type="text" placeholder="First Name *" [(ngModel)]="m_sFirstName" />
           </div>
           <div class="form-group">
-            <input type="text" placeholder="Last Name" [(ngModel)]="m_sLastName" />
+            <input type="text" placeholder="Last Name *" [(ngModel)]="m_sLastName" />
           </div>
         </div>
 
         <div class="form-group form-group--full">
-          <input type="email" placeholder="Email" [(ngModel)]="m_sEmail" />
+          <input type="email" placeholder="Email *" [(ngModel)]="m_sEmail" />
         </div>
 
         <div class="form-row">
@@ -46,7 +46,7 @@
         </div>
 
         <div class="form-group form-group--full">
-          <textarea placeholder="Message" [(ngModel)]="m_sMessage" rows="5"></textarea>
+          <textarea placeholder="Message *" [(ngModel)]="m_sMessage" rows="5"></textarea>
         </div>
 
         <button class="btn-send" (click)="sendMessage()">SEND</button>
