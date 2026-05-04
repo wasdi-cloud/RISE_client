@@ -21,7 +21,7 @@ export class PublicFooterComponent {
   navigateToFaq() {
     this.m_oRouter.navigate(['/platform']).then(() => {
       setTimeout(() => {
-        const oElement = document.getElementById('faq');
+        const oElement = document.getElementById('faq-section');
         if (oElement) {
           oElement.scrollIntoView({ behavior: 'smooth' });
         }
