@@ -422,7 +422,7 @@ b.landing-page-paragraph {
 .feature-card-content3 {
   align-self: stretch;
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* Changed back to flex-start to allow natural height */
   justify-content: center;
   gap: 30px;
 }
@@ -489,7 +489,7 @@ details[open] summary.feature-card-title::after {
   padding: 0 20px 15px 20px;
   font-size: 14px;
   font-family: 'Satoshi';
-  text-align: left;
+  text-align: justify; /* Changed from left to justify */
   color: #284e59;
   animation: reveal-content 0.4s ease-out forwards;
   opacity: 0;

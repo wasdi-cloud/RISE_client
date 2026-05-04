@@ -154,4 +154,20 @@ export class PublicHomeComponent implements AfterViewInit {
     // Use the window object to open the mail application
     window.location.href = sMailtoLink;
   }
+
+  /**
+   * Tracks which feature card is currently open.
+   */
+  m_sOpenFeature: string | null = null;
+
+  /**
+   * Manages accordion behavior for feature cards using state binding.
+   */
+  toggleFeature(sFeatureName: string): void {
+    if (this.m_sOpenFeature === sFeatureName) {
+      this.m_sOpenFeature = null; // Close if clicked again
+    } else {
+      this.m_sOpenFeature = sFeatureName;
+    }
+  }
 }

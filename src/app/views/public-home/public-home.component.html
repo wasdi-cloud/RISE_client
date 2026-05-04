@@ -82,43 +82,43 @@
     <div class="discover-features-container">
       <div class="discover-features-row">
         <div class="feature-card-content3">
-          <details class="feature-card-openclose">
-            <summary class="feature-card-title">
+          <details class="feature-card-openclose" [open]="m_sOpenFeature === 'monitoring'">
+            <summary class="feature-card-title" (click)="$event.preventDefault(); toggleFeature('monitoring')">
               <b class="title4">Near Real-Time Monitoring</b>
             </summary>
-            <div class="title5">The system continuously queries new satellite data to elaborate and provide the fastest possible environmental monitoring service.</div>
+            <div class="title5">RISE keeps you ahead of change with near real-time geospatial and satellite information. By providing continuous situational awareness, the platform empowers teams to make decisions and act quickly, reduce risks, and respond proactively to emergencies as soon as they occur, protecting communities with confidence.</div>
           </details>
-          <details class="feature-card-openclose">
-            <summary class="feature-card-title">
+          <details class="feature-card-openclose" [open]="m_sOpenFeature === 'ui'">
+            <summary class="feature-card-title" (click)="$event.preventDefault(); toggleFeature('ui')">
               <b class="title4">Intuitive User Interface</b>
             </summary>
-            <div class="title5">The system continuously queries new satellite data to elaborate and provide the fastest possible environmental monitoring service.</div>
+            <div class="title5">RISE user-friendly interface is designed to make complex and essential data accessible to everyone. Both technical and non-technical experts can navigate the platform effortlessly. RISE minimizes the time spent learning the system, allowing users to focus on what really matters.</div>
           </details>
-          <details class="feature-card-openclose">
-            <summary class="feature-card-title">
+          <details class="feature-card-openclose" [open]="m_sOpenFeature === 'historical'">
+            <summary class="feature-card-title" (click)="$event.preventDefault(); toggleFeature('historical')">
               <b class="title4">Historical Data Analysis</b>
             </summary>
-            <div class="title5">The system continuously queries new satellite data to elaborate and provide the fastest possible environmental monitoring service.</div>
+            <div class="title5">RISE transforms historical satellite and environmental data into strategic decisions for the future. Organizations can identify long-term patterns by examining past environmental and satellite data, identify recurring risks, and anticipate potential scenarios. This capability supports smarter planning and resilience strategies, ensuring that lessons from the past strengthen tomorrow's response.</div>
           </details>
         </div>
         <div class="feature-card-content3">
-          <details class="feature-card-openclose">
-            <summary class="feature-card-title">
+          <details class="feature-card-openclose" [open]="m_sOpenFeature === 'impacts'">
+            <summary class="feature-card-title" (click)="$event.preventDefault(); toggleFeature('impacts')">
               <b class="title4">Impacts Evaluation</b>
             </summary>
-            <div class="title5">The system continuously queries new satellite data to elaborate and provide the fastest possible environmental monitoring service.</div>
+            <div class="title5">Our platform offers automated impact assessments that reveal exactly what is at risk after an event. From roads and buildings to populations, crops, and critical infrastructure, RISE transforms complex information into clear insights. A dynamic dashboard brings everything together, percentages, affected areas, and risk comparisons, giving organizations the confidence to act quickly and effectively.</div>
           </details>
-          <details class="feature-card-openclose">
-            <summary class="feature-card-title">
+          <details class="feature-card-openclose" [open]="m_sOpenFeature === 'language'">
+            <summary class="feature-card-title" (click)="$event.preventDefault(); toggleFeature('language')">
               <b class="title4">Multi-language</b>
             </summary>
-            <div class="title5">The system continuously queries new satellite data to elaborate and provide the fastest possible environmental monitoring service.</div>
+            <div class="title5">RISE was developed for global collaboration. With multilingual support, the platform adapts to various languages, ensuring accessibility and inclusion beyond geographical borders. International teams and humanitarian actors can collaborate easily, regardless of their location.</div>
           </details>
-          <details class="feature-card-openclose">
-            <summary class="feature-card-title">
+          <details class="feature-card-openclose" [open]="m_sOpenFeature === 'profiles'">
+            <summary class="feature-card-title" (click)="$event.preventDefault(); toggleFeature('profiles')">
               <b class="title4">Tailored User Profiles</b>
             </summary>
-            <div class="title5">The system continuously queries new satellite data to elaborate and provide the fastest possible environmental monitoring service.</div>
+            <div class="title5">Each user is unique, and RISE reflects this with personalized profiles. The system adapts dashboards and settings based on roles, responsibilities, and preferences, ensuring that each user sees the most relevant information. Personalized experiences increase efficiency, reduce clutter, and allow individuals to focus on what matters most.</div>
           </details>
         </div>
       </div>
@@ -197,11 +197,11 @@
   <div class="case-study-section">
     <div class="case-study-header-row">
       <div class="case-study-text">
-        <b class="header">See how RISE Supports Humanitarian Operations.</b>
+        <b class="header">Humanitarian Impact, Powered by RISE</b>
         <div class="paragraph">See how RISE increased efficiency and reduced response time during field operations in Madagascar.</div>
       </div>
       <div class="results-action">
-        <button class="btn-primary-yellow" (click)="navigateRoute('/impact-stories')">SEE ALL RESULTS</button>
+        <button class="btn-primary-yellow" (click)="navigateRoute('/impact-stories')">VIEW ALL RESULTS</button>
       </div>
     </div>
 
