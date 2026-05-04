@@ -22,12 +22,20 @@ export class ContactComponent {
   m_sMessage = '';
 
   m_aoHowHeardOptions = [
-    'Search Engine', 'Social Media', 'Colleague or Friend', 'Conference or Event', 'Other'
+    'Social Media',
+    'Search Engine',
+    'Friend / Colleague',
+    'Other',
   ];
 
   m_aoSubjectOptions = [
-    'General Inquiry', 'Pricing', 'Technical Support', 'Partnership', 'Press', 'Other'
+    'General Inquiry',
+    'Sales',
+    'Technical Support',
+    'Other',
   ];
+
+  constructor() {}
 
   sendMessage(): void {
     if (!this.m_sFirstName || !this.m_sLastName || !this.m_sEmail) {

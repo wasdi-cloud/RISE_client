@@ -1,31 +1,31 @@
 import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'public-footer',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, CommonModule],
   templateUrl: './public-footer.component.html',
   styleUrl: './public-footer.component.css',
 })
 export class PublicFooterComponent {
+  constructor(private m_oRouter: Router) {}
 
-  constructor(private router: Router) {}
-
-  navigateRoute(route: string) {
-    this.router.navigate([route]).then(() => {
+  navigateRoute(sRoute: string) {
+    this.m_oRouter.navigate([sRoute]).then(() => {
       window.scrollTo(0, 0);
     });
   }
 
   navigateToFaq() {
-    this.router.navigate(['/platform']).then(() => {
+    this.m_oRouter.navigate(['/platform']).then(() => {
       setTimeout(() => {
-        const faqEl = document.getElementById('faq-section');
-        if (faqEl) {
-          faqEl.scrollIntoView({ behavior: 'smooth' });
+        const oElement = document.getElementById('faq');
+        if (oElement) {
+          oElement.scrollIntoView({ behavior: 'smooth' });
         }
-      }, 300);
+      }, 100);
     });
   }
 }

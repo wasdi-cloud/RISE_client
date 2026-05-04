@@ -55,7 +55,7 @@ export class ImpactStoriesComponent implements OnInit, AfterViewInit {
   }
 
   startTypingEffect(): void {
-    this.typeText('real-time insights', (val) => this.m_sTyped1 = val, () => this.m_bTyping1 = false, 0);
+    this.typeText('actionable intelligence', (val) => this.m_sTyped1 = val, () => this.m_bTyping1 = false, 0);
     this.typeText('respond faster', (val) => this.m_sTyped2 = val, () => this.m_bTyping2 = false, 1500);
     this.typeText('reduce costs', (val) => this.m_sTyped3 = val, () => this.m_bTyping3 = false, 3000);
   }

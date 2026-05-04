@@ -5,8 +5,8 @@
   <!-- CONTACT FORM SECTION -->
   <section class="contact-form-section">
     <div class="contact-form-inner">
-      <h1>Get in Touch with the RISE Team</h1>
-      <p class="contact-form-sub">Fill in the form and we'll get back to you as soon as possible.</p>
+      <h1>Contact the RISE Team</h1>
+      <p class="contact-form-sub">Fill out the form and we'll get back to you as soon as possible.</p>
 
       <div class="contact-form-card">
         <div class="form-row">
@@ -27,7 +27,7 @@
             <input type="text" placeholder="Company" [(ngModel)]="m_sCompany" />
           </div>
           <div class="form-group">
-            <input type="text" placeholder="Role / Job title" [(ngModel)]="m_sRole" />
+            <input type="text" placeholder="Role / Job Title" [(ngModel)]="m_sRole" />
           </div>
         </div>
 
@@ -40,7 +40,7 @@
 
         <div class="form-group form-group--full">
           <select [(ngModel)]="m_sSubject">
-            <option value="" disabled selected>Select Subject</option>
+            <option value="" disabled selected>Select a subject</option>
             <option *ngFor="let opt of m_aoSubjectOptions" [value]="opt">{{ opt }}</option>
           </select>
         </div>
@@ -57,7 +57,7 @@
   <!-- CONTACT INFO SECTION -->
   <section class="contact-info-section">
     <div class="contact-info-inner">
-      <h2>Contact Information</h2>
+      <h2>Our contact information</h2>
       
       <div class="contact-info-list">
         <!-- Email: No icon, only title and email -->

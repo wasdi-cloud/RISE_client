@@ -17,12 +17,14 @@ export class PricingComponent {
   m_sMessage: string = '';
 
   readonly m_aoPricingRows = [
-    { label: 'Only Public Areas', monthly: null, ngoMonthly: null },
+    { label: 'Public Areas Only', monthly: null, ngoMonthly: null },
     { label: '1 Area',  monthly: 200,  ngoMonthly: 100  },
     { label: '3 Areas', monthly: 400,  ngoMonthly: 200  },
     { label: '5 Areas', monthly: 600,  ngoMonthly: 300  },
     { label: '10 Areas', monthly: 1000, ngoMonthly: 500 },
   ];
+
+  constructor() {}
 
   getPrice(monthly: number | null): string {
     if (monthly === null) return 'FREE';
@@ -30,9 +32,11 @@ export class PricingComponent {
     return `€ ${value}`;
   }
 
-  getPriceSuffix(monthly: number | null): string {
-    if (monthly === null) return '';
-    return this.m_sBillingCycle === 'year' ? '/ yr' : '/ mo';
+  getPriceSuffix(): string {
+    if (this.m_sBillingCycle === 'month') {
+      return '/month';
+    }
+    return '/year';
   }
 
   sendCustomPlan(): void {

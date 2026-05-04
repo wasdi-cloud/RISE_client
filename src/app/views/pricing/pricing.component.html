@@ -5,12 +5,12 @@
   <!-- PRICING TABLE SECTION -->
   <section class="pricing-section">
     <div class="pricing-container">
-      <h1>Our Pricing Plans</h1>
-      <p class="pricing-intro">RISE offers flexible subscription plans tailored to your needs. You can customize your plan based on:</p>
+      <h1>Our Pricing</h1>
+      <p class="pricing-intro">RISE offers flexible subscriptions tailored to your needs. You can customize your plan based on:</p>
 
       <div class="pricing-toggle-labels">
         <div class="toggle-label toggle-label--active">
-          <strong>Number of Areas*</strong> &nbsp;you want to monitor
+          <strong>Number of areas*</strong> you want to monitor
         </div>
         <div class="toggle-label toggle-label--active">
           <strong>Subscription duration</strong> (choose between 1 month or 1 year)
@@ -18,7 +18,7 @@
       </div>
 
       <p class="pricing-note">
-        <strong>Every plan includes ALL RISE plugins – no restrictions, no hidden costs. Whether you choose 1 AREA or 10 AREAS, you get the full power of RISE</strong>
+        <strong>Each plan includes ALL RISE plugins – no restrictions, no hidden costs. Whether you choose 1 AREA or 10 AREAS, you get the full power of RISE.</strong>
       </p>
 
       <!-- BILLING TOGGLE -->
@@ -34,7 +34,7 @@
           (click)="m_sBillingCycle = 'year'"
         >YEAR</button>
       </div>
-      <p class="billing-hint">Select your preferred duration to instantly update the pricing table and see the best value option</p>
+      <p class="billing-hint">Select your preferred duration to instantly update the pricing table and see the best value option.</p>
 
       <!-- PRICING TABLE -->
       <div class="pricing-table-wrapper">
@@ -51,11 +51,11 @@
               <td>{{ row.label }}</td>
               <td>
                 <span class="price-value">{{ getPrice(row.monthly) }}</span>
-                <span class="price-suffix" *ngIf="row.monthly !== null">{{ getPriceSuffix(row.monthly) }}</span>
+                <span class="price-suffix" *ngIf="row.monthly !== null">{{ getPriceSuffix() }}</span>
               </td>
               <td class="ngo-col">
                 <span class="price-value price-value--ngo">{{ getPrice(row.ngoMonthly) }}</span>
-                <span class="price-suffix" *ngIf="row.ngoMonthly !== null">{{ getPriceSuffix(row.ngoMonthly) }}</span>
+                <span class="price-suffix" *ngIf="row.ngoMonthly !== null">{{ getPriceSuffix() }}</span>
               </td>
             </tr>
           </tbody>
@@ -64,8 +64,7 @@
 
       <p class="area-definition">
         <strong>*What does "AREA" mean?</strong>
-        An "AREA" in RISE refers to an Area of Operations (AoO) – a geographic zone that your organization defines and monitors using
-        satellite data and RISE's plugins. / From 1 AREA to 10 AREAS, RISE adapts to your needs and project size, whether you're starting small or scaling globally.
+        An "AREA" in RISE refers to an Area of Operations (AoO) – a geographic area that your organization defines and monitors using RISE's satellite data and plugins. / From 1 AREA to 10 AREAS, RISE scales to fit your needs and project size, whether you're starting small or going global.
       </p>
     </div>
   </section>
@@ -81,7 +80,7 @@
           <li>Want to monitor more areas?</li>
           <li>Interested in a personalized demo session?</li>
         </ul>
-        <p>We're here to help. Connect with our team today, we'll work with you to design the right plan and pricing for your needs.</p>
+        <p>We're here to help. Contact our team today, we'll work with you to design the right plan and price for your needs.</p>
       </div>
       <div class="custom-plan-right">
         <div class="input-with-icon">
@@ -100,7 +99,7 @@
           class="custom-plan-textarea"
           rows="5"
         ></textarea>
-        <button class="btn-primary-yellow btn-slim" (click)="sendCustomPlan()">CONTACT US</button>
+        <button class="btn-primary-yellow btn-slim" (click)="sendCustomPlan()">SEND NOW</button>
       </div>
     </div>
   </section>

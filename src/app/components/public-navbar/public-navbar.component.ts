@@ -13,7 +13,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 export class PublicNavbarComponent {
   m_bScrolled: boolean = false;
   m_bMenuOpen: boolean = false;
-  
+
   constructor(private m_oRouter: Router) {}
 
   @HostListener('window:scroll', [])

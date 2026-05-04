@@ -1,14 +1,13 @@
 import {Component, HostListener, AfterViewInit} from '@angular/core';
 import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
 import { Router } from '@angular/router';
-import {TranslateModule} from "@ngx-translate/core";
 import { PublicNavbarComponent } from '../../components/public-navbar/public-navbar.component';
 import { PublicFooterComponent } from '../../components/public-footer/public-footer.component';
 
 @Component({
   selector: 'app-public-home',
   standalone: true,
-  imports: [PublicNavbarComponent, PublicFooterComponent, TranslateModule, RiseButtonComponent],
+  imports: [PublicNavbarComponent, PublicFooterComponent, RiseButtonComponent],
   templateUrl: './public-home.component.html',
   styleUrl: './public-home.component.css',
 })
