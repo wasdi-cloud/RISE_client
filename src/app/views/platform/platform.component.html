@@ -99,7 +99,7 @@
         </ul>
       </div>
       <div class="plugin-block__media">
-        <video class="plugin-block__img" autoplay loop muted playsinline>
+        <video class="plugin-block__img" autoplay loop muted playsinline preload="metadata">
           <source src="/assets/rise-assets/plugins/Floods.mp4" type="video/mp4">
         </video>
         <div class="video-overlay" (click)="openVideo('/assets/rise-assets/plugins/Floods.mp4')">
@@ -120,7 +120,7 @@
         </ul>
       </div>
       <div class="plugin-block__media">
-        <video class="plugin-block__img" autoplay loop muted playsinline>
+        <video class="plugin-block__img" autoplay loop muted playsinline preload="metadata">
           <source src="/assets/rise-assets/plugins/droughts.mkv" type="video/x-matroska">
         </video>
         <div class="video-overlay" (click)="openVideo('/assets/rise-assets/plugins/droughts.mkv')">
@@ -141,7 +141,7 @@
         </ul>
       </div>
       <div class="plugin-block__media">
-        <video class="plugin-block__img" autoplay loop muted playsinline>
+        <video class="plugin-block__img" autoplay loop muted playsinline preload="metadata">
           <source src="/assets/rise-assets/plugins/Buildings.mp4" type="video/mp4">
         </video>
         <div class="video-overlay" (click)="openVideo('/assets/rise-assets/plugins/Buildings.mp4')">
@@ -163,7 +163,7 @@
         </ul>
       </div>
       <div class="plugin-block__media">
-        <video class="plugin-block__img" autoplay loop muted playsinline>
+        <video class="plugin-block__img" autoplay loop muted playsinline preload="metadata">
           <source src="/assets/rise-assets/plugins/impacts.mp4" type="video/mp4">
         </video>
         <div class="video-overlay" (click)="openVideo('/assets/rise-assets/plugins/impacts.mp4')">
@@ -182,7 +182,7 @@
         </ul>
       </div>
       <div class="plugin-block__media">
-        <video class="plugin-block__img" autoplay loop muted playsinline>
+        <video class="plugin-block__img" autoplay loop muted playsinline preload="metadata">
           <source src="/assets/rise-assets/plugins/Rain.mp4" type="video/mp4">
         </video>
         <div class="video-overlay" (click)="openVideo('/assets/rise-assets/plugins/Rain.mp4')">
@@ -250,9 +250,7 @@
           <span>{{ faq.question }}</span>
           <span class="faq-item__icon">{{ faq.open ? '−' : '+' }}</span>
         </button>
-        <div class="faq-item__answer" [class.faq-item__answer--visible]="faq.open">
-          {{ faq.answer }}
-        </div>
+        <div class="faq-item__answer" [class.faq-item__answer--visible]="faq.open" [innerHTML]="faq.answer"></div>
       </div>
     </div>
   </section>

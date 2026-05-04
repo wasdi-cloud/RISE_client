@@ -594,6 +594,7 @@
   color: #4a6672;
   line-height: 1.6;
   font-size: 15px;
+  white-space: pre-wrap; /* Preserves line breaks and formatting */
 }
 
 .faq-item__answer--visible {

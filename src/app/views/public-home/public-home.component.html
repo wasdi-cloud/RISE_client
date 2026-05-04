@@ -2,13 +2,13 @@
   <public-navbar></public-navbar>
   <div class="hero-section">
     <div class="hero-content">
-      <img src="assets/rise-assets/Logo%20Small%20Bianco%201.png" class="logo-small-bianco-1" alt="">
+      <img src="assets/rise-assets/Logo%20Small%20Bianco%201.png" class="logo-small-bianco-1" alt="" fetchpriority="high">
 
       <div class="hero-text-container">
         <b class="hero-title">Direct Access to Geospatial Intelligence</b>
         <div class="hero-subtitle">Overwhelmed by complex satellite data and reports? Turn them into clear, actionable insights to accelerate decision-making and relief efforts.</div>
       </div>
-      <img src="assets/rise-assets/RISE-platform%201.png" class="rise-platform-preview-1-icon" alt="">
+      <img src="assets/rise-assets/RISE-platform%201.png" class="rise-platform-preview-1-icon" alt="" loading="lazy">
       <div class="hero-buttons">
         <button class="btn-primary-yellow" (click)="navigateRoute('sign-up')">GET STARTED TODAY</button>
       </div>
@@ -129,7 +129,7 @@
           <b> plugins tailored to your needs:</b>
         </div>
         <div class="plugins-row">
-          <img [src]="m_sSelectedPluginImage" class="riseplatform-1-icon" alt="">
+          <img [src]="m_sSelectedPluginImage" class="riseplatform-1-icon" alt="" loading="lazy">
 
           <div class="plugins-list">
             <div class="div" (click)="selectPluginImage('Floods')"

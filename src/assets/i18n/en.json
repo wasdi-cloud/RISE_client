@@ -713,7 +713,7 @@
     "REFINEMENT_TITLE": "User-Driven Refinement",
     "REFINEMENT_DESC": "RISE evolved through iterative testing, focus groups, and training with AICRL and Malagasy Red Cross (CRM) teams. This process guaranteed the platform was user-friendly, efficient, and fully aligned with humanitarian operations.",
     "VALIDATION_TITLE": "Field Validation Success",
-    "VALIDATION_DESC": "In a head-to-head test during Cyclone Cheneso, two teams — one using traditional methods (field visits, interviews, and secondary data) and the other using RISE — assessed flood impact, population needs, and infrastructure damage. The exercise demonstrated RISE's speed, accuracy, cost-efficiency, and safety in crisis response.",
+    "VALIDATION_DESC": "In a head-to-head test during Cyclone Cheneso, two teams, one using traditional methods (field visits, interviews, and secondary data) and the other using RISE, assessed flood impact, population needs, and infrastructure damage. The exercise demonstrated RISE's speed, accuracy, cost-efficiency, and safety in crisis response.",
     "VALIDATION_RESULTS_TITLE": "Validation Exercise Results & Impact",
     "NUMBERS_STORY": "THE NUMBERS TOLD THE STORY:",
     "RESULTS_INTRO": "RISE delivered faster, safer, and more cost-effective disaster response",
@@ -729,7 +729,8 @@
     "QUOTE_TEXT": "\"RISE shows very positive results, making needs assessment and crisis management more accurate, time-efficient, cost-effective, and safe.\"",
     "WATCH_FULL_SCREEN": "WATCH FULL SCREEN",
     "COLLABORATIVE_INNOVATION": "Collaborative Innovation",
-    "WASDI_LIST_AICRL_DESC": "WASDI built the technical core of RISE, while LIST provided scientific expertise — including the development of drought and settlement monitoring tools. AICRL led real-world validation, ensuring RISE met the demands of disaster response through field testing and practical guidance."
+    "WASDI_LIST_AICRL_DESC": "WASDI built the technical core of RISE, while LIST provided scientific expertise, including the development of drought and settlement monitoring tools. AICRL led real-world validation, ensuring RISE met the demands of disaster response through field testing and practical guidance.",
+    "IMAGES_RESULTS_TITLE": "Images of the results obtained during the test."
   },
   "PRICING": {
     "TITLE": "Our Pricing Plans",
