@@ -121,6 +121,23 @@
 }
 
 /* RESPONSIVE */
+@media (max-width: 1100px) {
+  .public-nav__links li a {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+
+  .public-nav__cta {
+    padding: 7px 14px;
+    font-size: 12px;
+  }
+
+  .public-nav__inner {
+    padding: 0 12px;
+    gap: 8px;
+  }
+}
+
 @media (max-width: 900px) {
   .public-nav__links {
     display: none;
@@ -144,6 +161,7 @@
   .public-nav__links li a {
     border-radius: 8px;
     padding: 10px 16px;
+    font-size: 14px;
   }
 
   .public-nav__burger {

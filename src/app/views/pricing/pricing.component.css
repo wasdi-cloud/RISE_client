@@ -326,7 +326,66 @@
 @media (max-width: 600px) {
   .pricing-toggle-labels { gap: 12px; }
   .billing-toggle__btn { padding: 8px 16px; font-size: 13px; }
-  .custom-plan-section { padding: 60px 20px; }
+  .custom-plan-section { padding: 60px 16px; }
+
+  .pricing-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-left: -8px;
+    margin-right: -8px;
+  }
+
+  .pricing-table th,
+  .pricing-table td {
+    padding: 14px 12px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .price-value {
+    font-size: 15px;
+  }
+
+  .price-suffix {
+    font-size: 11px;
+  }
+
+  .pricing-note {
+    font-size: 15px;
+  }
+
+  .custom-plan-inner {
+    gap: 32px;
+  }
+
+  .custom-plan-right {
+    width: 100%;
+  }
+
+  .custom-plan-input,
+  .custom-plan-textarea {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 16px;
+    padding: 16px 20px;
+  }
+
+  .custom-plan-input {
+    padding-left: 48px !important;
+  }
+
+  .custom-plan-textarea {
+    min-height: 120px;
+  }
+
+  .custom-plan-left h2 {
+    font-size: 26px;
+  }
+
+  .custom-plan-left ul li,
+  .custom-plan-left > p {
+    font-size: 14px;
+  }
 }
 
 @keyframes bounceIn {

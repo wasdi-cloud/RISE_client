@@ -27,6 +27,7 @@ export class PublicNavbarComponent {
 
   closeMenu(): void {
     this.m_bMenuOpen = false;
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
   }
 
   navigateToHome(): void {

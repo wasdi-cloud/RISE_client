@@ -450,8 +450,8 @@ summary.feature-card-title {
   list-style: none;
   cursor: pointer;
   margin: 0;
-  height: 44px;
-  padding: 0 20px;
+  min-height: 44px;
+  padding: 8px 20px;
   box-sizing: border-box;
 }
 
@@ -953,6 +953,8 @@ details[open] summary.feature-card-title::after {
   .plugins-row { flex-direction: column; gap: 40px; }
   .riseplatform-1-icon { width: 100%; max-width: 800px; }
   .plugins-list { width: 100%; max-width: 500px; }
+  .plugins-list .div { align-self: center; }
+  details.feature-card-openclose { max-width: 100%; }
 }
 
 @media (max-width: 768px) {
@@ -967,13 +969,18 @@ details[open] summary.feature-card-title::after {
   .features-cards-row { flex-direction: column; padding: 0; }
   .card-large { flex: 1 1 100%; min-width: 0; padding: 32px 24px; }
   .landing-page-header { font-size: 26px; line-height: 1.3; }
-  .feature-card-content3 { flex-direction: column; gap: 20px; }
-  details.feature-card-openclose { max-width: 100%; }
+  .feature-card-content3 { flex-direction: column; gap: 20px; align-items: center; }
+  details.feature-card-openclose { max-width: 100%; width: 100%; }
   .plugins-container { padding: 40px 0 0; }
   .plugins-row { gap: 30px; }
+  .plugins-list .div { align-self: center; }
+
+  /* Reorder case study section so button appears after results */
+  .case-study-section { display: flex; flex-direction: column; }
   .case-study-header-row { flex-direction: column; text-align: center; }
   .case-study-text { align-items: center; text-align: center; }
   .case-study-text .header { font-size: 24px; }
+  .case-study-text .paragraph { text-align: center; }
   .results-highlights { flex-direction: column; align-items: center; gap: 32px; }
   .result-highlight-item { text-align: center; }
   .div { max-width: 100%; }
