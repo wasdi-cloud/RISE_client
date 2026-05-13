@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PublicNavbarComponent } from '../../components/public-navbar/public-navbar.component';
 import { PublicFooterComponent } from '../../components/public-footer/public-footer.component';
+import { ContactMessageViewModel } from '../../models/ContactMessageViewModel';
+import { HelloService } from '../../services/api/hello.service';
 
 @Component({
   selector: 'app-contact',
@@ -35,23 +37,34 @@ export class ContactComponent {
     'Other',
   ];
 
-  constructor() {}
+  constructor(private m_oHelloService: HelloService) {}
 
   sendMessage(): void {
-    if (!this.m_sFirstName || !this.m_sLastName || !this.m_sEmail) {
-      alert('Please fill in all mandatory fields (First Name, Last Name, and Email).');
+    if (!this.m_sFirstName || !this.m_sLastName || !this.m_sEmail || !this.m_sMessage) {
+      alert('Please fill in all mandatory fields (First Name, Last Name, Email, and Message).');
       return;
     }
 
-    const subject = encodeURIComponent(this.m_sSubject || 'Contact from RISE website');
-    const body = encodeURIComponent(
-      `Name: ${this.m_sFirstName} ${this.m_sLastName}\n` +
-      `Email: ${this.m_sEmail}\n` +
-      `Company: ${this.m_sCompany}\n` +
-      `Role: ${this.m_sRole}\n` +
-      `How heard: ${this.m_sHowHeard}\n\n` +
-      this.m_sMessage
+    const oContactMessage: ContactMessageViewModel = {
+      name: this.m_sFirstName,
+      surname: this.m_sLastName,
+      email: this.m_sEmail,
+      company: this.m_sCompany,
+      role: this.m_sRole,
+      heardAbout: this.m_sHowHeard,
+      subject: this.m_sSubject,
+      message: this.m_sMessage,
+    };
+
+    this.m_oHelloService.contact(oContactMessage).subscribe(
+      {
+        next: () => {
+          alert('Message sent successfully!');
+        },
+        error: () => {
+          alert('Failed to send message. Please try again later.');
+        },
+      }
     );
-    window.location.href = `mailto:info@wasdi.cloud?subject=${subject}&body=${body}`;
   }
 }

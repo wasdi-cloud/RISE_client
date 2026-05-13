@@ -21,3 +21,57 @@ img {
   overflow-y: auto; /* Enable vertical scrolling if content overflows */
   padding-right: 8px; /* Optional: Add padding to avoid scrollbar overlap */
 }
+
+/* Keep user menu at top-right of map area */
+.map-user-menu {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.15rem;
+  z-index: 1200;
+  pointer-events: auto;
+}
+
+/* Place create/cancel button at top-left of map area */
+.map-create-control {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1200;
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+}
+
+/* Create area button at top */
+.create-area-btn {
+  flex-shrink: 0;
+  display: block;
+  width: 42px;
+}
+
+/* Cancel drawing button at top */
+.cancel-draw-btn {
+  flex-shrink: 0;
+  display: block;
+  width: 42px;
+}
+
+:host ::ng-deep .create-area-btn .btn,
+:host ::ng-deep .cancel-draw-btn .btn {
+  width: 42px;
+  min-width: 42px;
+  height: 34px;
+  padding: 0;
+}
+
+:host ::ng-deep .create-area-btn .btn .material-symbols-outlined,
+:host ::ng-deep .cancel-draw-btn .btn .material-symbols-outlined {
+  margin: 0;
+}

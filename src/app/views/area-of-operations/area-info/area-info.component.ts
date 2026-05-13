@@ -9,7 +9,7 @@ import {PluginService} from '../../../services/api/plugin.service';
 import {RiseTextInputComponent} from '../../../components/rise-text-input/rise-text-input.component';
 import {RiseDateInputComponent} from '../../../components/rise-date-input/rise-date-input.component';
 import {RiseTextareaInputComponent} from '../../../components/rise-textarea-input/rise-textarea-input.component';
-import {DatePipe, NgIf} from '@angular/common';
+import {DatePipe, NgIf, CommonModule} from '@angular/common';
 import {RiseCheckboxComponent} from '../../../components/rise-checkbox/rise-checkbox.component';
 import {RiseButtonComponent} from '../../../components/rise-button/rise-button.component';
 import {RiseDropdownComponent} from "../../../components/rise-dropdown/rise-dropdown.component";
@@ -17,6 +17,8 @@ import {JsonEditorService} from "../../../services/json-editor.service";
 import {MapAPIService} from "../../../services/api/map.service";
 import {MapParametersService} from "../../../services/api/map-parameters.service";
 import {Subject, takeUntil} from "rxjs";
+import {MatSlideToggle, MatSlideToggleChange} from "@angular/material/slide-toggle";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-area-info',
@@ -31,6 +33,9 @@ import {Subject, takeUntil} from "rxjs";
     RiseButtonComponent,
     NgIf,
     RiseDropdownComponent,
+    CommonModule,
+    MatSlideToggle,
+    FormsModule,
   ],
   templateUrl: './area-info.component.html',
   styleUrl: './area-info.component.css',
@@ -49,9 +54,32 @@ export class AreaInfoComponent implements OnInit,OnDestroy {
   m_aoPluginMaps = [];
   m_oSelectedMap: any;
 
-
   m_bIsAdvancedSettingsOn: boolean = false;
 
+  /**
+   * Flag to indicate this is a new area creation from dashboard
+   */
+  m_bIsNewAreaCreation: boolean = false;
+
+  /**
+   * Plugins selected for new area
+   */
+  m_asPluginsSelected: string[] = [];
+
+  /**
+   * Support archive flag for new area
+   */
+  m_bIsSupportArchiveArea: boolean = false;
+  m_bSupportArchiveToggle: boolean = false;
+
+  /**
+   * Error tracking for validation
+   */
+  m_sAreaNameError: string = '';
+  m_bNameIsValid: boolean = true;
+  m_sPluginsError: string = '';
+  m_bPluginsAreValid: boolean = true;
+  m_bValidationActive: boolean = false;
 
   m_sAreaId: string = '';
   m_sParamsId: string = '';
@@ -84,7 +112,17 @@ export class AreaInfoComponent implements OnInit,OnDestroy {
       value: 'isPublic'
     });
 
-    if (this.m_oData.area) {
+    // Check if this is a new area creation from dashboard
+    if (this.m_oData?.isNew) {
+      this.m_bIsNewAreaCreation = true;
+      // Initialize new area with data from dashboard
+      this.m_oArea = {} as AreaViewModel;
+      this.m_oArea.bbox = this.m_oData.bbox;
+      this.m_oArea.markerCoordinates = this.m_oData.markerCoordinates;
+      this.checkArchiveSupport();
+    } else if (this.m_oData?.area) {
+      // Edit mode: existing area
+      this.m_bIsNewAreaCreation = false;
       this.m_sAreaId = this.m_oData.area.id;
       this.getAreaInfo();
     }
@@ -205,6 +243,63 @@ export class AreaInfoComponent implements OnInit,OnDestroy {
     this.m_oDialogRef.close();
   }
 
+  /**
+   * Check if the organization's subscription supports archive
+   */
+  private checkArchiveSupport(): void {
+    this.m_oAreaService.canAreaSupportArchive().pipe(takeUntil(this.m_oDestroy$)).subscribe({
+      next: (bResponse) => {
+        this.m_bIsSupportArchiveArea = bResponse;
+      }
+    });
+  }
+
+  /**
+   * Handle archive support toggle change
+   */
+  onSwitchArchiveButton(oToggle: MatSlideToggleChange): void {
+    this.m_bSupportArchiveToggle = oToggle.checked;
+  }
+
+  /**
+   * Handle plugin selection change for new area
+   */
+  onPluginSelectionChange(selectedValues: any[]): void {
+    this.m_asPluginsSelected = selectedValues;
+    if (selectedValues.length > 0) {
+      this.m_bPluginsAreValid = true;
+      this.m_sPluginsError = '';
+    }
+  }
+
+  /**
+   * Validate area name for new creation
+   */
+  private validateAreaName(): boolean {
+    if (FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oArea.name) || this.m_oArea.name.length < 3) {
+      this.m_sAreaNameError = 'Please enter a valid name of at least 3 characters.';
+      this.m_bNameIsValid = false;
+      return false;
+    }
+    this.m_sAreaNameError = '';
+    this.m_bNameIsValid = true;
+    return true;
+  }
+
+  /**
+   * Validate plugins selection for new creation
+   */
+  private validatePlugins(): boolean {
+    if (this.m_asPluginsSelected.length < 1) {
+      this.m_bPluginsAreValid = false;
+      this.m_sPluginsError = 'Please select at least one plugin.';
+      return false;
+    }
+    this.m_bPluginsAreValid = true;
+    this.m_sPluginsError = '';
+    return true;
+  }
+
   returnToEditPage() {
     //here we initialize the values
     // init json editor
@@ -276,25 +371,52 @@ export class AreaInfoComponent implements OnInit,OnDestroy {
       'AREA_OF_OPERATIONS.SUCCESS_SAVE'
     );
 
-    if (this.m_asSelectedIsPublic.length > 0) {
-      this.m_oArea.publicArea = true;
-    } else {
-      this.m_oArea.publicArea = false;
-    }
+    if (this.m_bIsNewAreaCreation) {
+      // Validate new area creation
+      this.m_bValidationActive = true;
+      if (!this.validateAreaName() || !this.validatePlugins()) {
+        return;
+      }
 
-    this.m_oAreaService.updateArea(this.m_oArea).pipe(takeUntil(this.m_oDestroy$)).subscribe({
-      next: (oResponse) => {
-        this.m_oNotificationService.openSnackBar(
-          sSuccess,
-          'Success',
-          'success'
-        );
-        this.onDismiss();
-      },
-      error: (oError) => {
-        this.m_oNotificationService.openInfoDialog(sError, 'danger');
-      },
-    });
+      this.m_oArea.publicArea = this.m_asSelectedIsPublic.length > 0;
+      this.m_oArea.plugins = this.m_asPluginsSelected;
+      this.m_oArea.supportArchive = this.m_bSupportArchiveToggle;
+
+      // Use addArea for new creation
+      this.m_oAreaService.addArea(this.m_oArea).pipe(takeUntil(this.m_oDestroy$)).subscribe({
+        next: (oResponse) => {
+          this.m_oNotificationService.openSnackBar(sSuccess, 'Success', 'success');
+          this.m_oDialogRef.close(true);
+        },
+        error: (oError) => {
+          if (oError.error?.errorStringCodes?.[0] === 'ERROR_API_NO_VALID_SUBSCRIPTION') {
+            this.m_oNotificationService.openConfirmationDialog(
+              'Your subscription is invalid. Would you like to purchase a new one?',
+              'alert'
+            );
+          } else {
+            this.m_oNotificationService.openInfoDialog(sError, 'danger');
+          }
+        },
+      });
+    } else {
+      // Update existing area
+      if (this.m_asSelectedIsPublic.length > 0) {
+        this.m_oArea.publicArea = true;
+      } else {
+        this.m_oArea.publicArea = false;
+      }
+
+      this.m_oAreaService.updateArea(this.m_oArea).pipe(takeUntil(this.m_oDestroy$)).subscribe({
+        next: (oResponse) => {
+          this.m_oNotificationService.openSnackBar(sSuccess, 'Success', 'success');
+          this.m_oDialogRef.close(true);
+        },
+        error: (oError) => {
+          this.m_oNotificationService.openInfoDialog(sError, 'danger');
+        },
+      });
+    }
   }
 
 

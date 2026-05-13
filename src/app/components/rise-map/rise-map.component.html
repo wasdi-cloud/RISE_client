@@ -1,7 +1,7 @@
 <div class="map-container">
   <div class="map-frame">
-    <ng-container *ngIf="m_bIsSelectingArea; else nonDrawMap">
-      <!-- Map with leafletDraw when selecting area -->
+    <ng-container *ngIf="m_bIsSelectingArea || m_bEnableDashboardDrawing; else nonDrawMap">
+      <!-- Map with leafletDraw when selecting area or dashboard drawing -->
       <div
         id="map"
         leaflet

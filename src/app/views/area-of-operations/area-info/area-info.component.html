@@ -2,50 +2,96 @@
   <div
     class="dialog-header d-flex flex-row justify-content-between align-items-center"
   >
-    <h3>{{ "AREA_OF_OPERATIONS.DIALOG_HEADER" | translate }}</h3>
+    <h3>
+      {{ (m_bIsNewAreaCreation ? "CREATE_NEW_AREA_OF_OPERATION.CREATE_NEW_AREA_OF_OPERATION" : "AREA_OF_OPERATIONS.DIALOG_HEADER") | translate }}
+    </h3>
     <span class="close-btn material-symbols-outlined" (click)="onDismiss()">
       close
     </span>
   </div>
   <div *ngIf="!this.m_bIsAdvancedSettingsOn" class="body flex-fill d-flex flex-column gap-2">
+    <!-- Name Input -->
     <rise-text-input
       [m_bHasTitle]="true"
       [m_sLocalizationKey]="'CREATE_NEW_AREA_OF_OPERATION.NAME'"
       [m_bReadonly]="false"
       [(m_sInputText)]="m_oArea.name"
+      [m_sErrorText]="m_sAreaNameError"
+      [m_bIsValid]="m_bNameIsValid"
+      [m_bRequired]="m_bIsNewAreaCreation"
+      [m_bIsValidatorInput]="m_bIsNewAreaCreation"
     ></rise-text-input>
+
+    <!-- ID Input (only show in edit mode) -->
     <rise-text-input
+      *ngIf="!m_bIsNewAreaCreation"
       [m_bHasTitle]="true"
       [m_sLocalizationKey]="'CREATE_NEW_AREA_OF_OPERATION.ID'"
       [m_bReadonly]="true"
       [(m_sInputText)]="m_sAreaId"
     ></rise-text-input>
+
+    <!-- Description Input -->
     <rise-textarea-input
       [m_bHasTitle]="true"
       [m_sLocalizationKey]="'CREATE_NEW_AREA_OF_OPERATION.DESCRIPTION'"
       [m_bReadonly]="false"
       [(m_sInputText)]="m_oArea.description"
     ></rise-textarea-input>
+
+    <!-- Public Checkbox -->
     <rise-checkbox
       [m_aoOptions]="m_asIsPublic"
       [m_aoSelectedValues]="m_asSelectedIsPublic"
-      [m_bReadonly]="true"
+      [m_bReadonly]="m_bIsNewAreaCreation ? false : true"
     >
     </rise-checkbox>
+
+    <!-- Creation Date (only show in edit mode) -->
     <rise-date-input
+      *ngIf="!m_bIsNewAreaCreation"
       [m_bHasTitle]="true"
       [m_sLocalizationKey]="'AREA_OF_OPERATIONS.CREATION_DATE'"
       [m_bReadonly]="true"
       [m_sInputDate]="m_oArea.creationDate | date : 'YYYY-MM-dd'"
     ></rise-date-input>
+
+    <!-- Plugins Selection (for new creation) -->
+    <div *ngIf="m_bIsNewAreaCreation" class="d-flex flex-column gap-1">
+      <label>{{ 'CREATE_NEW_AREA_OF_OPERATION.PLUGINS' | translate }}</label>
+      <rise-checkbox
+        [m_aoOptions]="m_aoPlugins"
+        (m_oSelectionChange)="onPluginSelectionChange($event)"
+        [m_aoSelectedValues]="m_asPluginsSelected"
+        [m_bEnableSelectAll]="true"
+      ></rise-checkbox>
+      <div class="invalid-feedback" *ngIf="!m_bPluginsAreValid">{{ m_sPluginsError }}</div>
+    </div>
+
+    <!-- Plugins (readonly for edit mode) -->
     <rise-checkbox
+      *ngIf="!m_bIsNewAreaCreation"
       [m_aoOptions]="m_aoPlugins"
       [m_aoSelectedValues]="m_oArea.plugins"
       [m_bReadonly]="true"
     >
     </rise-checkbox>
+
+    <!-- Archive Support Toggle (only for new creation if supported) -->
+    <div *ngIf="m_bIsNewAreaCreation && m_bIsSupportArchiveArea" class="align-items-md-start d-flex">
+      <span class="toggle-label">{{"CREATE_NEW_AREA_OF_OPERATION.SUPPORT_ARCHIVE" | translate }}</span>
+      <mat-slide-toggle
+        labelPosition="before"
+        (change)="onSwitchArchiveButton($event)"
+        [(ngModel)]="m_bSupportArchiveToggle"
+        class="custom-toggle"
+      ></mat-slide-toggle>
+    </div>
+
+    <!-- Action Buttons -->
     <div class="d-flex justify-content-between mt-2">
       <rise-button
+        *ngIf="!m_bIsNewAreaCreation"
         [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.ADVANCED_SETTINGS'"
         (click)="openAdvancedSettingsDialog()"
       ></rise-button>
@@ -56,6 +102,8 @@
       ></rise-button>
     </div>
   </div>
+
+  <!-- Advanced Settings View -->
   <div *ngIf="this.m_bIsAdvancedSettingsOn" class="body flex-fill d-flex flex-column gap-2">
     <rise-dropdown
       [m_bHasTitle]="true"
@@ -74,14 +122,23 @@
       [m_aoDropdownItems]="m_aoPluginMaps"
       (m_oSelectionChange)="setSelectedMap($event)"
     ></rise-dropdown>
+
     <div class="JSON-container">
-      <div #editor class="json-editor"  (keyup)="getJsonInput()"
-           (change)="getJsonInput()"></div>
-      <rise-button class="json-button" [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.DIALOG_PROCESSOR_UI_APP_FORMAT_JSON' | translate"
-                   [m_sSize]="'small'" (click)="checkJSON()"></rise-button>
-      <rise-button class="default-button" [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.DEFAULT_PARAMS' | translate"
-                   [m_sSize]="'small'" (click)="deleteParamAndReturnTheDefaultOne()"></rise-button>
+      <div #editor class="json-editor" (keyup)="getJsonInput()" (change)="getJsonInput()"></div>
+      <rise-button
+        class="json-button"
+        [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.DIALOG_PROCESSOR_UI_APP_FORMAT_JSON' | translate"
+        [m_sSize]="'small'"
+        (click)="checkJSON()"
+      ></rise-button>
+      <rise-button
+        class="default-button"
+        [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.DEFAULT_PARAMS' | translate"
+        [m_sSize]="'small'"
+        (click)="deleteParamAndReturnTheDefaultOne()"
+      ></rise-button>
     </div>
+
     <div class="d-flex justify-content-between mt-2">
       <rise-button
         [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.RETURN'"
@@ -94,5 +151,4 @@
       ></rise-button>
     </div>
   </div>
-
 </div>

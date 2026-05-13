@@ -23,8 +23,39 @@
       <rise-alerts-widget [m_aoAlerts]="m_aoAlerts"></rise-alerts-widget>
     </div>
     <div class="map-container flex-fill">
-      <rise-user-menu class="user-menu"></rise-user-menu>
-      <rise-map [m_aoAreas]="m_aoAreas" [m_bDashboardMap]="true"></rise-map>
+      <div class="map-user-menu">
+        <rise-user-menu class="user-menu"></rise-user-menu>
+      </div>
+
+      <div class="map-create-control">
+        <rise-button
+          *ngIf="!m_bEnableAreaDrawing"
+          class="create-area-btn"
+          [m_sLabel]="''"
+          [m_sIconLeft]="'add'"
+          [m_sRole]="'action'"
+          [m_sSize]="'small'"
+          (click)="startAreaCreation()"
+          title="Create new area"
+        ></rise-button>
+        <rise-button
+          *ngIf="m_bEnableAreaDrawing"
+          class="cancel-draw-btn"
+          [m_sLabel]="''"
+          [m_sIconLeft]="'close'"
+          [m_sRole]="'danger'"
+          [m_sSize]="'small'"
+          (click)="cancelAreaCreation()"
+          title="Cancel drawing"
+        ></rise-button>
+      </div>
+
+      <rise-map
+        [m_aoAreas]="m_aoAreas"
+        [m_bDashboardMap]="true"
+        [m_bEnableDashboardDrawing]="m_bEnableAreaDrawing"
+        (m_oDashboardAreaDrawn)="onAreaShapeDrawn($event)"
+      ></rise-map>
     </div>
   </div>
 </main>

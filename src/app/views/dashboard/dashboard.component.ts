@@ -1,6 +1,9 @@
 import {Component, NgZone, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {Subject, Subscription, takeUntil} from 'rxjs';
+import {MatDialog} from '@angular/material/dialog';
+import {geojsonToWKT} from '@terraformer/wkt';
+import {CommonModule} from '@angular/common';
 
 import {RiseAffectedWidgetComponent} from './rise-affected-widget/rise-affected-widget.component';
 import {RiseAlertsWidgetComponent} from './rise-alerts-widget/rise-alerts-widget.component';
@@ -8,12 +11,15 @@ import {RiseBannerComponent} from '../../components/rise-banner/rise-banner.comp
 import {RiseMapComponent} from '../../components/rise-map/rise-map.component';
 import {RiseOngoingWidgetComponent} from './rise-ongoing-widget/rise-ongoing-widget.component';
 import {RiseUserMenuComponent} from '../../components/rise-user-menu/rise-user-menu.component';
+import {RiseButtonComponent} from '../../components/rise-button/rise-button.component';
 
 import {EventViewModel} from '../../models/EventViewModel';
 import {AreaViewModel} from '../../models/AreaViewModel';
 
 import {AreaService} from '../../services/api/area.service';
 import {MapService} from '../../services/map.service';
+import {AreaInfoComponent} from '../area-of-operations/area-info/area-info.component';
+import {NotificationsDialogsService} from '../../services/notifications-dialogs.service';
 
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 
@@ -21,12 +27,14 @@ import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
   selector: 'app-dashboard',
   standalone: true,
   imports: [
+    CommonModule,
     RiseAffectedWidgetComponent,
     RiseAlertsWidgetComponent,
     RiseBannerComponent,
     RiseMapComponent,
     RiseOngoingWidgetComponent,
     RiseUserMenuComponent,
+    RiseButtonComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
@@ -50,11 +58,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   private m_oActiveAOI: Subscription = null;
 
+  /**
+   * Flag to enable drawing mode on dashboard map
+   */
+  public m_bEnableAreaDrawing: boolean = false;
+
+  /**
+   * Temporary shape data drawn on map
+   */
+  private m_oDrawnShapeInfo: any = null;
+
   constructor(
     private m_oAreaService: AreaService,
     private m_oMapService: MapService,
     private m_oRouter: Router,
     private m_oNgZone: NgZone,
+    private m_oDialog: MatDialog,
+    private m_oNotificationService: NotificationsDialogsService,
   ) {}
 
   ngOnInit(): void {
@@ -143,4 +163,64 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * TODO: User can click on an Area of Operation to access it
    */
   handleAreaSelected() {}
+
+  /**
+   * Enables drawing mode on the dashboard map to create a new area
+   */
+  public startAreaCreation(): void {
+    this.m_bEnableAreaDrawing = true;
+  }
+
+  /**
+   * Handles shape data emitted from the map when user completes drawing
+   * Opens the area info dialog for the user to fill in details
+   * @param shapeInfo - The drawn shape information (coordinates, type, etc.)
+   */
+  public onAreaShapeDrawn(shapeInfo: any): void {
+    if (FadeoutUtils.utilsIsObjectNullOrUndefined(shapeInfo)) {
+      return;
+    }
+
+    this.m_bEnableAreaDrawing = false;
+    this.m_oDrawnShapeInfo = shapeInfo;
+
+    // Convert shape to WKT format for API
+    let sBbox = '';
+    let sMarkerCoordinates = '';
+
+    if (shapeInfo.type === 'circle') {
+      sBbox = this.m_oMapService.convertCircleToWKT(shapeInfo.center, shapeInfo.radius);
+      sMarkerCoordinates = 'POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')';
+    } else if (shapeInfo.type === 'polygon') {
+      sBbox = geojsonToWKT(shapeInfo.geoJson);
+      sMarkerCoordinates = 'POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')';
+    }
+
+    // Open the area info dialog with the drawn shape data
+    this.m_oDialog
+      .open(AreaInfoComponent, {
+        data: {
+          isNew: true,
+          bbox: sBbox,
+          markerCoordinates: sMarkerCoordinates,
+          shapeInfo: shapeInfo,
+        },
+        height: '68%',
+      })
+      .afterClosed()
+      .subscribe((oResponse) => {
+        // Refresh areas list after dialog closes
+        if (oResponse) {
+          this.getUsersAOI();
+        }
+      });
+  }
+
+  /**
+   * Cancels the area drawing mode
+   */
+  public cancelAreaCreation(): void {
+    this.m_bEnableAreaDrawing = false;
+    this.m_oDrawnShapeInfo = null;
+  }
 }

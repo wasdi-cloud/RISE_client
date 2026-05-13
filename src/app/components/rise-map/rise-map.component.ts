@@ -84,9 +84,16 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
    */
   @Input() m_bMonitorMap: boolean = false;
 
+  /**
+   * Should enable drawing mode on dashboard?
+   */
+  @Input() m_bEnableDashboardDrawing: boolean = false;
+
   @Output() m_oMapInputChange = new EventEmitter();
 
   @Output() m_bPrintButtonClick = new EventEmitter<boolean>(); // Or EventEmitter<any> if you want to pass data
+
+  @Output() m_oDashboardAreaDrawn = new EventEmitter();
 
 
   m_oMap: L.Map;
@@ -204,13 +211,13 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     this.m_oMapService.m_oLayersControl.addTo(oMap);
     this.m_oMapService.initGeoSearchPluginForOpenStreetMap(oMap);
     this.addLatLngSearch(oMap);
-    if (!this.m_bIsSelectingArea) {
+    if (!this.m_bIsSelectingArea && !this.m_bEnableDashboardDrawing) {
       for (let oArea of this.m_aoAreas) {
         this.m_oMapService.addAreaMarker(oArea, oMap);
 
       }
       this.addMeasurementTools(oMap);
-    } else {
+    } else if (this.m_bIsSelectingArea || this.m_bEnableDashboardDrawing) {
       this.addImportBtn(oMap);
       this.addManualBbox(oMap);
       this.addCircleButton(oMap);
@@ -530,6 +537,10 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     }
     // Emit the shape information (area, points, center, radius) to the parent component
     this.m_oMapInputChange.emit(oShapeInfo);
+    // Also emit via dashboard-specific output if in dashboard drawing mode
+    if (this.m_bEnableDashboardDrawing) {
+      this.m_oDashboardAreaDrawn.emit(oShapeInfo);
+    }
   }
 
   private emitCircleButtonAreaEvent(fRadius: number, fLat, fLng) {
