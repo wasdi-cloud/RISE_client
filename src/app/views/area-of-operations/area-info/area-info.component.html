@@ -3,7 +3,7 @@
     class="dialog-header d-flex flex-row justify-content-between align-items-center"
   >
     <h3>
-      {{ (m_bIsNewAreaCreation ? "CREATE_NEW_AREA_OF_OPERATION.CREATE_NEW_AREA_OF_OPERATION" : "AREA_OF_OPERATIONS.DIALOG_HEADER") | translate }}
+      {{ (m_bIsNewAreaCreation ? "AREA_OF_OPERATIONS.CREATE_NEW_AREA_OF_OPERATION" : "AREA_OF_OPERATIONS.DIALOG_HEADER") | translate }}
     </h3>
     <span class="close-btn material-symbols-outlined" (click)="onDismiss()">
       close
@@ -90,11 +90,17 @@
 
     <!-- Action Buttons -->
     <div class="d-flex justify-content-between mt-2">
-      <rise-button
-        *ngIf="!m_bIsNewAreaCreation"
-        [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.ADVANCED_SETTINGS'"
-        (click)="openAdvancedSettingsDialog()"
-      ></rise-button>
+      <div class="d-flex gap-2">
+        <rise-button
+          *ngIf="!m_bIsNewAreaCreation"
+          [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.ADVANCED_SETTINGS'"
+          (click)="openAdvancedSettingsDialog()"
+        ></rise-button>
+        <rise-button
+          [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.CANCEL'"
+          (click)="onDismiss()"
+        ></rise-button>
+      </div>
       <rise-button
         [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.SAVE'"
         (click)="saveAreaOfOperation()"

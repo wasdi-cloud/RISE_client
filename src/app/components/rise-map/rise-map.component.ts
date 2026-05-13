@@ -3,6 +3,7 @@ import {
   Component,
   EventEmitter,
   Input,
+  NgZone,
   OnChanges,
   OnInit,
   Output,
@@ -111,6 +112,9 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
 
   private m_bIsManualBBoxInsert: boolean=false;
 
+  private m_oDashboardRectangleDrawer: any = null;
+  private m_fnDashboardDrawCreatedHandler: ((oEvent: any) => void) | null = null;
+
 
 
 
@@ -119,6 +123,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     private m_oNotificationService: NotificationsDialogsService,
     private m_oTranslate: TranslateService,
     private m_oViewContainerRef: ViewContainerRef,
+    private m_oNgZone: NgZone,
   ) {
     this.m_oMapService.initTilelayer();
     this.m_oMapService.setMapOptions();
@@ -186,6 +191,14 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
         }
 
       }
+
+      if (changes['m_bEnableDashboardDrawing'] && this.m_bDashboardMap && this.m_oMap) {
+        if (this.m_bEnableDashboardDrawing) {
+          this.startDashboardRectangleDrawing();
+        } else {
+          this.cancelDashboardRectangleDrawing();
+        }
+      }
     }
   }
 
@@ -211,13 +224,13 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     this.m_oMapService.m_oLayersControl.addTo(oMap);
     this.m_oMapService.initGeoSearchPluginForOpenStreetMap(oMap);
     this.addLatLngSearch(oMap);
-    if (!this.m_bIsSelectingArea && !this.m_bEnableDashboardDrawing) {
+    if (!this.m_bIsSelectingArea) {
       for (let oArea of this.m_aoAreas) {
         this.m_oMapService.addAreaMarker(oArea, oMap);
 
       }
       this.addMeasurementTools(oMap);
-    } else if (this.m_bIsSelectingArea || this.m_bEnableDashboardDrawing) {
+    } else if (this.m_bIsSelectingArea) {
       this.addImportBtn(oMap);
       this.addManualBbox(oMap);
       this.addCircleButton(oMap);
@@ -241,6 +254,48 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       this.onDrawDeleted(oEvent);
     });
 
+    if (this.m_bDashboardMap && this.m_bEnableDashboardDrawing) {
+      this.startDashboardRectangleDrawing();
+    }
+
+  }
+
+  private startDashboardRectangleDrawing(): void {
+    if (!this.m_oMap || this.m_bIsSelectingArea) {
+      return;
+    }
+
+    this.m_oMapService.clearPreviousDrawings(this.m_oMap);
+
+    this.cancelDashboardRectangleDrawing();
+
+    this.m_oDashboardRectangleDrawer = new L.Draw.Rectangle(this.m_oMap, {
+      shapeOptions: { color: '#e1aa07' },
+      showArea: false,
+    });
+
+    this.m_fnDashboardDrawCreatedHandler = (oEvent: any) => {
+      this.m_oNgZone.run(() => {
+        this.onDrawCreated(oEvent);
+        this.cancelDashboardRectangleDrawing();
+      });
+    };
+
+    this.m_oMap.on(L.Draw.Event.CREATED, this.m_fnDashboardDrawCreatedHandler);
+
+    this.m_oDashboardRectangleDrawer.enable();
+  }
+
+  private cancelDashboardRectangleDrawing(): void {
+    if (this.m_oMap && this.m_fnDashboardDrawCreatedHandler) {
+      this.m_oMap.off(L.Draw.Event.CREATED, this.m_fnDashboardDrawCreatedHandler);
+      this.m_fnDashboardDrawCreatedHandler = null;
+    }
+
+    if (this.m_oDashboardRectangleDrawer) {
+      this.m_oDashboardRectangleDrawer.disable();
+      this.m_oDashboardRectangleDrawer = null;
+    }
   }
 
   addCircleButton(oMap: L.Map): void {

@@ -168,6 +168,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * Enables drawing mode on the dashboard map to create a new area
    */
   public startAreaCreation(): void {
+    if (this.m_bEnableAreaDrawing) {
+      this.cancelAreaCreation();
+      return;
+    }
+
     this.m_bEnableAreaDrawing = true;
   }
 
@@ -181,39 +186,46 @@ export class DashboardComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.m_bEnableAreaDrawing = false;
-    this.m_oDrawnShapeInfo = shapeInfo;
+    this.m_oNgZone.run(() => {
+      this.m_bEnableAreaDrawing = false;
+      this.m_oDrawnShapeInfo = shapeInfo;
 
-    // Convert shape to WKT format for API
-    let sBbox = '';
-    let sMarkerCoordinates = '';
+      // Convert shape to WKT format for API
+      let sBbox = '';
+      let sMarkerCoordinates = '';
 
-    if (shapeInfo.type === 'circle') {
-      sBbox = this.m_oMapService.convertCircleToWKT(shapeInfo.center, shapeInfo.radius);
-      sMarkerCoordinates = 'POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')';
-    } else if (shapeInfo.type === 'polygon') {
-      sBbox = geojsonToWKT(shapeInfo.geoJson);
-      sMarkerCoordinates = 'POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')';
-    }
+      if (shapeInfo.type === 'circle') {
+        sBbox = this.m_oMapService.convertCircleToWKT(shapeInfo.center, shapeInfo.radius);
+        sMarkerCoordinates = 'POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')';
+      } else if (shapeInfo.type === 'polygon') {
+        sBbox = geojsonToWKT(shapeInfo.geoJson);
+        sMarkerCoordinates = 'POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')';
+      }
 
-    // Open the area info dialog with the drawn shape data
-    this.m_oDialog
-      .open(AreaInfoComponent, {
-        data: {
-          isNew: true,
-          bbox: sBbox,
-          markerCoordinates: sMarkerCoordinates,
-          shapeInfo: shapeInfo,
-        },
-        height: '68%',
-      })
-      .afterClosed()
-      .subscribe((oResponse) => {
-        // Refresh areas list after dialog closes
-        if (oResponse) {
-          this.getUsersAOI();
-        }
-      });
+      // Open the area info dialog with the drawn shape data
+      this.m_oDialog
+        .open(AreaInfoComponent, {
+          data: {
+            isNew: true,
+            bbox: sBbox,
+            markerCoordinates: sMarkerCoordinates,
+            shapeInfo: shapeInfo,
+          },
+          height: '68%',
+        })
+        .afterClosed()
+        .subscribe((oResponse) => {
+          // Refresh areas list after save
+          if (oResponse) {
+            this.getUsersAOI();
+            return;
+          }
+
+          // If dialog is canceled, remove temporary drawn overlays/markers.
+          this.m_oMapService.clearPreviousDrawings(null);
+          this.m_oDrawnShapeInfo = null;
+        });
+    });
   }
 
   /**

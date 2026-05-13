@@ -29,24 +29,13 @@
 
       <div class="map-create-control">
         <rise-button
-          *ngIf="!m_bEnableAreaDrawing"
           class="create-area-btn"
           [m_sLabel]="''"
-          [m_sIconLeft]="'add'"
-          [m_sRole]="'action'"
+          [m_sIconLeft]="m_bEnableAreaDrawing ? 'close' : 'add'"
+          [m_sRole]="m_bEnableAreaDrawing ? 'danger' : 'action'"
           [m_sSize]="'small'"
           (click)="startAreaCreation()"
-          title="Create new area"
-        ></rise-button>
-        <rise-button
-          *ngIf="m_bEnableAreaDrawing"
-          class="cancel-draw-btn"
-          [m_sLabel]="''"
-          [m_sIconLeft]="'close'"
-          [m_sRole]="'danger'"
-          [m_sSize]="'small'"
-          (click)="cancelAreaCreation()"
-          title="Cancel drawing"
+          [title]="m_bEnableAreaDrawing ? 'Cancel drawing' : 'Create new area'"
         ></rise-button>
       </div>
 
