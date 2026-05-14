@@ -137,7 +137,11 @@ export class SubscriptionEditorComponent implements OnInit,OnDestroy {
       return 'SUBSCRIPTIONS.EXPIRED';
     }
 
-    return this.m_oSubscription?.buySuccess ? 'SUBSCRIPTIONS.PAID' : 'SUBSCRIPTIONS.NOT_PAID';
+    if (this.m_oSubscription?.buySuccess || this.m_oSubscription?.valid) {
+      return 'SUBSCRIPTIONS.PAID';
+    }
+
+    return 'SUBSCRIPTIONS.NOT_PAID';    
   }
 
   getStatusIcon(): string {
@@ -145,7 +149,11 @@ export class SubscriptionEditorComponent implements OnInit,OnDestroy {
       return 'event_busy';
     }
 
-    return this.m_oSubscription?.buySuccess ? 'check_circle' : 'pending';
+    if (this.m_oSubscription?.buySuccess || this.m_oSubscription?.valid) {
+      return 'check_circle';
+    }
+
+    return 'pending';
   }
 
   getStatusClass(): string {
@@ -153,7 +161,11 @@ export class SubscriptionEditorComponent implements OnInit,OnDestroy {
       return 'payment-badge-expired';
     }
 
-    return this.m_oSubscription?.buySuccess ? 'payment-badge-paid' : 'payment-badge-not-paid';
+    if (this.m_oSubscription?.buySuccess || this.m_oSubscription?.valid) {
+      return 'payment-badge-paid';
+    }    
+
+    return 'payment-badge-not-paid';
   }
 
   getTranslatedPluginName(sPluginId: string): string {

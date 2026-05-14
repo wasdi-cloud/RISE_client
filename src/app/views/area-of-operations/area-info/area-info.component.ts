@@ -700,6 +700,7 @@ export class AreaInfoComponent implements OnInit,OnDestroy {
           this.m_bRequiresFastCheckout = true;
           this.tryOpenFastCheckoutIfReady();
         } else {
+          let sError: string = this.m_oTranslate.instant('SUBSCRIPTIONS.PURCHASE_ERROR');
           this.m_oNotificationService.openInfoDialog(sError, 'danger');
         }
       },
