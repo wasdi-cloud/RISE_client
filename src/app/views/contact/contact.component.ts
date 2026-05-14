@@ -22,6 +22,9 @@ export class ContactComponent {
   m_sHowHeard = '';
   m_sSubject = '';
   m_sMessage = '';
+  m_bIsSubmitting = false;
+  m_bSubmitSuccess = false;
+  m_sSubmitError = '';
 
   m_aoHowHeardOptions = [
     'Social Media',
@@ -40,10 +43,14 @@ export class ContactComponent {
   constructor(private m_oHelloService: HelloService) {}
 
   sendMessage(): void {
+    this.m_sSubmitError = '';
+
     if (!this.m_sFirstName || !this.m_sLastName || !this.m_sEmail || !this.m_sMessage) {
-      alert('Please fill in all mandatory fields (First Name, Last Name, Email, and Message).');
+      this.m_sSubmitError = 'Please fill in all mandatory fields (First Name, Last Name, Email, and Message).';
       return;
     }
+
+    this.m_bIsSubmitting = true;
 
     const oContactMessage: ContactMessageViewModel = {
       name: this.m_sFirstName,
@@ -56,15 +63,32 @@ export class ContactComponent {
       message: this.m_sMessage,
     };
 
-    this.m_oHelloService.contact(oContactMessage).subscribe(
-      {
-        next: () => {
-          alert('Message sent successfully!');
-        },
-        error: () => {
-          alert('Failed to send message. Please try again later.');
-        },
-      }
-    );
+    this.m_oHelloService.contact(oContactMessage).subscribe({
+      next: () => {
+        this.resetForm();
+        this.m_bSubmitSuccess = true;
+        this.m_bIsSubmitting = false;
+      },
+      error: () => {
+        this.m_bIsSubmitting = false;
+        this.m_sSubmitError = 'Failed to send message. Please try again later.';
+      },
+    });
+  }
+
+  sendAnotherMessage(): void {
+    this.m_bSubmitSuccess = false;
+    this.m_sSubmitError = '';
+  }
+
+  private resetForm(): void {
+    this.m_sFirstName = '';
+    this.m_sLastName = '';
+    this.m_sEmail = '';
+    this.m_sCompany = '';
+    this.m_sRole = '';
+    this.m_sHowHeard = '';
+    this.m_sSubject = '';
+    this.m_sMessage = '';
   }
 }

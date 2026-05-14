@@ -567,7 +567,8 @@ export class AreaInfoComponent implements OnInit,OnDestroy {
           }
         },
       });
-    } else {
+    } 
+    else {
       // Update existing area
       if (this.m_asSelectedIsPublic.length > 0) {
         this.m_oArea.publicArea = true;
@@ -647,36 +648,68 @@ export class AreaInfoComponent implements OnInit,OnDestroy {
       return;
     }
 
-    this.m_bFastCheckoutRunning = true;
-    this.m_oSubscriptionService.saveSubscription(this.m_oFastCheckoutInput).pipe(takeUntil(this.m_oDestroy$)).subscribe({
-      next: (oResponse) => {
-        const sSubId = oResponse?.body?.id;
-        if (FadeoutUtils.utilsIsStrNullOrEmpty(sSubId)) {
-          this.m_bFastCheckoutRunning = false;
-          this.m_oNotificationService.openInfoDialog(this.m_oTranslate.instant('SUBSCRIPTIONS.PURCHASE_ERROR'), 'danger');
-          return;
-        }
+    this.m_oArea.publicArea = this.m_asSelectedIsPublic.length > 0;
+    this.m_oArea.plugins = this.m_asPluginsSelected;
+    this.m_oArea.supportArchive = this.m_bSupportArchiveToggle;
+    this.m_oArea.active = false;
 
-        this.m_oSubscriptionService.getStripePaymentUrl(sSubId).pipe(takeUntil(this.m_oDestroy$)).subscribe({
-          next: (sUrl) => {
-            this.m_bFastCheckoutRunning = false;
-            if (!FadeoutUtils.utilsIsStrNullOrEmpty(sUrl)) {
-              window.location.href = sUrl;
+    // Use addArea for new creation with a de-activated area
+    this.m_oAreaService.addArea(this.m_oArea).pipe(takeUntil(this.m_oDestroy$)).subscribe({
+      next: (oResponse) => {
+        if (this.m_oArea.name != null) {
+          this.m_oFastCheckoutInput.name = this.m_oArea.name;
+        }
+        
+        this.m_oFastCheckoutInput.associatedAreaId = oResponse.id;
+
+        this.m_bFastCheckoutRunning = true;
+        this.m_oSubscriptionService.saveSubscription(this.m_oFastCheckoutInput).pipe(takeUntil(this.m_oDestroy$)).subscribe({
+          next: (oResponse) => {
+            const sSubId = oResponse?.body?.id;
+            if (FadeoutUtils.utilsIsStrNullOrEmpty(sSubId)) {
+              this.m_bFastCheckoutRunning = false;
+              this.m_oNotificationService.openInfoDialog(this.m_oTranslate.instant('SUBSCRIPTIONS.PURCHASE_ERROR'), 'danger');
               return;
             }
-            this.m_oNotificationService.openInfoDialog(this.m_oTranslate.instant('SUBSCRIPTIONS.PURCHASE_ERROR'), 'danger');
+
+            this.m_oSubscriptionService.getStripePaymentUrl(sSubId).pipe(takeUntil(this.m_oDestroy$)).subscribe({
+              next: (sUrl) => {
+                this.m_bFastCheckoutRunning = false;
+                if (!FadeoutUtils.utilsIsStrNullOrEmpty(sUrl)) {
+                  window.location.href = sUrl;
+                  return;
+                }
+                this.m_oNotificationService.openInfoDialog(this.m_oTranslate.instant('SUBSCRIPTIONS.PURCHASE_ERROR'), 'danger');
+              },
+              error: () => {
+                this.m_bFastCheckoutRunning = false;
+                this.m_oNotificationService.openInfoDialog(this.m_oTranslate.instant('SUBSCRIPTIONS.PURCHASE_ERROR'), 'danger');
+              },
+            });
           },
           error: () => {
             this.m_bFastCheckoutRunning = false;
             this.m_oNotificationService.openInfoDialog(this.m_oTranslate.instant('SUBSCRIPTIONS.PURCHASE_ERROR'), 'danger');
           },
         });
+
       },
-      error: () => {
-        this.m_bFastCheckoutRunning = false;
-        this.m_oNotificationService.openInfoDialog(this.m_oTranslate.instant('SUBSCRIPTIONS.PURCHASE_ERROR'), 'danger');
+      error: (oError) => {
+        if (oError.error?.errorStringCodes?.[0] === 'ERROR_API_NO_VALID_SUBSCRIPTION') {
+          this.m_bHasValidSubscription = false;
+          this.m_bRequiresFastCheckout = true;
+          this.tryOpenFastCheckoutIfReady();
+        } else {
+          this.m_oNotificationService.openInfoDialog(sError, 'danger');
+        }
       },
     });
+
+    if (this.m_oArea != null) {
+      if (this.m_oArea.name != null) {
+        
+      }
+    }
   }
 
   openFullBuyOptions(): void {

@@ -40,4 +40,6 @@ export class AreaViewModel extends RiseViewModel {
   firstFullArchivesReady?: boolean; 
 
   allFullArchivesReady?: boolean;
+
+  active?: boolean;
 }
