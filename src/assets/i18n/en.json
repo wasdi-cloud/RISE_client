@@ -62,7 +62,7 @@
     "AREA_NOT_FOUND_MSG": "To start creating areas of operations in RISE , please ",
     "AREA_NOT_FOUND_MSG_FIELD": "Your account is not linked to any area of operation at the moment. Please contact your organization admin ",
     "AREA_NOT_FOUND_LINK": "click here",
-    "IS_PUBLIC": "Is Public",
+    "IS_PUBLIC": "Make your area public (visible to all RISE users)",
     "DELETING_MESSAGE": "We are deleting your area of operation. Please wait."
   },
   "BANNER": {
@@ -78,12 +78,12 @@
     "SUPPORT_ARCHIVE": "Support Archive",
     "SUCCESS_AND_PENDING": "Your area has been added successfully, The layers are being generated , you will receive a notification by email when they are ready",
     "NAME": "Name",
-    "DESCRIPTION": "Description",
+    "DESCRIPTION": "Add your optional description here",
     "MAP_TITLE": "Define your Area",
     "SAVE": "Save",
     "CANCEL": "Cancel",
     "ADD_FIELD_OPERATOR": "Add Field Operator",
-    "PLUGINS": "Select Plugins",
+    "PLUGINS": "Select Plugins to activate in this area",
     "MANAGE_USERS": "Manage Users",
     "ID": "Id"
   },
@@ -295,6 +295,7 @@
     "BACK": "Back to Subscriptions",
     "BILLING": "Billing",
     "BUY_BUTTON": "Buy New Subscription",
+    "ADVANCED_BUY_BUTTON": "More Purchase Options",
     "COMPUTE_PRICE": "Get Computed Price",
     "COMPUTE_SECOND": "Compute Again",
     "COMPUTED_PRICE": "Computed Price",

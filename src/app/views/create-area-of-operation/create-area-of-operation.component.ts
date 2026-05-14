@@ -27,6 +27,7 @@ import {SubscriptionService} from "../../services/api/subscription.service";
 import {MatSlideToggle, MatSlideToggleChange} from "@angular/material/slide-toggle";
 import {FormsModule} from "@angular/forms";
 import {Subject, takeUntil} from "rxjs";
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-create-area-of-operation',
@@ -96,7 +97,7 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit,OnD
    */
   m_bIsSupportArchiveArea: boolean = false;
 
-  constructor(private m_oAreaOfOperationService: AreaService, private m_oDialog: MatDialog, private m_oNotificationService: NotificationsDialogsService, private m_oPluginService: PluginService, private m_oRouter: Router, private m_oTranslate: TranslateService, private m_oMapService: MapService, private m_oConstantService: ConstantsService, private m_oUserService: UserService, private m_oSubscriptionService: SubscriptionService) {
+  constructor(private m_oAreaOfOperationService: AreaService, private m_oDialog: MatDialog, private m_oNotificationService: NotificationsDialogsService, private m_oPluginService: PluginService, private m_oRouter: Router, private m_oTranslate: TranslateService, private m_oMapService: MapService, private m_oConstantService: ConstantsService, private m_oUserService: UserService, private m_oSubscriptionService: SubscriptionService, private m_oHttp: HttpClient) {
   }
 
   ngAfterViewInit() {
@@ -121,6 +122,11 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit,OnD
               label: aoResponseElement.name, value: aoResponseElement.id,
             });
           }
+        }
+
+        if (this.m_asPluginsSelected.length === 0) {
+          this.m_asPluginsSelected = this.m_asPlugins.map((oPlugin) => oPlugin.value);
+          this.m_oAreaOfOperation.plugins = [...this.m_asPluginsSelected];
         }
       },
     });
@@ -194,6 +200,7 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit,OnD
         this.m_oAreaOfOperation.markerCoordinates = 'POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')';
         // Convert circle to WKT (approximated as a polygon with 64 points)
         this.m_oAreaOfOperation.bbox = this.m_oMapService.convertCircleToWKT(shapeInfo.center, shapeInfo.radius);
+        this.suggestedName(shapeInfo.center.lat, shapeInfo.center.lng);
       } else if (shapeInfo.type === 'polygon') {
         // Store polygon information as before
         this.m_oAreaInfo = {
@@ -206,10 +213,58 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit,OnD
         // Convert polygon to WKT
         this.m_oAreaOfOperation.bbox = geojsonToWKT(shapeInfo.geoJson);
         this.m_oAreaOfOperation.markerCoordinates = 'POINT(' + shapeInfo.center.lng + ' ' + shapeInfo.center.lat + ')';
+        this.suggestedName(shapeInfo.center.lat, shapeInfo.center.lng);
 
 
       }
     }
+  }
+
+  private suggestedName(fLat: number, fLng: number): void {
+    if (!FadeoutUtils.utilsIsStrNullOrEmpty(this.m_oAreaOfOperation.name)) {
+      return;
+    }
+
+    const sFallback = this.getLatLonFallbackName(fLat, fLng);
+    const sUrl = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${encodeURIComponent(fLat)}&lon=${encodeURIComponent(fLng)}&zoom=10&addressdetails=1`;
+
+    this.m_oHttp.get<any>(sUrl).pipe(takeUntil(this.m_oDestroy$)).subscribe({
+      next: (oResponse) => {
+        const sReverseGeocodedName = this.buildNameFromAddress(oResponse?.address);
+        this.m_oAreaOfOperation.name = sReverseGeocodedName || sFallback;
+      },
+      error: () => {
+        this.m_oAreaOfOperation.name = sFallback;
+      }
+    });
+  }
+
+  private buildNameFromAddress(oAddress: any): string {
+    if (!oAddress) {
+      return '';
+    }
+
+    const sLocality = oAddress.city || oAddress.town || oAddress.village || oAddress.municipality || oAddress.county || '';
+    const sRegion = oAddress.state || '';
+    const sCountry = oAddress.country || '';
+
+    if (sRegion && sCountry) {
+      return `Area - ${sRegion}, ${sCountry}`;
+    }
+
+    if (sLocality && sCountry) {
+      return `Area - ${sLocality}, ${sCountry}`;
+    }
+
+    if (sCountry) {
+      return `Area - ${sCountry}`;
+    }
+
+    return '';
+  }
+
+  private getLatLonFallbackName(fLat: number, fLng: number): string {
+    return `Area - Lat ${fLat.toFixed(4)}, Lon ${fLng.toFixed(4)}`;
   }
 
   executeAreaOfOperationSaving() {

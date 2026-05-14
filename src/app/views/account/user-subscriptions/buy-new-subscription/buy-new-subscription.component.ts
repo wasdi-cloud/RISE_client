@@ -51,6 +51,7 @@ export class BuyNewSubscriptionComponent implements OnInit, OnDestroy {
   m_sPaymentMethod: string = 'credit';
   m_oSelectedPaymentType = null;
   m_sSelectedPaymentTypeName: string = "";
+  m_asPrefillPluginIds: Array<string> = [];
   isCheckoutNow: boolean = false;
   m_iStep: number = 1; // Step 1 initially
   private m_oDestroy$ = new Subject<void>();
@@ -77,7 +78,11 @@ export class BuyNewSubscriptionComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     let oDate = new Date()
-    this.m_oSubInput.name = "Subscription - " + oDate.toDateString()
+    this.m_oSubInput.name = this.m_oData?.prefill?.name || ("Subscription - " + oDate.toDateString());
+    this.m_oSubInput.description = this.m_oData?.prefill?.description || '';
+    this.m_asPrefillPluginIds = Array.isArray(this.m_oData?.prefill?.pluginIds)
+      ? [...this.m_oData.prefill.pluginIds]
+      : [];
     this.getPaymentTypes();
     this.m_sOrganizationId = this.getOrganizationId();
 
@@ -165,8 +170,22 @@ export class BuyNewSubscriptionComponent implements OnInit, OnDestroy {
 
   initPluginNames() {
     this.m_aoPluginNames = this.m_aoPluginTypes.map((oPlugin) => oPlugin.name);
-    this.m_asSelectedPluginsDisplay = [...this.m_aoPluginNames];
-    this.m_asSelectedPlugins = this.m_aoPluginTypes.map((oPlugin) => oPlugin.id);
+
+    const bHasPrefillPlugins = this.m_asPrefillPluginIds.length > 0;
+    if (bHasPrefillPlugins) {
+      this.m_asSelectedPlugins = this.m_aoPluginTypes
+        .filter((oPlugin) => this.m_asPrefillPluginIds.includes(oPlugin.id))
+        .map((oPlugin) => oPlugin.id);
+
+      this.m_asSelectedPluginsDisplay = this.m_aoPluginTypes
+        .filter((oPlugin) => this.m_asSelectedPlugins.includes(oPlugin.id))
+        .map((oPlugin) => oPlugin.name);
+    } else {
+      this.m_asSelectedPluginsDisplay = [...this.m_aoPluginNames];
+      this.m_asSelectedPlugins = this.m_aoPluginTypes.map((oPlugin) => oPlugin.id);
+    }
+
+    this.m_oSubInput.plugins = [...this.m_asSelectedPlugins];
   }
 
   handleSubTypeSelect(oEvent) {

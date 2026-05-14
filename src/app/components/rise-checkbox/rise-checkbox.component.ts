@@ -22,6 +22,7 @@ export class RiseCheckboxComponent implements OnChanges {
   @Output() m_oSelectionChange = new EventEmitter<Array<any>>();
   @Input() m_aoSelectedValues: any[] = []; // Input for selected values
   @Input() m_bReadonly: boolean = false;
+  @Input() m_bShowChips: boolean = false;
   /*
     a flag to enable select all
    */

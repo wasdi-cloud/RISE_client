@@ -61,7 +61,7 @@
 		"AREA_NOT_FOUND": "Area non trovata",
 		"AREA_NOT_FOUND_MSG": "Per iniziare a creare aree di operazioni in RISE, ",
 		"AREA_NOT_FOUND_LINK": "clicca qui",
-    	"IS_PUBLIC": "Questa area è pubblica?",
+    "IS_PUBLIC": "Rendi la tua area pubblica (visibile a tutti gli utenti RISE)",
 		"DELETING_MESSAGE": "Stiamo eliminado la tua area di operazioni, attendere prego...",
     "AREA_NOT_FOUND_MSG_FIELD": "Il tuo account non è attualmente collegato a nessuna area operativa. Si prega di contattare l'amministratore della tua organizzazione "
 
@@ -83,12 +83,12 @@
     "SUPPORT_ARCHIVE": "Supporta l'archiviazione",
     "SUCCESS_AND_PENDING": "La tua area è stata aggiunta con successo. I livelli sono in fase di generazione; riceverai una notifica via email quando saranno pronti.",
 		"NAME": "Nome",
-		"DESCRIPTION": "Descrizione",
+		"DESCRIPTION": "Aggiungi la tua descrizione opzionale qui",
 		"MAP_TITLE": "Definisci la tua Area",
 		"SAVE": "Salva",
 		"CANCEL": "Annulla",
 		"ADD_FIELD_OPERATOR": "Aggiungi Operatore sul Campo",
-		"PLUGINS": "Seleziona Plugin",
+		"PLUGINS": "Seleziona i plugin da attivare in questa area",
 		"MANAGE_USERS": "Gestisci Utenti",
 		"ID": "Id"
 	},
@@ -317,6 +317,7 @@
 		"BACK": "Torna agli Abbonamenti",
 		"BILLING": "Fatturazione",
 		"BUY_BUTTON": "Acquista Nuovo Abbonamento",
+    "ADVANCED_BUY_BUTTON": "Più Opzioni di Acquisto",
 		"COMPUTE_PRICE": "Calcola Prezzo",
 		"COMPUTE_SECOND": "Ricalcola",
 		"COMPUTED_PRICE": "Prezzo Calcolato",

@@ -20,8 +20,20 @@ textarea.form-control:focus {
 
 ::placeholder {
   color: var(--rise-text-dim);
+  font-style: italic;
+}
+
+textarea::-webkit-input-placeholder {
+  color: var(--rise-text-dim);
+  font-style: italic;
+}
+
+textarea::-moz-placeholder {
+  color: var(--rise-text-dim);
+  font-style: italic;
 }
 
 :-ms-input-placeholder {
   color: var(--rise-text-dim);
+  font-style: italic;
 }
