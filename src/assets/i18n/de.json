@@ -46,6 +46,7 @@
     "CONFIRM_SAME_NAME": "The selected area shares a name with an already existing area. Do you want to proceed?",
     "CONFIRM": "<bt>Proceed anyways?",
     "CONFIRM_AREA_TOO_BIG": "The area you've selected is too large. Click 'confirm' to have RISE automatically adjust it.",
+      "DATE": "Datum",
     "CONFIRM_AREA_TOO_SMALL": "The area you've selected is too small. Click 'confirm' to have RISE automatically adjust it.",
     "CONFIRM_CREATE_NEW_AREA": "The area you've selected is too large. Please adjust the dimensions.",
     "CREATION_DATE": "Date Created",
@@ -323,14 +324,18 @@
     "SUCCESS": "Subscription purchase successful!",
     "TYPE": "Number of areas",
     "TYPE_ERROR": "Could not retrieve subscription types",
-    "PAYMENT_TYPE": "Subscription Length",
+    "PAYMENT_TYPE": "Duration",
     "UPDATE": "Update Subscription",
     "WIRE": "Wire Transfer",
     "YEAR": "One Year",
     "STRIPE_TITLE":  "Re-directing to STRIPE",
     "STRIPE_MSG":  "You will be re-directed to our payment partner, Stripe. Click 'Yes' to continue or 'CANCEL' to end the payment process.",
     "INVALID_SUB": "Invalid Subscription",
-    "INVALID_SUB_MSG": "Your subscription has expired or you do not have an active subscription. Please buy new subscription to continue using this feature."
+    "INVALID_SUB_MSG": "Your subscription has expired or you do not have an active subscription. Please buy new subscription to continue using this feature.",
+    "PAID": "Paid",
+    "NOT_PAID": "Not Paid",
+    "EXPIRED": "Abgelaufen",
+    "GET_INVOICE": "Get Invoice"
   },
   "TOOLBAR": {
     "ACCOUNT": "Account",
@@ -536,5 +541,21 @@
     "PLUGIN_LST": "Temperature",
     "PLUGIN_ACTIVE_FIRE": "Fire",
     "PLUGIN_POLLUTANT": "Air Quality"
+  },
+  "COMMON": {
+    "ERROR": "Error",
+    "SUCCESS": "Success",
+    "LOADING": "Loading...",
+    "CONFIRM": "Confirm",
+    "CANCEL": "Cancel",
+    "YES": "Yes",
+    "NO": "No",
+    "EDIT": "Edit",
+    "INFO": "Info",
+    "ALL": "All",
+    "AREA": "Area",
+    "AREAS": "Areas",
+    "MONTH": "Month",
+    "MONTHS": "Months"
   }
 }

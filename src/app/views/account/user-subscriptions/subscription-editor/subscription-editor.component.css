@@ -1,11 +1,134 @@
 div.editor-container {
   background-color: var(--surface-glass);
   backdrop-filter: blur(20px);
-  width: 450px;
+  width: min(760px, 95vw);
+  max-height: 85vh;
+  overflow: auto;
+  border-radius: 12px;
 }
 
 h3 {
   font-size: 20px;
+  margin: 0;
+}
+
+.subtitle {
+  margin: 2px 0 0;
+  opacity: 0.75;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+
+.close-btn {
+  cursor: pointer;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.detail-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.detail-card h4 {
+  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.detail-label {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.detail-value {
+  font-size: 13px;
+  font-weight: 500;
+  text-align: right;
+}
+
+.payment-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.payment-badge-paid {
+  background-color: var(--rise-gold);
+  color: #705710;
+}
+
+.payment-badge-not-paid {
+  background-color: #7e444b;
+  color: #291e1e;
+}
+
+.payment-badge-expired {
+  background-color: #5f5f5f;
+  color: #ececec;
+}
+
+.status-icon {
+  font-size: 16px;
+}
+
+.archive-support {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #f4b27e;
+  font-weight: 600;
+}
+
+.archive-support.enabled {
+  color: #7fd39c;
+}
+
+.archive-support .material-symbols-outlined {
+  font-size: 16px;
+}
+
+.plugins-section {
+  margin-top: 10px;
+}
+
+.plugins-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.plugin-chip {
+  background: rgba(130, 186, 255, 0.14);
+  border: 1px solid rgba(130, 186, 255, 0.35);
+  border-radius: 999px;
+  padding: 3px 9px;
+  font-size: 12px;
+}
+
+@media (max-width: 760px) {
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 ::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {

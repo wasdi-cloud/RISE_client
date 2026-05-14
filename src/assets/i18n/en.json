@@ -323,14 +323,18 @@
     "SUCCESS": "Subscription purchase successful!",
     "TYPE": "Number of areas",
     "TYPE_ERROR": "Could not retrieve subscription types",
-    "PAYMENT_TYPE": "Subscription Length",
+    "PAYMENT_TYPE": "Duration",
     "UPDATE": "Update Subscription",
     "WIRE": "Wire Transfer",
     "YEAR": "One Year",
     "STRIPE_TITLE":  "Re-directing to STRIPE",
     "STRIPE_MSG":  "You will be re-directed to our payment partner, Stripe. Click 'Yes' to continue or 'CANCEL' to end the payment process.",
     "INVALID_SUB": "Invalid Subscription",
-    "INVALID_SUB_MSG": "Your subscription has expired or you do not have an active subscription. Please buy new subscription to continue using this feature."
+    "INVALID_SUB_MSG": "Your subscription has expired or you do not have an active subscription. Please buy new subscription to continue using this feature.",
+    "PAID": "Paid",
+    "NOT_PAID": "Not Paid",
+    "EXPIRED": "Expired",
+    "GET_INVOICE": "Get Invoice"
   },
   "TOOLBAR": {
     "ACCOUNT": "Account",
@@ -822,5 +826,22 @@
     "PRIVACY_POLICY": "Privacy Policy",
     "FAQ": "F.A.Q.",
     "BUILT_WITH": "Built with ❤️ to support humanitarian action — © 2025 RISE — Powered by WASDI — All rights reserved."
+  },
+  "COMMON": {
+    "ERROR": "Error",
+    "SUCCESS": "Success",
+    "LOADING": "Loading...",
+    "CONFIRM": "Confirm",
+    "CANCEL": "Cancel",
+    "YES": "Yes",
+    "NO": "No",
+    "EDIT": "Edit",
+    "INFO": "Info",
+    "ALL": "All",
+    "DATE": "Date",
+    "AREA": "Area",
+    "AREAS": "Areas",
+    "MONTH": "Month",
+    "MONTHS": "Months"
   }
 }

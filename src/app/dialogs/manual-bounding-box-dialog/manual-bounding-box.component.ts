@@ -101,7 +101,7 @@ export class ManualBoundingBoxComponent implements OnInit{
 
   checkJSON() {
     let sErrorMsg = this.m_oTranslate.instant("MANUAL_BBOX.DIALOG_FORMAT_JSON_ERROR");
-    let sErrorHeader = this.m_oTranslate.instant("MANUAL_BBOX.KEY_PHRASES.ERROR");
+    let sErrorHeader = this.m_oTranslate.instant("LAT_LNG_SEARCH.ERROR");
     try {
       let oParsedJson = JSON.parse(this.m_sJSONParam);
       let sPrettyPrint = JSON.stringify(oParsedJson, null, 2);

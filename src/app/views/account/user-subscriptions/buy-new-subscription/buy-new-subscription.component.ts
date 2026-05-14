@@ -245,7 +245,7 @@ export class BuyNewSubscriptionComponent implements OnInit, OnDestroy {
         }
       },
       error: (oError) => {
-        this.m_oNotificationService.openSnackBar(this.m_oTranslate.instant("USER_SUBSCRIPTION_URL_ERROR"), this.m_oTranslate.instant("KEY_PHRASES.GURU_MEDITATION"), 'alert');
+        this.m_oNotificationService.openSnackBar(this.m_oTranslate.instant("USER_SUBSCRIPTION_URL_ERROR"), this.m_oTranslate.instant("ERROR_MSG.ERROR_UNKNOWN"), 'alert');
         this.isCheckoutNow = false;
       }
     });

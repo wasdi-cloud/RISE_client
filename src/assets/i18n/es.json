@@ -297,7 +297,11 @@
     "YEAR": "Un año",
     "STRIPE_MSG": "Será redirigido a nuestro socio de pago, Stripe. Haga clic en 'Sí' para continuar o en 'CANCELAR' para finalizar el proceso de pago.",
     "INVALID_SUB": "Suscripción inválida",
-    "INVALID_SUB_MSG": "Su suscripción ha caducado o no tiene una suscripción activa. Por favor, adquiera una nueva suscripción para continuar usando esta función."
+    "INVALID_SUB_MSG": "Su suscripción ha caducado o no tiene una suscripción activa. Por favor, adquiera una nueva suscripción para continuar usando esta función.",
+    "PAID": "Pagado",
+    "NOT_PAID": "No Pagado",
+    "EXPIRED": "Caducado",
+    "GET_INVOICE": "Obtener Factura"
   },
   "MONITOR": {
     "ADD_TITLE_AND_DESCRIPTION": "Añadir Título y Descripción",
@@ -361,7 +365,6 @@
     "EXPLANATION": "El filtro puede ser Ninguno para analizar todos los píxeles, o un número: en este caso, RISE analizará los píxeles con un valor mayor que el filtro. Haz clic en Actualizar para iniciar el análisis.",
     "WAIT": "RISE está analizando tu capa."
   },
-
 
   "TOOLBAR": {
     "ACCOUNT": "Cuenta",
@@ -528,5 +531,22 @@
     "PLUGIN_LST": "Temperatura",
     "PLUGIN_ACTIVE_FIRE": "Incendio",
     "PLUGIN_POLLUTANT": "Calidad del aire"
+  },
+  "COMMON": {
+    "ERROR": "Error",
+    "SUCCESS": "Éxito",
+    "LOADING": "Cargando...",
+    "CONFIRM": "Confirmar",
+    "CANCEL": "Cancelar",
+    "YES": "Sí",
+    "NO": "No",
+    "EDIT": "Editar",
+    "INFO": "Información",
+    "ALL": "Todos",
+    "DATE": "Fecha",
+    "AREA": "Área",
+    "AREAS": "Áreas",
+    "MONTH": "Mes",
+    "MONTHS": "Meses"
   }
 }

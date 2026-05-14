@@ -2,7 +2,10 @@
   <div
     class="header d-flex flex-row justify-content-between align-items-center"
   >
-    <h3>Edit {{ m_oSubscription.name }}</h3>
+    <div class="title-block">
+      <h3>{{ m_sSubscriptionHeader }}</h3>
+      <p class="subtitle">{{ "ACCOUNT.SUBSCRIPTIONS" | translate }}</p>
+    </div>
     <span
       class="close-btn material-symbols-outlined"
       (click)="onDismiss(false)"
@@ -15,52 +18,96 @@
       [m_bHasTitle]="true"
       [(m_sInputText)]="m_oSubscription.name"
       [m_sLocalizationKey]="'SUBSCRIPTIONS.NAME'"
-      [m_bReadonly]="!m_bIsEditing"
+      [m_bReadonly]="false"
     ></rise-text-input>
     <rise-textarea-input
       [m_bHasTitle]="true"
       [(m_sInputText)]="m_oSubscription.description"
       [m_sLocalizationKey]="'SUBSCRIPTIONS.DESCRIPTION'"
-      [m_bReadonly]="!m_bIsEditing"
+      [m_bReadonly]="false"
     ></rise-textarea-input>
-    <rise-text-input
-      *ngIf="!m_bIsEditing"
-      [m_bHasTitle]="true"
-      [m_bReadonly]="true"
-      [(m_sInputText)]="m_oSubscription.paymentType"
-      [m_sLocalizationKey]="'SUBSCRIPTIONS.TYPE'"
-    ></rise-text-input>
-    <rise-date-input
-      *ngIf="!m_bIsEditing"
-      [m_bReadonly]="true"
-      [m_bHasTitle]="true"
-      [m_sLocalizationKey]="'SUBSCRIPTIONS.START_DATE'"
-      [m_sInputDate]="m_oSubscription.buyDate | date : 'yyyy-MM-dd'"
-    ></rise-date-input>
-    <rise-date-input
-      *ngIf="!m_bIsEditing"
-      [m_bReadonly]="true"
-      [m_bHasTitle]="true"
-      [m_sLocalizationKey]="'SUBSCRIPTIONS.EXPIRY'"
-      [m_sInputDate]="m_oSubscription.expireDate | date : 'yyyy-MM-dd'"
-    ></rise-date-input>
-    <rise-text-input
-      *ngIf="!m_bIsEditing"
-      [m_bHasTitle]="true"
-      [m_bReadonly]="true"
-      [m_sLocalizationKey]="'SUBSCRIPTIONS.PRICE'"
-      [m_sInputText]="m_sPrice | currency : 'EUR'"
-    ></rise-text-input>
+
+    <div class="details-grid">
+      <section class="detail-card">
+        <h4>{{ "SUBSCRIPTIONS.BILLING" | translate }}</h4>
+
+        <div class="detail-row">
+          <span class="detail-label">{{ "AREA_OF_OPERATIONS.CREATION_DATE" | translate }}</span>
+          <span class="detail-value">{{ m_oSubscription.creationDate | date : "yyyy-MM-dd HH:mm" }}</span>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">{{ "SUBSCRIPTIONS.PURCHASE" | translate }}</span>
+          <span class="detail-value">{{ m_oSubscription.buyDate | date : "yyyy-MM-dd HH:mm" }}</span>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">{{ "SUBSCRIPTIONS.EXPIRY" | translate }}</span>
+          <span class="detail-value">{{ m_oSubscription.expireDate | date : "yyyy-MM-dd HH:mm" }}</span>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">{{ "SUBSCRIPTIONS.TYPE" | translate }}</span>
+          <span class="detail-value">{{ m_oSubscription.areaCount || "-" }}</span>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">{{ "SUBSCRIPTIONS.PAYMENT_TYPE" | translate }}</span>
+          <span class="detail-value">{{ m_oSubscription.paymentType || "-" }}</span>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">{{ "SUBSCRIPTIONS.PAYMENT" | translate }}</span>
+          <span class="detail-value">{{ m_oSubscription.paymentMethod || "-" }}</span>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">{{ "SUBSCRIPTIONS.PRICE" | translate }}</span>
+          <span class="detail-value">{{ m_oSubscription.price | currency : (m_oSubscription.currency || "EUR") }}</span>
+        </div>
+      </section>
+
+      <section class="detail-card">
+        <h4>{{ "ACCOUNT.SUBSCRIPTIONS" | translate }}</h4>
+
+        <div class="detail-row">
+          <span class="detail-label">{{ "SUBSCRIPTIONS.PAYMENT" | translate }}</span>
+          <span class="payment-badge" [ngClass]="getStatusClass()">
+            <span class="material-symbols-outlined status-icon">{{ getStatusIcon() }}</span>
+            {{ getStatusLabelKey() | translate }}
+          </span>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">{{ "CREATE_NEW_AREA_OF_OPERATION.SUPPORT_ARCHIVE" | translate }}</span>
+          <span class="archive-support" [class.enabled]="m_oSubscription.supportsArchive">
+            <span class="material-symbols-outlined">{{ m_oSubscription.supportsArchive ? "check_circle" : "cancel" }}</span>
+            {{ (m_oSubscription.supportsArchive ? "COMMON.YES" : "COMMON.NO") | translate }}
+          </span>
+        </div>
+
+        <div class="plugins-section">
+          <div class="detail-label mb-1">{{ "SUBSCRIPTIONS.PLUGINS" | translate }}</div>
+          <div class="plugins-list" *ngIf="m_oSubscription.plugins?.length; else noPluginsTpl">
+            <span class="plugin-chip" *ngFor="let sPlugin of m_oSubscription.plugins">
+              {{ getTranslatedPluginName(sPlugin) }}
+            </span>
+          </div>
+          <ng-template #noPluginsTpl>
+            <div class="detail-value">-</div>
+          </ng-template>
+        </div>
+      </section>
+    </div>
   </div>
   <div class="footer d-flex flex-row justify-content-between">
     <rise-button
-      *ngIf="m_bIsEditing"
       [m_sLabel]="'SUBSCRIPTIONS.UPDATE'"
       (click)="updateSubscription()"
     ></rise-button>
     <rise-button
       [m_sRole]="'muted'"
-      [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.CANCEL'"
+      [m_sLabel]="'COMMON.CANCEL'"
       (click)="onDismiss(false)"
     ></rise-button>
   </div>

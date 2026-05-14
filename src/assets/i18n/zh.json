@@ -323,14 +323,18 @@
     "SUCCESS": "Subscription purchase successful!",
     "TYPE": "Number of areas",
     "TYPE_ERROR": "Could not retrieve subscription types",
-    "PAYMENT_TYPE": "Subscription Length",
+    "PAYMENT_TYPE": "Duration",
     "UPDATE": "Update Subscription",
     "WIRE": "Wire Transfer",
     "YEAR": "One Year",
     "STRIPE_TITLE":  "Re-directing to STRIPE",
     "STRIPE_MSG":  "You will be re-directed to our payment partner, Stripe. Click 'Yes' to continue or 'CANCEL' to end the payment process.",
     "INVALID_SUB": "Invalid Subscription",
-    "INVALID_SUB_MSG": "Your subscription has expired or you do not have an active subscription. Please buy new subscription to continue using this feature."
+    "INVALID_SUB_MSG": "Your subscription has expired or you do not have an active subscription. Please buy new subscription to continue using this feature.",
+    "PAID": "Paid",
+    "NOT_PAID": "Not Paid",
+    "EXPIRED": "已过期",
+    "GET_INVOICE": "Get Invoice"
   },
   "TOOLBAR": {
     "ACCOUNT": "Account",
@@ -536,5 +540,22 @@
     "PLUGIN_LST": "Temperature",
     "PLUGIN_ACTIVE_FIRE": "Fire",
     "PLUGIN_POLLUTANT": "Air Quality"
+  },
+  "COMMON": {
+    "ERROR": "Error",
+    "SUCCESS": "Success",
+    "LOADING": "Loading...",
+    "CONFIRM": "Confirm",
+    "CANCEL": "Cancel",
+    "YES": "Yes",
+    "NO": "No",
+    "EDIT": "Edit",
+    "INFO": "Info",
+    "ALL": "All",
+    "DATE": "日期",
+    "AREA": "Area",
+    "AREAS": "Areas",
+    "MONTH": "Month",
+    "MONTHS": "Months"
   }
 }

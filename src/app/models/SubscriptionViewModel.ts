@@ -34,4 +34,6 @@ export class SubscriptionViewModel {
   paymentMethod:string
 
   buySuccess:boolean;
+
+  areaCount:number;
 }

@@ -344,11 +344,16 @@
     "PAYMENT_TYPE": "Durata dell'abbonamento",
 		"UPDATE": "Aggiorna Abbonamento",
 		"WIRE": "Bonifico Bancario",
+    "WIRE_TRANSFER": "se confermi di voler pagare con bonifico bancario, riceverai i dettagli bancari via e-mail",
 		"YEAR": "Un Anno",
 		"STRIPE_TITLE": "Reindirizzamento a STRIPE",
 		"STRIPE_MSG": "Verrai reindirizzato al nostro partner di pagamento, Stripe. Clicca 'Sì' per continuare o 'ANNULLA' per terminare il processo di pagamento.",
 		"INVALID_SUB": "Abbonamento Non Valido",
-		"INVALID_SUB_MSG": "Il tuo abbonamento è scaduto o non è attivo. Acquista un nuovo abbonamento per continuare a utilizzare questa funzionalità."
+    "INVALID_SUB_MSG": "Il tuo abbonamento è scaduto o non è attivo. Acquista un nuovo abbonamento per continuare a utilizzare questa funzionalità.",
+    "PAID": "Pagato",
+    "NOT_PAID": "Non Pagato",
+    "EXPIRED": "Scaduto",
+    "GET_INVOICE": "Ottieni Fattura"
 	},
 	"TOOLBAR": {
 		"ACCOUNT": "Account",
@@ -384,7 +389,10 @@
 		"PW_ERROR": "Impossibile salvare le informazioni sulla password",
 		"SELECT_LANG": "Seleziona Lingua",
 		"SELECT_LANG_MSG": "Seleziona la lingua del sistema che desideri utilizzare per RISE.",
-		"SUB_MSG": "<strong>RISE</strong> utilizzerà questa email per connettersi e inviare notifiche. Puoi gestire le impostazioni delle notifiche sopra."
+		"SUB_MSG": "<strong>RISE</strong> utilizzerà questa email per connettersi e inviare notifiche. Puoi gestire le impostazioni delle notifiche sopra.",
+    "PAID": "Pagato",
+    "NOT_PAID": "Non Pagato",
+    "GET_INVOICE": "Ottieni Fattura"
 	},
 	"USER_MENU": {
     "ORGANIZATION": "Organizzazione",
@@ -717,6 +725,7 @@
     "VALIDATION_TITLE": "Successo della Validazione sul Campo",
     "VALIDATION_DESC": "In un test testa a testa durante il ciclone Cheneso, due team — uno che utilizzava metodi tradizionali (visite sul campo, interviste e dati secondari) e l'altro che utilizzava RISE — hanno valutato l'impatto dell'inondazione, i bisogni della popolazione e i danni alle infrastrutture. L'esercizio ha dimostrato la velocità, la precisione, l'efficienza dei costi e la sicurezza di RISE nella risposta alle crisi.",
     "VALIDATION_RESULTS_TITLE": "Risultati dell'Esercizio di Validazione e Impatto",
+		"IMAGES_RESULTS_TITLE": "Risultati delle immagini",
     "NUMBERS_STORY": "I NUMERI HANNO RACCONTATO LA STORIA:",
     "RESULTS_INTRO": "RISE ha fornito una risposta ai disastri più veloce, sicura ed economica",
     "FASTER_RESPONSE_DESC": "RISE ha ridotto drasticamente i tempi di valutazione, consentendo un processo decisionale più rapido nelle emergenze.",
@@ -824,5 +833,22 @@
     "PRIVACY_POLICY": "Informativa sulla Privacy",
     "FAQ": "F.A.Q.",
     "BUILT_WITH": "Creato con ❤️ per supportare l'azione umanitaria — © 2025 RISE — Powered by WASDI — Tutti i diritti riservati."
+  },
+  "COMMON": {
+    "ERROR": "Error",
+    "SUCCESS": "Success",
+    "LOADING": "Loading...",
+    "CONFIRM": "Confirm",
+    "CANCEL": "Cancel",
+    "YES": "Yes",
+    "NO": "No",
+    "EDIT": "Edit",
+    "INFO": "Info",
+    "ALL": "Tutti",
+    "DATE": "Data",
+    "AREA": "Area",
+    "AREAS": "Aree",
+    "MONTH": "Mese",
+    "MONTHS": "Mesi"
   }
 }

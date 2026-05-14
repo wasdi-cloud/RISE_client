@@ -88,6 +88,7 @@
     "INPUT_DATA": "Données d'entrée",
     "FORCE_UPDATE": "Forcer la mise à jour de la couche",
     "MANAGE_EVENTS": "Gérer les Événements",
+    "LAYER_ID": "ID de la couche",
     "WORK_IN_PROGRESS": "Chez RISE, nous préférons gérer uniquement les données satellites fraîchement acquises. Nous travaillons actuellement sur votre nouvelle zone d'opérations. Veuillez revenir plus tard",
     "WORK_IN_PROGRESS_TITLE": "Zone d'opérations en cours"
   },
@@ -121,6 +122,8 @@
     "CREATION_DATE": "Date de création",
     "DIALOG_HEADER": "Zone d'opérations",
     "DELETE_OR_UPDATE": "Voulez-vous vraiment supprimer ou mettre à jour ?",
+    "AREA_NAME_ALREADY_EXISTS": "Le nom de la zone existe déjà",
+    "ERROR_DELETE": "Une erreur s'est produite lors de la tentative de suppression de cette zone d'opérations",
     "ERROR_GET_INFO": "Impossible de récupérer les informations sur cette zone",
     "ERROR_GET_USERS": "Impossible de récupérer les utilisateurs pour cette zone d'opérations",
     "ERROR_PLUGINS": "Impossible de récupérer les informations du plugin",
@@ -210,12 +213,16 @@
     "OTP_DESCRIPTION": "Nous avons envoyé un mot de passe à usage unique à l'adresse e-mail associée à votre compte.\nVeuillez également vérifier votre dossier de spam ou de courrier indésirable si vous ne le voyez pas.",
     "NEXT": "Suivant",
     "OTP_VERIFICATION": "Vous n'avez pas reçu de mot de passe à usage unique ?",
-    "OTP_CODE": "Code de confirmation",
+    "DATE": "Date",
     "OTP_LOGIN_AGAIN": "Essayez de vous reconnecter",
     "TITLE": "Bon retour",
     "USER_ID": "Identifiant utilisateur ou adresse e-mail",
     "PASSWORD": "Mot de passe",
-    "FORGOT_PASSWORD": "Mot de passe oublié ? Cliquez <a class='inner-html-link'>ici</a>"
+    "FORGOT_PASSWORD": "Mot de passe oublié ? Cliquez <a class='inner-html-link'>ici</a>",
+    "ERROR": "RISE n'a pas pu exécuter la connexion. Veuillez réessayer ou nous contacter."
+  },
+  "MAP": {
+    "ERROR_LAYER": "Une erreur s'est produite lors de la récupération des informations de pixel."
   },
   "ORGANIZATION": {
     "ADDRESS": "Adresse de l'organisation",
@@ -332,17 +339,26 @@
     "PAYMENT": "Mode de paiement",
     "PLUGINS": "Sélectionner les plugins à inclure",
     "PURCHASE": "Achat",
+    "PURCHASE_CREDIT": "Paiement via Stripe",
+    "PURCHASE_ERROR": "Une erreur s'est produite pendant l'achat. Veuillez réessayer ou contacter l'équipe RISE.",
     "PRICE": "Prix",
     "START_DATE": "Date de début",
+    "SUCCESS": "Achat de l'abonnement effectué avec succès !",
     "TYPE": "Nombre de zones",
     "TYPE_ERROR": "Impossible de récupérer les types d'abonnement",
     "PAYMENT_TYPE": "Durée de l'abonnement",
     "UPDATE": "Mettre à jour l'abonnement",
     "WIRE": "Transfert bancaire",
+    "WIRE_TRANSFER": "si vous confirmez vouloir payer par virement bancaire, vous recevrez les coordonnées bancaires par e-mail",
     "YEAR": "Un an",
+    "STRIPE_TITLE": "Redirection vers STRIPE",
     "STRIPE_MSG": "Vous allez être redirigé vers notre partenaire de paiement, Stripe. Cliquez sur 'Oui' pour continuer ou sur 'ANNULER' pour mettre fin au processus de paiement.",
     "INVALID_SUB": "Abonnement invalide",
-    "INVALID_SUB_MSG": "Votre abonnement a expiré ou vous n'avez pas d'abonnement actif. Veuillez acheter un nouvel abonnement pour continuer à utiliser cette fonctionnalité."
+    "INVALID_SUB_MSG": "Votre abonnement a expiré ou vous n'avez pas d'abonnement actif. Veuillez acheter un nouvel abonnement pour continuer à utiliser cette fonctionnalité.",
+    "PAID": "Payé",
+    "NOT_PAID": "Non payé",
+    "EXPIRED": "Expiré",
+    "GET_INVOICE": "Obtenir la facture"
   },
   "TOOLBAR": {
     "ACCOUNT": "Compte",
@@ -370,6 +386,7 @@
     "NEW_EMAIL": "Nouvel adresse email",
     "NEW_PW": "Nouveau mot de passe",
     "NOTIFICATIONS": "Notifications",
+    "NOTIFICATIONS_ERROR": "Impossible de mettre à jour les paramètres de notification.",
     "NOTIFICATIONS_MSG": "Sélectionnez les notifications que vous souhaitez recevoir de <strong>RISE</strong>.",
     "OLD_PW": "Mot de passe actuel",
     "PW_MSG": "Modifiez le mot de passe utilisé pour accéder à votre compte <strong>RISE</strong>. Si vous rencontrez des difficultés, <a>contactez-nous.</a>",
@@ -404,6 +421,8 @@
     "NAME": "Nom",
     "TYPE": "Type",
     "PURCHASE_DATE": "Date d'achat",
+    "CREATION_DATE": "Date de création",
+    "PAID_STATUS": "Statut",
     "EXPIRY_DATE": "Date d'expiration"
   },
   "CONFIRM_DIALOG": {
@@ -705,6 +724,7 @@
     "VALIDATION_TITLE": "Succès de la validation sur le terrain",
     "VALIDATION_DESC": "Lors d'un test face à face pendant le cyclone Cheneso, deux équipes — l'une utilisant des méthodes traditionnelles (visites sur le terrain, entretiens et données secondaires) et l'autre utilisant RISE — ont évalué l'impact de l'inondation, les besoins de la population et les dommages aux infrastructures. L'exercice a démontré la vitesse, la précision, l'efficacité des coûts et la sécurité de RISE dans la réponse aux crises.",
     "VALIDATION_RESULTS_TITLE": "Résultats de l'exercice de validation et impact",
+    "IMAGES_RESULTS_TITLE": "Résultats des images",
     "NUMBERS_STORY": "LES CHIFFRES ONT RACONTÉ L'HISTOIRE :",
     "RESULTS_INTRO": "RISE a permis une réponse aux catastrophes plus rapide, plus sûre et plus rentable",
     "FASTER_RESPONSE_DESC": "RISE a réduit le temps d'évaluation, permettant une prise de décision plus rapide dans les situations d'urgence.",
@@ -812,5 +832,21 @@
     "PRIVACY_POLICY": "Politique de Confidentialité",
     "FAQ": "F.A.Q.",
     "BUILT_WITH": "Conçu avec ❤️ pour soutenir l'action humanitaire — © 2025 RISE — Propulsé par WASDI — Tous droits réservés."
+  },
+  "COMMON": {
+    "ERROR": "Erreur",
+    "SUCCESS": "Succès",
+    "LOADING": "Chargement...",
+    "CONFIRM": "Confirmer",
+    "CANCEL": "Annuler",
+    "YES": "Oui",
+    "NO": "Non",
+    "EDIT": "Modifier",
+    "INFO": "Informations",
+    "ALL": "Tous",
+    "AREA": "Zone",
+    "AREAS": "Zones",
+    "MONTH": "Mois",
+    "MONTHS": "Mois"
   }
 }
