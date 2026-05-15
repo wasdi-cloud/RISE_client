@@ -359,7 +359,11 @@
     "PAID": "Payé",
     "NOT_PAID": "Non payé",
     "EXPIRED": "Expiré",
-    "GET_INVOICE": "Obtenir la facture"
+    "GET_INVOICE": "Obtenir la facture",
+    "SELECT_TO_USE": "Selectionner l'abonnement a utiliser",
+    "RECAP": "Recapitulatif de l'abonnement",
+    "USED_AREAS": "Zones utilisees",
+    "FREE_AREAS": "Zones disponibles"
   },
   "TOOLBAR": {
     "ACCOUNT": "Compte",

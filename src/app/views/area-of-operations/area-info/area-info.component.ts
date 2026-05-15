@@ -49,12 +49,31 @@ import {BuyNewSubscriptionComponent} from '../../account/user-subscriptions/buy-
 export class AreaInfoComponent implements OnInit,OnDestroy {
 
   private m_oDestroy$ = new Subject<void>();
+
+  /**
+   * Override of the JSON parameters for a specific plugin
+   */
   m_sJSONParam = '{}';
   @ViewChild('editor') m_oEditorRef!: ElementRef;
+
+  /**
+   * Plugin selected for the Advanced View
+   */
   m_aoSelectedPlugins = [];
+
+  /**
+   * Specific plugin selected for showing the parameters editor, if any
+   */
   m_oSelectedPlugin: any;
 
+  /**
+   * Flag to indicate if we are in update mode (editing an existing area) or add mode (creating a new area)
+   */
   m_bIsUpdate:boolean = false;
+
+  /**
+   * Flag to indicate if we are adding new area or updating existing ones
+   */
   m_bIsAdd:boolean = false;
 
   m_aoPluginMaps = [];
@@ -104,6 +123,9 @@ export class AreaInfoComponent implements OnInit,OnDestroy {
   m_aoPlugins: { label: string; value: string }[] = [];
   m_asIsPublic: { label: string; value: string }[] = [];
   m_asSelectedIsPublic: string[] = [];
+
+  m_aoAvailableSubscriptions: SubscriptionViewModel[] = [];
+  m_oSelectedAvailableSubscription: SubscriptionViewModel | null = null;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private m_oData: any,
@@ -167,15 +189,65 @@ export class AreaInfoComponent implements OnInit,OnDestroy {
           this.m_bRequiresFastCheckout = true;
           this.tryOpenFastCheckoutIfReady();
         }
+        else {
+          this.m_oSubscriptionService.getSubscriptionsAvailable().pipe(takeUntil(this.m_oDestroy$)).subscribe({
+            next: (aoResponse) => {
+              const aoSubscriptions = (aoResponse || []).filter(
+                (oSubscription: SubscriptionViewModel) => !!oSubscription && (!!oSubscription.buySuccess || !!oSubscription.valid)
+              );
+
+              this.m_aoAvailableSubscriptions = aoSubscriptions;
+
+              if (this.m_aoAvailableSubscriptions.length > 0) {
+                this.m_oSelectedAvailableSubscription = this.m_aoAvailableSubscriptions[0];
+                this.m_oArea.subscriptionId = this.m_oSelectedAvailableSubscription.id;
+                this.m_bShowFastCheckout = false;
+              } else {
+                this.m_oSelectedAvailableSubscription = null;
+                this.m_oArea.subscriptionId = '';
+                this.m_bHasValidSubscription = false;
+                this.m_bRequiresFastCheckout = true;
+                this.tryOpenFastCheckoutIfReady();
+              }
+            },
+            error: (oError) => {
+              console.error(oError);
+            }
+          });
+        }
       },
       error: () => {
         // Backend contract: unauthorized/internal_server_error means user cannot add area.
         this.m_bSubscriptionCheckLoading = false;
         this.m_bHasValidSubscription = false;
+        this.m_oSelectedAvailableSubscription = null;
+        this.m_oArea.subscriptionId = '';
         this.m_bRequiresFastCheckout = true;
         this.tryOpenFastCheckoutIfReady();
       },
     });
+  }
+
+  onAvailableSubscriptionChange(oEvent: any): void {
+    const oSelected = oEvent?.value as SubscriptionViewModel;
+    this.m_oSelectedAvailableSubscription = oSelected || null;
+    this.m_oArea.subscriptionId = this.m_oSelectedAvailableSubscription?.id || '';
+  }
+
+  getSelectedSubscriptionPaymentTypeLabel(): string {
+    const sPaymentType = this.m_oSelectedAvailableSubscription?.paymentType as unknown as string;
+    if (sPaymentType === 'YEAR') {
+      return this.m_oTranslate.instant('SUBSCRIPTIONS.YEAR');
+    }
+
+    return `1 ${this.m_oTranslate.instant('COMMON.MONTH')}`;
+  }
+
+  getSelectedSubscriptionFreeAreas(): number {
+    const iAllowedAreas = Number(this.m_oSelectedAvailableSubscription?.areaCount || 0);
+    const iUsedAreas = Number(this.m_oSelectedAvailableSubscription?.areaUsed || 0);
+
+    return Math.max(iAllowedAreas - iUsedAreas, 0);
   }
 
   private tryOpenFastCheckoutIfReady(): void {
@@ -550,6 +622,7 @@ export class AreaInfoComponent implements OnInit,OnDestroy {
       this.m_oArea.publicArea = this.m_asSelectedIsPublic.length > 0;
       this.m_oArea.plugins = this.m_asPluginsSelected;
       this.m_oArea.supportArchive = this.m_bSupportArchiveToggle;
+      this.m_oArea.subscriptionId = this.m_oSelectedAvailableSubscription?.id || '';
 
       // Use addArea for new creation
       this.m_oAreaService.addArea(this.m_oArea).pipe(takeUntil(this.m_oDestroy$)).subscribe({

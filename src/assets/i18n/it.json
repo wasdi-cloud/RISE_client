@@ -354,7 +354,11 @@
     "PAID": "Pagato",
     "NOT_PAID": "Non Pagato",
     "EXPIRED": "Scaduto",
-    "GET_INVOICE": "Ottieni Fattura"
+    "GET_INVOICE": "Ottieni Fattura",
+    "SELECT_TO_USE": "Seleziona abbonamento da usare",
+    "RECAP": "Riepilogo abbonamento",
+    "USED_AREAS": "Aree usate",
+    "FREE_AREAS": "Aree libere"
 	},
 	"TOOLBAR": {
 		"ACCOUNT": "Account",

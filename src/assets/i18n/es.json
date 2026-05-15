@@ -302,7 +302,11 @@
     "PAID": "Pagado",
     "NOT_PAID": "No Pagado",
     "EXPIRED": "Caducado",
-    "GET_INVOICE": "Obtener Factura"
+    "GET_INVOICE": "Obtener Factura",
+    "SELECT_TO_USE": "Seleccionar suscripcion a usar",
+    "RECAP": "Resumen de la suscripcion",
+    "USED_AREAS": "Areas usadas",
+    "FREE_AREAS": "Areas libres"
   },
   "MONITOR": {
     "ADD_TITLE_AND_DESCRIPTION": "Añadir Título y Descripción",

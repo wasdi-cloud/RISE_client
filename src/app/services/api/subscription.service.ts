@@ -17,7 +17,6 @@ export class SubscriptionService {
   /**
    * Get a list of Subscriptions per user
    *
-   * @param sSessionId
    * @param bValid
    * @return
    */
@@ -26,6 +25,19 @@ export class SubscriptionService {
       this.APIURL + '/subscriptions/list?valid=' + bValid
     );
   }
+
+
+    /**
+   * Get a list of Subscriptions Available per user to create a new area
+   *
+   * @return
+   */
+  getSubscriptionsAvailable() {
+    return this.m_oHttp.get<any>(
+      this.APIURL + '/subscriptions/available'
+    );
+  }
+  
 
   /**
    * Get a Subscription view model by id

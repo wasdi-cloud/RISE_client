@@ -69,6 +69,47 @@
       <div class="invalid-feedback" *ngIf="!m_bPluginsAreValid">{{ m_sPluginsError }}</div>
     </div>
 
+    <div *ngIf="m_bIsNewAreaCreation && !m_bShowFastCheckout && m_aoAvailableSubscriptions.length > 0" class="d-flex flex-column gap-2 mt-2">
+      <rise-dropdown
+        *ngIf="m_aoAvailableSubscriptions.length > 1"
+        [m_bHasTitle]="true"
+        [m_sLabel]="'SUBSCRIPTIONS.SELECT_TO_USE'"
+        [m_sPlaceholder]="'SUBSCRIPTIONS.SELECT_TO_USE'"
+        [m_aoDropdownItems]="m_aoAvailableSubscriptions"
+        [m_aoSelectedItems]="m_oSelectedAvailableSubscription"
+        (m_oSelectionChange)="onAvailableSubscriptionChange($event)"
+      ></rise-dropdown>
+
+      <div *ngIf="m_oSelectedAvailableSubscription" class="available-subscription-card">
+        <div class="subscription-recap-title">{{ 'SUBSCRIPTIONS.RECAP' | translate }}</div>
+
+        <div class="subscription-recap-row">
+          <span>{{ 'SUBSCRIPTIONS.NAME' | translate }}</span>
+          <strong>{{ m_oSelectedAvailableSubscription.name || '-' }}</strong>
+        </div>
+        <div class="subscription-recap-row">
+          <span>{{ 'SUBSCRIPTIONS.PAYMENT_TYPE' | translate }}</span>
+          <strong>{{ getSelectedSubscriptionPaymentTypeLabel() }}</strong>
+        </div>
+        <div class="subscription-recap-row">
+          <span>{{ 'SUBSCRIPTIONS.EXPIRY' | translate }}</span>
+          <strong>{{ m_oSelectedAvailableSubscription.expireDate | date : 'yyyy-MM-dd' }}</strong>
+        </div>
+        <div class="subscription-recap-row">
+          <span>{{ 'SUBSCRIPTIONS.TYPE' | translate }}</span>
+          <strong>{{ m_oSelectedAvailableSubscription.areaCount }} {{ 'COMMON.AREAS' | translate }}</strong>
+        </div>
+        <div class="subscription-recap-row">
+          <span>{{ 'SUBSCRIPTIONS.USED_AREAS' | translate }}</span>
+          <strong>{{ m_oSelectedAvailableSubscription.areaUsed }}</strong>
+        </div>
+        <div class="subscription-recap-row">
+          <span>{{ 'SUBSCRIPTIONS.FREE_AREAS' | translate }}</span>
+          <strong>{{ getSelectedSubscriptionFreeAreas() }}</strong>
+        </div>
+      </div>
+    </div>
+
     <!-- Plugins (readonly for edit mode) -->
     <rise-checkbox
       *ngIf="!m_bIsNewAreaCreation"

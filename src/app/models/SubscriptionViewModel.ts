@@ -38,4 +38,6 @@ export class SubscriptionViewModel {
   areaCount:number;
 
   associatedAreaId?: string;
+
+  areaUsed:number;
 }

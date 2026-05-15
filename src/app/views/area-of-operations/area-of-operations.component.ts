@@ -124,7 +124,8 @@ export class AreaOfOperationsComponent implements OnInit,OnDestroy {
         data: {
           area: oArea,
         },
-        height: "68%"
+        height: '72vh',
+        maxHeight: '90vh'
       })
       .afterClosed()
       .subscribe((oResponse) => {

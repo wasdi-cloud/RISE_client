@@ -336,7 +336,11 @@
     "PAID": "Paid",
     "NOT_PAID": "Not Paid",
     "EXPIRED": "Abgelaufen",
-    "GET_INVOICE": "Get Invoice"
+    "GET_INVOICE": "Get Invoice",
+    "SELECT_TO_USE": "Abonnement zur Nutzung auswahlen",
+    "RECAP": "Abonnement-Ubersicht",
+    "USED_AREAS": "Genutzte Bereiche",
+    "FREE_AREAS": "Freie Bereiche"
   },
   "TOOLBAR": {
     "ACCOUNT": "Account",

@@ -284,7 +284,11 @@
     "PAID": "Paid",
     "NOT_PAID": "Not Paid",
     "EXPIRED": "منتهي الصلاحية",
-    "GET_INVOICE": "Get Invoice"
+    "GET_INVOICE": "Get Invoice",
+    "SELECT_TO_USE": "Select subscription to use",
+    "RECAP": "Subscription recap",
+    "USED_AREAS": "Used areas",
+    "FREE_AREAS": "Free areas"
   },
   "TOOLBAR": {
     "ACCOUNT": "الحساب",

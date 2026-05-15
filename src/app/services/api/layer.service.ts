@@ -19,9 +19,16 @@ export class LayerService {
   findLayer(sMapId: string, sAreaId: string, iDate: string | number) {
     return this.m_oHttp.get<any>(this.APIURL + '/layer/find?map_id=' + sMapId + '&area_id=' + sAreaId + '&date=' + iDate);
   }
+
   findAvailableLayers(sMapIds: string, sAreaId: string, iDate: string | number, sPluginId: string):Observable<any> {
     return this.m_oHttp.post<any>(this.APIURL + '/layer/find?area_id=' + sAreaId + '&date=' + iDate+"&plugin_id="+sPluginId,sMapIds);
   }
+
+  areaLayerCount(sAreaId: string) {
+    return this.m_oHttp.get<any>(this.APIURL + '/layer/available?area_id=' + sAreaId);
+  }
+
+
 
   downloadLayer(sLayerId: string, sFormat: string):Observable<Blob> {
     const params = new HttpParams()
