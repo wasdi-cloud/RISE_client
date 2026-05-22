@@ -22,7 +22,12 @@
     "DIALOG_MANUAL_INSERT_BBOX_INFO": "Veuillez saisir le JSON dans le format suivant :<br>",
     "DIALOG_PROCESSOR_UI_APP_FORMAT_JSON": "Formater JSON",
     "DIALOG_FORMAT_JSON_ERROR": "Impossible de formater votre entrée JSON. Veuillez vous assurer que c'est un JSON valide",
-    "DIALOG_PARSE_JSON_ERROR": "Une erreur est survenue lors de l'analyse de la charge utile JSON"
+    "DIALOG_PARSE_JSON_ERROR": "Une erreur est survenue lors de l'analyse de la charge utile JSON",
+    "VALIDATION_ERROR_TITLE": "Bounding Box Manuel",
+    "VALIDATION_INVALID_NUMERIC": "Veuillez saisir des coordonnées numériques valides pour Nord, Sud, Est et Ouest.",
+    "VALIDATION_INVALID_COORD_RANGE": "La latitude doit être comprise entre -90 et 90, et la longitude entre -180 et 180.",
+    "VALIDATION_TOO_SMALL": "La zone est trop petite. La taille minimale est de 1x1 degré.",
+    "VALIDATION_TOO_LARGE": "La zone est trop grande. La taille maximale est de 2x2 degrés."
   },
   "LAT_LNG_SEARCH": {
     "TITLE": "Rechercher par coordonnées",
@@ -148,6 +153,7 @@
     "ADVANCED_SETTINGS": "Paramètres avancés",
     "MAP_LAYER": "Couche de Carte",
     "SUPPORT_ARCHIVE": "Supporte l'archivage",
+    "ENABLE_ARCHIVE": "Activer l'archivage complet",
     "SUCCESS_AND_PENDING": "Votre zone a été ajoutée avec succès. Les couches sont en cours de génération ; vous recevrez une notification par e-mail lorsqu'elles seront prêtes.",
     "NAME": "Nom",
     "DESCRIPTION": "Ajoutez votre description optionnelle ici",

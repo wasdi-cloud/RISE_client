@@ -122,7 +122,7 @@
 
     <!-- Archive Support Toggle (only for new creation if supported) -->
     <div *ngIf="m_bIsNewAreaCreation && m_bIsSupportArchiveArea" class="align-items-md-start d-flex">
-      <span class="toggle-label">{{"CREATE_NEW_AREA_OF_OPERATION.SUPPORT_ARCHIVE" | translate }}</span>
+      <span class="toggle-label">{{"CREATE_NEW_AREA_OF_OPERATION.ENABLE_ARCHIVE" | translate }}</span>
       <mat-slide-toggle
         labelPosition="before"
         (change)="onSwitchArchiveButton($event)"

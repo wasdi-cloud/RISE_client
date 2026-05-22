@@ -24,7 +24,7 @@
         [leafletOptions]="m_oMapOptions"
         (leafletMapReady)="onMapReady($event)"
       >
-        <div [leafletLayer]="m_oDrawnItems" *ngIf="m_bIsSelectingArea"></div>
+        <div [leafletLayer]="m_oDrawnItems"></div>
       </div>
     </ng-template>
   </div>

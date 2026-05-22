@@ -44,8 +44,15 @@ img {
   z-index: 1200;
   pointer-events: auto;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.map-create-submenu {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   gap: 0.4rem;
 }
 
@@ -68,8 +75,15 @@ img {
   width: 42px;
 }
 
+.create-area-sub-btn {
+  flex-shrink: 0;
+  display: block;
+  width: 42px;
+}
+
 :host ::ng-deep .create-area-btn .btn,
-:host ::ng-deep .cancel-draw-btn .btn {
+:host ::ng-deep .cancel-draw-btn .btn,
+:host ::ng-deep .create-area-sub-btn .btn {
   width: 42px;
   min-width: 42px;
   height: 34px;
@@ -77,6 +91,7 @@ img {
 }
 
 :host ::ng-deep .create-area-btn .btn .material-symbols-outlined,
-:host ::ng-deep .cancel-draw-btn .btn .material-symbols-outlined {
+:host ::ng-deep .cancel-draw-btn .btn .material-symbols-outlined,
+:host ::ng-deep .create-area-sub-btn .btn .material-symbols-outlined {
   margin: 0;
 }

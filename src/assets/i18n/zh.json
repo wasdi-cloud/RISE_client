@@ -76,6 +76,7 @@
     "ADVANCED_SETTINGS": "Advanced Settings",
     "RETURN": "Return",
     "SUPPORT_ARCHIVE": "Support Archive",
+    "ENABLE_ARCHIVE": "Enable Full Archive",
     "SUCCESS_AND_PENDING": "Your area has been added successfully, The layers are being generated , you will receive a notification by email when they are ready",
     "NAME": "Name",
     "DESCRIPTION": "Add your optional description here",
@@ -415,7 +416,12 @@
     "DIALOG_MANUAL_INSERT_BBOX_INFO": "Input JSON in the following format:<br>",
     "DIALOG_PROCESSOR_UI_APP_FORMAT_JSON": "Format JSON",
     "DIALOG_FORMAT_JSON_ERROR": "Could not format your JSON input. Please ensure it is a valid JSON",
-    "DIALOG_PARSE_JSON_ERROR": "There was an error in parsing the JSON payload"
+    "DIALOG_PARSE_JSON_ERROR": "There was an error in parsing the JSON payload",
+    "VALIDATION_ERROR_TITLE": "Manual Bounding Box",
+    "VALIDATION_INVALID_NUMERIC": "Please insert valid numeric coordinates for North, South, East and West.",
+    "VALIDATION_INVALID_COORD_RANGE": "Latitude must be between -90 and 90, longitude must be between -180 and 180.",
+    "VALIDATION_TOO_SMALL": "The area is too small. Minimum size is 1x1 degree.",
+    "VALIDATION_TOO_LARGE": "The area is too large. Maximum size is 2x2 degrees."
   },
   "LAT_LNG_SEARCH": {
     "TITLE": "Search by Coordinates",

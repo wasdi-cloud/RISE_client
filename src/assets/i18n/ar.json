@@ -76,6 +76,7 @@
     "ADVANCED_SETTINGS": "إعدادات متقدمة",
     "MAP_LAYER": "طبقة الخريطة",
     "SUPPORT_ARCHIVE": "يدعم الأرشفة",
+    "ENABLE_ARCHIVE": "تمكين الأرشيف الكامل",
     "SUCCESS_AND_PENDING": "تمت إضافة منطقتك بنجاح، ويتم إنشاء الطبقات، ستتلقى إشعارًا عبر البريد الإلكتروني عندما تكون جاهزة.",
     "NAME": "الاسم",
     "DESCRIPTION": "أضف وصفك الاختياري هنا",
@@ -511,7 +512,12 @@
     "DIALOG_MANUAL_INSERT_BBOX_INFO": "الرجاء إدخال JSON بالتنسيق التالي:<br>",
     "DIALOG_PROCESSOR_UI_APP_FORMAT_JSON": "تنسيق JSON",
     "DIALOG_FORMAT_JSON_ERROR": "تعذر تنسيق إدخال JSON الخاص بك. يرجى التأكد من أنه JSON صالح",
-    "DIALOG_PARSE_JSON_ERROR": "حدث خطأ في تحليل حمولة JSON"
+    "DIALOG_PARSE_JSON_ERROR": "حدث خطأ في تحليل حمولة JSON",
+    "VALIDATION_ERROR_TITLE": "صندوق الإحاطة اليدوي",
+    "VALIDATION_INVALID_NUMERIC": "يرجى إدخال إحداثيات رقمية صالحة للشمال والجنوب والشرق والغرب.",
+    "VALIDATION_INVALID_COORD_RANGE": "يجب أن يكون خط العرض بين -90 و90، وخط الطول بين -180 و180.",
+    "VALIDATION_TOO_SMALL": "المنطقة صغيرة جدا. الحد الأدنى للحجم هو 1×1 درجة.",
+    "VALIDATION_TOO_LARGE": "المنطقة كبيرة جدا. الحد الأقصى للحجم هو 2×2 درجة."
   },
   "LAT_LNG_SEARCH": {
     "TITLE": "البحث بالإحداثيات",

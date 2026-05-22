@@ -22,7 +22,12 @@
     "DIALOG_MANUAL_INSERT_BBOX_INFO": "Introduce el JSON en el siguiente formato:<br>",
     "DIALOG_PROCESSOR_UI_APP_FORMAT_JSON": "Formatear JSON",
     "DIALOG_FORMAT_JSON_ERROR": "No se pudo formatear tu entrada JSON. Asegúrate de que sea un JSON válido",
-    "DIALOG_PARSE_JSON_ERROR": "Hubo un error al analizar la carga JSON"
+    "DIALOG_PARSE_JSON_ERROR": "Hubo un error al analizar la carga JSON",
+    "VALIDATION_ERROR_TITLE": "Bounding Box Manual",
+    "VALIDATION_INVALID_NUMERIC": "Introduce coordenadas numéricas válidas para Norte, Sur, Este y Oeste.",
+    "VALIDATION_INVALID_COORD_RANGE": "La latitud debe estar entre -90 y 90, y la longitud entre -180 y 180.",
+    "VALIDATION_TOO_SMALL": "El área es demasiado pequeña. El tamaño mínimo es 1x1 grado.",
+    "VALIDATION_TOO_LARGE": "El área es demasiado grande. El tamaño máximo es 2x2 grados."
   },
   "LAT_LNG_SEARCH": {
     "TITLE": "Buscar por coordenadas",
@@ -98,6 +103,7 @@
     "DEFAULT_PARAMS": "Parámetros predeterminados",
     "MAP_LAYER": "Capa del Mapa",
     "SUPPORT_ARCHIVE": "Soporta el archivo",
+    "ENABLE_ARCHIVE": "Habilitar archivo completo",
     "SUCCESS_AND_PENDING": "Su área ha sido añadida con éxito. Las capas se están generando; recibirá una notificación por correo electrónico cuando estén listas.",
     "NAME": "Nombre",
     "DESCRIPTION": "Agrega tu descripción opcional aquí",

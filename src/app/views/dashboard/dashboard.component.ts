@@ -20,6 +20,7 @@ import {AreaService} from '../../services/api/area.service';
 import {MapService} from '../../services/map.service';
 import {AreaInfoComponent} from '../area-of-operations/area-info/area-info.component';
 import {NotificationsDialogsService} from '../../services/notifications-dialogs.service';
+import {ManualBoundingBoxComponent} from '../../dialogs/manual-bounding-box-dialog/manual-bounding-box.component';
 
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 
@@ -62,6 +63,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * Flag to enable drawing mode on dashboard map
    */
   public m_bEnableAreaDrawing: boolean = false;
+
+  /**
+   * Toggle for compact dashboard area creation submenu
+   */
+  public m_bShowAreaCreationMenu: boolean = false;
 
   /**
    * Temporary shape data drawn on map
@@ -165,15 +171,93 @@ export class DashboardComponent implements OnInit, OnDestroy {
   handleAreaSelected() {}
 
   /**
-   * Enables drawing mode on the dashboard map to create a new area
+   * Toggles compact area creation menu or cancels active draw mode
    */
-  public startAreaCreation(): void {
+  public toggleAreaCreationMenu(): void {
     if (this.m_bEnableAreaDrawing) {
       this.cancelAreaCreation();
       return;
     }
 
+    this.m_bShowAreaCreationMenu = !this.m_bShowAreaCreationMenu;
+  }
+
+  /**
+   * Starts rectangle drawing from the compact dashboard submenu
+   */
+  public startAreaDrawingCreation(): void {
+    this.m_bShowAreaCreationMenu = false;
     this.m_bEnableAreaDrawing = true;
+  }
+
+  /**
+   * Opens manual bbox dialog from dashboard and continues with area creation flow
+   */
+  public startManualBboxCreation(): void {
+    this.m_bShowAreaCreationMenu = false;
+    this.m_bEnableAreaDrawing = false;
+
+    this.m_oDialog
+      .open(ManualBoundingBoxComponent)
+      .afterClosed()
+      .subscribe((oResult) => {
+        if (FadeoutUtils.utilsIsObjectNullOrUndefined(oResult)) {
+          return;
+        }
+
+        const fNorth = Number.parseFloat(oResult.north);
+        const fSouth = Number.parseFloat(oResult.south);
+        const fEast = Number.parseFloat(oResult.east);
+        const fWest = Number.parseFloat(oResult.west);
+
+        if (
+          !Number.isFinite(fNorth) ||
+          !Number.isFinite(fSouth) ||
+          !Number.isFinite(fEast) ||
+          !Number.isFinite(fWest)
+        ) {
+          return;
+        }
+
+        const fCenterLat = (fNorth + fSouth) / 2;
+        const fCenterLng = (fWest + fEast) / 2;
+
+        const aoBounds = [[fNorth, fWest], [fSouth, fEast]];
+        const oMap = this.m_oMapService.getMap();
+        if (oMap) {
+          this.m_oMapService.clearPreviousDrawings(oMap);
+          this.m_oMapService.addManualBboxLayer(oMap, aoBounds, {
+            zoomToBounds: false,
+            markerCenter: { lat: fCenterLat, lng: fCenterLng },
+            invalidateSize: true,
+          });
+        }
+
+        const oGeoJson = {
+          type: 'Polygon',
+          coordinates: [
+            [
+              [fWest, fNorth],
+              [fEast, fNorth],
+              [fEast, fSouth],
+              [fWest, fSouth],
+              [fWest, fNorth],
+            ],
+          ],
+        };
+
+        this.onAreaShapeDrawn({
+          type: 'polygon',
+          center: { lat: fCenterLat, lng: fCenterLng },
+          geoJson: oGeoJson,
+          points: [
+            { lat: fNorth, lng: fWest },
+            { lat: fNorth, lng: fEast },
+            { lat: fSouth, lng: fEast },
+            { lat: fSouth, lng: fWest },
+          ],
+        });
+      });
   }
 
   /**
@@ -187,6 +271,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     this.m_oNgZone.run(() => {
+      this.m_bShowAreaCreationMenu = false;
       this.m_bEnableAreaDrawing = false;
       this.m_oDrawnShapeInfo = shapeInfo;
 
@@ -233,6 +318,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * Cancels the area drawing mode
    */
   public cancelAreaCreation(): void {
+    this.m_bShowAreaCreationMenu = false;
     this.m_bEnableAreaDrawing = false;
     this.m_oDrawnShapeInfo = null;
   }

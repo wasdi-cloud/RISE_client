@@ -81,6 +81,7 @@
     "RETURN": "Indietro",
     "ADVANCED_SETTINGS": "Impostazioni avanzate",
     "SUPPORT_ARCHIVE": "Supporta l'archiviazione",
+    "ENABLE_ARCHIVE": "Enable Full Archive",
     "SUCCESS_AND_PENDING": "La tua area è stata aggiunta con successo. I livelli sono in fase di generazione; riceverai una notifica via email quando saranno pronti.",
 		"NAME": "Nome",
 		"DESCRIPTION": "Aggiungi la tua descrizione opzionale qui",
@@ -437,7 +438,12 @@
 		"DIALOG_MANUAL_INSERT_BBOX_INFO": "Inserisci JSON nel seguente formato:<br>",
 		"DIALOG_PROCESSOR_UI_APP_FORMAT_JSON": "Formato JSON",
 		"DIALOG_FORMAT_JSON_ERROR": "Impossibile formattare il tuo input JSON. Assicurati che sia un JSON valido",
-		"DIALOG_PARSE_JSON_ERROR": "Si è verificato un errore nell'analizzare il payload JSON"
+    "DIALOG_PARSE_JSON_ERROR": "Si è verificato un errore nell'analizzare il payload JSON",
+    "VALIDATION_ERROR_TITLE": "Bounding Box Manuale",
+    "VALIDATION_INVALID_NUMERIC": "Inserisci coordinate numeriche valide per Nord, Sud, Est e Ovest.",
+    "VALIDATION_INVALID_COORD_RANGE": "La latitudine deve essere compresa tra -90 e 90, la longitudine tra -180 e 180.",
+    "VALIDATION_TOO_SMALL": "L'area è troppo piccola. La dimensione minima è 1x1 grado.",
+    "VALIDATION_TOO_LARGE": "L'area è troppo grande. La dimensione massima è 2x2 gradi."
 	},
 	"LAT_LNG_SEARCH": {
 		"TITLE": "Cerca per coordinate",
