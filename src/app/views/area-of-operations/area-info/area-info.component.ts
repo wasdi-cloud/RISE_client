@@ -236,12 +236,30 @@ export class AreaInfoComponent implements OnInit,OnDestroy {
 
   getSelectedSubscriptionPaymentTypeLabel(): string {
     const sPaymentType = this.m_oSelectedAvailableSubscription?.paymentType as unknown as string;
-    if (sPaymentType === 'YEAR') {
-      return this.m_oTranslate.instant('SUBSCRIPTIONS.YEAR');
+
+    if (FadeoutUtils.utilsIsStrNullOrEmpty(sPaymentType)) {
+      return 'N.A.';
+    }
+    else {
+      return sPaymentType;
+    }
+  }
+
+
+  getSelectedSubscriptionDurationLabel(): string {
+    const sSubscriptionType = this.m_oSelectedAvailableSubscription?.type as unknown as string;
+
+    if (FadeoutUtils.utilsIsStrNullOrEmpty(sSubscriptionType)) {
+      return 'N.A.';
     }
 
-    return `1 ${this.m_oTranslate.instant('COMMON.MONTH')}`;
-  }
+    if (sSubscriptionType.includes('QUARTER')) {  
+      return `1 ${this.m_oTranslate.instant('COMMON.MONTH')}`;
+    }
+    else {
+      return this.m_oTranslate.instant('SUBSCRIPTIONS.YEAR');
+    }
+  }  
 
   getSelectedSubscriptionFreeAreas(): number {
     const iAllowedAreas = Number(this.m_oSelectedAvailableSubscription?.areaCount || 0);
