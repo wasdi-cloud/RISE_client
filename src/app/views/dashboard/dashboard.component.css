@@ -21,6 +21,28 @@ img {
   height: 24px;
 }
 
+.logo-help-row {
+  width: 100%;
+}
+
+.help-link {
+  background-color: var(--surface-glass-elevation);
+  border: 1px solid var(--surface-glass-elevation);
+  border-radius: 8px;
+  color: var(--rise-text-dim);
+  text-decoration: none;
+  padding: 0.2rem 0.45rem;
+  transition: all 0.2s ease;
+}
+
+.help-link:hover {
+  color: var(--rise-text-default);
+}
+
+.help-link .material-symbols-outlined {
+  font-size: 18px;
+}
+
 .scrollable-sidebar {
   max-height: 100vh; /* Ensure the sidebar doesn't exceed the viewport height */
   overflow-y: auto; /* Enable vertical scrolling if content overflows */

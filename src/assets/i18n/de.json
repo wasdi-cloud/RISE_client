@@ -316,7 +316,7 @@
     "PLUGINS": "Select Plugins to Include",
     "PURCHASE": "Purchase",
     "PURCHASE_CONTACT": "Contact",
-    "CONTACT_MSG": "The team of RISE will contact you to handle the payment. Click 'Confirm' to continue or 'CANCEL' to end the payment process.",
+    "CONTACT_MSG": "The team of RISE will contact you to handle the payment. Click 'Yes' to continue or 'Cancel' to end the payment process.",
     "SUCCESS_CONTACT_TITLE": "Subscription created",
     "SUCCESS_CONTACT_Description": "Subscription created successfully",
     "PURCHASE_CREDIT": "Checkout on Stripe",
