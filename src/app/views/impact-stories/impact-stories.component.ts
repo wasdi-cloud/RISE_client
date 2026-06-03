@@ -1,17 +1,19 @@
-import { Component, OnInit, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { PublicNavbarComponent } from '../../components/public-navbar/public-navbar.component';
 import { PublicFooterComponent } from '../../components/public-footer/public-footer.component';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-impact-stories',
   standalone: true,
-  imports: [CommonModule, PublicNavbarComponent, PublicFooterComponent],
+  imports: [CommonModule, PublicNavbarComponent, PublicFooterComponent, TranslateModule],
   templateUrl: './impact-stories.component.html',
   styleUrl: './impact-stories.component.css',
 })
-export class ImpactStoriesComponent implements OnInit, AfterViewInit {
+export class ImpactStoriesComponent implements OnInit, OnDestroy, AfterViewInit {
   m_sTyped1: string = '';
   m_sTyped2: string = '';
   m_sTyped3: string = '';
@@ -31,9 +33,28 @@ export class ImpactStoriesComponent implements OnInit, AfterViewInit {
     '/assets/rise-assets/modal_screenshot_5.jpg'
   ];
 
-  constructor(private m_oRouter: Router, private m_oElementRef: ElementRef) {}
+  private m_oLangSubscription: Subscription | null = null;
+  private m_anTimeouts: any[] = [];
+  private m_anIntervals: any[] = [];
 
-  ngOnInit(): void {}
+  constructor(
+    private m_oRouter: Router, 
+    private m_oElementRef: ElementRef,
+    private m_oTranslateService: TranslateService
+  ) {}
+
+  ngOnInit(): void {
+    this.m_oLangSubscription = this.m_oTranslateService.onLangChange.subscribe(() => {
+      this.startTypingEffect();
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.m_oLangSubscription) {
+      this.m_oLangSubscription.unsubscribe();
+    }
+    this.clearTypingEffects();
+  }
 
   ngAfterViewInit(): void {
     this.startTypingEffect();
@@ -54,24 +75,46 @@ export class ImpactStoriesComponent implements OnInit, AfterViewInit {
     }
   }
 
+  clearTypingEffects(): void {
+    this.m_anTimeouts.forEach(t => clearTimeout(t));
+    this.m_anIntervals.forEach(i => clearInterval(i));
+    this.m_anTimeouts = [];
+    this.m_anIntervals = [];
+
+    this.m_sTyped1 = '';
+    this.m_sTyped2 = '';
+    this.m_sTyped3 = '';
+    this.m_bTyping1 = true;
+    this.m_bTyping2 = true;
+    this.m_bTyping3 = true;
+  }
+
   startTypingEffect(): void {
-    this.typeText('actionable intelligence', (val) => this.m_sTyped1 = val, () => this.m_bTyping1 = false, 0);
-    this.typeText('respond faster', (val) => this.m_sTyped2 = val, () => this.m_bTyping2 = false, 1500);
-    this.typeText('reduce costs', (val) => this.m_sTyped3 = val, () => this.m_bTyping3 = false, 3000);
+    this.clearTypingEffects();
+
+    const txt1 = this.m_oTranslateService.instant('IMPACT.HIGHLIGHT_P1') || 'actionable intelligence';
+    const txt2 = this.m_oTranslateService.instant('IMPACT.HIGHLIGHT_P2') || 'respond faster';
+    const txt3 = this.m_oTranslateService.instant('IMPACT.HIGHLIGHT_P3') || 'reduce costs';
+
+    this.typeText(txt1, (val) => this.m_sTyped1 = val, () => this.m_bTyping1 = false, 0);
+    this.typeText(txt2, (val) => this.m_sTyped2 = val, () => this.m_bTyping2 = false, 1500);
+    this.typeText(txt3, (val) => this.m_sTyped3 = val, () => this.m_bTyping3 = false, 3000);
   }
 
   typeText(text: string, updateFn: (val: string) => void, finishFn: () => void, delay: number): void {
-    setTimeout(() => {
+    const tRef = setTimeout(() => {
       let i = 0;
-      const interval = setInterval(() => {
+      const iRef = setInterval(() => {
         updateFn(text.substring(0, i + 1));
         i++;
         if (i === text.length) {
-          clearInterval(interval);
+          clearInterval(iRef);
           finishFn();
         }
       }, 50);
+      this.m_anIntervals.push(iRef);
     }, delay);
+    this.m_anTimeouts.push(tRef);
   }
 
   openStory(): void {

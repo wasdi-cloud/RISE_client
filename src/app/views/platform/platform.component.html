@@ -6,21 +6,21 @@
   <section class="steps-section">
     <div class="steps-inner">
       <div class="platform-intro">
-        <h1>RISE Platform</h1>
-        <p>RISE delivers satellite intelligence at your fingertips. Access near real-time data, visualize environmental changes, and generate instant reports, all in one intuitive platform designed to help you make smarter, faster decisions.</p>
+        <h1>{{ 'PLATFORM.TITLE' | translate }}</h1>
+        <p>{{ 'PLATFORM.INTRO' | translate }}</p>
       </div>
 
-      <h2 class="steps-heading">Get Started in <span class="text-gold">4 Simple Steps:</span></h2>
+      <h2 class="steps-heading">{{ 'PLATFORM.GET_STARTED_IN' | translate }} <span class="text-gold">{{ 'PLATFORM.SIMPLE_STEPS' | translate }}</span></h2>
       
       <div class="steps-grid">
         <!-- STEP 1 -->
         <div class="step-card">
           <div class="step-content">
-            <h3 class="step-title">Step 1</h3>
-            <h4>Register and Invite Your Team</h4>
+            <h3 class="step-title">{{ 'PLATFORM.STEP_1' | translate }}</h3>
+            <h4>{{ 'PLATFORM.REGISTER_INVITE' | translate }}</h4>
             <ul>
-              <li>Sign up and create your organization's account.</li>
-              <li>Invite colleagues and assign roles (e.g., Admin, Analyst, Viewer) to manage access.</li>
+              <li>{{ 'PLATFORM.STEP_1_L1' | translate }}</li>
+              <li>{{ 'PLATFORM.STEP_1_L2' | translate }}</li>
             </ul>
           </div>
         </div>
@@ -28,11 +28,11 @@
         <!-- STEP 2 -->
         <div class="step-card">
           <div class="step-content">
-            <h3 class="step-title">Step 2</h3>
-            <h4>Set Up Your Monitoring Area</h4>
+            <h3 class="step-title">{{ 'PLATFORM.STEP_2' | translate }}</h3>
+            <h4>{{ 'PLATFORM.SET_UP_MONITORING' | translate }}</h4>
             <ul>
-              <li>Define the geographical area you want to monitor.</li>
-              <li>Select the plugins (e.g., Floods, Droughts) to activate for your needs.</li>
+              <li>{{ 'PLATFORM.STEP_2_L1' | translate }}</li>
+              <li>{{ 'PLATFORM.STEP_2_L2' | translate }}</li>
             </ul>
           </div>
         </div>
@@ -40,11 +40,11 @@
         <!-- STEP 3 -->
         <div class="step-card">
           <div class="step-content">
-            <h3 class="step-title">Step 3</h3>
-            <h4>Receive Real-Time Updates</h4>
+            <h3 class="step-title">{{ 'PLATFORM.STEP_3' | translate }}</h3>
+            <h4>{{ 'PLATFORM.RECEIVE_REAL_TIME' | translate }}</h4>
             <ul>
-              <li>RISE processes satellite imagery and automatically publishes updated maps.</li>
-              <li>Get a quick overview of all areas and active events on your dashboard.</li>
+              <li>{{ 'PLATFORM.STEP_3_L1' | translate }}</li>
+              <li>{{ 'PLATFORM.STEP_3_L2' | translate }}</li>
             </ul>
           </div>
         </div>
@@ -52,12 +52,12 @@
         <!-- STEP 4 -->
         <div class="step-card">
           <div class="step-content">
-            <h3 class="step-title">Step 4</h3>
-            <h4>Explore and Analyze</h4>
+            <h3 class="step-title">{{ 'PLATFORM.STEP_4' | translate }}</h3>
+            <h4>{{ 'PLATFORM.EXPLORE_ANALYZE' | translate }}</h4>
             <ul>
-              <li>Click into an area to open the monitoring view.</li>
-              <li>Toggle maps, browse historical data, and track changes over time.</li>
-              <li>Evaluate impacts with visual maps and chart-based analytics.</li>
+              <li>{{ 'PLATFORM.STEP_4_L1' | translate }}</li>
+              <li>{{ 'PLATFORM.STEP_4_L2' | translate }}</li>
+              <li>{{ 'PLATFORM.STEP_4_L3' | translate }}</li>
             </ul>
           </div>
         </div>
@@ -65,7 +65,7 @@
 
       <div class="steps-cta">
         <a href="https://rise.wasdi.net/sign-up" target="_blank" rel="noopener">
-          <button class="btn-primary-yellow">GET STARTED NOW</button>
+          <button class="btn-primary-yellow">{{ 'PLATFORM.GET_STARTED_NOW' | translate }}</button>
         </a>
       </div>
     </div>
@@ -74,28 +74,28 @@
   <!-- STAY CONNECTED (Updated style) -->
   <section class="connected-section">
     <div class="connected-inner" [class.animate-zoom]="m_bIsConnectedVisible">
-      <h2>Stay Connected Anywhere</h2>
-      <p>Internet issues? Use the <strong>RISE Telegram Bot</strong> for updates in your chat. <br> No connectivity? Print maps for <strong>offline use</strong> in the field.</p>
-      <p class="connected-note">Critical information is always at your fingertips!</p>
+      <h2>{{ 'PLATFORM.STAY_CONNECTED_ANYWHERE' | translate }}</h2>
+      <p [innerHTML]="'PLATFORM.TELEGRAM_BOT' | translate"></p>
+      <p class="connected-note">{{ 'PLATFORM.CRITICAL_INFO' | translate }}</p>
     </div>
   </section>
 
   <!-- PLUGINS DETAIL (Clean white style) -->
   <section class="plugins-section">
     <div class="plugins-header">
-      <h2>Discover RISE Plugins in Detail</h2>
-      <p>Customize RISE with specialized plugins tailored to your needs: <span class="text-yellow"><strong>Have a glimpse on what the platform can do.</strong></span></p>
+      <h2>{{ 'PLATFORM.DISCOVER_PLUGINS_DETAILS' | translate }}</h2>
+      <p [innerHTML]="'PLATFORM.CUSTOMIZE_RISE_PLUGINS' | translate"></p>
     </div>
 
     <div class="plugin-block">
       <div class="plugin-block__content">
-        <h3 class="plugin-block__title plugin-block__title--gold">Flood</h3>
-        <p>Monitor water over your area of interest:</p>
+        <h3 class="plugin-block__title plugin-block__title--gold">{{ 'PLATFORM.FLOOD_TITLE' | translate }}</h3>
+        <p>{{ 'PLATFORM.FLOOD_DESC' | translate }}</p>
         <ul>
-          <li><strong>Flood Monitoring:</strong> Near real-time mapping of floods in open and urban areas for rapid response.</li>
-          <li><strong>Flood Archive:</strong> Access historical flood data via an interactive time-bar for deep review and analysis.</li>
-          <li><strong>Flood Depth:</strong> Visualize flood water depth to assess severity and prioritize actions.</li>
-          <li><strong>Flood Prone Areas:</strong> Identify high-risk areas by showing frequency and vulnerability to flooding.</li>
+          <li><strong [innerHTML]="'PLATFORM.FLOOD_MONITORING' | translate"></strong>: {{ 'PLATFORM.FLOOD_MONITORING_DESC' | translate }}</li>
+          <li><strong [innerHTML]="'PLATFORM.FLOOD_ARCHIVE' | translate"></strong>: {{ 'PLATFORM.FLOOD_ARCHIVE_DESC' | translate }}</li>
+          <li><strong [innerHTML]="'PLATFORM.FLOOD_DEPTH' | translate"></strong>: {{ 'PLATFORM.FLOOD_DEPTH_DESC' | translate }}</li>
+          <li><strong [innerHTML]="'PLATFORM.FLOOD_PRONE' | translate"></strong>: {{ 'PLATFORM.FLOOD_PRONE_DESC' | translate }}</li>
         </ul>
       </div>
       <div class="plugin-block__media">
@@ -104,19 +104,19 @@
         </video>
         <div class="video-overlay" (click)="openVideo('/assets/rise-assets/plugins/Floods.mp4')">
           <span class="play-icon">▶</span>
-          <span>WATCH FULL SCREEN</span>
+          <span>{{ 'IMPACT.WATCH_FULL_SCREEN' | translate }}</span>
         </div>
       </div>
     </div>
 
     <div class="plugin-block">
       <div class="plugin-block__content">
-        <h3 class="plugin-block__title plugin-block__title--gold">Drought</h3>
-        <p>Track vegetation health over time:</p>
+        <h3 class="plugin-block__title plugin-block__title--gold">{{ 'PLATFORM.DROUGHT_TITLE' | translate }}</h3>
+        <p>{{ 'PLATFORM.DROUGHT_DESC' | translate }}</p>
         <ul>
-          <li><strong>Drought Monitoring:</strong> Continuous assessment of vegetation health and surface conditions to detect drought patterns.</li>
-          <li><strong>VCI and VHI Indices:</strong> Analyze Vegetation Condition Index (VCI) and Vegetation Health Index (VHI) for agricultural insights.</li>
-          <li><strong>Precipitation Anomalies:</strong> Compare current rainfall with historical averages to identify water stress.</li>
+          <li><strong [innerHTML]="'PLATFORM.DROUGHT_MONITORING' | translate"></strong>: {{ 'PLATFORM.DROUGHT_MONITORING_DESC' | translate }}</li>
+          <li><strong [innerHTML]="'PLATFORM.VCI_VHI' | translate"></strong>: {{ 'PLATFORM.VCI_VHI_DESC' | translate }}</li>
+          <li><strong [innerHTML]="'PLATFORM.PRECIPITATION_ANOMALIES' | translate"></strong>: {{ 'PLATFORM.PRECIPITATION_ANOMALIES_DESC' | translate }}</li>
         </ul>
       </div>
       <div class="plugin-block__media">
@@ -125,19 +125,19 @@
         </video>
         <div class="video-overlay" (click)="openVideo('/assets/rise-assets/plugins/droughts.mkv')">
           <span class="play-icon">▶</span>
-          <span>WATCH FULL SCREEN</span>
+          <span>{{ 'IMPACT.WATCH_FULL_SCREEN' | translate }}</span>
         </div>
       </div>
     </div>
 
     <div class="plugin-block">
       <div class="plugin-block__content">
-        <h3 class="plugin-block__title plugin-block__title--gold">Buildings</h3>
-        <p>Detailed analysis of structure and infrastructure:</p>
+        <h3 class="plugin-block__title plugin-block__title--gold">{{ 'PLATFORM.BUILDINGS_TITLE' | translate }}</h3>
+        <p>{{ 'PLATFORM.BUILDINGS_DESC' | translate }}</p>
         <ul>
-          <li><strong>Building Footprints:</strong> High-precision mapping of built-up areas for urban planning and disaster impact analysis.</li>
-          <li><strong>Infrastructure Exposure:</strong> Identify critical buildings (e.g., hospitals, schools) in potential hazard zones.</li>
-          <li><strong>Urban Growth:</strong> Track temporal changes in building density to monitor rapid urbanization.</li>
+          <li><strong [innerHTML]="'PLATFORM.BUILDING_FOOTPRINTS' | translate"></strong>: {{ 'PLATFORM.BUILDING_FOOTPRINTS_DESC' | translate }}</li>
+          <li><strong [innerHTML]="'PLATFORM.INFRASTRUCTURE_EXPOSURE' | translate"></strong>: {{ 'PLATFORM.INFRASTRUCTURE_EXPOSURE_DESC' | translate }}</li>
+          <li><strong [innerHTML]="'PLATFORM.URBAN_GROWTH' | translate"></strong>: {{ 'PLATFORM.URBAN_GROWTH_DESC' | translate }}</li>
         </ul>
       </div>
       <div class="plugin-block__media">
@@ -146,20 +146,20 @@
         </video>
         <div class="video-overlay" (click)="openVideo('/assets/rise-assets/plugins/Buildings.mp4')">
           <span class="play-icon">▶</span>
-          <span>WATCH FULL SCREEN</span>
+          <span>{{ 'IMPACT.WATCH_FULL_SCREEN' | translate }}</span>
         </div>
       </div>
     </div>
 
     <div class="plugin-block">
       <div class="plugin-block__content">
-        <h3 class="plugin-block__title plugin-block__title--gold">Impacts</h3>
-        <p>Understand the human and environmental cost:</p>
+        <h3 class="plugin-block__title plugin-block__title--gold">{{ 'PLATFORM.IMPACTS_TITLE' | translate }}</h3>
+        <p>{{ 'PLATFORM.IMPACTS_DESC' | translate }}</p>
         <ul>
-          <li>Instantly calculate the extent of damage to buildings, agriculture, and infrastructure.</li>
-          <li><strong>Population Affected:</strong> Estimate the number of people impacted within a disaster zone.</li>
-          <li><strong>Infrastructure Exposure:</strong> Identify critical buildings (e.g., hospitals, schools) in potential hazard zones.</li>
-          <li><strong>Damage Reports:</strong> Generate automated summaries of impacted assets for rapid situational reporting.</li>
+          <li>{{ 'PLATFORM.IMPACTS_EVALUATION_DESC' | translate }}</li>
+          <li><strong [innerHTML]="'PLATFORM.POP_AFFECTED_PL' | translate"></strong>: {{ 'PLATFORM.POP_AFFECTED_DESC' | translate }}</li>
+          <li><strong [innerHTML]="'PLATFORM.INFRASTRUCTURE_EXPOSURE' | translate"></strong>: {{ 'PLATFORM.INFRASTRUCTURE_EXPOSURE_DESC' | translate }}</li>
+          <li><strong [innerHTML]="'PLATFORM.DAMAGE_REPORTS' | translate"></strong>: {{ 'PLATFORM.DAMAGE_REPORTS_DESC' | translate }}</li>
         </ul>
       </div>
       <div class="plugin-block__media">
@@ -168,17 +168,17 @@
         </video>
         <div class="video-overlay" (click)="openVideo('/assets/rise-assets/plugins/impacts.mp4')">
           <span class="play-icon">▶</span>
-          <span>WATCH FULL SCREEN</span>
+          <span>{{ 'IMPACT.WATCH_FULL_SCREEN' | translate }}</span>
         </div>
       </div>
     </div>
 
     <div class="plugin-block">
       <div class="plugin-block__content">
-        <h3 class="plugin-block__title plugin-block__title--gold">Rain</h3>
-        <p>Monitor precipitation patterns:</p>
+        <h3 class="plugin-block__title plugin-block__title--gold">{{ 'PLATFORM.RAIN_TITLE' | translate }}</h3>
+        <p>{{ 'PLATFORM.RAIN_DESC' | translate }}</p>
         <ul>
-          <li>Access multi-hourly and daily accumulated rainfall data for early warning and tracking.</li>
+          <li>{{ 'PLATFORM.RAIN_OBSERVATIONS_DESC' | translate }}</li>
         </ul>
       </div>
       <div class="plugin-block__media">
@@ -187,17 +187,17 @@
         </video>
         <div class="video-overlay" (click)="openVideo('/assets/rise-assets/plugins/Rain.mp4')">
           <span class="play-icon">▶</span>
-          <span>WATCH FULL SCREEN</span>
+          <span>{{ 'IMPACT.WATCH_FULL_SCREEN' | translate }}</span>
         </div>
       </div>
     </div>
 
     <div class="plugin-block plugin-block--centered">
       <div class="plugin-block__content">
-        <h3 class="plugin-block__title plugin-block__title--gold">AND MUCH MORE...</h3>
-        <p>Explore the plugins available today and discover even more tools you can start using right away.</p>
+        <h3 class="plugin-block__title plugin-block__title--gold">{{ 'PLATFORM.AND_MUCH_MORE' | translate }}</h3>
+        <p>{{ 'PLATFORM.CUSTOM_PLUGINS' | translate }}</p>
         <div class="plugin-block__action">
-          <button class="btn-primary-yellow" (click)="navigateTo('sign-up')">Sign Up and Start Exploring</button>
+          <button class="btn-primary-yellow" (click)="navigateTo('sign-up')">{{ 'LANDING.GET_STARTED' | translate }}</button>
         </div>
       </div>
     </div>
@@ -207,33 +207,33 @@
   <!-- FUTURE READY (Gold style) -->
   <section class="future-section">
     <div class="future-inner">
-      <h2>Future Ready Platform</h2>
-      <p class="future-sub1">RISE is built to evolve. We are constantly integrating new satellite data sources and advanced AI-driven analytics to stay ahead of natural hazards.</p>
+      <h2>{{ 'PLATFORM.FUTURE_READY' | translate }}</h2>
+      <p class="future-sub1">{{ 'PLATFORM.FUTURE_READY_DESC' | translate }}</p>
       
       <div class="future-grid">
         <!-- Card 1 -->
         <div class="future-card">
           <div class="future-bg-number">1</div>
-          <h4>Unlimited Users</h4>
-          <p>Scale your operations without limits. Add as many team members as you need.</p>
+          <h4>{{ 'PLATFORM.GLOBAL_COVERAGE' | translate }}</h4>
+          <p>{{ 'PLATFORM.GLOBAL_DESC' | translate }}</p>
         </div>
         <!-- Card 2 -->
         <div class="future-card">
           <div class="future-bg-number">2</div>
-          <h4>Scalable Architecture</h4>
-          <p>Our cloud-based system scales instantly to meet the demands of any operation.</p>
+          <h4>{{ 'PLATFORM.SCALABLE_ARCHITECTURE' | translate }}</h4>
+          <p>{{ 'PLATFORM.SCALABLE_DESC' | translate }}</p>
         </div>
         <!-- Card 3 -->
         <div class="future-card">
           <div class="future-bg-number">3</div>
-          <h4>Always Up-to-Date</h4>
-          <p>Benefit from automatic updates and the latest satellite imagery as it becomes available.</p>
+          <h4>{{ 'PLATFORM.SECURE_PRIVATE' | translate }}</h4>
+          <p>{{ 'PLATFORM.SECURE_DESC' | translate }}</p>
         </div>
         <!-- Card 4 -->
         <div class="future-card">
           <div class="future-bg-number">4</div>
-          <h4>Cross-Device Access</h4>
-          <p>Access RISE from your desktop and tablet — anywhere in the world.</p>
+          <h4>{{ 'PLATFORM.API_INTEGRATION' | translate }}</h4>
+          <p>{{ 'PLATFORM.API_DESC' | translate }}</p>
         </div>
       </div>
       
@@ -243,7 +243,7 @@
 
   <!-- FAQ -->
   <section id="faq-section" class="faq-section">
-    <h2>F.A.Q.</h2>
+    <h2>{{ 'FOOTER.FAQ' | translate }}</h2>
     <div class="faq-list">
       <div class="faq-item" *ngFor="let faq of m_aoFaqs; let i = index">
         <button class="faq-item__question" (click)="toggleFaq(i)" [class.faq-item__question--open]="faq.open">

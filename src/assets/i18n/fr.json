@@ -12,7 +12,6 @@
     "USER": "Utilisateur",
     "USER_ACCOUNT": "Compte utilisateur",
     "MANAGE_EVENTS": "Gérer les événements"
-
   },
   "MANUAL_BBOX": {
     "DRAW_AREA": "Dessiner une zone",
@@ -100,12 +99,10 @@
     "REFRESH": "Rafraîchir",
     "DOWNLOAD": "Télécharger",
     "EXPLANATION": "Le filtre peut être défini sur Aucun pour analyser tous les pixels, ou sur un nombre : dans ce cas, RISE analysera les pixels dont la valeur est supérieure au filtre. Cliquez sur Actualiser pour démarrer l'analyse.",
-    "WAIT": "RISE analyse votre couche."    ,
+    "WAIT": "RISE analyse votre couche.",
     "EXPORT": "Exporter",
     "ESTIMATED_AREA_PIXEL_AFFECTED": "Zone Estimée des Pixels Affectés"
   },
-
-
   "AREA_OF_OPERATIONS": {
     "ACTIVE_AREAS": "Zones d'opérations actives",
     "AREA_HEADER_TOO_BIG": "Zone trop grande !",
@@ -132,7 +129,6 @@
     "AREA_NOT_FOUND_MSG": "Pour commencer à créer des zones d'opérations dans RISE, veuillez ",
     "AREA_NOT_FOUND_MSG_FIELD": "Votre compte n'est lié à aucune zone d'opération pour le moment. Veuillez contacter l'administrateur de votre organisation ",
     "AREA_NOT_FOUND_LINK": "cliquez ici"
-
   },
   "BANNER": {
     "LIVE_SIT": "Situation en direct",
@@ -437,12 +433,12 @@
     "FLOOD_DEPTH": "Profondeur d'Inondation",
     "ACTIVE_FIRES": "Feu Actif",
     "POLLUTANT": "Polluant",
-    "NO2":"NO2",
-    "HCHO":"HCHO",
-    "CO":"CO",
-    "O3":"O3",
-    "CH4":"CH4",
-    "SO2":"SO2"
+    "NO2": "NO2",
+    "HCHO": "HCHO",
+    "CO": "CO",
+    "O3": "O3",
+    "CH4": "CH4",
+    "SO2": "SO2"
   },
   "FORGET_PASSWORD_REQUEST": {
     "TITLE": "Réinitialiser votre mot de passe",
@@ -473,15 +469,15 @@
     "LST": "Température de surface terrestre",
     "FLOOD_DEPTH": "Estimation de la profondeur d'inondation",
     "POLLUTANT": "Polluant",
-    "NO2":"NO2",
-    "HCHO":"HCHO",
-    "CO":"CO",
-    "O3":"O3",
-    "CH4":"CH4",
-    "SO2":"SO2"
+    "NO2": "NO2",
+    "HCHO": "HCHO",
+    "CO": "CO",
+    "O3": "O3",
+    "CH4": "CH4",
+    "SO2": "SO2"
   },
   "IMPACTS_DIALOG": {
-    "NO_IMPACTS_AVAILABLE_MSG":"RISE n'a trouvé aucune donnée pour la date sélectionnée dans cette zone. Veuillez vérifier la date ou la zone d'opération.",
+    "NO_IMPACTS_AVAILABLE_MSG": "RISE n'a trouvé aucune donnée pour la date sélectionnée dans cette zone. Veuillez vérifier la date ou la zone d'opération.",
     "SELECT_LAYER": "Afficher les impacts selon :",
     "SELECT_LAYER_PLACEHOLDER": "Sélectionnez une couche pour afficher les impacts",
     "ESTIMATED_AREA": "Superficie totale estimée",
@@ -505,7 +501,6 @@
     "CANCEL": "Annuler",
     "IMPORT": "Importer"
   },
-
   "LAYER_ITEM": {
     "OPACITY": "Opacité",
     "REMOVE_LAYER": "Supprimer la couche",
@@ -550,10 +545,15 @@
     "REAL_TIME_MONITORING": "Surveillance en temps quasi réel",
     "REAL_TIME_MONITORING_DESC": "Le système interroge en permanence les nouvelles données satellitaires pour élaborer et fournir le service de surveillance environnementale le plus rapide possible.",
     "INTUITIVE_UI": "Interface utilisateur intuitive",
+    "INTUITIVE_UI_DESC": "L'interface conviviale de RISE est conçue pour rendre les données complexes et essentielles accessibles à tous. Les experts techniques et non techniques peuvent naviguer sur la plateforme sans effort. RISE minimise le temps passé à apprendre le système, permettant aux utilisateurs de se concentrer sur ce qui compte vraiment.",
     "HISTORICAL_DATA": "Analyse des données historiques",
+    "HISTORICAL_DATA_DESC": "RISE transforme les données satellitaires et environnementales historiques en décisions stratégiques pour l'avenir. Les organisations peuvent identifier des modèles à long terme en examinant les données environnementales et satellitaires passées, identifier les risques récurrents et anticiper les scénarios potentiels. Cette capacité soutient une planification et des stratégies de résilience plus intelligentes, garantissant que les leçons du passé renforcent la réponse de demain.",
     "IMPACTS_EVALUATION": "Évaluation des impacts",
+    "IMPACTS_EVALUATION_DESC": "Notre plateforme propose des évaluations d'impact automatisées qui révèlent exactement ce qui est menacé après un événement. Des routes et bâtiments aux populations, cultures et infrastructures critiques, RISE transforme des informations complexes en informations claires. Un tableau de bord dynamique rassemble tout, les pourcentages, les zones touchées et les comparaisons de risques, donnant aux organisations la confiance nécessaire pour agir rapidement et efficacement.",
     "MULTI_LANGUAGE": "Multi-langues",
+    "MULTI_LANGUAGE_DESC": "RISE a été développé pour la collaboration mondiale. Grâce au support multilingue, la plateforme s'adapte à différentes langues, garantissant l'accessibilité et l'inclusion au-delà des frontières géographiques. Les équipes internationales et les acteurs humanitaires peuvent collaborer facilement, quel que soit leur emplacement.",
     "TAILORED_PROFILES": "Profils d'utilisateurs sur mesure",
+    "TAILORED_PROFILES_DESC": "Chaque utilisateur est unique, et RISE le reflète avec des profils personnalisés. Le système adapte les tableaux de bord et les paramètres en fonction des rôles, des responsabilités et des préférences, garantissant que chaque utilisateur voit les informations les plus pertinentes. Les expériences personnalisées augmentent l'efficacité, réduisent l'encombrement et permettent aux individus de se concentrer sur ce qui compte le plus.",
     "CUSTOMIZE_RISE": "Vous pouvez personnaliser RISE avec ",
     "SPECIALIZED": "spécialisés",
     "PLUGINS_TAILORED": " des plugins adaptés à vos besoins :",
@@ -667,7 +667,16 @@
     "FAQ_Q4": "Puis-je intégrer RISE à mes outils existants ?",
     "FAQ_A4": "Oui, nous proposons des intégrations API et prenons en charge les formats de données géospatiales standard.",
     "TAGLINE": "Toujours en expansion. Toujours portable. Toujours en amélioration.",
-    "TEST_PLUGIN_NOW": "TESTER UN PLUGIN MAINTENANT"
+    "TEST_PLUGIN_NOW": "TESTER UN PLUGIN MAINTENANT",
+    "FAQ_Q5": "Quelles sources RISE utilise-t-il pour ses données d'observation de la Terre ?",
+    "FAQ_A5": "RISE s'appuie sur la plateforme WASDI pour le traitement de l'observation de la Terre, garantissant ainsi l'accès à un grand nombre de missions satellites et d'algorithmes de traitement. Les sources de données les plus utilisées sont Sentinel-1, Sentinel-2, Sentinel-3, Sentinel-5P, VIIRS, GFS.",
+    "FAQ_Q6": "RISE peut-il être utilisé sur des appareils mobiles comme des tablettes ou des smartphones ?",
+    "FAQ_A6": "L'interface utilisateur de RISE est actuellement optimisée pour les ordinateurs personnels et les tablettes. Pour les smartphones, nous vous recommandons d'utiliser notre bot Telegram, qui vous permet d'interagir directement avec RISE via le chat et de recevoir instantanément des cartes sur votre appareil tout en travaillant sur le terrain.",
+    "FAQ_Q7": "RISE prend-il en charge les API ou les exportations de données ?",
+    "FAQ_A7": "Oui. RISE permet aux utilisateurs de télécharger toutes les cartes manuellement via la plateforme ou via une API. Cela garantit une certaine flexibilité pour les organisations qui souhaitent intégrer les résultats de RISE dans leurs propres systèmes ou flux de travail.",
+    "FAQ_Q8": "Quelles langues RISE prend-il en charge actuellement ?",
+    "FAQ_A8": "Actuellement, RISE prend en charge les langues suivantes : <b>anglais, espagnol, français, italien et arabe.</b>\n\nNous travaillons continuellement à élargir nos offres linguistiques afin de rendre RISE plus inclusif et accessible aux utilisateurs du monde entier. D'autres langues seront ajoutées dans les futures mises à jour dans le cadre de notre engagement en faveur de la convivialité mondiale.",
+    "FUTURE_READY_DESC": "RISE est conçu pour évoluer. Nous intégrons constamment de nouvelles sources de données satellites et des analyses avancées basées sur l'IA pour garder une longueur d'avance sur les risques naturels."
   },
   "IMPACT": {
     "TITLE": "Histoires d'impact",
@@ -753,17 +762,20 @@
     "3_AREAS": "3 zones",
     "5_AREAS": "5 zones",
     "10_AREAS": "10 zones",
-    "FREE": "GRATUIT"
+    "FREE": "GRATUIT",
+    "ALERT_FILL_FIELDS": "Veuillez remplir votre adresse e-mail et votre message.",
+    "CUSTOM_SUBJECT": "Demande de plan personnalisé RISE"
   },
   "ABOUT": {
     "TITLE": "À propos",
+    "HERO_SUBTITLE": "Faire progresser la résilience climatique grâce aux connaissances scientifiques, à l'innovation technologique et à la collaboration.",
     "MISSION_VISION": "Mission et Vision",
     "MISSION_P1": "RISE est un produit développé par WASDI Sarl. <strong>WASDI S.a.r.l. est une joint-venture formée en décembre 2020 entre FadeOut Software (une PME de développement de logiciels en Italie) et le Luxembourg Institute of Science and Technology.</strong>",
     "VISION_P1": "WASDI imagine un monde où la télédétection, la technologie et la science permettent aux communautés de collaborer et de renforcer leur résilience face aux catastrophes climatiques, assurant la durabilité et la protection mondiale avec un accent particulier sur les plus vulnérables.",
     "RISE_P1": "RISE existe pour transformer la recherche scientifique de pointe en services opérationnels accessibles, donnant aux décideurs et aux intervenants de première ligne des données satellitaires exploitables pour la surveillance environnementale, l'aide humanitaire et le développement durable.",
     "RISE_P2": "RISE a été développé par WASDI Sarl dans le cadre de l'action pour l'innovation humanitaire, promue par l'Accélérateur d'innovation du Programme alimentaire mondial <a href=\"https://innovation.wfp.org/\" target=\"_blank\" rel=\"noopener\">(HIIA)</a>. RISE transforme automatiquement les données satellites en cartes de risques claires, aidant les intervenants à évaluer rapidement les inondations, les sécheresses et autres risques, tout en utilisant des archives historiques pour suivre les impacts au fil du temps.",
     "LIST_CONTRIB": "Le LIST ha contribuito a RISE sviluppando gli algoritmi per il Rilevamento delle Inondazioni in suolo nudo e in aree urbane, per rilevare gli edifici e per valutare l'evapotraspirazione per valutare lo stress da siccità.",
-    "RED_CROSS_CONTRIB": "La Croix-Rouge luxembourgeoise, Shelter Research Unit, a été impliquée dans le projet pour définir les cas d'utilisation et tester la solution sur le terrain, à Madagascar. (Voir Histoires d'impact)",
+    "RED_CROSS_CONTRIB": "L'Aide Internationale de la Croix-Rouge de Luxembourg (AICRL) – Shelter Research Unit (SRU) a contribué en définissant des cas d'utilisation réels et en testant la solution directement sur le terrain à Madagascar.",
     "TESTIMONIALS": "Témoignages",
     "CLIENT_SAY": "CE QUE NOS CLIENTS DISENT DE NOUS",
     "WE_ARE_HERE": "Nous sommes ici !",
@@ -791,7 +803,10 @@
     "OPT_OTHER": "Autre",
     "SUB_GENERAL": "Demande générale",
     "SUB_SALES": "Ventes",
-    "SUB_TECH": "Support technique"
+    "SUB_TECH": "Support technique",
+    "ALERT_FILL_MANDATORY": "Veuillez remplir tous les champs obligatoires (Prénom, Nom, Email et Message).",
+    "ALERT_SENT_SUCCESS": "Message envoyé avec succès !",
+    "ALERT_SENT_FAIL": "L'envoi du message a échoué. Veuillez réessayer plus tard."
   },
   "NAVBAR": {
     "HOME": "Accueil",

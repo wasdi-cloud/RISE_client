@@ -17,7 +17,7 @@
     "HEADER": "Manage Events",
     "CREATE_NEW_EVENT": "Create new Event",
     "EDIT_EVENT": "Edit Event",
-    "RETURN": "Return" ,
+    "RETURN": "Return",
     "CREATION_UPLOAD_ALTERNATIVE_TEXT": "After the creation of your event, you will be able to upload associated images and documents when editing it."
   },
   "CREATE_NEW_EVENT": {
@@ -31,7 +31,7 @@
   },
   "EVENT": {
     "NAME": "Name",
-    "TYPE":"Type",
+    "TYPE": "Type",
     "START_DATE": "Start date",
     "PEAK_DATE": "Peak Date",
     "END_DATE": "End date"
@@ -123,7 +123,7 @@
     "ERROR_LAYER_FAILURE": "Could not load layers for ",
     "ERROR_UNKNOWN": "An unknown error occurred",
     "ERROR_API_INVITE_STILL_PENDING": "There is already a pending invitation for this user. You can resend the invitation after it expires."
-    },
+  },
   "INVITE_USER": {
     "EMAIL": "Enter the email of the person to invite",
     "CONFIRM": "Confirm the email of your invitee",
@@ -171,7 +171,7 @@
     "EVENT_START": "Start",
     "EVENT_PEAK": "Peak",
     "EVENT_END": "End",
-    "DRAG":"Drag to rearrange",
+    "DRAG": "Drag to rearrange",
     "SEE_IMPACTS": "Impacts Evaluation",
     "ADD_EVENT": "Add event",
     "SEARCH_LAYERS_BY_NAME": "Search Layers By Name",
@@ -196,7 +196,6 @@
     "PER_AREA_AFFECTED_PIXEL": "Percentage of Affected Pixel in Area",
     "ESTIMATED_AREA": "Estimated Area",
     "ESTIMATED_AREA_PIXEL_AFFECTED": "Estimated Area Pixel Affected",
-
     "PER_TOT_AREA_AFFECTED_PIXEL": "Percentage of total Affected Pixel in Area",
     "REFRESH": "Refresh",
     "DOWNLOAD": "Download",
@@ -235,7 +234,7 @@
     "ENTER_PW": "Please enter your One Time Pass Code"
   },
   "CONFIRM_ADMIN_INV": {
-    "TITLE":"Confirm your registration",
+    "TITLE": "Confirm your registration",
     "DESCRIPTION": "Thank you for signing up in RISE! Please confirm your registration so you can log in and start exploring",
     "CONFIRM": "Confirm"
   },
@@ -248,12 +247,12 @@
     "USERNAME_ERROR_MESSAGE_LOWERCASE": "User ID must be all lowercase",
     "USERNAME_ERROR_MESSAGE_AT_SYMBOL": "User ID cannot contain the '@' symbol (it is not an email).",
     "NEXT": "Next",
-    "PERSONAL_INFO":"Enter your Personal Information",
+    "PERSONAL_INFO": "Enter your Personal Information",
     "ORG_INFO": "Enter your Organization's Information",
-    "STREET_ADDRESS":"Street Address",
+    "STREET_ADDRESS": "Street Address",
     "TITLE": "Create a RISE account",
     "STREET_NUMBER": "Street Number",
-    "POSTAL_CODE":"Postal Code",
+    "POSTAL_CODE": "Postal Code",
     "BUTTON": "Register",
     "PREV_BUTTON": "Previous",
     "INVITED_USER_SUCCESS": "You are successfully registered",
@@ -327,8 +326,8 @@
     "UPDATE": "Update Subscription",
     "WIRE": "Wire Transfer",
     "YEAR": "One Year",
-    "STRIPE_TITLE":  "Re-directing to STRIPE",
-    "STRIPE_MSG":  "You will be re-directed to our payment partner, Stripe. Click 'Yes' to continue or 'CANCEL' to end the payment process.",
+    "STRIPE_TITLE": "Re-directing to STRIPE",
+    "STRIPE_MSG": "You will be re-directed to our payment partner, Stripe. Click 'Yes' to continue or 'CANCEL' to end the payment process.",
     "INVALID_SUB": "Invalid Subscription",
     "INVALID_SUB_MSG": "Your subscription has expired or you do not have an active subscription. Please buy new subscription to continue using this feature."
   },
@@ -397,11 +396,11 @@
     "EXPIRY_DATE": "Expiry date",
     "PAID_STATUS": "Status"
   },
-  "MANUAL_BBOX":{
-    "DRAW_AREA":"Draw Area",
+  "MANUAL_BBOX": {
+    "DRAW_AREA": "Draw Area",
     "JSON_INPUT": "JSON Input",
     "INPUT_FIELDS": "Input Fields",
-    "TITLE":"Please insert The coordination",
+    "TITLE": "Please insert The coordination",
     "DIALOG_MANUAL_INSERT_BBOX_INFO": "Input JSON in the following format:<br>",
     "DIALOG_PROCESSOR_UI_APP_FORMAT_JSON": "Format JSON",
     "DIALOG_FORMAT_JSON_ERROR": "Could not format your JSON input. Please ensure it is a valid JSON",
@@ -418,7 +417,7 @@
     "ERROR": "Error"
   },
   "CONFIRM_DIALOG": {
-    "ACTION":"Confirm Action",
+    "ACTION": "Confirm Action",
     "CONFIRM": "Yes",
     "CANCEL": "Cancel"
   },
@@ -448,12 +447,12 @@
     "FLOOD_DEPTH": "Flood Depth",
     "ACTIVE_FIRES": "Active Fire",
     "POLLUTANT": "Pollutant",
-    "NO2":"NO2",
-    "HCHO":"HCHO",
-    "CO":"CO",
-    "O3":"O3",
-    "CH4":"CH4",
-    "SO2":"SO2"
+    "NO2": "NO2",
+    "HCHO": "HCHO",
+    "CO": "CO",
+    "O3": "O3",
+    "CH4": "CH4",
+    "SO2": "SO2"
   },
   "PLUGIN_MAP_DESCRIPTIONS": {
     "HIGH_RES_FLOOD": "High Resolution SAR based Flood Map",
@@ -477,12 +476,12 @@
     "LST": "Land Surface Temperature",
     "FLOOD_DEPTH": "Flood Depth Estimation",
     "POLLUTANT": "Pollutant",
-    "NO2":"NO2",
-    "HCHO":"HCHO",
-    "CO":"CO",
-    "O3":"O3",
-    "CH4":"CH4",
-    "SO2":"SO2"
+    "NO2": "NO2",
+    "HCHO": "HCHO",
+    "CO": "CO",
+    "O3": "O3",
+    "CH4": "CH4",
+    "SO2": "SO2"
   },
   "IMPACTS_DIALOG": {
     "NO_IMPACTS_AVAILABLE_MSG": "RISE did not find any data for the selected date in this area of operation",
@@ -507,10 +506,10 @@
   "LAYER_ITEM": {
     "OPACITY": "Opacity",
     "REMOVE_LAYER": "Remove Layer",
-    "TOGGLE_LEGEND_VISIBILITY":"Toggle legend visibility",
-    "FOCUS_ON_LAYER":"Focus on layer",
-    "DOWNLOAD_FILE":"Download file",
-    "LAYER_PROP":"Layer Properties"
+    "TOGGLE_LEGEND_VISIBILITY": "Toggle legend visibility",
+    "FOCUS_ON_LAYER": "Focus on layer",
+    "DOWNLOAD_FILE": "Download file",
+    "LAYER_PROP": "Layer Properties"
   },
   "TIMEBAR": {
     "LIVE": "Live"
@@ -559,11 +558,16 @@
     "DISCOVER_FEATURES_DESC": "Discover how RISE empowers your organization with advanced tools for smarter, faster decision-making:",
     "REAL_TIME_MONITORING": "Near Real-Time Monitoring",
     "REAL_TIME_MONITORING_DESC": "RISE keeps you ahead of change with near real-time geospatial and satellite information. By providing continuous situational awareness, the platform empowers teams to make decisions and act quickly, reduce risks, and respond proactively to emergencies as soon as they occur, protecting communities with confidence.",
-    "INTUITIVE_UI": "RISE user-friendly interface is designed to make complex and essential data accessible to everyone. Both technical and non-technical experts can navigate the platform effortlessly. RISE minimizes the time spent learning the system, allowing users to focus on what really matters.",
-    "HISTORICAL_DATA": "RISE transforms historical satellite and environmental data into strategic decisions for the future. Organizations can identify long-term patterns by examining past environmental and satellite data, identify recurring risks, and anticipate potential scenarios. This capability supports smarter planning and resilience strategies, ensuring that lessons from the past strengthen tomorrow's response.",
-    "IMPACTS_EVALUATION": "Our platform offers automated impact assessments that reveal exactly what is at risk after an event. From roads and buildings to populations, crops, and critical infrastructure, RISE transforms complex information into clear insights. A dynamic dashboard brings everything together, percentages, affected areas, and risk comparisons, giving organizations the confidence to act quickly and effectively.",
-    "MULTI_LANGUAGE": "RISE was developed for global collaboration. With multilingual support, the platform adapts to various languages, ensuring accessibility and inclusion beyond geographical borders. International teams and humanitarian actors can collaborate easily, regardless of their location.",
-    "TAILORED_PROFILES": "Each user is unique, and RISE reflects this with personalized profiles. The system adapts dashboards and settings based on roles, responsibilities, and preferences, ensuring that each user sees the most relevant information. Personalized experiences increase efficiency, reduce clutter, and allow individuals to focus on what matters most.",
+    "INTUITIVE_UI": "Intuitive User Interface",
+    "INTUITIVE_UI_DESC": "RISE user-friendly interface is designed to make complex and essential data accessible to everyone. Both technical and non-technical experts can navigate the platform effortlessly. RISE minimizes the time spent learning the system, allowing users to focus on what really matters.",
+    "HISTORICAL_DATA": "Historical Data Analysis",
+    "HISTORICAL_DATA_DESC": "RISE transforms historical satellite and environmental data into strategic decisions for the future. Organizations can identify long-term patterns by examining past environmental and satellite data, identify recurring risks, and anticipate potential scenarios. This capability supports smarter planning and resilience strategies, ensuring that lessons from the past strengthen tomorrow's response.",
+    "IMPACTS_EVALUATION": "Impacts Evaluation",
+    "IMPACTS_EVALUATION_DESC": "Our platform offers automated impact assessments that reveal exactly what is at risk after an event. From roads and buildings to populations, crops, and critical infrastructure, RISE transforms complex information into clear insights. A dynamic dashboard brings everything together, percentages, affected areas, and risk comparisons, giving organizations the confidence to act quickly and effectively.",
+    "MULTI_LANGUAGE": "Multi-language",
+    "MULTI_LANGUAGE_DESC": "RISE was developed for global collaboration. With multilingual support, the platform adapts to various languages, ensuring accessibility and inclusion beyond geographical borders. International teams and humanitarian actors can collaborate easily, regardless of their location.",
+    "TAILORED_PROFILES": "Tailored User Profiles",
+    "TAILORED_PROFILES_DESC": "Each user is unique, and RISE reflects this with personalized profiles. The system adapts dashboards and settings based on roles, responsibilities, and preferences, ensuring that each user sees the most relevant information. Personalized experiences increase efficiency, reduce clutter, and allow individuals to focus on what matters most.",
     "CUSTOMIZE_RISE": "You can customize RISE with ",
     "SPECIALIZED": "specialized",
     "PLUGINS_TAILORED": " plugins tailored to your needs:",
@@ -677,7 +681,16 @@
     "FAQ_Q4": "Can I integrate RISE with my existing tools?",
     "FAQ_A4": "Yes, we offer API integrations and support standard geospatial data formats.",
     "TAGLINE": "Always expanding. Always portable. Always improving.",
-    "TEST_PLUGIN_NOW": "TEST A PLUGIN NOW"
+    "TEST_PLUGIN_NOW": "TEST A PLUGIN NOW",
+    "FAQ_Q5": "What sources does RISE use for its Earth Observation data?",
+    "FAQ_A5": "RISE leverages the WASDI Platform for the EO Processing, ensuring in this way the access to a huge number of satellite missions and processing algorithms. The most used source of data are Sentinel-1, Sentinel-2, Sentinel-3, Sentinel-5P, VIIRS, GFS.",
+    "FAQ_Q6": "Can RISE be used on mobile devices like tablets or smartphones?",
+    "FAQ_A6": "The RISE user interface is currently optimized for personal computers and tablets. For smartphones, we recommend using our Telegram bot, which allows you to interact with RISE directly through chat and instantly receive maps on your device while working in the field.",
+    "FAQ_Q7": "Does RISE support APIs or data exports?",
+    "FAQ_A7": "Yes. RISE allows users to download all maps either manually through the platform or via API. This ensures flexibility for organizations that want to integrate RISE outputs into their own systems or workflows.",
+    "FAQ_Q8": "What languages does RISE support at the moment?",
+    "FAQ_A8": "Currently, RISE supports the following languages: <b>English, Spanish, French, Italian, and Arabic.</b>\n\nWe're continuously working to expand our language offerings to make RISE more inclusive and accessible to users worldwide. More languages will be added in future updates as part of our commitment to global usability.",
+    "FUTURE_READY_DESC": "RISE is built to evolve. We are constantly integrating new satellite data sources and advanced AI-driven analytics to stay ahead of natural hazards."
   },
   "IMPACT": {
     "TITLE": "Impact Stories",
@@ -764,17 +777,20 @@
     "3_AREAS": "3 Areas",
     "5_AREAS": "5 Areas",
     "10_AREAS": "10 Areas",
-    "FREE": "FREE"
+    "FREE": "FREE",
+    "ALERT_FILL_FIELDS": "Please fill in both your email and your message.",
+    "CUSTOM_SUBJECT": "RISE Custom Plan Request"
   },
   "ABOUT": {
     "TITLE": "About Us",
+    "HERO_SUBTITLE": "Advancing Climate Resilience Through Scientific Insight, Technological Innovation, and Collaboration.",
     "MISSION_VISION": "Mission And Vision",
     "MISSION_P1": "RISE is a product developed by WASDI Sarl. <strong>WASDI S.a.r.l. is a joint venture formed in December 2020 between FadeOut Software (a software development SME in Italy), and the Luxembourg Institute of Science and Technology.</strong>",
     "VISION_P1": "WASDI envisions a world where remote sensing, technology and science empower communities to collaborate and build resilience against climate disasters, ensuring sustainability and worldwide protection with a special focus for the most vulnerable.",
     "RISE_P1": "RISE exists to transform state-of-the-art scientific research into accessible, operational services, empowering decision-makers and frontline responders with actionable satellite data for environmental monitoring, humanitarian aid, and sustainable development.",
     "RISE_P2": "RISE has been developed by WASDI Sarl in the context of the Humanitarian Innovation Action, promoted by the World Food Programme Innovation Accelerator <a href=\"https://innovation.wfp.org/\" target=\"_blank\" rel=\"noopener\">(HIIA)</a>. RISE automatically processes satellite data into clear hazard maps, helping responders quickly assess floods, droughts, and other risks, while also using historical archives to track impacts over time.",
     "LIST_CONTRIB": "LIST contributed to RISE developing the algorithms for Flood Detection in bare soil and in urban areas, to detect the buildings and to evaluate the evapotranspiration to evaluate drought stress.",
-    "RED_CROSS_CONTRIB": "The Luxembourg Red Cross, Shelter Research Unit, has been involved in the project to define the use cases and to test the solution on the field, in Madagascar. (See Impact stories)",
+    "RED_CROSS_CONTRIB": "The International Aid of the Luxembourg Red Cross (AICRL) – Shelter Research Unit (SRU) contributed by defining real-world use cases and testing the solution directly in the field in Madagascar.",
     "TESTIMONIALS": "Testimonials",
     "CLIENT_SAY": "THIS IS WHAT OUR CLIENTS SAY ABOUT US",
     "WE_ARE_HERE": "We are here!",
@@ -802,9 +818,13 @@
     "OPT_OTHER": "Other",
     "SUB_GENERAL": "General Inquiry",
     "SUB_SALES": "Sales",
-    "SUB_TECH": "Technical Support"
+    "SUB_TECH": "Technical Support",
+    "ALERT_FILL_MANDATORY": "Please fill in all mandatory fields (First Name, Last Name, Email, and Message).",
+    "ALERT_SENT_SUCCESS": "Message sent successfully!",
+    "ALERT_SENT_FAIL": "Failed to send message. Please try again later."
   },
   "NAVBAR": {
+    "HOME": "Home",
     "PLATFORM": "Platform",
     "IMPACT_STORIES": "Impact Stories",
     "PRICING": "Pricing",
