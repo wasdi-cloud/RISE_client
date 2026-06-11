@@ -5,14 +5,11 @@
   <!-- HERO -->
   <section class="impact-hero">
     <div class="impact-hero__content">
-      <h1>Impact Stories</h1>
+      <h1>{{ 'IMPACT.TITLE' | translate }}</h1>
       <p class="impact-hero__subtitle">
-        RISE transforms satellite data into <span class="text-yellow" [class.typing-text]="m_bTyping1">{{ m_sTyped1 }}</span>, 
-        helping organizations <span class="text-yellow" [class.typing-text]="m_bTyping2">{{ m_sTyped2 }}</span>, 
-        <span class="text-yellow" [class.typing-text]="m_bTyping3">{{ m_sTyped3 }}</span>, 
-        and make data-driven decisions.
+        {{ 'IMPACT.SUBTITLE_1' | translate }}<span class="text-yellow" [class.typing-text]="m_bTyping1">{{ m_sTyped1 }}</span>{{ 'IMPACT.SUBTITLE_2' | translate }}<span class="text-yellow" [class.typing-text]="m_bTyping2">{{ m_sTyped2 }}</span>{{ 'IMPACT.SUBTITLE_3' | translate }}<span class="text-yellow" [class.typing-text]="m_bTyping3">{{ m_sTyped3 }}</span>{{ 'IMPACT.SUBTITLE_4' | translate }}
       </p>
-      <p class="impact-hero__highlight">Here is how it’s making an impact today</p>
+      <p class="impact-hero__highlight">{{ 'IMPACT.IMPACT_HERO_HIGHLIGHT' | translate }}</p>
     </div>
   </section>
 
@@ -20,15 +17,15 @@
   <section class="case-study-section">
     <div class="case-study-card">
       <div class="case-study-card__header">
-        <h2>RISE & Luxembourg Red Cross:</h2>
-        <p class="case-study-card__subtitle">TRANSFORMING DISASTER RESPONSE IN MADAGASCAR</p>
+        <h2>{{ 'IMPACT.LUX_RED_CROSS_TITLE' | translate }}</h2>
+        <p class="case-study-card__subtitle">{{ 'IMPACT.LUX_RED_CROSS_SUBTITLE' | translate }}</p>
       </div>
 
       <div class="case-study-card__body">
         <div class="case-study-card__text">
-          <p>From 2023 to 2025, WASDI participated in the Humanitarian Innovation Accelerator programme, supported by the WFP Innovation Accelerator, the Government of the Grand Duchy of Luxembourg, and the Austrian Development Cooperation (ADC). The programme supports innovative solutions to address urgent challenges facing vulnerable populations and humanitarian actors.</p>
-          <p>In collaboration with the Luxembourg Institute of Science and Technology (LIST) and the Luxembourg Red Cross (AICRL), WASDI developed RISE and conducted a field‑based simulation exercise to explore its potential use in disaster response contexts. Partnering with the Malagasy Red Cross Society (CRM), the team chose <strong>Madagascar</strong>, a country frequently hit by cyclones, floods, and droughts, as the testing ground.</p>
-          <p>The project focused on Maroantsetra, a region affected by Cyclone Cheneso in 2023, to compare how RISE could support rapid needs assessments alongside traditional methods.</p>
+          <p>{{ 'IMPACT.CASE_STUDY_P1' | translate }}</p>
+          <p [innerHTML]="'IMPACT.CASE_STUDY_P2' | translate"></p>
+          <p>{{ 'IMPACT.CASE_STUDY_P3' | translate }}</p>
         </div>
         <div class="case-study-card__img-container">
           <img src="/assets/rise-assets/impact_lux_red_cross.jpg" alt="RISE Luxembourg Red Cross case study" class="case-study-card__img" loading="lazy" />
@@ -36,14 +33,14 @@
       </div>
 
       <div class="case-study-card__actions">
-        <button class="btn-primary-yellow btn-slim" (click)="openStory()">CLICK TO READ MORE</button>
+        <button class="btn-primary-yellow btn-slim" (click)="openStory()">{{ 'IMPACT.CLICK_TO_READ_MORE' | translate }}</button>
       </div>
     </div>
   </section>
 
   <!-- TRUSTED BY -->
   <section class="trusted-section">
-    <h2>Trusted by</h2>
+    <h2>{{ 'IMPACT.TRUSTED_BY' | translate }}</h2>
     <div class="trusted-logos">
       <div class="trusted-logo-item" [class.animate-zoom]="m_bLogosVisible">
         <img src="/assets/rise-assets/logo_list.png" alt="LIST" class="trusted-logo-img" loading="lazy" />
@@ -62,11 +59,11 @@
   <!-- CTA BANNER -->
   <section class="cta-banner">
     <div class="cta-banner__text">
-      <h2>Interested in seeing how RISE can support your organization?</h2>
+      <h2>{{ 'IMPACT.INTERESTED_IN_RISE' | translate }}</h2>
     </div>
     <div class="cta-banner__actions">
-      <button class="btn-primary-green btn-small" (click)="navigateTo('contact')">GET IN TOUCH</button>
-      <button class="btn-primary-yellow btn-small" (click)="navigateTo('platform')">EXPLORE RISE FEATURES</button>
+      <button class="btn-primary-green btn-small" (click)="navigateTo('contact')">{{ 'IMPACT.GET_IN_TOUCH' | translate }}</button>
+      <button class="btn-primary-yellow btn-small" (click)="navigateTo('platform')">{{ 'IMPACT.EXPLORE_RISE_FEATURES' | translate }}</button>
     </div>
   </section>
 
@@ -79,10 +76,10 @@
 
     <!-- Modal Header -->
     <div class="story-modal__header">
-      <h2 style="font-weight: 900; font-size: 32px;">Project Highlights</h2>
+      <h2 style="font-weight: 900; font-size: 32px;">{{ 'IMPACT.PROJECT_HIGHLIGHTS' | translate }}</h2>
       <p class="story-modal__subtitle" style="font-size: 14px; margin-top: 22px;">
-        RISE & Luxembourg Red Cross:<br>
-        <strong>TRANSFORMING DISASTER RESPONSE IN MADAGASCAR</strong>
+        {{ 'IMPACT.LUX_RED_CROSS_TITLE' | translate }}<br>
+        <strong>{{ 'IMPACT.LUX_RED_CROSS_SUBTITLE' | translate }}</strong>
       </p>
     </div>
 
@@ -93,75 +90,75 @@
           <div class="highlight-card__icon">
             <img src="/assets/rise-assets/trade-icon.svg" alt="Collaborative Innovation" />
           </div>
-          <h4>Collaborative Innovation</h4>
-          <p>WASDI built the technical core of RISE, while LIST provided scientific expertise, including developing drought and settlement monitoring tools. AICRL led field‑based simulation validation, ensuring RISE met disaster response requirements through field testing and practical guidance.</p>
+          <h4>{{ 'IMPACT.COLLABORATIVE_INNOVATION' | translate }}</h4>
+          <p>{{ 'IMPACT.WASDI_LIST_AICRL_DESC' | translate }}</p>
         </div>
         <div class="highlight-card">
           <div class="highlight-card__icon">
             <img src="/assets/rise-assets/business-relationship-icon.svg" alt="User-Led Refinement" />
           </div>
-          <h4>User-Led Refinement</h4>
-          <p>RISE evolved through iterative testing, focus groups, and training with AICRL and Malagasy Red Cross (CRM) teams. This process ensured the platform was user-friendly, efficient, and fully aligned with humanitarian operations.</p>
+          <h4>{{ 'IMPACT.REFINEMENT_TITLE' | translate }}</h4>
+          <p>{{ 'IMPACT.REFINEMENT_DESC' | translate }}</p>
         </div>
         <div class="highlight-card">
           <div class="highlight-card__icon">
             <img src="/assets/rise-assets/web-app-icon.svg" alt="Field Validation Success" />
           </div>
-          <h4>Field Validation Success</h4>
-          <p>During a head-to-head simulation based on Cyclone Cheneso, two teams, one using traditional methods (field visits, interviews, and secondary data) and the other using RISE, assessed flood impact, population needs, and infrastructure damage. The exercise demonstrated RISE's speed, cost-efficiency, and safety in crisis response.</p>
+          <h4>{{ 'IMPACT.VALIDATION_TITLE' | translate }}</h4>
+          <p>{{ 'IMPACT.VALIDATION_DESC' | translate }}</p>
         </div>
       </div>
     </div>
 
     <!-- Results Section -->
     <div class="story-results">
-      <h3 class="results-title-yellow">Validation Exercise Results & Impact</h3>
-      <p class="story-results__sub">THE NUMBERS TOLD THE STORY:</p>
-      <p class="story-results__intro">RISE enabled a faster, safer, and more cost-effective disaster response</p>
+      <h3 class="results-title-yellow">{{ 'IMPACT.VALIDATION_RESULTS_TITLE' | translate }}</h3>
+      <p class="story-results__sub">{{ 'IMPACT.NUMBERS_STORY' | translate }}</p>
+      <p class="story-results__intro">{{ 'IMPACT.RESULTS_INTRO' | translate }}</p>
       
       <div class="story-results__grid">
         <!-- Top Row -->
         <div class="result-card result-card--dark">
           <span class="result-card__bg-letter">1</span>
-          <h4>Faster Response</h4>
-          <p>RISE reduced assessment time, enabling faster decision-making in emergency situations.</p>
+          <h4>{{ 'LANDING.FASTER_RESPONSE' | translate }}</h4>
+          <p>{{ 'IMPACT.FASTER_RESPONSE_DESC' | translate }}</p>
         </div>
         <div class="result-card result-card--dark">
           <span class="result-card__bg-letter">2</span>
-          <h4><span class="results-title-yellow">88.9%</span> Cost Reduction</h4>
-          <p>By minimizing field visits and transport, RISE significantly lowered operational costs.</p>
+          <h4>{{ 'IMPACT.COST_V' | translate }}</h4>
+          <p>{{ 'IMPACT.COST_L' | translate }}</p>
         </div>
         <div class="result-card result-card--dark">
           <span class="result-card__bg-letter">3</span>
-          <h4>Precision You Can Trust</h4>
-          <p>RISE provided high-resolution flood maps, depth analysis, and infrastructure impact data — insights traditional methods simply couldn’t match.</p>
+          <h4>{{ 'IMPACT.PRECISION_TITLE' | translate }}</h4>
+          <p>{{ 'IMPACT.PRECISION_DESC' | translate }}</p>
         </div>
         <!-- Bottom Row (Centered via CSS) -->
         <div class="result-card result-card--dark result-card--bottom">
           <span class="result-card__bg-letter">4</span>
-          <h4>Safer Operations</h4>
-          <p>Teams using RISE avoided exposure to hazardous areas, reducing risks for humanitarian workers.</p>
+          <h4>{{ 'IMPACT.SAFER_TITLE' | translate }}</h4>
+          <p>{{ 'IMPACT.SAFER_DESC' | translate }}</p>
         </div>
         <div class="result-card result-card--dark result-card--bottom">
           <span class="result-card__bg-letter">5</span>
-          <h4>Scalable and Adaptable</h4>
-          <p>The exercise proved RISE could be easily integrated into existing disaster response protocols, even in low-resource settings.</p>
+          <h4>{{ 'IMPACT.SCALABLE_TITLE' | translate }}</h4>
+          <p>{{ 'IMPACT.SCALABLE_DESC_IM' | translate }}</p>
         </div>
       </div>
     </div>
 
     <!-- Quote and Platform Paragraph -->
     <div class="story-feedback-intro">
-      <p>Feedback from the Red Cross teams highlighted RISE’s potential to revolutionize how humanitarians prepare for and respond to disasters.</p>
+      <p>{{ 'IMPACT.FEEDBACK_INTRO' | translate }}</p>
     </div>
 
     <blockquote class="story-quote">
-      <p>"RISE shows very positive results, making needs assessment and crisis management more accurate, time-efficient, cost-effective, and safer."</p>
-      <footer>Red Cross Validation Report</footer>
+      <p>{{ 'IMPACT.QUOTE_TEXT' | translate }}</p>
+      <footer>{{ 'IMPACT.VALIDATION_REPORT' | translate }}</footer>
     </blockquote>
 
     <!-- Screenshots Carousel -->
-    <div style="font-weight: 900; font-size: 16px; font-style: italic; color: #284E59; margin-top: 40px; text-align: center;">Images of the results obtained during the test.</div>
+    <div style="font-weight: 900; font-size: 16px; font-style: italic; color: #284E59; margin-top: 40px; text-align: center;">{{ 'IMPACT.IMAGES_RESULTS_TITLE' | translate }}</div>
     <div class="story-carousel-container">
       <div class="story-carousel">
         <button class="carousel-arrow carousel-arrow--left" (click)="prevImage()">❮</button>
@@ -185,12 +182,12 @@
 
     <!-- What's Next? -->
     <div class="story-whats-next">
-      <h3 style="font-weight: 900;">What’s next for RISE?</h3>
-      <p>Building on the success in Madagascar, the RISE team is expanding its footprint to support global humanitarian operations. By continuously integrating new satellite data sources and AI-driven analytics, RISE is evolving to predict risks before they occur, allowing teams to stay one step ahead of disasters.</p>
+      <h3 style="font-weight: 900;">{{ 'IMPACT.WHATS_NEXT' | translate }}</h3>
+      <p>{{ 'IMPACT.WHATS_NEXT_DESC' | translate }}</p>
     </div>
 
     <div class="story-modal__footer">
-      <button class="btn-primary-yellow btn-small" (click)="closeStory()">Close</button>
+      <button class="btn-primary-yellow btn-small" (click)="closeStory()">{{ 'IMPACT.CLOSE' | translate }}</button>
     </div>
 
   </div>

@@ -5,12 +5,12 @@
       <img src="assets/rise-assets/Logo%20Small%20Bianco%201.png" class="logo-small-bianco-1" alt="" fetchpriority="high">
 
       <div class="hero-text-container">
-        <b class="hero-title">Direct Access to Geospatial Intelligence</b>
-        <div class="hero-subtitle">Monitor global hazards in real time, assess impacts instantly, and act with confidence. RISE gives you the insights you need to respond faster and stay ahead of every challenge.</div>
+        <b class="hero-title">{{ 'LANDING.HERO_TITLE' | translate }}</b>
+        <div class="hero-subtitle">{{ 'LANDING.HERO_SUBTITLE' | translate }}</div>
       </div>
       <img src="assets/rise-assets/RISE-platform%201.png" class="rise-platform-preview-1-icon" alt="" loading="lazy">
       <div class="hero-buttons">
-        <button class="btn-primary-yellow" (click)="navigateRoute('sign-up')">GET STARTED TODAY</button>
+        <button class="btn-primary-yellow" (click)="navigateRoute('sign-up')">{{ 'LANDING.GET_STARTED' | translate }}</button>
       </div>
 
     </div>
@@ -21,32 +21,32 @@
         <b class="header">{{m_sTypedPart1}}<span
             style="color: #EFB840; text-transform: uppercase;">{{m_sTypedPart2}}</span>{{m_sTypedPart3}}<span
             class="typing-cursor">|</span></b>
-        <div class="paragraph">RISE is a cloud-based platform that integrates Earth Observation (EO) data with advanced analytics to provide near real-time intelligence on natural hazards worldwide. It provides the technology organizations need to anticipate risks and strengthen resilience.</div>
+        <div class="paragraph" [innerHTML]="'LANDING.INTRO_P1' | translate"></div>
       </div>
       <div class="features-cards-container">
         <div class="features-cards-row">
           <div class="card-large reveal-on-scroll">
             <div class="feature-card-content">
               <div class="card-icon icon-satellite"></div>
-              <b class="title">What is RISE?</b>
+              <b class="title">{{ 'LANDING.WHAT_IS_RISE' | translate }}</b>
 
-              <div class="landing-page-paragraph">Built in collaboration with the WFP Innovation Accelerator, the LIST and the Luxembourg Red Cross, RISE transforms cutting-edge geospatial technology into decision-ready intelligence. helping organizations turn complex hazard data into clear, decision-ready insights that guide smarter actions.</div>
+              <div class="landing-page-paragraph">{{ 'LANDING.WHAT_IS_RISE_DESC' | translate }}</div>
             </div>
           </div>
           <div class="card-large reveal-on-scroll">
             <div class="feature-card-content">
               <div class="card-icon icon-company"></div>
-              <b class="title">Who is RISE for?</b>
+              <b class="title">{{ 'LANDING.WHO_IS_RISE_FOR' | translate }}</b>
 
-              <div class="landing-page-paragraph">RISE is built for NGOs, environmental agencies, agribusinesses, and insurance companies who need to respond to disasters, track environmental changes, or secure supply chains. By eliminating the middleman, it provides scalable, cloud-based solutions tailored to operational needs.</div>
+              <div class="landing-page-paragraph">{{ 'LANDING.WHO_IS_RISE_FOR_DESC' | translate }}</div>
             </div>
           </div>
           <div class="card-large reveal-on-scroll">
             <div class="feature-card-content">
               <div class="card-icon icon-thumbs-up"></div>
-              <b class="title">Why choose RISE?</b>
+              <b class="title">{{ 'LANDING.WHY_CHOOSE_RISE' | translate }}</b>
 
-              <div class="landing-page-paragraph">With RISE, organizations gain real-time monitoring, field-tested accuracy, and seamless integration into existing workflows. It’s designed to accelerate response times, optimize resources, and maximize impact, empowering teams to make smarter decisions under pressure.</div>
+              <div class="landing-page-paragraph">{{ 'LANDING.WHY_CHOOSE_RISE_DESC' | translate }}</div>
             </div>
           </div>
         </div>
@@ -57,16 +57,16 @@
     <div class="reveal-on-scroll"
       style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 40px;">
       <div class="cta-container">
-        <b class="landing-page-header">Manual Processes Are Holding You Back!</b>
-        <div class="landing-page-paragraph">Traditional monitoring and assessment methods are slowing you down. Waiting for official reports or chasing scattered data slows down decision-making and prevents timely action. The old way keeps your teams reactive, relying on guesswork rather than clear insights, leaving lives and resources exposed to unnecessary hazard.</div>
+        <b class="landing-page-header">{{ 'LANDING.MANUAL_PROCESSES' | translate }}</b>
+        <div class="landing-page-paragraph">{{ 'LANDING.MANUAL_PROCESSES_DESC' | translate }}</div>
         <b class="landing-page-paragraph">
-          <span class="critical-events-are">Critical events are detected too late </span>
+          <span class="critical-events-are">{{ 'LANDING.CRITICAL_EVENTS' | translate }} </span>
           <span class="span">• </span>
-          <span class="critical-events-are">Data is scattered and hard to analyze • Decision-making is slow and uncertain • Inefficient resource allocation is costly</span>
+          <span class="critical-events-are">{{ 'LANDING.SCATTERED_DATA' | translate }} • {{ 'LANDING.SLOW_DECISION' | translate }} • {{ 'LANDING.INEFFICIENT_RESOURCE' | translate }}</span>
         </b>
       </div>
       <div class="cta-button">
-        <rise-button [m_sLabel]="'CONTACT US TODAY'" (click)="navigateRoute('/contact')" [m_sRole]="'secondary'">
+        <rise-button [m_sLabel]="'LANDING.CONTACT_US_TODAY' | translate" (click)="navigateRoute('/contact')" [m_sRole]="'secondary'">
         </rise-button>
         <div class="landing-page-buttonsecondary">
         </div>
@@ -75,58 +75,57 @@
   </div>
   <div class="features-section">
     <div class="discover-header">
-      <b class="header">Discover RISE Features</b>
-      <div class="paragraph">Discover how RISE empowers your organization with advanced tools for smarter, faster
-        decision-making:</div>
+      <b class="header">{{ 'LANDING.DISCOVER_FEATURES' | translate }}</b>
+      <div class="paragraph">{{ 'LANDING.DISCOVER_FEATURES_DESC' | translate }}</div>
     </div>
     <div class="discover-features-container">
       <div class="discover-features-row">
         <div class="feature-card-content3">
           <details class="feature-card-openclose" [open]="m_sOpenFeature === 'monitoring'">
             <summary class="feature-card-title" (click)="$event.preventDefault(); toggleFeature('monitoring')">
-              <b class="title4">Near Real-Time Monitoring</b>
+              <b class="title4">{{ 'LANDING.REAL_TIME_MONITORING' | translate }}</b>
             </summary>
-            <div class="title5">RISE keeps you ahead of change with near real-time geospatial and satellite information. By providing continuous situational awareness, the platform empowers teams to make decisions and act quickly, reduce risks, and respond proactively to emergencies as soon as they occur, protecting communities with confidence.</div>
+            <div class="title5">{{ 'LANDING.REAL_TIME_MONITORING_DESC' | translate }}</div>
           </details>
           <details class="feature-card-openclose" [open]="m_sOpenFeature === 'ui'">
             <summary class="feature-card-title" (click)="$event.preventDefault(); toggleFeature('ui')">
-              <b class="title4">Intuitive User Interface</b>
+              <b class="title4">{{ 'LANDING.INTUITIVE_UI' | translate }}</b>
             </summary>
-            <div class="title5">RISE user-friendly interface is designed to make complex and essential data accessible to everyone. Both technical and non-technical experts can navigate the platform effortlessly. RISE minimizes the time spent learning the system, allowing users to focus on what really matters.</div>
+            <div class="title5">{{ 'LANDING.INTUITIVE_UI_DESC' | translate }}</div>
           </details>
           <details class="feature-card-openclose" [open]="m_sOpenFeature === 'historical'">
             <summary class="feature-card-title" (click)="$event.preventDefault(); toggleFeature('historical')">
-              <b class="title4">Historical Data Analysis</b>
+              <b class="title4">{{ 'LANDING.HISTORICAL_DATA' | translate }}</b>
             </summary>
-            <div class="title5">RISE transforms historical satellite and environmental data into strategic decisions for the future. Organizations can identify long-term patterns by examining past environmental and satellite data, identify recurring risks, and anticipate potential scenarios. This capability supports smarter planning and resilience strategies, ensuring that lessons from the past strengthen tomorrow's response.</div>
+            <div class="title5">{{ 'LANDING.HISTORICAL_DATA_DESC' | translate }}</div>
           </details>
         </div>
         <div class="feature-card-content3">
           <details class="feature-card-openclose" [open]="m_sOpenFeature === 'impacts'">
             <summary class="feature-card-title" (click)="$event.preventDefault(); toggleFeature('impacts')">
-              <b class="title4">Impacts Evaluation</b>
+              <b class="title4">{{ 'LANDING.IMPACTS_EVALUATION' | translate }}</b>
             </summary>
-            <div class="title5">Our platform offers automated impact assessments that reveal exactly what is at risk after an event. From roads and buildings to populations, crops, and critical infrastructure, RISE transforms complex information into clear insights. A dynamic dashboard brings everything together, percentages, affected areas, and risk comparisons, giving organizations the confidence to act quickly and effectively.</div>
+            <div class="title5">{{ 'LANDING.IMPACTS_EVALUATION_DESC' | translate }}</div>
           </details>
           <details class="feature-card-openclose" [open]="m_sOpenFeature === 'language'">
             <summary class="feature-card-title" (click)="$event.preventDefault(); toggleFeature('language')">
-              <b class="title4">Multi-language</b>
+              <b class="title4">{{ 'LANDING.MULTI_LANGUAGE' | translate }}</b>
             </summary>
-            <div class="title5">RISE was developed for global collaboration. With multilingual support, the platform adapts to various languages, ensuring accessibility and inclusion beyond geographical borders. International teams and humanitarian actors can collaborate easily, regardless of their location.</div>
+            <div class="title5">{{ 'LANDING.MULTI_LANGUAGE_DESC' | translate }}</div>
           </details>
           <details class="feature-card-openclose" [open]="m_sOpenFeature === 'profiles'">
             <summary class="feature-card-title" (click)="$event.preventDefault(); toggleFeature('profiles')">
-              <b class="title4">Tailored User Profiles</b>
+              <b class="title4">{{ 'LANDING.TAILORED_PROFILES' | translate }}</b>
             </summary>
-            <div class="title5">Each user is unique, and RISE reflects this with personalized profiles. The system adapts dashboards and settings based on roles, responsibilities, and preferences, ensuring that each user sees the most relevant information. Personalized experiences increase efficiency, reduce clutter, and allow individuals to focus on what matters most.</div>
+            <div class="title5">{{ 'LANDING.TAILORED_PROFILES_DESC' | translate }}</div>
           </details>
         </div>
       </div>
       <div class="plugins-container">
         <div class="paragraph7">
-          <b>Customize RISE with </b>
-          <i class="specialized">specialized</i>
-          <b> plugins tailored to your needs:</b>
+          <b>{{ 'LANDING.CUSTOMIZE_RISE' | translate }}</b>
+          <i class="specialized">{{ 'LANDING.SPECIALIZED' | translate }}</i>
+          <b>{{ 'LANDING.PLUGINS_TAILORED' | translate }}</b>
         </div>
         <div class="plugins-row">
           <img [src]="m_sSelectedPluginImage" class="riseplatform-1-icon" alt="" loading="lazy">
@@ -137,7 +136,7 @@
               <div class="plugin-item">
                 <div class="plugin-checkbox-icon"></div>
 
-                <b class="title4">Floods</b>
+                <b class="title4">{{ 'LANDING.PLUGIN_FLOODS' | translate }}</b>
               </div>
             </div>
             <div class="div" (click)="selectPluginImage('Droughts')"
@@ -145,7 +144,7 @@
               <div class="plugin-item">
                 <div class="plugin-checkbox-icon"></div>
 
-                <b class="title4">Droughts</b>
+                <b class="title4">{{ 'LANDING.PLUGIN_DROUGHTS' | translate }}</b>
               </div>
             </div>
             <div class="div" (click)="selectPluginImage('Buildings')"
@@ -153,7 +152,7 @@
               <div class="plugin-item">
                 <div class="plugin-checkbox-icon"></div>
 
-                <b class="title4">Buildings</b>
+                <b class="title4">{{ 'LANDING.PLUGIN_BUILDINGS' | translate }}</b>
               </div>
             </div>
             <div class="div" (click)="selectPluginImage('Impacts')"
@@ -161,7 +160,7 @@
               <div class="plugin-item">
                 <div class="plugin-checkbox-icon"></div>
 
-                <b class="title4">Impacts</b>
+                <b class="title4">{{ 'LANDING.PLUGIN_IMPACTS' | translate }}</b>
               </div>
             </div>
             <div class="div" (click)="selectPluginImage('Rain Observations')"
@@ -169,7 +168,7 @@
               <div class="plugin-item">
                 <div class="plugin-checkbox-icon"></div>
 
-                <b class="title4">Rain Observations</b>
+                <b class="title4">{{ 'LANDING.PLUGIN_RAIN' | translate }}</b>
               </div>
             </div>
             <div class="div" (click)="selectPluginImage('Land Surface Temperature')"
@@ -177,7 +176,7 @@
               <div class="plugin-item">
                 <div class="plugin-checkbox-icon"></div>
 
-                <b class="title4">Land Surface Temperature</b>
+                <b class="title4">{{ 'LANDING.PLUGIN_TEMP' | translate }}</b>
               </div>
             </div>
             <div class="div" (click)="selectPluginImage('Wildfires')"
@@ -185,40 +184,40 @@
               <div class="plugin-item">
                 <div class="plugin-checkbox-icon"></div>
 
-                <b class="title4">Wildfires (coming soon!)</b>
+                <b class="title4">{{ 'LANDING.PLUGIN_WILDFIRES' | translate }}</b>
               </div>
             </div>
           </div>
         </div>
-        <i class="paragraph8">More plugins are on their way!</i>
+        <i class="paragraph8">{{ 'LANDING.MORE_PLUGINS' | translate }}</i>
       </div>
     </div>
   </div>
   <div class="case-study-section">
     <div class="case-study-header-row">
       <div class="case-study-text">
-        <b class="header">Humanitarian Impact, Powered by RISE</b>
-        <div class="paragraph">See how RISE increased efficiency and reduced response time during field operations in Madagascar.</div>
+        <b class="header">{{ 'LANDING.SEE_HOW_RISE_SUPPORTS' | translate }}</b>
+        <div class="paragraph">{{ 'LANDING.MADAGASCAR_DESC' | translate }}</div>
       </div>
       <div class="results-action">
-        <button class="btn-primary-yellow" (click)="navigateRoute('/impact-stories')">VIEW ALL RESULTS</button>
+        <button class="btn-primary-yellow" (click)="navigateRoute('/impact-stories')">{{ 'LANDING.SEE_ALL_RESULTS' | translate }}</button>
       </div>
     </div>
 
     <div class="results-highlights">
       <div class="result-highlight-item">
         <div class="result-highlight-content">
-          <b class="result-highlight-value"><span style="color: #EFB840;">84.6%</span> Faster Response</b>
+          <b class="result-highlight-value"><span style="color: #EFB840;">84.6%</span> {{ 'LANDING.FASTER_RESPONSE' | translate }}</b>
         </div>
       </div>
       <div class="result-highlight-item">
         <div class="result-highlight-content">
-          <b class="result-highlight-value"><span style="color: #EFB840;">89.9%</span> Cost Reduction</b>
+          <b class="result-highlight-value"><span style="color: #EFB840;">89.9%</span> {{ 'LANDING.COST_REDUCTION' | translate }}</b>
         </div>
       </div>
       <div class="result-highlight-item">
         <div class="result-highlight-content">
-          <b class="result-highlight-value"><span style="color: #EFB840;">+</span> Greater Accuracy</b>
+          <b class="result-highlight-value"><span style="color: #EFB840;">+</span> {{ 'LANDING.GREATER_ACCURACY' | translate }}</b>
         </div>
       </div>
     </div>

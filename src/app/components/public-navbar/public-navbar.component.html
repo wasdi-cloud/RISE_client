@@ -1,35 +1,51 @@
 <nav class="public-nav" [class.public-nav--scrolled]="m_bScrolled">
   <div class="public-nav__inner">
 
-    <a class="public-nav__logo" (click)="navigateToHome()" style="cursor: pointer;">
-      <img src="/assets/rise-assets/rise-logo.png" alt="RISE" />
-    </a>
+    <div class="public-nav__left">
+      <a class="public-nav__logo" (click)="navigateToHome()" style="cursor: pointer;">
+        <img src="/assets/rise-assets/rise-logo.png" alt="RISE" />
+      </a>
+    </div>
 
     <ul class="public-nav__links" [class.public-nav__links--open]="m_bMenuOpen">
       <li>
         <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeMenu()">
-          Home
+          {{ 'NAVBAR.HOME' | translate }}
         </a>
       </li>
       <li>
-        <a routerLink="/platform" routerLinkActive="active" (click)="closeMenu()">Platform</a>
+        <a routerLink="/platform" routerLinkActive="active" (click)="closeMenu()">{{ 'NAVBAR.PLATFORM' | translate }}</a>
       </li>
       <li>
-        <a routerLink="/impact-stories" routerLinkActive="active" (click)="closeMenu()">Impact Stories</a>
+        <a routerLink="/impact-stories" routerLinkActive="active" (click)="closeMenu()">{{ 'NAVBAR.IMPACT_STORIES' | translate }}</a>
       </li>
       <li>
-        <a routerLink="/pricing" routerLinkActive="active" (click)="closeMenu()">Pricing</a>
+        <a routerLink="/pricing" routerLinkActive="active" (click)="closeMenu()">{{ 'NAVBAR.PRICING' | translate }}</a>
       </li>
       <li>
-        <a routerLink="/about" routerLinkActive="active" (click)="closeMenu()">About us</a>
+        <a routerLink="/about" routerLinkActive="active" (click)="closeMenu()">{{ 'NAVBAR.ABOUT' | translate }}</a>
       </li>
       <li>
-        <a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">Contact us</a>
+        <a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">{{ 'NAVBAR.CONTACT' | translate }}</a>
       </li>
     </ul>
 
     <div class="public-nav__actions">
-      <a routerLink="/login" class="btn-primary-green public-nav__cta" (click)="closeMenu()">SIGN UP / SIGN IN</a>
+      <a routerLink="/login" class="btn-primary-green public-nav__cta" (click)="closeMenu()">{{ 'NAVBAR.SIGN_UP_IN' | translate }}</a>
+
+      <div class="lang-selector">
+        <button class="lang-selector__btn" (click)="toggleLangDropdown(); $event.stopPropagation()">
+          {{ m_sCurrentLang }}
+          <span class="lang-selector__arrow" [class.lang-selector__arrow--open]="m_bLangOpen">▾</span>
+        </button>
+        <ul class="lang-selector__dropdown" *ngIf="m_bLangOpen">
+          <li *ngFor="let lang of m_aoLanguages"
+              [class.lang-selector__item--active]="lang.label === m_sCurrentLang"
+              (click)="changeLanguage(lang); $event.stopPropagation()">
+            {{ lang.name }}
+          </li>
+        </ul>
+      </div>
 
       <button class="public-nav__burger" (click)="toggleMenu()" aria-label="Toggle menu">
         <span></span><span></span><span></span>

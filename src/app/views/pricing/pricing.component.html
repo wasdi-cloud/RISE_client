@@ -5,20 +5,20 @@
   <!-- PRICING TABLE SECTION -->
   <section class="pricing-section">
     <div class="pricing-container">
-      <h1>Our Pricing</h1>
-      <p class="pricing-intro">RISE offers flexible subscriptions tailored to your needs. You can customize your plan based on:</p>
+      <h1>{{ 'PRICING.TITLE' | translate }}</h1>
+      <p class="pricing-intro">{{ 'PRICING.INTRO' | translate }}</p>
 
       <div class="pricing-toggle-labels">
         <div class="toggle-label toggle-label--active">
-          <strong>Number of areas*</strong> &nbsp;you want to monitor
+          <strong [innerHTML]="'PRICING.NUM_AREAS' | translate"></strong> &nbsp;{{ 'PRICING.YOU_WANT_MONITOR' | translate }}
         </div>
         <div class="toggle-label toggle-label--active">
-          <strong>Subscription duration</strong> (choose between 1 month or 1 year)
+          <strong [innerHTML]="'PRICING.SUB_DURATION' | translate"></strong> {{ 'PRICING.CHOOSE_BETWEEN' | translate }}
         </div>
       </div>
 
       <p class="pricing-note">
-        <strong>Each plan includes <span class="highlight-yellow">ALL RISE plugins</span> – no restrictions, no hidden costs.<br>Whether you choose 1 AREA or 10 AREAS, you get the full power of RISE.</strong>
+        <strong [innerHTML]="'PRICING.NOTE' | translate"></strong>
       </p>
 
       <!-- BILLING TOGGLE -->
@@ -27,23 +27,23 @@
           class="billing-toggle__btn"
           [class.billing-toggle__btn--active]="m_sBillingCycle === 'month'"
           (click)="m_sBillingCycle = 'month'"
-        >MONTH</button>
+        >{{ 'PRICING.MONTH' | translate }}</button>
         <button
           class="billing-toggle__btn"
           [class.billing-toggle__btn--active]="m_sBillingCycle === 'year'"
           (click)="m_sBillingCycle = 'year'"
-        >YEAR</button>
+        >{{ 'PRICING.YEAR' | translate }}</button>
       </div>
-      <p class="billing-hint">Select your preferred duration to instantly update the pricing table and see the best value option.</p>
+      <p class="billing-hint">{{ 'PRICING.BILLING_HINT' | translate }}</p>
 
       <!-- PRICING TABLE -->
       <div class="pricing-table-wrapper">
         <table class="pricing-table">
           <thead>
             <tr>
-              <th>Subscription</th>
-              <th>Price</th>
-              <th class="ngo-col">NGO Discount</th>
+              <th>{{ 'PRICING.SUBSCRIPTION' | translate }}</th>
+              <th>{{ 'PRICING.PRICE' | translate }}</th>
+              <th class="ngo-col">{{ 'PRICING.NGO_DISCOUNT' | translate }}</th>
             </tr>
           </thead>
           <tbody>
@@ -63,8 +63,8 @@
       </div>
 
       <p class="area-definition">
-        <strong>*What does "AREA" mean?</strong>
-        An "AREA" in RISE refers to an Area of Operations (AoO) – a geographic area that your organization defines and monitors using RISE's satellite data and plugins. / From 1 AREA to 10 AREAS, RISE scales to fit your needs and project size, whether you're starting small or going global.
+        <strong [innerHTML]="'PRICING.WHAT_IS_AREA' | translate"></strong>
+        <span [innerHTML]="'PRICING.AREA_DESC' | translate"></span>
       </p>
     </div>
   </section>
@@ -73,33 +73,33 @@
   <section class="custom-plan-section">
     <div class="custom-plan-inner">
       <div class="custom-plan-left">
-        <h2>Custom Plan</h2>
-        <p class="custom-plan-tagline"><strong>Looking for a tailored solution?</strong></p>
+        <h2>{{ 'PRICING.CUSTOM_PLAN_TITLE' | translate }}</h2>
+        <p class="custom-plan-tagline"><strong [innerHTML]="'PRICING.LOOKING_FOR_TAILORED' | translate"></strong></p>
         <ul>
-          <li>Need a longer subscription duration?</li>
-          <li>Want to monitor more areas?</li>
-          <li>Interested in a personalized demo session?</li>
+          <li>{{ 'PRICING.NEED_LONGER' | translate }}</li>
+          <li>{{ 'PRICING.WANT_MORE_AREAS' | translate }}</li>
+          <li>{{ 'PRICING.INTERESTED_DEMO' | translate }}</li>
         </ul>
-        <p>We're here to help. Contact our team today, we'll work with you to design the right plan and price for your needs.</p>
+        <p>{{ 'PRICING.HERE_TO_HELP' | translate }}</p>
       </div>
       <div class="custom-plan-right">
         <div class="input-with-icon">
           <span class="input-icon">✉</span>
           <input
             type="email"
-            placeholder="Email"
+            [placeholder]="'PRICING.PLACEHOLDER_EMAIL' | translate"
             [(ngModel)]="m_sEmail"
             class="custom-plan-input"
             required
           />
         </div>
         <textarea
-          placeholder="Your message:"
+          [placeholder]="'PRICING.PLACEHOLDER_MESSAGE' | translate"
           [(ngModel)]="m_sMessage"
           class="custom-plan-textarea"
           rows="5"
         ></textarea>
-        <button class="btn-primary-yellow btn-slim" (click)="sendCustomPlan()">SEND NOW</button>
+        <button class="btn-primary-yellow btn-slim" (click)="sendCustomPlan()">{{ 'PRICING.SEND_NOW' | translate }}</button>
       </div>
     </div>
   </section>

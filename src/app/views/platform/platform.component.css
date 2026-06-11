@@ -598,7 +598,7 @@
 }
 
 .faq-item__answer--visible {
-  max-height: 500px;
+  max-height: 1500px;
   padding-bottom: 24px;
 }
 

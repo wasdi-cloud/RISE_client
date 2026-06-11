@@ -429,7 +429,7 @@ b.landing-page-paragraph {
 
 details.feature-card-openclose {
   flex: 1;
-  max-width: 350px;
+  max-width: 390px;
   border-radius: 8px;
   background-color: #f4f6f8;
   border: 1px solid #efb840;
@@ -482,6 +482,7 @@ details[open] summary.feature-card-title::after {
 
 .plugin-item .title4 {
   color: #fafafa;
+  white-space: nowrap;
 }
 
 .title5 {
@@ -544,11 +545,13 @@ details[open] summary.feature-card-title::after {
 }
 
 .riseplatform-1-icon {
-  width: 765px;
+  width: 100%;
+  max-width: 680px;
+  height: auto;
   position: relative;
-  max-height: 100%;
   object-fit: cover;
   border-radius: 10px;
+  flex-shrink: 1;
 }
 
 .plugins-list {
@@ -566,10 +569,11 @@ details[open] summary.feature-card-title::after {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding: 0 30px;
+  padding: 0 20px;
   height: 44px;
   box-sizing: border-box;
-  max-width: 310px;
+  max-width: 450px;
+  min-width: 350px;
   width: 100%;
   cursor: pointer;
   transition: background-color 0.3s ease;

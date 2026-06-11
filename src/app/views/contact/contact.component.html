@@ -5,51 +5,51 @@
   <!-- CONTACT FORM SECTION -->
   <section class="contact-form-section">
     <div class="contact-form-inner">
-      <h1>Contact the RISE Team</h1>
-      <p class="contact-form-sub">Fill out the form and we'll get back to you as soon as possible.</p>
+      <h1>{{ 'CONTACT.TITLE' | translate }}</h1>
+      <p class="contact-form-sub">{{ 'CONTACT.SUBTITLE' | translate }}</p>
 
       <div class="contact-form-card">
         <div class="form-row">
           <div class="form-group">
-            <input type="text" placeholder="First Name *" [(ngModel)]="m_sFirstName" />
+            <input type="text" [placeholder]="('CONTACT.FIRST_NAME' | translate) + ' *'" [(ngModel)]="m_sFirstName" />
           </div>
           <div class="form-group">
-            <input type="text" placeholder="Last Name *" [(ngModel)]="m_sLastName" />
+            <input type="text" [placeholder]="('CONTACT.LAST_NAME' | translate) + ' *'" [(ngModel)]="m_sLastName" />
           </div>
         </div>
 
         <div class="form-group form-group--full">
-          <input type="email" placeholder="Email *" [(ngModel)]="m_sEmail" />
+          <input type="email" [placeholder]="('CONTACT.EMAIL' | translate) + ' *'" [(ngModel)]="m_sEmail" />
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <input type="text" placeholder="Company" [(ngModel)]="m_sCompany" />
+            <input type="text" [placeholder]="'CONTACT.COMPANY' | translate" [(ngModel)]="m_sCompany" />
           </div>
           <div class="form-group">
-            <input type="text" placeholder="Role / Job Title" [(ngModel)]="m_sRole" />
+            <input type="text" [placeholder]="'CONTACT.ROLE' | translate" [(ngModel)]="m_sRole" />
           </div>
         </div>
 
         <div class="form-group form-group--full">
           <select [(ngModel)]="m_sHowHeard">
-            <option value="" disabled selected>How did you hear about RISE?</option>
+            <option value="" disabled selected>{{ 'CONTACT.HOW_HEARD' | translate }}</option>
             <option *ngFor="let opt of m_aoHowHeardOptions" [value]="opt">{{ opt }}</option>
           </select>
         </div>
 
         <div class="form-group form-group--full">
           <select [(ngModel)]="m_sSubject">
-            <option value="" disabled selected>Select a subject</option>
+            <option value="" disabled selected>{{ 'CONTACT.SELECT_SUBJECT' | translate }}</option>
             <option *ngFor="let opt of m_aoSubjectOptions" [value]="opt">{{ opt }}</option>
           </select>
         </div>
 
         <div class="form-group form-group--full">
-          <textarea placeholder="Message *" [(ngModel)]="m_sMessage" rows="5"></textarea>
+          <textarea [placeholder]="('CONTACT.MESSAGE' | translate) + ' *'" [(ngModel)]="m_sMessage" rows="5"></textarea>
         </div>
 
-        <button class="btn-send" (click)="sendMessage()">SEND</button>
+        <button class="btn-send" (click)="sendMessage()">{{ 'CONTACT.SEND' | translate }}</button>
       </div>
     </div>
   </section>
@@ -57,7 +57,7 @@
   <!-- CONTACT INFO SECTION -->
   <section class="contact-info-section">
     <div class="contact-info-inner">
-      <h2>Our contact information</h2>
+      <h2>{{ 'CONTACT.CONTACT_INFO' | translate }}</h2>
       
       <div class="contact-info-list">
         <!-- Email: No icon, only title and email -->
@@ -77,7 +77,7 @@
               </a>
             </div>
             <div class="info-content">
-              <p class="info-label">Website</p>
+              <p class="info-label">{{ 'CONTACT.WEBSITE' | translate }}</p>
             </div>
           </div>
 
@@ -88,7 +88,7 @@
               </a>
             </div>
             <div class="info-content">
-              <p class="info-label">LinkedIn</p>
+              <p class="info-label">{{ 'CONTACT.LINKEDIN' | translate }}</p>
             </div>
           </div>
         </div>

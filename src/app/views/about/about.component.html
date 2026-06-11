@@ -5,10 +5,10 @@
   <!-- HERO -->
   <section class="about-hero">
     <div class="about-hero__content">
-      <h1>About Us</h1>
-      <p>Advancing Climate Resilience Through Scientific Insight, Technological Innovation, and Collaboration.</p>
+      <h1>{{ 'ABOUT.TITLE' | translate }}</h1>
+      <p>{{ 'ABOUT.HERO_SUBTITLE' | translate }}</p>
       <a href="https://rise.wasdi.net/" target="_blank" rel="noopener">
-        <button class="btn-primary-yellow">GET STARTED TODAY</button>
+        <button class="btn-primary-yellow">{{ 'LANDING.GET_STARTED' | translate }}</button>
       </a>
     </div>
   </section>
@@ -16,30 +16,30 @@
   <!-- MISSION & VISION -->
   <section class="mission-section">
     <div class="mission-inner">
-      <h2>Mission and Vision</h2>
-      <p>RISE is developed by <a href="https://www.wasdi.cloud/" target="_blank" rel="noopener">WASDI Sàrl</a>, a joint venture created in December 2020 by <a href="https://www.fadeout.it/" target="_blank" rel="noopener"><strong>FadeOut Software</strong></a>, an Italian SME software house, and the <strong>Luxembourg Institute of Science and Technology</strong> (LIST).</p>
-      <p>WASDI’s mission is to build a world where remote sensing, technology, and scientific innovation empower communities to collaborate, anticipate risks, and strengthen their resilience to climate‑related disasters. Our vision places a special focus on supporting the most vulnerable populations and advancing global sustainability.</p>
-      <p>RISE turns cutting‑edge scientific research into practical, accessible services. It provides decision‑makers, first responders, and humanitarian actors with actionable satellite‑based insights for environmental monitoring, disaster response, and sustainable development.</p>
+      <h2>{{ 'ABOUT.MISSION_VISION' | translate }}</h2>
+      <p [innerHTML]="'ABOUT.MISSION_P1' | translate"></p>
+      <p [innerHTML]="'ABOUT.VISION_P1' | translate"></p>
+      <p [innerHTML]="'ABOUT.RISE_P1' | translate"></p>
 
       <div class="wasdi-logo-container">
         <img src="/assets/rise-assets/wasdi-logo.png" alt="WASDI Logo" class="wasdi-logo-img" />
       </div>
 
-      <p>Developed within the framework of the Humanitarian Innovation Accelerator (HIIA), promoted by the <strong>World Food Programme Innovation Accelerator</strong>, RISE automatically transforms satellite observations into clear, actionable hazard maps. It helps responders quickly assess floods, droughts, and other risks, while historical satellite archives make it possible to track how these hazards evolve over time.</p>
-      <p>The <strong>Luxembourg Institute of Science and Technology</strong> (LIST) enhanced RISE with advanced algorithms for flood detection in bare soil and urban areas, building identification, and evapotranspiration analysis to evaluate drought stress.</p>
-      <p><strong>The Luxembourg Red Cross – Shelter Research Unit</strong> contributed by defining real‑world use cases and testing the solution directly in the field in Madagascar. (<a routerLink="/impact-stories">See Impact Stories.</a>)</p>
+      <p [innerHTML]="'ABOUT.RISE_P2' | translate"></p>
+      <p [innerHTML]="'ABOUT.LIST_CONTRIB' | translate"></p>
+      <p><strong>The International Aid of the Luxembourg Red Cross (AICRL) – Shelter Research Unit (SRU)</strong> {{ 'ABOUT.RED_CROSS_CONTRIB_REST' | translate }} (<a routerLink="/impact-stories">{{ 'IMPACT.CLICK_TO_READ_MORE' | translate }}</a>)</p>
     </div>
   </section>
 
   <!-- TESTIMONIALS -->
   <section class="testimonials-section">
     <div class="testimonials-inner">
-      <h2>Testimonials</h2>
-      <p class="testimonials-sub">WHAT OUR CLIENTS SAY ABOUT US</p>
+      <h2>{{ 'ABOUT.TESTIMONIALS' | translate }}</h2>
+      <p class="testimonials-sub">{{ 'ABOUT.CLIENT_SAY' | translate }}</p>
       <div class="testimonial-card">
         <blockquote>
-          <p>"RISE shows very positive results, making needs assessment and crisis management more accurate, time-efficient, cost-effective, and safer."</p>
-          <footer>Red Cross Validation Report</footer>
+          <p>{{ 'IMPACT.QUOTE_TEXT' | translate }}</p>
+          <footer>{{ 'IMPACT.LUX_RED_CROSS_TITLE' | translate }}</footer>
         </blockquote>
       </div>
     </div>
@@ -57,9 +57,9 @@
         allowfullscreen>
       </iframe>
       <div class="location-card">
-        <p class="location-label">We are here!</p>
-        <p class="location-name"><strong>WASDI Sarl</strong></p>
-        <p>Rue de Volmerange 100,<br>Dudelange, Luxembourg</p>
+        <p class="location-label">{{ 'ABOUT.WE_ARE_HERE' | translate }}</p>
+        <p class="location-name"><strong>{{ 'ABOUT.WASDI_SARL' | translate }}</strong></p>
+        <p [innerHTML]="'ABOUT.ADDRESS' | translate"></p>
       </div>
     </div>
   </section>
