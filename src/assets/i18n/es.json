@@ -12,25 +12,31 @@
     "USER": "Usuario",
     "USER_ACCOUNT": "Cuenta de usuario",
     "MANAGE_EVENTS": "Gestionar eventos"
+
   },
   "MANUAL_BBOX": {
     "DRAW_AREA": "Dibujar Área",
     "JSON_INPUT": "Entrada JSON",
     "INPUT_FIELDS": "Campos de entrada",
-    "TITLE": "Por favor, introduzca las coordenadas",
-    "DIALOG_MANUAL_INSERT_BBOX_INFO": "Introduzca el JSON en el siguiente formato:<br>",
+    "TITLE": "Por favor, inserta las coordenadas",
+    "DIALOG_MANUAL_INSERT_BBOX_INFO": "Introduce el JSON en el siguiente formato:<br>",
     "DIALOG_PROCESSOR_UI_APP_FORMAT_JSON": "Formatear JSON",
-    "DIALOG_FORMAT_JSON_ERROR": "No se pudo formatear su entrada JSON. Asegúrese de que sea un JSON válido",
-    "DIALOG_PARSE_JSON_ERROR": "Hubo un error al analizar la carga JSON"
+    "DIALOG_FORMAT_JSON_ERROR": "No se pudo formatear tu entrada JSON. Asegúrate de que sea un JSON válido",
+    "DIALOG_PARSE_JSON_ERROR": "Hubo un error al analizar la carga JSON",
+    "VALIDATION_ERROR_TITLE": "Bounding Box Manual",
+    "VALIDATION_INVALID_NUMERIC": "Introduce coordenadas numéricas válidas para Norte, Sur, Este y Oeste.",
+    "VALIDATION_INVALID_COORD_RANGE": "La latitud debe estar entre -90 y 90, y la longitud entre -180 y 180.",
+    "VALIDATION_TOO_SMALL": "El área es demasiado pequeña. El tamaño mínimo es 1x1 grado.",
+    "VALIDATION_TOO_LARGE": "El área es demasiado grande. El tamaño máximo es 2x2 grados."
   },
   "LAT_LNG_SEARCH": {
-    "TITLE": "Buscar por Coordenadas",
+    "TITLE": "Buscar por coordenadas",
     "LATITUDE": "Latitud",
     "LONGITUDE": "Longitud",
     "LATITUDE_PLACEHOLDER": "ej. 44.4056",
     "LONGITUDE_PLACEHOLDER": "ej. 8.9463",
-    "GO_TO_LOCATION": "Ir a la Ubicación",
-    "INVALID_COORDINATES": "Coordenadas no válidas. La latitud debe estar entre -90 y 90, y la longitud entre -180 y 180.",
+    "GO_TO_LOCATION": "Ir a la ubicación",
+    "INVALID_COORDINATES": "Coordenadas inválidas. La latitud debe estar entre -90 y 90, y la longitud entre -180 y 180.",
     "ERROR": "Error"
   },
   "MANAGE_EVENTS": {
@@ -56,7 +62,9 @@
     "PEAK_DATE": "Fecha pico",
     "END_DATE": "Fecha de finalización"
   },
-  "AREA_OF_OPERATIONS": {
+
+
+"AREA_OF_OPERATIONS": {
     "ACTIVE_AREAS": "Áreas Activas de Operaciones",
     "AREA_HEADER_TOO_BIG": "¡Área demasiado grande!",
     "AREA_HEADER_TOO_SMALL": "¡Área demasiado pequeña!",
@@ -76,13 +84,14 @@
     "ERROR_PLUGINS": "No se pudo recuperar la información del complemento",
     "ERROR_SAVE": "No se pudieron guardar los cambios en esta área",
     "SUCCESS_SAVE": "Cambios de área guardados",
-    "IS_PUBLIC": "¿Es esta área pública?",
+    "IS_PUBLIC": "Haz que tu área sea pública (visible para todos los usuarios de RISE)",
     "DELETING_MESSAGE": "Estamos eliminando tu área de operaciones. Por favor, espera.",
     "AREA_NOT_FOUND": "Área no encontrada",
     "AREA_NOT_FOUND_MSG": "Para empezar a crear áreas de operaciones en RISE, por favor ",
     "AREA_NOT_FOUND_MSG_FIELD": "Su cuenta no está vinculada a ninguna área de operación en este momento. Póngase en contacto con el administrador de su organización ",
     "AREA_NOT_FOUND_LINK": "haga clic aquí"
-  },
+
+},
   "BANNER": {
     "LIVE_SIT": "Situación en vivo",
     "BACK": "Volver a vivir"
@@ -94,17 +103,19 @@
     "DEFAULT_PARAMS": "Parámetros predeterminados",
     "MAP_LAYER": "Capa del Mapa",
     "SUPPORT_ARCHIVE": "Soporta el archivo",
+    "ENABLE_ARCHIVE": "Habilitar archivo completo",
     "SUCCESS_AND_PENDING": "Su área ha sido añadida con éxito. Las capas se están generando; recibirá una notificación por correo electrónico cuando estén listas.",
     "NAME": "Nombre",
-    "DESCRIPTION": "Descripción",
+    "DESCRIPTION": "Agrega tu descripción opcional aquí",
     "MAP_TITLE": "Define tu Área",
     "SAVE": "Guardar",
     "CANCEL": "Cancelar",
     "ADD_FIELD_OPERATOR": "Agregar operador de campo",
-    "PLUGINS": "Seleccionar complementos",
+    "PLUGINS": "Seleccionar complementos para activar en esta área",
     "MANAGE_USERS": "Gestionar usuarios",
     "ID": "Id"
   },
+
   "COLLABORATORS": {
     "ALL_USERS_ADDED": "Todos los colaboradores disponibles de su organización ya han sido añadidos.",
     "USER_ID": "Correo electrónico o ID de usuario RISE",
@@ -259,12 +270,13 @@
     "CONTACT_MSG": "El equipo de RISE se pondrá en contacto con usted para gestionar el pago. Haga clic en «Confirmar» para continuar o en «CANCELAR» para finalizar el proceso de pago.",
     "SUCCESS_CONTACT_TITLE": "Suscripción creada",
     "SUCCESS_CONTACT_Description": "Suscripción creada con éxito",
-    "WIRE_TRANSFER": "si confirma que quiere pagar con transferencia bancaria, recibirá los detalles bancarios por correo electrónico",
+    "WIRE_TRANSFER": "si confirma que quiere pagar con transferencia bancaria, recibirá los datos bancarios por correo electrónico",
     "AREA_INFO_MESSAGE": "<strong>Tipo de Área:</strong><br/><ul><li><strong>Emergencia:</strong> Monitoreo a corto plazo y alta prioridad (ej. desastres). Datos rápidos, no almacenados a largo plazo.</li><li><strong>Largo Plazo:</strong> Monitoreo continuo o periódico a lo largo del tiempo (ej. ambiente, infraestructura). Datos más lentos pero archivados.</li></ul><br/><strong>Tipo de Suscripción:</strong><br/><ul><li><strong>1 Ubicación:</strong> Monitorear una sola área de operaciones.</li><li><strong>3 Ubicaciones:</strong> Monitorear hasta 3 áreas de operaciones diferentes.</li><li><strong>5 Ubicaciones:</strong> Monitorear hasta cinco áreas diferentes simultáneamente.</li><li><strong>10 Ubicaciones:</strong> Rastrear hasta diez regiones separadas.</li></ul>",
     "AREA_TYPE": "Producción de Archivo Completo",
     "BACK": "Volver a Suscripciones",
     "BILLING": "Facturación",
     "BUY_BUTTON": "Comprar nueva suscripción",
+    "ADVANCED_BUY_BUTTON": "Más opciones de compra",
     "COMPUTE_PRICE": "Obtener precio calculado",
     "COMPUTE_SECOND": "Calcular de nuevo",
     "COMPUTED_PRICE": "Precio Calculado",
@@ -286,13 +298,22 @@
     "START_DATE": "Fecha de inicio",
     "TYPE": "Número de áreas",
     "TYPE_ERROR": "No se pudieron recuperar los tipos de suscripción",
-    "PAYMENT_TYPE": "Duración de la suscripción",
+    "PAYMENT_TYPE": "Método de Pago",
+    "DURATION": "Duración",
     "UPDATE": "Actualizar suscripción",
     "WIRE": "Transferencia bancaria",
     "YEAR": "Un año",
     "STRIPE_MSG": "Será redirigido a nuestro socio de pago, Stripe. Haga clic en 'Sí' para continuar o en 'CANCELAR' para finalizar el proceso de pago.",
     "INVALID_SUB": "Suscripción inválida",
-    "INVALID_SUB_MSG": "Su suscripción ha caducado o no tiene una suscripción activa. Por favor, adquiera una nueva suscripción para continuar usando esta función."
+    "INVALID_SUB_MSG": "Su suscripción ha caducado o no tiene una suscripción activa. Por favor, adquiera una nueva suscripción para continuar usando esta función.",
+    "PAID": "Pagado",
+    "NOT_PAID": "No Pagado",
+    "EXPIRED": "Caducado",
+    "GET_INVOICE": "Obtener Factura",
+    "SELECT_TO_USE": "Seleccionar suscripcion a usar",
+    "RECAP": "Resumen de la suscripcion",
+    "USED_AREAS": "Areas usadas",
+    "FREE_AREAS": "Areas libres"
   },
   "MONITOR": {
     "ADD_TITLE_AND_DESCRIPTION": "Añadir Título y Descripción",
@@ -356,6 +377,7 @@
     "EXPLANATION": "El filtro puede ser Ninguno para analizar todos los píxeles, o un número: en este caso, RISE analizará los píxeles con un valor mayor que el filtro. Haz clic en Actualizar para iniciar el análisis.",
     "WAIT": "RISE está analizando tu capa."
   },
+
   "TOOLBAR": {
     "ACCOUNT": "Cuenta",
     "LOGIN": "Iniciar sesión",
@@ -449,12 +471,12 @@
     "LST_AVG": "Temperatura Promedio",
     "FLOOD_DEPTH": "Profundidad de Inundación",
     "POLLUTANT": "contaminante",
-    "NO2": "NO2",
-    "HCHO": "HCHO",
-    "CO": "CO",
-    "O3": "O3",
-    "CH4": "CH4",
-    "SO2": "SO2"
+    "NO2":"NO2",
+    "HCHO":"HCHO",
+    "CO":"CO",
+    "O3":"O3",
+    "CH4":"CH4",
+    "SO2":"SO2"
   },
   "FORGET_PASSWORD_REQUEST": {
     "TITLE": "Restablecer su contraseña",
@@ -485,12 +507,12 @@
     "LST": "Temperatura Superficial Terrestre",
     "FLOOD_DEPTH": "Estimación de Profundidad de Inundación",
     "POLLUTANT": "contaminante",
-    "NO2": "NO2",
-    "HCHO": "HCHO",
-    "CO": "CO",
-    "O3": "O3",
-    "CH4": "CH4",
-    "SO2": "SO2"
+    "NO2":"NO2",
+    "HCHO":"HCHO",
+    "CO":"CO",
+    "O3":"O3",
+    "CH4":"CH4",
+    "SO2":"SO2"
   },
   "IMPACTS_DIALOG": {
     "NO_IMPACTS_AVAILABLE_MSG": "RISE no encontró datos para la fecha seleccionada en esta área. Por favor, verifica la fecha o el área de operación.",
@@ -514,7 +536,7 @@
   },
   "PLUGIN_NAMES": {
     "PLUGIN_FLOOD": "Inundaciones",
-    "PLUGIN_DROUGHT": "Sequía",
+    "PLUGIN_DROUGHT": "Sequ\u00eda",
     "PLUGIN_BUILDINGS": "Edificios",
     "PLUGIN_IMPACTS": "Impactos",
     "PLUGIN_RAIN": "Lluvia",
@@ -831,5 +853,22 @@
     "FAQ_A8": "Actualmente, RISE admite los siguientes idiomas: <b>inglés, español, francés, italiano y árabe.</b>\n\nTrabajamos continuamente para ampliar nuestra oferta de idiomas para hacer que RISE sea más inclusivo y accesible para los usuarios de todo el mundo. Se agregarán más idiomas en futuras actualizaciones.",
     "FUTURE_READY_DESC": "RISE está diseñado para evolucionar. Integramos constantemente nuevas fuentes de datos satelitales y análisis avanzados basados en IA para anticipar los peligros naturales.",
     "GLIMPSE_ON_PLATFORM": "Eche un vistazo a lo que la plataforma puede hacer."
-  }
+  },
+  "COMMON": {
+    "ERROR": "Error",
+    "SUCCESS": "Éxito",
+    "LOADING": "Cargando...",
+    "CONFIRM": "Confirmar",
+    "CANCEL": "Cancelar",
+    "YES": "Sí",
+    "NO": "No",
+    "EDIT": "Editar",
+    "INFO": "Información",
+    "ALL": "Todos",
+    "DATE": "Fecha",
+    "AREA": "Área",
+    "AREAS": "Áreas",
+    "MONTH": "Mes",
+    "MONTHS": "Meses"
+ }
 }

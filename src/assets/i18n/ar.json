@@ -10,7 +10,8 @@
     "ORGANIZATION": "المنظمة",
     "USER": "المستخدم",
     "USER_ACCOUNT": "حساب المستخدم",
-    "MANAGE_EVENTS": "إدارة الأحداث"
+    "MANAGE_EVENTS": "إدارة الأحداث",
+    "ERROR_INFO": "Could not get account information"
   },
   "MANAGE_EVENTS": {
     "HEADER": "إدارة الأحداث",
@@ -51,12 +52,18 @@
     "DIALOG_HEADER": "منطقة العمليات",
     "DELETE_OR_UPDATE": "هل تريد حقًا الحذف أم التحديث؟",
     "ERROR_GET_USERS": "هناك خطأ ما في الحصول على مستخدمين لهذه المنطقة",
-    "IS_PUBLIC": "هل هذه المنطقة عامة؟",
+    "IS_PUBLIC": "اجعل منطقتك عامة (مرئية لجميع مستخدمي RISE)",
     "DELETING_MESSAGE": "نحن نقوم بحذف منطقة العمليات الخاصة بك. يرجى الانتظار.",
     "AREA_NOT_FOUND": "لم يتم العثور على منطقة",
     "AREA_NOT_FOUND_MSG": "لبدء إنشاء مناطق العمليات في RISE، يرجى ",
     "AREA_NOT_FOUND_MSG_FIELD": "حسابك غير مرتبط بأي منطقة عمليات في الوقت الحالي. يرجى الاتصال بمسؤول مؤسستك ",
-    "AREA_NOT_FOUND_LINK": "انقر هنا"
+    "AREA_NOT_FOUND_LINK": "انقر هنا",
+    "AREA_NAME_ALREADY_EXISTS": "Area name already exists",
+    "ERROR_DELETE": "An error occurred while attempting to delete this Area of Operations",
+    "ERROR_GET_INFO": "Could not retrieve information on this area",
+    "ERROR_PLUGINS": "Could not retrieve plugin information",
+    "ERROR_SAVE": "Could not save changes to this area",
+    "SUCCESS_SAVE": "Area changes saved"
   },
   "BANNER": {
     "LIVE_SIT": "الوضع المباشر",
@@ -69,14 +76,15 @@
     "ADVANCED_SETTINGS": "إعدادات متقدمة",
     "MAP_LAYER": "طبقة الخريطة",
     "SUPPORT_ARCHIVE": "يدعم الأرشفة",
+    "ENABLE_ARCHIVE": "تمكين الأرشيف الكامل",
     "SUCCESS_AND_PENDING": "تمت إضافة منطقتك بنجاح، ويتم إنشاء الطبقات، ستتلقى إشعارًا عبر البريد الإلكتروني عندما تكون جاهزة.",
     "NAME": "الاسم",
-    "DESCRIPTION": "الوصف",
+    "DESCRIPTION": "أضف وصفك الاختياري هنا",
     "MAP_TITLE": "حدد منطقتك",
     "SAVE": "حفظ",
     "CANCEL": "إلغاء",
     "ADD_FIELD_OPERATOR": "إضافة مشغل ميداني",
-    "PLUGINS": "اختر الإضافات",
+    "PLUGINS": "اختر الإضافات لتفعيلها في هذه المنطقة",
     "MANAGE_USERS": "إدارة المستخدمين",
     "ID": "معرف"
   },
@@ -139,7 +147,8 @@
     "TITLE": "مرحبًا بعودتك",
     "USER_ID": "اسم المستخدم أو البريد الإلكتروني",
     "PASSWORD": "كلمة المرور",
-    "FORGOT_PASSWORD": "نسيت كلمة المرور؟ اضغط <a class='inner-html-link'>هنا</a>"
+    "FORGOT_PASSWORD": "نسيت كلمة المرور؟ اضغط <a class='inner-html-link'>هنا</a>",
+    "ERROR": "RISE could not execute login. Please try again or contact us."
   },
   "ORGANIZATION": {
     "ADDRESS": "عنوان المنظمة",
@@ -234,12 +243,13 @@
     "CONTACT_MSG": "سيتصل بك فريق RISE لمعالجة الدفع. انقر على \"تأكيد\" للمتابعة أو \"إلغاء\" لإنهاء عملية الدفع.",
     "SUCCESS_CONTACT_TITLE": "تم إنشاء الاشتراك",
     "SUCCESS_CONTACT_Description": "تم إنشاء الاشتراك بنجاح",
-    "WIRE_TRANSFER": "إذا أكدت رغبتك في الدفع عن طريق التحويل البنكي، فستتلقى التفاصيل البنكية عبر البريد الإلكتروني",
+    "WIRE_TRANSFER": "إذا أكدت أنك تريد الدفع عن طريق التحويل البنكي، وستصلك التفاصيل المصرفية عبر البريد الإلكتروني",
     "AREA_INFO_MESSAGE": "<strong>نوع المنطقة:</strong><br/><ul><li><strong>طوارئ:</strong> مراقبة قصيرة المدى وعالية الأولوية (مثال: كوارث). البيانات سريعة التسليم، لا تخزن طويلاً.</li><li><strong>طويلة الأمد:</strong> مراقبة مستمرة أو دورية بمرور الوقت (مثال: بيئة، بنية تحتية). البيانات قد تصل أبطأ لكنها مؤرشفة.</li></ul><br/><strong>نوع الاشتراك:</strong><br/><ul><li><strong>موقع واحد:</strong> مراقبة منطقة عمليات واحدة.</li><li><strong>3 مواقع:</strong> مراقبة حتى 3 مناطق عمليات مختلفة.</li><li><strong>5 مواقع:</strong> مراقبة حتى خمس مناطق مختلفة في آن واحد.</li><li><strong>10 مواقع:</strong> تتبع حتى عشر مناطق منفصلة.</li></ul>",
     "AREA_TYPE": "إنتاج الأرشيف الكامل",
     "BACK": "العودة إلى الاشتراكات",
     "BILLING": "الفوترة",
     "BUY_BUTTON": "اشتر اشتراك جديد",
+    "ADVANCED_BUY_BUTTON": "خيارات شراء متقدمة",
     "COMPUTE_PRICE": "احصل على السعر المحسوب",
     "COMPUTE_SECOND": "إعادة الحساب",
     "COMPUTED_PRICE": "السعر المحسوب",
@@ -258,13 +268,29 @@
     "PRICE": "السعر",
     "START_DATE": "تاريخ البدء",
     "TYPE": "النوع",
-    "PAYMENT_TYPE": "مدة الاشتراك",
+    "PAYMENT_TYPE": "طريقة الدفع",
+    "DURATION": "المدة",
     "UPDATE": "تحديث الاشتراك",
     "WIRE": "تحويل مصرفي",
     "YEAR": "سنة واحدة",
     "STRIPE_MSG": "سيتم توجيهك إلى شريكنا للدفع، Stripe. انقر على 'نعم' للمتابعة أو 'إلغاء' لإنهاء عملية الدفع.",
     "INVALID_SUB": "اشتراك غير صالح",
-    "INVALID_SUB_MSG": "لقد انتهى اشتراكك أو ليس لديك اشتراك نشط. يرجى شراء اشتراك جديد للاستمرار في استخدام هذه الميزة."
+    "INVALID_SUB_MSG": "لقد انتهى اشتراكك أو ليس لديك اشتراك نشط. يرجى شراء اشتراك جديد للاستمرار في استخدام هذه الميزة.",
+    "ERROR": "An error occurred while executing your purchase",
+    "ERROR_INFO": "Could not get subscription information",
+    "PURCHASE_CREDIT": "Checkout on Stripe",
+    "PURCHASE_ERROR": "An error occurred while executing your purchase. Please try again or contact us.",
+    "SUCCESS": "Subscription purchase successful!",
+    "TYPE_ERROR": "Could not retrieve subscription types",
+    "STRIPE_TITLE": "Re-directing to STRIPE",
+    "PAID": "Paid",
+    "NOT_PAID": "Not Paid",
+    "EXPIRED": "منتهي الصلاحية",
+    "GET_INVOICE": "Get Invoice",
+    "SELECT_TO_USE": "Select subscription to use",
+    "RECAP": "Subscription recap",
+    "USED_AREAS": "Used areas",
+    "FREE_AREAS": "Free areas"
   },
   "TOOLBAR": {
     "ACCOUNT": "الحساب",
@@ -304,7 +330,8 @@
     "FORCE_UPDATE": "تحديث الطبقة بالقوة",
     "MANAGE_EVENTS": "إدارة الأحداث",
     "WORK_IN_PROGRESS": "في RISE، نفضل إدارة البيانات الفضائية المكتسبة حديثًا فقط. نحن نعمل حاليًا على منطقة العمليات الجديدة الخاصة بك. يرجى التحقق مرة أخرى لاحقًا.",
-    "WORK_IN_PROGRESS_TITLE": "العمل قيد التقدم"
+    "WORK_IN_PROGRESS_TITLE": "العمل قيد التقدم",
+    "LAYER_ID": "Layer ID"
   },
   "LAYER_ANALYZER": {
     "FILTER": "تصفية قيم البكسل",
@@ -342,7 +369,11 @@
     "SELECT_LANG": "اختيار اللغة",
     "SELECT_LANG_MSG": "حدد اللغة التي ترغب في استخدامها في RISE.",
     "SUB_MSG": "<strong>RISE</strong> سيستخدم هذا البريد الإلكتروني للاتصال وإرسال الإشعارات. يمكنك إدارة إعدادات الإشعارات أعلاه.",
-    "EMAIL_SUCCESS": "يرجى التحقق من بريدك الإلكتروني"
+    "EMAIL_SUCCESS": "يرجى التحقق من بريدك الإلكتروني",
+    "ERROR": "Could not retrieve user's information",
+    "EMAIL_ERROR": "Could not save new email information",
+    "NOTIFICATIONS_ERROR": "Could not save notifications settings",
+    "PW_ERROR": "Could not save password information"
   },
   "USER_MENU": {
     "ACCOUNT": "الحساب",
@@ -365,7 +396,9 @@
     "NAME": "الاسم",
     "TYPE": "النوع",
     "PURCHASE_DATE": "تاريخ الشراء",
-    "EXPIRY_DATE": "تاريخ الانتهاء"
+    "EXPIRY_DATE": "تاريخ الانتهاء",
+    "CREATION_DATE": "Creation date",
+    "PAID_STATUS": "Status"
   },
   "WIDGET": {
     "AFFECTED_PPL": "الأشخاص المتأثرين",
@@ -440,7 +473,16 @@
     "POP": "خريطة تأثيرات السكان",
     "FLOOD_COMPOSITE": "المدى الأقصى لحدث الفيضان",
     "LST": "درجة حرارة سطح الأرض",
-    "FLOOD_DEPTH": "تقدير عمق الفيضان"
+    "FLOOD_DEPTH": "تقدير عمق الفيضان",
+    "FFM_DATA": "Flood Frequency Data Map",
+    "FFM_PERC": "Flood Frequency Percentage Map",
+    "POLLUTANT": "Pollutant",
+    "NO2": "NO2",
+    "HCHO": "HCHO",
+    "CO": "CO",
+    "O3": "O3",
+    "CH4": "CH4",
+    "SO2": "SO2"
   },
   "IMPACTS_DIALOG": {
     "NO_IMPACTS_AVAILABLE_MSG": "لم يتمكن RISE من العثور على أي بيانات للتاريخ الذي اخترته في هذه المنطقة. يرجى التحقق مرة أخرى من التاريخ أو منطقة العمليات.",
@@ -463,23 +505,28 @@
     "ROADS_AFFECTED": "الطرق المتأثرة"
   },
   "MANUAL_BBOX": {
-    "DRAW_AREA": "رسم المنطقة",
+    "DRAW_AREA": "رسم منطقة",
     "JSON_INPUT": "إدخال JSON",
     "INPUT_FIELDS": "حقول الإدخال",
-    "TITLE": "يرجى إدخال الإحداثيات",
-    "DIALOG_MANUAL_INSERT_BBOX_INFO": "أدخل JSON بالتنسيق التالي:<br>",
+    "TITLE": "الرجاء إدخال الإحداثيات",
+    "DIALOG_MANUAL_INSERT_BBOX_INFO": "الرجاء إدخال JSON بالتنسيق التالي:<br>",
     "DIALOG_PROCESSOR_UI_APP_FORMAT_JSON": "تنسيق JSON",
     "DIALOG_FORMAT_JSON_ERROR": "تعذر تنسيق إدخال JSON الخاص بك. يرجى التأكد من أنه JSON صالح",
-    "DIALOG_PARSE_JSON_ERROR": "حدث خطأ أثناء تحليل حمولة JSON"
+    "DIALOG_PARSE_JSON_ERROR": "حدث خطأ في تحليل حمولة JSON",
+    "VALIDATION_ERROR_TITLE": "صندوق الإحاطة اليدوي",
+    "VALIDATION_INVALID_NUMERIC": "يرجى إدخال إحداثيات رقمية صالحة للشمال والجنوب والشرق والغرب.",
+    "VALIDATION_INVALID_COORD_RANGE": "يجب أن يكون خط العرض بين -90 و90، وخط الطول بين -180 و180.",
+    "VALIDATION_TOO_SMALL": "المنطقة صغيرة جدا. الحد الأدنى للحجم هو 1×1 درجة.",
+    "VALIDATION_TOO_LARGE": "المنطقة كبيرة جدا. الحد الأقصى للحجم هو 2×2 درجة."
   },
   "LAT_LNG_SEARCH": {
-    "TITLE": "البحث عن طريق الإحداثيات",
+    "TITLE": "البحث بالإحداثيات",
     "LATITUDE": "خط العرض",
     "LONGITUDE": "خط الطول",
     "LATITUDE_PLACEHOLDER": "مثال: 44.4056",
     "LONGITUDE_PLACEHOLDER": "مثال: 8.9463",
-    "GO_TO_LOCATION": "الذهاب إلى الموقع",
-    "INVALID_COORDINATES": "إحداثيات غير صالحة. يجب أن يكون خط العرض بين -90 و90، وخط الطول بين -180 و180.",
+    "GO_TO_LOCATION": "الانتقال إلى الموقع",
+    "INVALID_COORDINATES": "إحداثيات غير صالحة. يجب أن يكون خط العرض بين -90 و 90، وخط الطول بين -180 و 180.",
     "ERROR": "خطأ"
   },
   "IMPORT_SHAPE_FILE": {

@@ -17,7 +17,7 @@
     "HEADER": "Manage Events",
     "CREATE_NEW_EVENT": "Create new Event",
     "EDIT_EVENT": "Edit Event",
-    "RETURN": "Return",
+    "RETURN": "Return" ,
     "CREATION_UPLOAD_ALTERNATIVE_TEXT": "After the creation of your event, you will be able to upload associated images and documents when editing it."
   },
   "CREATE_NEW_EVENT": {
@@ -31,7 +31,7 @@
   },
   "EVENT": {
     "NAME": "Name",
-    "TYPE": "Type",
+    "TYPE":"Type",
     "START_DATE": "Start date",
     "PEAK_DATE": "Peak Date",
     "END_DATE": "End date"
@@ -62,7 +62,7 @@
     "AREA_NOT_FOUND_MSG": "To start creating areas of operations in RISE , please ",
     "AREA_NOT_FOUND_MSG_FIELD": "Your account is not linked to any area of operation at the moment. Please contact your organization admin ",
     "AREA_NOT_FOUND_LINK": "click here",
-    "IS_PUBLIC": "Is Public",
+    "IS_PUBLIC": "Make your area public (visible to all RISE users)",
     "DELETING_MESSAGE": "We are deleting your area of operation. Please wait."
   },
   "BANNER": {
@@ -76,14 +76,15 @@
     "ADVANCED_SETTINGS": "Advanced Settings",
     "RETURN": "Return",
     "SUPPORT_ARCHIVE": "Support Archive",
+    "ENABLE_ARCHIVE": "Enable Full Archive",
     "SUCCESS_AND_PENDING": "Your area has been added successfully, The layers are being generated , you will receive a notification by email when they are ready",
     "NAME": "Name",
-    "DESCRIPTION": "Description",
+    "DESCRIPTION": "Add your optional description here",
     "MAP_TITLE": "Define your Area",
     "SAVE": "Save",
     "CANCEL": "Cancel",
     "ADD_FIELD_OPERATOR": "Add Field Operator",
-    "PLUGINS": "Select Plugins",
+    "PLUGINS": "Select Plugins to activate in this area",
     "MANAGE_USERS": "Manage Users",
     "ID": "Id"
   },
@@ -123,7 +124,7 @@
     "ERROR_LAYER_FAILURE": "Could not load layers for ",
     "ERROR_UNKNOWN": "An unknown error occurred",
     "ERROR_API_INVITE_STILL_PENDING": "There is already a pending invitation for this user. You can resend the invitation after it expires."
-  },
+    },
   "INVITE_USER": {
     "EMAIL": "Enter the email of the person to invite",
     "CONFIRM": "Confirm the email of your invitee",
@@ -171,7 +172,7 @@
     "EVENT_START": "Start",
     "EVENT_PEAK": "Peak",
     "EVENT_END": "End",
-    "DRAG": "Drag to rearrange",
+    "DRAG":"Drag to rearrange",
     "SEE_IMPACTS": "Impacts Evaluation",
     "ADD_EVENT": "Add event",
     "SEARCH_LAYERS_BY_NAME": "Search Layers By Name",
@@ -196,6 +197,7 @@
     "PER_AREA_AFFECTED_PIXEL": "Percentage of Affected Pixel in Area",
     "ESTIMATED_AREA": "Estimated Area",
     "ESTIMATED_AREA_PIXEL_AFFECTED": "Estimated Area Pixel Affected",
+
     "PER_TOT_AREA_AFFECTED_PIXEL": "Percentage of total Affected Pixel in Area",
     "REFRESH": "Refresh",
     "DOWNLOAD": "Download",
@@ -234,7 +236,7 @@
     "ENTER_PW": "Please enter your One Time Pass Code"
   },
   "CONFIRM_ADMIN_INV": {
-    "TITLE": "Confirm your registration",
+    "TITLE":"Confirm your registration",
     "DESCRIPTION": "Thank you for signing up in RISE! Please confirm your registration so you can log in and start exploring",
     "CONFIRM": "Confirm"
   },
@@ -247,12 +249,12 @@
     "USERNAME_ERROR_MESSAGE_LOWERCASE": "User ID must be all lowercase",
     "USERNAME_ERROR_MESSAGE_AT_SYMBOL": "User ID cannot contain the '@' symbol (it is not an email).",
     "NEXT": "Next",
-    "PERSONAL_INFO": "Enter your Personal Information",
+    "PERSONAL_INFO":"Enter your Personal Information",
     "ORG_INFO": "Enter your Organization's Information",
-    "STREET_ADDRESS": "Street Address",
+    "STREET_ADDRESS":"Street Address",
     "TITLE": "Create a RISE account",
     "STREET_NUMBER": "Street Number",
-    "POSTAL_CODE": "Postal Code",
+    "POSTAL_CODE":"Postal Code",
     "BUTTON": "Register",
     "PREV_BUTTON": "Previous",
     "INVITED_USER_SUCCESS": "You are successfully registered",
@@ -294,6 +296,7 @@
     "BACK": "Back to Subscriptions",
     "BILLING": "Billing",
     "BUY_BUTTON": "Buy New Subscription",
+    "ADVANCED_BUY_BUTTON": "More Purchase Options",
     "COMPUTE_PRICE": "Get Computed Price",
     "COMPUTE_SECOND": "Compute Again",
     "COMPUTED_PRICE": "Computed Price",
@@ -312,7 +315,7 @@
     "PLUGINS": "Select Plugins to Include",
     "PURCHASE": "Purchase",
     "PURCHASE_CONTACT": "Contact",
-    "CONTACT_MSG": "The team of RISE will contact you to handle the payment. Click 'Confirm' to continue or 'CANCEL' to end the payment process.",
+    "CONTACT_MSG": "The team of RISE will contact you to handle the payment. Click 'Yes' to continue or 'Cancel' to end the payment process.",
     "SUCCESS_CONTACT_TITLE": "Subscription created",
     "SUCCESS_CONTACT_Description": "Subscription created successfully",
     "PURCHASE_CREDIT": "Checkout on Stripe",
@@ -322,14 +325,23 @@
     "SUCCESS": "Subscription purchase successful!",
     "TYPE": "Number of areas",
     "TYPE_ERROR": "Could not retrieve subscription types",
-    "PAYMENT_TYPE": "Subscription Length",
+    "PAYMENT_TYPE": "Payment Type",
+    "DURATION": "Duration",
     "UPDATE": "Update Subscription",
     "WIRE": "Wire Transfer",
     "YEAR": "One Year",
-    "STRIPE_TITLE": "Re-directing to STRIPE",
-    "STRIPE_MSG": "You will be re-directed to our payment partner, Stripe. Click 'Yes' to continue or 'CANCEL' to end the payment process.",
+    "STRIPE_TITLE":  "Re-directing to STRIPE",
+    "STRIPE_MSG":  "You will be re-directed to our payment partner, Stripe. Click 'Yes' to continue or 'CANCEL' to end the payment process.",
     "INVALID_SUB": "Invalid Subscription",
-    "INVALID_SUB_MSG": "Your subscription has expired or you do not have an active subscription. Please buy new subscription to continue using this feature."
+    "INVALID_SUB_MSG": "Your subscription has expired or you do not have an active subscription. Please buy new subscription to continue using this feature.",
+    "PAID": "Paid",
+    "NOT_PAID": "Not Paid",
+    "EXPIRED": "Expired",
+    "GET_INVOICE": "Get Invoice",
+    "SELECT_TO_USE": "Select subscription to use",
+    "RECAP": "Subscription recap",
+    "USED_AREAS": "Used areas",
+    "FREE_AREAS": "Free areas"
   },
   "TOOLBAR": {
     "ACCOUNT": "Account",
@@ -396,15 +408,20 @@
     "EXPIRY_DATE": "Expiry date",
     "PAID_STATUS": "Status"
   },
-  "MANUAL_BBOX": {
-    "DRAW_AREA": "Draw Area",
+  "MANUAL_BBOX":{
+    "DRAW_AREA":"Draw Area",
     "JSON_INPUT": "JSON Input",
     "INPUT_FIELDS": "Input Fields",
-    "TITLE": "Please insert The coordination",
+    "TITLE":"Please insert The coordination",
     "DIALOG_MANUAL_INSERT_BBOX_INFO": "Input JSON in the following format:<br>",
     "DIALOG_PROCESSOR_UI_APP_FORMAT_JSON": "Format JSON",
     "DIALOG_FORMAT_JSON_ERROR": "Could not format your JSON input. Please ensure it is a valid JSON",
-    "DIALOG_PARSE_JSON_ERROR": "There was an error in parsing the JSON payload"
+    "DIALOG_PARSE_JSON_ERROR": "There was an error in parsing the JSON payload",
+    "VALIDATION_ERROR_TITLE": "Manual Bounding Box",
+    "VALIDATION_INVALID_NUMERIC": "Please insert valid numeric coordinates for North, South, East and West.",
+    "VALIDATION_INVALID_COORD_RANGE": "Latitude must be between -90 and 90, longitude must be between -180 and 180.",
+    "VALIDATION_TOO_SMALL": "The area is too small. Minimum size is 1x1 degree.",
+    "VALIDATION_TOO_LARGE": "The area is too large. Maximum size is 2x2 degrees."
   },
   "LAT_LNG_SEARCH": {
     "TITLE": "Search by Coordinates",
@@ -417,7 +434,7 @@
     "ERROR": "Error"
   },
   "CONFIRM_DIALOG": {
-    "ACTION": "Confirm Action",
+    "ACTION":"Confirm Action",
     "CONFIRM": "Yes",
     "CANCEL": "Cancel"
   },
@@ -447,12 +464,12 @@
     "FLOOD_DEPTH": "Flood Depth",
     "ACTIVE_FIRES": "Active Fire",
     "POLLUTANT": "Pollutant",
-    "NO2": "NO2",
-    "HCHO": "HCHO",
-    "CO": "CO",
-    "O3": "O3",
-    "CH4": "CH4",
-    "SO2": "SO2"
+    "NO2":"NO2",
+    "HCHO":"HCHO",
+    "CO":"CO",
+    "O3":"O3",
+    "CH4":"CH4",
+    "SO2":"SO2"
   },
   "PLUGIN_MAP_DESCRIPTIONS": {
     "HIGH_RES_FLOOD": "High Resolution SAR based Flood Map",
@@ -476,12 +493,12 @@
     "LST": "Land Surface Temperature",
     "FLOOD_DEPTH": "Flood Depth Estimation",
     "POLLUTANT": "Pollutant",
-    "NO2": "NO2",
-    "HCHO": "HCHO",
-    "CO": "CO",
-    "O3": "O3",
-    "CH4": "CH4",
-    "SO2": "SO2"
+    "NO2":"NO2",
+    "HCHO":"HCHO",
+    "CO":"CO",
+    "O3":"O3",
+    "CH4":"CH4",
+    "SO2":"SO2"
   },
   "IMPACTS_DIALOG": {
     "NO_IMPACTS_AVAILABLE_MSG": "RISE did not find any data for the selected date in this area of operation",
@@ -506,10 +523,10 @@
   "LAYER_ITEM": {
     "OPACITY": "Opacity",
     "REMOVE_LAYER": "Remove Layer",
-    "TOGGLE_LEGEND_VISIBILITY": "Toggle legend visibility",
-    "FOCUS_ON_LAYER": "Focus on layer",
-    "DOWNLOAD_FILE": "Download file",
-    "LAYER_PROP": "Layer Properties"
+    "TOGGLE_LEGEND_VISIBILITY":"Toggle legend visibility",
+    "FOCUS_ON_LAYER":"Focus on layer",
+    "DOWNLOAD_FILE":"Download file",
+    "LAYER_PROP":"Layer Properties"
   },
   "TIMEBAR": {
     "LIVE": "Live"
@@ -538,7 +555,7 @@
   },
   "LANDING": {
     "HERO_TITLE": "Direct Access to Geospatial Intelligence",
-    "HERO_SUBTITLE": "Monitor global hazards in real time, assess impacts instantly, and act with confidence. RISE gives you the insights you need to respond faster and stay ahead of every challenge",
+    "HERO_SUBTITLE": "Overwhelmed by complex satellite data and reports? Turn it into clear, actionable insights to accelerate decision-making and relief efforts.",
     "GET_STARTED": "GET STARTED TODAY",
     "INTRO_P1": "RISE is a cloud‑based platform that integrates Earth Observation (EO) data with advanced analytics to deliver near real‑time intelligence on natural hazards worldwide. It provides the technology organizations need to anticipate risks and strengthen resilience.",
     "WHAT_IS_RISE": "What is Rise?",
@@ -845,5 +862,22 @@
     "PRIVACY_POLICY": "Privacy Policy",
     "FAQ": "F.A.Q.",
     "BUILT_WITH": "Built with ❤️ to support humanitarian action — © 2025 RISE — Powered by WASDI — All rights reserved."
+  },
+  "COMMON": {
+    "ERROR": "Error",
+    "SUCCESS": "Success",
+    "LOADING": "Loading...",
+    "CONFIRM": "Confirm",
+    "CANCEL": "Cancel",
+    "YES": "Yes",
+    "NO": "No",
+    "EDIT": "Edit",
+    "INFO": "Info",
+    "ALL": "All",
+    "DATE": "Date",
+    "AREA": "Area",
+    "AREAS": "Areas",
+    "MONTH": "Month",
+    "MONTHS": "Months"
   }
 }

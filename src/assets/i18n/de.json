@@ -46,6 +46,7 @@
     "CONFIRM_SAME_NAME": "The selected area shares a name with an already existing area. Do you want to proceed?",
     "CONFIRM": "<bt>Proceed anyways?",
     "CONFIRM_AREA_TOO_BIG": "The area you've selected is too large. Click 'confirm' to have RISE automatically adjust it.",
+      "DATE": "Datum",
     "CONFIRM_AREA_TOO_SMALL": "The area you've selected is too small. Click 'confirm' to have RISE automatically adjust it.",
     "CONFIRM_CREATE_NEW_AREA": "The area you've selected is too large. Please adjust the dimensions.",
     "CREATION_DATE": "Date Created",
@@ -62,7 +63,7 @@
     "AREA_NOT_FOUND_MSG": "To start creating areas of operations in RISE , please ",
     "AREA_NOT_FOUND_MSG_FIELD": "Your account is not linked to any area of operation at the moment. Please contact your organization admin ",
     "AREA_NOT_FOUND_LINK": "click here",
-    "IS_PUBLIC": "Is Public",
+    "IS_PUBLIC": "Make your area public (visible to all RISE users)",
     "DELETING_MESSAGE": "We are deleting your area of operation. Please wait."
   },
   "BANNER": {
@@ -76,14 +77,15 @@
     "ADVANCED_SETTINGS": "Advanced Settings",
     "RETURN": "Return",
     "SUPPORT_ARCHIVE": "Support Archive",
+    "ENABLE_ARCHIVE": "Enable Full Archive",
     "SUCCESS_AND_PENDING": "Your area has been added successfully, The layers are being generated , you will receive a notification by email when they are ready",
     "NAME": "Name",
-    "DESCRIPTION": "Description",
+    "DESCRIPTION": "Add your optional description here",
     "MAP_TITLE": "Define your Area",
     "SAVE": "Save",
     "CANCEL": "Cancel",
     "ADD_FIELD_OPERATOR": "Add Field Operator",
-    "PLUGINS": "Select Plugins",
+    "PLUGINS": "Select Plugins to activate in this area",
     "MANAGE_USERS": "Manage Users",
     "ID": "Id"
   },
@@ -295,6 +297,7 @@
     "BACK": "Back to Subscriptions",
     "BILLING": "Billing",
     "BUY_BUTTON": "Buy New Subscription",
+    "ADVANCED_BUY_BUTTON": "More Purchase Options",
     "COMPUTE_PRICE": "Get Computed Price",
     "COMPUTE_SECOND": "Compute Again",
     "COMPUTED_PRICE": "Computed Price",
@@ -313,7 +316,7 @@
     "PLUGINS": "Select Plugins to Include",
     "PURCHASE": "Purchase",
     "PURCHASE_CONTACT": "Contact",
-    "CONTACT_MSG": "The team of RISE will contact you to handle the payment. Click 'Confirm' to continue or 'CANCEL' to end the payment process.",
+    "CONTACT_MSG": "The team of RISE will contact you to handle the payment. Click 'Yes' to continue or 'Cancel' to end the payment process.",
     "SUCCESS_CONTACT_TITLE": "Subscription created",
     "SUCCESS_CONTACT_Description": "Subscription created successfully",
     "PURCHASE_CREDIT": "Checkout on Stripe",
@@ -323,14 +326,23 @@
     "SUCCESS": "Subscription purchase successful!",
     "TYPE": "Number of areas",
     "TYPE_ERROR": "Could not retrieve subscription types",
-    "PAYMENT_TYPE": "Subscription Length",
+    "PAYMENT_TYPE": "Payment Type",
+    "DURATION": "Duration",
     "UPDATE": "Update Subscription",
     "WIRE": "Wire Transfer",
     "YEAR": "One Year",
     "STRIPE_TITLE":  "Re-directing to STRIPE",
     "STRIPE_MSG":  "You will be re-directed to our payment partner, Stripe. Click 'Yes' to continue or 'CANCEL' to end the payment process.",
     "INVALID_SUB": "Invalid Subscription",
-    "INVALID_SUB_MSG": "Your subscription has expired or you do not have an active subscription. Please buy new subscription to continue using this feature."
+    "INVALID_SUB_MSG": "Your subscription has expired or you do not have an active subscription. Please buy new subscription to continue using this feature.",
+    "PAID": "Paid",
+    "NOT_PAID": "Not Paid",
+    "EXPIRED": "Abgelaufen",
+    "GET_INVOICE": "Get Invoice",
+    "SELECT_TO_USE": "Abonnement zur Nutzung auswahlen",
+    "RECAP": "Abonnement-Ubersicht",
+    "USED_AREAS": "Genutzte Bereiche",
+    "FREE_AREAS": "Freie Bereiche"
   },
   "TOOLBAR": {
     "ACCOUNT": "Account",
@@ -405,7 +417,12 @@
     "DIALOG_MANUAL_INSERT_BBOX_INFO": "Input JSON in the following format:<br>",
     "DIALOG_PROCESSOR_UI_APP_FORMAT_JSON": "Format JSON",
     "DIALOG_FORMAT_JSON_ERROR": "Could not format your JSON input. Please ensure it is a valid JSON",
-    "DIALOG_PARSE_JSON_ERROR": "There was an error in parsing the JSON payload"
+    "DIALOG_PARSE_JSON_ERROR": "There was an error in parsing the JSON payload",
+    "VALIDATION_ERROR_TITLE": "Manual Bounding Box",
+    "VALIDATION_INVALID_NUMERIC": "Please insert valid numeric coordinates for North, South, East and West.",
+    "VALIDATION_INVALID_COORD_RANGE": "Latitude must be between -90 and 90, longitude must be between -180 and 180.",
+    "VALIDATION_TOO_SMALL": "The area is too small. Minimum size is 1x1 degree.",
+    "VALIDATION_TOO_LARGE": "The area is too large. Maximum size is 2x2 degrees."
   },
   "LAT_LNG_SEARCH": {
     "TITLE": "Search by Coordinates",
@@ -536,5 +553,21 @@
     "PLUGIN_LST": "Temperature",
     "PLUGIN_ACTIVE_FIRE": "Fire",
     "PLUGIN_POLLUTANT": "Air Quality"
+  },
+  "COMMON": {
+    "ERROR": "Error",
+    "SUCCESS": "Success",
+    "LOADING": "Loading...",
+    "CONFIRM": "Confirm",
+    "CANCEL": "Cancel",
+    "YES": "Yes",
+    "NO": "No",
+    "EDIT": "Edit",
+    "INFO": "Info",
+    "ALL": "All",
+    "AREA": "Area",
+    "AREAS": "Areas",
+    "MONTH": "Month",
+    "MONTHS": "Months"
   }
 }

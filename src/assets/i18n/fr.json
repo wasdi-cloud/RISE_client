@@ -12,6 +12,7 @@
     "USER": "Utilisateur",
     "USER_ACCOUNT": "Compte utilisateur",
     "MANAGE_EVENTS": "Gérer les événements"
+
   },
   "MANUAL_BBOX": {
     "DRAW_AREA": "Dessiner une zone",
@@ -21,7 +22,12 @@
     "DIALOG_MANUAL_INSERT_BBOX_INFO": "Veuillez saisir le JSON dans le format suivant :<br>",
     "DIALOG_PROCESSOR_UI_APP_FORMAT_JSON": "Formater JSON",
     "DIALOG_FORMAT_JSON_ERROR": "Impossible de formater votre entrée JSON. Veuillez vous assurer que c'est un JSON valide",
-    "DIALOG_PARSE_JSON_ERROR": "Une erreur est survenue lors de l'analyse de la charge utile JSON"
+    "DIALOG_PARSE_JSON_ERROR": "Une erreur est survenue lors de l'analyse de la charge utile JSON",
+    "VALIDATION_ERROR_TITLE": "Bounding Box Manuel",
+    "VALIDATION_INVALID_NUMERIC": "Veuillez saisir des coordonnées numériques valides pour Nord, Sud, Est et Ouest.",
+    "VALIDATION_INVALID_COORD_RANGE": "La latitude doit être comprise entre -90 et 90, et la longitude entre -180 et 180.",
+    "VALIDATION_TOO_SMALL": "La zone est trop petite. La taille minimale est de 1x1 degré.",
+    "VALIDATION_TOO_LARGE": "La zone est trop grande. La taille maximale est de 2x2 degrés."
   },
   "LAT_LNG_SEARCH": {
     "TITLE": "Rechercher par coordonnées",
@@ -830,5 +836,21 @@
     "PRIVACY_POLICY": "Politique de Confidentialité",
     "FAQ": "F.A.Q.",
     "BUILT_WITH": "Conçu avec ❤️ pour soutenir l'action humanitaire — © 2025 RISE — Propulsé par WASDI — Tous droits réservés."
+  },
+  "COMMON": {
+    "ERROR": "Erreur",
+    "SUCCESS": "Succès",
+    "LOADING": "Chargement...",
+    "CONFIRM": "Confirmer",
+    "CANCEL": "Annuler",
+    "YES": "Oui",
+    "NO": "Non",
+    "EDIT": "Modifier",
+    "INFO": "Informations",
+    "ALL": "Tous",
+    "AREA": "Zone",
+    "AREAS": "Zones",
+    "MONTH": "Mois",
+    "MONTHS": "Mois"
   }
 }
