@@ -1,18 +1,23 @@
-import {Component, HostListener, AfterViewInit} from '@angular/core';
+import {Component, HostListener, AfterViewInit, OnDestroy} from '@angular/core';
 import { RiseButtonComponent } from '../../components/rise-button/rise-button.component';
 import { Router } from '@angular/router';
 import { PublicNavbarComponent } from '../../components/public-navbar/public-navbar.component';
 import { PublicFooterComponent } from '../../components/public-footer/public-footer.component';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-public-home',
   standalone: true,
-  imports: [PublicNavbarComponent, PublicFooterComponent, RiseButtonComponent],
+  imports: [PublicNavbarComponent, PublicFooterComponent, RiseButtonComponent, TranslateModule],
   templateUrl: './public-home.component.html',
   styleUrl: './public-home.component.css',
 })
-export class PublicHomeComponent implements AfterViewInit {
-  constructor(private m_oRouter: Router) {}
+export class PublicHomeComponent implements AfterViewInit, OnDestroy {
+  private m_oLangSubscription: Subscription | null = null;
+  private m_oTimeoutRef: any = null;
+
+  constructor(private m_oRouter: Router, private m_oTranslateService: TranslateService) {}
 
   ngAfterViewInit(): void {
     const oObserverOptions = {
@@ -32,7 +37,34 @@ export class PublicHomeComponent implements AfterViewInit {
     const aRevealElements = document.querySelectorAll('.reveal-on-scroll');
     aRevealElements.forEach(oEl => oObserver.observe(oEl));
 
+    this.updateTypingTexts();
     this.startTypingEffect();
+
+    this.m_oLangSubscription = this.m_oTranslateService.onLangChange.subscribe(() => {
+      if (this.m_oTimeoutRef) {
+        clearTimeout(this.m_oTimeoutRef);
+      }
+      this.m_sTypedPart1 = '';
+      this.m_sTypedPart2 = '';
+      this.m_sTypedPart3 = '';
+      this.updateTypingTexts();
+      this.startTypingEffect();
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.m_oLangSubscription) {
+      this.m_oLangSubscription.unsubscribe();
+    }
+    if (this.m_oTimeoutRef) {
+      clearTimeout(this.m_oTimeoutRef);
+    }
+  }
+
+  private updateTypingTexts(): void {
+    this.m_sFullPart1 = this.m_oTranslateService.instant('LANDING.TYPED_P1') || 'Empowering action with ';
+    this.m_sFullPart2 = this.m_oTranslateService.instant('LANDING.TYPED_P2') || 'near real-time';
+    this.m_sFullPart3 = this.m_oTranslateService.instant('LANDING.TYPED_P3') || ' insights.';
   }
 
   private startTypingEffect(): void {
@@ -43,7 +75,7 @@ export class PublicHomeComponent implements AfterViewInit {
       if (i < this.m_sFullPart1.length) {
         this.m_sTypedPart1 += this.m_sFullPart1.charAt(i);
         i++;
-        setTimeout(type1, nSpeed);
+        this.m_oTimeoutRef = setTimeout(type1, nSpeed);
       } else {
         i = 0;
         type2();
@@ -54,7 +86,7 @@ export class PublicHomeComponent implements AfterViewInit {
       if (i < this.m_sFullPart2.length) {
         this.m_sTypedPart2 += this.m_sFullPart2.charAt(i);
         i++;
-        setTimeout(type2, nSpeed);
+        this.m_oTimeoutRef = setTimeout(type2, nSpeed);
       } else {
         i = 0;
         type3();
@@ -65,12 +97,13 @@ export class PublicHomeComponent implements AfterViewInit {
       if (i < this.m_sFullPart3.length) {
         this.m_sTypedPart3 += this.m_sFullPart3.charAt(i);
         i++;
-        setTimeout(type3, nSpeed);
+        this.m_oTimeoutRef = setTimeout(type3, nSpeed);
       }
     };
 
     type1();
   }
+
   m_bIsScrolled: boolean = false;
   m_sEmail:string="info@wasdi.cloud"
 

@@ -9,7 +9,7 @@
     <div class="public-footer__columns">
 
       <div class="public-footer__col">
-        <h4>CONTACT</h4>
+        <h4>{{ 'FOOTER.CONTACT' | translate }}</h4>
         <ul>
           <li><a href="mailto:info&#64;wasdi.cloud">info&#64;wasdi.cloud</a></li>
           <li>100, Route de Volmerange · L-3593<br>Dudelange · Luxembourg</li>
@@ -20,27 +20,27 @@
       <div class="public-footer__divider"></div>
 
       <div class="public-footer__col">
-        <h4>DOCUMENTATION</h4>
+        <h4>{{ 'FOOTER.DOCUMENTATION' | translate }}</h4>
         <ul>
-          <li><a href="https://github.com/wasdi-cloud" target="_blank" rel="noopener">GitHub repository</a></li>
-          <li><a href="https://rise-docs.readthedocs.io/en/latest/" target="_blank" rel="noopener">Documentation</a></li>
-          <li><a (click)="navigateRoute('/contact')" style="cursor:pointer;">Support</a></li>
-          <li><a href="https://wasdi.readthedocs.io/en/latest/Legal/PrivacyPolicy.html" target="_blank" rel="noopener">Privacy Policy</a></li>
-          <li><a (click)="navigateToFaq()" style="cursor:pointer;">F.A.Q.</a></li>
+          <li><a href="https://github.com/wasdi-cloud" target="_blank" rel="noopener">{{ 'FOOTER.GITHUB' | translate }}</a></li>
+          <li><a href="https://rise-docs.readthedocs.io/en/latest/" target="_blank" rel="noopener">{{ 'FOOTER.DOCS_LINK' | translate }}</a></li>
+          <li><a (click)="navigateRoute('/contact')" style="cursor:pointer;">{{ 'FOOTER.SUPPORT' | translate }}</a></li>
+          <li><a href="https://wasdi.readthedocs.io/en/latest/Legal/PrivacyPolicy.html" target="_blank" rel="noopener">{{ 'FOOTER.PRIVACY_POLICY' | translate }}</a></li>
+          <li><a (click)="navigateToFaq()" style="cursor:pointer;">{{ 'FOOTER.FAQ' | translate }}</a></li>
         </ul>
       </div>
 
       <div class="public-footer__divider"></div>
 
       <div class="public-footer__col">
-        <h4>NAVIGATION</h4>
+        <h4>{{ 'FOOTER.NAVIGATION' | translate }}</h4>
         <ul>
-          <li><a (click)="navigateRoute('/')" style="cursor:pointer;">Homepage</a></li>
-          <li><a (click)="navigateRoute('/platform')" style="cursor:pointer;">Platform</a></li>
-          <li><a (click)="navigateRoute('/impact-stories')" style="cursor:pointer;">Impact Stories</a></li>
-          <li><a (click)="navigateRoute('/pricing')" style="cursor:pointer;">Pricing</a></li>
-          <li><a (click)="navigateRoute('/about')" style="cursor:pointer;">About Us</a></li>
-          <li><a (click)="navigateRoute('/contact')" style="cursor:pointer;">Contact Us</a></li>
+          <li><a (click)="navigateRoute('/')" style="cursor:pointer;">{{ 'NAVBAR.HOME' | translate }}</a></li>
+          <li><a (click)="navigateRoute('/platform')" style="cursor:pointer;">{{ 'NAVBAR.PLATFORM' | translate }}</a></li>
+          <li><a (click)="navigateRoute('/impact-stories')" style="cursor:pointer;">{{ 'NAVBAR.IMPACT_STORIES' | translate }}</a></li>
+          <li><a (click)="navigateRoute('/pricing')" style="cursor:pointer;">{{ 'NAVBAR.PRICING' | translate }}</a></li>
+          <li><a (click)="navigateRoute('/about')" style="cursor:pointer;">{{ 'NAVBAR.ABOUT' | translate }}</a></li>
+          <li><a (click)="navigateRoute('/contact')" style="cursor:pointer;">{{ 'NAVBAR.CONTACT' | translate }}</a></li>
         </ul>
       </div>
 
@@ -48,6 +48,6 @@
   </div>
 
   <div class="public-footer__bottom">
-    <p>Built with ❤️ to support humanitarian action — © 2025 RISE — Powered by WASDI — All rights reserved.</p>
+    <p [innerHTML]="'FOOTER.BUILT_WITH' | translate"></p>
   </div>
 </footer>
