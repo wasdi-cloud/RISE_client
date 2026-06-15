@@ -600,7 +600,7 @@
     "SPECIALIZED": "specializzati",
     "PLUGINS_TAILORED": " plugin adattati alle tue esigenze:",
     "MORE_PLUGINS": "Altri plugin sono in arrivo!",
-    "SEE_HOW_RISE_SUPPORTS": "Scopri come RISE Supporta le Operazioni Umanitarie.",
+    "SEE_HOW_RISE_SUPPORTS": "Impatto Umanitario, Alimentato da RISE",
     "MADAGASCAR_DESC": "Scopri come RISE ha aumentato l'efficienza e ridotto i tempi di risposta durante le operazioni sul campo in Madagascar.",
     "SEE_ALL_RESULTS": "VEDI TUTTI I RISULTATI",
     "FASTER_RESPONSE": "Risposta Più Rapida",
@@ -827,7 +827,8 @@
     "WE_ARE_HERE": "Siamo qui!",
     "WASDI_SARL": "WASDI Sarl",
     "ADDRESS": "Rte. de Volmerange 100,<br>Dudelange, Lussemburgo",
-    "RED_CROSS_CONTRIB_REST": "ha contribuito definendo casi d'uso reali e testando la soluzione direttamente sul campo in Madagascar."
+    "RED_CROSS_CONTRIB_REST": "ha contribuito definendo casi d'uso reali e testando la soluzione direttamente sul campo in Madagascar.",
+    "SEE_IMPACT_STORIES": "Vedi le storie di impatto"
   },
   "CONTACT": {
     "TITLE": "Mettiti in Contatto con il Team RISE",
@@ -838,10 +839,10 @@
     "COMPANY": "Azienda",
     "ROLE": "Ruolo / Posizione",
     "HOW_HEARD": "Come hai saputo di RISE?",
-    "SELECT_SUBJECT": "Seleziona l'Oggetto",
+    "SELECT_SUBJECT": "Seleziona un oggetto",
     "MESSAGE": "Messaggio",
     "SEND": "INVIA",
-    "CONTACT_INFO": "Informazioni di Contatto",
+    "CONTACT_INFO": "Le nostre informazioni di contatto",
     "WEBSITE": "Sito Web",
     "LINKEDIN": "LinkedIn",
     "OPT_SOCIAL": "Social Media",

@@ -574,10 +574,12 @@
     "NAVIGATION": "التنقل",
     "GITHUB": "مستودع جيت هاب",
     "DOCS_LINK": "الوثائق",
-    "SUPPORT": "Support",
+    "SUPPORT": "الدعم",
     "PRIVACY_POLICY": "سياسة الخصوصية",
     "FAQ": "الأسئلة الشائعة",
-    "BUILT_WITH": "صنع بـ ❤️ لدعم العمل الإنساني — © 2025 RISE — بدعم من WASDI — جميع الحقوق محفوظة."
+    "BUILT_WITH": "صنع بـ ❤️ لدعم العمل الإنساني — © 2025 RISE — بدعم من WASDI — جميع الحقوق محفوظة.",
+    "RISE_ACRONYM": "RISE. Remote Imaging Support for Emergencies",
+    "ADDRESS": "100, Rte. de Volmerange · L-3593<br>Dudelange · Luxembourg"
   },
   "ABOUT": {
     "TITLE": "من نحن",
@@ -594,7 +596,8 @@
     "WE_ARE_HERE": "نحن هنا!",
     "WASDI_SARL": "WASDI Sarl",
     "ADDRESS": "100 طريق فولمرانج،<br>دوديلانج، لوكسمبورغ",
-    "RED_CROSS_CONTRIB_REST": "ساهمت من خلال تحديد حالات الاستخدام في العالم الحقيقي واختبار الحل مباشرة في الميدان في مدغشقر."
+    "RED_CROSS_CONTRIB_REST": "ساهمت من خلال تحديد حالات الاستخدام في العالم الحقيقي واختبار الحل مباشرةً في الميدان في مدغشقر.",
+    "SEE_IMPACT_STORIES": "انظر قصص التأثير"
   },
   "CONTACT": {
     "TITLE": "تواصل مع فريق RISE",
@@ -891,6 +894,13 @@
     "AREA": "المنطقة",
     "AREAS": "المناطق",
     "MONTH": "الشهر",
-    "MONTHS": "الأشهر"
+    "MONTHS": "الأشهر",
+    "TOTAL": "المجموع",
+    "DRAG_HERE": "اسحب هنا أو",
+    "BROWSE": "تصفح",
+    "ADD_NEW_ROW": "إضافة صف جديد",
+    "SELECT_ALL": "تحديد الكل",
+    "UNSELECT_ALL": "إلغاء تحديد الكل",
+    "SEARCH": "بحث..."
   }
 }

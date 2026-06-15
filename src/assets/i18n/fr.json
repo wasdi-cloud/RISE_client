@@ -568,7 +568,7 @@
     "SPECIALIZED": "spécialisés",
     "PLUGINS_TAILORED": " des plugins adaptés à vos besoins :",
     "MORE_PLUGINS": "D'autres plugins sont en préparation !",
-    "SEE_HOW_RISE_SUPPORTS": "Découvrez comment RISE soutient les opérations humanitaires.",
+    "SEE_HOW_RISE_SUPPORTS": "Impact humanitaire, propulsé par RISE",
     "MADAGASCAR_DESC": "Découvrez comment RISE a augmenté l'efficacité et réduit le temps de réponse lors d'opérations sur le terrain à Madagascar.",
     "SEE_ALL_RESULTS": "VOIR TOUS LES RÉSULTATS",
     "FASTER_RESPONSE": "Réponse plus rapide",
@@ -787,14 +787,15 @@
     "VISION_P1": "WASDI imagine un monde où la télédétection, la technologie et la science permettent aux communautés de collaborer et de renforcer leur résilience face aux catastrophes climatiques, assurant la durabilité et la protection mondiale avec un accent particulier sur les plus vulnérables.",
     "RISE_P1": "RISE existe pour transformer la recherche scientifique de pointe en services opérationnels accessibles, donnant aux décideurs et aux intervenants de première ligne des données satellitaires exploitables pour la surveillance environnementale, l'aide humanitaire et le développement durable.",
     "RISE_P2": "RISE a été développé par WASDI Sarl dans le cadre de l'action pour l'innovation humanitaire, promue par l'Accélérateur d'innovation du Programme alimentaire mondial <a href=\"https://innovation.wfp.org/\" target=\"_blank\" rel=\"noopener\">(HIIA)</a>. RISE transforme automatiquement les données satellites en cartes de risques claires, aidant les intervenants à évaluer rapidement les inondations, les sécheresses et autres risques, tout en utilisant des archives historiques pour suivre les impacts au fil du temps.",
-    "LIST_CONTRIB": "Le LIST ha contribuito a RISE sviluppando gli algoritmi per il Rilevamento delle Inondazioni in suolo nudo e in aree urbane, per rilevare gli edifici e per valutare l'evapotraspirazione per valutare lo stress da siccità.",
+    "LIST_CONTRIB": "Le <strong>Luxembourg Institute of Science and Technology</strong> (LIST) a renforcé RISE avec des algorithmes avancés de détection des inondations sur sol nu et en zones urbaines, d'identification des bâtiments, et d'analyse de l'évapotranspiration pour évaluer le stress hydrique lié à la sécheresse.",
     "RED_CROSS_CONTRIB": "The International Aid of the Luxembourg Red Cross (AICRL) – Shelter Research Unit (SRU) a contribué en définissant des cas d'utilisation réels et en testant la solution directement sur le terrain à Madagascar.",
     "TESTIMONIALS": "Témoignages",
     "CLIENT_SAY": "CE QUE NOS CLIENTS DISENT DE NOUS",
     "WE_ARE_HERE": "Nous sommes ici !",
     "WASDI_SARL": "WASDI Sarl",
     "ADDRESS": "Rte. de Volmerange 100,<br>Dudelange, Luxembourg",
-    "RED_CROSS_CONTRIB_REST": "a contribué en définissant des cas d'utilisation réels et en testant la solution directement sur le terrain à Madagascar."
+    "RED_CROSS_CONTRIB_REST": "a contribué en définissant des cas d'utilisation réels et en testant la solution directement sur le terrain à Madagascar.",
+    "SEE_IMPACT_STORIES": "Voir les histoires d'impact"
   },
   "CONTACT": {
     "TITLE": "Contactez l'équipe RISE",
@@ -837,10 +838,12 @@
     "NAVIGATION": "NAVIGATION",
     "GITHUB": "Dépôt GitHub",
     "DOCS_LINK": "Documentation",
-    "SUPPORT": "Support",
+    "SUPPORT": "Assistance",
     "PRIVACY_POLICY": "Politique de Confidentialité",
     "FAQ": "F.A.Q.",
-    "BUILT_WITH": "Conçu avec ❤️ pour soutenir l'action humanitaire — © 2025 RISE — Propulsé par WASDI — Tous droits réservés."
+    "BUILT_WITH": "Conçu avec ❤️ pour soutenir l'action humanitaire — © 2025 RISE — Propulsé par WASDI — Tous droits réservés.",
+    "RISE_ACRONYM": "RISE. Remote Imaging Support for Emergencies",
+    "ADDRESS": "100, Rte. de Volmerange · L-3593<br>Dudelange · Luxembourg"
   },
   "SUBSCRIPTION_SUCCESS": {
     "TITLE": "Abonnement activé avec succès !",
@@ -862,6 +865,13 @@
     "AREA": "Zone",
     "AREAS": "Zones",
     "MONTH": "Mois",
-    "MONTHS": "Mois"
+    "MONTHS": "Mois",
+    "TOTAL": "Total",
+    "DRAG_HERE": "Faites glisser ici ou",
+    "BROWSE": "parcourir",
+    "ADD_NEW_ROW": "Ajouter une nouvelle ligne",
+    "SELECT_ALL": "Tout sélectionner",
+    "UNSELECT_ALL": "Tout désélectionner",
+    "SEARCH": "Rechercher..."
   }
 }

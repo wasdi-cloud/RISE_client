@@ -586,7 +586,8 @@
     "WE_ARE_HERE": "¡Estamos aquí!",
     "WASDI_SARL": "WASDI Sarl",
     "ADDRESS": "Rte. de Volmerange 100,<br>Dudelange, Luxemburgo",
-    "RED_CROSS_CONTRIB_REST": "contribuyó definiendo casos de uso del mundo real y probando la solución directamente en el campo en Madagascar."
+    "RED_CROSS_CONTRIB_REST": "contribuyó definiendo casos de uso del mundo real y probando la solución directamente en el campo en Madagascar.",
+    "SEE_IMPACT_STORIES": "Ver las historias de impacto"
   },
   "CONTACT": {
     "TITLE": "Póngase en contacto con el equipo de RISE",
@@ -597,7 +598,7 @@
     "COMPANY": "Empresa",
     "ROLE": "Rol / Título del puesto",
     "HOW_HEARD": "¿Cómo se enteró de RISE?",
-    "SELECT_SUBJECT": "Seleccione Asunto",
+    "SELECT_SUBJECT": "Seleccione un asunto",
     "MESSAGE": "Mensaje",
     "SEND": "ENVIAR",
     "CONTACT_INFO": "Información de contacto",
@@ -883,6 +884,13 @@
     "AREA": "Área",
     "AREAS": "Áreas",
     "MONTH": "Mes",
-    "MONTHS": "Meses"
+    "MONTHS": "Meses",
+    "TOTAL": "Total",
+    "DRAG_HERE": "Arrastra aquí o",
+    "BROWSE": "explorar",
+    "ADD_NEW_ROW": "Agregar nueva fila",
+    "SELECT_ALL": "Seleccionar todo",
+    "UNSELECT_ALL": "Deseleccionar todo",
+    "SEARCH": "Buscar..."
  }
 }
