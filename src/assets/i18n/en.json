@@ -27,7 +27,8 @@
     "TYPE": "Type",
     "SITUATION": "Situation",
     "UPLOAD_IMAGES": "Upload image",
-    "UPLOAD_DOCUMENTS": "Upload Document"
+    "UPLOAD_DOCUMENTS": "Upload Document",
+    "PUBLIC_EVENT": "Public Event"
   },
   "EVENT": {
     "NAME": "Name",
@@ -726,9 +727,9 @@
     "IMPACT_HERO_HIGHLIGHT": "Here’s how it’s making an impact today",
     "LUX_RED_CROSS_TITLE": "RISE & Luxembourg Red Cross:",
     "LUX_RED_CROSS_SUBTITLE": "TRANSFORMING DISASTER RESPONSE IN MADAGASCAR",
-    "CASE_STUDY_P1": "From 2023 to 2025, WASDI participated in the Humanitarian Innovation Accelerator Programme, backed by the WFP Innovation Accelerator, the Government of the Grand-Duchy of Luxembourg, and the Austrian Development Cooperation (ADC). The program supports innovative solutions to address the urgent challenges faced by vulnerable populations and humanitarian actors.",
+    "CASE_STUDY_P1": "From 2023 to 2025, WASDI participated in the Humanitarian Innovation Accelerator programme, supported by the WFP Innovation Accelerator, the Government of the Grand Duchy of Luxembourg, and the Austrian Development Cooperation (ADC). The programme supports innovative solutions to address urgent challenges facing vulnerable populations and humanitarian actors.",
     "CASE_STUDY_P2": "In collaboration with the Luxembourg Institute of Science and Technology (LIST) and the Luxembourg Red Cross (AICRL), WASDI developed RISE and conducted a field‑based simulation exercise to explore its potential use in disaster response contexts. Partnering with the Malagasy Red Cross Society (CRM), the team chose <strong>Madagascar</strong>, a country frequently hit by cyclones, floods, and droughts, as the testing ground.",
-    "CASE_STUDY_P3": "The project focused on Maroantsetra, a region devastated by Cyclone Cheneso in 2023, to evaluate how RISE could enhance rapid needs assessments compared to traditional methods.",
+    "CASE_STUDY_P3": "The project focused on Maroantsetra, a region affected by Cyclone Cheneso in 2023, to compare how RISE could support rapid needs assessments alongside traditional methods.",
     "CLICK_TO_READ_MORE": "CLICK TO READ MORE",
     "TRUSTED_BY": "Trusted By",
     "INTERESTED_IN_RISE": "Interested in seeing how RISE can support your organization?",
@@ -813,7 +814,7 @@
     "RISE_P1": "RISE turns cutting‑edge scientific research into practical, accessible services. It provides decision‑makers, first responders, and humanitarian actors with actionable satellite‑based insights for environmental monitoring, disaster response, and sustainable development.",
     "RISE_P2": "Developed within the framework of the <a href='https://innovation.wfp.org/' target='_blank' rel='noopener'>Humanitarian Innovation Accelerator (HIIA)</a>, promoted by the <strong>World Food Programme Innovation Accelerator</strong>, RISE automatically transforms satellite observations into clear, actionable hazard maps. It helps responders quickly assess floods, droughts, and other risks, while historical satellite archives make it possible to track how these hazards evolve over time.",
     "LIST_CONTRIB": "The <strong>Luxembourg Institute of Science and Technology</strong> (LIST) enhanced RISE with advanced algorithms for flood detection in bare soil and urban areas, building identification, and evapotranspiration analysis to evaluate drought stress.",
-    "RED_CROSS_CONTRIB": "The International Aid of the Luxembourg Red Cross (AICRL) – Shelter Research Unit (SRU) contributed by defining real-world use cases and testing the solution directly in the field in Madagascar.",
+    "RED_CROSS_CONTRIB": "<strong>The International Aid of the Luxembourg Red Cross (AICRL) – Shelter Research Unit (SRU)</strong> contributed by defining real-world use cases and testing the solution directly in the field in Madagascar.",
     "TESTIMONIALS": "Testimonials",
     "CLIENT_SAY": "WHAT OUR CLIENTS SAY ABOUT US",
     "WE_ARE_HERE": "We are here!",
@@ -866,7 +867,9 @@
     "SUPPORT": "Support",
     "PRIVACY_POLICY": "Privacy Policy",
     "FAQ": "F.A.Q.",
-    "BUILT_WITH": "Built with ❤️ to support humanitarian action — © 2025 RISE — Powered by WASDI — All rights reserved."
+    "BUILT_WITH": "Built with ❤️ to support humanitarian action — © 2025 RISE — Powered by WASDI — All rights reserved.",
+    "RISE_ACRONYM": "RISE. Remote Imaging Support for Emergencies",
+    "ADDRESS": "100, Rte. de Volmerange · L-3593<br>Dudelange · Luxembourg"
   },
   "SUBSCRIPTION_SUCCESS": {
     "TITLE": "Subscription Activated Successfully!",
@@ -889,6 +892,13 @@
     "AREA": "Area",
     "AREAS": "Areas",
     "MONTH": "Month",
-    "MONTHS": "Months"
+    "MONTHS": "Months",
+    "TOTAL": "Total",
+    "DRAG_HERE": "Drag here or",
+    "BROWSE": "browse",
+    "ADD_NEW_ROW": "Add New Row",
+    "SELECT_ALL": "Select All",
+    "UNSELECT_ALL": "Deselect All",
+    "SEARCH": "Search..."
   }
 }

@@ -53,7 +53,8 @@
     "TYPE": "Tipo",
     "SITUATION": "Situación",
     "UPLOAD_IMAGES": "Subir Imágenes",
-    "UPLOAD_DOCUMENTS": "Subir Documentos"
+    "UPLOAD_DOCUMENTS": "Subir Documentos",
+    "PUBLIC_EVENT": "Evento público"
   },
   "EVENT": {
     "NAME": "Nombre",
@@ -566,7 +567,9 @@
     "SUPPORT": "Apoyo",
     "PRIVACY_POLICY": "Política de Privacidad",
     "FAQ": "F.A.Q.",
-    "BUILT_WITH": "Creado con ❤️ para apoyar la acción humanitaria — © 2025 RISE — Con tecnología de WASDI — Todos los derechos reservados."
+    "BUILT_WITH": "Creado con ❤️ para apoyar la acción humanitaria — © 2025 RISE — Con tecnología de WASDI — Todos los derechos reservados.",
+    "RISE_ACRONYM": "RISE. Remote Imaging Support for Emergencies",
+    "ADDRESS": "100, Rte. de Volmerange · L-3593<br>Dudelange · Luxemburgo"
   },
   "ABOUT": {
     "TITLE": "Sobre Nosotros",
@@ -577,7 +580,7 @@
     "RISE_P1": "RISE existe para transformar la investigación científica de vanguardia en servicios operativos accesibles, empoderando a los tomadores de decisiones y a los servicios de emergencia con datos satelitales procesables para el monitoreo ambiental, la ayuda humanitaria y el desarrollo sostenible.",
     "RISE_P2": "RISE ha sido desarrollado por WASDI Sarl en el contexto del programa Humanitarian Innovation Accelerator, promovido por la World Food Programme Innovation Accelerator <a href=\"https://innovation.wfp.org/\" target=\"_blank\" rel=\"noopener\">(HIIA)</a>. RISE procesa automáticamente las observaciones satelitales en mapas de peligro claros, lo que ayuda a los servicios de emergencia a evaluar rápidamente inundaciones, sequías y otros riesgos, al tiempo que utiliza archivos históricos para rastrear los impactos a lo largo del tiempo.",
     "LIST_CONTRIB": "LIST contribuyó a RISE desarrollando los algoritmos para la detección de inundaciones en suelo desnudo y en áreas urbanas, para la identificación de edificios y para el análisis de evapotranspiración para evaluar el estrés por sequía.",
-    "RED_CROSS_CONTRIB": "The International Aid of the Luxembourg Red Cross (AICRL) – Shelter Research Unit (SRU) contribuyó definiendo casos de uso del mundo real y probando la solución directamente en el campo en Madagascar.",
+    "RED_CROSS_CONTRIB": "<strong>The International Aid of the Luxembourg Red Cross (AICRL) – Shelter Research Unit (SRU)</strong> contribuyó definiendo casos de uso del mundo real y probando la solución directamente en el campo en Madagascar.",
     "TESTIMONIALS": "Testimonios",
     "CLIENT_SAY": "ESTO ES LO QUE DICEN NUESTROS CLIENTES SOBRE NOSOTROS",
     "WE_ARE_HERE": "¡Estamos aquí!",

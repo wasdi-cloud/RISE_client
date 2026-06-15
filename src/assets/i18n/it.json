@@ -27,7 +27,8 @@
 		"TYPE": "Tipo",
 		"SITUATION": "Situazione",
 		"UPLOAD_IMAGES": "Carica immagine",
-		"UPLOAD_DOCUMENTS": "Carica documento"
+		"UPLOAD_DOCUMENTS": "Carica documento",
+		"PUBLIC_EVENT": "Evento pubblico"
 	},
 	"EVENT": {
 		"NAME": "Nome",
@@ -811,26 +812,6 @@
     "ALERT_FILL_FIELDS": "Compila sia l'email che il messaggio.",
     "CUSTOM_SUBJECT": "Richiesta Piano Personalizzato RISE"
   },
-  "FOOTER": {
-    "CONTACT": "CONTATTI",
-    "DOCUMENTATION": "DOCUMENTAZIONE",
-    "NAVIGATION": "NAVIGAZIONE",
-    "GITHUB": "Repository GitHub",
-    "DOCS_LINK": "Documentazione",
-    "SUPPORT": "Support",
-    "PRIVACY_POLICY": "Informativa sulla Privacy",
-    "FAQ": "F.A.Q.",
-    "BUILT_WITH": "Creato con ❤️ per supportare l'azione umanitaria — © 2025 RISE — Powered by WASDI — Tutti i diritti riservati."
-  },
-  "NAVBAR": {
-    "HOME": "Home",
-    "PLATFORM": "Piattaforma",
-    "IMPACT_STORIES": "Storie di Impatto",
-    "PRICING": "Piani Tariffari",
-    "ABOUT": "Chi Siamo",
-    "CONTACT": "Contatti",
-    "SIGN_UP_IN": "REGISTRATI / ACCEDI"
-  },
   "ABOUT": {
     "TITLE": "Chi Siamo",
     "HERO_SUBTITLE": "Promuovere la resilienza climatica attraverso l'intuizione scientifica, l'innovazione tecnologica e la collaborazione.",
@@ -840,7 +821,7 @@
     "RISE_P1": "RISE esiste per trasformare la ricerca scientifica all'avanguardia in servizi operativi accessibili, fornendo ai decisori e ai soccorritori dati satellitari azionabili per il monitoraggio ambientale, l'aiuto umanitario e lo sviluppo sostenibile.",
     "RISE_P2": "RISE è stato sviluppato da WASDI Sarl nell'ambito dell'Humanitarian Innovation Action, promosso dal WFP Innovation Accelerator <a href=\"https://innovation.wfp.org/\" target=\"_blank\" rel=\"noopener\">(HIIA)</a>. RISE elabora automaticamente i dati satellitari in mappe di pericolo chiare, aiutando i soccorritori a valutare rapidamente inondazioni, siccità e altri rischi, utilizzando anche archivi storici per tracciare gli impatti nel tempo.",
     "LIST_CONTRIB": "LIST ha contribuito a RISE sviluppando gli algoritmi per il Rilevamento delle Inondazioni in suolo nudo e in aree urbane, per rilevare gli edifici e per valutare l'evapotraspirazione per valutare lo stress da siccità.",
-    "RED_CROSS_CONTRIB": "The International Aid of the Luxembourg Red Cross (AICRL) – Shelter Research Unit (SRU) ha contribuito definendo casi d'uso reali e testando la soluzione direttamente sul campo in Madagascar.",
+    "RED_CROSS_CONTRIB": "<strong>The International Aid of the Luxembourg Red Cross (AICRL) – Shelter Research Unit (SRU)</strong> ha contribuito definendo casi d'uso reali e testando la soluzione direttamente sul campo in Madagascar.",
     "TESTIMONIALS": "Testimonianze",
     "CLIENT_SAY": "QUESTO È QUEL CHE DICONO DI NOI I NOSTRI CLIENTI",
     "WE_ARE_HERE": "Siamo qui!",
@@ -889,7 +870,9 @@
     "SUPPORT": "Supporto",
     "PRIVACY_POLICY": "Informativa sulla Privacy",
     "FAQ": "F.A.Q.",
-    "BUILT_WITH": "Creato con ❤️ per supportare l'azione umanitaria — © 2025 RISE — Powered by WASDI — Tutti i diritti riservati."
+    "BUILT_WITH": "Creato con ❤️ per supportare l'azione umanitaria — © 2025 RISE — Powered by WASDI — Tutti i diritti riservati.",
+    "RISE_ACRONYM": "RISE. Remote Imaging Support for Emergencies",
+    "ADDRESS": "100, Rte. de Volmerange · L-3593<br>Dudelange · Lussemburgo"
   },
   "SUBSCRIPTION_SUCCESS": {
     "TITLE": "Abbonamento attivato con successo!",
@@ -912,6 +895,13 @@
     "AREA": "Area",
     "AREAS": "Aree",
     "MONTH": "Mese",
-    "MONTHS": "Mesi"
+    "MONTHS": "Mesi",
+    "TOTAL": "Totale",
+    "DRAG_HERE": "Trascina qui o",
+    "BROWSE": "sfoglia",
+    "ADD_NEW_ROW": "Aggiungi nuova riga",
+    "SELECT_ALL": "Seleziona Tutto",
+    "UNSELECT_ALL": "Deseleziona Tutto",
+    "SEARCH": "Cerca..."
   }
 }
