@@ -35,7 +35,7 @@
   font-weight: 700;
 }
 
-.text-yellow {
+.text-yellow, ::ng-deep .text-yellow {
   color: #EFB840;
 }
 

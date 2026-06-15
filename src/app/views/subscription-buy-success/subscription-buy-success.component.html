@@ -8,16 +8,16 @@
       <div
         class="slider-content flex-fill d-flex flex-column justify-content-between gap-4 my-2"
       >
-        <h2 class="space-mono-regular">Subscription Activated Successfully!</h2>
+        <h2 class="space-mono-regular">{{ 'SUBSCRIPTION_SUCCESS.TITLE' | translate }}</h2>
         <div class="inputs-container d-flex flex-column flex-fill gap-2">
           <p>
-            Thank you for subscribing to RISE! Your subscription has been successfully activated, and you're all set to enjoy premium features.
+            {{ 'SUBSCRIPTION_SUCCESS.DESC_1' | translate }}
           </p>
           <p>
-            Click below to go to your dashboard and start using your new subscription.
+            {{ 'SUBSCRIPTION_SUCCESS.DESC_2' | translate }}
           </p>
           <rise-button
-            [m_sLabel]="'go to Dashboard'"
+            [m_sLabel]="'SUBSCRIPTION_SUCCESS.GO_TO_DASHBOARD'"
             [m_sRole]="'primary'"
             [m_bDisabled]="!m_bCanProceed"
             (click)="m_bCanProceed?navigateToDashboard():''"

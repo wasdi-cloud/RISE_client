@@ -131,8 +131,8 @@
   text-align: justify;
 }
 
-.mission-inner a {
-  color: #274d59;
+::ng-deep .mission-inner a {
+  color: #4a6672;
   font-weight: 600;
 }
 

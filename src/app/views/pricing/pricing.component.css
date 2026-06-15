@@ -90,6 +90,10 @@
   font-weight: 800; /* Extra bold */
 }
 
+::ng-deep .note-highlight {
+  color: #efb840;
+}
+
 /* BILLING TOGGLE */
 .billing-toggle {
   display: inline-flex;

@@ -126,13 +126,13 @@
       </div>
       <div class="d-flex flex-column gap-1">
         <rise-button
-          [m_sLabel]="'Next'"
+          [m_sLabel]="'REGISTER.NEXT'"
           [m_sRole]="'primary'"
           [m_bDisabled]="!checkPersonalInfo()"
           (click)="checkPersonalInfo() ? setPage('organization') : ''"
         ></rise-button>
         <rise-button
-          [m_sLabel]="'Previous'"
+          [m_sLabel]="'REGISTER.PREV_BUTTON'"
           [m_sRole]="'regular'"
           (click)="setPage('username')"
         ></rise-button>

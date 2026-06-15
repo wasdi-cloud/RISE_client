@@ -8,7 +8,7 @@
       <div
         class="slider-content flex-fill d-flex flex-column justify-content-between gap-4 my-2"
       >
-        <h2 class="space-mono-regular">Confirm registration</h2>
+        <h2 class="space-mono-regular">{{ 'CONFIRM_ADMIN_INV.TITLE' | translate }}</h2>
         <div class="inputs-container d-flex flex-column flex-fill gap-2">
           <rise-text-input
             [m_sLocalizationKey]="'REGISTER.USER_ID'"
@@ -94,7 +94,7 @@
             ></div>
           </div>
           <rise-button
-            [m_sLabel]="'Submit'"
+            [m_sLabel]="'OTP_DIALOG.SUBMIT'"
             [m_sRole]="'primary'"
             [m_bDisabled]="!verifyInputs()"
             (click)="verifyInputs()?register():''"

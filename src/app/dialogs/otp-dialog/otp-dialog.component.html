@@ -1,6 +1,6 @@
 <div class="otp-dialog d-flex flex-column gap-2">
   <div class="d-flex flex-row gap-2 justify-content-between">
-    <h2 class="space-mono-regular">Check your email</h2>
+    <h2 class="space-mono-regular">{{ 'LOGIN.OTP_TITLE' | translate }}</h2>
     <span
       class="material-symbols-outlined"
       (click)="onDismiss()"
@@ -9,13 +9,12 @@
     </span>
   </div>
   <p>
-    We have sent a one time password to the address associated with the account
-    <strong>{{ m_sUserId }}</strong
-    >.
+    {{ 'LOGIN.OTP_DESCRIPTION' | translate }}
+    <strong>{{ m_sUserId }}</strong>.
   </p>
   <div class="inputs-container d-flex flex-column flex-fill gap-3">
     <rise-text-input
-      [m_sLocalizationKey]="'Confirmation Code'"
+      [m_sLocalizationKey]="'LOGIN.OTP_CODE'"
       [m_sName]="'one time password'"
       [(m_sInputText)]="m_sOneTimePW"
       [m_bIsValidatorInput]="true"
@@ -23,13 +22,13 @@
   </div>
   <div class="d-flex flex-column gap-2">
     <rise-button
-      [m_sLabel]="'Next'"
+      [m_sLabel]="'LOGIN.NEXT'"
       [m_sRole]="'primary'"
       (click)="submitOTP()"
     ></rise-button>
     <p class="retry-text">
-      Didn't receive a one time password?
-      <a>Try executing the action again</a>.
+      {{ 'LOGIN.OTP_VERIFICATION' | translate }}
+      <a>{{ 'LOGIN.OTP_LOGIN_AGAIN' | translate }}</a>.
     </p>
   </div>
 </div>
