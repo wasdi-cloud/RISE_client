@@ -8,7 +8,7 @@ import {RiseToolbarComponent} from "../../components/rise-toolbar/rise-toolbar.c
 import {UserService} from "../../services/api/user.service";
 import {ConfirmForgetPasswordViewModel} from "../../models/ConfirmForgetPasswordViewModel";
 import {Subject, takeUntil} from "rxjs";
-import {TranslateService} from "@ngx-translate/core";
+import {TranslateService, TranslateModule} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-change-forget-password',
@@ -16,7 +16,8 @@ import {TranslateService} from "@ngx-translate/core";
   imports: [
     RiseTextInputComponent,
     RiseButtonComponent,
-    RiseToolbarComponent
+    RiseToolbarComponent,
+    TranslateModule
   ],
   templateUrl: './change-forget-password.component.html',
   styleUrl: './change-forget-password.component.css'

@@ -7,12 +7,15 @@ import FadeoutUtils from "../../shared/utilities/FadeoutUtils";
 import {SubscriptionService} from "../../services/api/subscription.service";
 import {Subject, takeUntil} from "rxjs";
 
+import {TranslateModule} from "@ngx-translate/core";
+
 @Component({
   selector: 'app-subscription-buy-success',
   standalone: true,
   imports: [
     RiseButtonComponent,
-    RiseToolbarComponent
+    RiseToolbarComponent,
+    TranslateModule
   ],
   templateUrl: './subscription-buy-success.component.html',
   styleUrl: './subscription-buy-success.component.css'

@@ -9,12 +9,15 @@ import {ConstantsService} from "../../services/constants.service";
 import {ConfirmEmailChangeViewModel} from "../../models/ConfirmEmailChangeViewModel";
 import {Subject, takeUntil} from "rxjs";
 
+import {TranslateModule} from "@ngx-translate/core";
+
 @Component({
   selector: 'app-confirm-change-email',
   standalone: true,
   imports: [
     RiseButtonComponent,
-    RiseToolbarComponent
+    RiseToolbarComponent,
+    TranslateModule
   ],
   templateUrl: './confirm-change-email.component.html',
   styleUrl: './confirm-change-email.component.css'
