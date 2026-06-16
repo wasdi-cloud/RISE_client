@@ -52,7 +52,7 @@
         <div class="submit-feedback" *ngIf="m_sSubmitError">
           {{ m_sSubmitError }}
         </div>
-		<button class="btn-send" (click)="sendMessage()">{{ 'CONTACT.SEND' | translate }}</button>
+		<button class="btn-send" (click)="sendMessage()">{{ 'CONTACT.SEND' | translate }}
           {{ m_bIsSubmitting ? 'SENDING...' : 'SEND' }}
         </button>
       </div>
