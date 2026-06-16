@@ -24,6 +24,9 @@ export class ContactComponent implements OnInit, OnDestroy {
   m_sHowHeard = '';
   m_sSubject = '';
   m_sMessage = '';
+  m_bIsSubmitting = false;
+  m_bSubmitSuccess = false;
+  m_sSubmitError = '';
 
   m_aoHowHeardOptions: string[] = [];
   m_aoSubjectOptions: string[] = [];
@@ -62,10 +65,14 @@ export class ContactComponent implements OnInit, OnDestroy {
   }
 
   sendMessage(): void {
+    this.m_sSubmitError = '';
+
     if (!this.m_sFirstName || !this.m_sLastName || !this.m_sEmail || !this.m_sMessage) {
       alert(this.m_oTranslateService.instant('CONTACT.ALERT_FILL_MANDATORY') || 'Please fill in all mandatory fields (First Name, Last Name, Email, and Message).');
       return;
     }
+
+    this.m_bIsSubmitting = true;
 
     const oContactMessage: ContactMessageViewModel = {
       name: this.m_sFirstName,
@@ -78,15 +85,32 @@ export class ContactComponent implements OnInit, OnDestroy {
       message: this.m_sMessage,
     };
 
-    this.m_oHelloService.contact(oContactMessage).subscribe(
-      {
-        next: () => {
+    this.m_oHelloService.contact(oContactMessage).subscribe({
+      next: () => {
           alert(this.m_oTranslateService.instant('CONTACT.ALERT_SENT_SUCCESS') || 'Message sent successfully!');
-        },
-        error: () => {
-          alert(this.m_oTranslateService.instant('CONTACT.ALERT_SENT_FAIL') || 'Failed to send message. Please try again later.');
-        },
-      }
-    );
+        this.m_bSubmitSuccess = true;
+        this.m_bIsSubmitting = false;
+      },
+      error: () => {
+        this.m_bIsSubmitting = false;
+         alert(this.m_oTranslateService.instant('CONTACT.ALERT_SENT_FAIL') || 'Failed to send message. Please try again later.');
+      },
+    });
+  }
+
+  sendAnotherMessage(): void {
+    this.m_bSubmitSuccess = false;
+    this.m_sSubmitError = '';
+  }
+
+  private resetForm(): void {
+    this.m_sFirstName = '';
+    this.m_sLastName = '';
+    this.m_sEmail = '';
+    this.m_sCompany = '';
+    this.m_sRole = '';
+    this.m_sHowHeard = '';
+    this.m_sSubject = '';
+    this.m_sMessage = '';
   }
 }

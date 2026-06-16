@@ -12,5 +12,6 @@ export class SubscriptionListViewModel {
 
   expireDate: number;
 
+  areaCount:number;
 
 }

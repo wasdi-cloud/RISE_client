@@ -64,8 +64,50 @@
         (m_oSelectionChange)="onPluginSelectionChange($event)"
         [m_aoSelectedValues]="m_asPluginsSelected"
         [m_bEnableSelectAll]="true"
+        [m_bShowChips]="true"
       ></rise-checkbox>
       <div class="invalid-feedback" *ngIf="!m_bPluginsAreValid">{{ m_sPluginsError }}</div>
+    </div>
+
+    <div *ngIf="m_bIsNewAreaCreation && !m_bShowFastCheckout && m_aoAvailableSubscriptions.length > 0" class="d-flex flex-column gap-2 mt-2">
+      <rise-dropdown
+        *ngIf="m_aoAvailableSubscriptions.length > 1"
+        [m_bHasTitle]="true"
+        [m_sLabel]="'SUBSCRIPTIONS.SELECT_TO_USE'"
+        [m_sPlaceholder]="'SUBSCRIPTIONS.SELECT_TO_USE'"
+        [m_aoDropdownItems]="m_aoAvailableSubscriptions"
+        [m_aoSelectedItems]="m_oSelectedAvailableSubscription"
+        (m_oSelectionChange)="onAvailableSubscriptionChange($event)"
+      ></rise-dropdown>
+
+      <div *ngIf="m_oSelectedAvailableSubscription" class="available-subscription-card">
+        <div class="subscription-recap-title">{{ 'SUBSCRIPTIONS.RECAP' | translate }}</div>
+
+        <div class="subscription-recap-row">
+          <span>{{ 'SUBSCRIPTIONS.NAME' | translate }}</span>
+          <strong>{{ m_oSelectedAvailableSubscription.name || '-' }}</strong>
+        </div>
+        <div class="subscription-recap-row">
+          <span>{{ 'SUBSCRIPTIONS.PAYMENT_TYPE' | translate }}</span>
+          <strong>{{ getSelectedSubscriptionDurationLabel() }}</strong>
+        </div>
+        <div class="subscription-recap-row">
+          <span>{{ 'SUBSCRIPTIONS.EXPIRY' | translate }}</span>
+          <strong>{{ m_oSelectedAvailableSubscription.expireDate | date : 'yyyy-MM-dd' }}</strong>
+        </div>
+        <div class="subscription-recap-row">
+          <span>{{ 'SUBSCRIPTIONS.TYPE' | translate }}</span>
+          <strong>{{ m_oSelectedAvailableSubscription.areaCount }} {{ 'COMMON.AREAS' | translate }}</strong>
+        </div>
+        <div class="subscription-recap-row">
+          <span>{{ 'SUBSCRIPTIONS.USED_AREAS' | translate }}</span>
+          <strong>{{ m_oSelectedAvailableSubscription.areaUsed }}</strong>
+        </div>
+        <div class="subscription-recap-row">
+          <span>{{ 'SUBSCRIPTIONS.FREE_AREAS' | translate }}</span>
+          <strong>{{ getSelectedSubscriptionFreeAreas() }}</strong>
+        </div>
+      </div>
     </div>
 
     <!-- Plugins (readonly for edit mode) -->
@@ -74,12 +116,13 @@
       [m_aoOptions]="m_aoPlugins"
       [m_aoSelectedValues]="m_oArea.plugins"
       [m_bReadonly]="true"
+      [m_bShowChips]="true"
     >
     </rise-checkbox>
 
     <!-- Archive Support Toggle (only for new creation if supported) -->
     <div *ngIf="m_bIsNewAreaCreation && m_bIsSupportArchiveArea" class="align-items-md-start d-flex">
-      <span class="toggle-label">{{"CREATE_NEW_AREA_OF_OPERATION.SUPPORT_ARCHIVE" | translate }}</span>
+      <span class="toggle-label">{{"CREATE_NEW_AREA_OF_OPERATION.ENABLE_ARCHIVE" | translate }}</span>
       <mat-slide-toggle
         labelPosition="before"
         (change)="onSwitchArchiveButton($event)"
@@ -89,6 +132,48 @@
     </div>
 
     <!-- Action Buttons -->
+    <div *ngIf="m_bShowFastCheckout" class="fast-checkout-card mt-2">
+
+      <div class="fast-checkout-details mt-2">
+        <div class="fast-checkout-row">
+          <span>{{ "SUBSCRIPTIONS.TYPE" | translate }}</span>
+          <strong>1 {{ "COMMON.AREA" | translate }}</strong>
+        </div>
+        <div class="fast-checkout-row">
+          <span>{{ "SUBSCRIPTIONS.PAYMENT_TYPE" | translate }}</span>
+          <strong>1 {{ "COMMON.MONTH" | translate }}</strong>
+        </div>
+      </div>
+
+      <div class="fast-checkout-price mt-2">
+        <span>{{ "SUBSCRIPTIONS.PRICE" | translate }}</span>
+        <strong>
+          <ng-container *ngIf="!m_bFastCheckoutLoading; else loadingPriceTpl">
+            {{ m_iFastCheckoutPrice | currency : "EUR" }}
+          </ng-container>
+          <ng-template #loadingPriceTpl>...</ng-template>
+        </strong>
+      </div>
+
+      <div *ngIf="m_sFastCheckoutError" class="invalid-feedback d-block mt-2">
+        {{ m_sFastCheckoutError }}
+      </div>
+
+      <div class="d-flex justify-content-end gap-2 mt-2">
+        <rise-button
+          [m_sRole]="'muted'"
+          [m_sLabel]="'SUBSCRIPTIONS.ADVANCED_BUY_BUTTON'"
+          (click)="openFullBuyOptions()"
+        ></rise-button>
+        <rise-button
+          [m_sRole]="'action'"
+          [m_bDisabled]="m_bFastCheckoutRunning || m_bFastCheckoutLoading || m_iFastCheckoutPrice <= 0"
+          [m_sLabel]="'SUBSCRIPTIONS.PURCHASE_CREDIT'"
+          (click)="executeFastCheckout()"
+        ></rise-button>
+      </div>
+    </div>
+
     <div class="d-flex justify-content-between mt-2">
       <div class="d-flex gap-2">
         <rise-button
@@ -102,8 +187,10 @@
         ></rise-button>
       </div>
       <rise-button
+        *ngIf="!m_bShowFastCheckout"
         [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.SAVE'"
         (click)="saveAreaOfOperation()"
+        [m_bDisabled]="m_bSubscriptionCheckLoading"
         [m_sRole]="'action'"
       ></rise-button>
     </div>

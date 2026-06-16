@@ -32,3 +32,62 @@ h3 {
   bottom: 1rem;
   right: 8rem;
 }
+
+.fast-checkout-card {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 10px;
+  background: rgba(9, 35, 52, 0.35);
+  padding: 12px;
+}
+
+.fast-checkout-title {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.fast-checkout-subtitle {
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.fast-checkout-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fast-checkout-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.fast-checkout-price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.available-subscription-card {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 10px;
+  background: rgba(9, 35, 52, 0.25);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.subscription-recap-title {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.subscription-recap-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+}

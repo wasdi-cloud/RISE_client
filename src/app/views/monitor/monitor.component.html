@@ -17,9 +17,19 @@
         height="35%"
         (click)="navigateRoute('dashboard')"
       />
-      <div class="area-name-text">
+      <div class="area-name-text flex-fill">
         {{ m_sAreaName }}
       </div>
+      <a
+        class="area-help-link d-inline-flex align-items-center justify-content-center"
+        href="https://rise-docs.readthedocs.io/en/latest/"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Open help documentation"
+        aria-label="Open help documentation"
+      >
+        <span class="material-symbols-outlined">help</span>
+      </a>
     </div>
       <rise-text-input
         [m_bHasIcon]="true"

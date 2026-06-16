@@ -41,6 +41,7 @@
               (m_oSelectionChange)="onSelectionChange($event)"
               [m_aoSelectedValues]="this.m_asPluginsSelected"
               [m_bEnableSelectAll]="true"
+              [m_bShowChips]="true"
             >
             </rise-checkbox>
             <div class="invalid-feedback" *ngIf="!m_bPluginsAreValid"></div>
@@ -70,39 +71,3 @@
     </div>
   </div>
 </div>
-<!-- <div class="d-flex flex-row gap-3 p-2">
-
-  <div class="d-flex flex-column flex-fill gap-5">
-
-
-
-    <div class="mb-3">
-      <rise-crud-table
-        [m_sButtonLabel]="'CREATE_NEW_AREA_OF_OPERATION.ADD_FIELD_OPERATOR'"
-        [m_asDisplayedColumns]="m_asUsersColumns"
-        [m_aoDataSource]="m_aoUserData"
-        (m_oDelete)="onRowDelete($event)"
-        (m_oAdd)="onRowAdd()"
-        (m_oTableData)="handleTableData($event)"
-      >
-      </rise-crud-table>
-    </div>
-  </div>
-
-
-  <div class="col-8">
-
-
-    <div class="position-absolute" style="bottom: 10px; right: 10px">
-      <rise-button
-        [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.SAVE'"
-        (click)="SaveAreaOfOperation()"
-        class="me-2"
-      ></rise-button>
-      <rise-button
-        [m_sLabel]="'CREATE_NEW_AREA_OF_OPERATION.CANCEL'"
-        (click)="cancelCreatingAreaOfOperation()"
-      ></rise-button>
-    </div>
-  </div>
-</div> -->

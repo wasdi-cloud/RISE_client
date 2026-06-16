@@ -5,12 +5,11 @@ import { SubscriptionViewModel } from '../../../../models/SubscriptionViewModel'
 import { RiseButtonComponent } from '../../../../components/rise-button/rise-button.component';
 import { RiseTextInputComponent } from '../../../../components/rise-text-input/rise-text-input.component';
 import { RiseTextareaInputComponent } from '../../../../components/rise-textarea-input/rise-textarea-input.component';
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SubscriptionTypeViewModel } from '../../../../models/SubscriptionTypeViewModel';
 import { NotificationsDialogsService } from '../../../../services/notifications-dialogs.service';
 import FadeoutUtils from '../../../../shared/utilities/FadeoutUtils';
-import { RiseDateInputComponent } from '../../../../components/rise-date-input/rise-date-input.component';
 import {Subject, takeUntil} from "rxjs";
 
 @Component({
@@ -18,22 +17,29 @@ import {Subject, takeUntil} from "rxjs";
   standalone: true,
   imports: [
     RiseButtonComponent,
-    RiseDateInputComponent,
     RiseTextInputComponent,
     RiseTextareaInputComponent,
     CommonModule,
-    CurrencyPipe,
     TranslateModule,
   ],
   templateUrl: './subscription-editor.component.html',
   styleUrl: './subscription-editor.component.css',
 })
 export class SubscriptionEditorComponent implements OnInit,OnDestroy {
-  m_bIsEditing: boolean = false;
   m_sSubscriptionHeader: string = '';
   m_aoSubTypes: Array<SubscriptionTypeViewModel> = [];
-  m_sPrice: string = '';
   private m_oDestroy$ = new Subject<void>();
+
+  private m_oPluginTranslationMap: {[sPluginId: string]: string} = {
+    rise_flood_plugin: 'PLUGIN_NAMES.PLUGIN_FLOOD',
+    rise_drought_plugin: 'PLUGIN_NAMES.PLUGIN_DROUGHT',
+    rise_building_plugin: 'PLUGIN_NAMES.PLUGIN_BUILDINGS',
+    rise_impact_plugin: 'PLUGIN_NAMES.PLUGIN_IMPACTS',
+    rise_rain_plugin: 'PLUGIN_NAMES.PLUGIN_RAIN',
+    rise_lst_plugin: 'PLUGIN_NAMES.PLUGIN_LST',
+    rise_active_fire_plugin: 'PLUGIN_NAMES.PLUGIN_ACTIVE_FIRE',
+    rise_pollutant_plugin: 'PLUGIN_NAMES.PLUGIN_POLLUTANT',
+  };
 
   m_oSubscription: SubscriptionViewModel = {} as SubscriptionViewModel;
 
@@ -49,7 +55,6 @@ export class SubscriptionEditorComponent implements OnInit,OnDestroy {
     if (this.m_oData) {
       this.m_oSubscription = this.m_oData.subscription;
       this.m_sSubscriptionHeader = this.m_oData.subscription.name;
-      this.m_bIsEditing = this.m_oData.isEditing;
     }
     if (this.m_oSubscription.id) {
       this.getSubscriptionVM(this.m_oSubscription.id);
@@ -81,7 +86,6 @@ export class SubscriptionEditorComponent implements OnInit,OnDestroy {
       next: (oResponse) => {
         if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
           this.m_oSubscription = oResponse;
-          this.m_sPrice = this.m_oSubscription.price.toString();
         }
       },
       error: (oError) => {
@@ -118,5 +122,67 @@ export class SubscriptionEditorComponent implements OnInit,OnDestroy {
 
   onDismiss(bUpdated: boolean) {
     this.m_oDialogRef.close(bUpdated);
+  }
+
+  isExpired(): boolean {
+    if (!this.m_oSubscription?.expireDate) {
+      return false;
+    }
+
+    return Number(this.m_oSubscription.expireDate) < Date.now();
+  }
+
+  getStatusLabelKey(): string {
+    if (this.isExpired()) {
+      return 'SUBSCRIPTIONS.EXPIRED';
+    }
+
+    if (this.m_oSubscription?.buySuccess || this.m_oSubscription?.valid) {
+      return 'SUBSCRIPTIONS.PAID';
+    }
+
+    return 'SUBSCRIPTIONS.NOT_PAID';    
+  }
+
+  getStatusIcon(): string {
+    if (this.isExpired()) {
+      return 'event_busy';
+    }
+
+    if (this.m_oSubscription?.buySuccess || this.m_oSubscription?.valid) {
+      return 'check_circle';
+    }
+
+    return 'pending';
+  }
+
+  getStatusClass(): string {
+    if (this.isExpired()) {
+      return 'payment-badge-expired';
+    }
+
+    if (this.m_oSubscription?.buySuccess || this.m_oSubscription?.valid) {
+      return 'payment-badge-paid';
+    }    
+
+    return 'payment-badge-not-paid';
+  }
+
+  getTranslatedPluginName(sPluginId: string): string {
+    if (!sPluginId) {
+      return '';
+    }
+
+    const sTranslationKey = this.m_oPluginTranslationMap[sPluginId];
+    if (sTranslationKey) {
+      return this.m_oTranslate.instant(sTranslationKey);
+    }
+
+    return sPluginId
+      .replace(/^rise_/, '')
+      .replace(/_plugin$/, '')
+      .split('_')
+      .map((sWord) => sWord.charAt(0).toUpperCase() + sWord.slice(1))
+      .join(' ');
   }
 }

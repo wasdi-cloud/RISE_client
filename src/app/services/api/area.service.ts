@@ -137,4 +137,13 @@ export class AreaService {
   canAreaSupportArchive() {
     return this.m_oHttp.get<any>(this.APIURL + '/area/check-archive-area');
   }
+
+  /**
+   * Get a list of areas of an organization
+   * @param sSessionId
+   * @return
+   */
+  canUserAddArea() {
+    return this.m_oHttp.get<any>(this.APIURL + '/area/canadd');
+  }  
 }

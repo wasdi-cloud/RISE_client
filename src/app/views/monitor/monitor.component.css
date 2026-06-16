@@ -78,6 +78,32 @@ img {
   height: 24px;
 }
 
+.area-help-link {
+  background-color: var(--surface-glass-elevation);
+  border: 1px solid var(--surface-glass-elevation);
+  border-radius: 8px;
+  color: var(--rise-text-dim);
+  text-decoration: none;
+  padding: 0.2rem 0.45rem;
+  position: relative;
+  z-index: 10;
+  flex-shrink: 0;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.area-help-link:hover {
+  color: var(--rise-text-default);
+  transform: translateY(-1px);
+}
+
+.area-help-link .material-symbols-outlined {
+  font-size: 18px;
+}
+
+.area-name-text {
+  min-width: 0;
+}
+
 .layer-list-container {
   background-color: rgba(255, 255, 255, 0.04);
   border-radius: 8px;

@@ -1,6 +1,44 @@
 thead {
   font-weight: 700;
 }
+
+.sortable-header {
+  cursor: pointer;
+  user-select: none;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.sort-icon {
+  font-size: 16px;
+  opacity: 0.85;
+}
+
+.filter-row td {
+  padding-top: 6px;
+  padding-bottom: 8px;
+}
+
+.table-filter-input,
+.table-filter-select {
+  width: 100%;
+  min-width: 90px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--rise-text-bright);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  font-size: 12px;
+  padding: 4px 8px;
+}
+
+.table-filter-select option {
+  color: #111;
+}
+
 td {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding: 8px;
@@ -44,5 +82,16 @@ rise-dropdown {
 .payment-badge-not-paid {
   background-color: #7e444b; /* Red */
   color: #291e1e;
+}
+
+/* Expired */
+.payment-badge-expired {
+  background-color: #5f5f5f;
+  color: #ececec;
+}
+
+.status-icon {
+  font-size: 16px;
+  line-height: 1;
 }
 

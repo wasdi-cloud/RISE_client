@@ -15,37 +15,119 @@
         (click)="openBuyNewSub(true)"
       ></rise-button>
     </div>
-    <div class="dropdown-container right-align">
-      <rise-dropdown
-        [m_sLabel]="'SUBSCRIPTIONS.TYPE'"
-        [m_aoDropdownItems]="m_asSubAvailabilities"
-        (m_oSelectionChange)="filterSubscriptions($event)"
-      ></rise-dropdown>
-    </div>
 
     <div class="body d-flex flex-fill flex-column gap-5 py-4 px-1">
       <table class="w-100">
         <thead>
-         <tr>
-          <td>{{ "SUBSCRIPTION_ARRAY.NAME" | translate }}</td>
-          <td>{{ "SUBSCRIPTION_ARRAY.TYPE" | translate }}</td>
-           <td>{{ "SUBSCRIPTION_ARRAY.CREATION_DATE" | translate }}</td>
-          <td>{{ "SUBSCRIPTION_ARRAY.PURCHASE_DATE" | translate }}</td>
-          <td>{{ "SUBSCRIPTION_ARRAY.EXPIRY_DATE" | translate }}</td>
-           <td>{{ "SUBSCRIPTION_ARRAY.PAID_STATUS" | translate }}</td>
-          <td></td>
-        </tr>
+          <tr>
+            <td class="sortable-header" (click)="toggleSort('name')">
+              <div class="header-content">
+                {{ "SUBSCRIPTION_ARRAY.NAME" | translate }}
+                <span class="material-symbols-outlined sort-icon">{{ getSortIcon('name') }}</span>
+              </div>
+            </td>
+            <td class="sortable-header" (click)="toggleSort('type')">
+              <div class="header-content">
+                {{ "SUBSCRIPTION_ARRAY.TYPE" | translate }}
+                <span class="material-symbols-outlined sort-icon">{{ getSortIcon('type') }}</span>
+              </div>
+            </td>
+            <!--td class="sortable-header" (click)="toggleSort('date')">
+              <div class="header-content">
+                {{ "COMMON.DATE" | translate }}
+                <span class="material-symbols-outlined sort-icon">{{ getSortIcon('date') }}</span>
+              </div>
+            </td-->
+            <td class="sortable-header" (click)="toggleSort('price')">
+              <div class="header-content">
+                {{ "SUBSCRIPTIONS.PRICE" | translate }}
+                <span class="material-symbols-outlined sort-icon">{{ getSortIcon('price') }}</span>
+              </div>
+            </td>
+            <td class="sortable-header" (click)="toggleSort('expireDate')">
+              <div class="header-content">
+                {{ "SUBSCRIPTION_ARRAY.EXPIRY_DATE" | translate }}
+                <span class="material-symbols-outlined sort-icon">{{ getSortIcon('expireDate') }}</span>
+              </div>
+            </td>
+            <td class="sortable-header" (click)="toggleSort('status')">
+              <div class="header-content">
+                {{ "SUBSCRIPTION_ARRAY.PAID_STATUS" | translate }}
+                <span class="material-symbols-outlined sort-icon">{{ getSortIcon('status') }}</span>
+              </div>
+            </td>
+            <td></td>
+          </tr>
+          <tr class="filter-row">
+            <td>
+              <input
+                class="table-filter-input"
+                type="text"
+                [(ngModel)]="m_oColumnFilters.name"
+                (ngModelChange)="onColumnFiltersChange()"
+                placeholder="Filter"
+              />
+            </td>
+            <td>
+              <input
+                class="table-filter-input"
+                type="text"
+                [(ngModel)]="m_oColumnFilters.type"
+                (ngModelChange)="onColumnFiltersChange()"
+                placeholder="Filter"
+              />
+            </td>
+            <!--td>
+              <input
+                class="table-filter-input"
+                type="date"
+                [(ngModel)]="m_oColumnFilters.date"
+                (ngModelChange)="onColumnFiltersChange()"
+              />
+            </td-->
+            <td>
+              <input
+                class="table-filter-input"
+                type="text"
+                [(ngModel)]="m_oColumnFilters.price"
+                (ngModelChange)="onColumnFiltersChange()"
+                placeholder="Filter"
+              />
+            </td>
+            <td>
+              <input
+                class="table-filter-input"
+                type="date"
+                [(ngModel)]="m_oColumnFilters.expireDate"
+                (ngModelChange)="onColumnFiltersChange()"
+              />
+            </td>
+            <td>
+              <select
+                class="table-filter-select"
+                [(ngModel)]="m_oColumnFilters.status"
+                (ngModelChange)="onColumnFiltersChange()"
+              >
+                <option value="all">{{ 'COMMON.ALL' | translate }}</option>
+                <option value="paid">{{ 'SUBSCRIPTIONS.PAID' | translate }}</option>
+                <option value="not_paid">{{ 'SUBSCRIPTIONS.NOT_PAID' | translate }}</option>
+                <option value="expired">{{ 'SUBSCRIPTIONS.EXPIRED' | translate }}</option>
+              </select>
+            </td>
+            <td></td>
+          </tr>
         </thead>
         <tbody>
         <tr *ngFor="let oSubscription of m_aoSubscriptionsToShow">
           <td>{{ oSubscription.name }}</td>
           <td>{{ oSubscription.type }}</td>
-          <td>{{ oSubscription.creationDate | date }}</td>
-          <td>{{ oSubscription.buyDate ? (oSubscription.buyDate | date) : 'N/A' }}</td>
+          <!--td>{{ getDisplayDate(oSubscription) | date }}</td-->
+          <td>{{ getDisplayPrice(oSubscription) }}</td>
           <td>{{ oSubscription.expireDate ? (oSubscription.expireDate | date) : 'N/A' }}</td>
           <td>
-              <span [ngClass]="getPaymentClass(oSubscription.buySuccess)" class="payment-badge">
-                {{ oSubscription.buySuccess ? 'Paid' : 'Not Paid' }}
+              <span [ngClass]="getPaymentClass(oSubscription)" class="payment-badge d-inline-flex align-items-center gap-1">
+                <span class="material-symbols-outlined status-icon">{{ getStatusIcon(oSubscription) }}</span>
+                {{ getStatusLabelKey(oSubscription) | translate }}
               </span>
           </td>
 
@@ -54,24 +136,17 @@
               <span
                 *ngIf="oSubscription.paymentMethod==='credit' && oSubscription.buySuccess"
                 class="material-symbols-outlined edit"
-                [matTooltip]="'Get Invoice'"
+                [matTooltip]="'SUBSCRIPTIONS.GET_INVOICE' | translate"
                 (click)="getInvoice(oSubscription)"
               >
-                paid
+                {{ 'SUBSCRIPTIONS.PAID' | translate }}
               </span>
             <span
                 class="material-symbols-outlined edit"
-                [matTooltip]="'Edit Subscription'"
-                (click)="openEditor(oSubscription,true)"
+                [matTooltip]="'COMMON.INFO' | translate"
+                (click)="openSubscriptionProperties(oSubscription)"
               >
-                edit
-              </span>
-            <span
-              class="material-symbols-outlined edit"
-              [matTooltip]="'Info'"
-              (click)="openEditor(oSubscription,false)"
-            >
-                info
+                tune
               </span>
           </td>
         </tr>

@@ -428,22 +428,29 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
           // Fly to the area bounds
           this.m_oMapService.flyToMonitorBounds(oResponse.bbox);
 
-          // Check if there is at least some maps to show
-          if (!this.m_oAreaOfOperation.firstShortArchivesReady) {
-
-            let sWorkingOnIt: string = this.m_oTranslate.instant(
-              'MONITOR.WORK_IN_PROGRESS'
-            );
-            let sWorkingOnItTitle: string = this.m_oTranslate.instant(
-              'MONITOR.WORK_IN_PROGRESS_TITLE'
-            );
-            //todo make notification type that only ask user for confirmation eg : I understand
-            this.m_oNotificationService.openInfoDialog(
-              sWorkingOnIt,
-              'alert',
-              sWorkingOnItTitle
-            );
-          }
+          this.m_oLayerService.areaLayerCount(sAreaId).pipe(takeUntil(this.m_oDestroy$)).subscribe({
+            next: (oResponse) => {
+              if (oResponse != null) {
+                if (oResponse<=0) {
+                  let sWorkingOnIt: string = this.m_oTranslate.instant(
+                    'MONITOR.WORK_IN_PROGRESS'
+                  );
+                  let sWorkingOnItTitle: string = this.m_oTranslate.instant(
+                    'MONITOR.WORK_IN_PROGRESS_TITLE'
+                  );
+                  //todo make notification type that only ask user for confirmation eg : I understand
+                  this.m_oNotificationService.openInfoDialog(
+                    sWorkingOnIt,
+                    'alert',
+                    sWorkingOnItTitle
+                  );
+                }
+              }
+            },
+            error: (oError) => {
+              console.error('Error fetching layer count for area', oError);
+            }
+          });
         }
       },
       error: (oError) => {

@@ -9,18 +9,25 @@
     />
     <strong>{{ isAllSelected() ? 'Unselect All' : 'Select All' }}</strong>
   </label>
+  <br />
 </div>
-<div class="rise-checkbox-container" *ngFor="let option of m_aoOptions">
-  <label class="d-flex flex-row align-items-center gap-2">
-    <input
-      [readOnly]="m_bReadonly"
-      class="rise-checkbox"
-      type="checkbox"
-      [value]="option.value"
-      [checked]="m_aoSelectedValues?.includes(option.value)"
-      (change)="onCheckboxChange(option.value, $event)"
-    />
-    <!-- Translate or show label directly -->
-    {{ option.label | translate }}
-  </label>
+<div class="rise-checkbox-options" [class.chip-mode]="m_bShowChips">
+  <div class="rise-checkbox-container" *ngFor="let option of m_aoOptions">
+    <label
+      class="rise-option-label"
+      [class.rise-chip-label]="m_bShowChips"
+      [class.selected]="m_bShowChips && m_aoSelectedValues?.includes(option.value)"
+      [class.readonly]="m_bReadonly"
+    >
+      <input
+        [readOnly]="m_bReadonly"
+        class="rise-checkbox"
+        type="checkbox"
+        [value]="option.value"
+        [checked]="m_aoSelectedValues?.includes(option.value)"
+        (change)="onCheckboxChange(option.value, $event)"
+      />
+      <span>{{ option.label | translate }}</span>
+    </label>
+  </div>
 </div>

@@ -8,7 +8,7 @@
       <h1>{{ 'CONTACT.TITLE' | translate }}</h1>
       <p class="contact-form-sub">{{ 'CONTACT.SUBTITLE' | translate }}</p>
 
-      <div class="contact-form-card">
+      <div class="contact-form-card" *ngIf="!m_bSubmitSuccess; else successPanelTpl">
         <div class="form-row">
           <div class="form-group">
             <input type="text" [placeholder]="('CONTACT.FIRST_NAME' | translate) + ' *'" [(ngModel)]="m_sFirstName" />
@@ -49,8 +49,22 @@
           <textarea [placeholder]="('CONTACT.MESSAGE' | translate) + ' *'" [(ngModel)]="m_sMessage" rows="5"></textarea>
         </div>
 
-        <button class="btn-send" (click)="sendMessage()">{{ 'CONTACT.SEND' | translate }}</button>
+        <div class="submit-feedback" *ngIf="m_sSubmitError">
+          {{ m_sSubmitError }}
+        </div>
+		<button class="btn-send" (click)="sendMessage()">{{ 'CONTACT.SEND' | translate }}</button>
+          {{ m_bIsSubmitting ? 'SENDING...' : 'SEND' }}
+        </button>
       </div>
+
+      <ng-template #successPanelTpl>
+        <div class="contact-success-panel">
+          <span class="material-symbols-outlined success-icon">mark_email_read</span>
+          <h3>Your message has been sent to the RISE team.</h3>
+          <p>Thank you for contacting us, we will come back to you as soon as possible.</p>
+          <button class="btn-send btn-send-secondary" (click)="sendAnotherMessage()">SEND ANOTHER MESSAGE</button>
+        </div>
+      </ng-template>
     </div>
   </section>
 

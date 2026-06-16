@@ -57,7 +57,12 @@ export class ManualBoundingBoxComponent implements OnInit{
     // this.showJsonParams()
   }
   submit() {
-    this.m_oDialogRef.close(this.m_oBBox);
+    const oValidatedBBox = this.validateAndNormalizeBBox();
+    if (!oValidatedBBox) {
+      return;
+    }
+
+    this.m_oDialogRef.close(oValidatedBBox);
   }
   onDismiss() {
     this.m_oDialogRef.close(null);
@@ -101,7 +106,7 @@ export class ManualBoundingBoxComponent implements OnInit{
 
   checkJSON() {
     let sErrorMsg = this.m_oTranslate.instant("MANUAL_BBOX.DIALOG_FORMAT_JSON_ERROR");
-    let sErrorHeader = this.m_oTranslate.instant("MANUAL_BBOX.KEY_PHRASES.ERROR");
+    let sErrorHeader = this.m_oTranslate.instant("LAT_LNG_SEARCH.ERROR");
     try {
       let oParsedJson = JSON.parse(this.m_sJSONParam);
       let sPrettyPrint = JSON.stringify(oParsedJson, null, 2);
@@ -111,5 +116,73 @@ export class ManualBoundingBoxComponent implements OnInit{
     } catch {
       this.m_oNotificationDisplayService.openInfoDialog(sErrorMsg, 'danger', sErrorHeader)
     }
+  }
+
+  private validateAndNormalizeBBox(): { north: number; south: number; east: number; west: number } | null {
+    const fNorth = Number.parseFloat(this.m_oBBox.north as any);
+    const fSouth = Number.parseFloat(this.m_oBBox.south as any);
+    const fEast = Number.parseFloat(this.m_oBBox.east as any);
+    const fWest = Number.parseFloat(this.m_oBBox.west as any);
+
+    if (
+      !Number.isFinite(fNorth) ||
+      !Number.isFinite(fSouth) ||
+      !Number.isFinite(fEast) ||
+      !Number.isFinite(fWest)
+    ) {
+      this.m_oNotificationDisplayService.openInfoDialog(
+        this.m_oTranslate.instant('MANUAL_BBOX.VALIDATION_INVALID_NUMERIC'),
+        'danger',
+        this.m_oTranslate.instant('MANUAL_BBOX.VALIDATION_ERROR_TITLE')
+      );
+      return null;
+    }
+
+    if (
+      fNorth < -90 || fNorth > 90 ||
+      fSouth < -90 || fSouth > 90 ||
+      fEast < -180 || fEast > 180 ||
+      fWest < -180 || fWest > 180
+    ) {
+      this.m_oNotificationDisplayService.openInfoDialog(
+        this.m_oTranslate.instant('MANUAL_BBOX.VALIDATION_INVALID_COORD_RANGE'),
+        'danger',
+        this.m_oTranslate.instant('MANUAL_BBOX.VALIDATION_ERROR_TITLE')
+      );
+      return null;
+    }
+
+    const fNormalizedNorth = Math.max(fNorth, fSouth);
+    const fNormalizedSouth = Math.min(fNorth, fSouth);
+    const fNormalizedEast = Math.max(fEast, fWest);
+    const fNormalizedWest = Math.min(fEast, fWest);
+
+    const fHeightDeg = fNormalizedNorth - fNormalizedSouth;
+    const fWidthDeg = fNormalizedEast - fNormalizedWest;
+
+    if (fHeightDeg < 1 || fWidthDeg < 1) {
+      this.m_oNotificationDisplayService.openInfoDialog(
+        this.m_oTranslate.instant('MANUAL_BBOX.VALIDATION_TOO_SMALL'),
+        'danger',
+        this.m_oTranslate.instant('MANUAL_BBOX.VALIDATION_ERROR_TITLE')
+      );
+      return null;
+    }
+
+    if (fHeightDeg > 2 || fWidthDeg > 2) {
+      this.m_oNotificationDisplayService.openInfoDialog(
+        this.m_oTranslate.instant('MANUAL_BBOX.VALIDATION_TOO_LARGE'),
+        'danger',
+        this.m_oTranslate.instant('MANUAL_BBOX.VALIDATION_ERROR_TITLE')
+      );
+      return null;
+    }
+
+    return {
+      north: fNormalizedNorth,
+      south: fNormalizedSouth,
+      east: fNormalizedEast,
+      west: fNormalizedWest,
+    };
   }
 }

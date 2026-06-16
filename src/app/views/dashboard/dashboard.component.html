@@ -2,11 +2,23 @@
   <!-- <rise-toolbar [m_bUserIsSigned]="true"></rise-toolbar> -->
   <div class="flex-fill d-flex flex-row">
     <div class="rise-sidebar d-flex flex-column gap-3 scrollable-sidebar">
-      <img
-        class="align-self-start"
-        src="/assets/rise-assets/logo-white-horizontal.svg"
-        alt=""
-      />
+      <div class="logo-help-row d-flex align-items-center justify-content-between gap-2">
+        <img
+          class="align-self-start"
+          src="/assets/rise-assets/logo-white-horizontal.svg"
+          alt=""
+        />
+        <a
+          class="help-link d-inline-flex align-items-center gap-1"
+          href="https://rise-docs.readthedocs.io/en/latest/"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Open help documentation"
+          aria-label="Open help documentation"
+        >
+          <span class="material-symbols-outlined">help</span>
+        </a>
+      </div>
 <!--      <rise-text-input-->
 <!--        [m_sLocalizationKey]="'DASHBOARD.SEARCH'"-->
 <!--        [m_sIcon]="'search'"-->
@@ -31,12 +43,33 @@
         <rise-button
           class="create-area-btn"
           [m_sLabel]="''"
-          [m_sIconLeft]="m_bEnableAreaDrawing ? 'close' : 'add'"
+          [m_sIconLeft]="(m_bEnableAreaDrawing || m_bShowAreaCreationMenu) ? 'close' : 'add'"
           [m_sRole]="m_bEnableAreaDrawing ? 'danger' : 'action'"
           [m_sSize]="'small'"
-          (click)="startAreaCreation()"
+          (click)="toggleAreaCreationMenu()"
           [title]="m_bEnableAreaDrawing ? 'Cancel drawing' : 'Create new area'"
         ></rise-button>
+
+        <div class="map-create-submenu" *ngIf="m_bShowAreaCreationMenu && !m_bEnableAreaDrawing">
+          <rise-button
+            class="create-area-sub-btn"
+            [m_sLabel]="''"
+            [m_sIconLeft]="'rectangle'"
+            [m_sRole]="'action'"
+            [m_sSize]="'small'"
+            (click)="startAreaDrawingCreation()"
+            [title]="'Draw rectangle'"
+          ></rise-button>
+          <rise-button
+            class="create-area-sub-btn"
+            [m_sLabel]="''"
+            [m_sIconLeft]="'pin_invoke'"
+            [m_sRole]="'action'"
+            [m_sSize]="'small'"
+            (click)="startManualBboxCreation()"
+            [title]="'Manual bounding box'"
+          ></rise-button>
+        </div>
       </div>
 
       <rise-map

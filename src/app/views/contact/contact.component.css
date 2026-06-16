@@ -104,8 +104,58 @@ textarea {
   transition: opacity 0.2s;
 }
 
+.btn-send:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .btn-send:hover {
   opacity: 0.9;
+}
+
+.btn-send-secondary {
+  margin-top: 16px;
+  background: #f3d28e;
+  color: #284E59;
+}
+
+.submit-feedback {
+  margin-top: 10px;
+  border: 1px solid rgba(255, 155, 155, 0.45);
+  background: rgba(122, 40, 40, 0.25);
+  color: #ffd2d2;
+  border-radius: 6px;
+  font-size: 13px;
+  padding: 10px 12px;
+}
+
+.contact-success-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 34px 22px;
+}
+
+.contact-success-panel h3 {
+  margin: 4px 0 0;
+  font-size: 22px;
+  font-family: 'Space Mono', monospace;
+}
+
+.contact-success-panel p {
+  margin: 0;
+  max-width: 520px;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.success-icon {
+  font-size: 54px;
+  color: #f2b84b;
 }
 
 /* INFO SECTION */

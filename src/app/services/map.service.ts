@@ -1455,7 +1455,6 @@ export class MapService {
                 // Calculate the center of the bounds (midpoint of North-South and West-East)
                 let fCenterLat = (fNorth + fSouth) / 2;
                 let fCenterLng = (fWest + fEast) / 2;
-                this.m_oLastMarker = L.marker([fCenterLat, fCenterLng],{icon:oIconDefault}).addTo(oMap);
                 // Move the map to the center of the bounds and set a zoom level
                 oMap.setView([fCenterLat, fCenterLng], 8);
                 // Create the bounds array
@@ -1472,7 +1471,11 @@ export class MapService {
                   ],
                 };
                 let aoBounds = [[fNorth, fWest], [fSouth, fEast]];
-                this.addManualBboxLayer(oMap,aoBounds)
+                this.addManualBboxLayer(oMap, aoBounds, {
+                  zoomToBounds: false,
+                  markerCenter: { lat: fCenterLat, lng: fCenterLng },
+                  invalidateSize: true,
+                });
                 this.m_oManualBoundingBoxSubscription.next({ geoJson, center: { lat: fCenterLat, lng: fCenterLng } });
               }
             }
@@ -1495,7 +1498,15 @@ export class MapService {
   }
 
 
-  addManualBboxLayer(oMap, aoBounds) {
+  addManualBboxLayer(
+    oMap,
+    aoBounds,
+    oOptions: {
+      zoomToBounds?: boolean;
+      markerCenter?: { lat: number; lng: number };
+      invalidateSize?: boolean;
+    } = {}
+  ) {
     let oLayer = L.rectangle(aoBounds, { color: "#3388ff", weight: 1 });
 
     //remove old shape
@@ -1503,8 +1514,30 @@ export class MapService {
       this.m_oDrawnItems.clearLayers();
     }
 
+    if (this.m_oLastMarker) {
+      oMap.removeLayer(this.m_oLastMarker);
+      this.m_oLastMarker = null;
+    }
+
+    if (oOptions.markerCenter) {
+      this.m_oLastMarker = L.marker(
+        [oOptions.markerCenter.lat, oOptions.markerCenter.lng],
+        { icon: oIconDefault }
+      ).addTo(oMap);
+    }
+
     this.m_oDrawnItems.addLayer(oLayer);
-    this.zoomOnBounds(aoBounds);
+
+    if (oOptions.zoomToBounds) {
+      this.zoomOnBounds(aoBounds, oMap);
+    }
+
+    if (oOptions.invalidateSize) {
+      setTimeout(() => {
+        oMap.invalidateSize();
+      }, 0);
+    }
+
     //Emit bounding box to listening component:
     return aoBounds
   }

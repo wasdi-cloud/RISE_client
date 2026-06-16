@@ -31,7 +31,13 @@ export class SubscriptionViewModel {
 
   plugins: string[];
 
-  paymentMethod:string
+  paymentMethod:string;
 
   buySuccess:boolean;
+
+  areaCount:number;
+
+  associatedAreaId?: string;
+
+  areaUsed:number;
 }

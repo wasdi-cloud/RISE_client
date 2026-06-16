@@ -35,8 +35,8 @@ pipeline {
         sh script: "which npm", label: "Tool > npm > path"
         sh script: "npm --version", label: "Tool > npm > current version"
 
-        sh script: "which sass", label: "Tool > sass > path"
-        sh script: "sass --version", label: "Tool > sass > current version"
+        sh script: "which sass || true", label: "Tool > sass > path (non-blocking)"
+        sh script: "sass --version || true", label: "Tool > sass > current version (non-blocking)"
       }
     }
 
