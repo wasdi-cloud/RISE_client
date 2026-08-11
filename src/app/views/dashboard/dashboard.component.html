@@ -39,7 +39,18 @@
         <rise-user-menu class="user-menu"></rise-user-menu>
       </div>
 
-      <div class="map-create-control">
+      <div class="map-create-control d-flex gap-2 flex-column">
+        <rise-button
+          class="toggle-public-btn"
+          [m_sLabel]="''"
+          [m_sIconLeft]="m_bShowPublicAoOs ? 'visibility' : 'visibility_off'"
+          [m_sRole]="'action'"
+          [m_sSize]="'small'"
+          (click)="togglePublicAoOs()"
+          [title]="m_bShowPublicAoOs ? 'Hide public areas' : 'Show public areas'"
+        ></rise-button>
+
+        <!-- EXISTING: Create Area Button -->
         <rise-button
           class="create-area-btn"
           [m_sLabel]="''"

@@ -41,6 +41,10 @@ import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
   styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent implements OnInit, OnDestroy {
+
+  public m_aoAllAreas: Array<AreaViewModel> = [];
+  public m_bShowPublicAoOs: boolean = true;
+
   public m_aoOngoingEvents: Array<EventViewModel> = [];
 
   private m_oDestroy$ = new Subject<void>();
@@ -127,9 +131,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.m_oAreaService.getAreaListByUser().pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse) => {
         if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
-          this.m_aoAreas = oResponse;
+          this.m_aoAllAreas = oResponse;
+          this.filterPublicAoOs();
+
+          // Populate the map with the filtered list
           if (this.m_aoAreas.length > 0) {
-            this.m_aoAlerts.forEach((oArea) => {
+            this.m_aoAreas.forEach((oArea) => {
               this.addAOIToMap(oArea);
             });
           }
@@ -137,6 +144,29 @@ export class DashboardComponent implements OnInit, OnDestroy {
       },
     });
   }
+
+  public togglePublicAoOs(): void {
+    this.m_bShowPublicAoOs = !this.m_bShowPublicAoOs;
+    this.filterPublicAoOs();
+
+    // Note: Depending on how your <rise-map> component is built, simply updating
+    // this.m_aoAreas might automatically remove/add the shapes on the map via Angular @Input.
+    // If it doesn't, you may need to call a map service method here to clear the map
+    // and loop through this.m_aoAreas to re-add them via this.addAOIToMap(oArea).
+  }
+
+  /**
+   * Filters the map areas based on the user's toggle state
+   */
+  private filterPublicAoOs(): void {
+    if (this.m_bShowPublicAoOs) {
+      this.m_aoAreas = [...this.m_aoAllAreas];
+    } else {
+      // IMPORTANT: Change 'isPublic' to whatever your actual property name is in AreaViewModel
+      this.m_aoAreas = this.m_aoAllAreas.filter(area => !area.publicArea);
+    }
+  }
+
 
   /**
    * TODO: Add the Areas of interest to the map
