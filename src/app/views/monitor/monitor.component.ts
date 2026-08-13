@@ -75,7 +75,8 @@ import {FormsModule} from "@angular/forms";
 export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
 
-
+  public m_sSortColumn: string = 'name';
+  public m_bSortAscending: boolean = true;
   /**
    * Collapsible section flags for sidebar
    */
@@ -346,6 +347,26 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
     // IMPORTANT: Remove the fullscreenchange event listener
     document.removeEventListener('fullscreenchange', this.m_oFullscreenChangeListener);
+  }
+
+
+  public sortTable(sColumn: string): void {
+    // If clicking the same column, toggle direction. Otherwise, sort ascending.
+    if (this.m_sSortColumn === sColumn) {
+      this.m_bSortAscending = !this.m_bSortAscending;
+    } else {
+      this.m_sSortColumn = sColumn;
+      this.m_bSortAscending = true;
+    }
+
+    this.m_aoFilteredImpactTableData.sort((a, b) => {
+      let valA = a[sColumn] ? a[sColumn].toString().toLowerCase() : '';
+      let valB = b[sColumn] ? b[sColumn].toString().toLowerCase() : '';
+
+      if (valA < valB) return this.m_bSortAscending ? -1 : 1;
+      if (valA > valB) return this.m_bSortAscending ? 1 : -1;
+      return 0;
+    });
   }
 
     /**
@@ -844,6 +865,11 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
         item => item.type === this.m_sSelectedTypeFilter
       );
     }
+
+    // Re-apply current sort to the newly filtered data
+    // Temporarily flip the boolean so calling sortTable doesn't reverse the user's preference
+    this.m_bSortAscending = !this.m_bSortAscending;
+    this.sortTable(this.m_sSortColumn);
   }
 
   /**

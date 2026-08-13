@@ -134,8 +134,37 @@
             <table class="table table-dark table-striped table-hover table-sm mb-0 align-middle">
               <thead>
               <tr>
-                <th scope="col" class="position-sticky top-0 bg-dark" style="z-index: 1;">Name</th>
-                <th scope="col" class="position-sticky top-0 bg-dark" style="z-index: 1;">Type</th>
+                <!-- NAME COLUMN -->
+                <th
+                  scope="col"
+                  class="position-sticky top-0 bg-dark cursor-pointer user-select-none"
+                  style="z-index: 1;"
+                  (click)="sortTable('name')"
+                  title="Sort by Name"
+                >
+                  <div class="d-flex align-items-center justify-content-between">
+                    <span>Name</span>
+                    <span [style.opacity]="m_sSortColumn === 'name' ? '1' : '0.4'" class="fs-6">
+                        {{ m_sSortColumn === 'name' ? (m_bSortAscending ? '↑' : '↓') : '⇅' }}
+                      </span>
+                  </div>
+                </th>
+
+                <!-- TYPE COLUMN -->
+                <th
+                  scope="col"
+                  class="position-sticky top-0 bg-dark cursor-pointer user-select-none"
+                  style="z-index: 1;"
+                  (click)="sortTable('type')"
+                  title="Sort by Type"
+                >
+                  <div class="d-flex align-items-center justify-content-between">
+                    <span>Type</span>
+                    <span [style.opacity]="m_sSortColumn === 'type' ? '1' : '0.4'" class="fs-6">
+                        {{ m_sSortColumn === 'type' ? (m_bSortAscending ? '↑' : '↓') : '⇅' }}
+                      </span>
+                  </div>
+                </th>
               </tr>
               </thead>
               <tbody>
