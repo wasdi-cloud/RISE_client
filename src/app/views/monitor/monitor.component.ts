@@ -41,6 +41,7 @@ import {PrintMapDialogComponent} from "../../dialogs/print-map-dialog/print-map-
 import { PluginService } from '../../services/api/plugin.service';
 import e from 'express';
 import L from 'leaflet';
+import {FormsModule} from "@angular/forms";
 
 /**
  * TODO THERE IS A BIG NAMING PROBLEM HERE, plugin, maps, layers, plugins here in the client is
@@ -52,25 +53,53 @@ import L from 'leaflet';
   @Component({
   selector: 'app-monitor',
   standalone: true,
-  imports: [
-    CdkDropList,
-    CdkDrag,
-    CommonModule,
-    FilterPipe,
-    RiseButtonComponent,
-    RiseLayerItemComponent,
-    RiseMapChipComponent,
-    RiseMapComponent,
-    RiseTextInputComponent,
-    RiseTimebarComponent,
-    RiseUserMenuComponent,
-    TranslateModule,
+    imports: [
+      CdkDropList,
+      CdkDrag,
+      CommonModule,
+      FilterPipe,
+      RiseButtonComponent,
+      RiseLayerItemComponent,
+      RiseMapChipComponent,
+      RiseMapComponent,
+      RiseTextInputComponent,
+      RiseTimebarComponent,
+      RiseUserMenuComponent,
+      TranslateModule,
+      FormsModule,
 
-  ],
+    ],
   templateUrl: './monitor.component.html',
   styleUrl: './monitor.component.css',
 })
 export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
+
+
+
+  /**
+   * Collapsible section flags for sidebar
+   */
+  public m_bLayersExpanded: boolean = true;
+  public m_bEventInfoExpanded: boolean = true;
+  public m_bImpactsTableExpanded: boolean = true;
+
+  /**
+   * Raw and filtered table data from GeoServer WFS
+   */
+  public m_aoImpactTableData: Array<{ name: string; type: string; raw: any }> = [];
+  public m_aoFilteredImpactTableData: Array<{ name: string; type: string; raw: any }> = [];
+
+  /**
+   * Dropdown filter options
+   */
+  public m_asImpactTypes: Array<string> = [];
+  public m_sSelectedTypeFilter: string = 'ALL';
+
+  /**
+   * Active impact layer WFS details for CSV Export
+   */
+  public m_sActiveImpactWfsUrl: string = '';
+  public m_sActiveImpactLayerId: string = '';
 
   /**
    * Flag to show either 2D Leaflet map or 3D Cesium Map (TODO: CESIUM)
@@ -144,7 +173,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   /**
    * Layer group for image markers
    */
-  private m_oImageMarkersLayer: any = null;  
+  private m_oImageMarkersLayer: any = null;
 
   /**
    * List of Event documents
@@ -314,7 +343,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
     this.m_oDestroy$.next();
     this.m_oDestroy$.complete();
-    
+
     // IMPORTANT: Remove the fullscreenchange event listener
     document.removeEventListener('fullscreenchange', this.m_oFullscreenChangeListener);
   }
@@ -540,14 +569,14 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
 
   private updateLayerList(oLayerMapVM:any) {
-    
+
     // Check if it a layer already shown in the map
     let oExistingLayer = this.m_aoLayers.find(oThisLayer => oThisLayer.mapId === oLayerMapVM.mapId);
 
     // We do have it
-    if (oExistingLayer) { 
+    if (oExistingLayer) {
       // Double check also reference date and geoserver url
-      const bIsSameLayer = oExistingLayer.referenceDate === oLayerMapVM.referenceDate 
+      const bIsSameLayer = oExistingLayer.referenceDate === oLayerMapVM.referenceDate
                         && oExistingLayer.geoserverUrl === oLayerMapVM.geoserverUrl
                         && oExistingLayer.layerId === oLayerMapVM.layerId;
 
@@ -580,7 +609,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
         }
         else {
           // Replace existing in our active list
-          this.m_aoLayers[iIndex] = oLayerMapVM;  
+          this.m_aoLayers[iIndex] = oLayerMapVM;
 
           // Add the layer again to the map
           this.m_oMapService.addLayerMap2DByServer(
@@ -592,9 +621,9 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
         this.m_aoReversedLayers = [...this.m_aoLayers].reverse();
         // Update the selected layers
-        this.m_oMapService.setSelectedLayers(this.m_aoLayers)      
+        this.m_oMapService.setSelectedLayers(this.m_aoLayers)
 
-      }      
+      }
     }
 
   }
@@ -617,6 +646,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
         this.cleanEventPanel();
         this.clearImageMarkers();
     }
+    this.clearImpactTableData();
 
     // Update the layers based on the new date
     this.updateMapAndLayerButtons();
@@ -652,11 +682,12 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
               }
             }
             this.m_aoVisibleMapLayersButtons = aoNewVisibleButtons;
+            this.logPluginImpactData(oResponse);
           }
         }
       });
     }
-  }  
+  }
 
   /**
    * Handle selection of a plugin in the first level menu
@@ -668,9 +699,11 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       // It is, toggle selection
       if (this.m_oSelectedPlugin.id === oPlugin.id) {
         this.m_oSelectedPlugin = null;
+        this.clearImpactTableData();
       }
       else {
         this.m_oSelectedPlugin = oPlugin;
+        this.clearImpactTableData();
       }
     }
     else {
@@ -694,6 +727,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
           }
 
           this.m_aoVisibleMapLayersButtons = oResponse;
+          this.logPluginImpactData(oResponse);
         },
         error: (oError) => {
           this.m_oNotificationService.openInfoDialog(
@@ -739,8 +773,100 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       //was inactive,turn it to active
       oMapButton.loaded = true;
       this.showLayer(oMapButton);
+
     }
 
+  }
+
+  /**
+   * Scans a plugin's layers for vector/impact data and fetches their WFS tables
+   */
+  /**
+   * Fetches impact layer features and populates the sidebar table
+   */
+  private logPluginImpactData(aoLayers: any[]): void {
+    if (!aoLayers || aoLayers.length === 0) return;
+
+    const aoImpactLayers = aoLayers.filter((oLayer: any) =>
+        oLayer.layerId && (
+          oLayer.layerId.includes('roads') ||
+          oLayer.layerId.includes('exposure') ||
+          oLayer.layerId.includes('markers')
+        )
+    );
+
+    if (aoImpactLayers.length > 0) {
+
+      // Reset data
+      this.clearImpactTableData();
+      // Store WFS reference for export
+      const oFirstLayer = aoImpactLayers[0];
+      this.m_sActiveImpactLayerId = oFirstLayer.layerId;
+      this.m_sActiveImpactWfsUrl = oFirstLayer.geoserverUrl ? oFirstLayer.geoserverUrl.replace(/\/wms\b/i, '/wfs') : '';
+
+      aoImpactLayers.forEach((oLayer: any) => {
+        if (oLayer.geoserverUrl) {
+          this.m_oLayerService.getLayerTableDataWFS(oLayer.geoserverUrl, oLayer.layerId)
+            .subscribe({
+              next: (aoTableProps: any[]) => {
+                // Normalize properties into name & type format
+                const aoParsedRows = aoTableProps.map((props: any) => {
+                  const sName = props.name || props.NAME || props.road_name || props.id || props.ID || 'Unnamed Feature';
+                  const sType = props.type || props.TYPE || props.category || props.CLASS || props.fclass || (oLayer.layerId.includes('roads') ? 'Road' : 'Exposure');
+                  return { name: sName, type: sType, raw: props };
+                });
+
+                this.m_aoImpactTableData = [...this.m_aoImpactTableData, ...aoParsedRows];
+
+                // Extract unique types for dropdown filter
+                const setTypes = new Set(this.m_aoImpactTableData.map(item => item.type));
+                this.m_asImpactTypes = Array.from(setTypes).sort();
+
+                this.applyImpactTypeFilter();
+              },
+              error: (oError: any) => {
+                console.error(`WFS Error for ${oLayer.layerId}:`, oError);
+              }
+            });
+        }
+      });
+    }
+  }
+
+  /**
+   * Filter table rows based on selected dropdown type
+   */
+  public applyImpactTypeFilter(): void {
+    if (this.m_sSelectedTypeFilter === 'ALL' || !this.m_sSelectedTypeFilter) {
+      this.m_aoFilteredImpactTableData = [...this.m_aoImpactTableData];
+    } else {
+      this.m_aoFilteredImpactTableData = this.m_aoImpactTableData.filter(
+        item => item.type === this.m_sSelectedTypeFilter
+      );
+    }
+  }
+
+  /**
+   * Directly downloads CSV from GeoServer WFS
+   */
+  public exportImpactsToCSV(): void {
+    if (!this.m_sActiveImpactWfsUrl || !this.m_sActiveImpactLayerId) {
+      return;
+    }
+    const sCsvUrl = `${this.m_sActiveImpactWfsUrl}?service=WFS&version=1.0.0&request=GetFeature&typeName=${this.m_sActiveImpactLayerId}&outputFormat=csv`;
+    window.open(sCsvUrl, '_blank');
+  }
+
+  /**
+   * Clears the impact table data and hides the UI container
+   */
+  public clearImpactTableData(): void {
+    this.m_aoImpactTableData = [];
+    this.m_aoFilteredImpactTableData = [];
+    this.m_asImpactTypes = [];
+    this.m_sSelectedTypeFilter = 'ALL';
+    this.m_sActiveImpactLayerId = '';
+    this.m_sActiveImpactWfsUrl = '';
   }
 
   /********** DRAG AND DROP CAPABILITIES **********/
@@ -919,9 +1045,9 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
             });
           }
         }
-        
+
         // Add markers to the map
-        this.addImageMarkersToMap();        
+        this.addImageMarkersToMap();
       },
       error: (oError) => {
         console.error("Error loading image attachment", oError);
@@ -958,7 +1084,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     }
 
     const oMap = this.m_oMapService.getMap();
-    
+
     // Create a layer group for image markers
     this.m_oImageMarkersLayer = L.layerGroup().addTo(oMap);
 
@@ -995,7 +1121,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       this.m_oImageMarkersLayer.addLayer(oImageMarkerLeaflet);
     });
 
-  }  
+  }
 
   onPreviewImage(sFileName: string) {
     if (sFileName) {
@@ -1070,7 +1196,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       this.cleanEventPanel();
 
       // Clear image markers when going live
-      this.clearImageMarkers();      
+      this.clearImageMarkers();
 
       // Re-start the timer
       this.startLiveTimer();

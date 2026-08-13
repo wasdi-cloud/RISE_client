@@ -13,6 +13,33 @@ rise-map {
   min-height: 0; /* Important when inside flex */
   position: relative;
 }
+.cursor-pointer {
+  cursor: pointer;
+}
+/* Force the sidebar containers to hug their content and shrink when collapsed */
+.layer-list-container,
+.event-container {
+  height: fit-content !important;
+  flex: 0 0 auto !important;
+  min-height: 0 !important;
+}
+/* Ensure the main sidebar fills the screen but doesn't scroll itself */
+.rise-sidebar {
+  max-width: 380px;
+  min-width: 320px;
+}
+
+/* Scrollbar styling for the middle section */
+.sidebar-scrollable-content::-webkit-scrollbar,
+.sidebar-table-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-scrollable-content::-webkit-scrollbar-thumb,
+.sidebar-table-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
 
 
 .logo-img:hover {
@@ -90,6 +117,7 @@ img {
   flex-shrink: 0;
   transition: color 0.2s ease, transform 0.2s ease;
 }
+
 
 .area-help-link:hover {
   color: var(--rise-text-default);

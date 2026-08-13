@@ -1,105 +1,213 @@
 <main class="d-flex flex-column">
-  <!-- <rise-user-menu ></rise-user-menu> -->
-  <!-- <rise-toolbar [m_bUserIsSigned]="true"></rise-toolbar> -->
   <div class="flex-fill d-flex flex-row">
 <!--    this is the left panel -->
-    <div
-      class="rise-sidebar d-flex flex-column justify-content-between gap-4 px-3"
-      cdkDropList
+    <!-- LEFT SIDEBAR -->
+    <!-- LEFT SIDEBAR (Using Flexbox to manage fixed vs scrollable areas) -->
+    <div class="rise-sidebar d-flex flex-column gap-3 px-3 py-3" cdkDropList style="max-height: 100vh;">
 
-    >
-    <div class="d-flex align-items-center gap-2">
-      <img
-        class="align-self-start logo-img"
-        src="/assets/rise-assets/logo-white-horizontal.svg"
-        alt=""
-        width="35%"
-        height="35%"
-        (click)="navigateRoute('dashboard')"
-      />
-      <div class="area-name-text flex-fill">
-        {{ m_sAreaName }}
-      </div>
-      <a
-        class="area-help-link d-inline-flex align-items-center justify-content-center"
-        href="https://rise-docs.readthedocs.io/en/latest/"
-        target="_blank"
-        rel="noopener noreferrer"
-        title="Open help documentation"
-        aria-label="Open help documentation"
-      >
-        <span class="material-symbols-outlined">help</span>
-      </a>
-    </div>
-      <rise-text-input
-        [m_bHasIcon]="true"
-        [m_sIcon]="'search'"
-        [m_bHasTitle]="false"
-        [m_sLocalizationKey]="'MONITOR.SEARCH_LAYERS_BY_NAME'"
-        [(m_sInputText)]="m_sSearchString"
-      ></rise-text-input>
-      <!-- Layer List output -->
-      <div class="flex-fill d-flex flex-column gap-2 layer-list-container p-3" >
-        <div class="layers-header d-flex flex-row justify-content-between gap-2" >
-          <span class="material-symbols-outlined"> map </span>
-          <div class="flex-fill d-flex flex-column">
-            {{"MONITOR.MAP_LAYERS"|translate}}
-            <span *ngIf="m_aoLayers.length > 0" class="cta-text">{{"MONITOR.DRAG"|translate}}</span>
+      <!-- ======================================= -->
+      <!-- FIXED TOP: LOGO, TITLE, AND SEARCH      -->
+      <!-- ======================================= -->
+      <div class="d-flex flex-column gap-4 flex-shrink-0">
+        <div class="d-flex align-items-center gap-2">
+          <img
+            class="align-self-start logo-img"
+            src="/assets/rise-assets/logo-white-horizontal.svg"
+            alt=""
+            width="35%"
+            height="35%"
+            (click)="navigateRoute('dashboard')"
+            class="cursor-pointer"
+          />
+          <div class="area-name-text flex-fill">
+            {{ m_sAreaName }}
           </div>
-          <!--span class="material-symbols-outlined"> keyboard_arrow_up </span-->
+          <a
+            class="area-help-link d-inline-flex align-items-center justify-content-center"
+            href="https://rise-docs.readthedocs.io/en/latest/"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Open help documentation"
+          >
+            <span class="material-symbols-outlined">help</span>
+          </a>
         </div>
 
-        @if(m_aoLayers.length > 0) {
-        <div class="layer-outlet flex-fill d-flex flex-column gap-2"  cdkDropList (cdkDropListDropped)="drop($event)">
-          <!-- Reverse the layers list to show the correct order - when passing to the filter, if empty string pass null! -->
-          <rise-layer-item
-            *ngFor="let oLayer of m_aoReversedLayers | filter : (m_sSearchString ? m_sSearchString : null)"
-            cdkDrag
-            [m_oLayer]="oLayer"
-            (m_oLayerVisibility)="getLayerVisibility($event, oLayer)"
-            (m_oLayerOpacity)="setOpacity($event, oLayer.layerId)"
-            (m_oEmitAction)="handleLayerAction($event)"
-          ></rise-layer-item>
-        </div>
-        } @else {  {{"MONITOR.NO_LAYERS_TO_SHOW"|translate}} }
+        <rise-text-input
+          [m_bHasIcon]="true"
+          [m_sIcon]="'search'"
+          [m_bHasTitle]="false"
+          [m_sLocalizationKey]="'MONITOR.SEARCH_LAYERS_BY_NAME'"
+          [(m_sInputText)]="m_sSearchString"
+        ></rise-text-input>
       </div>
-      <div *ngIf="m_bShowEventInfo"  class="event-section d-flex flex-column p-3 event-container">
-        <!-- Fixed Header -->
-        <div class="layers-header d-flex justify-content-between gap-2 flex-shrink-0">
-          <span class="material-symbols-outlined"> flag </span>
-          <div class="flex-fill d-flex flex-column">
-            <strong>{{ m_oSelectedEvent.name }} - {{ m_oSelectedEvent.type }}</strong>
+
+      <!-- ======================================= -->
+      <!-- SCROLLABLE MIDDLE: ALL 3 CONTAINERS     -->
+      <!-- ======================================= -->
+      <div class="sidebar-scrollable-content flex-fill overflow-y-auto d-flex flex-column gap-3 pe-2">
+
+        <!-- 1. MAP LAYERS SECTION -->
+        <div class="d-flex flex-column layer-list-container" style="overflow: hidden;">
+          <!-- FIXED HEADER -->
+          <div
+            class="layers-header d-flex flex-row justify-content-between align-items-center gap-2 cursor-pointer px-3 py-2"
+            (click)="m_bLayersExpanded = !m_bLayersExpanded"
+          >
+            <span class="material-symbols-outlined">map</span>
+            <div class="flex-fill d-flex flex-column">
+              <!-- UPDATE THIS LINE BELOW -->
+              <strong>{{ 'MONITOR.MAP_LAYERS' | translate }} ({{ m_aoLayers.length }})</strong>
+
+              <span *ngIf="m_aoLayers.length > 0 && m_bLayersExpanded" class="cta-text">
+                {{ 'MONITOR.DRAG' | translate }}
+              </span>
+            </div>
+            <span class="material-symbols-outlined">
+              {{ m_bLayersExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
+            </span>
+          </div>
+
+          <!-- SCROLLABLE BODY -->
+          <div *ngIf="m_bLayersExpanded" class="px-3 pb-3 overflow-y-auto sidebar-table-scroll" style="max-height: 250px;">
+            @if(m_aoLayers.length > 0) {
+              <div class="layer-outlet d-flex flex-column gap-2 mt-2" cdkDropList (cdkDropListDropped)="drop($event)">
+                <rise-layer-item
+                  *ngFor="let oLayer of m_aoReversedLayers | filter : (m_sSearchString ? m_sSearchString : null)"
+                  cdkDrag
+                  [m_oLayer]="oLayer"
+                  (m_oLayerVisibility)="getLayerVisibility($event, oLayer)"
+                  (m_oLayerOpacity)="setOpacity($event, oLayer.layerId)"
+                  (m_oEmitAction)="handleLayerAction($event)"
+                ></rise-layer-item>
+              </div>
+            } @else {
+              <div class="text-muted small mt-2">{{ 'MONITOR.NO_LAYERS_TO_SHOW' | translate }}</div>
+            }
           </div>
         </div>
 
-        <!-- Scrollable Event Details -->
-        <div class="event-details-scroll mt-2 flex-grow-1 overflow-auto">
-          <!--p><strong>Event:</strong> {{ m_oSelectedEvent.name }} - <strong>Type:</strong> {{ m_oSelectedEvent.type }}</p-->
-          <p>{{"MONITOR.EVENT_START"|translate}} : {{ m_oSelectedEvent.startDate * 1000 | date: 'medium' : 'UTC' }}</p>
-          <p>{{"MONITOR.EVENT_PEAK"|translate}} : {{ m_oSelectedEvent.peakDate * 1000 | date: 'medium' : 'UTC' }}</p>
-          <p>{{"MONITOR.EVENT_END"|translate}} : {{ m_oSelectedEvent.endDate * 1000 | date: 'medium' : 'UTC' }}</p>
-          <div class="drag-drop-container d-flex flex-row justify-content-between mt-3">
-            <div class="attachments-zone">
-            <div *ngFor="let sFile of m_asEventImages" class="file-item" (click)="onPreviewImage(sFile)">
-              <div class="attachment-icon-container d-flex flex-row align-items-center gap-2">
-                <span class="material-icons file-icon">image</span>
-                <span class="file-name">{{ sFile }}</span>
+        <!-- 2. AFFECTED IMPACTS TABLE SECTION -->
+        <div *ngIf="m_aoImpactTableData.length > 0" class="d-flex flex-column layer-list-container" style="overflow: hidden;">
+          <!-- FIXED HEADER -->
+          <div
+            class="layers-header d-flex flex-row justify-content-between align-items-center gap-2 cursor-pointer px-3 py-2"
+            (click)="m_bImpactsTableExpanded = !m_bImpactsTableExpanded"
+          >
+            <span class="material-symbols-outlined">table_chart</span>
+            <div class="flex-fill">
+              <strong>Affected Features ({{ m_aoFilteredImpactTableData.length }})</strong>
+            </div>
+
+            <button
+              type="button"
+              class="btn btn-sm btn-outline-light d-flex align-items-center p-1"
+              (click)="$event.stopPropagation(); exportImpactsToCSV()"
+              title="Export CSV from GeoServer"
+            >
+              <span class="material-symbols-outlined fs-6">download</span>
+            </button>
+
+            <span class="material-symbols-outlined">
+              {{ m_bImpactsTableExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
+            </span>
+          </div>
+
+          <!-- SCROLLABLE BODY -->
+          <div *ngIf="m_bImpactsTableExpanded" class="px-3 pb-3 overflow-y-auto sidebar-table-scroll" style="max-height: 250px;">
+            <div class="d-flex align-items-center gap-2 mb-2 mt-2">
+              <label for="impactTypeSelect" class="small fw-bold text-nowrap">Type:</label>
+              <select
+                id="impactTypeSelect"
+                class="form-select form-select-sm bg-dark text-light border-secondary"
+                [(ngModel)]="m_sSelectedTypeFilter"
+                (change)="applyImpactTypeFilter()"
+              >
+                <option value="ALL">All Types</option>
+                <option *ngFor="let sType of m_asImpactTypes" [value]="sType">
+                  {{ sType }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Table natively flows within the scrolling body -->
+            <table class="table table-dark table-striped table-hover table-sm mb-0 align-middle">
+              <thead>
+              <tr>
+                <th scope="col" class="position-sticky top-0 bg-dark" style="z-index: 1;">Name</th>
+                <th scope="col" class="position-sticky top-0 bg-dark" style="z-index: 1;">Type</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let item of m_aoFilteredImpactTableData">
+                <td class="text-truncate" style="max-width: 140px;" [title]="item.name">
+                  {{ item.name }}
+                </td>
+                <td>
+                  <span class="badge bg-secondary">{{ item.type }}</span>
+                </td>
+              </tr>
+              <tr *ngIf="m_aoFilteredImpactTableData.length === 0">
+                <td colspan="2" class="text-center text-muted small py-2">
+                  No features match selected type
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 3. EVENT DETAILS SECTION -->
+        <div *ngIf="m_bShowEventInfo" class="d-flex flex-column event-container" style="overflow: hidden;">
+          <!-- FIXED HEADER -->
+          <div
+            class="layers-header d-flex justify-content-between align-items-center gap-2 cursor-pointer px-3 py-2"
+            (click)="m_bEventInfoExpanded = !m_bEventInfoExpanded"
+          >
+            <span class="material-symbols-outlined">flag</span>
+            <div class="flex-fill d-flex flex-column">
+              <strong>{{ m_oSelectedEvent.name }} - {{ m_oSelectedEvent.type }}</strong>
+            </div>
+            <span class="material-symbols-outlined">
+              {{ m_bEventInfoExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
+            </span>
+          </div>
+
+          <!-- SCROLLABLE BODY -->
+          <div *ngIf="m_bEventInfoExpanded" class="px-3 pb-3 overflow-y-auto sidebar-table-scroll" style="max-height: 250px;">
+            <div class="mt-2">
+              <p class="mb-1">{{ 'MONITOR.EVENT_START' | translate }} : {{ m_oSelectedEvent.startDate * 1000 | date: 'medium' : 'UTC' }}</p>
+              <p class="mb-1">{{ 'MONITOR.EVENT_PEAK' | translate }} : {{ m_oSelectedEvent.peakDate * 1000 | date: 'medium' : 'UTC' }}</p>
+              <p class="mb-1">{{ 'MONITOR.EVENT_END' | translate }} : {{ m_oSelectedEvent.endDate * 1000 | date: 'medium' : 'UTC' }}</p>
+
+              <div class="drag-drop-container d-flex flex-row justify-content-between mt-3">
+                <div class="attachments-zone">
+                  <div *ngFor="let sFile of m_asEventImages" class="file-item" (click)="onPreviewImage(sFile)">
+                    <div class="attachment-icon-container d-flex flex-row align-items-center gap-2">
+                      <span class="material-icons file-icon">image</span>
+                      <span class="file-name">{{ sFile }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="attachments-zone">
+                  <div *ngFor="let sFile of m_asEventDocs" class="file-item" (click)="onPreviewDoc(sFile)">
+                    <div class="attachment-icon-container d-flex flex-row align-items-center gap-2">
+                      <span class="material-icons file-icon">description</span>
+                      <span class="file-name">{{ sFile }}</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div class="attachments-zone">
-            <div *ngFor="let sFile of m_asEventDocs" class="file-item" (click)="onPreviewDoc(sFile)">
-              <div class="attachment-icon-container d-flex flex-row align-items-center gap-2">
-                <span class="material-icons file-icon">description</span>
-                <span class="file-name">{{ sFile }}</span>
-              </div>
-            </div>
-          </div>
         </div>
-        </div>
-      </div>
 
-      <div class="button-container  d-flex flex-row gap-3">
+      </div> <!-- End Scrollable Middle -->
+
+      <!-- ======================================= -->
+      <!-- FIXED BOTTOM: NAVIGATION BUTTONS        -->
+      <!-- ======================================= -->
+      <div class="button-container d-flex flex-row gap-3 flex-shrink-0 pt-2 border-top border-secondary">
         <rise-button
           class="flex-fill"
           [m_sLabel]="'MONITOR.MANAGE_EVENTS'"
@@ -111,6 +219,7 @@
           (click)="openImpacts()"
         ></rise-button>
       </div>
+
     </div>
 <!--    this is the map-->
     <div  class=" flex-fill temp-fix" #tempFix>
