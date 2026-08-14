@@ -158,8 +158,16 @@ export class EventsComponent implements OnInit, OnDestroy {
     // Load Images
     this.m_oAttachmentService.list("event_images", this.m_oEvent.id).pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse) => {
-        const files = oResponse.files || [];
-        files.forEach(f => this.m_asOriginalAllFiles.push({ name: f, type: 'image' }));
+        this.m_asEventImages = oResponse.files || [];
+        // (Keep your event markers logic here if you are in monitor.component)
+
+        for (let i = 0; i < oResponse.files.length; i++) {
+          let sFileName = oResponse.files[i];
+          let bIsVideo = sFileName.toLowerCase().endsWith('.mp4') || sFileName.toLowerCase().endsWith('.mov') || sFileName.toLowerCase().endsWith('.avi');
+
+          // Assign 'video' or 'image' dynamically
+          this.m_asOriginalAllFiles.push({ name: sFileName, type: bIsVideo ? 'video' : 'image' });
+        }
         this.applyFileSort();
       }
     });
@@ -167,8 +175,14 @@ export class EventsComponent implements OnInit, OnDestroy {
     // Load Documents
     this.m_oAttachmentService.list("event_docs", this.m_oEvent.id).pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse) => {
-        const files = oResponse.files || [];
-        files.forEach(f => this.m_asOriginalAllFiles.push({ name: f, type: 'doc' }));
+        this.m_asEventDocs = oResponse.files || [];
+        for (let i = 0; i < oResponse.files.length; i++) {
+          let sFileName = oResponse.files[i];
+          // Just in case someone uploaded a video as a document!
+          let bIsVideo = sFileName.toLowerCase().endsWith('.mp4') || sFileName.toLowerCase().endsWith('.mov') || sFileName.toLowerCase().endsWith('.avi');
+
+          this.m_asOriginalAllFiles.push({ name: sFileName, type: bIsVideo ? 'video' : 'doc' });
+        }
         this.applyFileSort();
       }
     });

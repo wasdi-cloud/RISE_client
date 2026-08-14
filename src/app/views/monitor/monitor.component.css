@@ -222,3 +222,50 @@ span.cta-text {
   gap: 10px; /* Adds spacing between items */
   align-items: center; /* Vertically aligns items */
 }
+
+
+/* Sleek Attachment List Styling */
+.file-list-container {
+  max-height: 250px;
+  overflow-y: auto;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.file-list-item {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.file-list-item:last-child {
+  border-bottom: none !important;
+}
+
+.file-list-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.file-open-icon {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.file-list-item:hover .file-open-icon {
+  opacity: 1;
+  color: var(--rise-gold) !important;
+}
+
+.transition-all {
+  transition: all 0.2s ease;
+}
+
+/* Custom Scrollbar for the list */
+.file-list-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.file-list-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}

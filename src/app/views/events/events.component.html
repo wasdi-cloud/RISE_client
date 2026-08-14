@@ -262,9 +262,15 @@
                  (click)="previewFile(file)">
 
               <div class="d-flex flex-row align-items-center gap-3 overflow-hidden flex-fill">
-                <span class="badge" [ngClass]="file.type === 'image' ? 'bg-primary' : 'bg-secondary'" style="width: 45px; opacity: 0.9;">
-                  {{ file.type === 'image' ? 'IMG' : 'DOC' }}
-                </span>
+                <span class="badge"
+                      [ngClass]="{
+                      'bg-primary': file.type === 'image',
+                      'bg-danger': file.type === 'video',
+                      'bg-secondary': file.type === 'doc'
+                    }"
+                      style="width: 45px; opacity: 0.9;">
+                {{ file.type === 'image' ? 'IMG' : (file.type === 'video' ? 'VID' : 'DOC') }}
+              </span>
                 <span class="text-truncate text-light mb-0" style="font-size: 0.95rem;" [title]="file.name">
                   {{ file.name }}
                 </span>

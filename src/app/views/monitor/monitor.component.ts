@@ -74,7 +74,12 @@ import {FormsModule} from "@angular/forms";
 })
 export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
-
+  /**
+   * Variables for unified File Sorting in the sidebar
+   */
+  m_sFilesSortType: 'oldest' | 'newest' | 'az' | 'za' = 'oldest';
+  m_aoAllFiles: any[] = [];
+  m_asOriginalAllFiles: any[] = [];
   public m_sSortColumn: string = 'name';
   public m_bSortAscending: boolean = true;
   /**
@@ -1042,6 +1047,8 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     this.m_oSelectedEvent={};
     this.m_asEventImages = [];
     this.m_asEventDocs = [];
+    this.m_aoAllFiles = [];          // NEW
+    this.m_asOriginalAllFiles = [];  // NEW
   }
 
   fillEventPanel(sEventId:string) {
@@ -1057,37 +1064,73 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   }
 
   loadEventAttachments(sEventId:string) {
+    // Reset our unified arrays
+    this.m_aoAllFiles = [];
+    this.m_asOriginalAllFiles = [];
+
+    // 1. FOR IMAGES/VIDEOS:
     this.m_oAttachmentService.list("event_images", sEventId).subscribe({
       next: (oResponse) => {
-        this.m_asEventImages = oResponse.files;
-        this.m_aoEventImageMarkers = [];
+        this.m_asEventImages = oResponse.files || [];
+        // (Keep your event markers logic here if you are in monitor.component)
 
         for (let i = 0; i < oResponse.files.length; i++) {
-          if (oResponse.lats[i] != -9999.0 && oResponse.lngs[i] != -9999.0) {
-            this.m_aoEventImageMarkers.push({
-              fileName: oResponse.files[i],
-              lat: oResponse.lats[i],
-              lon: oResponse.lngs[i]
-            });
-          }
+          let sFileName = oResponse.files[i];
+          let bIsVideo = sFileName.toLowerCase().endsWith('.mp4') || sFileName.toLowerCase().endsWith('.mov') || sFileName.toLowerCase().endsWith('.avi');
+
+          // Assign 'video' or 'image' dynamically
+          this.m_asOriginalAllFiles.push({ name: sFileName, type: bIsVideo ? 'video' : 'image' });
         }
-
-        // Add markers to the map
-        this.addImageMarkersToMap();
-      },
-      error: (oError) => {
-        console.error("Error loading image attachment", oError);
+        this.applyFileSort();
       }
     });
 
-    this.m_oAttachmentService.list("event_docs", sEventId).subscribe({
+    // 2. FOR DOCUMENTS:
+    this.m_oAttachmentService.list("event_docs",sEventId).subscribe({
       next: (oResponse) => {
-        this.m_asEventDocs = oResponse.files;
-      },
-      error: (oError) => {
-        console.error("Error loading document attachment", oError);
+        this.m_asEventDocs = oResponse.files || [];
+        for (let i = 0; i < oResponse.files.length; i++) {
+          let sFileName = oResponse.files[i];
+          // Just in case someone uploaded a video as a document!
+          let bIsVideo = sFileName.toLowerCase().endsWith('.mp4') || sFileName.toLowerCase().endsWith('.mov') || sFileName.toLowerCase().endsWith('.avi');
+
+          this.m_asOriginalAllFiles.push({ name: sFileName, type: bIsVideo ? 'video' : 'doc' });
+        }
+        this.applyFileSort();
       }
     });
+  }
+
+  // --- Unified Sorting Methods ---
+  applyFileSort() {
+    let copy = [...this.m_asOriginalAllFiles];
+    if (this.m_sFilesSortType === 'oldest') {
+      this.m_aoAllFiles = copy;
+    } else if (this.m_sFilesSortType === 'newest') {
+      this.m_aoAllFiles = copy.reverse();
+    } else if (this.m_sFilesSortType === 'az') {
+      this.m_aoAllFiles = copy.sort((a,b) => a.name.localeCompare(b.name));
+    } else if (this.m_sFilesSortType === 'za') {
+      this.m_aoAllFiles = copy.sort((a,b) => b.name.localeCompare(a.name));
+    }
+  }
+
+  toggleTimeSort() {
+    this.m_sFilesSortType = this.m_sFilesSortType === 'oldest' ? 'newest' : 'oldest';
+    this.applyFileSort();
+  }
+
+  toggleAlphaSort() {
+    this.m_sFilesSortType = this.m_sFilesSortType === 'az' ? 'za' : 'az';
+    this.applyFileSort();
+  }
+
+  previewFile(file: any) {
+    if (file.type === 'image') {
+      this.onPreviewImage(file.name);
+    } else {
+      this.onPreviewDoc(file.name);
+    }
   }
 
   clearImageMarkers(): void {
