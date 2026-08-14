@@ -1,5 +1,68 @@
 div.user-container {
   height: 100%;
 }
+/* Grid Layout for Maps */
+.map-grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+  gap: 1rem;
+  max-width: 600px; /* Limits the max width so cards don't look overly stretched on huge monitors */
+}
 
+/* Base Card Styles */
+.map-theme-card {
+  height: 110px; /* Fixed height, width is handled by the grid */
+  border-radius: 8px;
+  border: 2px solid transparent;
+  transition: all 0.2s ease-in-out;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+.map-theme-card:hover:not(.add-map-card) {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.selected-map {
+  border-color: var(--rise-gold, #efba35) !important;
+  box-shadow: 0 0 10px rgba(239, 186, 53, 0.5);
+}
+
+.selected-icon {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  color: var(--rise-gold, #efba35);
+  background: rgba(0,0,0,0.5);
+  border-radius: 50%;
+  display: flex;
+}
+
+.map-theme-label {
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  font-size: 0.85rem;
+  padding: 4px;
+  backdrop-filter: blur(2px);
+}
+
+/* The 6th Blocked Card */
+.add-map-card {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  box-shadow: none;
+  opacity: 0.6;
+}
+
+.cursor-not-allowed {
+  cursor: not-allowed !important;
+}
+/* Mock Backgrounds - Replace these URLs with real thumbnails of your maps */
+.bg-dark-map { background-color: #242424; background-image: url('/assets/rise-assets/thumb_dark.png'); }
+.bg-osm-map { background-color: #aad3df; background-image: url('/assets/rise-assets/thumb_osm.jpeg'); }
+.bg-topo-map { background-color: #c0d3b5; background-image: url('/assets/rise-assets/thumb_topp.jpeg'); }
+.bg-street-map { background-color: #e5e3df; background-image: url('/assets/rise-assets/thumb_street.png'); }
+.bg-satellite-map { background-color: #1a3b1c; background-image: url('/assets/rise-assets/thumb_staellite.jpeg'); }
 

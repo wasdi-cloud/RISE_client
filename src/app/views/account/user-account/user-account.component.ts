@@ -50,7 +50,13 @@ export class UserAccountComponent implements OnInit,OnDestroy {
   /**
    * UC_060 - Manage User Account
    */
-
+  m_aoBaseMaps = [
+    { id: 'Dark', name: 'Dark Gray', class: 'bg-dark-map' },
+    { id: 'Standard', name: 'OSM Standard', class: 'bg-osm-map' },
+    { id: 'Topology', name: 'Topology', class: 'bg-topo-map' },
+    { id: 'Street', name: 'Esri Street', class: 'bg-street-map' },
+    { id: 'World Imagery', name: 'Satellite', class: 'bg-satellite-map' }
+  ];
   /**
    * User account information
    */
@@ -160,6 +166,14 @@ export class UserAccountComponent implements OnInit,OnDestroy {
     this.m_oDestroy$.complete();
   }
 
+
+  selectDefaultBaseMap(sMapId: string) {
+    // Assuming you add 'defaultBaseMap' to UserViewModel
+    this.m_oUser.defaultBaseMap = sMapId;
+  }
+
+
+
   /**
    * Get user information from the server and set the user object
    */
@@ -171,7 +185,12 @@ export class UserAccountComponent implements OnInit,OnDestroy {
           return;
         }
 
+
+
         this.m_oUser = oResponse;
+        if (!this.m_oUser.defaultBaseMap) {
+          this.m_oUser.defaultBaseMap = 'Dark';
+        }
         this.m_oOriginalUser={...this.m_oUser}
         this.m_sNewUserId=this.m_oUser.userId
         this.setUserLanguage();
@@ -205,9 +224,52 @@ export class UserAccountComponent implements OnInit,OnDestroy {
       this.m_oUser.surname !== this.m_oOriginalUser.surname ||
       this.m_oUser.mobile !== this.m_oOriginalUser.mobile ||
       this.m_sNewUserId !== this.m_oOriginalUser.userId ||
-        this.m_oUser.internationalPrefix != this.m_oOriginalUser.internationalPrefix
-
+      this.m_oUser.internationalPrefix !== this.m_oOriginalUser.internationalPrefix
     );
+  }
+
+  // --- 2. Add specific map change checker ---
+  hasMapChanged(): boolean {
+    return this.m_oUser.defaultBaseMap !== this.m_oOriginalUser.defaultBaseMap;
+  }
+
+  // --- 3. Add specific save method for the map ---
+  saveMapSetting() {
+    let oBody = {
+      name: this.m_oUser.name,
+      surname: this.m_oUser.surname,
+      mobile: this.m_oUser.mobile,
+      internationalPrefix: this.m_oUser.internationalPrefix,
+      userId: this.m_oUser.userId,
+      defaultBaseMap: this.m_oUser.defaultBaseMap // Include the map setting
+    };
+
+    this.m_oUserService.updateUser(oBody).pipe(takeUntil(this.m_oDestroy$)).subscribe({
+      next: (oResponse) => {
+
+        // 1: Update the global ConstantsService user so navigating to Dashboard works
+        let oGlobalUser = this.m_oConstantsService.getUser();
+        if (oGlobalUser) {
+          oGlobalUser.defaultBaseMap = this.m_oUser.defaultBaseMap;
+          this.m_oConstantsService.setUser(oGlobalUser);
+        }
+
+        // 2: Reset the original user so the "Save" button gets disabled again
+        this.m_oOriginalUser = { ...this.m_oUser };
+
+        this.m_oNotificationDialogService.openSnackBar(
+          "Default Map Saved",
+          "Account",
+          'success'
+        );
+      }, error: (oError) => {
+        this.m_oNotificationDialogService.openSnackBar(
+          oError,
+          "Account",
+          'danger'
+        )
+      }
+    });
   }
 
   /**
@@ -229,6 +291,7 @@ export class UserAccountComponent implements OnInit,OnDestroy {
       mobile: this.m_oUser.mobile,
       internationalPrefix: this.m_oUser.internationalPrefix,
       userId: bIsUserIdChanged?this.m_sNewUserId:this.m_oUser.userId,
+      defaultBaseMap: this.m_oUser.defaultBaseMap
     };
     //verify if user id is changed if it is , user have to log in again , if not we proceed
     if(bIsUserIdChanged){

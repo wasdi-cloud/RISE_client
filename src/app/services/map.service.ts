@@ -266,25 +266,87 @@ export class MapService {
   ) {
   }
 
-  setMapOptions() {
-    this.m_oOptions = {
-      layers: [this.m_oDarkGrayArcGIS],
-      zoomControl: false,
-      zoom: 3,
-      minZoom:3,
-      // worldCopyJump: true, // This enables the seamless world wrapping for markers
-      noWrap:true,
-      // center: latLng(0, 0),
-      edit: {featureGroup: this.m_oDrawnItems},
-      fullscreenControl: true,
-      fullscreenControlOptions: {
-        position: 'topleft',
-      },
-    };
+  /**
+   * Safely swaps the active base layer if the map is currently on the screen.
+   */
+  public applyBaseLayer(sLayerId: string) {
+    if (!this.m_oRiseMap) return; // Safety check! Prevents crashes if map is hidden.
+
+    let oTargetLayer = this.m_oDarkGrayArcGIS; // Fallback
+    switch (sLayerId) {
+      case 'Standard':
+        oTargetLayer = this.m_oOSMBasic;
+        break;
+      case 'Topology':
+        oTargetLayer = this.m_oOpenTopoMap;
+        break;
+      case 'Street':
+        oTargetLayer = this.m_oEsriWorldStreetMap;
+        break;
+      case 'World Imagery':
+        oTargetLayer = this.m_oEsriWorldImagery;
+        break;
+      case 'Dark':
+      default:
+        oTargetLayer = this.m_oDarkGrayArcGIS;
+        break;
+    }
+
+    this.setActiveLayer(this.m_oRiseMap, oTargetLayer);
   }
 
+    setMapOptions() {
+      // 1. Make sure base layers exist before we try to use them
+      if (!this.m_oDarkGrayArcGIS) {
+        this.initTilelayer();
+      }
+
+      // 2. Get the user's preference
+      let oUser = this.m_oConstantsService.getUser();
+      let sDefaultLayerId = (oUser && oUser.defaultBaseMap) ? oUser.defaultBaseMap : 'Dark';
+
+      // 3. Match the preference
+      let oDefaultLayer = this.m_oDarkGrayArcGIS; // Fallback
+      switch (sDefaultLayerId) {
+        case 'Standard':
+          oDefaultLayer = this.m_oOSMBasic;
+          break;
+        case 'Topology':
+          oDefaultLayer = this.m_oOpenTopoMap;
+          break;
+        case 'Street':
+          oDefaultLayer = this.m_oEsriWorldStreetMap;
+          break;
+        case 'World Imagery':
+          oDefaultLayer = this.m_oEsriWorldImagery;
+          break;
+        case 'Dark':
+        default:
+          oDefaultLayer = this.m_oDarkGrayArcGIS;
+          break;
+      }
+
+      // 4. Track it as active
+      this.m_oActiveBaseLayer = oDefaultLayer;
+      console.log(oDefaultLayer);
+      // 5. Build the Leaflet options WITH the user's map injected!
+      this.m_oOptions = {
+        layers: [oDefaultLayer], // <--- THIS is what Angular Leaflet reads when it first builds the map!
+        zoomControl: false,
+        zoom: 3,
+        minZoom: 3,
+        noWrap: true,
+        edit: {featureGroup: this.m_oDrawnItems},
+        fullscreenControl: true,
+        fullscreenControlOptions: {
+          position: 'topleft',
+        },
+      };
+    }
+
+
   /**
-   * Set the map object(when created not by the service)
+   * Set the map object (when created not by the service) and force the correct default layer
    * @param oMap
    */
   setMap(oMap: any) {
@@ -1009,10 +1071,10 @@ export class MapService {
         const fDistance = this.calculateDistance(layer.getLatLngs());
         // from mm² to km²
         let sDistanceWithComas = oFormatNumber(fDistance)
-        
+
         sMessage = `Distance: ${sDistanceWithComas} kilometers`;
         sWkt=this.convertLatLngsToWktLineString(layer.getLatLngs());
-      } 
+      }
       else if (sLayerType === 'circle') {
         const iRadius = layer.getRadius();
         const fArea = this.calculateCircleArea(iRadius);
@@ -1021,7 +1083,7 @@ export class MapService {
         sMessage = `Circle Area: ${fAreaWithFormat} Km²`;
         const oCenter=layer.getLatLng();
         sWkt=this.convertCircleToWKT(oCenter,iRadius);
-      } 
+      }
       else {
         const aiLatLngs = layer.getLatLngs()[0];
         const area = this.calculatePolygonArea(aiLatLngs);
@@ -1882,16 +1944,16 @@ export class MapService {
   // Update cleanupPixelInfo to cancel requests and remove handler
   private cleanupPixelInfo() {
     this.m_bPixelInfoOn = false;
-    
+
     // Cancel pending requests
     this.cancelFeatureInfoRequests();
-    
+
     // Remove click handler
     if (this.m_oPixelInfoClickHandler) {
       this.m_oRiseMap.off('click', this.m_oPixelInfoClickHandler);
       this.m_oPixelInfoClickHandler = null;
     }
-  }  
+  }
 
 
   addPrinterButton(oMap: any): Observable<void> {

@@ -21,6 +21,7 @@ import {NotificationsDialogsService} from '../../services/notifications-dialogs.
 import {TranslateService} from '@ngx-translate/core';
 import 'leaflet.fullscreen';
 import {EventViewModel} from "../../models/EventViewModel";
+import {UserService} from "../../services/api/user.service";
 
 // import * as L from 'leaflet';
 declare const L: any;
@@ -124,6 +125,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     private m_oTranslate: TranslateService,
     private m_oViewContainerRef: ViewContainerRef,
     private m_oNgZone: NgZone,
+    private m_oUserService: UserService,
   ) {
     this.m_oMapService.initTilelayer();
     this.m_oMapService.setMapOptions();
@@ -208,10 +210,20 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     if (this.m_bIsSelectingArea) {
       this.m_oMapService.clearPreviousDrawings(oMap);
     }
-    this.m_oMapService.setActiveLayer(
-      oMap,
-      this.m_oMapService.m_oDarkGrayArcGIS
-    );
+
+    // 👇 NEW: Fix the F5 Refresh Timing Issue 👇
+    // This waits for the network to finish loading the user, THEN checks the map preference!
+    this.m_oUserService.getUser().subscribe({
+      next: (user) => {
+        if (user && user.defaultBaseMap) {
+          this.m_oMapService.applyBaseLayer(user.defaultBaseMap);
+        }
+      }
+    });
+    // this.m_oMapService.setActiveLayer(
+    //   oMap,
+    //   this.m_oMapService.m_oActiveBaseLayer ? this.m_oMapService.m_oActiveBaseLayer : this.m_oMapService.m_oDarkGrayArcGIS
+    // );
     let southWest = L.latLng(0, 0);
     let northEast = L.latLng(0, 0);
 

@@ -138,6 +138,8 @@
           ></rise-button>
         </div>
       </div>
+      <!-- ... Previous Email & Password row ... -->
+
       <div class="d-flex flex-row gap-2">
         <!-- System Language Selector -->
         <div class="d-flex flex-column align-items-start col-6">
@@ -161,7 +163,9 @@
             [m_sLabel]="'ORGANIZATION.SAVE'"
           ></rise-button>
         </div>
-        <div class="d-flex flex-column gap-1 ps-2">
+
+        <!-- Notifications Selector (Fixed col-6 width to match Language) -->
+        <div class="d-flex flex-column gap-1 col-6 ps-2">
           <div class="account-sub-header">
             {{ "USER.NOTIFICATIONS" | translate }}
           </div>
@@ -182,6 +186,57 @@
           ></rise-button>
         </div>
       </div>
+
+      <!-- NEW: Default Base Map Selector (Full width block) -->
+      <div class="d-flex flex-column gap-1">
+        <div class="account-sub-header">
+          Default Base Map
+        </div>
+        <p class="account-sub-msg mb-2">
+          Choose the map style that will load by default when you open a workspace.
+        </p>
+
+        <!-- 3x2 Grid Container -->
+        <div class="map-grid-container">
+
+          <!-- 5 Active Maps -->
+          <div *ngFor="let oMap of m_aoBaseMaps"
+               class="map-theme-card d-flex align-items-end p-2 cursor-pointer position-relative"
+               [ngClass]="oMap.class"
+               [class.selected-map]="m_oUser.defaultBaseMap === oMap.id"
+               (click)="selectDefaultBaseMap(oMap.id)">
+
+            <!-- Checkmark -->
+            <div *ngIf="m_oUser.defaultBaseMap === oMap.id" class="selected-icon">
+              <span class="material-symbols-outlined">check_circle</span>
+            </div>
+
+            <!-- Label -->
+            <div class="map-theme-label w-100 text-center rounded">
+              {{ oMap.name }}
+            </div>
+          </div>
+
+          <!-- 6th Blocked 'Add' Card -->
+          <div class="map-theme-card add-map-card d-flex flex-column align-items-center justify-content-center cursor-not-allowed position-relative" title="Coming Soon">
+            <span class="material-symbols-outlined fs-2 text-muted mb-3">add</span>
+
+            <div class="map-theme-label w-100 text-center rounded position-absolute" style="bottom: 8px; width: calc(100% - 16px) !important;">
+              Add Custom
+            </div>
+          </div>
+          <rise-button
+            class="align-self-start mt-3"
+            [m_sRole]="'primary'"
+            [m_bDisabled]="!hasMapChanged()"
+            [m_sLabel]="'ORGANIZATION.SAVE'"
+            (click)="saveMapSetting()"
+          ></rise-button>
+
+        </div>
+      </div>
+
+      <!-- ... Delete Account Area ... -->
       <div
         class="delete-area p-3 d-flex flex-row justify-content-between align-items-center"
       >
