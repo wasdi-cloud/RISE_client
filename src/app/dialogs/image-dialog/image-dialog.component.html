@@ -1,35 +1,45 @@
 <div mat-dialog-content class="attachment-preview-dialog">
 
-    <div class="drag-drop-container d-flex flex-row justify-content-between mt-3">
-        <div class="header-zone">        
-            <div class="icon-container">
-                <span class="file-name">{{ m_oData.oPayload.fileName}}</span>
-                <span class="material-icons file-icon" style="cursor: pointer;" (click)="onDonwloadAttachment()">download</span>
-                <span class="material-icons file-icon" style="cursor: pointer;" (click)="onDeleteAttachment()">delete</span>
-            </div>
+  <!-- TOP BAR (Header & Actions) -->
+  <div class="drag-drop-container d-flex flex-row justify-content-between mt-3 mb-3">
+    <div class="header-zone">
+      <div class="icon-container d-flex align-items-center gap-2">
+        <span class="file-name text-light fw-bold">{{ m_oData.oPayload.fileName }}</span>
+        <span class="material-icons file-icon text-light" style="cursor: pointer;" (click)="onDonwloadAttachment()" title="Download">download</span>
+        <span class="material-icons file-icon text-danger" style="cursor: pointer;" (click)="onDeleteAttachment()" title="Delete">delete</span>
       </div>
-      <div>
-        <span class="material-icons file-icon" style="cursor: pointer;" (click)="m_oDialogRef.close()">close</span>
-      </div>
-    </div>    
-
-    <!-- Check if link contains .mp4 for video -->
-    <div *ngIf="m_oData.oPayload.type === 'image' && m_oData.oPayload.link?.toLowerCase().includes('.mp4')">
-        <video [src]="m_oData.oPayload.link" controls style="width: 90vw; height: 80vh;">
-            Your browser does not support the video tag.
-        </video>
     </div>
-    
-    <!-- Otherwise show as image -->
-    <div *ngIf="m_oData.oPayload.type === 'image' && !m_oData.oPayload.link?.toLowerCase().includes('.mp4')">
-        <img [src]="m_oData.oPayload.link" alt="Preview" class="image-preview">
+    <div>
+      <span class="material-icons file-icon text-light" style="cursor: pointer;" (click)="m_oDialogRef.close()" title="Close">close</span>
+    </div>
+  </div>
+
+  <!-- LOADING SPINNER / INDICATOR -->
+  <div *ngIf="m_bIsLoading" class="d-flex justify-content-center align-items-center" style="height: 70vh;">
+    <div class="text-light fs-5">Loading Preview...</div>
+  </div>
+
+  <!-- PREVIEW AREA (Renders once m_oPreviewUrl is ready) -->
+  <!-- PREVIEW AREA (Renders once m_oPreviewUrl is ready) -->
+  <div *ngIf="!m_bIsLoading && m_oPreviewUrl" class="d-flex justify-content-center align-items-center w-100" style="min-height: 75vh;">
+
+    <!-- 1. VIDEO PREVIEW -->
+    <div *ngIf="isVideo()" class="w-100 d-flex justify-content-center">
+      <video [src]="m_oPreviewUrl" controls autoplay style="max-width: 90vw; max-height: 78vh; background: #000;">
+        Your browser does not support video playback.
+      </video>
     </div>
 
-    <div *ngIf="m_oData.oPayload.type === 'pdf'">
-        <iframe  [src]="m_oPdfUrl" style="width: 90vw; height: 80vh; "></iframe>
+    <!-- 2. IMAGE PREVIEW (FIX: Exclude videos using !isVideo()) -->
+    <div *ngIf="!isVideo() && (m_oData.oPayload.type === 'image')" class="w-100 d-flex justify-content-center">
+      <img [src]="m_oPreviewUrl" alt="Preview" class="image-preview" style="max-width: 90vw; max-height: 78vh; object-fit: contain;">
     </div>
 
-    <div *ngIf="m_oData.oPayload.type === 'txt'">
-        <iframe  [src]="m_oPdfUrl" style="width: 90vw; height: 80vh; "></iframe>
-    </div>    
+    <!-- 3. DOCUMENT PREVIEW (PDF, Text, Logs) -->
+    <div *ngIf="!isVideo() && (m_oData.oPayload.type === 'pdf' || m_oData.oPayload.type === 'txt')" class="w-100 d-flex justify-content-center">
+      <iframe [src]="m_oPreviewUrl" style="width: 90vw; height: 78vh; border: none; background: #fff;"></iframe>
+    </div>
+
+  </div>
+
 </div>
