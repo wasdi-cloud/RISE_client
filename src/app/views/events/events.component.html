@@ -10,14 +10,14 @@
         <div
           class="account-header d-flex flex-row align-items-center justify-content-between mt-2 p-2"
         >
-          {{ "MANAGE_EVENTS.HEADER" | translate }} - {{ m_sAreaName}}
+          {{ "MANAGE_EVENTS.HEADER" | translate }} - {{ m_sAreaName }}
 
           <div class="d-flex flex-row gap-2">
             <rise-button *ngIf="canUserWriteArea()"
-              [m_sSize]="'small'"
-              [m_sRole]="'action'"
-              [m_sLabel]="'MANAGE_EVENTS.CREATE_NEW_EVENT'"
-              (click)="onCreateNewEvent()"
+                         [m_sSize]="'small'"
+                         [m_sRole]="'action'"
+                         [m_sLabel]="'MANAGE_EVENTS.CREATE_NEW_EVENT'"
+                         (click)="onCreateNewEvent()"
             ></rise-button>
             <rise-button
               [m_sSize]="'small'"
@@ -45,11 +45,11 @@
                           {{ m_sSortDirection === 'asc' ? '↑' : '↓' }}
                         </ng-template>
                   </span>
-                 </td>
+                </td>
 
-                  <td (click)="sortBy('peakDate')" style="cursor: pointer;">
-                   {{ "EVENT.PEAK_DATE" | translate }}
-                     <span>
+                <td (click)="sortBy('peakDate')" style="cursor: pointer;">
+                  {{ "EVENT.PEAK_DATE" | translate }}
+                  <span>
                       <ng-container *ngIf="m_sSortField !== 'peakDate'; else sortedPeak">
                         ⇅
                       </ng-container>
@@ -57,10 +57,10 @@
                         {{ m_sSortDirection === 'asc' ? '↑' : '↓' }}
                       </ng-template>
                     </span>
-                  </td>
+                </td>
 
-                  <td (click)="sortBy('endDate')" style="cursor: pointer;">
-                              {{ "EVENT.END_DATE" | translate }}
+                <td (click)="sortBy('endDate')" style="cursor: pointer;">
+                  {{ "EVENT.END_DATE" | translate }}
                   <span>
                       <ng-container *ngIf="m_sSortField !== 'endDate'; else sortedEnd">
                         ⇅
@@ -76,15 +76,15 @@
               <tbody>
               <tr *ngFor="let oEvent of m_aoEvents">
                 <td>{{ oEvent.name }}</td>
-                <td>{{ getNameOfEventType(oEvent.type)}}</td>
-                <td>{{ oEvent.startDate*1000| date : 'yyyy-MM-dd' }}</td>
-                <td>{{ oEvent.peakDate*1000| date : 'yyyy-MM-dd' }}</td>
-                <td>{{ oEvent.endDate*1000| date : 'yyyy-MM-dd' }}</td>
+                <td>{{ getNameOfEventType(oEvent.type) }}</td>
+                <td>{{ oEvent.startDate * 1000| date : 'yyyy-MM-dd' }}</td>
+                <td>{{ oEvent.peakDate * 1000| date : 'yyyy-MM-dd' }}</td>
+                <td>{{ oEvent.endDate * 1000| date : 'yyyy-MM-dd' }}</td>
                 <td class="d-flex flex-row justify-content-end gap-2">
               <span *ngIf="canUserWriteArea()"
-                class="material-symbols-outlined edit"
-                [matTooltip]="'Edit Event'"
-                (click)="editEvent(oEvent)"
+                    class="material-symbols-outlined edit"
+                    [matTooltip]="'Edit Event'"
+                    (click)="editEvent(oEvent)"
               >
                 edit
               </span>
@@ -97,9 +97,9 @@
                 jump_to_element
               </span>
                   <span *ngIf="canUserWriteArea()"
-                    class="material-symbols-outlined remove"
-                    [matTooltip]="'Remove Event'"
-                    (click)="deleteEvent(oEvent)"
+                        class="material-symbols-outlined remove"
+                        [matTooltip]="'Remove Event'"
+                        (click)="deleteEvent(oEvent)"
                   >
                 delete
               </span>
@@ -120,10 +120,12 @@
   <div
     class="create-container h-100 d-flex flex-column justify-content-between px-4"
   >
-    <div class="account-header d-flex flex-row align-items-center justify-content-between mt-2 p-2" *ngIf="m_bCreateNewEvent">
+    <div class="account-header d-flex flex-row align-items-center justify-content-between mt-2 p-2"
+         *ngIf="m_bCreateNewEvent">
       {{ "MANAGE_EVENTS.CREATE_NEW_EVENT" | translate }}
     </div>
-    <div class="account-header d-flex flex-row align-items-center justify-content-between mt-2 p-2" *ngIf="m_bUpdatingEvent">
+    <div class="account-header d-flex flex-row align-items-center justify-content-between mt-2 p-2"
+         *ngIf="m_bUpdatingEvent">
       {{ "MANAGE_EVENTS.EDIT_EVENT" | translate }}
     </div>
     <div class="body flex-fill d-flex flex-row my-3">
@@ -136,7 +138,8 @@
           ></rise-text-input>
           <div class="align-items-md-start d-flex">
             <span class="toggle-label">Public event</span>
-            <mat-slide-toggle labelPosition="before" (change)="onSwitchPublicButton($event)" [(ngModel)]="m_oEvent.publicEvent" class="custom-toggle"></mat-slide-toggle>
+            <mat-slide-toggle labelPosition="before" (change)="onSwitchPublicButton($event)"
+                              [(ngModel)]="m_oEvent.publicEvent" class="custom-toggle"></mat-slide-toggle>
           </div>
           <rise-textarea-input
             [m_bHasTitle]="true"
@@ -173,8 +176,9 @@
 
           <!--          todo add date range here with switch button for live or no-->
           <div class="align-items-md-start d-flex">
-            <span class="toggle-label">{{"CREATE_NEW_EVENT.ON_GOING_EVENT" | translate }}</span>
-            <mat-slide-toggle labelPosition="before" (change)="onSwitchOnGoingButton($event)" [(ngModel)]="m_oEvent.inGoing" class="custom-toggle"></mat-slide-toggle>
+            <span class="toggle-label">{{ "CREATE_NEW_EVENT.ON_GOING_EVENT" | translate }}</span>
+            <mat-slide-toggle labelPosition="before" (change)="onSwitchOnGoingButton($event)"
+                              [(ngModel)]="m_oEvent.inGoing" class="custom-toggle"></mat-slide-toggle>
           </div>
 
 
@@ -209,6 +213,8 @@
         </div>
       </div>
       <div class="map-container-create flex-fill">
+
+        <!-- 1. THE MAP -->
         <rise-map
           (m_oMapInputChange)="onMapInputChange($event)"
           [m_bIsSelectingArea]="m_bCreateNewEvent"
@@ -216,57 +222,78 @@
           [m_oEvent]="m_bUpdatingEvent?m_oEvent:{}"
         ></rise-map>
 
-      <div class="drag-drop-container d-flex flex-row justify-content-between mt-3">
-        <div class="download-zone">
-          <div *ngFor="let sFile of m_asEventImages" class="file-item" (click)="onPreviewImage(sFile)">
-            <div class="attachment-icon-container">
-              <span class="material-icons file-icon">image</span>
-              <span class="file-name">{{ sFile }}</span>
-            </div>
-          </div>
-        </div>
-        <div class="download-zone">
-          <div *ngFor="let sFile of m_asEventDocs" class="file-item" (click)="onPreviewDoc(sFile)">
-            <div class="attachment-icon-container">
-              <span class="material-icons file-icon">description</span>
-              <span class="file-name">{{ sFile }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
+        <!-- 2. THE ATTACHMENTS LIST (Placed in the middle!) -->
+        <div class="d-flex flex-column mt-3" *ngIf="!m_bCreateNewEvent && m_aoAllFiles.length > 0">
 
-        <!-- Drag-and-Drop Zones -->
+          <div class="d-flex flex-row justify-content-between align-items-center mb-2 px-1">
+            <span class="text-uppercase text-light small fw-bold">
+              Event Attachments ({{ m_aoAllFiles.length }})
+            </span>
+
+            <!-- NEW: Text-based Sorting Toggles -->
+            <div class="d-flex align-items-center gap-3">
+
+              <!-- Time Sort (Oldest / Newest) -->
+              <span class="cursor-pointer transition-all small fw-bold user-select-none text-uppercase"
+                    [class.text-light]="m_sFilesSortType === 'oldest' || m_sFilesSortType === 'newest'"
+                    [class.text-muted]="m_sFilesSortType !== 'oldest' && m_sFilesSortType !== 'newest'"
+                    (click)="toggleTimeSort()"
+                    style="letter-spacing: 0.5px;"
+                    title="Click to toggle time sort">
+                    {{ m_sFilesSortType === 'newest' ? 'Newest' : 'Oldest' }}
+              </span>
+
+              <!-- Alpha Sort (A-Z / Z-A) -->
+              <span class="cursor-pointer transition-all small fw-bold user-select-none text-uppercase"
+                    [class.text-light]="m_sFilesSortType === 'az' || m_sFilesSortType === 'za'"
+                    [class.text-muted]="m_sFilesSortType !== 'az' && m_sFilesSortType !== 'za'"
+                    (click)="toggleAlphaSort()"
+                    style="letter-spacing: 0.5px;"
+                    title="Click to toggle alphabetical sort">
+                    {{ m_sFilesSortType === 'za' ? 'Z-A' : 'A-Z' }}
+              </span>
+
+            </div>
+          </div>
+
+          <div class="file-list-container">
+            <div class="file-list-item d-flex flex-row align-items-center justify-content-between p-3 border-bottom border-secondary"
+                 *ngFor="let file of m_aoAllFiles"
+                 (click)="previewFile(file)">
+
+              <div class="d-flex flex-row align-items-center gap-3 overflow-hidden flex-fill">
+                <span class="badge" [ngClass]="file.type === 'image' ? 'bg-primary' : 'bg-secondary'" style="width: 45px; opacity: 0.9;">
+                  {{ file.type === 'image' ? 'IMG' : 'DOC' }}
+                </span>
+                <span class="text-truncate text-light mb-0" style="font-size: 0.95rem;" [title]="file.name">
+                  {{ file.name }}
+                </span>
+              </div>
+              <span class="material-symbols-outlined fs-6 text-muted file-open-icon">open_in_new</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. THE UPLOAD ZONES (Placed at the bottom!) -->
         <div class="drag-drop-container d-flex flex-row justify-content-between mt-3" *ngIf="!m_bCreateNewEvent">
-          <!-- Images Drag-and-Drop -->
-          <div class="drag-drop-zone">
-            <rise-drag-and-drop
-              (m_oSelectedFileOutput)="setImageFile($event)"
-            ></rise-drag-and-drop>
-          </div>
-          <rise-button
-          [m_sLabel]="'CREATE_NEW_EVENT.UPLOAD_IMAGES'"
-          [m_bDisabled]="m_oUploadImageFile==null"
-          (click)="uploadImage()"
-        ></rise-button>
 
-          <!-- Documents Drag-and-Drop -->
           <div class="drag-drop-zone">
-            <rise-drag-and-drop
-              (m_oSelectedFileOutput)="setDocumentFile($event)"
-            ></rise-drag-and-drop>
+            <rise-drag-and-drop (m_oSelectedFileOutput)="setImageFile($event)"></rise-drag-and-drop>
           </div>
-          <rise-button
-          [m_sLabel]="'CREATE_NEW_EVENT.UPLOAD_DOCUMENTS'"
-          [m_bDisabled]="m_oUploadDocFile==null"
-          (click)="uploadDocument()"
-        ></rise-button>
+          <rise-button [m_sLabel]="'CREATE_NEW_EVENT.UPLOAD_IMAGES'" [m_bDisabled]="m_oUploadImageFile==null" (click)="uploadImage()"></rise-button>
 
+          <div class="drag-drop-zone">
+            <rise-drag-and-drop (m_oSelectedFileOutput)="setDocumentFile($event)"></rise-drag-and-drop>
+          </div>
+          <rise-button [m_sLabel]="'CREATE_NEW_EVENT.UPLOAD_DOCUMENTS'" [m_bDisabled]="m_oUploadDocFile==null" (click)="uploadDocument()"></rise-button>
         </div>
+
         <div class="drag-drop-container d-flex flex-row justify-content-between mt-3" *ngIf="m_bCreateNewEvent">
-          <div>
+          <div class="text-light">
             {{ "MANAGE_EVENTS.CREATION_UPLOAD_ALTERNATIVE_TEXT" | translate }}
           </div>
         </div>
+
       </div>
 
     </div>

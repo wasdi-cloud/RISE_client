@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {RiseToolbarComponent} from "../../components/rise-toolbar/rise-toolbar.component";
-import {DatePipe, NgForOf, NgIf, TitleCasePipe} from "@angular/common";
+import {DatePipe, NgClass, NgForOf, NgIf, TitleCasePipe} from "@angular/common";
 import {RiseButtonComponent} from "../../components/rise-button/rise-button.component";
 import {TranslateModule} from "@ngx-translate/core";
 import {EventViewModel} from "../../models/EventViewModel";
@@ -54,14 +54,17 @@ import {Subject, takeUntil} from "rxjs";
     RiseDateInputComponent,
     MatSlideToggleModule,
     FormsModule,
-    TitleCasePipe
+    TitleCasePipe,
+    NgClass
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './events.component.html',
   styleUrl: './events.component.css'
 })
 export class EventsComponent implements OnInit, OnDestroy {
-
+  m_sFilesSortType: 'oldest' | 'newest' | 'az' | 'za' = 'oldest';
+  m_aoAllFiles: any[] = []; // Unified list for the UI
+  m_asOriginalAllFiles: any[] = []; // Backup for "Time Added" sorting
   m_sSortField: string = '';
   m_sSortDirection: 'asc' | 'desc' | '' = '';
   m_aoOriginalEvents: EventViewModel[] = []; // Backup the original order
@@ -149,23 +152,63 @@ export class EventsComponent implements OnInit, OnDestroy {
   }
 
   loadEventAttachments() {
+    this.m_asOriginalAllFiles = [];
+    this.m_aoAllFiles = [];
+
+    // Load Images
     this.m_oAttachmentService.list("event_images", this.m_oEvent.id).pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse) => {
-        this.m_asEventImages = oResponse.files;
-      },
-      error: (oError) => {
-        console.error("Error loading image attachment", oError);
+        const files = oResponse.files || [];
+        files.forEach(f => this.m_asOriginalAllFiles.push({ name: f, type: 'image' }));
+        this.applyFileSort();
       }
     });
 
+    // Load Documents
     this.m_oAttachmentService.list("event_docs", this.m_oEvent.id).pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse) => {
-        this.m_asEventDocs = oResponse.files;
-      },
-      error: (oError) => {
-        console.error("Error loading document attachment", oError);
+        const files = oResponse.files || [];
+        files.forEach(f => this.m_asOriginalAllFiles.push({ name: f, type: 'doc' }));
+        this.applyFileSort();
       }
     });
+  }
+
+  // --- Unified Sorting Method ---
+  applyFileSort() {
+    // Create a shallow copy so we don't destroy the original array
+    let copy = [...this.m_asOriginalAllFiles];
+
+    if (this.m_sFilesSortType === 'oldest') {
+      this.m_aoAllFiles = copy;
+    } else if (this.m_sFilesSortType === 'newest') {
+      this.m_aoAllFiles = copy.reverse();
+    } else if (this.m_sFilesSortType === 'az') {
+      this.m_aoAllFiles = copy.sort((a,b) => a.name.localeCompare(b.name));
+    } else if (this.m_sFilesSortType === 'za') {
+      this.m_aoAllFiles = copy.sort((a,b) => b.name.localeCompare(a.name));
+    }
+  }
+
+  toggleTimeSort() {
+    // Swap between oldest and newest
+    this.m_sFilesSortType = this.m_sFilesSortType === 'oldest' ? 'newest' : 'oldest';
+    this.applyFileSort();
+  }
+
+  toggleAlphaSort() {
+    // Swap between A-Z and Z-A
+    this.m_sFilesSortType = this.m_sFilesSortType === 'az' ? 'za' : 'az';
+    this.applyFileSort();
+  }
+
+  // --- Unified Click Handler ---
+  previewFile(file: any) {
+    if (file.type === 'image') {
+      this.onPreviewImage(file.name);
+    } else {
+      this.onPreviewDoc(file.name);
+    }
   }
 
 
