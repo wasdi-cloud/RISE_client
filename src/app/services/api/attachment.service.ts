@@ -16,24 +16,19 @@ export class AttachmentService {
   ) {}
 
   /**
-   * Uplaod an attachment
-   * @param sCollection 
-   * @param sFolder 
-   * @param sName 
-   * @param bNotSameName 
-   * @param oBody 
-   * @returns 
+   * Upload an attachment
    */
-  upload(sCollection: string, sFolder: string, sName: string, oBody, bNotSameName=false) {
+  upload(sCollection: string, sFolder: string, sName: string, oBody: any, bNotSameName = false, lat?: number, lng?: number) {
 
     let sUrlParams = '?collection=' + sCollection + '&folder=' + sFolder + '&name=' + encodeURI(sName);
 
-    if (bNotSameName) {
-      sUrlParams += '&notsamename=true';
+    sUrlParams += bNotSameName ? '&notsamename=true' : '&notsamename=false';
+
+    // NEW: Append coordinates if they are provided
+    if (lat != null && lng != null) {
+      sUrlParams += `&lat=${lat}&lng=${lng}`;
     }
-    else {
-      sUrlParams += '&notsamename=false';
-    }
+
     return this.m_oHttp.post<any>(
       this.APIURL + '/attachment/upload' + sUrlParams,
       oBody
@@ -42,11 +37,11 @@ export class AttachmentService {
 
   /**
    * Get an attachment file
-   * @param sCollection 
-   * @param sFolder 
-   * @param sName 
-   * @param sToken 
-   * @returns 
+   * @param sCollection
+   * @param sFolder
+   * @param sName
+   * @param sToken
+   * @returns
    */
   get(sCollection: string, sFolder: string, sName: string, sToken: string) {
     let sUrlParams = '?collection=' + sCollection + '&folder=' + sFolder + '&name=' + encodeURI(sName);
@@ -60,10 +55,10 @@ export class AttachmentService {
 
   /**
    * Check if an attachment file exists
-   * @param sCollection 
-   * @param sFolder 
-   * @param sName 
-   * @returns 
+   * @param sCollection
+   * @param sFolder
+   * @param sName
+   * @returns
    */
   exists(sCollection: string, sFolder: string, sName: string) {
     let sUrlParams = '?collection=' + sCollection + '&folder=' + sFolder + '&name=' + encodeURI(sName);
@@ -73,9 +68,9 @@ export class AttachmentService {
 
   /**
    * List all the attachment files in a folder
-   * @param sCollection 
-   * @param sFolder 
-   * @returns 
+   * @param sCollection
+   * @param sFolder
+   * @returns
    */
   list(sCollection: string, sFolder: string) {
     let sUrlParams = '?collection=' + sCollection + '&folder=' + sFolder;
@@ -84,10 +79,10 @@ export class AttachmentService {
 
   /**
    * Delete an attachment file
-   * @param sCollection 
-   * @param sFolder 
-   * @param sName 
-   * @returns 
+   * @param sCollection
+   * @param sFolder
+   * @param sName
+   * @returns
    */
   delete(sCollection: string, sFolder: string, sName: string) {
     let sUrlParams = '?collection=' + sCollection + '&folder=' + sFolder + '&name=' + encodeURI(sName);
@@ -96,10 +91,10 @@ export class AttachmentService {
 
   /**
    * Get the link to an attachment file
-   * @param sCollection 
-   * @param sFolder 
-   * @param sName 
-   * @returns 
+   * @param sCollection
+   * @param sFolder
+   * @param sName
+   * @returns
    */
   getAttachmentLink(sCollection: string, sFolder: string, sName: string) {
 

@@ -42,6 +42,7 @@ import { PluginService } from '../../services/api/plugin.service';
 import e from 'express';
 import L from 'leaflet';
 import {FormsModule} from "@angular/forms";
+import {UserRole} from "../../models/UserRole";
 
 /**
  * TODO THERE IS A BIG NAMING PROBLEM HERE, plugin, maps, layers, plugins here in the client is
@@ -174,7 +175,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   /**
    * List of Event image markers
    */
-  m_aoEventImageMarkers: Array<{fileName: string, lat: number, lon: number}> = [];
+  m_aoEventImageMarkers: Array<{fileName: string, lat: number, lon: number, type?: string}> = [];
 
   /**
    * Layer group for image markers
@@ -260,6 +261,15 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    * Subject to handle unsubscription on component destroy
    */
   private m_oDestroy$ = new Subject<void>();
+
+
+  // --- Quick Upload Variables ---
+  m_oQuickUploadFile: any = null;
+  m_sQuickUploadFileName: string = "";
+  m_sQuickUploadType: 'image' | 'doc' = 'image';
+
+  m_oSelectedLocation: { lat: number; lng: number } | null = null;
+  m_oTempLocationMarker: any = null;
 
   constructor(
     private m_oActivatedRoute: ActivatedRoute,
@@ -371,6 +381,117 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       if (valA < valB) return this.m_bSortAscending ? -1 : 1;
       if (valA > valB) return this.m_bSortAscending ? 1 : -1;
       return 0;
+    });
+  }
+
+
+  // --- Quick Upload Methods for Monitor ---
+
+  canUserWriteArea(): boolean {
+    let oUser = this.m_oConstantsService.getUser();
+
+    if (oUser == null || this.m_oAreaOfOperation == null) {
+      return false;
+    }
+
+    // User can write if they belong to the same organization, OR if they are an admin
+    if (oUser.organizationId == this.m_oAreaOfOperation.organizationId) {
+      return true;
+    }
+
+    if (oUser.role != UserRole.FIELD) {
+      return true;
+    }
+
+    return false;
+  }
+
+  triggerQuickUpload(sType: 'image' | 'doc') {
+    this.m_sQuickUploadType = sType;
+
+    // Create a hidden file input dynamically to trigger the browser's file picker
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = sType === 'image' ? 'image/*,video/mp4,video/quicktime' : '.pdf,.doc,.docx,.txt,.csv';
+
+    fileInput.onchange = (event: any) => {
+      const file = event.target.files[0];
+      if (file) {
+        this.m_oQuickUploadFile = file;
+        this.m_sQuickUploadFileName = file.name;
+
+        // Let the user know they can click the map now!
+        this.m_oNotificationService.openSnackBar(
+          "File selected! Click anywhere on the map to pin its location, or click Upload to skip.",
+          "Location Required?",
+          "success"
+        );
+      }
+    };
+
+    fileInput.click();
+  }
+
+  // --- New Map Click Handlers for Monitor ---
+  onMapClicked(event: {lat: number, lng: number}) {
+    // Only drop a pin if we are actively trying to quick-upload a file
+    if (this.m_oQuickUploadFile) {
+      this.m_oSelectedLocation = { lat: event.lat, lng: event.lng };
+
+      const oMap = this.m_oMapService.getMap();
+
+      // Remove old temp marker if it exists
+      if (this.m_oTempLocationMarker) {
+        oMap.removeLayer(this.m_oTempLocationMarker);
+      }
+
+      // Draw a bright green pin to indicate the pending upload location
+      this.m_oTempLocationMarker = L.marker([event.lat, event.lng], {
+        icon: L.divIcon({
+          html: '<span class="material-icons" style="color: #00ff00; font-size: 32px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">add_location</span>',
+          className: 'custom-temp-marker',
+          iconSize: [32, 32],
+          iconAnchor: [16, 32]
+        })
+      }).addTo(oMap);
+    }
+  }
+
+  clearLocation() {
+    this.m_oSelectedLocation = null;
+    if (this.m_oTempLocationMarker) {
+      this.m_oMapService.getMap().removeLayer(this.m_oTempLocationMarker);
+      this.m_oTempLocationMarker = null;
+    }
+  }
+
+  // --- Update these two existing methods ---
+  cancelQuickUpload() {
+    this.m_oQuickUploadFile = null;
+    this.m_sQuickUploadFileName = "";
+    this.clearLocation(); // Clear the green pin!
+  }
+
+  executeQuickUpload() {
+    if (!this.m_oQuickUploadFile) return;
+
+    const oFormData = new FormData();
+    oFormData.append("file", this.m_oQuickUploadFile);
+
+    const sEndpoint = this.m_sQuickUploadType === 'image' ? 'event_images' : 'event_docs';
+
+    // We now use the actual dropped pin coordinates instead of the measurement tool!
+    this.m_oAttachmentService.upload(sEndpoint, this.m_oSelectedEvent.id, this.m_sQuickUploadFileName, oFormData, false, this.m_oSelectedLocation?.lat, this.m_oSelectedLocation?.lng)
+      .pipe(takeUntil(this.m_oDestroy$)).subscribe({
+      next: (oResponse) => {
+        this.m_oNotificationService.openSnackBar("Attachment uploaded successfully!", "Success", "success");
+        this.cancelQuickUpload(); // Clears file and green pin
+        this.loadEventAttachments(this.m_oSelectedEvent.id); // Refresh list
+      },
+      error: (oError) => {
+        console.error("Upload failed", oError);
+        this.m_oNotificationService.openSnackBar("Failed to upload attachment", "Error", "danger");
+      }
     });
   }
 
@@ -1063,41 +1184,119 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     }
   }
 
-  loadEventAttachments(sEventId:string) {
-    // Reset our unified arrays
+  loadEventAttachments(sEventId: string) {
     this.m_aoAllFiles = [];
     this.m_asOriginalAllFiles = [];
+
+    // FIX: Clear markers ONCE at the top to prevent async race conditions!
+    this.m_aoEventImageMarkers = [];
 
     // 1. FOR IMAGES/VIDEOS:
     this.m_oAttachmentService.list("event_images", sEventId).subscribe({
       next: (oResponse) => {
         this.m_asEventImages = oResponse.files || [];
-        // (Keep your event markers logic here if you are in monitor.component)
 
         for (let i = 0; i < oResponse.files.length; i++) {
           let sFileName = oResponse.files[i];
           let bIsVideo = sFileName.toLowerCase().endsWith('.mp4') || sFileName.toLowerCase().endsWith('.mov') || sFileName.toLowerCase().endsWith('.avi');
+          let sType = bIsVideo ? 'video' : 'image';
 
-          // Assign 'video' or 'image' dynamically
-          this.m_asOriginalAllFiles.push({ name: sFileName, type: bIsVideo ? 'video' : 'image' });
+          this.m_asOriginalAllFiles.push({ name: sFileName, type: sType });
+
+          // Capture coordinates
+          if (oResponse.lats && oResponse.lngs && oResponse.lats[i] !== -9999.0 && oResponse.lngs[i] !== -9999.0) {
+            this.m_aoEventImageMarkers.push({
+              fileName: sFileName, lat: oResponse.lats[i], lon: oResponse.lngs[i], type: sType
+            });
+          }
         }
         this.applyFileSort();
+        this.addImageMarkersToMap();
       }
     });
 
     // 2. FOR DOCUMENTS:
-    this.m_oAttachmentService.list("event_docs",sEventId).subscribe({
+    this.m_oAttachmentService.list("event_docs", sEventId).subscribe({
       next: (oResponse) => {
         this.m_asEventDocs = oResponse.files || [];
+
         for (let i = 0; i < oResponse.files.length; i++) {
           let sFileName = oResponse.files[i];
-          // Just in case someone uploaded a video as a document!
           let bIsVideo = sFileName.toLowerCase().endsWith('.mp4') || sFileName.toLowerCase().endsWith('.mov') || sFileName.toLowerCase().endsWith('.avi');
+          let sType = bIsVideo ? 'video' : 'doc';
 
-          this.m_asOriginalAllFiles.push({ name: sFileName, type: bIsVideo ? 'video' : 'doc' });
+          this.m_asOriginalAllFiles.push({ name: sFileName, type: sType });
+
+          // Capture coordinates
+          if (oResponse.lats && oResponse.lngs && oResponse.lats[i] !== -9999.0 && oResponse.lngs[i] !== -9999.0) {
+            this.m_aoEventImageMarkers.push({
+              fileName: sFileName, lat: oResponse.lats[i], lon: oResponse.lngs[i], type: sType
+            });
+          }
         }
         this.applyFileSort();
+        this.addImageMarkersToMap();
       }
+    });
+  }
+
+  previewFile(file: any) {
+    if (file.type === 'image' || file.type === 'video') {
+      this.onPreviewImage(file.name);
+    } else {
+      this.onPreviewDoc(file.name);
+    }
+  }
+
+  addImageMarkersToMap(): void {
+    this.clearImageMarkers();
+
+    if (this.m_aoEventImageMarkers.length === 0)  {
+      return;
+    }
+
+    const oMap = this.m_oMapService.getMap();
+    this.m_oImageMarkersLayer = L.layerGroup().addTo(oMap);
+
+    this.m_aoEventImageMarkers.forEach(oMarker => {
+
+      // Dynamically pick the icon and color based on the file type!
+      let sIconName = 'photo_camera';
+      let sIconColor = '#efba35'; // gold
+
+      if (oMarker.type === 'doc') {
+        sIconName = 'description';
+        sIconColor = '#a8b2bc'; // light gray
+      } else if (oMarker.type === 'video') {
+        sIconName = 'videocam';
+        sIconColor = '#dc3545'; // red
+      }
+
+      const oIcon = L.divIcon({
+        html: `<span class="material-icons" style="color: ${sIconColor}; font-size: 24px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">${sIconName}</span>`,
+        className: 'custom-image-marker',
+        iconSize: [24, 24],
+        iconAnchor: [12, 24],
+        popupAnchor: [0, -24]
+      });
+
+      const oImageMarkerLeaflet = L.marker([oMarker.lat, oMarker.lon], {
+        icon: oIcon,
+        title: oMarker.fileName
+      });
+
+      // Pass the whole object to previewFile so it routes docs/images correctly
+      oImageMarkerLeaflet.on('click', () => {
+        this.previewFile({ name: oMarker.fileName, type: oMarker.type || 'image' });
+      });
+
+      oImageMarkerLeaflet.bindTooltip(oMarker.fileName, {
+        permanent: false,
+        direction: 'top',
+        offset: [0, -10]
+      });
+
+      this.m_oImageMarkersLayer.addLayer(oImageMarkerLeaflet);
     });
   }
 
@@ -1125,13 +1324,6 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     this.applyFileSort();
   }
 
-  previewFile(file: any) {
-    if (file.type === 'image') {
-      this.onPreviewImage(file.name);
-    } else {
-      this.onPreviewDoc(file.name);
-    }
-  }
 
   clearImageMarkers(): void {
     if (this.m_oImageMarkersLayer) {
@@ -1141,56 +1333,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     }
   }
 
- /**
-   * Add image markers to the map
-   */
-  addImageMarkersToMap(): void {
-    // Remove existing markers if any
-    this.clearImageMarkers();
 
-    if (this.m_aoEventImageMarkers.length === 0)  {
-      return;
-    }
-
-    const oMap = this.m_oMapService.getMap();
-
-    // Create a layer group for image markers
-    this.m_oImageMarkersLayer = L.layerGroup().addTo(oMap);
-
-    // Add each marker
-    this.m_aoEventImageMarkers.forEach(oImageMarker => {
-      // Create custom icon using Material Icons (no PNG needed)
-      const oIcon = L.divIcon({
-        html: '<span class="material-icons" style="color: #efba35; font-size: 24px;">photo_camera</span>',
-        className: 'custom-image-marker',
-        iconSize: [24, 24],
-        iconAnchor: [12, 24],
-        popupAnchor: [0, -24]
-      });
-
-      // Create marker
-      const oImageMarkerLeaflet = L.marker([oImageMarker.lat, oImageMarker.lon], {
-        icon: oIcon,
-        title: oImageMarker.fileName
-      });
-
-      // Add click event
-      oImageMarkerLeaflet.on('click', () => {
-        this.onPreviewImage(oImageMarker.fileName);
-      });
-
-      // Optional: Add tooltip
-      oImageMarkerLeaflet.bindTooltip(oImageMarker.fileName, {
-        permanent: false,
-        direction: 'top',
-        offset: [0, -10]
-      });
-
-      // Add to layer group
-      this.m_oImageMarkersLayer.addLayer(oImageMarkerLeaflet);
-    });
-
-  }
 
   onPreviewImage(sFileName: string) {
     if (sFileName) {

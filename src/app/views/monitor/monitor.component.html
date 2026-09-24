@@ -208,7 +208,49 @@
               <p class="mb-1">{{ 'MONITOR.EVENT_START' | translate }} : {{ m_oSelectedEvent.startDate * 1000 | date: 'medium' : 'UTC' }}</p>
               <p class="mb-1">{{ 'MONITOR.EVENT_PEAK' | translate }} : {{ m_oSelectedEvent.peakDate * 1000 | date: 'medium' : 'UTC' }}</p>
               <p class="mb-1">{{ 'MONITOR.EVENT_END' | translate }} : {{ m_oSelectedEvent.endDate * 1000 | date: 'medium' : 'UTC' }}</p>
+              <!-- NEW: QUICK UPLOAD SHORTCUT (Only visible if user has write permissions) -->
+              <div class="mt-3 border-top border-secondary pt-3" *ngIf="canUserWriteArea()">
 
+                <!-- State 1: Pick a file type -->
+                <div class="d-flex flex-row gap-2" *ngIf="!m_oQuickUploadFile">
+                  <button class="btn btn-sm btn-outline-light flex-fill d-flex align-items-center justify-content-center gap-2" (click)="triggerQuickUpload('image')">
+                    <span class="material-symbols-outlined fs-6 text-primary">add_a_photo</span> Image / Video
+                  </button>
+                  <button class="btn btn-sm btn-outline-light flex-fill d-flex align-items-center justify-content-center gap-2" (click)="triggerQuickUpload('doc')">
+                    <span class="material-symbols-outlined fs-6 text-secondary">description</span> Document
+                  </button>
+                </div>
+
+                <!-- State 2: File Selected -> Confirm Location & Upload -->
+                <!-- State 2: File Selected -> Confirm Location & Upload -->
+                <div class="d-flex flex-column gap-2" *ngIf="m_oQuickUploadFile">
+                  <div class="d-flex align-items-center justify-content-between p-2 rounded" style="background-color: rgba(255,255,255,0.05); border: 1px dashed var(--rise-gold);">
+                    <div class="d-flex align-items-center gap-2 overflow-hidden">
+                      <span class="material-symbols-outlined text-success">check_circle</span>
+                      <span class="small text-light text-truncate">{{ m_sQuickUploadFileName }}</span>
+                    </div>
+                    <span class="material-symbols-outlined fs-6 text-danger cursor-pointer" (click)="cancelQuickUpload()" title="Cancel">close</span>
+                  </div>
+
+                  <!-- UI HELPER: Prompt user to click the map -->
+                  <div *ngIf="!m_oSelectedLocation" class="d-flex align-items-center gap-2">
+                    <span class="material-symbols-outlined pulse-animation" style="color: var(--rise-gold);">touch_app</span>
+                    <span class="small text-light" style="font-size: 0.8rem;">Click the map to drop a pin, then click Upload!</span>
+                  </div>
+
+                  <!-- UI HELPER: Location confirmed -->
+                  <div *ngIf="m_oSelectedLocation" class="text-success small d-flex align-items-center gap-1 fw-bold px-1">
+                    <span class="material-symbols-outlined fs-6">location_on</span>
+                    {{ m_oSelectedLocation.lat | number:'1.4-4' }}, {{ m_oSelectedLocation.lng | number:'1.4-4' }}
+                    <span class="material-symbols-outlined fs-6 text-danger cursor-pointer ms-auto" (click)="clearLocation()" title="Clear Location">close</span>
+                  </div>
+
+                  <button class="btn btn-sm btn-success w-100 fw-bold" (click)="executeQuickUpload()">
+                    {{ m_oSelectedLocation ? 'UPLOAD WITH LOCATION' : 'UPLOAD NOW' }}
+                  </button>
+                </div>
+
+              </div>
               <!-- EVENT ATTACHMENTS (Sleek List) -->
               <div class="d-flex flex-column mt-3" *ngIf="m_aoAllFiles.length > 0">
 
@@ -346,7 +388,9 @@
       <rise-map  #mapElement class="map-section"
                  [m_bMonitorMap]="true"
                  [m_bDashboardMap]="true"
+                 [m_oEvent]="m_bShowEventInfo ? m_oSelectedEvent : {}"
                  (m_bPrintButtonClick)="onPrintButtonClick()"
+                 (m_oMapClick)="onMapClicked($event)"
                  (m_oMapInputChange)="handleMeasurementTool($event)"
       ></rise-map>
       <rise-timebar

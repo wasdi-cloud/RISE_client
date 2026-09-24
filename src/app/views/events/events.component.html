@@ -217,6 +217,7 @@
         <!-- 1. THE MAP -->
         <rise-map
           (m_oMapInputChange)="onMapInputChange($event)"
+          (m_oMapClick)="onMapClicked($event)"
           [m_bIsSelectingArea]="m_bCreateNewEvent"
           [m_bCheckAreaSize]="false"
           [m_oEvent]="m_bUpdatingEvent?m_oEvent:{}"
@@ -280,18 +281,67 @@
           </div>
         </div>
 
-        <!-- 3. THE UPLOAD ZONES (Placed at the bottom!) -->
+        <!-- 3. THE UPLOAD ZONES -->
         <div class="drag-drop-container d-flex flex-row justify-content-between mt-3" *ngIf="!m_bCreateNewEvent">
 
-          <div class="drag-drop-zone">
-            <rise-drag-and-drop (m_oSelectedFileOutput)="setImageFile($event)"></rise-drag-and-drop>
-          </div>
-          <rise-button [m_sLabel]="'CREATE_NEW_EVENT.UPLOAD_IMAGES'" [m_bDisabled]="m_oUploadImageFile==null" (click)="uploadImage()"></rise-button>
+          <!-- Images Upload -->
+          <div class="d-flex flex-column gap-2 mb-2" style="width: 48%;">
+            <div class="drag-drop-zone">
+              <rise-drag-and-drop (m_oSelectedFileOutput)="setImageFile($event)"></rise-drag-and-drop>
+            </div>
 
-          <div class="drag-drop-zone">
-            <rise-drag-and-drop (m_oSelectedFileOutput)="setDocumentFile($event)"></rise-drag-and-drop>
+            <!-- UI HELPER: Prompt user to click the map (Only shows when file is ready but no location) -->
+            <div *ngIf="m_oUploadImageFile && !m_oSelectedLocation"
+                 class="d-flex align-items-center gap-2 p-2 rounded mt-1"
+                 style="background-color: rgba(239, 186, 53, 0.15); border: 1px solid var(--rise-gold);">
+              <span class="material-symbols-outlined pulse-animation" style="color: var(--rise-gold);">touch_app</span>
+              <span class="small text-light"><strong>Tip:</strong> Click the map to pin a location for this image!</span>
+            </div>
+
+            <!-- UI HELPER: Location confirmed -->
+            <div *ngIf="m_oSelectedLocation"
+                 class="d-flex align-items-center gap-2 p-2 rounded mt-1"
+                 style="background-color: rgba(40, 167, 69, 0.15); border: 1px solid #28a745;">
+              <span class="material-symbols-outlined text-success">location_on</span>
+              <span class="small text-light flex-fill">Pin: {{ m_oSelectedLocation.lat | number:'1.4-4' }}, {{ m_oSelectedLocation.lng | number:'1.4-4' }}</span>
+              <span class="material-symbols-outlined fs-6 text-danger cursor-pointer" (click)="clearLocation()" title="Clear Location">close</span>
+            </div>
+
+            <!-- Button text changes dynamically to guide the user! -->
+            <rise-button [m_sLabel]="m_oSelectedLocation ? 'UPLOAD WITH LOCATION' : 'UPLOAD IMAGE'"
+                         [m_bDisabled]="m_oUploadImageFile==null"
+                         (click)="uploadImage()"></rise-button>
           </div>
-          <rise-button [m_sLabel]="'CREATE_NEW_EVENT.UPLOAD_DOCUMENTS'" [m_bDisabled]="m_oUploadDocFile==null" (click)="uploadDocument()"></rise-button>
+
+          <!-- Documents Upload -->
+          <div class="d-flex flex-column gap-2 mb-2" style="width: 48%;">
+            <div class="drag-drop-zone">
+              <rise-drag-and-drop (m_oSelectedFileOutput)="setDocumentFile($event)"></rise-drag-and-drop>
+            </div>
+
+            <!-- UI HELPER: Prompt user to click the map -->
+            <div *ngIf="m_oUploadDocFile && !m_oSelectedLocation"
+                 class="d-flex align-items-center gap-2 p-2 rounded mt-1"
+                 style="background-color: rgba(239, 186, 53, 0.15); border: 1px solid var(--rise-gold);">
+              <span class="material-symbols-outlined pulse-animation" style="color: var(--rise-gold);">touch_app</span>
+              <span class="small text-light"><strong>Tip:</strong> Click the map to pin a location for this document!</span>
+            </div>
+
+            <!-- UI HELPER: Location confirmed -->
+            <div *ngIf="m_oSelectedLocation"
+                 class="d-flex align-items-center gap-2 p-2 rounded mt-1"
+                 style="background-color: rgba(40, 167, 69, 0.15); border: 1px solid #28a745;">
+              <span class="material-symbols-outlined text-success">location_on</span>
+              <span class="small text-light flex-fill">Pin: {{ m_oSelectedLocation.lat | number:'1.4-4' }}, {{ m_oSelectedLocation.lng | number:'1.4-4' }}</span>
+              <span class="material-symbols-outlined fs-6 text-danger cursor-pointer" (click)="clearLocation()" title="Clear Location">close</span>
+            </div>
+
+            <!-- Button text changes dynamically to guide the user! -->
+            <rise-button [m_sLabel]="m_oSelectedLocation ? 'UPLOAD WITH LOCATION' : 'UPLOAD DOCUMENT'"
+                         [m_bDisabled]="m_oUploadDocFile==null"
+                         (click)="uploadDocument()"></rise-button>
+          </div>
+
         </div>
 
         <div class="drag-drop-container d-flex flex-row justify-content-between mt-3" *ngIf="m_bCreateNewEvent">

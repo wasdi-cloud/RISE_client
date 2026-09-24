@@ -61,6 +61,10 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() m_oEvent: EventViewModel = {}
   ;
 
+
+  @Output() m_oMapClick = new EventEmitter<{lat: number, lng: number}>();
+
+
   /**
    * Map Title
    */
@@ -204,6 +208,9 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
+
+
+
   onMapReady(oMap) {
     this.m_oMap = oMap;
     this.m_oMapService.setMap(this.m_oMap);
@@ -270,6 +277,10 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       this.startDashboardRectangleDrawing();
     }
 
+    // Listen for manual clicks on the map to pass coordinates to the parent
+    oMap.on('click', (e: any) => {
+      this.m_oMapClick.emit({ lat: e.latlng.lat, lng: e.latlng.lng });
+    });
   }
 
   private startDashboardRectangleDrawing(): void {

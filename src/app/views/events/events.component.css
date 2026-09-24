@@ -186,3 +186,14 @@ rise-dropdown {
   background: rgba(255, 255, 255, 0.2);
   border-radius: 3px;
 }
+/* Animation to draw user's eye to the map-click tip */
+.pulse-animation {
+  animation: pulseIcon 1.5s infinite ease-in-out;
+}
+
+@keyframes pulseIcon {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
