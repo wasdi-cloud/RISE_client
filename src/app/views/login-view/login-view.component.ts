@@ -35,6 +35,10 @@ import {Subject, takeUntil} from "rxjs";
   styleUrl: './login-view.component.css',
 })
 export class LoginViewComponent implements OnDestroy {
+
+  /**
+   * UC_020 - Login
+   */
   public m_oUserInput: UserCredentialsViewModel = {
     userId: '',
     password: '',
@@ -46,9 +50,13 @@ export class LoginViewComponent implements OnDestroy {
   public m_oOTPVerifyVM: any = {};
   m_bIsOtpSubmitted: boolean = false;
   m_bIsLoginSubmitted: boolean = false;
-  /**
-   * UC_020 - Login
-   */
+
+  // --- New OTP Resend Variables ---
+  public m_iResendAttempts: number = 0;
+  public m_iMaxResendAttempts: number = 3;
+  public m_iResendCooldownRemaining: number = 0;
+  private m_oResendTimerInterval: any;
+
 
   private m_oDestroy$: Subject<void> = new Subject<void>();
 
@@ -65,6 +73,7 @@ export class LoginViewComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.clearResendTimer();
     this.m_oDestroy$.next();
     this.m_oDestroy$.complete();
   }
@@ -82,6 +91,9 @@ export class LoginViewComponent implements OnDestroy {
           this.m_oOTPVerifyVM = oResponse;
           this.m_bShowOtp = true;
           this.m_bIsLoginSubmitted = false;
+
+          // Start the 60-second timer as soon as they hit the OTP screen!
+          this.startResendCooldown();
         }
       },
       error: (oError) => {
@@ -201,9 +213,69 @@ export class LoginViewComponent implements OnDestroy {
   backToLogin(): void {
     this.m_bIsOtpSubmitted = false;
     this.m_bShowOtp = false;
+    this.m_iResendAttempts = 0; // Reset attempts if they go back to the start
+    this.clearResendTimer();
   }
 
   toForgetPassword() {
     this.m_oRouter.navigateByUrl('/forget-password')
+  }
+
+  // --- New OTP Resend Methods ---
+
+  /**
+   * Resends the OTP by triggering the login API again with the same credentials.
+   */
+  resendOtp(): void {
+    // Only allow resend if they haven't hit the limit, aren't on cooldown, and aren't already submitting
+    if (this.m_iResendAttempts >= this.m_iMaxResendAttempts || this.m_iResendCooldownRemaining > 0 || this.m_bIsLoginSubmitted) {
+      return;
+    }
+
+    this.m_bIsLoginSubmitted = true;
+
+    // Call the login API again to generate a fresh OTP
+    this.m_oAuthService.loginUser(this.m_oUserInput).pipe(takeUntil(this.m_oDestroy$)).subscribe({
+      next: (oResponse) => {
+        if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
+          // Update the OTP View Model with the new ID
+          this.m_oOTPVerifyVM = oResponse;
+          this.m_bIsLoginSubmitted = false;
+
+          // Increment attempts and start the 60-second cooldown
+          this.m_iResendAttempts++;
+          this.startResendCooldown();
+
+          this.m_oNotificationService.openSnackBar("A new OTP has been sent to your email.", "Success", "success");
+        }
+      },
+      error: (oError) => {
+        this.m_oRiseUtils.handleNotificationError(oError.error.errorStringCodes);
+        this.m_bIsLoginSubmitted = false;
+      },
+    });
+  }
+
+  /**
+   * Starts a 60-second countdown before the user can request another OTP.
+   */
+  private startResendCooldown(): void {
+    this.m_iResendCooldownRemaining = 60;
+    this.clearResendTimer(); // Clear any existing timer just in case
+
+    this.m_oResendTimerInterval = setInterval(() => {
+      this.m_iResendCooldownRemaining--;
+
+      if (this.m_iResendCooldownRemaining <= 0) {
+        this.clearResendTimer();
+      }
+    }, 1000);
+  }
+
+  private clearResendTimer(): void {
+    if (this.m_oResendTimerInterval) {
+      clearInterval(this.m_oResendTimerInterval);
+      this.m_oResendTimerInterval = null;
+    }
   }
 }

@@ -64,17 +64,49 @@
             [m_sErrorText]="m_sErrorInput"
           ></rise-text-input>
         </div>
-        <div class="d-flex flex-column gap-2">
+        <div class="d-flex flex-column gap-2 mt-2">
           <rise-button
             [m_bDisabled]="m_bIsOtpSubmitted"
             [m_sLabel]="'LOGIN.NEXT'"
             [m_sRole]="'primary'"
-            (click)="!m_bIsOtpSubmitted?verifyOtp():''"
+            (click)="!m_bIsOtpSubmitted ? verifyOtp() : ''"
           ></rise-button>
-          <p class="retry-text">
-            {{'LOGIN.OTP_VERIFICATION'|translate}}
-            <a (click)="backToLogin()">{{'LOGIN.OTP_LOGIN_AGAIN'|translate}}</a>.
-          </p>
+
+          <!-- NEW OTP Resend Logic -->
+          <div class="d-flex flex-column text-center mt-2" style="font-size: 0.85rem; color: #8c8c8c;">
+
+            <!-- Resend Link -->
+            <p class="mb-1">
+              Didn't receive the code?
+
+              <!-- Active Link (When cooldown is 0 and attempts < max) -->
+              <a *ngIf="m_iResendCooldownRemaining === 0 && m_iResendAttempts < m_iMaxResendAttempts"
+                 (click)="resendOtp()"
+                 style="color: var(--rise-gold); cursor: pointer; text-decoration: underline; font-weight: 600;">
+                Resend OTP
+              </a>
+
+              <!-- Disabled Link (During cooldown) -->
+              <span *ngIf="m_iResendCooldownRemaining > 0 && m_iResendAttempts < m_iMaxResendAttempts"
+                    style="color: #6c757d; font-weight: 500;">
+                 Resend in {{ m_iResendCooldownRemaining }}s
+              </span>
+
+              <!-- Max Attempts Reached -->
+              <span *ngIf="m_iResendAttempts >= m_iMaxResendAttempts"
+                    class="text-danger fw-bold">
+                 Maximum attempts reached.
+              </span>
+            </p>
+
+            <p class="mb-0 mt-2">
+              {{'LOGIN.OTP_VERIFICATION'|translate}}
+              <a (click)="backToLogin()" style="color: var(--rise-gold); cursor: pointer; text-decoration: underline;">
+                {{'LOGIN.OTP_LOGIN_AGAIN'|translate}}
+              </a>.
+            </p>
+
+          </div>
         </div>
       </div>
     </div>
