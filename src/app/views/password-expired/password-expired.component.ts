@@ -66,7 +66,7 @@ export class PasswordExpiredComponent implements OnInit, OnDestroy {
         password: this.m_oPasswordInputs.password,
         userId: this.m_sUserId
       }
-      
+
       this.m_oUserService.changeExpiredPassword(oRequestVM).pipe(takeUntil(this.m_oDestroy$)).subscribe({
         next: (oResponse) => {
           this.m_oOTPVerifyVM = oResponse;
@@ -155,12 +155,17 @@ export class PasswordExpiredComponent implements OnInit, OnDestroy {
 
     this.m_oUserService.verifyExpiredPasswordChange(oOtpVerify).pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse) => {
-        this.m_oNotificationService.openSnackBar(
-          "Password updated successfully",
-          "Update",
-          "success"
-        );
-        this.m_oRouter.navigateByUrl('/login')
+        if (oResponse && oResponse.token) {
+          this.m_oAuthService.saveToken(oResponse.token);
+          this.m_oNotificationService.openSnackBar(
+            "Password updated successfully",
+            "Update",
+            "success"
+          );
+          this.m_oRouter.navigateByUrl('/dashboard'); // BOOM! Seamless login.
+        }
+
+
       },
       error: (oError) => {
         this.m_oNotificationService.openSnackBar(

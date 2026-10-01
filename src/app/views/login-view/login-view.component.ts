@@ -140,7 +140,7 @@ export class LoginViewComponent implements OnDestroy {
         if (oResponse.token) {
           //Set user Token and login
           this.m_oAuthService.saveToken(oResponse.token);
-          this.m_oRouter.navigateByUrl('/dashboard');
+
           this.m_oUserService.getUser().pipe(takeUntil(this.m_oDestroy$)).subscribe({
             next: (oResponse) => {
               if (FadeoutUtils.utilsIsObjectNullOrUndefined(oResponse)) {
@@ -152,7 +152,7 @@ export class LoginViewComponent implements OnDestroy {
                 }
                 this.m_oConstantsService.setUser(oResponse);
                 //needs to update user / and default language
-
+                this.m_oRouter.navigateByUrl('/dashboard');
                 let oUserVm: UserViewModel = {
                   defaultLanguage: this.m_sDefaultLanguage
                 }
