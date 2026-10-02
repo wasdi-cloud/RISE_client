@@ -218,6 +218,13 @@ export class CreateAreaOfOperationComponent implements OnInit, AfterViewInit,OnD
 
       }
     }
+    else {
+      // FIX: If the edited shape is invalid (or deleted), clear the data so the SAVE button disables
+      this.m_oAreaInfo = null;
+      this.m_oAreaOfOperation.bbox = '';
+      this.m_oAreaOfOperation.markerCoordinates = '';
+    }
+
   }
 
   private suggestedName(fLat: number, fLng: number): void {

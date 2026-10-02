@@ -204,7 +204,7 @@ export class MapService {
     },
     edit: {
       featureGroup: this.m_oDrawnItems,
-      edit: false,
+      edit: { selectedPathOptions: { maintainColor: true } },
       remove: true,
       fullscreenControl: true,
       fullscreenControlOptions: {
@@ -264,6 +264,16 @@ export class MapService {
     private m_oNotificationService: NotificationsDialogsService,
     private m_oTranslate: TranslateService
   ) {
+    // --- FIX: Patch the known Leaflet Draw crash for circle resizing ---
+    if (L.Edit && L.Edit.Circle) {
+      L.Edit.Circle.prototype._resize = function(latlng: any) {
+        const moveLatLng = this._moveMarker.getLatLng();
+        const radius = moveLatLng.distanceTo(latlng); // <--- Using 'const' fixes the crash!
+        this._shape.setRadius(radius);
+        this._map.fire('draw:editresize', { layer: this._shape });
+      };
+    }
+
   }
 
   /**
@@ -294,6 +304,29 @@ export class MapService {
 
     this.setActiveLayer(this.m_oRiseMap, oTargetLayer);
   }
+
+  /**
+   * Updates the center marker location after an edit
+   */
+  updateEditedMarker(layer: any, layerType: string, oMap: L.Map) {
+    if (this.m_oDrawMarker) {
+      oMap.removeLayer(this.m_oDrawMarker);
+    }
+
+    let centroid;
+    if (layerType === 'circle') {
+      centroid = layer.getLatLng();
+    } else {
+      const asLatlngs = layer.getLatLngs()[0];
+      const asPoints = asLatlngs.map((p: any) => ({ lat: p.lat, lng: p.lng }));
+      centroid = this.calculateCentroid(asPoints);
+    }
+
+    // Draw the new marker exactly in the middle
+    this.m_oDrawMarker = L.marker([centroid.lat, centroid.lng], { icon: oIconDefault }).addTo(oMap);
+  }
+
+
 
     setMapOptions() {
       // 1. Make sure base layers exist before we try to use them
@@ -648,14 +681,38 @@ export class MapService {
   }
 
   public setupInstantDelete(oMap: L.Map): void {
+
+    // 1. Force Leaflet to drop its default grey hover JUST for the Edit button
+    if (!document.getElementById('leaflet-edit-hover-override')) {
+      const style = document.createElement('style');
+      style.id = 'leaflet-edit-hover-override';
+      style.innerHTML = `
+        a.leaflet-draw-edit-edit:hover {
+          background-color: var(--rise-gold, #3388ff) !important;
+        }
+        a.leaflet-draw-edit-edit:hover span {
+          color: white !important;
+        }
+      `;
+      document.head.appendChild(style);
+    }
     // Timeout to ensure the DOM is ready and controls are rendered
     setTimeout(() => {
-      const trashButton = document.querySelector('a.leaflet-draw-edit-remove');
-
+      // 1. Hijack the native Leaflet Edit button to use your theme!
+      const editButton = document.querySelector('a.leaflet-draw-edit-edit') as HTMLElement;
+      if (editButton) {
+        editButton.classList.add('leaflet-control-button'); // Add your custom class
+        editButton.style.backgroundImage = 'none'; // Remove native Leaflet sprite
+        editButton.innerHTML = '<span class="material-symbols-outlined">edit</span>'; // Add your material icon
+      }
+      const trashButton = document.querySelector('a.leaflet-draw-edit-remove') as HTMLElement;
       if (trashButton) {
         // Remove previous listeners if any (though unlikely if done in onMapReady)
         // Note: Directly accessing and removing the native listener is hard, so we focus on
         // stopping propagation and overriding the functionality.
+        trashButton.classList.add('leaflet-control-button'); // Add your custom class
+        trashButton.style.backgroundImage = 'none'; // Remove native Leaflet sprite
+        trashButton.innerHTML = '<span class="material-symbols-outlined">delete</span>'; // Add your material icon
 
         trashButton.addEventListener('click', (oEvent) => {
           oEvent.preventDefault();
@@ -2005,6 +2062,39 @@ export class MapService {
   }
 
   /**
+   * Updates the center marker location after an edit
+   */
+  public updateEditedShapeMarker(layer: any, layerType: string, oMap: any) {
+    // Clear old markers
+    if (this.m_oDrawMarker) oMap.removeLayer(this.m_oDrawMarker);
+    if (this.m_oLastMarker) oMap.removeLayer(this.m_oLastMarker);
+
+    this.m_oDrawMarker = null;
+    this.m_oLastMarker = null;
+
+    let latlng;
+
+    if (layerType === 'circle') {
+      latlng = layer.getLatLng();
+    } else {
+      // FIX 3: Use centroid calculation for BOTH rectangles and polygons to ensure perfect tracking!
+      const points = layer.getLatLngs()[0].map((p: any) => ({
+        lat: p.lat,
+        lng: p.lng
+      }));
+      latlng = this.calculateCentroid(points);
+    }
+
+    // Drop new marker in the middle
+    if (latlng) {
+      this.m_oDrawMarker = L.marker(
+        [latlng.lat, latlng.lng],
+        { icon: oIconDefault }
+      ).addTo(oMap);
+    }
+  }
+
+  /**
    * Select a point in map and rise draw a circle with minimum radius
    * @param oMap
    */
@@ -2041,9 +2131,12 @@ export class MapService {
             const fLng = e.latlng.lng;
             const fRadius = 62600; // Set the radius of the circle (in meters)
 
+            // FIX: Remove .addTo(oMap) to prevent a duplicate, un-editable circle from rendering underneath!
             this.m_oLastCircle = L.circle([fLat, fLng], {
               radius: fRadius,
-            }).addTo(oMap);
+            });
+
+            this.m_oDrawnItems.addLayer(this.m_oLastCircle);
             this.m_oLastMarker = L.marker([fLat, fLng],{icon:oIconDefault}).addTo(oMap);
             setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
 
@@ -2052,7 +2145,6 @@ export class MapService {
               center: {lat: fLat, lng: fLng},
               radius: fRadius,
             });
-            // Don't complete the Subject here to allow future emissions
 
             oMap.off('click', onMapClick);
             bIsDrawing = false;

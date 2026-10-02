@@ -273,6 +273,10 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       this.onDrawDeleted(oEvent);
     });
 
+    oMap.on(L.Draw.Event.EDITED, (oEvent: any) => {
+      this.onDrawEdited(oEvent);
+    });
+
     if (this.m_bDashboardMap && this.m_bEnableDashboardDrawing) {
       this.startDashboardRectangleDrawing();
     }
@@ -307,6 +311,65 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     this.m_oMap.on(L.Draw.Event.CREATED, this.m_fnDashboardDrawCreatedHandler);
 
     this.m_oDashboardRectangleDrawer.enable();
+  }
+
+  // --- Check Boundaries After Edit ---
+  onDrawEdited(oEvent: any) {
+    oEvent.layers.eachLayer((layer: any) => {
+      let layerType = 'polygon';
+      if (layer instanceof L.Rectangle) layerType = 'rectangle';
+      else if (layer instanceof L.Circle) layerType = 'circle';
+
+      const mockEvent = { layerType: layerType, layer: layer };
+
+      // FIX 4: Always move the marker to the new center FIRST, so it stays in sync visually!
+      this.m_oMapService.updateEditedShapeMarker(layer, layerType, this.m_oMap);
+
+      let bIsValid = true;
+
+      if (layerType === 'rectangle') {
+        const asBounds = layer.getBounds();
+        const oSouthWest = asBounds.getSouthWest();
+        const oNorthEast = asBounds.getNorthEast();
+
+        const dWidth = L.latLng(oSouthWest.lat, oSouthWest.lng).distanceTo(L.latLng(oSouthWest.lat, oNorthEast.lng));
+        const dHeight = L.latLng(oSouthWest.lat, oSouthWest.lng).distanceTo(L.latLng(oNorthEast.lat, oSouthWest.lng));
+
+        if ((dWidth > MAX_WIDTH || dHeight > MAX_HEIGHT || dWidth < MIN_WIDTH || dHeight < MIN_HEIGHT) && this.m_bCheckAreaSize) {
+          bIsValid = false;
+        }
+      }
+      else if (layerType === 'polygon') {
+        const asLatlngs = layer.getLatLngs()[0];
+        const dArea = this.m_oMapService.calculatePolygonArea(asLatlngs);
+
+        const asBounds = layer.getBounds();
+        const oCenter = asBounds.getCenter();
+        const dLatitudeFactor = Math.cos(oCenter.lat * (Math.PI / 180));
+        const dAdjustedArea = dArea * dLatitudeFactor;
+
+        if ((dAdjustedArea < MIN_AREA_POLYGON || dAdjustedArea > MAX_AREA_POLYGON) && this.m_bCheckAreaSize) {
+          bIsValid = false;
+        }
+      }
+      else if (layerType === 'circle') {
+        const dRadius = layer.getRadius();
+        const dArea = Math.PI * dRadius * dRadius;
+
+        if ((dArea < MIN_AREA_CIRCLE || dArea > MAX_AREA_CIRCLE) && this.m_bCheckAreaSize) {
+          bIsValid = false;
+        }
+      }
+
+      // Final Check: Emit the coordinates, or reject and disable the Save button
+      if (!bIsValid) {
+        this.m_oNotificationService.openSnackBar("Edited shape is out of bounds. Please adjust.", "Invalid Size", "danger", true, this.m_oViewContainerRef);
+        this.m_oMapInputChange.emit(null); // Emits null to disable SAVE button
+      } else {
+        this.m_bIsDrawCreated = true;
+        this.emitInsertedArea(mockEvent); // Emits valid coordinates to enable SAVE button
+      }
+    });
   }
 
   private cancelDashboardRectangleDrawing(): void {
