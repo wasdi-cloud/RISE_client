@@ -83,6 +83,21 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   m_asOriginalAllFiles: any[] = [];
   public m_sSortColumn: string = 'name';
   public m_bSortAscending: boolean = true;
+  public m_sSidebarTab: 'layers' | 'event' | 'impacts' = 'layers';
+  public m_sAttachmentFilter: 'all' | 'media' | 'doc' = 'all';
+  public m_aoImpactSummary: Array<{ type: string; count: number }> = [];
+
+  get m_aoVisibleAttachments(): any[] {
+    return this.m_aoAllFiles.filter(oFile =>
+      this.m_sAttachmentFilter === 'all' ||
+      (this.m_sAttachmentFilter === 'media' ? oFile.type !== 'doc' : oFile.type === 'doc')
+    );
+  }
+
+  selectImpactType(sType: string): void {
+    this.m_sSelectedTypeFilter = this.m_sSelectedTypeFilter === sType ? 'ALL' : sType;
+    this.applyImpactTypeFilter();
+  }
   /**
    * Collapsible section flags for sidebar
    */
@@ -984,6 +999,13 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    * Filter table rows based on selected dropdown type
    */
   public applyImpactTypeFilter(): void {
+    const oCounts = new Map<string, number>();
+    this.m_aoImpactTableData.forEach(oItem => {
+      oCounts.set(oItem.type, (oCounts.get(oItem.type) || 0) + 1);
+    });
+    this.m_aoImpactSummary = Array.from(oCounts, ([type, count]) => ({ type, count }))
+      .sort((oLeft, oRight) => oLeft.type.localeCompare(oRight.type));
+
     if (this.m_sSelectedTypeFilter === 'ALL' || !this.m_sSelectedTypeFilter) {
       this.m_aoFilteredImpactTableData = [...this.m_aoImpactTableData];
     } else {
@@ -1015,6 +1037,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   public clearImpactTableData(): void {
     this.m_aoImpactTableData = [];
     this.m_aoFilteredImpactTableData = [];
+    this.m_aoImpactSummary = [];
     this.m_asImpactTypes = [];
     this.m_sSelectedTypeFilter = 'ALL';
     this.m_sActiveImpactLayerId = '';
