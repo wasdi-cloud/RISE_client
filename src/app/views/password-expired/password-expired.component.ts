@@ -155,17 +155,22 @@ export class PasswordExpiredComponent implements OnInit, OnDestroy {
 
     this.m_oUserService.verifyExpiredPasswordChange(oOtpVerify).pipe(takeUntil(this.m_oDestroy$)).subscribe({
       next: (oResponse) => {
+
+        this.m_oNotificationService.openSnackBar(
+          "Password updated successfully",
+          "Update",
+          "success"
+        );
+
+        // If backend returned a token, log them in automatically
         if (oResponse && oResponse.token) {
           this.m_oAuthService.saveToken(oResponse.token);
-          this.m_oNotificationService.openSnackBar(
-            "Password updated successfully",
-            "Update",
-            "success"
-          );
-          this.m_oRouter.navigateByUrl('/dashboard'); // BOOM! Seamless login.
+          this.m_oRouter.navigateByUrl('/dashboard');
         }
-
-
+        // If no token was returned, kick them back to login to use the new password!
+        else {
+          this.m_oRouter.navigateByUrl('/login');
+        }
       },
       error: (oError) => {
         this.m_oNotificationService.openSnackBar(
