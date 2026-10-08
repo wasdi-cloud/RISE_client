@@ -1,40 +1,41 @@
-<div class="widget-container">
-  <div
-    class="widget-header d-flex flex-row justify-content-between align-items-center gap-2"
-  >
-    <span class="material-symbols-outlined"> emergency </span>
-    <div
-      class="flex-fill d-flex flex-row justify-content-between align-items-center"
-    >
-      {{ "WIDGET.ONGOING_EVENTS" | translate }}
-      <rise-badge [m_iDisplayNum]="m_aoOngoingEvent.length"></rise-badge>
+<div class="widget-card">
+  <div class="widget-header d-flex flex-row justify-content-between align-items-center gap-2" (click)="collapseWidget()">
+    <div class="d-flex flex-row align-items-center gap-2">
+      <span class="material-symbols-outlined header-icon">emergency</span>
+      <span class="header-title">{{ "WIDGET.ONGOING_EVENTS" | translate }}</span>
+      <rise-badge
+        [m_iDisplayNum]="m_aoOngoingEvent.length"
+        [class.has-items]="m_aoOngoingEvent.length > 0">
+      </rise-badge>
     </div>
-    @if (m_bShowContent) {
-    <span (click)="collapseWidget()" class="material-symbols-outlined">
-      keyboard_arrow_up
+
+    <span class="material-symbols-outlined chevron-icon" [class.rotated]="!m_bShowContent">
+      expand_less
     </span>
-    } @else {
-    <span (click)="collapseWidget()" class="material-symbols-outlined">
-      keyboard_arrow_down
-    </span>
-    }
   </div>
-  <div *ngIf="m_bShowContent" class="affected-ppl">
+
+  <div *ngIf="m_bShowContent" class="widget-body">
     @if (m_aoOngoingEvent.length > 0) {
-    <div
-      class="event-item d-flex flex-column gap-1 mt-2"
-      *ngFor="let oEvent of m_aoOngoingEvent"
-    >
-    <div class="d-flex flex-row justify-content-between">
-        <div class="event-type">{{ oEvent.type }}</div>
-        <div>{{ oEvent.name }}</div>
-        <span (click)="openTargetArea(oEvent.areaId)" class="material-symbols-outlined widget-gold-icon" [matTooltip]="oEvent.areaName">my_location</span>
+      <div class="event-list d-flex flex-column gap-2 mt-2">
+        <div class="event-item d-flex flex-row justify-content-between align-items-center" *ngFor="let oEvent of m_aoOngoingEvent">
+          <div class="d-flex flex-row align-items-center gap-3">
+            <!-- Dynamic class binding based on the event type to color-code the badge -->
+            <div class="event-badge" [ngClass]="oEvent.type | lowercase">
+              {{ oEvent.type }}
+            </div>
+            <div class="event-name">{{ oEvent.name }}</div>
+          </div>
+          <span (click)="openTargetArea(oEvent.areaId); $event.stopPropagation()"
+                class="material-symbols-outlined widget-gold-icon"
+                [matTooltip]="oEvent.areaName || 'Go to event'">my_location</span>
+        </div>
       </div>
-    </div>
     } @else {
-    <div class="event-item mt-2">
-      {{ "WIDGET.NO_EVENTS" | translate }}
-    </div>
+      <!-- Calmer empty state -->
+      <div class="empty-state d-flex flex-row align-items-center gap-2 mt-2">
+        <span class="material-symbols-outlined empty-icon">check_circle</span>
+        <span class="empty-text">{{ "WIDGET.NO_EVENTS" | translate }}</span>
+      </div>
     }
   </div>
 </div>

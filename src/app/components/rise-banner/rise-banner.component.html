@@ -1,8 +1,11 @@
-<div class="banner-container d-flex flex-row gap-2 p-2"
+<div class="banner-card d-flex flex-row gap-3 align-items-center"
      [class.ongoing]="m_bLiveSituation">
-  <span (click)="showInfoDialog()" class="material-symbols-outlined info-button"> info </span>
-  <div class="d-flex flex-column">
-    <div>{{ m_sHeaderKey | translate }}</div>
-    <div>{{ m_sDescriptionKey | translate }}</div>
+  <!-- Uses dynamic icon if provided, otherwise defaults to info -->
+  <span (click)="showInfoDialog()" class="material-symbols-outlined info-button">
+    {{ m_sIcon || 'info' }}
+  </span>
+  <div class="d-flex flex-column banner-text-container">
+    <div class="banner-header">{{ m_sHeaderKey | translate }}</div>
+    <div *ngIf="m_sDescriptionKey" class="banner-description">{{ m_sDescriptionKey | translate }}</div>
   </div>
 </div>

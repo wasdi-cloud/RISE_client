@@ -419,6 +419,7 @@
 	},
 	"WIDGET": {
 		"AFFECTED_PPL": "Persone Interessate",
+    "AREAS": "Aree",
 		"ALERTS": "Allerte",
 		"NO_AFFECTED": "Nessuna",
 		"NO_ALERTS": "Nessuna allerta",

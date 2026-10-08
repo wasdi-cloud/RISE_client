@@ -392,6 +392,7 @@
   },
   "WIDGET": {
     "AFFECTED_PPL": "Affected People",
+    "AREAS": "エリア",
     "ALERTS": "Alerts",
     "NO_AFFECTED": "None",
     "NO_ALERTS": "No alerts",

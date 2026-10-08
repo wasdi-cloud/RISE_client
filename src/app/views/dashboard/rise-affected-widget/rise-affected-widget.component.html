@@ -1,26 +1,37 @@
-<div class="widget-container">
-  <div class="widget-header d-flex flex-row justify-content-between">
-    {{ "WIDGET.AFFECTED_PPL" | translate }}
-    @if (m_bShowContent) {
-    <div class="header-icons d-flex flex-row align-items-center gap-2">
-      <span *ngIf="m_iAffectedPpl" (click)="openTargetArea()" class="material-symbols-outlined widget-gold-icon" [matTooltip]="m_sAreaName">my_location</span>
-      <span (click)="collapseWidget()" class="material-symbols-outlined" style="cursor: pointer;">
-        keyboard_arrow_up
+<div class="widget-card">
+  <!-- The entire header is now clickable for a better UX -->
+  <div class="widget-header d-flex flex-row justify-content-between align-items-center" (click)="collapseWidget()">
+    <div class="d-flex align-items-center gap-2">
+      <span class="header-title">{{ "WIDGET.AFFECTED_PPL" | translate }}</span>
+    </div>
+
+    <div class="header-actions d-flex flex-row align-items-center gap-2">
+      <!-- Added stopPropagation so clicking the target doesn't collapse the widget -->
+      <span *ngIf="m_iAffectedPpl && m_bShowContent"
+            (click)="openTargetArea(); $event.stopPropagation()"
+            class="material-symbols-outlined widget-gold-icon action-icon"
+            [matTooltip]="m_sAreaName">my_location</span>
+
+      <!-- Single chevron that rotates via CSS based on state -->
+      <span class="material-symbols-outlined chevron-icon" [class.rotated]="!m_bShowContent">
+        expand_less
       </span>
     </div>
-    } @else {
-    <span (click)="collapseWidget()" class="material-symbols-outlined" style="cursor: pointer;">
-      keyboard_arrow_down
-    </span>
-    }
   </div>
-  <div *ngIf="m_bShowContent" class="affected-ppl d-flex flex-row align-items-center gap-2">
-    <span class="body-icon material-symbols-outlined"> family_restroom </span>
-    <div class="affected-total space-mono-regular">
-      {{ m_iAffectedPpl ? (m_iAffectedPpl | number:'1.0-0':'en') : ("WIDGET.NO_AFFECTED" | translate) }}
-    </div>
-    <div>
-      {{ m_oWidgetInfo ? m_oWidgetInfo.referenceDate : ""}}
+
+  <div class="widget-body" [class.collapsed-content]="!m_bShowContent">
+    <!-- Dynamic class 'empty-state' applied if no people are affected -->
+    <div class="affected-content d-flex flex-row align-items-center gap-3" [class.empty-state]="!m_iAffectedPpl">
+      <span class="body-icon material-symbols-outlined">family_restroom</span>
+      <div class="affected-details d-flex flex-column">
+        <span class="affected-total space-mono-regular">
+          {{ m_iAffectedPpl ? (m_iAffectedPpl | number:'1.0-0':'en') : ("WIDGET.NO_AFFECTED" | translate) }}
+        </span>
+        <span class="reference-date" *ngIf="m_oWidgetInfo?.referenceDate">
+          {{ m_oWidgetInfo.referenceDate }}
+        </span>
+      </div>
     </div>
   </div>
+
 </div>

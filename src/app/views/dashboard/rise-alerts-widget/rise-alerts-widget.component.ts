@@ -5,11 +5,12 @@ import {TranslateModule} from '@ngx-translate/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {WidgetService} from '../../../services/api/widget.service';
 import {WidgetInfoViewModel} from '../../../models/WidgetInfoViewModel';
+import {RiseBadgeComponent} from '../../../components/rise-badge/rise-badge.component';
 
 @Component({
   selector: 'rise-alerts-widget',
   standalone: true,
-  imports: [CommonModule, TranslateModule, MatTooltipModule],
+  imports: [CommonModule, TranslateModule, MatTooltipModule, RiseBadgeComponent],
   templateUrl: './rise-alerts-widget.component.html',
   styleUrl: './rise-alerts-widget.component.css',
 })

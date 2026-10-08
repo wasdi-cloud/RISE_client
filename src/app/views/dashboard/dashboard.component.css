@@ -7,6 +7,7 @@ div.map-container {
   --map-create-offset: 1rem;
 }
 
+/* Sidebar Core Positioning */
 .rise-sidebar {
   background-color: rgba(0, 31, 40, 0.8);
   border-right: 1px solid var(--rise-border-default);
@@ -16,13 +17,77 @@ div.map-container {
   padding: 1rem;
   height: 100%;
   width: var(--dashboard-sidebar-width);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease;
+  overflow-x: hidden;
+  white-space: nowrap;
 }
+
+/* --- Minimized State (80px Rail) --- */
+.rise-sidebar.collapsed {
+  width: 80px !important;
+  padding: 1rem 0.5rem !important;
+}
+
+/* Toggle Button Positioned as Sibling Outside Sidebar */
+.sidebar-toggle {
+  position: absolute;
+  top: 50%;
+  left: var(--dashboard-sidebar-width); /* Stays at 25% when expanded */
+  z-index: 1000;
+  width: 24px;
+  height: 44px;
+  background-color: rgba(0, 31, 40, 0.95);
+  border: 1px solid var(--rise-border-default);
+  border-left: none;
+  border-radius: 0 8px 8px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.8);
+  box-shadow: 2px 0 6px rgba(0,0,0,0.3);
+  transform: translateY(-50%);
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s, color 0.2s;
+}
+
+.sidebar-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+/* Moves button to 80px edge when collapsed */
+.sidebar-toggle.collapsed {
+  left: 80px;
+}
+
+/* Move Map Controls left when collapsed */
+:host:has(.rise-sidebar.collapsed) .map-create-control {
+  left: calc(80px + var(--map-create-offset));
+}
+
+/* Logo & Help adjustments */
 img {
   height: 24px;
 }
 
 .logo-help-row {
   width: 100%;
+}
+
+.rise-sidebar.collapsed .logo-help-row {
+  justify-content: center !important;
+}
+
+.rise-sidebar.collapsed .logo-help-row .help-link {
+  display: none !important;
+}
+
+.rise-sidebar.collapsed .logo-help-row img {
+  display: block;
+  width: 30px;
+  height: 24px;
+  object-fit: cover;
+  object-position: left;
 }
 
 .help-link {
@@ -44,12 +109,99 @@ img {
 }
 
 .scrollable-sidebar {
-  max-height: 100vh; /* Ensure the sidebar doesn't exceed the viewport height */
-  overflow-y: auto; /* Enable vertical scrolling if content overflows */
-  padding-right: 8px; /* Optional: Add padding to avoid scrollbar overlap */
+  max-height: 100vh;
+  overflow-y: auto;
+  padding-right: 8px;
 }
 
-/* Keep user menu at top-right of map area */
+/* --- Minimized Elements Deep Overrides --- */
+
+/* Hide text, badges, chevrons & secondary containers */
+.rise-sidebar.collapsed ::ng-deep .header-title,
+.rise-sidebar.collapsed ::ng-deep .flex-fill,
+.rise-sidebar.collapsed ::ng-deep .banner-text-container,
+.rise-sidebar.collapsed ::ng-deep .chevron-icon,
+.rise-sidebar.collapsed ::ng-deep rise-badge:not(.has-items),
+.rise-sidebar.collapsed ::ng-deep .header-actions,
+.rise-sidebar.collapsed ::ng-deep .reference-date {
+  display: none !important;
+}
+
+.rise-sidebar.collapsed ::ng-deep rise-badge.has-items {
+  display: block !important;
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border: none;
+}
+
+.rise-sidebar.collapsed ::ng-deep rise-badge.has-items .rise-badge {
+  display: block;
+  box-sizing: border-box;
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border: 2px solid var(--rise-gold);
+  border-radius: 50%;
+  font-size: 0;
+}
+
+/* Center widget header icons */
+.rise-sidebar.collapsed ::ng-deep .widget-header,
+.rise-sidebar.collapsed ::ng-deep .banner-card,
+.rise-sidebar.collapsed ::ng-deep .widget-container > .widget-header {
+  justify-content: center !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Ensure material symbols stay aligned */
+.rise-sidebar.collapsed ::ng-deep .material-symbols-outlined {
+  margin: 0 !important;
+}
+
+/* Hide bodies for Ongoing Events, Alerts, AoO */
+.rise-sidebar.collapsed rise-ongoing-widget ::ng-deep .widget-body,
+.rise-sidebar.collapsed rise-alerts-widget ::ng-deep .affected-ppl,
+.rise-sidebar.collapsed rise-aoo-widget ::ng-deep .widget-body {
+  display: none !important;
+}
+
+/* Affected People Widget (Stacked Icon + Number) */
+.rise-sidebar.collapsed rise-affected-widget ::ng-deep .widget-header {
+  display: none !important;
+}
+
+.rise-sidebar.collapsed rise-affected-widget ::ng-deep .widget-body {
+  display: block !important;
+  padding: 6px 0 !important;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.rise-sidebar.collapsed rise-affected-widget ::ng-deep .widget-body:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.rise-sidebar.collapsed rise-affected-widget ::ng-deep .affected-content,
+.rise-sidebar.collapsed rise-affected-widget ::ng-deep .affected-ppl {
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 2px !important;
+}
+
+.rise-sidebar.collapsed rise-affected-widget ::ng-deep .affected-total {
+  font-size: 13px !important;
+  font-weight: 600;
+  color: #fff;
+}
+
+.rise-sidebar.collapsed rise-aoo-widget ::ng-deep rise-badge {
+  display: none !important;
+}
+
+/* Map UI Controls */
 .map-user-menu {
   position: absolute;
   top: 0.5rem;
@@ -58,7 +210,6 @@ img {
   pointer-events: auto;
 }
 
-/* Place create/cancel button at top-left of map area */
 .map-create-control {
   position: absolute;
   top: 1rem;
@@ -69,6 +220,7 @@ img {
   flex-direction: row;
   align-items: center;
   gap: 0.4rem;
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .map-create-submenu {
@@ -83,37 +235,26 @@ img {
   align-items: center;
 }
 
-/* Create area button at top */
-.create-area-btn {
+.toggle-public-btn, .create-area-btn, .cancel-draw-btn, .create-area-sub-btn {
   flex-shrink: 0;
   display: block;
-  width: 42px;
+  width: 34px;
 }
 
-/* Cancel drawing button at top */
-.cancel-draw-btn {
-  flex-shrink: 0;
-  display: block;
-  width: 42px;
-}
-
-.create-area-sub-btn {
-  flex-shrink: 0;
-  display: block;
-  width: 42px;
-}
-
+:host ::ng-deep .toggle-public-btn .btn,
 :host ::ng-deep .create-area-btn .btn,
 :host ::ng-deep .cancel-draw-btn .btn,
 :host ::ng-deep .create-area-sub-btn .btn {
-  width: 42px;
-  min-width: 42px;
-  height: 34px;
+  width: 34px;
+  min-width: 34px;
+  height: 30px;
   padding: 0;
 }
 
+:host ::ng-deep .toggle-public-btn .btn .material-symbols-outlined,
 :host ::ng-deep .create-area-btn .btn .material-symbols-outlined,
 :host ::ng-deep .cancel-draw-btn .btn .material-symbols-outlined,
 :host ::ng-deep .create-area-sub-btn .btn .material-symbols-outlined {
+  font-size: 20px;
   margin: 0;
 }

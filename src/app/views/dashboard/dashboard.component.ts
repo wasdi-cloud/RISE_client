@@ -23,6 +23,7 @@ import {NotificationsDialogsService} from '../../services/notifications-dialogs.
 import {ManualBoundingBoxComponent} from '../../dialogs/manual-bounding-box-dialog/manual-bounding-box.component';
 
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
+import {RiseAooWidgetComponent} from "./rise-aoo-widget/rise-aoo-widget.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -36,6 +37,7 @@ import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
     RiseOngoingWidgetComponent,
     RiseUserMenuComponent,
     RiseButtonComponent,
+    RiseAooWidgetComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
@@ -48,6 +50,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public m_aoOngoingEvents: Array<EventViewModel> = [];
 
   private m_oDestroy$ = new Subject<void>();
+
+  public m_bIsSidebarCollapsed: boolean = false;
+
+
 
   /**
    * TODO: add appropriate typing
@@ -166,7 +172,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.m_aoAreas = this.m_aoAllAreas.filter(area => !area.publicArea);
     }
   }
+  public toggleSidebar(): void {
+    this.m_bIsSidebarCollapsed = !this.m_bIsSidebarCollapsed;
+  }
 
+  public openSidebarWidget(oWidget: { m_bShowContent?: boolean } | null): void {
+    if (!this.m_bIsSidebarCollapsed) {
+      return;
+    }
+
+    this.m_bIsSidebarCollapsed = false;
+
+    if (oWidget && 'm_bShowContent' in oWidget) {
+      oWidget.m_bShowContent = true;
+    }
+  }
 
   /**
    * TODO: Add the Areas of interest to the map

@@ -1,12 +1,15 @@
 <main class="d-flex flex-column">
-  <!-- <rise-toolbar [m_bUserIsSigned]="true"></rise-toolbar> -->
   <div class="flex-fill d-flex flex-row">
-    <div class="rise-sidebar d-flex flex-column gap-3 scrollable-sidebar">
+
+    <div class="rise-sidebar d-flex flex-column gap-3 scrollable-sidebar" [class.collapsed]="m_bIsSidebarCollapsed">
+
+
+
       <div class="logo-help-row d-flex align-items-center justify-content-between gap-2">
         <img
           class="align-self-start"
           src="/assets/rise-assets/logo-white-horizontal.svg"
-          alt=""
+          alt="RISE Logo"
         />
         <a
           class="help-link d-inline-flex align-items-center gap-1"
@@ -19,20 +22,25 @@
           <span class="material-symbols-outlined">help</span>
         </a>
       </div>
-<!--      <rise-text-input-->
-<!--        [m_sLocalizationKey]="'DASHBOARD.SEARCH'"-->
-<!--        [m_sIcon]="'search'"-->
-<!--        [m_bHasIcon]="true"-->
-<!--      ></rise-text-input>-->
 
-      <rise-banner [m_sHeaderKey]="'BANNER.LIVE_SIT'"></rise-banner>
-      <rise-affected-widget
-        [m_iAffectedPpl]="m_iAffectedPpl"
-      ></rise-affected-widget>
-      <rise-ongoing-widget
-        [m_aoOngoingEvent]="m_aoOngoingEvents"
-      ></rise-ongoing-widget>
-      <rise-alerts-widget [m_aoAlerts]="m_aoAlerts"></rise-alerts-widget>
+      <rise-banner [m_sHeaderKey]="'BANNER.LIVE_SIT'" (click)="openSidebarWidget(null)"></rise-banner>
+      <rise-affected-widget #affectedWidget [m_iAffectedPpl]="m_iAffectedPpl" (click)="openSidebarWidget(affectedWidget)"></rise-affected-widget>
+      <rise-ongoing-widget #ongoingWidget [m_aoOngoingEvent]="m_aoOngoingEvents" (click)="openSidebarWidget(ongoingWidget)"></rise-ongoing-widget>
+      <rise-alerts-widget #alertsWidget [m_aoAlerts]="m_aoAlerts" (click)="openSidebarWidget(alertsWidget)"></rise-alerts-widget>
+      <rise-aoo-widget #areasWidget
+        [m_aoAreas]="m_aoAreas"
+        [m_bShowPublicAoOs]="m_bShowPublicAoOs"
+        (m_oTogglePublic)="togglePublicAoOs()"
+        (click)="openSidebarWidget(areasWidget)">
+      </rise-aoo-widget>
+    </div>
+    <div class="sidebar-toggle"
+         [class.collapsed]="m_bIsSidebarCollapsed"
+         (click)="toggleSidebar()"
+         [title]="m_bIsSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'">
+      <span class="material-symbols-outlined">
+        {{ m_bIsSidebarCollapsed ? 'chevron_right' : 'chevron_left' }}
+      </span>
     </div>
     <div class="map-container flex-fill">
       <div class="map-user-menu">
@@ -50,7 +58,6 @@
           [title]="m_bShowPublicAoOs ? 'Hide public areas' : 'Show public areas'"
         ></rise-button>
 
-        <!-- EXISTING: Create Area Button -->
         <rise-button
           class="create-area-btn"
           [m_sLabel]="''"

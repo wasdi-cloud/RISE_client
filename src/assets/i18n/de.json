@@ -393,6 +393,7 @@
   },
   "WIDGET": {
     "AFFECTED_PPL": "Affected People",
+    "AREAS": "Gebiete",
     "ALERTS": "Alerts",
     "NO_AFFECTED": "None",
     "NO_ALERTS": "No alerts",

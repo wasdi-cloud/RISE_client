@@ -1,19 +1,51 @@
-.banner-container {
-  background-color: var(--surface-glass-elevation);
-  border: 1px solid var(--surface-glass-elevation);
+.banner-card {
+  background-color: #13262D;
+  border: 1px solid rgba(242, 201, 76, 0.15); /* Faint gold border */
   border-radius: 8px;
-  color: var(--rise-text-dim);
-}
-
-div.ongoing {
-  color: var(--rise-danger-text);
-}
-.info-button {
-  cursor: pointer;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  color: rgba(255, 255, 255, 0.85);
+  border-left: 4px solid var(--rise-gold, #F2C94C); /* Strong gold indicator */
   transition: all 0.3s ease;
 }
 
+.banner-card.ongoing {
+  border-left-color: var(--rise-danger-text, #ef4444);
+  background-color: rgba(239, 68, 68, 0.05);
+}
+
+.banner-card.ongoing .banner-header {
+  color: var(--rise-danger-text, #ef4444);
+}
+
+.info-button {
+  font-size: 24px;
+  color: var(--rise-gold, #F2C94C); /* Gold icon */
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
 .info-button:hover {
-  color: var(--rise-gold);
+  filter: brightness(1.2);
   transform: scale(1.1);
+}
+
+.banner-text-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.banner-header {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+  color: var(--rise-gold, #F2C94C); /* Gold title */
+}
+
+.banner-description {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 2px;
 }

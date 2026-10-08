@@ -431,6 +431,7 @@
   },
   "WIDGET": {
     "AFFECTED_PPL": "Personas Afectadas",
+    "AREAS": "Áreas",
     "ALERTS": "Alertas",
     "NO_AFFECTED": "Ninguna",
     "NO_ALERTS": "Sin alertas",
