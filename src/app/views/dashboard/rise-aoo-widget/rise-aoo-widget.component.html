@@ -1,0 +1,69 @@
+<div class="widget-card">
+  <div class="widget-header d-flex flex-row justify-content-between align-items-center gap-2" (click)="collapseWidget()">
+    <div class="d-flex flex-row align-items-center gap-2">
+      <span class="material-symbols-outlined header-icon">map</span>
+      <span class="header-title">{{ "WIDGET.AREAS" | translate }}</span>
+      <rise-badge
+        [m_iDisplayNum]="m_aoAreas.length"
+        [class.has-items]="m_aoAreas.length > 0">
+      </rise-badge>
+    </div>
+    <span class="material-symbols-outlined chevron-icon" [class.rotated]="!m_bShowContent">
+      expand_less
+    </span>
+  </div>
+
+  <div *ngIf="m_bShowContent" class="widget-body">
+    <!-- Controls Section: Label and Slider (Replaced the eye button) -->
+    <div class="aoo-controls d-flex flex-row justify-content-between align-items-center mb-2">
+      <span class="control-label">Show Public Areas</span>
+      <div class="d-flex align-items-center gap-2">
+        <label class="ui-switch" (click)="$event.stopPropagation()">
+          <input type="checkbox"
+                 [checked]="m_bShowPublicAoOs"
+                 (change)="togglePublicAoOs()">
+          <span class="ui-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Compact List Container: Scrolls only when expanded -->
+    <div class="aoo-list d-flex flex-column gap-1" [class.expanded-list]="m_iDisplayLimit > m_iDefaultLimit">
+      @if (m_aoAreas.length > 0) {
+
+        <div class="event-item d-flex flex-row justify-content-between align-items-center" *ngFor="let oArea of m_aoAreas | slice:0:m_iDisplayLimit">
+
+          <!-- Area Name comes first, aligned cleanly to the left -->
+          <div class="event-name" [matTooltip]="oArea.name">{{ oArea.name }}</div>
+
+          <!-- Icons grouped on the right side -->
+          <div class="d-flex flex-row align-items-center gap-3">
+            <span class="material-symbols-outlined privacy-icon"
+                  [class.public]="oArea.publicArea"
+                  [class.private]="!oArea.publicArea"
+                  [matTooltip]="oArea.publicArea ? 'Public Area' : 'Private Area'">
+              {{ oArea.publicArea ? 'public' : 'lock' }}
+            </span>
+            <span (click)="openMonitor(oArea); $event.stopPropagation()"
+                  class="material-symbols-outlined widget-gold-icon"
+                  matTooltip="Go to area">my_location</span>
+          </div>
+
+        </div>
+
+      } @else {
+        <div class="empty-state d-flex flex-row align-items-center gap-2">
+          <span class="material-symbols-outlined empty-icon">not_listed_location</span>
+          <span class="empty-text">No areas to display.</span>
+        </div>
+      }
+    </div>
+
+    <!-- Show More Toggle: Moved completely outside the scrollable area -->
+    <div *ngIf="m_aoAreas.length > m_iDefaultLimit"
+         class="show-more-toggle mt-2 text-center"
+         (click)="toggleShowAll()">
+      {{ m_iDisplayLimit === m_iDefaultLimit ? 'View all ' + m_aoAreas.length + ' areas...' : 'Show less' }}
+    </div>
+  </div>
+</div>
