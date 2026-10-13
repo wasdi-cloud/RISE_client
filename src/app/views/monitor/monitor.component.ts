@@ -98,6 +98,92 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     this.m_sSelectedTypeFilter = this.m_sSelectedTypeFilter === sType ? 'ALL' : sType;
     this.applyImpactTypeFilter();
   }
+
+  zoomToImpact(oImpact: { raw: any }): void {
+    const oMap = this.m_oMapService.getMap();
+    if (!oMap || !oImpact?.raw) {
+      return;
+    }
+
+    const oGeometry = oImpact.raw.geometry;
+    const aoCoordinates = oGeometry?.coordinates
+      ? this.getGeometryCoordinates(oGeometry.coordinates)
+      : [];
+    const aoPosition = aoCoordinates.length > 0
+      ? aoCoordinates
+      : this.getImpactPosition(oImpact.raw);
+
+    if (aoPosition.length === 0) {
+      return;
+    }
+
+    const oBounds = L.latLngBounds(aoPosition.map(([fLng, fLat]) => [fLat, fLng] as [number, number]));
+    if (oBounds.isValid()) {
+      oMap.flyToBounds(oBounds, {maxZoom: 16, duration: 1});
+    }
+  }
+
+  private getGeometryCoordinates(oCoordinates: any): Array<[number, number]> {
+    if (!Array.isArray(oCoordinates)) {
+      return [];
+    }
+    if (oCoordinates.length >= 2 &&
+        typeof oCoordinates[0] === 'number' &&
+        typeof oCoordinates[1] === 'number') {
+      return [[oCoordinates[0], oCoordinates[1]]];
+    }
+    return oCoordinates.flatMap((oCoordinate: any) => this.getGeometryCoordinates(oCoordinate));
+  }
+
+  private getImpactPosition(oProperties: any): Array<[number, number]> {
+    const fLat = this.getNumericProperty(oProperties, ['lat', 'latitude', 'y', 'LAT', 'LATITUDE']);
+    const fLng = this.getNumericProperty(oProperties, ['lng', 'lon', 'longitude', 'x', 'LON', 'LONGITUDE']);
+    return fLat !== null && fLng !== null ? [[fLng, fLat]] : [];
+  }
+
+  private getNumericProperty(oProperties: any, asNames: string[]): number | null {
+    for (const sName of asNames) {
+      const fValue = Number(oProperties?.[sName]);
+      if (Number.isFinite(fValue)) {
+        return fValue;
+      }
+    }
+    return null;
+  }
+
+  getImpactTypeIcon(sType: string): string {
+    const sNormalizedType = (sType || '').toLowerCase();
+
+    if (sNormalizedType.includes('airport') || sNormalizedType.includes('aerodrome')) {
+      return 'flight';
+    }
+    if (sNormalizedType.includes('school') || sNormalizedType.includes('college') || sNormalizedType.includes('university')) {
+      return 'school';
+    }
+    if (sNormalizedType.includes('hospital') || sNormalizedType.includes('clinic') || sNormalizedType.includes('health')) {
+      return 'local_hospital';
+    }
+    if (sNormalizedType.includes('road') || sNormalizedType.includes('highway') || sNormalizedType.includes('street')) {
+      return 'road';
+    }
+    if (sNormalizedType.includes('rail') || sNormalizedType.includes('train')) {
+      return 'train';
+    }
+    if (sNormalizedType.includes('building') || sNormalizedType.includes('residential') || sNormalizedType.includes('house')) {
+      return 'home';
+    }
+    if (sNormalizedType.includes('industrial') || sNormalizedType.includes('factory')) {
+      return 'factory';
+    }
+    if (sNormalizedType.includes('water') || sNormalizedType.includes('river') || sNormalizedType.includes('lake')) {
+      return 'water';
+    }
+    if (sNormalizedType.includes('park') || sNormalizedType.includes('forest') || sNormalizedType.includes('wood')) {
+      return 'park';
+    }
+
+    return 'location_on';
+  }
   /**
    * Collapsible section flags for sidebar
    */
@@ -122,6 +208,12 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    */
   public m_sActiveImpactWfsUrl: string = '';
   public m_sActiveImpactLayerId: string = '';
+
+  /**
+   * Prevents repeated plugin/layer refresh notifications from issuing the same
+   * WFS requests more than once.
+   */
+  private m_sImpactDataRequestKey: string = '';
 
   /**
    * Flag to show either 2D Leaflet map or 3D Cesium Map (TODO: CESIUM)
@@ -667,6 +759,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       next: (oResponse) => {
         if (oResponse.length > 0) {
           this.m_aoAreaPlugins = oResponse;
+          this.loadImpactLayers();
         }
       },
       error: (oError) => {
@@ -676,6 +769,25 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
           'Error'
         );
       },
+    });
+  }
+
+  /**
+   * Fetch impact layers for the current date independently of plugin selection.
+   */
+  private loadImpactLayers(): void {
+    if (!this.m_sAreaId || this.m_aoAreaPlugins.length === 0) {
+      return;
+    }
+
+    const iSelectedDate = this.m_iSelectedDate || Date.now();
+    this.m_aoAreaPlugins.forEach((oPlugin: any) => {
+      this.m_oLayerService.findAvailableLayers('', this.m_sAreaId, iSelectedDate, oPlugin.id)
+        .pipe(takeUntil(this.m_oDestroy$))
+        .subscribe({
+          next: (aoLayers) => this.logPluginImpactData(aoLayers),
+          error: (oError) => console.error('Error fetching impact layers:', oError)
+        });
     });
   }
 
@@ -812,6 +924,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
     // Update the layers based on the new date
     this.updateMapAndLayerButtons();
+    this.loadImpactLayers();
   }
 
   /**
@@ -861,11 +974,9 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       // It is, toggle selection
       if (this.m_oSelectedPlugin.id === oPlugin.id) {
         this.m_oSelectedPlugin = null;
-        this.clearImpactTableData();
       }
       else {
         this.m_oSelectedPlugin = oPlugin;
-        this.clearImpactTableData();
       }
     }
     else {
@@ -955,12 +1066,26 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
           oLayer.layerId.includes('exposure') ||
           oLayer.layerId.includes('markers')
         )
+    ).filter((oLayer: any, i: number, aoFilteredLayers: any[]) =>
+      aoFilteredLayers.findIndex((oOtherLayer: any) =>
+        oOtherLayer.layerId === oLayer.layerId &&
+        oOtherLayer.geoserverUrl === oLayer.geoserverUrl
+      ) === i
     );
 
     if (aoImpactLayers.length > 0) {
+      const sRequestKey = aoImpactLayers
+        .map((oLayer: any) => `${oLayer.geoserverUrl}|${oLayer.layerId}`)
+        .sort()
+        .join('||');
+
+      if (sRequestKey === this.m_sImpactDataRequestKey) {
+        return;
+      }
 
       // Reset data
       this.clearImpactTableData();
+      this.m_sImpactDataRequestKey = sRequestKey;
       // Store WFS reference for export
       const oFirstLayer = aoImpactLayers[0];
       this.m_sActiveImpactLayerId = oFirstLayer.layerId;
@@ -978,7 +1103,19 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
                   return { name: sName, type: sType, raw: props };
                 });
 
-                this.m_aoImpactTableData = [...this.m_aoImpactTableData, ...aoParsedRows];
+                const aoExistingRows = new Set(
+                  this.m_aoImpactTableData.map(oItem => JSON.stringify(oItem.raw))
+                );
+                const aoUniqueRows = aoParsedRows.filter(oRow => {
+                  const sRowKey = JSON.stringify(oRow.raw);
+                  if (aoExistingRows.has(sRowKey)) {
+                    return false;
+                  }
+                  aoExistingRows.add(sRowKey);
+                  return true;
+                });
+
+                this.m_aoImpactTableData = [...this.m_aoImpactTableData, ...aoUniqueRows];
 
                 // Extract unique types for dropdown filter
                 const setTypes = new Set(this.m_aoImpactTableData.map(item => item.type));
@@ -1042,6 +1179,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     this.m_sSelectedTypeFilter = 'ALL';
     this.m_sActiveImpactLayerId = '';
     this.m_sActiveImpactWfsUrl = '';
+    this.m_sImpactDataRequestKey = '';
   }
 
   /********** DRAG AND DROP CAPABILITIES **********/
