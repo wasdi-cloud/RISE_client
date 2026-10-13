@@ -116,7 +116,7 @@
                     [attr.aria-pressed]="m_sSelectedTypeFilter === oSummary.type"
                     [title]="'Filter affected features: ' + oSummary.type"
                     (click)="selectImpactType(oSummary.type)">
-              <span class="material-symbols-outlined">location_on</span>
+              <span class="material-symbols-outlined" aria-hidden="true">{{ getImpactTypeIcon(oSummary.type) }}</span>
               <strong>{{ oSummary.count | number }}</strong>
               <span>{{ oSummary.type }}</span>
             </button>
@@ -196,7 +196,10 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let item of m_aoFilteredImpactTableData">
+              <tr *ngFor="let item of m_aoFilteredImpactTableData"
+                  class="cursor-pointer"
+                  (click)="zoomToImpact(item)"
+                  title="Zoom to feature">
                 <td class="text-truncate" style="max-width: 140px;" [title]="item.name">
                   {{ item.name }}
                 </td>

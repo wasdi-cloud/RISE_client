@@ -58,7 +58,10 @@ export class LayerService {
     return this.m_oHttp.get<any>(sWfsUrl, { params: oParams }).pipe(
       map(oGeoJson => {
         if (oGeoJson && oGeoJson.features) {
-          return oGeoJson.features.map((oFeature: any) => oFeature.properties);
+          return oGeoJson.features.map((oFeature: any) => ({
+            ...oFeature.properties,
+            geometry: oFeature.geometry
+          }));
         }
         return [];
       })

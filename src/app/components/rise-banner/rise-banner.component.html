@@ -6,6 +6,8 @@
   </span>
   <div class="d-flex flex-column banner-text-container">
     <div class="banner-header">{{ m_sHeaderKey | translate }}</div>
-    <div *ngIf="m_sDescriptionKey" class="banner-description">{{ m_sDescriptionKey | translate }}</div>
+    @if (m_sDescriptionKey) {
+      <div class="banner-description">{{ m_sDescriptionKey | translate }}</div>
+    }
   </div>
 </div>
