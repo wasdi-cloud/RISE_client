@@ -22,6 +22,9 @@ export class RiseHistogramComponent implements OnInit{
   }
 
   createHistogram(): void {
+    if (!Array.isArray(this.aiPixelValues)) {
+      return;
+    }
     const oLabels = this.aiPixelValues.map((_, i) => `Bin ${i + 1}`); // Example bins
     const oData = this.aiPixelValues;
 

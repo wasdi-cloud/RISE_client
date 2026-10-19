@@ -41,7 +41,7 @@ export class LayerAnalyzerComponent implements OnInit{
   m_bIsLoading: boolean = false;
   m_bStarted: boolean = false;
   m_sActiveLayerName: string = "";
-  m_aiHistogramPixelValues: [];
+  m_aiHistogramPixelValues: number[] = [];
 
   @Output() m_oEmitBack: EventEmitter<boolean> = new EventEmitter<boolean>(
     null
@@ -73,6 +73,15 @@ export class LayerAnalyzerComponent implements OnInit{
 
   onRefresh() {
     //todo for now we are only selecting the first one , but in the future this must change
+    if (!this.m_aoInputLayers || this.m_aoInputLayers.length === 0) {
+      this.m_oNotificationService.openInfoDialog(
+        'Select a layer before analyzing.',
+        'warning',
+        'No layer selected'
+      );
+      return;
+    }
+
     let oInput = new LayerAnalyzerInputViewModel();
     // oInput.layerIds = this.m_aoInputLayers.map((layer) => layer.id);
     oInput.layerIds = [this.m_aoInputLayers[0].id];
@@ -106,7 +115,12 @@ export class LayerAnalyzerComponent implements OnInit{
           this.m_sPercentTotAreaAffectedPixels = oResponse.percentTotAreaAffectedPixels;
           this.m_sPercentAreaAffectedPixels = oResponse.percentAreaAffectedPixels;
           this.m_sAreaPixelAffected = oResponse.areaPixelAffected;
-          this.m_aiHistogramPixelValues = oResponse.histogram.map(sValue => parseInt(sValue, 10));;
+          const aHistogram = Array.isArray(oResponse.histogram)
+            ? oResponse.histogram
+            : [];
+          this.m_aiHistogramPixelValues = aHistogram
+            .map(sValue => parseInt(sValue, 10))
+            .filter(iValue => Number.isFinite(iValue));
 
         }
         this.m_bIsLoading = false;
@@ -118,6 +132,7 @@ export class LayerAnalyzerComponent implements OnInit{
           'danger',
           'Error'
         );
+        this.m_aiHistogramPixelValues = [];
         this.m_bIsLoading = false;
         this.m_oChangeDetectorRef.detectChanges();
       },
