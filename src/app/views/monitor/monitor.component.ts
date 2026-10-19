@@ -151,6 +151,33 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     return null;
   }
 
+  private getImpactFeatureKey(oRow: { name: string; type: string; raw: any }): string {
+    const oRaw = oRow.raw || {};
+    const sFeatureId = oRaw.id ?? oRaw.ID ?? oRaw.fid ?? oRaw.FID;
+    if (sFeatureId !== undefined && sFeatureId !== null) {
+      return `id:${String(sFeatureId)}|${oRow.name}|${oRow.type}`;
+    }
+
+    const oGeometry = oRaw.geometry ?? oRaw.geom ?? oRaw.the_geom;
+    if (oGeometry !== undefined && oGeometry !== null) {
+      return `feature:${oRow.name}|${oRow.type}|${this.getStableJson(oGeometry)}`;
+    }
+
+    return `properties:${this.getStableJson(oRaw)}`;
+  }
+
+  private getStableJson(oValue: any): string {
+    if (Array.isArray(oValue)) {
+      return `[${oValue.map(oItem => this.getStableJson(oItem)).join(',')}]`;
+    }
+    if (oValue && typeof oValue === 'object') {
+      return `{${Object.keys(oValue).sort().map(sKey =>
+        `${JSON.stringify(sKey)}:${this.getStableJson(oValue[sKey])}`
+      ).join(',')}}`;
+    }
+    return JSON.stringify(oValue);
+  }
+
   getImpactTypeIcon(sType: string): string {
     const sNormalizedType = (sType || '').toLowerCase();
 
@@ -1104,10 +1131,10 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
                 });
 
                 const aoExistingRows = new Set(
-                  this.m_aoImpactTableData.map(oItem => JSON.stringify(oItem.raw))
+                  this.m_aoImpactTableData.map(oItem => this.getImpactFeatureKey(oItem))
                 );
                 const aoUniqueRows = aoParsedRows.filter(oRow => {
-                  const sRowKey = JSON.stringify(oRow.raw);
+                  const sRowKey = this.getImpactFeatureKey(oRow);
                   if (aoExistingRows.has(sRowKey)) {
                     return false;
                   }
@@ -1164,7 +1191,10 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     if (!this.m_sActiveImpactWfsUrl || !this.m_sActiveImpactLayerId) {
       return;
     }
-    const sCsvUrl = `${this.m_sActiveImpactWfsUrl}?service=WFS&version=1.0.0&request=GetFeature&typeName=${this.m_sActiveImpactLayerId}&outputFormat=csv`;
+    const sQuerySeparator = this.m_sActiveImpactWfsUrl.includes('?')
+      ? (/[?&]$/.test(this.m_sActiveImpactWfsUrl) ? '' : '&')
+      : '?';
+    const sCsvUrl = `${this.m_sActiveImpactWfsUrl}${sQuerySeparator}service=WFS&version=1.0.0&request=GetFeature&typeName=${encodeURIComponent(this.m_sActiveImpactLayerId)}&outputFormat=csv`;
     window.open(sCsvUrl, '_blank');
   }
 

@@ -2058,7 +2058,10 @@ export class MapService {
   //todo delete
   buildGetCapabilitiesUrl(oLayer: any): string {
     const sBaseUrl = oLayer._url || oLayer.url;
-    return `${sBaseUrl}?service=WMS&version=1.3.0&request=GetCapabilities`;
+    const sQuerySeparator = sBaseUrl.includes('?')
+      ? (/[?&]$/.test(sBaseUrl) ? '' : '&')
+      : '?';
+    return `${sBaseUrl}${sQuerySeparator}service=WMS&version=1.3.0&request=GetCapabilities`;
   }
 
   /**
@@ -2333,18 +2336,14 @@ export class MapService {
       return '';
     }
 
-    let sGeoserverUrl: string = oLayer.geoserverUrl;
-
-    if (sGeoserverUrl.endsWith('?')) {
-      sGeoserverUrl = sGeoserverUrl.replace('ows?', 'wms?');
-    } else {
-      sGeoserverUrl = sGeoserverUrl.replace('ows', 'wms?');
-    }
-
+    let sGeoserverUrl: string = oLayer.geoserverUrl.replace(/\/ows(?=([?]|$))/i, '/wms');
+    const sQuerySeparator = sGeoserverUrl.includes('?')
+      ? (/[?&]$/.test(sGeoserverUrl) ? '' : '&')
+      : '?';
     sGeoserverUrl =
       sGeoserverUrl +
-      'request=GetLegendGraphic&format=image/png&WIDTH=12&HEIGHT=12&legend_options=fontAntiAliasing:true;fontSize:10&LEGEND_OPTIONS=forceRule:True&LAYER=';
-    sGeoserverUrl = sGeoserverUrl + oLayer.layerId;
+      `${sQuerySeparator}request=GetLegendGraphic&format=image/png&WIDTH=12&HEIGHT=12&legend_options=fontAntiAliasing:true;fontSize:10&LEGEND_OPTIONS=forceRule:True&LAYER=` +
+      encodeURIComponent(oLayer.layerId);
 
     return sGeoserverUrl;
   }
@@ -2675,4 +2674,3 @@ export class MapService {
     }
   }
 }
-
