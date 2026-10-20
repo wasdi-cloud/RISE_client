@@ -66,6 +66,7 @@ import {UserRole} from "../../models/UserRole";
       RiseTextInputComponent,
       RiseTimebarComponent,
       RiseUserMenuComponent,
+      ImpactsDialogComponent,
       TranslateModule,
       FormsModule,
 
@@ -83,7 +84,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   m_asOriginalAllFiles: any[] = [];
   public m_sSortColumn: string = 'name';
   public m_bSortAscending: boolean = true;
-  public m_sSidebarTab: 'layers' | 'event' | 'impacts' = 'layers';
+  public m_sSidebarTab: 'layers' | 'event' = 'layers';
   public m_sAttachmentFilter: 'all' | 'media' | 'doc' = 'all';
   public m_aoImpactSummary: Array<{ type: string; count: number }> = [];
 
@@ -395,6 +396,9 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    * Subject to handle unsubscription on component destroy
    */
   private m_oDestroy$ = new Subject<void>();
+
+  public m_bShowImpactsDrawer = false;
+  public m_oImpactsDrawerData: any = null;
 
 
   // --- Quick Upload Variables ---
@@ -1753,19 +1757,27 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     Given an area id and selected date , we show Impacts
     */
   openImpacts() {
-
-    const oDialogData = {
-      areaId: this.m_sAreaId,
-      selectedDate: this.m_iSelectedDate,
-      areaName: this.m_sAreaName
+    if (this.m_bShowImpactsDrawer) {
+      this.closeImpactsDrawer();
+      return;
     }
 
-    this.m_oDialog.open(ImpactsDialogComponent, {
-      data: oDialogData
-    }).afterClosed().subscribe(()=>{
+    this.m_oImpactsDrawerData = {
+      areaId: this.m_sAreaId,
+      selectedDate: this.m_iSelectedDate,
+      areaName: this.m_sAreaName,
+      impactRows: this.m_aoImpactTableData,
+      impactTypes: this.m_asImpactTypes,
+      impactSummary: this.m_aoImpactSummary,
+      activeImpactWfsUrl: this.m_sActiveImpactWfsUrl,
+      activeImpactLayerId: this.m_sActiveImpactLayerId
+    };
+    this.m_bShowImpactsDrawer = true;
+  }
 
-      }
-    )
+  closeImpactsDrawer(): void {
+    this.m_bShowImpactsDrawer = false;
+    this.m_oImpactsDrawerData = null;
   }
 
   handleMeasurementTool(sWkt:any){

@@ -1,5 +1,6 @@
-import {AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, Inject, Input, OnInit, Optional, Output, ViewChild} from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import {RiseTextInputComponent} from "../../components/rise-text-input/rise-text-input.component";
 import {TranslateModule} from "@ngx-translate/core";
@@ -14,6 +15,7 @@ import { WidgetInfoViewModel } from '../../models/WidgetInfoViewModel';
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     RiseTextInputComponent,
     TranslateModule,
     RiseDropdownComponent
@@ -23,6 +25,22 @@ import { WidgetInfoViewModel } from '../../models/WidgetInfoViewModel';
 })
 
 export class ImpactsDialogComponent implements OnInit, AfterViewInit {
+
+  @Input() m_oInputData: any;
+  @Output() m_oDismissed = new EventEmitter<void>();
+  @Output() m_oImpactSelected = new EventEmitter<{ raw: any }>();
+
+  m_sActiveTab: 'evaluation' | 'features' = 'evaluation';
+  m_aoImpactRows: Array<{ name: string; type: string; raw: any }> = [];
+  m_aoImpactTypes: string[] = [];
+  m_sSelectedImpactType: string = 'ALL';
+  m_aoFilteredImpactRows: Array<{ name: string; type: string; raw: any }> = [];
+  m_sImpactSortColumn: 'name' | 'type' = 'name';
+  m_bImpactSortAscending = true;
+  m_aoImpactSummary: Array<{ type: string; count: number }> = [];
+  m_sActiveImpactWfsUrl = '';
+  m_sActiveImpactLayerId = '';
+  m_sExportFormat: 'csv' | 'geojson' = 'csv';
 
   /**
    * Selected widget information.
@@ -104,10 +122,14 @@ export class ImpactsDialogComponent implements OnInit, AfterViewInit {
    */
   m_bImpactsAvailable: boolean = true;
 
+  get m_bHasSelectedImpactData(): boolean {
+    return !!this.m_oSelectedWidget?.payload;
+  }
+
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private m_oData: any,
-    private m_oDialogRef: MatDialogRef<ImpactsDialogComponent>,
+    @Optional() @Inject(MAT_DIALOG_DATA) private m_oDialogData: any,
+    @Optional() private m_oDialogRef: MatDialogRef<ImpactsDialogComponent>,
     private m_oWidgetService: WidgetService,
     private m_oTranslateService: TranslateService
   ) {
@@ -121,19 +143,27 @@ export class ImpactsDialogComponent implements OnInit, AfterViewInit {
    * We search the impacts for today's date first, and if not available, we search for the previous day.
    */
   ngOnInit(): void {
+    const oData = this.m_oInputData || this.m_oDialogData || {};
+    this.m_aoImpactRows = oData.impactRows || [];
+    this.m_aoImpactTypes = oData.impactTypes || [];
+    this.m_aoImpactSummary = oData.impactSummary || this.buildImpactSummary(this.m_aoImpactRows);
+    this.m_sActiveImpactWfsUrl = oData.activeImpactWfsUrl || '';
+    this.m_sActiveImpactLayerId = oData.activeImpactLayerId || '';
+    this.applyImpactTypeFilter();
+
     // Format the actual date
-    const sFormattedDate = this.formatDateToYMD(this.m_oData.selectedDate);
+    const sFormattedDate = this.formatDateToYMD(oData.selectedDate);
     // And the day before
-    const sFormattedPreviousDate = this.formatDateToYMDPreviousDay(this.m_oData.selectedDate);
+    const sFormattedPreviousDate = this.formatDateToYMDPreviousDay(oData.selectedDate);
 
     // Assign area name
-    this.m_sAreaName = this.m_oData.areaName;
+    this.m_sAreaName = oData.areaName;
 
     // And clean the date for now
     this.m_sRefDate = "";
 
     // Call the API
-    this.m_oWidgetService.getDayImpacts(this.m_oData.areaId, sFormattedDate).subscribe({
+    this.m_oWidgetService.getDayImpacts(oData.areaId, sFormattedDate).subscribe({
       next: (data) => {
         // Do we have data for today?
         if (data.length > 0) {
@@ -144,7 +174,7 @@ export class ImpactsDialogComponent implements OnInit, AfterViewInit {
         }
         else {
           // Maybe we have data for the previous day?
-          this.m_oWidgetService.getDayImpacts(this.m_oData.areaId, sFormattedPreviousDate).subscribe({
+          this.m_oWidgetService.getDayImpacts(oData.areaId, sFormattedPreviousDate).subscribe({
             next: (previousData) => { 
               // Great, we have data for the previous day
               this.m_aoWidgetInfoViewModel = previousData;
@@ -372,6 +402,112 @@ export class ImpactsDialogComponent implements OnInit, AfterViewInit {
     return undefined; 
   }  
 
+  applyImpactTypeFilter(): void {
+    this.m_aoFilteredImpactRows = this.m_sSelectedImpactType === 'ALL'
+      ? [...this.m_aoImpactRows]
+      : this.m_aoImpactRows.filter(oRow => oRow.type === this.m_sSelectedImpactType);
+    this.sortImpactRows();
+  }
+
+  sortImpactTable(sColumn: 'name' | 'type'): void {
+    if (this.m_sImpactSortColumn === sColumn) {
+      this.m_bImpactSortAscending = !this.m_bImpactSortAscending;
+    } else {
+      this.m_sImpactSortColumn = sColumn;
+      this.m_bImpactSortAscending = true;
+    }
+    this.sortImpactRows();
+  }
+
+  private sortImpactRows(): void {
+    const sColumn = this.m_sImpactSortColumn;
+    this.m_aoFilteredImpactRows.sort((oLeft, oRight) => {
+      const sLeft = (oLeft[sColumn] || '').toString().toLowerCase();
+      const sRight = (oRight[sColumn] || '').toString().toLowerCase();
+      if (sLeft === sRight) return 0;
+      const iResult = sLeft < sRight ? -1 : 1;
+      return this.m_bImpactSortAscending ? iResult : -iResult;
+    });
+  }
+
+  selectImpactType(sType: string): void {
+    this.m_sSelectedImpactType = this.m_sSelectedImpactType === sType ? 'ALL' : sType;
+    this.applyImpactTypeFilter();
+  }
+
+  zoomToImpact(oImpact: { raw: any }): void {
+    this.m_oImpactSelected.emit(oImpact);
+  }
+
+  getImpactTypeIcon(sType: string): string {
+    const sNormalizedType = (sType || '').toLowerCase();
+    if (sNormalizedType.includes('airport') || sNormalizedType.includes('aerodrome')) return 'flight';
+    if (sNormalizedType.includes('school') || sNormalizedType.includes('college') || sNormalizedType.includes('university')) return 'school';
+    if (sNormalizedType.includes('hospital') || sNormalizedType.includes('clinic') || sNormalizedType.includes('health')) return 'local_hospital';
+    if (sNormalizedType.includes('road') || sNormalizedType.includes('highway') || sNormalizedType.includes('street')) return 'road';
+    if (sNormalizedType.includes('rail') || sNormalizedType.includes('train')) return 'train';
+    if (sNormalizedType.includes('building') || sNormalizedType.includes('residential') || sNormalizedType.includes('house')) return 'home';
+    return 'location_on';
+  }
+
+  exportImpacts(): void {
+    if (this.m_aoFilteredImpactRows.length === 0) {
+      return;
+    }
+
+    const sFileExtension = this.m_sExportFormat === 'csv' ? 'csv' : 'geojson';
+    const oBlob = this.m_sExportFormat === 'csv'
+      ? new Blob([this.buildCsvExport()], {type: 'text/csv;charset=utf-8;'})
+      : new Blob([this.buildGeoJsonExport()], {type: 'application/geo+json;charset=utf-8;'});
+    const sUrl = URL.createObjectURL(oBlob);
+    const oLink = document.createElement('a');
+    oLink.href = sUrl;
+    oLink.download = `affected-features.${sFileExtension}`;
+    oLink.click();
+    URL.revokeObjectURL(sUrl);
+  }
+
+  private buildCsvExport(): string {
+    const aoRows = this.m_aoFilteredImpactRows.map(oRow => ({
+      name: oRow.name,
+      type: oRow.type,
+      ...oRow.raw
+    }));
+    const asColumns = Array.from(new Set(aoRows.flatMap(oRow => Object.keys(oRow))));
+    const asLines = [
+      asColumns.map(sColumn => this.escapeCsvValue(sColumn)).join(','),
+      ...aoRows.map(oRow => asColumns.map(sColumn => this.escapeCsvValue(oRow[sColumn])).join(','))
+    ];
+    return asLines.join('\r\n');
+  }
+
+  private buildGeoJsonExport(): string {
+    return JSON.stringify({
+      type: 'FeatureCollection',
+      features: this.m_aoFilteredImpactRows.map(oRow => {
+        const oRaw = oRow.raw || {};
+        const oGeometry = oRaw.geometry || null;
+        const {geometry: _geometry, ...oProperties} = oRaw;
+        return {
+          type: 'Feature',
+          geometry: oGeometry,
+          properties: {name: oRow.name, type: oRow.type, ...oProperties}
+        };
+      })
+    }, null, 2);
+  }
+
+  private escapeCsvValue(oValue: any): string {
+    const sValue = oValue === null || oValue === undefined ? '' : String(oValue);
+    return `"${sValue.replace(/"/g, '""')}"`;
+  }
+
+  private buildImpactSummary(aoRows: Array<{ type: string }>): Array<{ type: string; count: number }> {
+    const oCounts = new Map<string, number>();
+    aoRows.forEach(oRow => oCounts.set(oRow.type, (oCounts.get(oRow.type) || 0) + 1));
+    return Array.from(oCounts, ([type, count]) => ({type, count}));
+  }
+
   ngAfterViewInit(): void {
 
   }
@@ -420,10 +556,12 @@ export class ImpactsDialogComponent implements OnInit, AfterViewInit {
    * @param oEvent 
    */
   onDropdownSelectionChange(oEvent: any): void {
-    
     this.m_oSelectedOption = oEvent;
-
-    this.m_oSelectedWidget = this.getWidgetInfoByComboIndex(this.m_oSelectedOption.value.id);
+    const oSelectedValue = oEvent?.value ?? oEvent;
+    const iSelectedIndex = typeof oSelectedValue === 'object'
+      ? oSelectedValue?.id
+      : oSelectedValue;
+    this.m_oSelectedWidget = this.getWidgetInfoByComboIndex(Number(iSelectedIndex));
 
     if (this.m_oSelectedWidget === undefined) {
       this.m_bImpactsAvailable = false;
@@ -506,7 +644,11 @@ export class ImpactsDialogComponent implements OnInit, AfterViewInit {
     this.m_oCropsChart?.destroy();
     this.m_oGrassLandChart?.destroy();
     this.m_oBuiltUpChart?.destroy();
-    this.m_oDialogRef.close();
+    if (this.m_oDialogRef) {
+      this.m_oDialogRef.close();
+    } else {
+      this.m_oDismissed.emit();
+    }
   }
 
   formatSquareMetersToKm(fSquareMeters: number): string {
@@ -521,4 +663,5 @@ export class ImpactsDialogComponent implements OnInit, AfterViewInit {
     // }
     return `${(fSquareMeters / 1000000).toFixed(2)} km²`;
   }
+
 }

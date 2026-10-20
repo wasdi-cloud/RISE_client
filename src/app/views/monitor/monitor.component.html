@@ -54,12 +54,6 @@
           <span class="material-symbols-outlined">flag</span>
           <span>Event</span>
         </button>
-        <button type="button" class="sidebar-tab" [class.active]="m_sSidebarTab === 'impacts'"
-                [attr.aria-pressed]="m_sSidebarTab === 'impacts'" aria-controls="sidebar-impacts"
-                (click)="m_sSidebarTab = 'impacts'">
-          <span class="material-symbols-outlined">bar_chart</span>
-          <span>Impacts</span>
-        </button>
       </nav>
 
       <!-- ======================================= -->
@@ -103,122 +97,7 @@
           </div>
         </section>
 
-        <!-- 2. AFFECTED IMPACTS TABLE SECTION -->
-        <section id="sidebar-impacts" [hidden]="m_sSidebarTab !== 'impacts'" class="sidebar-panel" aria-label="Impacts and affected exposures">
-          <div *ngIf="m_aoImpactTableData.length === 0" class="sidebar-empty-state">
-            <span class="material-symbols-outlined">bar_chart</span>
-            <p>No affected features to show</p>
-          </div>
-          <ng-container *ngIf="m_aoImpactTableData.length > 0">
-          <div class="impact-summary-grid mb-3">
-            <button type="button" class="impact-summary-item" *ngFor="let oSummary of m_aoImpactSummary"
-                    [class.active]="m_sSelectedTypeFilter === oSummary.type"
-                    [attr.aria-pressed]="m_sSelectedTypeFilter === oSummary.type"
-                    [title]="'Filter affected features: ' + oSummary.type"
-                    (click)="selectImpactType(oSummary.type)">
-              <span class="material-symbols-outlined" aria-hidden="true">{{ getImpactTypeIcon(oSummary.type) }}</span>
-              <strong>{{ oSummary.count | number }}</strong>
-              <span>{{ oSummary.type }}</span>
-            </button>
-          </div>
-          <!-- FIXED HEADER -->
-          <div
-            class="layers-header d-flex flex-row justify-content-between align-items-center gap-2 py-2"
-          >
-            <span class="material-symbols-outlined">table_chart</span>
-            <div class="flex-fill">
-              <strong>Affected Features ({{ m_aoFilteredImpactTableData.length }})</strong>
-            </div>
-
-            <button
-              type="button"
-              class="btn btn-sm btn-outline-light d-flex align-items-center p-1"
-              (click)="$event.stopPropagation(); exportImpactsToCSV()"
-              title="Export CSV from GeoServer"
-            >
-              <span class="material-symbols-outlined fs-6">download</span>
-            </button>
-
-          </div>
-
-          <!-- SCROLLABLE BODY -->
-          <div class="pb-3">
-            <div class="d-flex align-items-center gap-2 mb-2 mt-2">
-              <label for="impactTypeSelect" class="small fw-bold text-nowrap">Type:</label>
-              <select
-                id="impactTypeSelect"
-                class="form-select form-select-sm sidebar-type-filter"
-                [(ngModel)]="m_sSelectedTypeFilter"
-                (change)="applyImpactTypeFilter()"
-              >
-                <option value="ALL">All Types</option>
-                <option *ngFor="let sType of m_asImpactTypes" [value]="sType">
-                  {{ sType }}
-                </option>
-              </select>
-            </div>
-
-            <!-- Table natively flows within the scrolling body -->
-            <table class="table table-striped table-hover table-sm mb-0 align-middle sidebar-impact-table">
-              <thead>
-              <tr>
-                <!-- NAME COLUMN -->
-                <th
-                  scope="col"
-                  class="cursor-pointer user-select-none"
-                  style="z-index: 1;"
-                  (click)="sortTable('name')"
-                  title="Sort by Name"
-                >
-                  <div class="d-flex align-items-center justify-content-between">
-                    <span>Name</span>
-                    <span [style.opacity]="m_sSortColumn === 'name' ? '1' : '0.4'" class="fs-6">
-                        {{ m_sSortColumn === 'name' ? (m_bSortAscending ? '↑' : '↓') : '⇅' }}
-                      </span>
-                  </div>
-                </th>
-
-                <!-- TYPE COLUMN -->
-                <th
-                  scope="col"
-                  class="cursor-pointer user-select-none"
-                  style="z-index: 1;"
-                  (click)="sortTable('type')"
-                  title="Sort by Type"
-                >
-                  <div class="d-flex align-items-center justify-content-between">
-                    <span>Type</span>
-                    <span [style.opacity]="m_sSortColumn === 'type' ? '1' : '0.4'" class="fs-6">
-                        {{ m_sSortColumn === 'type' ? (m_bSortAscending ? '↑' : '↓') : '⇅' }}
-                      </span>
-                  </div>
-                </th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr *ngFor="let item of m_aoFilteredImpactTableData"
-                  class="cursor-pointer"
-                  (click)="zoomToImpact(item)"
-                  title="Zoom to feature">
-                <td class="text-truncate" style="max-width: 140px;" [title]="item.name">
-                  {{ item.name }}
-                </td>
-                <td>
-                  <span class="badge bg-secondary">{{ item.type }}</span>
-                </td>
-              </tr>
-              <tr *ngIf="m_aoFilteredImpactTableData.length === 0">
-                <td colspan="2" class="text-center text-muted small py-2">
-                  No features match selected type
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-          </ng-container>
-        </section>
-
-        <!-- 3. EVENT DETAILS SECTION -->
+        <!-- 2. EVENT DETAILS SECTION -->
         <section id="sidebar-event" [hidden]="m_sSidebarTab !== 'event'" class="sidebar-panel" aria-label="Event details">
           <div *ngIf="!m_bShowEventInfo" class="sidebar-empty-state">
             <span class="material-symbols-outlined">flag</span>
@@ -355,9 +234,9 @@
         ></rise-button>
         <rise-button
           class="flex-fill"
-          [m_sLabel]="'MONITOR.SEE_IMPACTS'"
+          [m_sLabel]="m_bShowImpactsDrawer ? 'Close Impacts' : 'MONITOR.SEE_IMPACTS'"
           [m_sSize]="'small'"
-          [m_sIconLeft]="'bar_chart'"
+          [m_sIconLeft]="m_bShowImpactsDrawer ? 'close' : 'bar_chart'"
           [m_sRole]="'action'"
           (click)="openImpacts()"
         ></rise-button>
@@ -440,5 +319,13 @@
         [m_iInitialSelectedDate]="m_iInitialPeakDate"
       ></rise-timebar>
     </div>
+    <aside class="impacts-drawer" *ngIf="m_bShowImpactsDrawer"
+           aria-label="Impact information">
+      <app-impacts-dialog
+        [m_oInputData]="m_oImpactsDrawerData"
+        (m_oDismissed)="closeImpactsDrawer()"
+        (m_oImpactSelected)="zoomToImpact($event)"
+      ></app-impacts-dialog>
+    </aside>
   </div>
 </main>

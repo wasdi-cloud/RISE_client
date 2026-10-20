@@ -7,6 +7,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative;
 }
 rise-map {
   flex-grow: 1;
@@ -59,6 +60,25 @@ rise-map {
   width: 100%;
   height: 80px; /* Adjust as needed */
 }
+
+.impacts-drawer {
+  position: relative;
+  flex: 0 1 520px;
+  min-width: 360px;
+  max-width: 520px;
+  height: 100vh;
+  background-color: var(--surface-glass);
+  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+@media (max-width: 700px) {
+  .impacts-drawer {
+    flex-basis: 100%;
+    min-width: 0;
+    max-width: none;
+  }
+}
 .map-section {
   flex-grow: 1;
   position: relative;
@@ -68,10 +88,10 @@ rise-map {
 
 .btn-select-container {
   top: 0.5rem;
-  left: 27%;
+  left: 4.5rem;
   position: absolute;
   z-index: 999;
-  max-width: calc(100% - 27% - 150px);
+  max-width: calc(100% - 1.5rem);
   padding-right: 80px;
   flex-wrap: wrap;
   gap: 10px;
@@ -275,7 +295,7 @@ span.cta-text {
 
 .sidebar-tabs {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 4px;
   padding: 4px;
   border-top: 1px solid var(--rise-border-default);
