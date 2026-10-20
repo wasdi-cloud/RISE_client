@@ -207,6 +207,11 @@
                           [title]="file.name" (click)="previewFile(file)">
                     <span class="attachment-preview">
                       <span class="material-symbols-outlined">{{ file.type === 'image' ? 'image' : (file.type === 'video' ? 'videocam' : 'description') }}</span>
+                      <img *ngIf="file.type === 'image' && file.previewLink"
+                           class="attachment-thumbnail"
+                           [src]="file.previewLink"
+                           [alt]="file.name"
+                           (error)="onAttachmentPreviewError($event)">
                       <span class="attachment-type">{{ file.type === 'image' ? 'IMG' : (file.type === 'video' ? 'VID' : 'DOC') }}</span>
                     </span>
                     <span class="attachment-name">{{ file.name }}</span>

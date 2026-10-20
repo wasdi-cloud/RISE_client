@@ -537,6 +537,15 @@ span.cta-text {
   font-size: 28px;
 }
 
+.attachment-thumbnail {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: var(--surface-glass-interactive);
+}
+
 .attachment-type {
   position: absolute;
   top: 6px;

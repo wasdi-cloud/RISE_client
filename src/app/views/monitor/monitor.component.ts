@@ -1396,7 +1396,13 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
           let bIsVideo = sFileName.toLowerCase().endsWith('.mp4') || sFileName.toLowerCase().endsWith('.mov') || sFileName.toLowerCase().endsWith('.avi');
           let sType = bIsVideo ? 'video' : 'image';
 
-          this.m_asOriginalAllFiles.push({ name: sFileName, type: sType });
+          this.m_asOriginalAllFiles.push({
+            name: sFileName,
+            type: sType,
+            previewLink: sType === 'image'
+              ? this.m_oAttachmentService.getAttachmentLink('event_images', sEventId, sFileName)
+              : ''
+          });
 
           // Capture coordinates
           if (oResponse.lats && oResponse.lngs && oResponse.lats[i] !== -9999.0 && oResponse.lngs[i] !== -9999.0) {
@@ -1441,6 +1447,11 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     } else {
       this.onPreviewDoc(file.name);
     }
+  }
+
+  onAttachmentPreviewError(oEvent: Event): void {
+    const oImage = oEvent.target as HTMLImageElement;
+    oImage.style.display = 'none';
   }
 
   addImageMarkersToMap(): void {
