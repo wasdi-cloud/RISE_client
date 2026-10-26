@@ -942,6 +942,12 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     // This is safe to use directly.
     this.m_iSelectedDate = oSelecteDateInfo.iReferenceTime;
     this.m_bIsNavigatedFromEventList=!oSelecteDateInfo.bChangedByUser;
+    if (this.m_bShowImpactsDrawer && this.m_oImpactsDrawerData) {
+      this.m_oImpactsDrawerData = {
+        ...this.m_oImpactsDrawerData,
+        selectedDate: this.m_iSelectedDate
+      };
+    }
 
     if (!FadeoutUtils.utilsIsObjectNullOrUndefined(oSelecteDateInfo?.eventId)) {
       this.fillEventPanel(oSelecteDateInfo.eventId);
@@ -1108,7 +1114,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       const sRequestKey = aoImpactLayers
         .map((oLayer: any) => `${oLayer.geoserverUrl}|${oLayer.layerId}`)
         .sort()
-        .join('||');
+        .join('||') + `|date:${this.m_iSelectedDate}`;
 
       if (sRequestKey === this.m_sImpactDataRequestKey) {
         return;
@@ -1153,6 +1159,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
                 this.m_asImpactTypes = Array.from(setTypes).sort();
 
                 this.applyImpactTypeFilter();
+                this.updateImpactsDrawerData();
               },
               error: (oError: any) => {
                 console.error(`WFS Error for ${oLayer.layerId}:`, oError);
@@ -1214,6 +1221,23 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     this.m_sActiveImpactLayerId = '';
     this.m_sActiveImpactWfsUrl = '';
     this.m_sImpactDataRequestKey = '';
+    this.updateImpactsDrawerData();
+  }
+
+  private updateImpactsDrawerData(): void {
+    if (!this.m_bShowImpactsDrawer || !this.m_oImpactsDrawerData) {
+      return;
+    }
+
+    this.m_oImpactsDrawerData = {
+      ...this.m_oImpactsDrawerData,
+      selectedDate: this.m_iSelectedDate,
+      impactRows: [...this.m_aoImpactTableData],
+      impactTypes: [...this.m_asImpactTypes],
+      impactSummary: [...this.m_aoImpactSummary],
+      activeImpactWfsUrl: this.m_sActiveImpactWfsUrl,
+      activeImpactLayerId: this.m_sActiveImpactLayerId
+    };
   }
 
   /********** DRAG AND DROP CAPABILITIES **********/

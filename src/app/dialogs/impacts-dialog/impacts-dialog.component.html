@@ -29,6 +29,7 @@
           [m_bHasTitle]="true"
           [m_sLabel]="'IMPACTS_DIALOG.SELECT_LAYER'"
           [m_aoDropdownItems]="m_aoDropdownOptions"
+          [m_aoSelectedItems]="m_oSelectedOption"
           (m_oSelectionChange)="onDropdownSelectionChange($event)"
           [m_sPlaceholder]="'IMPACTS_DIALOG.SELECT_LAYER_PLACEHOLDER'"
 
@@ -51,41 +52,106 @@
     <div class="impact-counts-card" *ngIf="m_bHasSelectedImpactData; else noImpactEvaluationData">
       <div class="impact-card-title">Macro Telemetry</div>
       <div class="impact-counts-grid">
-      <div class="impact-count-card flex-grow-1">
+      <div class="impact-count-card impact-count-card-outline flex-grow-1">
         <span>Pop. Affected</span>
         <strong>{{ m_oSelectedWidget?.payload?.['populationCount'] ?? 'N.A.' }}</strong>
       </div>
-      <div class="impact-count-card flex-grow-1">
+      <div class="impact-count-card impact-count-card-outline flex-grow-1">
         <span>Exposures</span>
         <strong>{{ m_oSelectedWidget?.payload?.['exposuresCount'] ?? 'N.A.' }}</strong>
       </div>
-      <div class="impact-count-card flex-grow-1">
+      <div class="impact-count-card impact-count-card-outline flex-grow-1">
         <span>Roads Affected</span>
         <strong>{{ m_oSelectedWidget?.payload?.['roadsCount'] ?? 'N.A.' }}</strong>
       </div>
       </div>
     </div>
 
-    <div class="d-flex flex-row justify-content-around gap-3 mt-3"
-         *ngIf="m_bHasSelectedImpactData; else noImpactEvaluationData">
-      <div class="impact-landuse-card d-flex flex-column align-items-center gap-2">
-        <canvas #doughnutChart1 style="max-width: 150px; max-height: 150px;"></canvas>
-        <rise-text-input [m_bHasTitle]="true" [m_sLocalizationKey]="'IMPACTS_DIALOG.ESTIMATED_AREA' | translate" [(m_sInputText)]="m_sCropsTotArea"></rise-text-input>
-        <rise-text-input [m_bHasTitle]="true" [m_sLocalizationKey]="'IMPACTS_DIALOG.AFFECTED_AREA' | translate" [(m_sInputText)]="m_sCropsAffectedArea"></rise-text-input>
+    <!-- Inside your impact-landuse-grid -->
+<div class="impact-landuse-grid" *ngIf="m_bHasSelectedImpactData; else noImpactEvaluationData">
+  
+  <!-- Crops Arc -->
+  <div class="impact-concept-card align-items-center">
+    <span class="concept-title">Crops</span>
+    <div class="arc-wrapper">
+      <svg viewBox="0 0 100 55" class="half-arc">
+  <!-- Background Track (Now visible) -->
+  <path d="M 10 45 A 40 40 0 0 1 90 45" fill="none" stroke="rgba(255, 255, 255, 0.1)" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Foreground Fill -->
+  <path d="M 10 45 A 40 40 0 0 1 90 45" fill="none" stroke="var(--rise-gold, #f2c94c)" stroke-width="8" stroke-linecap="round"
+        [style.stroke-dasharray]="125.66"
+        [style.stroke-dashoffset]="125.66 - (125.66 * (m_fCropsPerc > 1 ? 1 : m_fCropsPerc))" />
+</svg>
+      <div class="arc-percent">{{ (m_fCropsPerc * 100) | number:'1.0-2' }}%</div>
+    </div>
+    <div class="concept-stats w-100 mt-2">
+      <div class="stat-col">
+        <span class="stat-lbl stat-lbl-affected">Affected</span>
+        <span class="stat-val stat-val-affected">{{ m_sCropsAffectedArea }}</span>
       </div>
-
-      <div class="impact-landuse-card d-flex flex-column align-items-center gap-2">
-        <canvas #doughnutChart2 style="max-width: 150px; max-height: 150px;"></canvas>
-        <rise-text-input [m_bHasTitle]="true" [m_sLocalizationKey]="'IMPACTS_DIALOG.ESTIMATED_AREA' | translate" [(m_sInputText)]="m_sGrassTotArea"></rise-text-input>
-        <rise-text-input [m_bHasTitle]="true" [m_sLocalizationKey]="'IMPACTS_DIALOG.AFFECTED_AREA' | translate" [(m_sInputText)]="m_sGrassAffectedArea"></rise-text-input>
-      </div>
-
-      <div class="impact-landuse-card d-flex flex-column align-items-center gap-2">
-        <canvas #doughnutChart3 style="max-width: 150px; max-height: 150px;"></canvas>
-        <rise-text-input [m_bHasTitle]="true" [m_sLocalizationKey]="'IMPACTS_DIALOG.ESTIMATED_AREA' | translate" [(m_sInputText)]="m_sBuiltTotArea"></rise-text-input>
-        <rise-text-input [m_bHasTitle]="true" [m_sLocalizationKey]="'IMPACTS_DIALOG.AFFECTED_AREA' | translate" [(m_sInputText)]="m_sBuiltAffectedArea"></rise-text-input>
+      <div class="stat-col stat-col-total text-right">
+        <span class="stat-lbl">Total estimated</span>
+        <span class="stat-val">{{ m_sCropsTotArea }}</span>
       </div>
     </div>
+  </div>
+
+  <!-- Grassland Arc -->
+  <div class="impact-concept-card align-items-center">
+    <span class="concept-title">Grassland</span>
+    <div class="arc-wrapper">
+      <svg viewBox="0 0 100 55" class="half-arc">
+  <!-- Background Track (Now visible) -->
+  <path d="M 10 45 A 40 40 0 0 1 90 45" fill="none" stroke="rgba(255, 255, 255, 0.1)" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Foreground Fill -->
+  <path d="M 10 45 A 40 40 0 0 1 90 45" fill="none" stroke="var(--rise-gold, #f2c94c)" stroke-width="8" stroke-linecap="round"
+        [style.stroke-dasharray]="125.66"
+        [style.stroke-dashoffset]="125.66 - (125.66 * (m_fGrassPerc > 1 ? 1 : m_fGrassPerc))" />
+</svg>
+      <div class="arc-percent">{{ (m_fGrassPerc * 100) | number:'1.0-2' }}%</div>
+    </div>
+    <div class="concept-stats w-100 mt-2">
+      <div class="stat-col">
+        <span class="stat-lbl stat-lbl-affected">Affected</span>
+        <span class="stat-val stat-val-affected">{{ m_sGrassAffectedArea }}</span>
+      </div>
+      <div class="stat-col stat-col-total text-right">
+        <span class="stat-lbl">Total estimated</span>
+        <span class="stat-val">{{ m_sGrassTotArea }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Built Up Arc -->
+  <div class="impact-concept-card align-items-center">
+    <span class="concept-title">Built Up</span>
+    <div class="arc-wrapper">
+      <svg viewBox="0 0 100 55" class="half-arc">
+  <!-- Background Track (Now visible) -->
+  <path d="M 10 45 A 40 40 0 0 1 90 45" fill="none" stroke="rgba(255, 255, 255, 0.1)" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Foreground Fill -->
+  <path d="M 10 45 A 40 40 0 0 1 90 45" fill="none" stroke="var(--rise-gold, #f2c94c)" stroke-width="8" stroke-linecap="round"
+        [style.stroke-dasharray]="125.66"
+        [style.stroke-dashoffset]="125.66 - (125.66 * (m_fBuiltPerc > 1 ? 1 : m_fBuiltPerc))" />
+</svg>
+      <div class="arc-percent">{{ (m_fBuiltPerc * 100) | number:'1.0-2' }}%</div>
+    </div>
+    <div class="concept-stats w-100 mt-2">
+      <div class="stat-col">
+        <span class="stat-lbl stat-lbl-affected">Affected</span>
+        <span class="stat-val stat-val-affected">{{ m_sBuiltAffectedArea }}</span>
+      </div>
+      <div class="stat-col stat-col-total text-right">
+        <span class="stat-lbl">Total estimated</span>
+        <span class="stat-val">{{ m_sBuiltTotArea }}</span>
+      </div>
+    </div>
+  </div>
+
+</div>
 
     <ng-template #noImpactEvaluationData>
       <div class="impact-empty-state">

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, Inject, Input, OnInit, Optional, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, Input, OnChanges, OnInit, Optional, Output, SimpleChanges, ViewChild} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
@@ -24,7 +24,7 @@ import { WidgetInfoViewModel } from '../../models/WidgetInfoViewModel';
   styleUrl: './impacts-dialog.component.css'
 })
 
-export class ImpactsDialogComponent implements OnInit, AfterViewInit {
+export class ImpactsDialogComponent implements OnInit, OnChanges, AfterViewInit {
 
   @Input() m_oInputData: any;
   @Output() m_oDismissed = new EventEmitter<void>();
@@ -41,6 +41,9 @@ export class ImpactsDialogComponent implements OnInit, AfterViewInit {
   m_sActiveImpactWfsUrl = '';
   m_sActiveImpactLayerId = '';
   m_sExportFormat: 'csv' | 'geojson' = 'csv';
+  m_fCropsPerc: number = 0;
+  m_fGrassPerc: number = 0;
+  m_fBuiltPerc: number = 0;
 
   /**
    * Selected widget information.
@@ -85,22 +88,8 @@ export class ImpactsDialogComponent implements OnInit, AfterViewInit {
    */
   m_oSelectedOption: any = ''; 
 
-  @ViewChild('doughnutChart1') m_oChartCropsRef!: ElementRef<HTMLCanvasElement>;
-  @ViewChild('doughnutChart2') m_oChartGrassRef!: ElementRef<HTMLCanvasElement>;
-  @ViewChild('doughnutChart3') m_ChartBuiltUpRef!: ElementRef<HTMLCanvasElement>;
-
-  /**
-   * Crops chart
-   */
-  m_oCropsChart: Chart | undefined;
-  /**
-   * Grassland chart
-   */
-  m_oGrassLandChart: Chart | undefined;
-  /**
-   * Built up chart
-   */
-  m_oBuiltUpChart: Chart | undefined;
+  
+  
 
   /**
    * Array of WidgetInfoViewModel objects containing the impacts data.
@@ -131,10 +120,10 @@ export class ImpactsDialogComponent implements OnInit, AfterViewInit {
     @Optional() @Inject(MAT_DIALOG_DATA) private m_oDialogData: any,
     @Optional() private m_oDialogRef: MatDialogRef<ImpactsDialogComponent>,
     private m_oWidgetService: WidgetService,
-    private m_oTranslateService: TranslateService
+    private m_oTranslateService: TranslateService,
+    private m_oChangeDetectorRef: ChangeDetectorRef
   ) {
-    // Register all Chart.js components once
-    Chart.register(...registerables); 
+    
   }
 
   /**
@@ -144,12 +133,27 @@ export class ImpactsDialogComponent implements OnInit, AfterViewInit {
    */
   ngOnInit(): void {
     const oData = this.m_oInputData || this.m_oDialogData || {};
+    this.loadImpactData(oData);
+  }
+
+  ngOnChanges(oChanges: SimpleChanges): void {
+    if (oChanges['m_oInputData'] && !oChanges['m_oInputData'].firstChange) {
+      this.loadImpactData(oChanges['m_oInputData'].currentValue || {});
+    }
+  }
+
+  private loadImpactData(oData: any): void {
     this.m_aoImpactRows = oData.impactRows || [];
     this.m_aoImpactTypes = oData.impactTypes || [];
     this.m_aoImpactSummary = oData.impactSummary || this.buildImpactSummary(this.m_aoImpactRows);
     this.m_sActiveImpactWfsUrl = oData.activeImpactWfsUrl || '';
     this.m_sActiveImpactLayerId = oData.activeImpactLayerId || '';
     this.applyImpactTypeFilter();
+    this.m_oSelectedWidget = undefined;
+    this.m_oSelectedOption = '';
+    this.m_aoDropdownOptions = [];
+    this.m_aoWidgetInfoViewModel = [];
+    this.m_bImpactsAvailable = true;
 
     // Format the actual date
     const sFormattedDate = this.formatDateToYMD(oData.selectedDate);
@@ -249,6 +253,13 @@ export class ImpactsDialogComponent implements OnInit, AfterViewInit {
     }
     else {
       this.m_bImpactsAvailable = true;
+
+      const oDefaultOption = this.m_aoDropdownOptions.find(oOption => oOption.id === 3)
+        || this.m_aoDropdownOptions[0];
+      this.m_oSelectedOption = oDefaultOption;
+
+      // Wait for the selected-data section to render its chart canvases.
+      setTimeout(() => this.onDropdownSelectionChange({value: oDefaultOption}));
     }
   }
 
@@ -531,12 +542,17 @@ export class ImpactsDialogComponent implements OnInit, AfterViewInit {
           label: sTitle,
           data: afDataValues,
           backgroundColor: asBackgroundColors,
-          hoverOffset: 4
+          borderColor: 'rgba(8, 31, 39, 0.9)',
+          borderWidth: 3,
+          borderRadius: 8,
+          spacing: 3,
+          hoverOffset: 6
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false, // Allows you to control size with CSS
+        cutout: '72%',
         plugins: {
           legend: {
             display: false // Hide legend if you want just the circle
@@ -556,8 +572,8 @@ export class ImpactsDialogComponent implements OnInit, AfterViewInit {
    * @param oEvent 
    */
   onDropdownSelectionChange(oEvent: any): void {
-    this.m_oSelectedOption = oEvent;
     const oSelectedValue = oEvent?.value ?? oEvent;
+    this.m_oSelectedOption = oSelectedValue;
     const iSelectedIndex = typeof oSelectedValue === 'object'
       ? oSelectedValue?.id
       : oSelectedValue;
@@ -568,6 +584,8 @@ export class ImpactsDialogComponent implements OnInit, AfterViewInit {
       return;
     }
 
+    this.m_oChangeDetectorRef.detectChanges();
+
     let sCropsLabel = this.m_oTranslateService.instant('IMPACTS_DIALOG.CROPS');
     let sGrassLabel = this.m_oTranslateService.instant('IMPACTS_DIALOG.GRASSLAND');
     let sBuiltLabel = this.m_oTranslateService.instant('IMPACTS_DIALOG.BUILT_UP');
@@ -575,9 +593,20 @@ export class ImpactsDialogComponent implements OnInit, AfterViewInit {
     let sAffected = this.m_oTranslateService.instant('IMPACTS_DIALOG.AFFECTED');
     let sNotAffected = this.m_oTranslateService.instant('IMPACTS_DIALOG.NOT_AFFECTED');
 
-    let fCropsPerc = 0;
-    let fGrassPerc = 0;
-    let fBuiltPerc = 0;
+    this.m_fCropsPerc = 0;
+    this.m_fGrassPerc = 0;
+    this.m_fBuiltPerc = 0;
+    this.m_sCropsTotArea = "N.A.";
+    this.m_sCropsAffectedArea = "N.A.";
+    this.m_sGrassTotArea = "N.A.";
+    this.m_sGrassAffectedArea = "N.A.";
+    this.m_sBuiltTotArea = "N.A.";
+    this.m_sBuiltAffectedArea = "N.A.";
+
+    this.m_fCropsPerc = 0;
+    this.m_fGrassPerc = 0;
+    this.m_fBuiltPerc = 0;
+
     this.m_sCropsTotArea = "N.A.";
     this.m_sCropsAffectedArea = "N.A.";
     this.m_sGrassTotArea = "N.A.";
@@ -587,30 +616,23 @@ export class ImpactsDialogComponent implements OnInit, AfterViewInit {
 
     if (this.m_oSelectedWidget.payload['affectedLandUse']) {
       if (this.m_oSelectedWidget.payload['affectedLandUse']['crops']) {
-        fCropsPerc = this.m_oSelectedWidget.payload['affectedLandUse']['crops']['percentage'];
+        this.m_fCropsPerc = this.m_oSelectedWidget.payload['affectedLandUse']['crops']['percentage'] || 0;
         this.m_sCropsTotArea = this.formatSquareMetersToKm(this.m_oSelectedWidget.payload['affectedLandUse']['crops']['tot_area']);
         this.m_sCropsAffectedArea = this.formatSquareMetersToKm(this.m_oSelectedWidget.payload['affectedLandUse']['crops']['square_meters']);
       }
       
       if (this.m_oSelectedWidget.payload['affectedLandUse']['grass']) {
-        fGrassPerc = this.m_oSelectedWidget.payload['affectedLandUse']['grass']['percentage'];
+        this.m_fGrassPerc = this.m_oSelectedWidget.payload['affectedLandUse']['grass']['percentage'] || 0;
         this.m_sGrassTotArea = this.formatSquareMetersToKm(this.m_oSelectedWidget.payload['affectedLandUse']['grass']['tot_area']);
         this.m_sGrassAffectedArea = this.formatSquareMetersToKm(this.m_oSelectedWidget.payload['affectedLandUse']['grass']['square_meters']);        
       }
       
       if (this.m_oSelectedWidget.payload['affectedLandUse']['built_up']) {
-        fBuiltPerc = this.m_oSelectedWidget.payload['affectedLandUse']['built_up']['percentage'];
+        this.m_fBuiltPerc = this.m_oSelectedWidget.payload['affectedLandUse']['built_up']['percentage'] || 0;
         this.m_sBuiltTotArea = this.formatSquareMetersToKm(this.m_oSelectedWidget.payload['affectedLandUse']['built_up']['tot_area']);
         this.m_sBuiltAffectedArea = this.formatSquareMetersToKm(this.m_oSelectedWidget.payload['affectedLandUse']['built_up']['square_meters']);
       }
     }
-
-    // Charts must be created after the view has been initialized,
-    // as the canvas elements need to be present in the DOM.
-    this.m_oCropsChart = this.createDoughnutChart(this.m_oChartCropsRef.nativeElement, sCropsLabel, [1.0-fCropsPerc, fCropsPerc], ['#4BC0C0', '#FF6384'], [sNotAffected, sAffected], this.m_oCropsChart);
-    this.m_oGrassLandChart = this.createDoughnutChart(this.m_oChartGrassRef.nativeElement, sGrassLabel, [1.0-fGrassPerc, fGrassPerc], ['#4BC0C0', '#FF6384'], [sNotAffected, sAffected], this.m_oGrassLandChart);
-    this.m_oBuiltUpChart = this.createDoughnutChart(this.m_ChartBuiltUpRef.nativeElement, sBuiltLabel, [1.0-fBuiltPerc, fBuiltPerc], ['#4BC0C0', '#FF6384'], [sNotAffected, sAffected], this.m_oBuiltUpChart);
-
   }
 
   /**
@@ -641,9 +663,6 @@ export class ImpactsDialogComponent implements OnInit, AfterViewInit {
   }
 
   onDismiss() {
-    this.m_oCropsChart?.destroy();
-    this.m_oGrassLandChart?.destroy();
-    this.m_oBuiltUpChart?.destroy();
     if (this.m_oDialogRef) {
       this.m_oDialogRef.close();
     } else {
