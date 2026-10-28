@@ -66,8 +66,27 @@ div.map-container {
 }
 
 /* Logo & Help adjustments */
-img {
+.dashboard-home-link {
+  display: block;
+  width: 95px;
+  max-width: calc(100% - 48px);
   height: 24px;
+  overflow: hidden;
+  flex-shrink: 0;
+  transform-origin: left center;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.dashboard-home-link:hover {
+  transform: scale(1.1);
+  opacity: 0.8;
+}
+
+.dashboard-logo {
+  display: block;
+  height: 24px;
+  width: auto;
+  max-width: none;
 }
 
 .logo-help-row {
@@ -82,12 +101,9 @@ img {
   display: none !important;
 }
 
-.rise-sidebar.collapsed .logo-help-row img {
-  display: block;
+.rise-sidebar.collapsed .dashboard-home-link {
   width: 30px;
-  height: 24px;
-  object-fit: cover;
-  object-position: left;
+  max-width: none;
 }
 
 .help-link {
@@ -249,6 +265,16 @@ img {
   min-width: 34px;
   height: 30px;
   padding: 0;
+}
+
+.create-area-btn {
+  width: auto;
+}
+
+:host ::ng-deep .create-area-btn .btn {
+  width: auto;
+  padding: 0 0.5rem;
+  white-space: nowrap;
 }
 
 :host ::ng-deep .toggle-public-btn .btn .material-symbols-outlined,

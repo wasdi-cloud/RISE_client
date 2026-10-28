@@ -1,5 +1,5 @@
 import {Component, NgZone, OnDestroy, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {Subject, Subscription, takeUntil} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {geojsonToWKT} from '@terraformer/wkt';
@@ -30,6 +30,7 @@ import {RiseAooWidgetComponent} from "./rise-aoo-widget/rise-aoo-widget.componen
   standalone: true,
   imports: [
     CommonModule,
+    RouterLink,
     RiseAffectedWidgetComponent,
     RiseAlertsWidgetComponent,
     RiseBannerComponent,

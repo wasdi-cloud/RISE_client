@@ -37,6 +37,7 @@
     "END_DATE": "End date"
   },
   "AREA_OF_OPERATIONS": {
+    "NEW_AREA": "\u65b0\u3057\u3044\u30a8\u30ea\u30a2",
     "ACTIVE_AREAS": "Active Areas of Operations",
     "AREA_HEADER_TOO_BIG": "Selected area is too large!",
     "AREA_HEADER_TOO_SMALL": "Selected area is too small",

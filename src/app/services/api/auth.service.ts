@@ -110,12 +110,18 @@ export class AuthService {
     );
   }
 
-  logout() {
+  /**
+   * Clear the local session (token and user) without navigating
+   */
+  clearSession() {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     this.m_oConstantsService.resetUser();
     this.m_oConstantsService.setSessionId(null);
-    this.m_oRouter.navigateByUrl('login');
+  }
 
+  logout() {
+    this.clearSession();
+    this.m_oRouter.navigateByUrl('login');
   }
 }

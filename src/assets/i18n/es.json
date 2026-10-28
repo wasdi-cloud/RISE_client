@@ -66,6 +66,7 @@
 
 
 "AREA_OF_OPERATIONS": {
+    "NEW_AREA": "Nueva área",
     "ACTIVE_AREAS": "Áreas Activas de Operaciones",
     "AREA_HEADER_TOO_BIG": "¡Área demasiado grande!",
     "AREA_HEADER_TOO_SMALL": "¡Área demasiado pequeña!",

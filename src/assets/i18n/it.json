@@ -38,7 +38,8 @@
 		"END_DATE": "Data di fine"
 	},
 	"AREA_OF_OPERATIONS": {
-		"ACTIVE_AREAS": "Aree di Operazioni Attive",
+    "NEW_AREA": "Nuova area",
+    "ACTIVE_AREAS": "Aree di Operazioni Attive",
 		"AREA_HEADER_TOO_BIG": "Area troppo grande!",
 		"AREA_HEADER_TOO_SMALL": "Area troppo piccola!",
 		"CREATE_NEW_AREA_OF_OPERATION": "Crea Nuova Area di Operazioni",

@@ -6,11 +6,13 @@
 
 
       <div class="logo-help-row d-flex align-items-center justify-content-between gap-2">
-        <img
-          class="align-self-start"
-          src="/assets/rise-assets/logo-white-horizontal.svg"
-          alt="RISE Logo"
-        />
+        <a routerLink="/" class="dashboard-home-link" title="RISE">
+          <img
+            class="dashboard-logo"
+            src="/assets/rise-assets/logo-white-horizontal.svg"
+            alt="RISE"
+          />
+        </a>
         <a
           class="help-link d-inline-flex align-items-center gap-1"
           href="https://rise-docs.readthedocs.io/en/latest/"
@@ -23,7 +25,7 @@
         </a>
       </div>
 
-      <rise-banner [m_sHeaderKey]="'BANNER.LIVE_SIT'" (click)="openSidebarWidget(null)"></rise-banner>
+      <!--rise-banner [m_sHeaderKey]="'BANNER.LIVE_SIT'" (click)="openSidebarWidget(null)"></rise-banner-->
       <rise-affected-widget #affectedWidget [m_iAffectedPpl]="m_iAffectedPpl" (click)="openSidebarWidget(affectedWidget)"></rise-affected-widget>
       <rise-ongoing-widget #ongoingWidget [m_aoOngoingEvent]="m_aoOngoingEvents" (click)="openSidebarWidget(ongoingWidget)"></rise-ongoing-widget>
       <rise-alerts-widget #alertsWidget [m_aoAlerts]="m_aoAlerts" (click)="openSidebarWidget(alertsWidget)"></rise-alerts-widget>
@@ -48,7 +50,7 @@
       </div>
 
       <div class="map-create-control d-flex gap-2 flex-column">
-        <rise-button
+        <!--rise-button
           class="toggle-public-btn"
           [m_sLabel]="''"
           [m_sIconLeft]="m_bShowPublicAoOs ? 'visibility' : 'visibility_off'"
@@ -56,11 +58,11 @@
           [m_sSize]="'small'"
           (click)="togglePublicAoOs()"
           [title]="m_bShowPublicAoOs ? 'Hide public areas' : 'Show public areas'"
-        ></rise-button>
+        ></rise-button-->
 
         <rise-button
           class="create-area-btn"
-          [m_sLabel]="''"
+          [m_sLabel]="'AREA_OF_OPERATIONS.NEW_AREA'"
           [m_sIconLeft]="(m_bEnableAreaDrawing || m_bShowAreaCreationMenu) ? 'close' : 'add'"
           [m_sRole]="m_bEnableAreaDrawing ? 'danger' : 'action'"
           [m_sSize]="'small'"
