@@ -191,7 +191,18 @@
             <span class="material-symbols-outlined fs-6">download</span>
           </button>
         </div>
-        <div class="d-flex align-items-center gap-2">
+        <div class="impact-features-filters d-flex align-items-center gap-2">
+          <label for="dialogImpactSearch" class="visually-hidden">Search affected features</label>
+          <div class="impact-search-wrapper flex-fill">
+            <span class="material-symbols-outlined" aria-hidden="true">search</span>
+            <input id="dialogImpactSearch"
+                   class="form-control form-control-sm"
+                   type="search"
+                   [(ngModel)]="m_sImpactSearchTerm"
+                   (ngModelChange)="applyImpactTypeFilter()"
+                   placeholder="Search affected features"
+                   autocomplete="off" />
+          </div>
           <label for="dialogImpactTypeSelect" class="small fw-bold text-nowrap">Type:</label>
           <select id="dialogImpactTypeSelect" class="form-select form-select-sm"
                   [(ngModel)]="m_sSelectedImpactType" (change)="applyImpactTypeFilter()">

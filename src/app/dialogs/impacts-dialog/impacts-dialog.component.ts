@@ -34,6 +34,7 @@ export class ImpactsDialogComponent implements OnInit, OnChanges, AfterViewInit 
   m_aoImpactRows: Array<{ name: string; type: string; raw: any }> = [];
   m_aoImpactTypes: string[] = [];
   m_sSelectedImpactType: string = 'ALL';
+  m_sImpactSearchTerm = '';
   m_aoFilteredImpactRows: Array<{ name: string; type: string; raw: any }> = [];
   m_sImpactSortColumn: 'name' | 'type' = 'name';
   m_bImpactSortAscending = true;
@@ -148,6 +149,7 @@ export class ImpactsDialogComponent implements OnInit, OnChanges, AfterViewInit 
     this.m_aoImpactSummary = oData.impactSummary || this.buildImpactSummary(this.m_aoImpactRows);
     this.m_sActiveImpactWfsUrl = oData.activeImpactWfsUrl || '';
     this.m_sActiveImpactLayerId = oData.activeImpactLayerId || '';
+    this.m_sImpactSearchTerm = '';
     this.applyImpactTypeFilter();
     this.m_oSelectedWidget = undefined;
     this.m_oSelectedOption = '';
@@ -414,9 +416,15 @@ export class ImpactsDialogComponent implements OnInit, OnChanges, AfterViewInit 
   }  
 
   applyImpactTypeFilter(): void {
-    this.m_aoFilteredImpactRows = this.m_sSelectedImpactType === 'ALL'
-      ? [...this.m_aoImpactRows]
-      : this.m_aoImpactRows.filter(oRow => oRow.type === this.m_sSelectedImpactType);
+    const sSearchTerm = this.m_sImpactSearchTerm.trim().toLowerCase();
+    this.m_aoFilteredImpactRows = this.m_aoImpactRows.filter(oRow => {
+      const bMatchesType = this.m_sSelectedImpactType === 'ALL'
+        || oRow.type === this.m_sSelectedImpactType;
+      const bMatchesSearch = !sSearchTerm
+        || oRow.name.toLowerCase().includes(sSearchTerm)
+        || oRow.type.toLowerCase().includes(sSearchTerm);
+      return bMatchesType && bMatchesSearch;
+    });
     this.sortImpactRows();
   }
 
