@@ -208,6 +208,41 @@ h3 {
   padding-bottom: 12px;
 }
 
+.impact-features-filters {
+  min-width: 0;
+}
+
+.impact-search-wrapper {
+  min-width: 0;
+  position: relative;
+}
+
+.impact-search-wrapper .material-symbols-outlined {
+  color: var(--rise-text-dim, #8a9f9f);
+  font-size: 18px;
+  left: 8px;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.impact-search-wrapper .form-control {
+  background: var(--surface-glass-elevation, #12252a);
+  border-color: var(--rise-border-default, #1a353c);
+  color: var(--rise-text-bright, #ffffff);
+  padding-left: 32px;
+}
+
+.impact-search-wrapper .form-control:focus {
+  border-color: var(--rise-gold, #f2c94c);
+  box-shadow: 0 0 0 2px rgba(242, 201, 76, 0.16);
+}
+
+.impact-search-wrapper .form-control::placeholder {
+  color: var(--rise-text-dim, #8a9f9f);
+}
+
 .impact-export-format {
   background-color: var(--rise-teal-600);
   border: 1px solid var(--rise-border-default, #1a353c);

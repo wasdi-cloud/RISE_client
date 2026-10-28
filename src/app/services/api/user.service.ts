@@ -88,10 +88,10 @@ export class UserService {
     );
   }
 
-  changeUserLanguageSetting(oUserViewModel: UserViewModel) {
+  changeUserLanguageSetting(oUserViewModel: Pick<UserViewModel, 'defaultLanguage'>) {
     return this.m_oHttp.post<any>(
       this.APIURL + '/usr/change-language',
-      oUserViewModel
+      {defaultLanguage: oUserViewModel.defaultLanguage}
     );
   }
 

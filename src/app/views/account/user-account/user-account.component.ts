@@ -191,6 +191,9 @@ export class UserAccountComponent implements OnInit,OnDestroy {
         if (!this.m_oUser.defaultBaseMap) {
           this.m_oUser.defaultBaseMap = 'Dark';
         }
+        if (!this.m_oUser.defaultLanguage) {
+          this.m_oUser.defaultLanguage = 'en';
+        }
         this.m_oOriginalUser={...this.m_oUser}
         this.m_sNewUserId=this.m_oUser.userId
         this.setUserLanguage();
@@ -290,8 +293,7 @@ export class UserAccountComponent implements OnInit,OnDestroy {
       surname: this.m_oUser.surname,
       mobile: this.m_oUser.mobile,
       internationalPrefix: this.m_oUser.internationalPrefix,
-      userId: bIsUserIdChanged?this.m_sNewUserId:this.m_oUser.userId,
-      defaultBaseMap: this.m_oUser.defaultBaseMap
+      userId: bIsUserIdChanged?this.m_sNewUserId:this.m_oUser.userId
     };
     //verify if user id is changed if it is , user have to log in again , if not we proceed
     if(bIsUserIdChanged){
@@ -302,6 +304,7 @@ export class UserAccountComponent implements OnInit,OnDestroy {
         if(oDialogResult){
           this.m_oUserService.updateUser(oBody).pipe(takeUntil(this.m_oDestroy$)).subscribe({
             next: (oResponse) => {
+              this.m_oOriginalUser = { ...this.m_oUser };
               this.m_oNotificationDialogService.openSnackBar(
                 "Information Saved",
                 "Account",
@@ -322,6 +325,7 @@ export class UserAccountComponent implements OnInit,OnDestroy {
     }else{
       this.m_oUserService.updateUser(oBody).pipe(takeUntil(this.m_oDestroy$)).subscribe({
         next: (oResponse) => {
+          this.m_oOriginalUser = { ...this.m_oUser };
           this.m_oNotificationDialogService.openSnackBar(
             "Information Saved",
             "Account",
@@ -616,7 +620,9 @@ export class UserAccountComponent implements OnInit,OnDestroy {
 
   saveUserLanguagesSetting() {
     if (this.m_oUser.defaultLanguage) {
-      this.m_oUserService.changeUserLanguageSetting(this.m_oUser).pipe(takeUntil(this.m_oDestroy$)).subscribe({
+      this.m_oUserService.changeUserLanguageSetting({
+        defaultLanguage: this.m_oUser.defaultLanguage
+      }).pipe(takeUntil(this.m_oDestroy$)).subscribe({
         next: (oResponse) => {
           this.getUserInfo();
           this.m_oTranslate.use(this.m_oUser.defaultLanguage);
