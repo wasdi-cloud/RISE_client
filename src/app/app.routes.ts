@@ -31,7 +31,7 @@ import {AboutComponent} from "./views/about/about.component";
 import {ContactComponent} from "./views/contact/contact.component";
 
 export const routes: Routes = [
-  {path: '', component: PublicHomeComponent, canActivate: [isLoggedGuard]},
+  {path: '', component: PublicHomeComponent},
   {path: 'platform', component: PlatformComponent},
   {path: 'impact-stories', component: ImpactStoriesComponent},
   {path: 'pricing', component: PricingComponent},

@@ -31,7 +31,7 @@
     </ul>
 
     <div class="public-nav__actions">
-      <a routerLink="/login" class="btn-primary-green public-nav__cta" (click)="closeMenu()">{{ 'NAVBAR.SIGN_UP_IN' | translate }}</a>
+      <a [routerLink]="m_bUserIsSigned ? '/dashboard' : '/login'" class="btn-primary-green public-nav__cta" (click)="closeMenu()">{{ (m_bUserIsSigned ? 'USER_MENU.DASHBOARD' : 'NAVBAR.SIGN_UP_IN') | translate }}</a>
 
       <div class="lang-selector">
         <button class="lang-selector__btn" (click)="toggleLangDropdown(); $event.stopPropagation()">

@@ -1,8 +1,9 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ConstantsService } from '../../services/constants.service';
 
 @Component({
   selector: 'public-navbar',
@@ -24,7 +25,19 @@ export class PublicNavbarComponent implements OnInit {
     { code: 'it', label: 'IT', name: 'Italiano' }
   ];
 
-  constructor(private m_oRouter: Router, private m_oTranslateService: TranslateService) {}
+  constructor(
+    private m_oRouter: Router,
+    private m_oTranslateService: TranslateService,
+    private m_oConstantsService: ConstantsService,
+    @Inject(PLATFORM_ID) private m_oPlatformId: Object
+  ) {}
+
+  /**
+   * The user is signed only when the server validated the session (user loaded in the ConstantsService)
+   */
+  get m_bUserIsSigned(): boolean {
+    return isPlatformBrowser(this.m_oPlatformId) && !!this.m_oConstantsService.getUser();
+  }
 
   ngOnInit(): void {
     const sCurrentLang = this.m_oTranslateService.currentLang || this.m_oTranslateService.defaultLang || 'en';

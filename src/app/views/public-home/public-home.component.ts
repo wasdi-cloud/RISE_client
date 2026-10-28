@@ -101,7 +101,7 @@ export class PublicHomeComponent implements AfterViewInit, OnDestroy {
       }
     };
 
-    type1();
+    this.m_oTimeoutRef = setTimeout(type1, nSpeed);
   }
 
   m_bIsScrolled: boolean = false;

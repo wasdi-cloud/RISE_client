@@ -8,7 +8,7 @@
         <b class="hero-title">{{ 'LANDING.HERO_TITLE' | translate }}</b>
         <div class="hero-subtitle">{{ 'LANDING.HERO_SUBTITLE' | translate }}</div>
       </div>
-      <img src="assets/rise-assets/RISE-platform%201.png" class="rise-platform-preview-1-icon" alt="" loading="lazy">
+      <img src="assets/rise-assets/RISE-platform%201.png" class="rise-platform-preview-1-icon" alt="" loading="eager" fetchpriority="high">
       <div class="hero-buttons">
         <button class="btn-primary-yellow" (click)="navigateRoute('sign-up')">{{ 'LANDING.GET_STARTED' | translate }}</button>
       </div>

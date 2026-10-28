@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RiseButtonComponent } from '../rise-button/rise-button.component';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import { MapService } from '../../services/map.service';
 import { RiseUserMenuComponent } from '../rise-user-menu/rise-user-menu.component';
@@ -18,6 +18,7 @@ import FadeoutUtils from "../../shared/utilities/FadeoutUtils";
     RiseButtonComponent,
     RiseUserMenuComponent,
     TranslateModule,
+    RouterLink,
   ],
   templateUrl: './rise-toolbar.component.html',
   styleUrl: './rise-toolbar.component.css',

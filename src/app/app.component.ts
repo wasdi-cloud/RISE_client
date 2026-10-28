@@ -5,7 +5,7 @@ import {RouterOutlet} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {UserService} from './services/api/user.service';
 import {AuthService} from "./services/api/auth.service";
-import {HttpErrorResponse} from "@angular/common/http";
+import {ConstantsService} from "./services/constants.service";
 
 @Component({
   selector: 'app-root',
@@ -20,7 +20,8 @@ export class AppComponent implements OnInit {
   constructor(
     private m_oTranslate: TranslateService,
     private m_oUserService: UserService,
-    private m_oAuthService: AuthService
+    private m_oAuthService: AuthService,
+    private m_oConstantsService: ConstantsService
   ) {
   }
 
@@ -42,16 +43,14 @@ export class AppComponent implements OnInit {
           return;
         }
 
+        this.m_oConstantsService.setUser(oResponse);
+
         if (oResponse.defaultLanguage) {
           this.m_oTranslate.use(oResponse.defaultLanguage.toLowerCase());
         }
       },
-      error: (oError: HttpErrorResponse) => {
-        if (oError.status === 401) {
-          this.m_oAuthService.logout();
-        }
-        return;
-      }
+      // Invalid session / expired password are handled by the AuthErrorInterceptor
+      error: () => {}
     })
   }
 }
