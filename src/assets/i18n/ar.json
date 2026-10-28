@@ -37,6 +37,7 @@
     "END_DATE": "تاريخ الانتهاء"
   },
   "AREA_OF_OPERATIONS": {
+    "NEW_AREA": "منطقة جديدة",
     "ACTIVE_AREAS": "مناطق العمليات النشطة",
     "AREA_HEADER_TOO_BIG": "المنطقة كبيرة جدًا!",
     "AREA_HEADER_TOO_SMALL": "المنطقة صغيرة جدًا!",

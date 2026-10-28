@@ -38,6 +38,7 @@
     "END_DATE": "End date"
   },
   "AREA_OF_OPERATIONS": {
+    "NEW_AREA": "New Area",
     "ACTIVE_AREAS": "Active Areas of Operations",
     "AREA_HEADER_TOO_BIG": "Selected area is too large!",
     "AREA_HEADER_TOO_SMALL": "Selected area is too small",

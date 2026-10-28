@@ -110,6 +110,7 @@
     "ESTIMATED_AREA_PIXEL_AFFECTED": "Zone Estimée des Pixels Affectés"
   },
   "AREA_OF_OPERATIONS": {
+    "NEW_AREA": "Nouvelle zone",
     "ACTIVE_AREAS": "Zones d'opérations actives",
     "AREA_HEADER_TOO_BIG": "Zone trop grande !",
     "AREA_HEADER_TOO_SMALL": "Zone trop petite !",
