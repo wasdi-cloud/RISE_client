@@ -22,8 +22,12 @@ function isProtectedRoute(oRouter: Router): boolean {
 }
 
 /**
- * Drop the local session when the server says that the session token is no longer valid
- * (invalid / expired session or expired password).
+ * Drop the local session when the server says that the session token is no longer valid.
+ *
+ * Server convention: 401 is returned ONLY for an invalid / expired session, while missing
+ * rights, wrong OTP, no subscription etc. return 403. 307 + WARNING_API_PASSWORD_EXPIRED is
+ * returned when the password of the user is expired.
+ *
  * Users browsing the public site just go back to the anonymous state, while users
  * in the protected area are sent to the login.
  */
@@ -33,6 +37,7 @@ export const AuthErrorInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((oError: HttpErrorResponse) => {
+      // Requests without token (login, register...) can return 401 for wrong credentials
       if (req.headers.has('x-session-token')) {
         const asCodes: string[] = oError?.error?.errorStringCodes ?? [];
         const bPasswordExpired = oError.status === 307 && asCodes.some((sCode) => sCode?.includes('WARNING_API_PASSWORD_EXPIRED'));

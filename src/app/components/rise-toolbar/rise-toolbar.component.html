@@ -7,7 +7,7 @@
 
     <div class="d-flex align-items-center gap-3">
 
-      <a routerLink="/">
+      <a [routerLink]="m_bUserIsSigned ? '/dashboard' : '/'">
         <img src="/assets/rise-assets/logo-white-horizontal.svg" alt="RISE" class="logo-img" />
       </a>
 

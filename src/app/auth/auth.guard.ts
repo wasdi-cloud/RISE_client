@@ -1,32 +1,33 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
+import { catchError, map, of } from 'rxjs';
 import { AuthService } from '../services/api/auth.service';
 import { ConstantsService } from '../services/constants.service';
 import { UserService } from '../services/api/user.service';
 
+/**
+ * Protects the private area: the session token must be valid on the server
+ */
 export const authGuard: CanActivateFn = (route, state) => {
-  const m_oAuthService = inject(AuthService);
-  const m_oConstantsService = inject(ConstantsService);
-  const m_oRouter = inject(Router);
-  const m_oUserService = inject(UserService);
-  //when we cant get the token
-  if (!m_oAuthService.getTokenObject()?.access_token) {
-    m_oRouter.navigate(['login']);
-    return false;
-  }
-  // If the User isn't set in the constants service
-  if (!m_oConstantsService.getUser()) {
-    m_oUserService.getUser().subscribe({
-      next: (oResponse) => {
-        m_oConstantsService.setUser(oResponse);
-        return true;
-      },
-      error: (oError) => {
-        m_oRouter.navigate(['login']);
-        return false;
-      },
-    });
+  const oAuthService = inject(AuthService);
+  const oConstantsService = inject(ConstantsService);
+  const oRouter = inject(Router);
+  const oUserService = inject(UserService);
+
+  if (!oAuthService.getTokenObject()?.access_token) {
+    return oRouter.parseUrl('/login');
   }
 
-  return true;
+  // User already validated in this app instance: later invalidations are handled by the AuthErrorInterceptor
+  if (oConstantsService.getUser()) {
+    return true;
+  }
+
+  return oUserService.getUser().pipe(
+    map((oResponse) => {
+      oConstantsService.setUser(oResponse);
+      return true;
+    }),
+    catchError(() => of(oRouter.parseUrl('/login')))
+  );
 };

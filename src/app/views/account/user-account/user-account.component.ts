@@ -659,8 +659,6 @@ export class UserAccountComponent implements OnInit,OnDestroy {
                     'Success',
                     'success'
                   );
-                  this.m_oMapService.clearMarkerSubject(); // Clear the subject
-                  this.m_oAuthService.logout();
                 },
                 error: (oError) => {
                   console.log(oResponse);
