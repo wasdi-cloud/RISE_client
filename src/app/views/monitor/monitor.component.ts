@@ -1423,6 +1423,9 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
           this.m_asOriginalAllFiles.push({
             name: sFileName,
             type: sType,
+            ...(this.hasAttachmentLocation(oResponse, i)
+              ? {lat: Number(oResponse.lats[i]), lng: Number(oResponse.lngs[i])}
+              : {}),
             previewLink: sType === 'image'
               ? this.m_oAttachmentService.getAttachmentLink('event_images', sEventId, sFileName)
               : ''
@@ -1450,7 +1453,13 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
           let bIsVideo = sFileName.toLowerCase().endsWith('.mp4') || sFileName.toLowerCase().endsWith('.mov') || sFileName.toLowerCase().endsWith('.avi');
           let sType = bIsVideo ? 'video' : 'doc';
 
-          this.m_asOriginalAllFiles.push({ name: sFileName, type: sType });
+          this.m_asOriginalAllFiles.push({
+            name: sFileName,
+            type: sType,
+            ...(this.hasAttachmentLocation(oResponse, i)
+              ? {lat: Number(oResponse.lats[i]), lng: Number(oResponse.lngs[i])}
+              : {})
+          });
 
           // Capture coordinates
           if (oResponse.lats && oResponse.lngs && oResponse.lats[i] !== -9999.0 && oResponse.lngs[i] !== -9999.0) {
@@ -1470,6 +1479,27 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
       this.onPreviewImage(file.name);
     } else {
       this.onPreviewDoc(file.name);
+    }
+  }
+
+  hasAttachmentLocation(oResponse: any, iIndex: number): boolean {
+    const fLat = Number(oResponse?.lats?.[iIndex]);
+    const fLng = Number(oResponse?.lngs?.[iIndex]);
+    return Number.isFinite(fLat) && Number.isFinite(fLng)
+      && fLat !== -9999 && fLng !== -9999
+      && fLat >= -90 && fLat <= 90
+      && fLng >= -180 && fLng <= 180;
+  }
+
+  zoomToAttachment(oFile: {lat?: number; lng?: number}, oEvent: Event): void {
+    oEvent.stopPropagation();
+    if (oFile?.lat === undefined || oFile?.lng === undefined) {
+      return;
+    }
+
+    const oMap = this.m_oMapService.getMap();
+    if (oMap) {
+      oMap.flyTo([oFile.lat, oFile.lng], 16, {duration: 1});
     }
   }
 

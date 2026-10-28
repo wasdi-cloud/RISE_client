@@ -215,6 +215,15 @@
                       <span class="attachment-type">{{ file.type === 'image' ? 'IMG' : (file.type === 'video' ? 'VID' : 'DOC') }}</span>
                     </span>
                     <span class="attachment-name">{{ file.name }}</span>
+                    <span *ngIf="file.lat !== undefined && file.lng !== undefined"
+                          class="attachment-location material-symbols-outlined"
+                          role="button"
+                          tabindex="0"
+                          title="Go to attachment location"
+                          aria-label="Go to attachment location"
+                          (click)="zoomToAttachment(file, $event)"
+                          (keydown.enter)="zoomToAttachment(file, $event)"
+                          (keydown.space)="zoomToAttachment(file, $event)">location_on</span>
                   </button>
                 </div>
                 <p *ngIf="m_aoVisibleAttachments.length === 0" class="small mt-2">No attachments of this type</p>

@@ -555,12 +555,31 @@ span.cta-text {
 }
 
 .attachment-name {
-  display: block;
+  display: inline-block;
+  max-width: calc(100% - 32px);
   padding: 8px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 11px;
+  vertical-align: middle;
+}
+
+.attachment-location {
+  align-self: center;
+  color: var(--rise-gold);
+  cursor: pointer;
+  flex: 0 0 auto;
+  font-size: 18px;
+  line-height: 1;
+  margin-left: 4px;
+  opacity: 0.9;
+  vertical-align: middle;
+}
+
+.attachment-location:hover,
+.attachment-location:focus-visible {
+  opacity: 1;
 }
 
 .button-container {
