@@ -99,6 +99,8 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
 
   @Output() m_bPrintButtonClick = new EventEmitter<boolean>(); // Or EventEmitter<any> if you want to pass data
 
+  @Output() m_oAreaSettingsClick = new EventEmitter<void>();
+
   @Output() m_oDashboardAreaDrawn = new EventEmitter();
 
 
@@ -266,6 +268,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
       this.m_oMapService.addPixelInfoToggle(oMap);
       this.addPrinterButton(oMap);
       this.addMagicTool(oMap);
+      this.addAreaSettingsButton(oMap);
     }
     this.m_oMapService.setupInstantDelete(oMap);
     oMap.on(L.Draw.Event.DELETED, (oEvent) => {
@@ -809,6 +812,35 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
     this.m_oMapInputChange.emit(oShapeInfo);
   }
 
+
+  private addAreaSettingsButton(oMap: L.Map): void {
+    const oSettingsControl = L.Control.extend({
+      options: { position: 'topright' },
+      onAdd: () => {
+        const oContainer = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+        const oButton = L.DomUtil.create('a', 'leaflet-control-button', oContainer);
+        const sTitle = this.m_oTranslate.instant('TOOLBAR.SETTINGS');
+        oButton.href = '#';
+        oButton.title = sTitle;
+        oButton.setAttribute('role', 'button');
+        oButton.setAttribute('aria-label', sTitle);
+        oButton.innerHTML = '<span class="material-symbols-outlined" aria-hidden="true">settings</span>';
+        L.DomEvent.disableClickPropagation(oContainer);
+        L.DomEvent.on(oButton, 'click', (oEvent: Event) => {
+          L.DomEvent.stop(oEvent);
+          this.m_oNgZone.run(() => this.m_oAreaSettingsClick.emit());
+        });
+        L.DomEvent.on(oButton, 'keydown', (oEvent: KeyboardEvent) => {
+          if (oEvent.key === ' ') {
+            L.DomEvent.stop(oEvent);
+            oButton.click();
+          }
+        });
+        return oContainer;
+      },
+    });
+    oMap.addControl(new oSettingsControl());
+  }
 
   private addPrinterButton(oMap) {
     this.m_oMapService.addPrinterButton(oMap).subscribe({

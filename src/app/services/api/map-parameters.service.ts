@@ -15,8 +15,12 @@ export class MapParametersService {
   ) {
   }
 
-  getParameters(sAreaId: string, sMapId: string): Observable<any> {
-    return this.m_oHttpClient.get<any>(this.APIURL + '/maps_parameters?area_id=' + sAreaId + '&map_id=' + sMapId);
+  getParameters(sAreaId: string, sMapId: string, sPluginId: string): Observable<any> {
+    return this.m_oHttpClient.get<any>(
+      this.APIURL + '/maps_parameters?area_id=' + encodeURIComponent(sAreaId) +
+      '&map_id=' + encodeURIComponent(sMapId) +
+      '&plugin_id=' + encodeURIComponent(sPluginId)
+    );
   }
 
   addParameters(oMapParametersViewModel: any): Observable<any> {

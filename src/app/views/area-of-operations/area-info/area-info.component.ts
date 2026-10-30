@@ -119,6 +119,7 @@ export class AreaInfoComponent implements OnInit,OnDestroy {
   m_sAreaId: string = '';
   m_sParamsId: string = '';
   m_sMapId: string = '';
+  m_sSelectedPluginId: string = '';
   m_oArea: AreaViewModel = {} as AreaViewModel;
   m_aoPlugins: { label: string; value: string }[] = [];
   m_asIsPublic: { label: string; value: string }[] = [];
@@ -385,8 +386,10 @@ export class AreaInfoComponent implements OnInit,OnDestroy {
   }
 
   private getMapParams() {
-    if (!FadeoutUtils.utilsIsStrNullOrEmpty(this.m_sAreaId)) {
-      this.m_oMapParamsService.getParameters(this.m_sAreaId, this.m_sMapId).pipe(takeUntil(this.m_oDestroy$)).subscribe({
+    if (!FadeoutUtils.utilsIsStrNullOrEmpty(this.m_sAreaId)
+      && !FadeoutUtils.utilsIsStrNullOrEmpty(this.m_sMapId)
+      && !FadeoutUtils.utilsIsStrNullOrEmpty(this.m_sSelectedPluginId)) {
+      this.m_oMapParamsService.getParameters(this.m_sAreaId, this.m_sMapId, this.m_sSelectedPluginId).pipe(takeUntil(this.m_oDestroy$)).subscribe({
           next: (oResponse) => {
             this.m_sJSONParam = oResponse.payload
             this.checkJSON();
@@ -414,12 +417,17 @@ export class AreaInfoComponent implements OnInit,OnDestroy {
     this.m_sJSONParam='{}'
     this.m_oJsonEditorService.setText(this.m_sJSONParam);
     this.m_oSelectedPlugin = oEvent.value;
-    let sPluginId = oEvent.value.value;
-    this.m_oMapService.byPluginId(sPluginId).subscribe(
+    this.m_sSelectedPluginId = oEvent.value.value;
+    this.m_oSelectedMap = null;
+    this.m_sMapId = '';
+    this.m_aoPluginMaps = [];
+    this.m_bIsUpdate = false;
+    this.m_bIsAdd = false;
+
+    this.m_oMapService.mapAppsByPluginId(this.m_sSelectedPluginId).subscribe(
       {
         next: (oResponse: any) => {
           //update the maps list
-          console.log(oResponse)
           this.m_aoPluginMaps = oResponse;
         },
         error: (oError) => {
@@ -555,7 +563,9 @@ export class AreaInfoComponent implements OnInit,OnDestroy {
     this.m_sJSONParam = '{}';
     //init selected Plugins and map
     this.m_oSelectedPlugin = null;
+    this.m_sSelectedPluginId = '';
     this.m_oSelectedMap = null;
+    this.m_sMapId = '';
 
     //init flags
     this.m_bIsUpdate = false;
@@ -572,6 +582,7 @@ export class AreaInfoComponent implements OnInit,OnDestroy {
         let oMapParamVM = {
           areaId: this.m_sAreaId,
           mapId: this.m_sMapId,
+          pluginId: this.m_sSelectedPluginId,
           payload: this.m_sJSONParam
         }
         this.m_oMapParamsService.addParameters(oMapParamVM).pipe(takeUntil(this.m_oDestroy$)).subscribe({

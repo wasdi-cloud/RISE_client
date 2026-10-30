@@ -43,6 +43,7 @@ import e from 'express';
 import L from 'leaflet';
 import {FormsModule} from "@angular/forms";
 import {UserRole} from "../../models/UserRole";
+import {AreaInfoComponent} from '../area-of-operations/area-info/area-info.component';
 
 /**
  * TODO THERE IS A BIG NAMING PROBLEM HERE, plugin, maps, layers, plugins here in the client is
@@ -1853,6 +1854,37 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     }else{
       this.m_sMeasurementToolWkt=null;
     }
+  }
+
+  openAreaSettings(): void {
+    if (!this.m_oAreaOfOperation?.id) {
+      return;
+    }
+
+    this.m_oDialog.open(AreaInfoComponent, {
+      data: { area: this.m_oAreaOfOperation },
+      height: '72vh',
+      maxHeight: '90vh'
+    }).afterClosed().pipe(takeUntil(this.m_oDestroy$)).subscribe((bSaved: boolean) => {
+      if (!bSaved) {
+        return;
+      }
+
+      this.m_oAreaService.getAreaById(this.m_sAreaId).pipe(takeUntil(this.m_oDestroy$)).subscribe({
+        next: (oArea: AreaViewModel) => {
+          if (oArea) {
+            this.m_oAreaOfOperation = oArea;
+            this.m_sAreaName = oArea.name;
+            this.m_oConstantsService.setActiveArea(oArea);
+          }
+        },
+        error: () => {
+          this.m_oNotificationService.openInfoDialog(
+            this.m_oTranslate.instant('AREA_OF_OPERATIONS.ERROR_GET_INFO'), 'danger'
+          );
+        }
+      });
+    });
   }
 
   onPrintButtonClick(){

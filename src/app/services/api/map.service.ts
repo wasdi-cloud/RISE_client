@@ -35,4 +35,15 @@ export class MapAPIService {
     );
   }
 
+  /**
+   * Get all the maps enabled for a plugin
+   * @param sPluginId Plugin Id
+   * @returns 
+   */
+  mapAppsByPluginId(sPluginId: string) {
+    return this.m_oHttpClient.get<any>(
+      this.APIURL + '/map/map_apps?plugin_id=' + sPluginId
+    );
+  }  
+
 }
