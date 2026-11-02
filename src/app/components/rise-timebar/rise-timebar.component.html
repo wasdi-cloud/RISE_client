@@ -1,18 +1,13 @@
 <div class="timebar-container d-flex flex-column">
-  <div class="slider-container position-relative">
-    <!-- Slider input -->
-    <input
-      #slider
-      class="slider {{ m_sSliderClass }}"
-      type="range"
-      name=""
-      id="slider-id"
-      [max]="m_asDates.length - 1"
-      [(value)]="m_iSliderValue"
-      (change)="dateSelected($event,true)"
-      (mouseenter)="onMouseEnter($event)"
-      (mouseleave)="onMouseLeave($event)"
-    />
+  <!-- Added inline CSS variable for the progress fill -->
+  <div class="slider-container position-relative" 
+       [style.--progress]="(m_iSliderValue / (m_asDates.length - 1 || 1)) * 100 + '%'">
+    
+    <!-- The Track Background (Empty right side) -->
+    <div class="track-background w-100 position-absolute"></div>
+    
+    <!-- The Track Fill (Colored left side) -->
+    <div class="track-fill position-absolute"></div>
 
     <!-- Ticks -->
     <div class="ticks-container position-absolute w-100">
@@ -25,66 +20,91 @@
       </div>
     </div>
 
-
-
+    <!-- Event Markers (Clustered) -->
     <div class="events-markers-container position-absolute w-100">
       <div
-        *ngFor="let event of getVisibleEvents()"
-        class="event-icon"
-        [style.left]="getEventMarkerPosition(event.peakDate * 1000)"
-        [matTooltip]="event.description"
-        (click)="goToEvent(event, true)"
+        *ngFor="let cluster of m_aoEventClusters"
+        class="event-node"
+        [class.is-cluster]="cluster.isCluster"
+        [style.left]="getEventMarkerPosition(cluster.peakDate * 1000)"
+        [matTooltip]="cluster.description"
+        matTooltipPosition="above"
+        [matTooltipDisabled]="!cluster.description"
+        matTooltipShowDelay="150"
+        matTooltipClass="multiline-tooltip"
+        [attr.aria-label]="cluster.description"
+        (click)="goToEvent(cluster.events[0], true)" 
       >
-        <span class="material-symbols-outlined">flag</span>
+        <div class="event-dot">
+          <span *ngIf="cluster.isCluster" class="cluster-count">{{ cluster.events.length }}</span>
+        </div>
       </div>
     </div>
+
+    <!-- Slider Input -->
+    <input
+      #slider
+      class="slider"
+      type="range"
+      id="slider-id"
+      [max]="m_asDates.length - 1"
+      [(value)]="m_iSliderValue"
+      (change)="dateSelected($event,true)"
+    />
   </div>
 
-  <div
-    class="timebar-options flex-fill d-flex flex-row justify-content-between align-items-center px-4"
-  >
-    <!-- Left-aligned options -->
-    <div class="time-options d-flex flex-row align-items-center gap-4">
-      <!--span class="material-symbols-outlined" (click)="onPlayButtonClick()"> play_arrow </span-->
+  <div class="timebar-options flex-fill d-flex flex-row justify-content-between align-items-center px-4">
+    
+    <!-- Left-aligned navigation & Live button -->
+    <div class="time-options d-flex flex-row align-items-center gap-3">
+      
       <span
-        class="material-symbols-outlined"
+        class="material-symbols-outlined nav-btn"
         [class.disabled-button]="m_bDisablePrevButton"
         (click)="changeTimeStep(-1)">
-        history
+        chevron_left
       </span>
 
       <span
-        class="material-symbols-outlined"
+        class="material-symbols-outlined nav-btn"
         [class.disabled-button]="m_bDisableNextButton"
         (click)="changeTimeStep(1)">
-        update
+        chevron_right
       </span>
-      <rise-button
-        [m_sLabel]="'TIMEBAR.LIVE'"
-        [m_sIconLeft]="'radio_button_checked'"
-        [m_sIconColor]="m_bIsLive ? m_sLiveIconColor : ''"
-        (click)="onLiveButtonClick()"
-      >
-      </rise-button>
+
+      <!-- Modern Live Button -->
+      <button 
+        class="live-pill" 
+        [class.is-live]="m_bIsLive"
+        (click)="onLiveButtonClick()">
+        <span class="live-dot"></span>
+        {{ 'TIMEBAR.LIVE' | translate }}
+      </button>
+
     </div>
 
-    <div class="range-selector d-flex flex-row align-items-center gap-2">
-      <ng-container *ngFor="let sRange of m_asTimeRanges; let i = index">
-        <span
-          class="range-option cursor-pointer"
+    <!-- Center: Modern Segmented Control -->
+    <div class="segmented-control">
+      <ng-container *ngFor="let sRange of m_asTimeRanges">
+        <button
+          class="segment-btn"
           [class.active]="m_sSelectedTimeRange === sRange"
           (click)="onTimeRangeSelected(sRange)">
           {{ sRange }}
-        </span>
-        <span *ngIf="i < m_asTimeRanges.length - 1" class="range-separator">|</span>
+        </button>
       </ng-container>
     </div>
-    <rise-calendar
-      [m_bShowTime]="m_sSelectedTimeRange === '1D'"
-      [m_oSelectedDate]="m_oSelectedDate"
-      [m_oStartDate]="m_oMomentStartDate"
-      (m_oSelectedDateFromCalendar)="dateSelected($event,true)"
-      [m_aoHighlightDates]="convertEventToDates()"
-    ></rise-calendar>
+
+    <!-- Right: Calendar -->
+    <div class="calendar-wrapper">
+      <rise-calendar
+        [m_bShowTime]="m_sSelectedTimeRange === '1D'"
+        [m_oSelectedDate]="m_oSelectedDate"
+        [m_oStartDate]="m_oMomentStartDate"
+        (m_oSelectedDateFromCalendar)="dateSelected($event,true)"
+        [m_aoHighlightDates]="convertEventToDates()">
+      </rise-calendar>
+    </div>
+
   </div>
 </div>

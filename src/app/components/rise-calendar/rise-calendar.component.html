@@ -1,24 +1,35 @@
-<div class="custom-calendar-container d-flex flex-row align-items-center gap-2">
+<div class="calendar-pill" [class.has-time]="m_bShowTime">
 
+  <!-- Hidden Input for Datepicker Binding -->
   <input
     [value]="m_oSelectedDate | date:'mediumDate':'UTC'"
     (dateChange)="emitDate($event)"
-    class="custom-small"
     matInput
     [matDatepicker]="picker"
     [matDatepickerFilter]="dateFilter"
+    class="hidden-picker-input"
     disabled
   >
 
-  <div *ngIf="m_bShowTime" class="time-display">
-    {{ m_oSelectedDate | date:'HH:mm' : 'UTC'}}
-  </div>
-  <div class="date-text">
-    {{ m_oSelectedDate | date:'dd MMM yyyy' : 'UTC' }}
+  <!-- Left Side: Time (if active) & Date Text -->
+  <div class="calendar-text-group" (click)="picker.open()">
+    <span *ngIf="m_bShowTime" class="time-display">
+      {{ m_oSelectedDate | date:'HH:mm' : 'UTC'}}
+    </span>
+    <span class="date-text">
+      {{ m_oSelectedDate | date:'dd MMM yyyy' : 'UTC' }}
+    </span>
   </div>
 
-  <mat-datepicker-toggle [disableRipple]="true" style="color:#f0f0f0;" matIconSuffix [for]="picker">
+  <!-- Right Side: Material Toggle Icon -->
+  <mat-datepicker-toggle [disableRipple]="true" matIconSuffix [for]="picker" class="calendar-toggle">
   </mat-datepicker-toggle>
 
-  <mat-datepicker [dateClass]="dateClass" disabled="false" #picker></mat-datepicker>
+  <mat-datepicker
+    [dateClass]="dateClass"
+    xPosition="end"
+    yPosition="above"
+    disabled="false"
+    #picker>
+  </mat-datepicker>
 </div>

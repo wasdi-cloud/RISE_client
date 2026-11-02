@@ -22,6 +22,13 @@ import {TranslateModule} from "@ngx-translate/core";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
+interface EventCluster {
+  peakDate: number;
+  events: EventViewModel[];
+  isCluster: boolean;
+  description: string;
+}
+
 @Component({
   selector: 'rise-timebar',
   standalone: true,
@@ -132,6 +139,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   m_sSliderClass: string = ''
   m_bDisableNextButton: boolean=false;
   m_bDisablePrevButton: boolean=false;
+  m_aoEventClusters: EventCluster[] = [];
 
   constructor() {
   }
@@ -139,6 +147,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.initDates(false);
     this.generateTicks();
+    this.updateEventClusters();
   }
 
 
@@ -167,10 +176,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     // Safety check
     if (!this.m_asDates || this.m_asDates.length === 0) return "0%";
 
-    // 1. Determine Current Window Boundaries
-    // We parse the strings in m_asDates to get exact timestamps
-    const iViewStart = new Date(this.m_asDates[0]).getTime();
-    const iViewEnd = new Date(this.m_asDates[this.m_asDates.length - 1]).getTime();
+    const {start: iViewStart, end: iViewEnd} = this.getViewBounds();
 
     // 2. Calculate Duration of the current view
     const iDuration = iViewEnd - iViewStart;
@@ -196,12 +202,37 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   }
 
 
+  getValidStartDate(): number {
+    let iStart = this.m_iStartDate;
+    if (iStart == null || iStart <= 0) {
+      return 1420130166; // Default to Jan 1, 2015 UTC in seconds
+    }
+    // Handle milliseconds (13 digits)
+    if (iStart > 1e11) {
+      iStart = Math.floor(iStart / 1000);
+    }
+    return iStart;
+  }
+
+  getValidEndDate(): number {
+    let iEnd = this.m_iEndDate;
+    if (iEnd == null || iEnd <= 0) {
+      return Math.floor(Date.now() / 1000);
+    }
+    // Handle milliseconds (13 digits)
+    if (iEnd > 1e11) {
+      iEnd = Math.floor(iEnd / 1000);
+    }
+    return iEnd;
+  }
+
   onTimeRangeSelected(sRange: string): void {
     this.m_sSelectedTimeRange = sRange;
 
     if (sRange === 'Auto') {
       this.initDates(false);
       this.generateTicks();
+      this.updateEventClusters();
       return;
     }
 
@@ -209,8 +240,8 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     let oBaseDate = new Date(this.m_oSelectedDate);
 
     // 2. Define Global Limits
-    const iGlobalEndTimestamp = this.m_iEndDate * 1000;
-    const iGlobalStartTimestamp = this.m_iStartDate * 1000;
+    const iGlobalEndTimestamp = this.getValidEndDate() * 1000;
+    const iGlobalStartTimestamp = this.getValidStartDate() * 1000;
 
     let oStartDate: Date;
     let oEndDate: Date;
@@ -316,6 +347,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
 
     this.generateZoomedTicks(oStartDate, oEndDate, sRange);
     this.updateButtonsState();
+    this.updateEventClusters();
   }
 
   generateZoomedTicks(oStartDate: Date, oEndDate: Date, sRange: string) {
@@ -394,7 +426,8 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
    * Based on difference between start date and  end date , generate the ticks for the timebar
    */
   generateTicks() {
-    this.m_iStartDate = this.m_iStartDate == -1 ? 1420130166 : this.m_iStartDate;
+    this.m_iStartDate = this.getValidStartDate();
+    this.m_iEndDate = this.getValidEndDate();
 
     // USE UTC METHODS
     const iStartDate = new Date(this.m_iStartDate * 1000);
@@ -410,20 +443,18 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     const iYearRange = iEndYear - iStartYear;
     this.m_aiTicks = [];
 
-    // Use UTC for current year reference too
-    let iCurrentYear = new Date().getUTCFullYear();
-
     // If the range is more than one year
     if (iYearRange > 1) {
       let interval = 1; // Default interval: one tick per year
-
+        console.log(`Year range: ${iYearRange}`);
       // Adjust an interval based on range
       if (iYearRange > 50) {
         interval = 10; // One tick every 10 years for ranges over 50 years
       } else if (iYearRange > 20) {
         interval = 5; // One tick every 5 years for ranges over 20 years
-      } else if (iYearRange > 10) {
-        interval = 2; // One tick every 2 years for ranges over 10 years
+      } else if (iYearRange > 12) {
+        console.log(`Year range is greater than 12, setting interval to 2`);
+        interval = 2; // One tick every 2 years for ranges over 12 years
       }
 
       this.generateYearTicks(iStartYear,iEndYear,interval);
@@ -436,37 +467,58 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
         if (iEndMonth - iStartMonth >= 1) {
 
           for (let iMonth = iStartMonth; iMonth <= iEndMonth; iMonth++) {
-            this.m_aiTicks.push({value: MONTHS[iMonth], timestamp: Date.UTC(iCurrentYear, iMonth, 1)});
+            this.m_aiTicks.push({value: MONTHS[iMonth], timestamp: Date.UTC(iStartYear, iMonth, 1)});
           }
 
         }
         else {
           for (let iDay = iStartDay; iDay <= iEndDay; iDay++) {
-            this.m_aiTicks.push({value: iDay, timestamp: Date.UTC(iCurrentYear, iEndMonth, iDay)});
+            this.m_aiTicks.push({value: iDay, timestamp: Date.UTC(iStartYear, iEndMonth, iDay)});
           }
 
         }
       }
       //different  year
       else {
-        if (Math.abs(iEndMonth - iStartMonth) >= 1) {
-          for (let iMonth = iStartMonth; iMonth < 12; iMonth++) {
-            this.m_aiTicks.push({value: MONTHS[iMonth], timestamp: Date.UTC(iStartYear, iMonth, 1)});
-          }
-          for (let iMonth = 0; iMonth <= iEndMonth; iMonth++) {
-            this.m_aiTicks.push({value: MONTHS[iMonth], timestamp: Date.UTC(iEndYear, iMonth, 1)});
-          }
-
+        // Matching month numbers in different years still span a full year.
+        for (let iMonth = iStartMonth; iMonth < 12; iMonth++) {
+          this.m_aiTicks.push({value: MONTHS[iMonth], timestamp: Date.UTC(iStartYear, iMonth, 1)});
         }
-        else {
-          for (let iDay = iStartDay; iDay <= iEndDay; iDay++) {
-            this.m_aiTicks.push({value: iDay, timestamp: Date.UTC(iEndYear, iEndMonth, iDay)});
-          }
-
-
+        for (let iMonth = 0; iMonth <= iEndMonth; iMonth++) {
+          this.m_aiTicks.push({value: MONTHS[iMonth], timestamp: Date.UTC(iEndYear, iMonth, 1)});
         }
       }
     }
+
+    this.logAutoTicks();
+  }
+
+  private logAutoTicks(): void {
+    if (this.m_sSelectedTimeRange !== 'Auto') return;
+
+    const {start, end} = this.getViewBounds();
+    const duration = end - start;
+
+    console.groupCollapsed('[Timebar][Auto] Generated date labels');
+    console.log('Date range (UTC)', {
+      start: new Date(this.m_iStartDate * 1000).toISOString(),
+      end: new Date(this.m_iEndDate * 1000).toISOString(),
+      viewStart: new Date(start).toISOString(),
+      viewEnd: new Date(end).toISOString(),
+      tickCount: this.m_aiTicks.length
+    });
+    console.table(this.m_aiTicks.map((tick, index) => ({
+      label: tick.value,
+      timestamp: tick.timestamp,
+      dateUTC: new Date(tick.timestamp).toISOString(),
+      rawPositionPercent: duration > 0 ? (tick.timestamp - start) / duration * 100 : null,
+      renderedPosition: this.getTickPosition(index),
+      placement: duration <= 0 ? 'Invalid view duration'
+        : tick.timestamp < start ? 'Clamped to left edge'
+        : tick.timestamp > end ? 'Clamped to right edge'
+        : 'Within view'
+    })));
+    console.groupEnd();
   }
 
   /**
@@ -493,16 +545,12 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
 
     // Get current view boundaries from the m_asDates array
     // m_asDates stores strings, so we convert boundaries to timestamps
-    const sStart = this.m_asDates[0];
-    const sEnd = this.m_asDates[this.m_asDates.length - 1];
-
-    const iStartTimestamp = new Date(sStart).getTime();
-    const iEndTimestamp = new Date(sEnd).getTime();
+    const {start: iStartTimestamp, end: iEndTimestamp} = this.getViewBounds();
 
     const iTotalDuration = iEndTimestamp - iStartTimestamp;
 
-    // Avoid division by zero (e.g. if 1D view where start=end, though usually 1D is 24h diff)
-    if (iTotalDuration === 0) return "0%";
+    // Avoid division by zero or negative duration
+    if (iTotalDuration <= 0) return "0%";
 
     const iTickOffset = oTick.timestamp - iStartTimestamp;
     const fPercentage = (iTickOffset / iTotalDuration) * 100;
@@ -515,12 +563,11 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   }
 
   initDates(bChangedByUser: boolean): void {
-    if (
-      FadeoutUtils.utilsIsObjectNullOrUndefined(this.m_iStartDate) ||
-      FadeoutUtils.utilsIsObjectNullOrUndefined(this.m_iEndDate)
-    ) {
-      return;
-    }
+    const iValidStart = this.getValidStartDate();
+    const iValidEnd = this.getValidEndDate();
+
+    this.m_iStartDate = iValidStart;
+    this.m_iEndDate = iValidEnd;
 
     this.m_oMomentStartDate = moment(this.m_iStartDate * 1000);
 
@@ -593,6 +640,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
       this.initDates(false);
       this.generateTicks();
     }
+    this.updateEventClusters();
   }
 
   /**
@@ -844,15 +892,104 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   getVisibleEvents(): EventViewModel[] {
     if (!this.m_aoEvents || this.m_asDates.length === 0) return [];
 
-    // 1. Get Boundaries
-    const iViewStart = new Date(this.m_asDates[0]).getTime();
-    const iViewEnd = new Date(this.m_asDates[this.m_asDates.length - 1]).getTime();
+    const {start: iViewStart, end: iViewEnd} = this.getViewBounds();
 
-    // 2. Filter Events
     return this.m_aoEvents.filter(event => {
+      if (event.peakDate == null) return false;
       const iEventTime = event.peakDate * 1000;
       return iEventTime >= iViewStart && iEventTime <= iViewEnd;
     });
+  }
+
+  getClusteredEvents(): EventCluster[] {
+    const aoVisible = this.getVisibleEvents();
+    if (aoVisible.length === 0) return [];
+
+    const {start: iViewStart, end: iViewEnd} = this.getViewBounds();
+    const iDuration = iViewEnd - iViewStart;
+
+    // Cluster only markers that would overlap on screen. The previous
+    // percentage-based threshold could merge events days apart on long views.
+    const iMarkerSpacing = 24;
+    const iTrackWidth = this.slider?.nativeElement.clientWidth || 0;
+    const iThreshold = iTrackWidth > 0 && iDuration > 0
+      ? iDuration * iMarkerSpacing / iTrackWidth
+      : 0;
+
+    const aoSorted = [...aoVisible].sort((a, b) => a.peakDate - b.peakDate);
+    const aoClusters: EventCluster[] = [];
+    
+    let oCurrentCluster: EventCluster = {
+      peakDate: aoSorted[0].peakDate,
+      events: [aoSorted[0]],
+      isCluster: false,
+      description: aoSorted[0].description || aoSorted[0].name || 'Event'
+    };
+
+    for (let i = 1; i < aoSorted.length; i++) {
+      const oEvent = aoSorted[i];
+      
+      if ((oEvent.peakDate - oCurrentCluster.peakDate) * 1000 <= iThreshold) {
+        oCurrentCluster.events.push(oEvent);
+        oCurrentCluster.isCluster = true;
+        
+        let sTooltip = `${oCurrentCluster.events.length} Events:\n`;
+        const iMaxToList = Math.min(oCurrentCluster.events.length, 5);
+        
+        for(let j = 0; j < iMaxToList; j++) {
+          const oClusterEvent = oCurrentCluster.events[j];
+          sTooltip += `• ${oClusterEvent.description || oClusterEvent.name || 'Event'}\n`;
+        }
+        if(oCurrentCluster.events.length > 5) {
+          sTooltip += `...and ${oCurrentCluster.events.length - 5} more`;
+        }
+        
+        oCurrentCluster.description = sTooltip.trim();
+      } else {
+        aoClusters.push(oCurrentCluster);
+        oCurrentCluster = {
+          peakDate: oEvent.peakDate,
+          events: [oEvent],
+          isCluster: false,
+          description: oEvent.description || oEvent.name || 'Event'
+        };
+      }
+    }
+    aoClusters.push(oCurrentCluster);
+    
+    return aoClusters;
+  }
+
+  private updateEventClusters(): void {
+    this.m_aoEventClusters = this.getClusteredEvents();
+  }
+
+  private parseDateStringToTimestamp(sDate: string, bEndOfDay: boolean = false): number {
+    if (!sDate) return 0;
+    if (sDate.includes('T')) {
+      return new Date(sDate).getTime();
+    }
+    const [year, month, day] = sDate.split('-').map(Number);
+    if (bEndOfDay) {
+      return Date.UTC(year, month - 1, day, 23, 59, 59, 999);
+    }
+    return Date.UTC(year, month - 1, day, 0, 0, 0, 0);
+  }
+
+  private getViewBounds(): { start: number; end: number } {
+    if (!this.m_asDates || this.m_asDates.length === 0) {
+      const iStart = this.getValidStartDate() * 1000;
+      const iEnd = this.getValidEndDate() * 1000;
+      return { start: iStart, end: iEnd };
+    }
+
+    const sStartDate = this.m_asDates[0];
+    const sEndDate = this.m_asDates[this.m_asDates.length - 1];
+
+    return {
+      start: this.parseDateStringToTimestamp(sStartDate, false),
+      end: this.parseDateStringToTimestamp(sEndDate, true)
+    };
   }
 
 
@@ -860,6 +997,7 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     for (let iYear = iStartYear; iYear <= iEndYear; iYear += interval) {
       this.m_aiTicks.push({value: iYear, timestamp: Date.UTC(iYear, 0, 1)});
     }
+    console.log(`Generated year ticks from ${iStartYear} to ${iEndYear} with interval ${interval}`);
 
     this.m_oZoomWindow = {
       start: new Date(iStartYear, 0, 1).getTime(),
