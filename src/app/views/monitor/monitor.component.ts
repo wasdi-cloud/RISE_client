@@ -411,8 +411,9 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   m_oTempLocationMarker: any = null;
 
   /**
-   * Timestamp of last impact layers fetch to prevent redundant calls
+   * Track last fetched date and time to prevent redundant calls for the same date
    */
+  private m_lLastImpactLayersDate: number = -1;
   private m_lLastImpactLayersLoadTime: number = 0;
 
   constructor(
@@ -815,22 +816,27 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    * independently of which plugin the user has selected.
    * Uses dedicated server endpoint that handles impacts plugin discovery and deduplication.
    * 
-   * Throttled to prevent redundant calls within 5 seconds (e.g., when live timer fires)
+   * Throttled only for the SAME date within 5 seconds (e.g., live timer updates).
+   * Different dates always fetch immediately (e.g., clicking different events).
    */
   private loadImpactLayers(): void {
     if (!this.m_sAreaId) {
       return;
     }
 
-    // Throttle: don't fetch more than once every 5 seconds
+    const iSelectedDate = this.m_iSelectedDate || Date.now();
     const iNowTime = Date.now();
-    if (iNowTime - this.m_lLastImpactLayersLoadTime < 5000) {
+
+    // Only throttle if: same date AND within 5 seconds
+    if (iSelectedDate === this.m_lLastImpactLayersDate && 
+        iNowTime - this.m_lLastImpactLayersLoadTime < 5000) {
       return;
     }
+
+    // New date or throttle window expired: fetch
+    this.m_lLastImpactLayersDate = iSelectedDate;
     this.m_lLastImpactLayersLoadTime = iNowTime;
 
-    const iSelectedDate = this.m_iSelectedDate || Date.now();
-    
     // Call dedicated impacts endpoint - server handles plugin discovery and deduplication
     this.m_oLayerService.getImpactLayers(this.m_sAreaId, iSelectedDate)
       .pipe(takeUntil(this.m_oDestroy$))
