@@ -410,6 +410,11 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   m_oSelectedLocation: { lat: number; lng: number } | null = null;
   m_oTempLocationMarker: any = null;
 
+  /**
+   * Timestamp of last impact layers fetch to prevent redundant calls
+   */
+  private m_lLastImpactLayersLoadTime: number = 0;
+
   constructor(
     private m_oActivatedRoute: ActivatedRoute,
     private m_oAreaService: AreaService,
@@ -805,22 +810,39 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   }
 
   /**
-   * Fetch impact layers for the current date independently of plugin selection.
+   * Fetch impact layers for the current date.
+   * This is called on every date change to populate the impacts sidebar,
+   * independently of which plugin the user has selected.
+   * Uses dedicated server endpoint that handles impacts plugin discovery and deduplication.
+   * 
+   * Throttled to prevent redundant calls within 5 seconds (e.g., when live timer fires)
    */
   private loadImpactLayers(): void {
-    if (!this.m_sAreaId || this.m_aoAreaPlugins.length === 0) {
+    if (!this.m_sAreaId) {
       return;
     }
 
+    // Throttle: don't fetch more than once every 5 seconds
+    const iNowTime = Date.now();
+    if (iNowTime - this.m_lLastImpactLayersLoadTime < 5000) {
+      return;
+    }
+    this.m_lLastImpactLayersLoadTime = iNowTime;
+
     const iSelectedDate = this.m_iSelectedDate || Date.now();
-    this.m_aoAreaPlugins.forEach((oPlugin: any) => {
-      this.m_oLayerService.findAvailableLayers('', this.m_sAreaId, iSelectedDate, oPlugin.id)
-        .pipe(takeUntil(this.m_oDestroy$))
-        .subscribe({
-          next: (aoLayers) => this.logPluginImpactData(aoLayers),
-          error: (oError) => console.error('Error fetching impact layers:', oError)
-        });
-    });
+    
+    // Call dedicated impacts endpoint - server handles plugin discovery and deduplication
+    this.m_oLayerService.getImpactLayers(this.m_sAreaId, iSelectedDate)
+      .pipe(takeUntil(this.m_oDestroy$))
+      .subscribe({
+        next: (aoLayers) => {
+          // Only process if we have layers
+          if (aoLayers && aoLayers.length > 0) {
+            this.logPluginImpactData(aoLayers);
+          }
+        },
+        error: (oError) => console.error('Error fetching impact layers:', oError)
+      });
   }
 
   /**
@@ -990,12 +1012,14 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
             for (let i=0;i<this.m_aoVisibleMapLayersButtons.length;i++) {
               for (let j=0;j<oResponse.length;j++) {
                 if (this.m_aoVisibleMapLayersButtons[i].mapId === oResponse[j].mapId) {
+                  oResponse[j].loaded = this.m_aoLayers.some(
+                    (oLayer) => oLayer.mapId === oResponse[j].mapId
+                  );
                   aoNewVisibleButtons.push(oResponse[j]);
                 }
               }
             }
             this.m_aoVisibleMapLayersButtons = aoNewVisibleButtons;
-            this.logPluginImpactData(oResponse);
           }
         }
       });
@@ -1038,7 +1062,9 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
           }
 
           this.m_aoVisibleMapLayersButtons = oResponse;
-          this.logPluginImpactData(oResponse);
+          
+          // Impact data is loaded automatically on date changes via dedicated endpoint
+          // Don't refresh it here when plugin is selected
         },
         error: (oError) => {
           this.m_oNotificationService.openInfoDialog(
@@ -1091,9 +1117,6 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
   /**
    * Scans a plugin's layers for vector/impact data and fetches their WFS tables
-   */
-  /**
-   * Fetches impact layer features and populates the sidebar table
    */
   private logPluginImpactData(aoLayers: any[]): void {
     if (!aoLayers || aoLayers.length === 0) return;

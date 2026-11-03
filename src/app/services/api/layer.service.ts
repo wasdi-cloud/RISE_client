@@ -24,6 +24,10 @@ export class LayerService {
     return this.m_oHttp.post<any>(this.APIURL + '/layer/find?area_id=' + sAreaId + '&date=' + iDate+"&plugin_id="+sPluginId,sMapIds);
   }
 
+  getImpactLayers(sAreaId: string, iDate: string | number): Observable<any> {
+    return this.m_oHttp.post<any>(this.APIURL + '/layer/impacts?area_id=' + sAreaId + '&date=' + iDate, '');
+  }
+
   areaLayerCount(sAreaId: string) {
     return this.m_oHttp.get<any>(this.APIURL + '/layer/available?area_id=' + sAreaId);
   }
