@@ -8,6 +8,11 @@ div.user-icon {
   border-radius: 50%;
   cursor: pointer;
 }
+.user-icon:has(.profile-icon) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .material-symbols-outlined {
   font-size: 36px;
 }

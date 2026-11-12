@@ -17,6 +17,7 @@ import {AreaService} from "../../services/api/area.service";
 import FadeoutUtils from "../../shared/utilities/FadeoutUtils";
 import {filter} from "rxjs";
 import e from 'express';
+import {BrandingService} from '../../services/branding.service';
 
 @Component({
   selector: 'rise-user-menu',
@@ -26,6 +27,7 @@ import e from 'express';
   styleUrl: './rise-user-menu.component.css',
 })
 export class RiseUserMenuComponent implements OnInit {
+  readonly m_bEmergencyBrand: boolean;
   m_aoMenuItems: Array<any> = [];
 
   m_bShowDropdown: boolean = false;
@@ -69,8 +71,10 @@ export class RiseUserMenuComponent implements OnInit {
     private m_oUserService: UserService,
     private m_oAreaService: AreaService,
     private elementRef: ElementRef,
+    oBranding: BrandingService,
 
   ) {
+    this.m_bEmergencyBrand = oBranding.brand.id === 'emergency';
     // this.m_aoMenuItems = DefaultMenuItems;
   }
 

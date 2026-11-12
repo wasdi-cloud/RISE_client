@@ -34,7 +34,7 @@
   gap: 8px;
   color: var(--rise-text-bright, #ffffff);
   font-size: 0.85rem;
-  font-weight: 500;
+  font-weight: 400;
   user-select: none;
 }
 
@@ -45,7 +45,7 @@
 /* The Time Chip */
 .time-display {
   color: var(--rise-primary, #38c4b7); /* Teal accent color for time */
-  font-weight: 700;
+  font-weight: 400;
   font-size: 0.85rem;
   background: rgba(56, 196, 183, 0.1); /* Subtle teal background */
   padding: 2px 6px;

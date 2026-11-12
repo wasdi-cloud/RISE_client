@@ -306,9 +306,10 @@
   background: transparent;
   border: none;
   color: var(--rise-text-dim, #8a9f9f);
-  padding: 6px 18px;
-  font-size: 0.95rem;
-  font-weight: 600;
+  padding: 6px 12px;
+  min-height: 32px;
+  font-size: 0.8125rem;
+  font-weight: 400;
   border-radius: 7px;
   cursor: pointer;
   transition: all 0.2s ease;

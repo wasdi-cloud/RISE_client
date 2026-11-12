@@ -44,6 +44,10 @@ rise-dropdown {
 .create-outlet {
   height: calc(100vh - 6rem);
 }
+
+.event-creation-upload-note {
+  color: var(--rise-text-bright, #ffffff);
+}
 .header {
   background-color: var(--surface-glass-interactive);
   border-radius: 10px;
@@ -196,4 +200,3 @@ rise-dropdown {
   50% { transform: scale(1.15); opacity: 0.7; }
   100% { transform: scale(1); opacity: 1; }
 }
-

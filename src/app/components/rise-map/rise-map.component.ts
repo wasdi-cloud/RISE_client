@@ -822,6 +822,7 @@ export class RiseMapComponent implements OnInit, AfterViewInit, OnChanges {
         const sTitle = this.m_oTranslate.instant('TOOLBAR.SETTINGS');
         oButton.href = '#';
         oButton.title = sTitle;
+        oButton.dataset['mapControlKey'] = 'SETTINGS';
         oButton.setAttribute('role', 'button');
         oButton.setAttribute('aria-label', sTitle);
         oButton.innerHTML = '<span class="material-symbols-outlined" aria-hidden="true">settings</span>';

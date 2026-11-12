@@ -42,8 +42,19 @@
   width: 145px;
 }
 
+:root[data-brand="emergency"] .rise-sidebar .widget-card,
+:root[data-brand="emergency"] .rise-sidebar .banner-card {
+  border-color: var(--rise-border-default);
+}
+
 :root[data-brand="emergency"] .rise-sidebar.collapsed .dashboard-home-link {
   width: 30px;
+}
+
+:root[data-brand="emergency"] .dashboard-logo {
+  width: 100%;
+  height: 100%;
+  object-position: left center;
 }
 
 :root[data-brand="emergency"] img[riseBrandLogo] {
@@ -130,15 +141,90 @@
   color: #78350f;
 }
 
-/* These controls use white SVGs, so retain a contrasting branded background. */
-:root[data-brand="emergency"] .leaflet-control-geocoder-icon,
-:root[data-brand="emergency"] .leaflet-draw-toolbar > a,
-:root[data-brand="emergency"] .leaflet-control-layers-toggle {
-  background-color: #b91c1c !important;
+:root[data-brand="emergency"] .leaflet-draw-toolbar > a {
+  background-color: var(--rise-widget-surface) !important;
+  color: var(--rise-text-default) !important;
+  background-image: none !important;
+  position: relative;
+  width: 36px !important;
+  height: 36px !important;
+  box-sizing: border-box;
+  margin: 0 !important;
 }
 
-:root[data-brand="emergency"] .leaflet-control-geocoder-expanded .leaflet-control-geocoder-icon {
-  background-color: #b91c1c !important;
+:root[data-brand="emergency"] .leaflet-draw-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+:root[data-brand="emergency"] .leaflet-draw-toolbar > a[class*="leaflet-draw-draw-"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 20px;
+  height: 20px;
+  background-color: currentColor;
+  -webkit-mask: var(--map-control-icon) center / contain no-repeat;
+  mask: var(--map-control-icon) center / contain no-repeat;
+  pointer-events: none;
+}
+
+:root[data-brand="emergency"] .leaflet-draw-draw-polyline {
+  --map-control-icon: url('/assets/rise-assets/diagonal-line.svg');
+}
+
+:root[data-brand="emergency"] .leaflet-draw-draw-polygon {
+  --map-control-icon: url('/assets/rise-assets/pentagon.svg');
+}
+
+:root[data-brand="emergency"] .leaflet-draw-draw-rectangle {
+  --map-control-icon: url('/assets/rise-assets/square-icon.svg');
+}
+
+:root[data-brand="emergency"] .leaflet-draw-draw-circle {
+  --map-control-icon: url('/assets/rise-assets/circle.svg');
+}
+
+:root[data-brand="emergency"] rise-date-input .calendar-icon {
+  display: none;
+}
+
+:root[data-brand="emergency"] .leaflet-control-geocoder-icon,
+:root[data-brand="emergency"] .leaflet-control-layers-toggle {
+  display: grid;
+  place-items: center;
+  background-color: var(--rise-widget-surface) !important;
+  background-image: none !important;
+}
+
+:root[data-brand="emergency"] .leaflet-control-geocoder-icon::before,
+:root[data-brand="emergency"] .leaflet-control-layers-toggle::before {
+  content: "";
+  width: 24px;
+  height: 24px;
+  background-color: var(--rise-text-default);
+  -webkit-mask: var(--map-control-icon) center / contain no-repeat;
+  mask: var(--map-control-icon) center / contain no-repeat;
+}
+
+:root[data-brand="emergency"] .leaflet-control-geocoder-icon {
+  --map-control-icon: url('/assets/rise-assets/map-search.svg');
+}
+
+:root[data-brand="emergency"] .leaflet-control-layers-toggle {
+  --map-control-icon: url('/assets/rise-assets/map-layers.svg');
+}
+
+:root[data-brand="emergency"] .leaflet-control-layers-toggle::before {
+  width: 20px;
+  height: 20px;
+}
+
+:root[data-brand="emergency"] .login-container {
+  border-color: var(--rise-border-default);
+  box-shadow: 0 8px 28px rgba(28, 25, 23, 0.08);
 }
 
 :root[data-brand="emergency"] :focus-visible {

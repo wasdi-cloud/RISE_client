@@ -6,7 +6,25 @@
     aria-haspopup="true"
     (click)="toggleDropdown()"
   >
-    <span class="material-symbols-outlined"> account_circle </span>
+    <span *ngIf="!m_bEmergencyBrand" class="material-symbols-outlined"> account_circle </span>
+    <svg
+      *ngIf="m_bEmergencyBrand"
+      class="profile-icon"
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 256 256"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="16"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <circle cx="128" cy="96" r="64" />
+      <path d="M32 216a104 104 0 0 1 192 0" />
+    </svg>
     <span *ngIf="!m_bHasArea"
     [ngClass]="m_bAlertShown ? 'notification-dot-static' : 'notification-dot'"></span>
   </div>

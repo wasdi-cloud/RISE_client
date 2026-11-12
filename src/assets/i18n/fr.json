@@ -1,4 +1,14 @@
 {
+  "MAP_CONTROLS": {
+    "EDIT": "Modifier les formes", "DELETE": "Supprimer les formes", "NO_EDIT": "Aucune forme à modifier", "NO_DELETE": "Aucune forme à supprimer",
+    "SETTINGS": "Paramètres", "FULLSCREEN": "Plein écran", "EXIT_FULLSCREEN": "Quitter le plein écran",
+    "MEASURE": "Commencer une mesure", "DRAW_LINE": "Tracer une polyligne", "DRAW_POLYGON": "Tracer un polygone",
+    "DRAW_CIRCLE": "Tracer un cercle", "DRAW_RECTANGLE": "Tracer un rectangle", "CANCEL": "Annuler",
+    "IMPORT": "Importer un fichier de formes", "BOUNDING_BOX": "Définir une emprise manuellement", "COORDINATES": "Rechercher par coordonnées",
+    "CANCEL_PIXEL": "Annuler les informations du pixel", "PIXEL": "Activer les informations du pixel", "PRINT": "Imprimer la carte",
+    "AUTO_CIRCLE": "Insérer automatiquement un cercle", "ANALYZER": "Analyser les couches",
+    "ZOOM_IN": "Zoom avant", "ZOOM_OUT": "Zoom arrière", "BASEMAPS": "Fonds de carte", "SEARCH": "Rechercher"
+  },
   "ACCOUNT": {
     "AREA_OF_OPERATIONS": "Zones d'opérations",
     "ERROR_INFO": "Impossible d'obtenir les informations du compte",
@@ -63,6 +73,10 @@
     "END_DATE": "Date de fin"
   },
   "MONITOR": {
+    "EVENT_TAB": "Événement",
+    "NO_EVENT_SELECTED": "Aucun événement sélectionné",
+    "EVENT_TIMELINE": "Chronologie de l'événement",
+    "CLOSE_IMPACTS": "Fermer les impacts",
     "ADD_TITLE_AND_DESCRIPTION": "Ajouter un titre et une description",
     "WIRE_TRANSFER": "si vous confirmez vouloir payer par virement bancaire, vous recevrez les coordonnées bancaires par e-mail",
     "PRINT_PAYLOAD_TITLE": "Titre",

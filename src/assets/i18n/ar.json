@@ -1,4 +1,14 @@
 {
+  "MAP_CONTROLS": {
+    "EDIT": "تعديل الأشكال", "DELETE": "حذف الأشكال", "NO_EDIT": "لا توجد أشكال للتعديل", "NO_DELETE": "لا توجد أشكال للحذف",
+    "SETTINGS": "الإعدادات", "FULLSCREEN": "ملء الشاشة", "EXIT_FULLSCREEN": "الخروج من ملء الشاشة",
+    "MEASURE": "بدء القياس", "DRAW_LINE": "رسم خط متعدد", "DRAW_POLYGON": "رسم مضلع",
+    "DRAW_CIRCLE": "رسم دائرة", "DRAW_RECTANGLE": "رسم مستطيل", "CANCEL": "إلغاء",
+    "IMPORT": "استيراد ملف أشكال", "BOUNDING_BOX": "تحديد الحدود يدوياً", "COORDINATES": "البحث بالإحداثيات",
+    "CANCEL_PIXEL": "إلغاء معلومات البكسل", "PIXEL": "تبديل معلومات البكسل", "PRINT": "طباعة الخريطة",
+    "AUTO_CIRCLE": "إدراج دائرة تلقائياً", "ANALYZER": "تحليل الطبقات",
+    "ZOOM_IN": "تكبير", "ZOOM_OUT": "تصغير", "BASEMAPS": "خرائط الأساس", "SEARCH": "بحث"
+  },
   "ACCOUNT": {
     "AREA_OF_OPERATIONS": "مناطق العمليات",
     "MY_ORGANIZATION": "منظمتي",
@@ -301,6 +311,10 @@
     "SIGN_UP": "التسجيل"
   },
   "MONITOR": {
+    "EVENT_TAB": "حدث",
+    "NO_EVENT_SELECTED": "لم يتم تحديد حدث",
+    "EVENT_TIMELINE": "التسلسل الزمني للحدث",
+    "CLOSE_IMPACTS": "إغلاق التأثيرات",
     "ADD_TITLE_AND_DESCRIPTION": "إضافة عنوان ووصف",
     "PRINT_PAYLOAD_TITLE": "العنوان",
     "PRINT_PAYLOAD_DESCRIPTION": "الوصف",

@@ -397,6 +397,77 @@ a.leaflet-control-button,
   background-image: url("/assets/rise-assets/layers.svg") !important;
 }
 
+.leaflet-control-geocoder-icon,
+.leaflet-control-layers-toggle,
+.leaflet-control-coordinates,
+.leaflet-control-measure,
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  position: relative;
+}
+
+.monitor-page .leaflet-control .material-symbols-outlined,
+.monitor-page .button-container rise-button .material-symbols-outlined {
+  font-weight: 300;
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+}
+
+.monitor-page .leaflet-control a:not(.leaflet-control-measure):not(.leaflet-control-coordinates):not(.leaflet-control-zoom-in):not(.leaflet-control-zoom-out) > .material-symbols-outlined,
+.monitor-page .button-container rise-button .material-symbols-outlined {
+  font-size: 20px;
+}
+
+button.leaflet-control-geocoder-icon {
+  --map-control-icon: url('/assets/rise-assets/map-search.svg');
+  background-image: none;
+}
+
+.leaflet-control-measure {
+  --map-control-icon: url('/assets/rise-assets/map-ruler.svg');
+}
+
+.leaflet-control-layers-toggle {
+  --map-control-icon: url('/assets/rise-assets/map-layers.svg');
+  background-image: none !important;
+}
+
+.leaflet-control-coordinates {
+  --map-control-icon: url('/assets/rise-assets/map-coordinates.svg');
+}
+
+.leaflet-control-zoom-in {
+  --map-control-icon: url('/assets/rise-assets/map-plus.svg');
+}
+
+.leaflet-control-zoom-out {
+  --map-control-icon: url('/assets/rise-assets/map-minus.svg');
+}
+
+.leaflet-control-measure > span,
+.leaflet-control-coordinates > span,
+.leaflet-control-zoom-in > span,
+.leaflet-control-zoom-out > span {
+  font-size: 0;
+}
+
+.leaflet-control-geocoder-icon::before,
+.leaflet-control-layers-toggle::before,
+.leaflet-control-coordinates::before,
+.leaflet-control-measure::before,
+.leaflet-control-zoom-in::before,
+.leaflet-control-zoom-out::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 20px;
+  height: 20px;
+  background-color: currentColor;
+  -webkit-mask: var(--map-control-icon) center / contain no-repeat;
+  mask: var(--map-control-icon) center / contain no-repeat;
+  pointer-events: none;
+}
+
 .leaflet-top .leaflet-control {
   margin-top: 8px !important;
 }

@@ -1,4 +1,14 @@
 {
+  "MAP_CONTROLS": {
+    "EDIT": "Edit shapes", "DELETE": "Delete shapes", "NO_EDIT": "No shapes to edit", "NO_DELETE": "No shapes to delete",
+    "SETTINGS": "Settings", "FULLSCREEN": "Full screen", "EXIT_FULLSCREEN": "Exit full screen",
+    "MEASURE": "Start measurement", "DRAW_LINE": "Draw polyline", "DRAW_POLYGON": "Draw polygon",
+    "DRAW_CIRCLE": "Draw circle", "DRAW_RECTANGLE": "Draw rectangle", "CANCEL": "Cancel",
+    "IMPORT": "Import shape file", "BOUNDING_BOX": "Manual bounding box", "COORDINATES": "Search by coordinates",
+    "CANCEL_PIXEL": "Cancel pixel info", "PIXEL": "Toggle pixel info", "PRINT": "Print map view",
+    "AUTO_CIRCLE": "Automatically insert a circle", "ANALYZER": "Layer analyzer",
+    "ZOOM_IN": "Zoom in", "ZOOM_OUT": "Zoom out", "BASEMAPS": "Basemaps", "SEARCH": "Search"
+  },
   "ACCOUNT": {
     "AREA_OF_OPERATIONS": "Areas of Operations",
     "ERROR_INFO": "Could not get account information",
@@ -160,6 +170,10 @@
     "ERROR_LAYER": "An error occurred while trying to fetch pixel information."
   },
   "MONITOR": {
+    "EVENT_TAB": "Event",
+    "NO_EVENT_SELECTED": "No event selected",
+    "EVENT_TIMELINE": "Event timeline",
+    "CLOSE_IMPACTS": "Close impacts",
     "ADD_TITLE_AND_DESCRIPTION": "Add Title & Description",
     "PRINT_PAYLOAD_TITLE": "Title",
     "PRINT_PAYLOAD_DESCRIPTION": "Description",

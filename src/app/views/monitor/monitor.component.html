@@ -1,4 +1,4 @@
-<main class="d-flex flex-column">
+<main class="monitor-page d-flex flex-column">
   <div class="flex-fill d-flex flex-row">
 <!--    this is the left panel -->
     <!-- LEFT SIDEBAR -->
@@ -49,7 +49,7 @@
                 [attr.aria-pressed]="m_sSidebarTab === 'event'" aria-controls="sidebar-event"
                 (click)="m_sSidebarTab = 'event'">
           <span class="material-symbols-outlined">flag</span>
-          <span>Event</span>
+          <span>{{ 'MONITOR.EVENT_TAB' | translate }}</span>
         </button>
       </nav>
 
@@ -98,7 +98,7 @@
         <section id="sidebar-event" [hidden]="m_sSidebarTab !== 'event'" class="sidebar-panel" aria-label="Event details">
           <div *ngIf="!m_bShowEventInfo" class="sidebar-empty-state">
             <span class="material-symbols-outlined">flag</span>
-            <p>No event selected</p>
+            <p>{{ 'MONITOR.NO_EVENT_SELECTED' | translate }}</p>
           </div>
           <ng-container *ngIf="m_bShowEventInfo">
           <!-- FIXED HEADER -->
@@ -117,7 +117,7 @@
             <div class="mt-2">
               <p *ngIf="m_oSelectedEvent.description" class="event-description">{{ m_oSelectedEvent.description }}</p>
               <div class="event-timeline">
-                <h3>Event Timeline <span>UTC</span></h3>
+                <h3>{{ 'MONITOR.EVENT_TIMELINE' | translate }} <span>UTC</span></h3>
                 <div><span>{{ 'MONITOR.EVENT_START' | translate }}</span><time>{{ m_oSelectedEvent.startDate * 1000 | date: 'medium' : 'UTC' }}</time></div>
                 <div class="event-peak"><span>{{ 'MONITOR.EVENT_PEAK' | translate }}</span><time>{{ m_oSelectedEvent.peakDate * 1000 | date: 'medium' : 'UTC' }}</time></div>
                 <div><span>{{ 'MONITOR.EVENT_END' | translate }}</span><time>{{ m_oSelectedEvent.endDate * 1000 | date: 'medium' : 'UTC' }}</time></div>
@@ -245,7 +245,7 @@
         ></rise-button>
         <rise-button
           class="flex-fill"
-          [m_sLabel]="m_bShowImpactsDrawer ? 'Close Impacts' : 'MONITOR.SEE_IMPACTS'"
+          [m_sLabel]="m_bShowImpactsDrawer ? 'MONITOR.CLOSE_IMPACTS' : 'MONITOR.SEE_IMPACTS'"
           [m_sSize]="'small'"
           [m_sIconLeft]="m_bShowImpactsDrawer ? 'close' : 'bar_chart'"
           [m_sRole]="'action'"

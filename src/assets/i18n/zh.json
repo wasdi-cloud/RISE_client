@@ -1,4 +1,14 @@
 {
+  "MAP_CONTROLS": {
+    "EDIT": "编辑图形", "DELETE": "删除图形", "NO_EDIT": "没有可编辑的图形", "NO_DELETE": "没有可删除的图形",
+    "SETTINGS": "设置", "FULLSCREEN": "全屏", "EXIT_FULLSCREEN": "退出全屏",
+    "MEASURE": "开始测量", "DRAW_LINE": "绘制折线", "DRAW_POLYGON": "绘制多边形",
+    "DRAW_CIRCLE": "绘制圆形", "DRAW_RECTANGLE": "绘制矩形", "CANCEL": "取消",
+    "IMPORT": "导入形状文件", "BOUNDING_BOX": "手动设置边界框", "COORDINATES": "按坐标搜索",
+    "CANCEL_PIXEL": "取消像素信息", "PIXEL": "切换像素信息", "PRINT": "打印地图",
+    "AUTO_CIRCLE": "自动插入圆形", "ANALYZER": "分析图层",
+    "ZOOM_IN": "放大", "ZOOM_OUT": "缩小", "BASEMAPS": "底图", "SEARCH": "搜索"
+  },
 	"ACCOUNT": {
 		"AREA_OF_OPERATIONS": "Areas of Operations",
 		"ERROR_INFO": "Could not get account information",
@@ -159,6 +169,10 @@
 		"ERROR_LAYER": "An error occurred while trying to fetch pixel information."
 	},
 	"MONITOR": {
+	  "EVENT_TAB": "事件",
+	  "NO_EVENT_SELECTED": "未选择事件",
+	  "EVENT_TIMELINE": "事件时间线",
+	  "CLOSE_IMPACTS": "关闭影响",
 		"ADD_TITLE_AND_DESCRIPTION": "Add Title & Description",
 		"PRINT_PAYLOAD_TITLE": "Title",
 		"PRINT_PAYLOAD_DESCRIPTION": "Description",

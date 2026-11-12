@@ -20,6 +20,7 @@ import {NotificationsDialogsService} from './notifications-dialogs.service';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ConstantsService} from './constants.service';
 import {TranslateService} from '@ngx-translate/core';
+import {localizeMapControls} from './map-control-i18n';
 import {EventViewModel} from "../models/EventViewModel";
 import {MapZoomLevels} from "../shared/MapZoomLevels";
 import { now } from 'moment';
@@ -384,6 +385,8 @@ export class MapService {
    */
   setMap(oMap: any) {
     this.m_oRiseMap = oMap;
+    const stopLocalizing = localizeMapControls(oMap.getContainer(), this.m_oTranslate);
+    oMap.once('unload', stopLocalizing);
   }
 
   /**
@@ -979,7 +982,7 @@ export class MapService {
         const oContainer = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
         const oMeasurementButton = L.DomUtil.create(
           'a',
-          'leaflet-control-button',
+          'leaflet-control-button leaflet-control-measure',
           oContainer
         );
         oMeasurementButton.innerHTML =
@@ -1672,7 +1675,7 @@ export class MapService {
         // Create the button to add to leaflet
         let oButton = L.DomUtil.create(
           'a',
-          'leaflet-control-button',
+          'leaflet-control-button leaflet-control-coordinates',
           oContainer
         );
 
