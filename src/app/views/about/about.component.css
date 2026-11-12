@@ -23,7 +23,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(40, 78, 89, 0.8);
+  background: rgba(var(--brand-public-rgb, 40, 78, 89), 0.8);
 }
 
 /* LOCATION MAP */
@@ -61,7 +61,7 @@
 
 .location-label {
   font-size: 12px;
-  color: #EFB840;
+  color: var(--brand-public-accent-text, #EFB840);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -69,14 +69,14 @@
 }
 
 .location-name {
-  color: #284E59;
+  color: var(--brand-public-text, #284E59);
   font-size: 18px;
   margin-bottom: 8px;
 }
 
 .location-card p {
   font-size: 14px;
-  color: #4a6672;
+  color: var(--brand-public-muted, #4a6672);
   margin: 0;
   line-height: 1.6;
 }
@@ -112,7 +112,7 @@
 .mission-inner {
   max-width: 800px;
   margin: 0 auto;
-  color: #4a6672;
+  color: var(--brand-public-muted, #4a6672);
   line-height: 1.8;
   text-align: center;
 }
@@ -121,7 +121,7 @@
   font-family: 'Space Mono', monospace;
   font-size: 28px;
   font-weight: 700;
-  color: #1c3d4a;
+  color: var(--brand-public-text, #1c3d4a);
   margin: 0 0 24px;
 }
 
@@ -132,7 +132,7 @@
 }
 
 ::ng-deep .mission-inner a {
-  color: #4a6672;
+  color: var(--brand-public-muted, #4a6672);
   font-weight: 600;
 }
 
@@ -152,7 +152,7 @@
 
 /* TESTIMONIALS */
 .testimonials-section {
-  background: #284E59;
+  background: var(--brand-public-strong, #284E59);
   padding: 80px 24px;
   text-align: center;
   color: #fff;
@@ -204,7 +204,7 @@ blockquote p {
 blockquote footer {
   font-size: 15px;
   font-weight: 700;
-  color: #efba35;
+  color: var(--brand-public-accent-text, #efba35);
   text-transform: uppercase;
   letter-spacing: 1px;
 }

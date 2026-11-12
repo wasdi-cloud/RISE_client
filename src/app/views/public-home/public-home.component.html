@@ -2,7 +2,7 @@
   <public-navbar></public-navbar>
   <div class="hero-section">
     <div class="hero-content">
-      <img src="assets/rise-assets/Logo%20Small%20Bianco%201.png" class="logo-small-bianco-1" alt="" fetchpriority="high">
+      <img riseBrandLogo="inverse" src="assets/rise-assets/Logo%20Small%20Bianco%201.png" class="logo-small-bianco-1" alt="" fetchpriority="high">
 
       <div class="hero-text-container">
         <b class="hero-title">{{ 'LANDING.HERO_TITLE' | translate }}</b>
@@ -19,7 +19,7 @@
     <div class="features-container">
       <div class="features-header">
         <b class="header">{{m_sTypedPart1}}<span
-            style="color: #EFB840; text-transform: uppercase;">{{m_sTypedPart2}}</span>{{m_sTypedPart3}}<span
+            style="color: var(--brand-public-accent-text, #EFB840); text-transform: uppercase;">{{m_sTypedPart2}}</span>{{m_sTypedPart3}}<span
             class="typing-cursor">|</span></b>
         <div class="paragraph" [innerHTML]="'LANDING.INTRO_P1' | translate"></div>
       </div>
@@ -207,17 +207,17 @@
     <div class="results-highlights">
       <div class="result-highlight-item">
         <div class="result-highlight-content">
-          <b class="result-highlight-value"><span style="color: #EFB840;">84.6%</span> {{ 'LANDING.FASTER_RESPONSE' | translate }}</b>
+          <b class="result-highlight-value"><span style="color: var(--brand-public-accent-text, #EFB840);">84.6%</span> {{ 'LANDING.FASTER_RESPONSE' | translate }}</b>
         </div>
       </div>
       <div class="result-highlight-item">
         <div class="result-highlight-content">
-          <b class="result-highlight-value"><span style="color: #EFB840;">89.9%</span> {{ 'LANDING.COST_REDUCTION' | translate }}</b>
+          <b class="result-highlight-value"><span style="color: var(--brand-public-accent-text, #EFB840);">89.9%</span> {{ 'LANDING.COST_REDUCTION' | translate }}</b>
         </div>
       </div>
       <div class="result-highlight-item">
         <div class="result-highlight-content">
-          <b class="result-highlight-value"><span style="color: #EFB840;">+</span> {{ 'LANDING.GREATER_ACCURACY' | translate }}</b>
+          <b class="result-highlight-value"><span style="color: var(--brand-public-accent-text, #EFB840);">+</span> {{ 'LANDING.GREATER_ACCURACY' | translate }}</b>
         </div>
       </div>
     </div>

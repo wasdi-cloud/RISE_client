@@ -5,11 +5,12 @@ import { PublicNavbarComponent } from '../../components/public-navbar/public-nav
 import { PublicFooterComponent } from '../../components/public-footer/public-footer.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import {BrandLogoDirective} from '../../directives/brand-logo.directive';
 
 @Component({
   selector: 'app-public-home',
   standalone: true,
-  imports: [PublicNavbarComponent, PublicFooterComponent, RiseButtonComponent, TranslateModule],
+  imports: [PublicNavbarComponent, PublicFooterComponent, RiseButtonComponent, TranslateModule, BrandLogoDirective],
   templateUrl: './public-home.component.html',
   styleUrl: './public-home.component.css',
 })

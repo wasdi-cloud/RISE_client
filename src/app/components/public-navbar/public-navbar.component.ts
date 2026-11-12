@@ -4,11 +4,12 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ConstantsService } from '../../services/constants.service';
+import {BrandLogoDirective} from '../../directives/brand-logo.directive';
 
 @Component({
   selector: 'public-navbar',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive, TranslateModule],
+  imports: [CommonModule, RouterLink, RouterLinkActive, TranslateModule, BrandLogoDirective],
   templateUrl: './public-navbar.component.html',
   styleUrl: './public-navbar.component.css',
 })

@@ -1,5 +1,5 @@
 .event-item {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: var(--rise-inset-surface, rgba(0, 0, 0, 0.1));
   border-radius: 4px;
   color: var(--rise-text-bright);
   padding: 8px 16px;
@@ -11,9 +11,9 @@
   font-size: 14px;
 }
 .widget-card {
-  background-color: #13262D;
+  background-color: var(--rise-widget-surface, #13262D);
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.05);
   margin-bottom: 12px;
   overflow: hidden;
 }
@@ -23,11 +23,11 @@
   cursor: pointer;
   user-select: none;
   transition: background-color 0.2s ease;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.85);
 }
 
 .widget-header:hover {
-  background-color: rgba(255, 255, 255, 0.08);
+  background-color: rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.08);
 }
 
 .header-title {
@@ -37,7 +37,7 @@
 
 .header-icon {
   font-size: 20px;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.6);
 }
 
 .chevron-icon {
@@ -49,7 +49,7 @@
 }
 
 .widget-gold-icon {
-  color: #F2C94C;
+  color: var(--rise-gold, #F2C94C);
   cursor: pointer;
   transition: transform 0.2s ease, filter 0.2s ease;
 }
@@ -65,15 +65,15 @@
 
 /* Event List Styling */
 .event-item {
-  background: rgba(0, 0, 0, 0.15);
+  background: var(--rise-inset-surface, rgba(0, 0, 0, 0.15));
   border-radius: 6px;
   padding: 10px 12px;
-  border: 1px solid rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.03);
 }
 
 .event-name {
   font-size: 14px;
-  color: #ffffff;
+  color: var(--rise-text-default, #ffffff);
   font-weight: 400;
 }
 
@@ -85,8 +85,8 @@
   padding: 4px 8px;
   border-radius: 4px;
   letter-spacing: 0.5px;
-  background-color: rgba(255, 255, 255, 0.1); /* Default fallback */
-  color: #ffffff;
+  background-color: rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.1); /* Default fallback */
+  color: var(--rise-text-default, #ffffff);
 }
 
 /* Semantic colors based on string types. Add more as needed! */
@@ -114,12 +114,12 @@
 }
 
 .empty-icon {
-  color: rgba(255, 255, 255, 0.15);
+  color: rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.15);
   font-size: 20px;
 }
 
 .empty-text {
   font-size: 14px;
   font-style: italic;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.4);
 }

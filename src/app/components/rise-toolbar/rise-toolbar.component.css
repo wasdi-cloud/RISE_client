@@ -19,13 +19,13 @@ nav.navbar-container.public-home-nav {
 /* New: Styling for the blurry effect when the user has scrolled */
 nav.navbar-container.public-home-nav.blurry-scrolled {
   /* A subtle, translucent background when blurred */
-  background-color: rgba(0, 0, 0, 0.9) !important;
+  background-color: var(--rise-inset-surface, rgba(0, 0, 0, 0.9)) !important;
 
   /* The magic for the blur effect */
   backdrop-filter: blur(8px);
 
   /* Bring back a subtle border */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-bottom: 1px solid rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.1) !important;
 
   /* Smooth transition for when the blur is toggled */
   transition: background-color 300ms ease, backdrop-filter 300ms ease, border-bottom 300ms ease;
@@ -38,11 +38,11 @@ ul.dropdown-list {
   /* ... other existing styles for dropdown-list ... */
 }
 nav.navbar-container {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.1);
 }
 
 nav.navbar-container.opaque {
-  background-color: rgba(0, 31, 40, 1);
+  background-color: var(--rise-panel-surface, rgba(0, 31, 40, 1));
 }
 .logo-img {
   transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth effect */
@@ -62,9 +62,9 @@ div.dropdown {
 
 ul.dropdown-list {
   backdrop-filter: blur(20px);
-  background-color: rgba(0, 31, 40, 0.5);
+  background-color: var(--rise-panel-surface, rgba(0, 31, 40, 0.5));
   border-radius: 16px 16px 16px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.1);
   color: var(--rise-text-dim);
   padding: 16px;
   position: absolute;
@@ -74,8 +74,8 @@ ul.dropdown-list {
 }
 
 li {
-  background-color: rgba(0, 31, 40, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: var(--rise-panel-surface, rgba(0, 31, 40, 0.5));
+  border: 1px solid rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.1);
   border-radius: 6px;
   cursor: pointer;
   list-style: none;
@@ -83,7 +83,7 @@ li {
 }
 
 li:hover {
-  background-color: rgba(255, 255, 255, 0.06);
+  background-color: rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.06);
   transition: 300ms;
 }
 

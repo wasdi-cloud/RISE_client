@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Chart, registerables} from "chart.js";
-const oRiseGold = getComputedStyle(document.documentElement).getPropertyValue('--rise-gold').trim();
 
 @Component({
   selector: 'rise-histogram',
@@ -22,6 +21,7 @@ export class RiseHistogramComponent implements OnInit{
   }
 
   createHistogram(): void {
+    const oRiseGold = getComputedStyle(document.documentElement).getPropertyValue('--rise-gold').trim();
     const oLabels = this.aiPixelValues.map((_, i) => `Bin ${i + 1}`); // Example bins
     const oData = this.aiPixelValues;
 

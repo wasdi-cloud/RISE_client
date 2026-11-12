@@ -44,6 +44,7 @@ import L from 'leaflet';
 import {FormsModule} from "@angular/forms";
 import {UserRole} from "../../models/UserRole";
 import {AreaInfoComponent} from '../area-of-operations/area-info/area-info.component';
+import {BrandLogoDirective} from '../../directives/brand-logo.directive';
 
 /**
  * TODO THERE IS A BIG NAMING PROBLEM HERE, plugin, maps, layers, plugins here in the client is
@@ -56,6 +57,7 @@ import {AreaInfoComponent} from '../area-of-operations/area-info/area-info.compo
   selector: 'app-monitor',
   standalone: true,
     imports: [
+      BrandLogoDirective,
       CdkDropList,
       CdkDrag,
       CommonModule,

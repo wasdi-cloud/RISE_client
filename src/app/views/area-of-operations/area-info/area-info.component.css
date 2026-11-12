@@ -1,5 +1,5 @@
 div.dialog-container {
-  background-color: rgba(0, 31, 40, 0.4);
+  background-color: var(--rise-panel-surface, rgba(0, 31, 40, 0.4));
   backdrop-filter: blur(20px);
   height: 100%;
   width: 700px;
@@ -34,9 +34,9 @@ h3 {
 }
 
 .fast-checkout-card {
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  border: 1px solid rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.22);
   border-radius: 10px;
-  background: rgba(9, 35, 52, 0.35);
+  background: var(--rise-panel-surface, rgba(9, 35, 52, 0.35));
   padding: 12px;
 }
 
@@ -71,9 +71,9 @@ h3 {
 }
 
 .available-subscription-card {
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  border: 1px solid rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.22);
   border-radius: 10px;
-  background: rgba(9, 35, 52, 0.25);
+  background: var(--rise-panel-surface, rgba(9, 35, 52, 0.25));
   padding: 12px;
   display: flex;
   flex-direction: column;

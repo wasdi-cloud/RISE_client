@@ -1,9 +1,9 @@
 .attachment-preview-dialog {
   
-  background-color: rgba(0, 31, 40, 0.8);
+  background-color: var(--rise-panel-surface, rgba(0, 31, 40, 0.8));
   backdrop-filter: blur(20px);
   padding: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.1);
   overflow-wrap: break-word;
   padding: 16px;
   max-height: 98vh;

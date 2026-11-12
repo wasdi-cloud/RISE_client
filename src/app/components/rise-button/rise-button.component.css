@@ -9,16 +9,16 @@
 }
 
 .btn:disabled {
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.4);
 }
 
 /* Default button styling */
 .regular {
-  background-color: rgba(255, 255, 255, 0.12);
+  background-color: rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.12);
 }
 
 .regular:hover {
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.4);
 }
 
 .regular:active {
@@ -27,19 +27,19 @@
 }
 
 .primary {
-  background-color: var(--rise-white);
-  color: var(--text-inverse);
+  background-color: var(--rise-primary-background, var(--rise-white));
+  color: var(--rise-primary-text, var(--text-inverse));
 }
 
 .primary:active {
-  background-color: var(--rise-text-dim);
-  color: var(--text-inverse);
+  background-color: var(--rise-primary-active, var(--rise-text-dim));
+  color: var(--rise-primary-text, var(--text-inverse));
 }
 
 /* Call to action button styling */
 .action {
   background-color: var(--rise-gold);
-  color: var(--text-inverse);
+  color: var(--rise-on-accent, var(--text-inverse));
   font-weight: 400;
 }
 

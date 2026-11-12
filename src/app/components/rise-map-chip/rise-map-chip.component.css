@@ -1,6 +1,6 @@
 .map-chip-container {
   background-color: var(--rise-teal);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.2);
   border-radius: 6px;
   cursor: pointer;
   padding: 6px 8px;

@@ -2,7 +2,7 @@
    BASE CONTAINER
    ========================================= */
 .timebar-container {
-  background-color: rgba(0, 31, 40, 0.8);
+  background-color: var(--rise-panel-surface, rgba(0, 31, 40, 0.8));
   backdrop-filter: blur(20px);
   height: 84px;
   display: flex;
@@ -24,7 +24,7 @@
 /* Base empty track */
 .track-background {
   height: 4px; /* Made slightly thicker */
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.2);
   top: 10px;
   left: 0;
   border-radius: 2px;
@@ -239,8 +239,8 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.05);
+  border: 1px solid rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.1);
   border-radius: 100px;
   padding: 6px 14px;
   color: var(--rise-text-dim, #8a9f9f);
@@ -253,7 +253,7 @@
 }
 
 .live-pill:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.1);
   color: var(--rise-text-bright, #ffffff);
 }
 
@@ -294,10 +294,10 @@
   display: flex;
   align-items: center;
   gap: 2px;
-  background: rgba(0, 0, 0, 0.35); /* Dark inset track */
+  background: var(--rise-inset-surface, rgba(0, 0, 0, 0.35)); /* Dark inset track */
   border-radius: 10px;
   padding: 4px 6px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.08);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   z-index: 5;
 }
@@ -318,11 +318,11 @@
 
 .segment-btn:hover:not(.active) {
   color: var(--rise-text-bright, #ffffff);
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.08);
 }
 
 .segment-btn.active {
-  background: rgba(255, 255, 255, 0.18); /* Frosted active pill */
+  background: rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.18); /* Frosted active pill */
   color: var(--rise-text-bright, #ffffff);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }

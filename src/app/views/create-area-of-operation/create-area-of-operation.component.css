@@ -21,7 +21,7 @@
 }
 
 .create-sidebar {
-  background-color: rgba(0, 31, 40, 0.8);
+  background-color: var(--rise-panel-surface, rgba(0, 31, 40, 0.8));
   border-right: 1px solid var(--rise-border-default);
   backdrop-filter: blur(10px);
   height: 100%;

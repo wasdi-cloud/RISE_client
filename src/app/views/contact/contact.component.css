@@ -7,7 +7,7 @@
 
 /* FORM SECTION */
 .contact-form-section {
-  background: #284E59; /* Section background matches template */
+  background: var(--brand-public-strong, #284E59); /* Section background matches template */
   padding: 80px 24px;
   color: #fff;
   text-align: center;
@@ -60,7 +60,7 @@ textarea {
   border: none;
   border-radius: 6px;
   padding: 14px 18px;
-  color: #284E59;
+  color: var(--brand-public-text, #284E59);
   font-family: inherit;
   font-size: 14px;
   outline: none;
@@ -70,7 +70,7 @@ textarea {
 
 input::placeholder,
 textarea::placeholder {
-  color: #284E59;
+  color: var(--brand-public-text, #284E59);
   opacity: 0.6;
 }
 
@@ -89,7 +89,7 @@ textarea {
 .btn-send {
   display: block;
   width: 100%;
-  background: #F2B84B; /* Matches the template orange/yellow */
+  background: var(--brand-public-accent, #F2B84B); /* Matches the template orange/yellow */
   color: #FFF;
   border: none;
   border-radius: 6px;
@@ -115,8 +115,8 @@ textarea {
 
 .btn-send-secondary {
   margin-top: 16px;
-  background: #f3d28e;
-  color: #284E59;
+  background: var(--brand-public-accent-hover, #f3d28e);
+  color: var(--brand-on-accent, var(--brand-public-text, #284E59));
 }
 
 .submit-feedback {
@@ -155,7 +155,7 @@ textarea {
 
 .success-icon {
   font-size: 54px;
-  color: #f2b84b;
+  color: var(--brand-public-accent-text, #f2b84b);
 }
 
 /* INFO SECTION */
@@ -174,7 +174,7 @@ textarea {
   font-family: 'Space Mono', monospace;
   font-size: 28px;
   font-weight: 700;
-  color: #284E59;
+  color: var(--brand-public-text, #284E59);
   margin: 0 0 48px;
 }
 
@@ -198,7 +198,7 @@ textarea {
 .contact-info-item--email {
   width: 100%;
   padding-bottom: 40px;
-  border-bottom: 1px solid rgba(40, 78, 89, 0.1);
+  border-bottom: 1px solid rgba(var(--brand-public-rgb, 40, 78, 89), 0.1);
 }
 
 .contact-info-item--vertical {
@@ -217,7 +217,7 @@ textarea {
   width: 56px;
   height: 56px;
   background: #fff;
-  color: #284E59;
+  color: var(--brand-public-text, #284E59);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -245,7 +245,7 @@ textarea {
 
 .info-label {
   font-size: 13px;
-  color: #F2B84B;
+  color: var(--brand-public-accent-text, #F2B84B);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -253,7 +253,7 @@ textarea {
 
 .info-content a {
   font-size: 18px;
-  color: #284E59;
+  color: var(--brand-public-text, #284E59);
   text-decoration: none;
   font-weight: 600;
 }
@@ -277,4 +277,3 @@ textarea {
     align-items: center;
   }
 }
-

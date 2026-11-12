@@ -1,16 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+@import "./themes/emergency.css";
 :root {
   /*Calendar colors*/
-  --mat-datepicker-calendar-container-background-color: #0c303c;
-  --mat-datepicker-calendar-container-text-color: #efba35;
-  --mat-datepicker-calendar-date-selected-state-background-color: #efba35;
-  --mat-datepicker-calendar-date-text-color: #efba35;
-  --mat-datepicker-calendar-header-text-color:#efba35 ;
-  --mat-datepicker-calendar-body-label-text-color:#efba35 ;
-  --mat-datepicker-calendar-period-button-text-color: #efba35;
-  --mat-datepicker-calendar-period-button-icon-color: #efba35;
-  --mat-datepicker-calendar-header-divider-text-color: #efba35;
-  --mat-datepicker-calendar-navigation-button-icon-color: #efba35;
+  --mat-datepicker-calendar-container-background-color: var(--rise-teal-600);
+  --mat-datepicker-calendar-container-text-color: var(--rise-gold);
+  --mat-datepicker-calendar-date-selected-state-background-color: var(--rise-gold);
+  --mat-datepicker-calendar-date-text-color: var(--rise-gold);
+  --mat-datepicker-calendar-header-text-color: var(--rise-gold);
+  --mat-datepicker-calendar-body-label-text-color: var(--rise-gold);
+  --mat-datepicker-calendar-period-button-text-color: var(--rise-gold);
+  --mat-datepicker-calendar-period-button-icon-color: var(--rise-gold);
+  --mat-datepicker-calendar-header-divider-text-color: var(--rise-gold);
+  --mat-datepicker-calendar-navigation-button-icon-color: var(--rise-gold);
 
 
   /* Primitive Colors */
@@ -176,7 +177,7 @@ input[type="radio"]:checked {
 
 .invalid-feedback {
   color: var(--rise-danger-text);
-  background-color: rgba(255, 255, 255, 0.04);
+  background-color: rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.04);
   border-radius: 8px;
   padding: 8px;
 }
@@ -217,15 +218,15 @@ input[type="radio"]:checked {
 }
 
 .leaflet-tooltip {
-  background-color: rgba(0, 31, 40, 0.5) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: var(--rise-panel-surface, rgba(0, 31, 40, 0.5)) !important;
+  border: 1px solid rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.2);
   color: var(--rise-text-bright) !important;
   padding: 8px; /* Add padding for better readability */
   border-radius: 5px; /* Optional: Adds rounded corners */
 }
 
 .leaflet-tooltip::before {
-  border-color: rgba(0, 31, 40, 0.5);
+  border-color: var(--rise-panel-surface, rgba(0, 31, 40, 0.5));
 }
 
 a.leaflet-control-zoom-in {
@@ -240,8 +241,8 @@ a.leaflet-control-zoom-out {
 /* Selector for Leaflet buttons - excluding Geocoder and attributions */
 .leaflet-bar a,
 .leaflet-control-layers-toggle {
-  background-color: rgba(0, 31, 40, 0.5) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: var(--rise-panel-surface, rgba(0, 31, 40, 0.5)) !important;
+  border: 1px solid rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.2);
   color: var(--rise-text-bright) !important;
   gap: 8px;
 }
@@ -257,7 +258,7 @@ a.leaflet-control-zoom-out {
 .leaflet-touch .leaflet-control-layers-toggle {
   height: 36px;
   width: 36px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.2);
   border-radius: 8px;
 }
 
@@ -313,10 +314,10 @@ a.leaflet-draw-edit-remove:hover {
 /* Selector for the Leaflet Geocoder */
 button.leaflet-control-geocoder-icon {
   backdrop-filter: blur(20px);
-  background-color: rgba(0, 31, 40, 0.4) !important;
+  background-color: var(--rise-panel-surface, rgba(0, 31, 40, 0.4)) !important;
   background-image: url("/assets/rise-assets/geocoder-search.svg");
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  color: #ffffff !important;
+  border: 1px solid rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.2) !important;
+  color: var(--rise-text-bright) !important;
   height: 36px !important;
   width: 36px !important;
 }
@@ -328,14 +329,14 @@ button.leaflet-control-geocoder-icon {
 
 .leaflet-control-geocoder-expanded {
   backdrop-filter: blur(20px);
-  background-color: rgba(0, 31, 40, 0.4) !important;
+  background-color: var(--rise-panel-surface, rgba(0, 31, 40, 0.4)) !important;
   border-radius: 8px !important;
-  color: #ffffff;
+  color: var(--rise-text-bright);
 }
 
 .leaflet-control-geocoder-form input {
   width: 200px !important;
-  color: #ffffff;
+  color: var(--rise-text-bright);
 }
 
 .leaflet-control-geocoder-expanded > .leaflet-control-geocoder-icon {
@@ -344,12 +345,12 @@ button.leaflet-control-geocoder-icon {
 }
 
 .leaflet-control-geocoder-form {
-  color: #ffffff !important;
+  color: var(--rise-text-bright) !important;
   padding-left: 8px;
 }
 
 .leaflet-control-geocoder-address-context {
-  color: #ffffff !important;
+  color: var(--rise-text-bright) !important;
 }
 
 
@@ -402,7 +403,7 @@ a.leaflet-control-button,
 
 .leaflet-control-layers-expanded {
   backdrop-filter: blur(20px);
-  background-color: rgba(0, 31, 40, 0.4) !important;
+  background-color: var(--rise-panel-surface, rgba(0, 31, 40, 0.4)) !important;
   border-radius: 10px;
 }
 
@@ -423,7 +424,7 @@ a.leaflet-control-zoom-fullscreen {
   align-items: center !important;
   justify-content: center !important;
   border-radius: 8px !important;
-  color: #ffffff !important;
+  color: var(--rise-text-bright) !important;
   height: 36px !important;
   width: 36px !important;
 }
@@ -528,9 +529,9 @@ a.leaflet-control-zoom-fullscreen {
 .leaflet-popup-content-wrapper,
 .leaflet-popup-tip {
   backdrop-filter: blur(20px);
-  background-color: rgba(0, 31, 40, 0.4) !important;
+  background-color: var(--rise-panel-surface, rgba(0, 31, 40, 0.4)) !important;
   border: none !important;
-  color: #ffffff !important;
+  color: var(--rise-text-bright) !important;
   font-family: "Poppins", sans-serif !important;
 }
 
@@ -539,7 +540,7 @@ a.leaflet-control-zoom-fullscreen {
 }
 
 .leaflet-container a.leaflet-popup-close-button {
-  color: #ffffff !important;
+  color: var(--rise-text-bright) !important;
 }
 /*material calendar*/
 
@@ -633,7 +634,7 @@ a.leaflet-control-zoom-fullscreen {
 
 /* Primary Buttons */
 .btn-primary-green {
-  background-color: #284E59;
+  background-color: var(--brand-public-strong, #284E59);
   color: #FAFAFA;
   border-radius: 5px;
   font-size: 18px;
@@ -643,7 +644,7 @@ a.leaflet-control-zoom-fullscreen {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid #284E59;
+  border: 2px solid var(--brand-public-strong, #284E59);
   cursor: pointer;
   transition: all 0.3s ease;
   text-decoration: none;
@@ -652,14 +653,14 @@ a.leaflet-control-zoom-fullscreen {
 
 .btn-primary-green:hover {
   background-color: #FAFAFA;
-  color: #284E59;
+  color: var(--brand-public-strong, #284E59);
   border-radius: 5px;
-  border: 2px solid #284E59;
+  border: 2px solid var(--brand-public-strong, #284E59);
   text-decoration: none;
 }
 
 .btn-primary-yellow {
-  background-color: #EFB840;
+  background-color: var(--brand-public-accent, #EFB840);
   color: #FAFAFA;
   border-radius: 5px;
   font-size: 18px;
@@ -669,7 +670,7 @@ a.leaflet-control-zoom-fullscreen {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid #EFB840;
+  border: 2px solid var(--brand-public-accent, #EFB840);
   cursor: pointer;
   transition: all 0.3s ease;
   text-decoration: none;
@@ -678,8 +679,8 @@ a.leaflet-control-zoom-fullscreen {
 
 .btn-primary-yellow:hover {
   background-color: #FAFAFA;
-  color: #EFB840;
+  color: var(--brand-public-accent, #EFB840);
   border-radius: 5px;
-  border: 2px solid #EFB840;
+  border: 2px solid var(--brand-public-accent, #EFB840);
   text-decoration: none;
 }

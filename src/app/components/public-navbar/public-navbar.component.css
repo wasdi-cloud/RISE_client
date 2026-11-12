@@ -56,18 +56,18 @@
   font-family: 'Satoshi Variable', sans-serif;
   font-size: 14px;
   font-weight: 500;
-  color: #274d59;
+  color: var(--brand-public-text, #274d59);
   text-decoration: none;
   transition: background 0.15s, color 0.15s;
   white-space: nowrap;
 }
 
 .public-nav__links li a:hover {
-  background: rgba(39, 77, 89, 0.08);
+  background: rgba(var(--brand-public-rgb, 39, 77, 89), 0.08);
 }
 
 .public-nav__links li a.active {
-  background: #274d59;
+  background: var(--brand-public-strong, #274d59);
   color: #ffffff;
 }
 
@@ -83,7 +83,7 @@
   display: inline-block;
   padding: 8px 18px;
   border-radius: 6px;
-  background: #274d59;
+  background: var(--brand-public-strong, #274d59);
   color: #ffffff;
   font-family: 'Satoshi Variable', sans-serif;
   font-size: 13px;
@@ -91,13 +91,13 @@
   text-decoration: none;
   letter-spacing: 0.4px;
   white-space: nowrap;
-  border: 2px solid #274d59;
+  border: 2px solid var(--brand-public-strong, #274d59);
   transition: background 0.15s, color 0.15s;
 }
 
 .public-nav__cta:hover {
-  background: #0c303c;
-  border-color: #0c303c;
+  background: var(--brand-public-strong, #0c303c);
+  border-color: var(--brand-public-strong, #0c303c);
   color: #ffffff;
 }
 
@@ -116,7 +116,7 @@
   display: block;
   width: 22px;
   height: 2px;
-  background: #274d59;
+  background: var(--brand-public-strong, #274d59);
   border-radius: 2px;
 }
 
@@ -188,8 +188,8 @@
 
 .lang-selector__btn {
   background: transparent;
-  border: 2px solid #284e59;
-  color: #284e59;
+  border: 2px solid var(--brand-public-strong, #284e59);
+  color: var(--brand-public-text, #284e59);
   font-family: 'Satoshi Variable', sans-serif;
   font-size: 13px;
   font-weight: 700;
@@ -204,7 +204,7 @@
 }
 
 .lang-selector__btn:hover {
-  background: #284e59;
+  background: var(--brand-public-strong, #284e59);
   color: #fff;
 }
 
@@ -238,7 +238,7 @@
   cursor: pointer;
   font-family: 'Satoshi Variable', sans-serif;
   font-size: 14px;
-  color: #274d59;
+  color: var(--brand-public-text, #274d59);
   transition: background 0.15s;
   white-space: nowrap;
 }

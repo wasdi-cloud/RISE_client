@@ -3,7 +3,7 @@
 .impact-page {
   padding-top: 60px;
   font-family: 'Satoshi Variable', sans-serif;
-  color: #1c3d4a;
+  color: var(--brand-public-text, #1c3d4a);
   background-color: #F2F5F7;
 }
 
@@ -12,7 +12,7 @@
   background: transparent;
   text-align: center;
   padding: 100px 24px 10px;
-  color: #284E59;
+  color: var(--brand-public-text, #284E59);
 }
 .impact-hero__content {
   max-width: 1000px;
@@ -24,23 +24,23 @@
   font-weight: 900;
   margin: 0 0 24px;
   letter-spacing: 2px;
-  color: #284E59;
+  color: var(--brand-public-text, #284E59);
 }
 .impact-hero__subtitle {
   font-size: 22px;
   line-height: 1.8;
-  color: #4a6672;
+  color: var(--brand-public-muted, #4a6672);
   margin: 0 auto 32px;
   max-width: 1000px;
   font-weight: 700;
 }
 
 .text-yellow, ::ng-deep .text-yellow {
-  color: #EFB840;
+  color: var(--brand-public-accent-text, #EFB840);
 }
 
 .typing-text {
-  border-right: 2px solid #EFB840;
+  border-right: 2px solid var(--brand-public-accent, #EFB840);
   white-space: nowrap;
   display: inline-block;
   overflow: hidden;
@@ -52,7 +52,7 @@
   50% { border-color: transparent; }
 }
 .impact-hero__highlight {
-  color: #284E59;
+  color: var(--brand-public-text, #284E59);
   font-weight: 400;
   font-size: 18px;
   margin: 0;
@@ -68,7 +68,7 @@
   margin: 0 auto;
   background: #fff;
   border-radius: 20px;
-  border: 1px solid rgba(39,77,89,0.1);
+  border: 1px solid rgba(var(--brand-public-rgb, 39,77,89), 0.1);
   padding: 60px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
@@ -82,7 +82,7 @@
   font-family: 'Space Mono', monospace;
   font-size: 32px;
   font-weight: 900;
-  color: #284E59;
+  color: var(--brand-public-text, #284E59);
   margin-bottom: 12px;
 }
 
@@ -91,7 +91,7 @@
   font-size: 14px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: #7a9ba8;
+  color: var(--brand-public-muted, #7a9ba8);
   font-weight: 700;
 }
 
@@ -107,7 +107,7 @@
   text-align: justify;
   text-align-last: left;
 }
-.story-modal__text--left-justify p { font-size: 14px; line-height: 1.7; color: #4a6672; margin-bottom: 14px; }
+.story-modal__text--left-justify p { font-size: 14px; line-height: 1.7; color: var(--brand-public-muted, #4a6672); margin-bottom: 14px; }
 
 .case-study-card__text {
   flex: 1;
@@ -117,7 +117,7 @@
 .case-study-card__text p {
   font-size: 16px;
   line-height: 1.8;
-  color: #4a6672;
+  color: var(--brand-public-muted, #4a6672);
   margin-bottom: 20px;
 }
 
@@ -145,19 +145,19 @@
 }
 
 .btn-cta-outline {
-  display: inline-block; padding: 12px 28px; border: 2px solid #efba35;
-  background: transparent; color: #efba35; border-radius: 6px;
+  display: inline-block; padding: 12px 28px; border: 2px solid var(--brand-public-accent, #efba35);
+  background: transparent; color: var(--brand-public-accent-text, #efba35); border-radius: 6px;
   font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700;
   letter-spacing: 1px; cursor: pointer; text-transform: uppercase;
   transition: background 0.15s, color 0.15s;
 }
-.btn-cta-outline:hover { background: #efba35; color: #1c3d4a; }
+.btn-cta-outline:hover { background: var(--brand-public-accent, #efba35); color: var(--brand-on-accent, var(--brand-public-text, #1c3d4a)); }
 
 /* TRUSTED */
 .trusted-section { background: #fff; padding: 64px 24px; text-align: center; }
 .trusted-section h2 {
   font-family: 'Space Mono', monospace; font-size: 28px; font-weight: 700;
-  color: #1c3d4a; margin: 0 0 40px;
+  color: var(--brand-public-text, #1c3d4a); margin: 0 0 40px;
 }
 .trusted-logos {
   display: flex; align-items: center; justify-content: center;
@@ -200,7 +200,7 @@
 .trusted-logo-img--larger {
   max-height: 90px;
 }
-.trusted-divider { width: 1px; height: 60px; background: rgba(39,77,89,0.2); flex-shrink: 0; }
+.trusted-divider { width: 1px; height: 60px; background: rgba(var(--brand-public-rgb, 39,77,89), 0.2); flex-shrink: 0; }
 
 /* CTA BANNER (Full width) */
 .cta-banner {
@@ -218,7 +218,7 @@
   font-family: 'Space Mono', monospace;
   font-size: 28px;
   font-weight: 900;
-  color: #284E59;
+  color: var(--brand-public-text, #284E59);
   margin: 0;
   max-width: 800px;
   line-height: 1.4;
@@ -236,20 +236,20 @@
 }
 
 .btn-dark {
-  display: inline-block; padding: 13px 28px; background: #274d59; color: #fff;
+  display: inline-block; padding: 13px 28px; background: var(--brand-public-strong, #274d59); color: #fff;
   border: none; border-radius: 6px; font-family: 'Space Mono', monospace;
   font-size: 12px; font-weight: 700; letter-spacing: 1px; cursor: pointer;
   text-transform: uppercase; transition: background 0.15s;
 }
-.btn-dark:hover { background: #0c303c; }
+.btn-dark:hover { background: var(--brand-public-strong, #0c303c); }
 
 .btn-cta {
-  display: inline-block; background: #efba35; color: #1c3d4a; border: none;
+  display: inline-block; background: var(--brand-public-accent, #efba35); color: var(--brand-on-accent, var(--brand-public-text, #1c3d4a)); border: none;
   border-radius: 6px; padding: 13px 28px; font-family: 'Space Mono', monospace;
   font-size: 12px; font-weight: 700; letter-spacing: 1px; cursor: pointer;
   text-transform: uppercase; transition: background 0.15s;
 }
-.btn-cta:hover { background: #d9a826; }
+.btn-cta:hover { background: var(--brand-public-accent-hover, #d9a826); }
 
 /* STORY OVERLAY */
 .story-overlay {
@@ -279,17 +279,17 @@
   justify-content: center;
   font-size: 16px;
   cursor: pointer;
-  color: #4a6672;
+  color: var(--brand-public-muted, #4a6672);
   transition: background 0.2s;
 }
 .story-modal__close:hover { background: #e2e8eb; }
 .story-modal__header { text-align: center; margin-bottom: 32px; }
 .story-modal__header h2 {
-  font-family: 'Space Mono', monospace; font-size: 24px; color: #1c3d4a; margin: 0 0 8px;
+  font-family: 'Space Mono', monospace; font-size: 24px; color: var(--brand-public-text, #1c3d4a); margin: 0 0 8px;
 }
 .story-modal__subtitle {
   font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 1.5px;
-  text-transform: uppercase; color: #7a9ba8;
+  text-transform: uppercase; color: var(--brand-public-muted, #7a9ba8);
 }
 .story-modal__body {
   display: flex;
@@ -317,11 +317,11 @@
 .story-highlights { margin-bottom: 80px; }
 .story-highlights h3 {
   font-family: 'Space Mono', monospace; font-size: 28px; font-weight: 700;
-  color: #1c3d4a; text-align: center; margin: 0;
+  color: var(--brand-public-text, #1c3d4a); text-align: center; margin: 0;
 }
 .story-highlights__sub {
   text-align: center; font-family: 'Space Mono', monospace; font-size: 11px;
-  letter-spacing: 1.5px; text-transform: uppercase; color: #7a9ba8; margin-bottom: 32px;
+  letter-spacing: 1.5px; text-transform: uppercase; color: var(--brand-public-muted, #7a9ba8); margin-bottom: 32px;
 }
 .story-highlights__grid { 
   display: grid; 
@@ -361,14 +361,14 @@
   font-family: 'Space Mono', monospace;
   font-size: 16px;
   font-weight: 700;
-  color: #1c3d4a;
+  color: var(--brand-public-text, #1c3d4a);
   margin: 0 0 16px;
   min-height: 2.4em;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.highlight-card p { font-size: 13px; line-height: 1.6; color: #4a6672; margin: 0; flex: 1; }
+.highlight-card p { font-size: 13px; line-height: 1.6; color: var(--brand-public-muted, #4a6672); margin: 0; flex: 1; }
 
 .story-results { margin-bottom: 60px; }
 .story-results h3 {
@@ -376,13 +376,13 @@
   text-align: center; margin: 0 0 8px;
 }
 .results-title-yellow {
-  color: #EFB840;
+  color: var(--brand-public-accent-text, #EFB840);
 }
 .story-results__sub {
   text-align: center; font-family: 'Space Mono', monospace; font-size: 11px;
-  letter-spacing: 1.5px; text-transform: uppercase; color: #7a9ba8; margin-bottom: 8px;
+  letter-spacing: 1.5px; text-transform: uppercase; color: var(--brand-public-muted, #7a9ba8); margin-bottom: 8px;
 }
-.story-results__intro { text-align: center; font-size: 15px; color: #4a6672; margin-bottom: 32px; }
+.story-results__intro { text-align: center; font-size: 15px; color: var(--brand-public-muted, #4a6672); margin-bottom: 32px; }
 
 .story-results__grid {
   display: flex;
@@ -393,7 +393,7 @@
 .result-card {
   flex: 0 0 calc(33.333% - 14px);
   min-width: 260px;
-  background: #284E59;
+  background: var(--brand-public-strong, #284E59);
   color: #fff;
   border-radius: 12px;
   padding: 40px 24px;
@@ -440,7 +440,7 @@
   text-align: center;
   font-size: 15px;
   line-height: 1.7;
-  color: #4a6672;
+  color: var(--brand-public-muted, #4a6672);
 }
 
 .story-quote {
@@ -453,12 +453,12 @@
   text-align: center;
   box-shadow: 0 4px 12px rgba(0,0,0,0.03);
 }
-.story-quote p { font-size: 18px; font-style: italic; color: #1c3d4a; line-height: 1.6; margin: 0 0 16px; }
+.story-quote p { font-size: 18px; font-style: italic; color: var(--brand-public-text, #1c3d4a); line-height: 1.6; margin: 0 0 16px; }
 .story-quote footer {
   font-family: 'Space Mono', monospace;
   font-size: 13px;
   font-weight: 700;
-  color: #284E59;
+  color: var(--brand-public-text, #284E59);
 }
 
 .story-carousel-container {
@@ -506,7 +506,7 @@
   align-items: center;
   justify-content: center;
   font-size: 20px;
-  color: #284E59;
+  color: var(--brand-public-text, #284E59);
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   position: absolute;
@@ -516,7 +516,7 @@
   transition: all 0.2s;
 }
 .carousel-arrow:hover {
-  background: #284E59;
+  background: var(--brand-public-strong, #284E59);
   color: #fff;
   transform: translateY(-50%) scale(1.1);
 }
@@ -538,22 +538,22 @@
   transition: all 0.2s;
 }
 .carousel-dot.active {
-  background: #284E59;
+  background: var(--brand-public-strong, #284E59);
   width: 24px;
   border-radius: 4px;
 }
 
 .story-whats-next {
-  background: #efba35;
+  background: var(--brand-public-accent, #efba35);
   border-radius: 16px;
   padding: 48px;
   text-align: center;
   margin-bottom: 40px;
 }
 .story-whats-next h3 {
-  font-family: 'Space Mono', monospace; font-size: 32px; color: #1c3d4a; margin: 0 0 16px;
+  font-family: 'Space Mono', monospace; font-size: 32px; color: var(--brand-public-text, #1c3d4a); margin: 0 0 16px;
 }
-.story-whats-next p { font-size: 16px; line-height: 1.7; color: #1c3d4a; margin: 0; }
+.story-whats-next p { font-size: 16px; line-height: 1.7; color: var(--brand-public-text, #1c3d4a); margin: 0; }
 
 .story-modal__footer {
   text-align: center;

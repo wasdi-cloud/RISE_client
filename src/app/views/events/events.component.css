@@ -2,7 +2,7 @@ thead {
   font-weight: 700;
 }
 td {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.1);
   padding: 8px;
 }
 
@@ -24,7 +24,7 @@ rise-dropdown {
   font-size: 0.9rem;
 }
 .events-sidebar {
-  background-color: rgba(0, 31, 40, 0.8);
+  background-color: var(--rise-panel-surface, rgba(0, 31, 40, 0.8));
   border-right: 1px solid var(--rise-border-default);
   backdrop-filter: blur(10px);
   height: 100%;
@@ -83,7 +83,7 @@ rise-dropdown {
 }
 
 .create-sidebar {
-  background-color: rgba(0, 31, 40, 0.8);
+  background-color: var(--rise-panel-surface, rgba(0, 31, 40, 0.8));
   border-right: 1px solid var(--rise-border-default);
   backdrop-filter: blur(10px);
   height: 100%;
@@ -141,9 +141,9 @@ rise-dropdown {
 .file-list-container {
   max-height: 250px;
   overflow-y: auto;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: var(--rise-inset-surface, rgba(0, 0, 0, 0.2));
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.1);
 }
 
 .file-list-item {
@@ -156,7 +156,7 @@ rise-dropdown {
 }
 
 .file-list-item:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.05);
 }
 
 .file-open-icon {
@@ -183,7 +183,7 @@ rise-dropdown {
 }
 
 .file-list-container::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.2);
   border-radius: 3px;
 }
 /* Animation to draw user's eye to the map-click tip */

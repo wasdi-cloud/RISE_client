@@ -134,7 +134,7 @@ h3 {
 
 .impact-count-card {
   background: var(--surface-glass, rgba(5, 24, 30, 0.72));
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.04);
   border-radius: 8px;
   display: flex;
   flex-direction: column;
