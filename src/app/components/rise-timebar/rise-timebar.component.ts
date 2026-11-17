@@ -1,11 +1,14 @@
 import {CommonModule} from '@angular/common';
 import {
   Component,
+  AfterViewInit,
   ElementRef,
   EventEmitter,
   HostListener,
   Input,
+  NgZone,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -19,6 +22,7 @@ import moment from "moment";
 import {EventViewModel} from "../../models/EventViewModel";
 import {EventType} from "../../models/EventType";
 import {TranslateModule} from "@ngx-translate/core";
+import {MatMenuModule} from '@angular/material/menu';
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
@@ -32,11 +36,11 @@ interface EventCluster {
 @Component({
   selector: 'rise-timebar',
   standalone: true,
-  imports: [CommonModule, RiseButtonComponent, MatTooltip, RiseCalendarComponent, TranslateModule],
+  imports: [CommonModule, RiseButtonComponent, MatTooltip, RiseCalendarComponent, TranslateModule, MatMenuModule],
   templateUrl: './rise-timebar.component.html',
   styleUrl: './rise-timebar.component.css',
 })
-export class RiseTimebarComponent implements OnInit, OnChanges {
+export class RiseTimebarComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   /**
    * UC_190 Browse Time
    */
@@ -141,7 +145,20 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
   m_bDisablePrevButton: boolean=false;
   m_aoEventClusters: EventCluster[] = [];
 
-  constructor() {
+  private m_oTrackObserver: ResizeObserver;
+
+  constructor(private m_oNgZone: NgZone) {
+  }
+
+  ngAfterViewInit(): void {
+    this.m_oTrackObserver = new ResizeObserver(() => {
+      this.m_oNgZone.run(() => this.updateEventClusters());
+    });
+    this.m_oTrackObserver.observe(this.slider.nativeElement);
+  }
+
+  ngOnDestroy(): void {
+    this.m_oTrackObserver?.disconnect();
   }
 
   ngOnInit(): void {
@@ -929,9 +946,11 @@ export class RiseTimebarComponent implements OnInit, OnChanges {
     for (let i = 1; i < aoSorted.length; i++) {
       const oEvent = aoSorted[i];
       
-      if ((oEvent.peakDate - oCurrentCluster.peakDate) * 1000 <= iThreshold) {
+      const oPreviousEvent = aoSorted[i - 1];
+      if ((oEvent.peakDate - oPreviousEvent.peakDate) * 1000 <= iThreshold) {
         oCurrentCluster.events.push(oEvent);
         oCurrentCluster.isCluster = true;
+        oCurrentCluster.peakDate = (oCurrentCluster.events[0].peakDate + oEvent.peakDate) / 2;
         
         let sTooltip = `${oCurrentCluster.events.length} Events:\n`;
         const iMaxToList = Math.min(oCurrentCluster.events.length, 5);

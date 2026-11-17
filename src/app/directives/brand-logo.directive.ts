@@ -21,5 +21,9 @@ export class BrandLogoDirective implements OnChanges {
     const sLogo = this.riseBrandLogo === 'mini' ? 'emergency-logo-mini.png' : 'emergency-logo-cropped.png';
     this.m_oRenderer.setAttribute(this.m_oElement.nativeElement, 'src', `assets/rise-assets/${sLogo}`);
     this.m_oRenderer.setAttribute(this.m_oElement.nativeElement, 'alt', this.m_oBranding.brand.name);
+    const oLink = this.m_oElement.nativeElement.closest('a');
+    if (oLink) {
+      this.m_oRenderer.setAttribute(oLink, 'title', 'emergency luxembourg');
+    }
   }
 }

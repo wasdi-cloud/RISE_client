@@ -22,7 +22,8 @@
 
     <!-- Event Markers (Clustered) -->
     <div class="events-markers-container position-absolute w-100">
-      <div
+      <button
+        type="button"
         *ngFor="let cluster of m_aoEventClusters"
         class="event-node"
         [class.is-cluster]="cluster.isCluster"
@@ -33,12 +34,24 @@
         matTooltipShowDelay="150"
         matTooltipClass="multiline-tooltip"
         [attr.aria-label]="cluster.description"
-        (click)="goToEvent(cluster.events[0], true)" 
+        [matMenuTriggerFor]="cluster.isCluster ? eventPicker : null"
+        [matMenuTriggerData]="{events: cluster.events}"
+        (click)="!cluster.isCluster && goToEvent(cluster.events[0], true)"
       >
-        <div class="event-dot">
+        <span class="event-dot">
           <span *ngIf="cluster.isCluster" class="cluster-count">{{ cluster.events.length }}</span>
-        </div>
-      </div>
+        </span>
+      </button>
+      <mat-menu #eventPicker="matMenu">
+        <ng-template matMenuContent let-events="events">
+          <button mat-menu-item *ngFor="let event of events" (click)="goToEvent(event, true)">
+            <span class="event-choice">
+              <span class="event-choice-name">{{ event.name || event.description || ('MONITOR.EVENT_TAB' | translate) }}</span>
+              <span class="event-choice-date">{{ event.peakDate * 1000 | date:'medium':'UTC' }} UTC</span>
+            </span>
+          </button>
+        </ng-template>
+      </mat-menu>
     </div>
 
     <!-- Slider Input -->

@@ -6,6 +6,7 @@ import { PublicFooterComponent } from '../../components/public-footer/public-foo
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import {BrandLogoDirective} from '../../directives/brand-logo.directive';
+import {BrandingService} from '../../services/branding.service';
 
 @Component({
   selector: 'app-public-home',
@@ -15,12 +16,22 @@ import {BrandLogoDirective} from '../../directives/brand-logo.directive';
   styleUrl: './public-home.component.css',
 })
 export class PublicHomeComponent implements AfterViewInit, OnDestroy {
+  readonly m_bEmergencyBrand: boolean;
   private m_oLangSubscription: Subscription | null = null;
   private m_oTimeoutRef: any = null;
 
-  constructor(private m_oRouter: Router, private m_oTranslateService: TranslateService) {}
+  constructor(
+    private m_oRouter: Router,
+    private m_oTranslateService: TranslateService,
+    oBranding: BrandingService,
+  ) {
+    this.m_bEmergencyBrand = oBranding.brand.id === 'emergency';
+  }
 
   ngAfterViewInit(): void {
+    if (this.m_bEmergencyBrand) {
+      return;
+    }
     const oObserverOptions = {
       root: null,
       rootMargin: '0px',

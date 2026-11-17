@@ -14,6 +14,8 @@
   --rise-danger-text: #9f1239;
   --text-inverse: #ffffff;
   --rise-border-default: #d6d3d1;
+  --impact-card-border: #d6d3d1;
+  --impact-chart-track: #a8a29e;
   --rise-foreground-rgb: 28, 25, 23;
   --rise-panel-surface: rgba(255, 255, 255, 0.97);
   --rise-widget-surface: #ffffff;
@@ -40,6 +42,76 @@
 
 :root[data-brand="emergency"] .dashboard-home-link {
   width: 145px;
+}
+
+:root[data-brand="emergency"] rise-aoo-widget input:checked + .ui-slider {
+  background-color: var(--rise-primary);
+}
+
+:root[data-brand="emergency"] rise-aoo-widget .privacy-icon.public {
+  color: var(--rise-text-dim);
+}
+
+:root[data-brand="emergency"] rise-alerts-widget .alert-heading {
+  padding: 0;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: default;
+}
+
+:root[data-brand="emergency"] rise-alerts-widget .alert-heading:hover {
+  background-color: transparent;
+}
+
+:root[data-brand="emergency"] rise-alerts-widget .alert-title {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+:root[data-brand="emergency"] rise-alerts-widget .alert-heading .widget-gold-icon {
+  flex-shrink: 0;
+  font-size: 20px;
+}
+
+:root[data-brand="emergency"] rise-alerts-widget .alert-metric {
+  padding: 0;
+  border: none;
+  background: transparent;
+  flex-wrap: nowrap;
+}
+
+:root[data-brand="emergency"] rise-alerts-widget .alert-metric .body-icon {
+  flex-shrink: 0;
+  font-size: 20px;
+  color: var(--rise-text-dim);
+}
+
+:root[data-brand="emergency"] rise-alerts-widget .alert-content {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+:root[data-brand="emergency"] .rise-sidebar:not(.collapsed) .widget-header .rise-badge {
+  background-color: #f3f4f6;
+  color: #6b7280;
+  border-color: #e5e7eb;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 15px;
+  height: auto;
+  padding: 2px 8px;
+  margin-left: 4px;
+}
+
+:root[data-brand="emergency"] .rise-sidebar:not(.collapsed) .widget-header rise-badge.has-items .rise-badge {
+  background-color: #fef2f2;
+  color: var(--rise-primary);
+  border-color: #fee2e2;
 }
 
 :root[data-brand="emergency"] .rise-sidebar .widget-card,

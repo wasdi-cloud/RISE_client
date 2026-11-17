@@ -349,6 +349,15 @@ button.leaflet-control-geocoder-icon {
   padding-left: 8px;
 }
 
+.leaflet-control-geocoder .leaflet-control-geocoder-form-no-error {
+  display: none;
+}
+
+.leaflet-control-geocoder.leaflet-control-geocoder-options-error .leaflet-control-geocoder-error {
+  display: block;
+  color: var(--rise-text-bright);
+}
+
 .leaflet-control-geocoder-address-context {
   color: var(--rise-text-bright) !important;
 }

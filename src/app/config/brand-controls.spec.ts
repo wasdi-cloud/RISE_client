@@ -4,6 +4,9 @@ import {TranslateModule} from '@ngx-translate/core';
 import {RiseButtonComponent} from '../components/rise-button/rise-button.component';
 import {RiseTimebarComponent} from '../components/rise-timebar/rise-timebar.component';
 import {RiseDateInputComponent} from '../components/rise-date-input/rise-date-input.component';
+import {provideRouter} from '@angular/router';
+import {RiseAooWidgetComponent} from '../views/dashboard/rise-aoo-widget/rise-aoo-widget.component';
+import {RiseBadgeComponent} from '../components/rise-badge/rise-badge.component';
 
 for (const sBrand of ['rise', 'emergency']) {
   describe(`${sBrand} shared controls`, () => {
@@ -14,9 +17,10 @@ for (const sBrand of ['rise', 'emergency']) {
       document.documentElement.setAttribute('data-brand', sBrand);
       await TestBed.configureTestingModule({
         imports: [
-          RiseButtonComponent, RiseTimebarComponent, RiseDateInputComponent,
+          RiseButtonComponent, RiseTimebarComponent, RiseDateInputComponent, RiseAooWidgetComponent, RiseBadgeComponent,
           NoopAnimationsModule, TranslateModule.forRoot(),
         ],
+        providers: [provideRouter([])],
       }).compileComponents();
     });
 
@@ -25,6 +29,90 @@ for (const sBrand of ['rise', 'emergency']) {
         document.documentElement.removeAttribute('data-brand');
       } else {
         document.documentElement.setAttribute('data-brand', sOriginalBrand);
+      }
+    });
+
+    it('themes the area toggle without changing its behavior or standard RISE color', () => {
+      const oFixture = TestBed.createComponent(RiseAooWidgetComponent);
+      const oHost = document.createElement('rise-aoo-widget');
+      document.body.appendChild(oHost);
+      oHost.appendChild(oFixture.nativeElement);
+      try {
+        oFixture.detectChanges();
+        const oInput: HTMLInputElement = oFixture.nativeElement.querySelector('input');
+        const oSlider = oFixture.nativeElement.querySelector('.ui-slider');
+        oSlider.style.transition = 'none';
+        expect(oInput.checked).toBeTrue();
+        expect(getComputedStyle(oSlider).backgroundColor).toBe(sBrand === 'emergency'
+          ? 'rgb(185, 28, 28)' : 'rgb(52, 211, 153)');
+        const oPublicIcon = document.createElement('span');
+        oPublicIcon.className = 'privacy-icon public';
+        oHost.appendChild(oPublicIcon);
+        if (sBrand === 'emergency') {
+          expect(getComputedStyle(oPublicIcon).color).toBe('rgb(87, 83, 78)');
+        }
+        const oToggle = spyOn(oFixture.componentInstance.m_oTogglePublic, 'emit');
+        oInput.click();
+        expect(oToggle).toHaveBeenCalledTimes(1);
+        oFixture.componentRef.setInput('m_bShowPublicAoOs', false);
+        oFixture.detectChanges();
+        expect(getComputedStyle(oSlider).backgroundColor).not.toBe('rgb(185, 28, 28)');
+      } finally {
+        oHost.remove();
+      }
+    });
+
+    it('uses compact mockup count badges only in the expanded Emergency sidebar', () => {
+      const oFixture = TestBed.createComponent(RiseBadgeComponent);
+      const oSidebar = document.createElement('div');
+      oSidebar.className = 'rise-sidebar';
+      const oHeader = document.createElement('div');
+      oHeader.className = 'widget-header';
+      const oHost = document.createElement('rise-badge');
+      oHeader.appendChild(oHost);
+      oSidebar.appendChild(oHeader);
+      document.body.appendChild(oSidebar);
+      oHost.appendChild(oFixture.nativeElement);
+      try {
+        oFixture.detectChanges();
+        const oBadge = oFixture.nativeElement.querySelector('.rise-badge');
+        expect(getComputedStyle(oBadge).fontSize).toBe(sBrand === 'emergency' ? '10px' : '12px');
+        if (sBrand === 'emergency') {
+          expect(getComputedStyle(oBadge).backgroundColor).toBe('rgb(243, 244, 246)');
+          oHost.classList.add('has-items');
+          oFixture.componentRef.setInput('m_iDisplayNum', 9);
+          oFixture.detectChanges();
+          expect(oBadge.textContent.trim()).toBe('9');
+          expect(getComputedStyle(oBadge).backgroundColor).toBe('rgb(254, 242, 242)');
+          expect(getComputedStyle(oBadge).color).toBe('rgb(185, 28, 28)');
+          oSidebar.classList.add('collapsed');
+          expect(getComputedStyle(oBadge).backgroundColor).not.toBe('rgb(254, 242, 242)');
+        }
+      } finally {
+        oSidebar.remove();
+      }
+    });
+
+    it('keeps Emergency alert metrics aligned without a nested card', () => {
+      const oWidget = document.createElement('rise-alerts-widget');
+      oWidget.innerHTML = `
+        <div class="alert-heading"><div class="alert-title">Flood - Luxembourg</div></div>
+        <div class="alert-metric" style="display: flex; align-items: center; gap: 8px">
+          <span class="body-icon">add_road</span><div class="alert-content">12 km</div>
+        </div>`;
+      document.body.appendChild(oWidget);
+      try {
+        const oMetric = getComputedStyle(oWidget.querySelector('.alert-metric')!);
+        expect(oMetric.display).toBe('flex');
+        expect(oMetric.flexWrap).toBe('nowrap');
+        if (sBrand === 'emergency') {
+          expect(oMetric.padding).toBe('0px');
+          expect(oMetric.borderTopStyle).toBe('none');
+          expect(getComputedStyle(oWidget.querySelector('.body-icon')!).fontSize).toBe('20px');
+          expect(getComputedStyle(oWidget.querySelector('.alert-content')!).fontSize).toBe('13px');
+        }
+      } finally {
+        oWidget.remove();
       }
     });
 
@@ -97,6 +185,27 @@ for (const sBrand of ['rise', 'emergency']) {
         }
       } finally {
         oContainer.remove();
+      }
+    });
+
+    it('hides the initial search message and shows feedback only for a failed search', () => {
+      const oControl = document.createElement('div');
+      oControl.className = 'leaflet-control-geocoder';
+      oControl.innerHTML = '<div class="leaflet-control-geocoder-form-no-error">Nothing found.</div>';
+      document.body.appendChild(oControl);
+      try {
+        const oMessage = oControl.firstElementChild!;
+        expect(getComputedStyle(oMessage).display).toBe('none');
+        oControl.classList.add('leaflet-control-geocoder-expanded');
+        expect(getComputedStyle(oMessage).display).toBe('none');
+        oControl.classList.add('leaflet-control-geocoder-options-error');
+        oMessage.classList.add('leaflet-control-geocoder-error');
+        expect(getComputedStyle(oMessage).display).toBe('block');
+        oControl.classList.remove('leaflet-control-geocoder-options-error');
+        oMessage.classList.remove('leaflet-control-geocoder-error');
+        expect(getComputedStyle(oMessage).display).toBe('none');
+      } finally {
+        oControl.remove();
       }
     });
 

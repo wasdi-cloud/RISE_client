@@ -155,7 +155,7 @@ h3 {
 }
 
 .impact-count-card-outline {
-  border-color: rgba(242, 201, 76, 0.42);
+  border-color: var(--impact-card-border, rgba(242, 201, 76, 0.42));
 }
 
 /* Features Table & Summary */

@@ -33,3 +33,5 @@ export const BRAND_CONFIG = new InjectionToken<BrandConfig>('Brand configuration
   providedIn: 'root',
   factory: () => resolveBrand(inject(DOCUMENT).location?.hostname ?? ''),
 });
+
+

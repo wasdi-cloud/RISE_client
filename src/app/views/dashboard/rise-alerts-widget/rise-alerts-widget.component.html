@@ -18,14 +18,14 @@
 
     @if (m_aoAlerts.length > 0) {
 
-    <div class="event-item d-flex flex-column gap-1 mt-2" *ngFor="let oAlert of m_aoAlerts">
+    <div class="event-item alert-item d-flex flex-column gap-1 mt-2" *ngFor="let oAlert of m_aoAlerts">
       
-      <div class="widget-header d-flex flex-row justify-content-between">
-        <div>{{ oAlert.title | translate }} - {{ oAlert.areaName }}</div>
+      <div class="widget-header alert-heading d-flex flex-row justify-content-between">
+        <div class="alert-title">{{ oAlert.title | translate }} - {{ oAlert.areaName }}</div>
         <span (click)="openTargetArea(oAlert)" class="material-symbols-outlined widget-gold-icon" [matTooltip]="oAlert.areaName">my_location</span>
       </div>
 
-      <div class="event-item d-flex flex-row align-items-center gap-2 mt-2">
+      <div class="event-item alert-metric d-flex flex-row align-items-center gap-2 mt-2">
         <span class="body-icon material-symbols-outlined"> {{ oAlert.icon }} </span>
         <div class="alert-content">
           {{ oAlert.content }}

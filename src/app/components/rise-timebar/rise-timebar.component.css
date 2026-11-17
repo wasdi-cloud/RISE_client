@@ -74,6 +74,9 @@
 }
 
 .event-node {
+  border: none;
+  background: transparent;
+  font: inherit;
   position: absolute;
   top: 0;
   transform: translate(-50%, -50%);
@@ -85,6 +88,20 @@
   justify-content: center;
   align-items: center;
   transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.event-choice {
+  display: flex;
+  flex-direction: column;
+  padding: 6px 0;
+  line-height: 1.4;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.event-choice-date {
+  font-size: 12px;
+  opacity: 0.75;
 }
 
 .event-dot {

@@ -62,6 +62,13 @@ div#hero-img {
   animation: fadeIn 0.6s ease-out forwards, cinematicPan 80s linear infinite alternate;
 }
 
+.hero-section.emergency-hero {
+  min-height: 100vh;
+  min-height: 100svh;
+  box-sizing: border-box;
+  justify-content: center;
+}
+
 @keyframes fadeIn {
   0% {
     opacity: 0;

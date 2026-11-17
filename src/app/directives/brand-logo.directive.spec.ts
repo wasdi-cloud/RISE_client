@@ -7,7 +7,7 @@ import {BrandLogoDirective} from './brand-logo.directive';
   standalone: true,
   imports: [BrandLogoDirective],
   template: `
-    <img [riseBrandLogo]="variant" src="/assets/rise-assets/rise-logo.png" alt="RISE">
+    <a title="RISE"><img [riseBrandLogo]="variant" src="/assets/rise-assets/rise-logo.png" alt="RISE"></a>
     <img riseBrandLogo="inverse" src="/assets/rise-assets/logo-white-horizontal.svg" alt="RISE">
   `,
 })
@@ -28,6 +28,7 @@ describe('BrandLogoDirective', () => {
     expect(aoImages[0].getAttribute('src')).toBe('/assets/rise-assets/rise-logo.png');
     expect(aoImages[1].getAttribute('src')).toBe('/assets/rise-assets/logo-white-horizontal.svg');
     expect(aoImages[0].alt).toBe('RISE');
+    expect(oFixture.nativeElement.querySelector('a').title).toBe('RISE');
     oFixture.componentInstance.variant = 'mini';
     oFixture.detectChanges();
     expect(aoImages[0].getAttribute('src')).toBe('/assets/rise-assets/rise-logo.png');
@@ -46,9 +47,11 @@ describe('BrandLogoDirective', () => {
     expect(aoImages[1].getAttribute('src')).toBe('assets/rise-assets/emergency-logo-cropped.png');
     expect(aoImages[0].alt).toBe('RISE for Emergency');
     expect(aoImages[1].alt).toBe('RISE for Emergency');
+    expect(oFixture.nativeElement.querySelector('a').title).toBe('emergency luxembourg');
     oFixture.componentInstance.variant = 'mini';
     oFixture.detectChanges();
     expect(aoImages[0].getAttribute('src')).toBe('assets/rise-assets/emergency-logo-mini.png');
+    expect(oFixture.nativeElement.querySelector('a').title).toBe('emergency luxembourg');
     oFixture.componentInstance.variant = 'default';
     oFixture.detectChanges();
     expect(aoImages[0].getAttribute('src')).toBe('assets/rise-assets/emergency-logo-cropped.png');

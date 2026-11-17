@@ -1,6 +1,6 @@
 <div class="landing-page-desktop">
   <public-navbar></public-navbar>
-  <div class="hero-section">
+  <div class="hero-section" [class.emergency-hero]="m_bEmergencyBrand">
     <div class="hero-content">
       <img riseBrandLogo="inverse" src="assets/rise-assets/Logo%20Small%20Bianco%201.png" class="logo-small-bianco-1" alt="" fetchpriority="high">
 
@@ -8,13 +8,16 @@
         <b class="hero-title">{{ 'LANDING.HERO_TITLE' | translate }}</b>
         <div class="hero-subtitle">{{ 'LANDING.HERO_SUBTITLE' | translate }}</div>
       </div>
+      @if (!m_bEmergencyBrand) {
       <img src="assets/rise-assets/RISE-platform%201.png" class="rise-platform-preview-1-icon" alt="" loading="eager" fetchpriority="high">
       <div class="hero-buttons">
         <button class="btn-primary-yellow" (click)="navigateRoute('sign-up')">{{ 'LANDING.GET_STARTED' | translate }}</button>
       </div>
+      }
 
     </div>
   </div>
+  @if (!m_bEmergencyBrand) {
   <div class="intro-section">
     <div class="features-container">
       <div class="features-header">
@@ -223,4 +226,5 @@
     </div>
   </div>
   <public-footer></public-footer>
+  }
 </div>
