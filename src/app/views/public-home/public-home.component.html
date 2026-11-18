@@ -6,7 +6,7 @@
 
       <div class="hero-text-container">
         <b class="hero-title">{{ 'LANDING.HERO_TITLE' | translate }}</b>
-        <div class="hero-subtitle">{{ 'LANDING.HERO_SUBTITLE' | translate }}</div>
+        <div class="hero-subtitle">{{ 'LANDING.HERO_SUBTITLE' | translate:{brandName: m_bEmergencyBrand ? 'riseforemergency.lu' : 'RISE'} }}</div>
       </div>
       @if (!m_bEmergencyBrand) {
       <img src="assets/rise-assets/RISE-platform%201.png" class="rise-platform-preview-1-icon" alt="" loading="eager" fetchpriority="high">

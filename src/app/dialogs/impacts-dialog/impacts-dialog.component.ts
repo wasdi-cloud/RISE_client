@@ -1,5 +1,5 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, Input, OnChanges, OnInit, Optional, Output, SimpleChanges, ViewChild} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, Input, LOCALE_ID, OnChanges, OnInit, Optional, Output, SimpleChanges, ViewChild} from '@angular/core';
+import { CommonModule, formatNumber } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import {RiseTextInputComponent} from "../../components/rise-text-input/rise-text-input.component";
@@ -122,7 +122,8 @@ export class ImpactsDialogComponent implements OnInit, OnChanges, AfterViewInit 
     @Optional() private m_oDialogRef: MatDialogRef<ImpactsDialogComponent>,
     private m_oWidgetService: WidgetService,
     private m_oTranslateService: TranslateService,
-    private m_oChangeDetectorRef: ChangeDetectorRef
+    private m_oChangeDetectorRef: ChangeDetectorRef,
+    @Inject(LOCALE_ID) private m_sLocale: string
   ) {
     
   }
@@ -683,12 +684,7 @@ export class ImpactsDialogComponent implements OnInit, OnChanges, AfterViewInit 
       return 'N.A.';
     }
 
-    // if (fSquareMeters < 1000000) {
-    //   return `${(fSquareMeters / 1000).toFixed(2)} km²`;
-    // } else {
-      
-    // }
-    return `${(fSquareMeters / 1000000).toFixed(2)} km²`;
+    return `${formatNumber(fSquareMeters / 1000000, this.m_sLocale, '1.2-2')} km²`;
   }
 
 }

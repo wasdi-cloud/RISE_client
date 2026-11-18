@@ -516,6 +516,7 @@
 		"SO2": "SO2"
 	},
 	"IMPACTS_DIALOG": {
+		"GO_TO_FEATURE": "前往{{name}}",
 		"NO_IMPACTS_AVAILABLE_MSG": "RISE did not find any data for the selected date in this area of operation",
 		"SELECT_LAYER": "Show Impacts based on:",
 		"SELECT_LAYER_PLACEHOLDER": "Select a layer to show impacts",

@@ -294,6 +294,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
    * Visible map buttons for the selected plugin
    */
   m_aoVisibleMapLayersButtons: Array<any> = [];
+  private m_oPluginMapsRequest?: Subscription;
 
   /**
    * Search string for users to search for Layer items based on their MAP ID
@@ -888,7 +889,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
                         && oExistingLayer.geoserverUrl === oLayerMapVM.geoserverUrl
                         && oExistingLayer.layerId === oLayerMapVM.layerId;
 
-      if (bIsSameLayer) {
+      if (bIsSameLayer && !oLayerMapVM.disabled) {
         // Nothing changed: skip re-adding to the map so we can avoid the reorder issue
         return;
       }
@@ -987,7 +988,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
           }
 
           // If we have a plugin selected, update the list of visible buttons
-          if (sSelectedPluginId!="") {
+          if (sSelectedPluginId !== '' && sSelectedPluginId === this.m_oSelectedPlugin?.id) {
             let aoNewVisibleButtons = [];
             for (let i=0;i<this.m_aoVisibleMapLayersButtons.length;i++) {
               for (let j=0;j<oResponse.length;j++) {
@@ -1004,11 +1005,21 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     }
   }
 
+  getSelectedPluginMapCount(sPluginId: string): number {
+    return this.m_aoLayers.filter(oLayer => oLayer.pluginId === sPluginId).length;
+  }
+
+  isMapSelected(sMapId: string): boolean {
+    return this.m_aoLayers.some(oLayer => oLayer.mapId === sMapId);
+  }
+
   /**
    * Handle selection of a plugin in the first level menu
    * @param oPlugin - The plugin selected by the user
    */
   selectPlugin(oPlugin: any) {
+    this.m_oPluginMapsRequest?.unsubscribe();
+    this.m_aoVisibleMapLayersButtons = [];
     // Is it selected already?
     if (this.m_oSelectedPlugin) {
       // It is, toggle selection
@@ -1027,18 +1038,8 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
     // Do we have a selected plugin?
     if (this.m_oSelectedPlugin) {
       // Get the plugins maps
-      this.m_oLayerService.findAvailableLayers("",this.m_sAreaId,this.m_iSelectedDate,this.m_oSelectedPlugin.id).pipe(takeUntil(this.m_oDestroy$)).subscribe({
+      this.m_oPluginMapsRequest = this.m_oLayerService.findAvailableLayers("",this.m_sAreaId,this.m_iSelectedDate,this.m_oSelectedPlugin.id).pipe(takeUntil(this.m_oDestroy$)).subscribe({
         next: (oResponse) => {
-
-          for (let i=0;i<oResponse.length;i++) {
-            // Fix the loaded flag
-            for (let j=0;j<this.m_aoLayers.length;j++) {
-              if (this.m_aoLayers[j].mapId === oResponse[i].mapId) {
-                oResponse[i].loaded = true;
-              }
-            }
-          }
-
           this.m_aoVisibleMapLayersButtons = oResponse;
           this.logPluginImpactData(oResponse);
         },
@@ -1051,44 +1052,19 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
         }
       });
     }
-    else {
-      // No selected plugin, clear visible maps
-      this.m_aoVisibleMapLayersButtons = [];
-    }
   }
 
-  switchMapButton(oMapButton:any) {
-    //was active,turn it to inactive
-    if(oMapButton.disabled){
+  switchMapButton(oMapButton: LayerViewModel & {disabled: boolean}) {
+    if (oMapButton.disabled) {
       return;
     }
 
-    // Check if the Map is already shown
-    if(oMapButton.loaded) {
-      // Remove the layers from the map
-      oMapButton.loaded = false;
-      let oLeafLetMap=this.m_oMapService.getMap();
-
-      oLeafLetMap.eachLayer((oMapLayer) => {
-        let sLayerId = oMapButton.layerId;
-        if (sLayerId === oMapLayer.options.layers) {
-          oLeafLetMap.removeLayer(oMapLayer);
-          let iIndex = this.m_aoLayers.findIndex(
-            (oLayer) => oLayer.layerId === sLayerId
-          );
-          this.m_aoLayers.splice(iIndex, 1);
-          this.m_aoReversedLayers=this.m_aoLayers;
-        }
-      });
-
-    }
-    else {
-      //was inactive,turn it to active
-      oMapButton.loaded = true;
+    const oSelectedLayer = this.m_aoLayers.find(oLayer => oLayer.mapId === oMapButton.mapId);
+    if (oSelectedLayer) {
+      this.removeLayer(oSelectedLayer);
+    } else {
       this.showLayer(oMapButton);
-
     }
-
   }
 
   /**
@@ -1349,13 +1325,15 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
   }
 
 
-  removeLayer(oEvent) {
+  removeLayer(oEvent: LayerViewModel) {
     let oMap = this.m_oMapService.getMap();
     // Remove from general
     let iIndex = this.m_aoLayers.findIndex(
       (oLayer) => oLayer.layerId === oEvent.layerId
     );
-    this.emptyPluginLayers(oEvent.mapId);
+    if (iIndex === -1) {
+      return;
+    }
 
     this.m_aoLayers.splice(iIndex, 1);
     oMap.eachLayer((oLayer) => {
@@ -1364,7 +1342,7 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
         oMap.removeLayer(oLayer);
       }
     });
-    this.m_aoReversedLayers=this.m_aoLayers.reverse();
+    this.m_aoReversedLayers = [...this.m_aoLayers].reverse();
     // Update the selected layers
 
     this.m_oMapService.setSelectedLayers(this.m_aoLayers);
@@ -1372,17 +1350,6 @@ export class MonitorComponent implements OnInit,AfterViewInit,OnDestroy {
 
   zoomToLayer(oEvent) {
     this.m_oMapService.flyToMonitorBounds(this.m_oAreaOfOperation.bbox);
-  }
-
-  emptyPluginLayers(sPluginId: string) {
-    this.m_aoVisibleMapLayersButtons.forEach((oPlugin) => {
-      if(oPlugin.id === sPluginId ){
-        if(oPlugin.loaded){
-          oPlugin.loaded = false;
-        }
-        oPlugin.layers=[];
-      }
-    });
   }
 
   cleanEventPanel() {

@@ -503,6 +503,7 @@
     "SO2": "SO2"
   },
   "IMPACTS_DIALOG": {
+    "GO_TO_FEATURE": "Aller à {{name}}",
     "NO_IMPACTS_AVAILABLE_MSG": "RISE n'a trouvé aucune donnée pour la date sélectionnée dans cette zone. Veuillez vérifier la date ou la zone d'opération.",
     "SELECT_LAYER": "Afficher les impacts selon :",
     "SELECT_LAYER_PLACEHOLDER": "Sélectionnez une couche pour afficher les impacts",
@@ -550,7 +551,7 @@
   },
   "LANDING": {
     "HERO_TITLE": "Accès Direct à l'Intelligence Géospatiale",
-    "HERO_SUBTITLE": "Surveillez les risques mondiaux en temps réel, évaluez les impacts instantanément et agissez en toute confiance. RISE vous donne les informations dont vous avez besoin pour répondre plus rapidement et garder une longueur d'avance sur chaque défi.",
+    "HERO_SUBTITLE": "Surveillez les risques mondiaux en temps réel, évaluez les impacts instantanément et agissez en toute confiance. {{brandName}} vous donne les informations dont vous avez besoin pour répondre plus rapidement et garder une longueur d'avance sur chaque défi.",
     "GET_STARTED": "COMMENCEZ DÈS AUJOURD'HUI",
     "INTRO_P1": "RISE est une plateforme basée sur le cloud qui intègre les données d'observation de la Terre (EO) avec des analyses avancées pour fournir une intelligence en temps quasi réel sur les risques naturels dans le monde entier. Elle fournit la technologie dont les organisations ont besoin pour anticiper les risques et renforcer la résilience.",
     "WHAT_IS_RISE": "Qu'est-ce que RISE ?",

@@ -41,7 +41,7 @@
 }
 
 :root[data-brand="emergency"] .dashboard-home-link {
-  width: 145px;
+  width: auto;
 }
 
 :root[data-brand="emergency"] rise-aoo-widget input:checked + .ui-slider {
@@ -124,9 +124,53 @@
 }
 
 :root[data-brand="emergency"] .dashboard-logo {
+  width: auto;
+  height: 24px;
+  object-position: left center;
+}
+
+:root[data-brand="emergency"] .rise-sidebar.collapsed .dashboard-logo {
   width: 100%;
   height: 100%;
-  object-position: left center;
+}
+
+:root[data-brand="emergency"] .monitor-page .logo-img {
+  width: auto;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+:root[data-brand="emergency"] .monitor-page :is(.event-quick-upload, .event-attachments) .text-light {
+  color: var(--rise-text-bright) !important;
+}
+
+:root[data-brand="emergency"] .monitor-page .event-attachments .text-muted {
+  color: var(--rise-text-dim) !important;
+}
+
+:root[data-brand="emergency"] .attachment-preview-dialog .text-light {
+  color: var(--rise-text-bright) !important;
+}
+
+:root[data-brand="emergency"] app-print-map-dialog .format-option :is(.format-icon, .format-label) {
+  color: var(--rise-text-dim);
+}
+
+:root[data-brand="emergency"] app-print-map-dialog .format-option.active :is(.format-icon, .format-label) {
+  color: var(--rise-on-accent);
+}
+
+:root[data-brand="emergency"] .monitor-page .event-quick-upload .btn-outline-light {
+  --bs-btn-color: var(--rise-text-bright);
+  --bs-btn-border-color: var(--rise-border-default);
+  --bs-btn-hover-color: var(--rise-text-bright);
+  --bs-btn-hover-bg: var(--surface-glass-interactive);
+  --bs-btn-hover-border-color: var(--rise-text-dim);
+  --bs-btn-active-color: var(--rise-text-bright);
+  --bs-btn-active-bg: var(--surface-glass-interactive);
+  --bs-btn-active-border-color: var(--rise-text-dim);
+  --bs-btn-disabled-color: var(--rise-text-dim);
+  --bs-btn-disabled-border-color: var(--rise-border-default);
 }
 
 :root[data-brand="emergency"] img[riseBrandLogo] {
@@ -283,6 +327,17 @@
 
 :root[data-brand="emergency"] .leaflet-control-geocoder-icon {
   --map-control-icon: url('/assets/rise-assets/map-search.svg');
+  position: relative;
+  display: inline-grid;
+  vertical-align: middle;
+}
+
+:root[data-brand="emergency"] .leaflet-control-geocoder-alternatives > li:is(:hover, .leaflet-control-geocoder-selected) {
+  background-color: var(--rise-border-default) !important;
+}
+
+:root[data-brand="emergency"] .leaflet-control-geocoder-alternatives > li > a:hover {
+  background-color: transparent !important;
 }
 
 :root[data-brand="emergency"] .leaflet-control-layers-toggle {

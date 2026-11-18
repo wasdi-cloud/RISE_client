@@ -274,6 +274,10 @@ h3 {
   color: var(--rise-text-bright, #ffffff);
 }
 
+.sidebar-impact-table .cursor-pointer {
+  cursor: pointer;
+}
+
 .sidebar-impact-table thead th {
   background-color: var(--surface-glass, #0c1c20);
   color: var(--rise-text-dim, #8a9f9f);

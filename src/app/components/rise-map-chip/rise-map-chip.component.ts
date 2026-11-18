@@ -12,6 +12,7 @@ export class RiseMapChipComponent implements OnInit {
   @Input() m_sTitle: string = '';
   @Input() m_sTooltip: string = '';
   @Input() m_bIsActive: boolean = false;
+  @Input() m_iSelectedSubChipCount = 0;
   @Input() m_sIcon: string = '';
   @Input() m_sChipType: 'default' | 'toggle' = 'default';
   @Input() m_bDisabled: boolean = false;

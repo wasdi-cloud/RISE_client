@@ -522,6 +522,7 @@
     "SO2":"SO2"
   },
   "IMPACTS_DIALOG": {
+    "GO_TO_FEATURE": "Go to {{name}}",
     "NO_IMPACTS_AVAILABLE_MSG": "RISE did not find any data for the selected date in this area of operation",
     "SELECT_LAYER": "Show Impacts based on:",
     "SELECT_LAYER_PLACEHOLDER": "Select a layer to show impacts",
@@ -576,7 +577,7 @@
   },
   "LANDING": {
     "HERO_TITLE": "Direct Access to Geospatial Intelligence",
-    "HERO_SUBTITLE": "Monitor global hazards in real time, assess impacts instantly, and act with confidence. RISE gives you the insights you need to respond faster and stay ahead of every challenge.",
+    "HERO_SUBTITLE": "Monitor global hazards in real time, assess impacts instantly, and act with confidence. {{brandName}} gives you the insights you need to respond faster and stay ahead of every challenge.",
     "GET_STARTED": "GET STARTED TODAY",
     "INTRO_P1": "RISE is a cloud‑based platform that integrates Earth Observation (EO) data with advanced analytics to deliver near real‑time intelligence on natural hazards worldwide. It provides the technology organizations need to anticipate risks and strengthen resilience.",
     "WHAT_IS_RISE": "What is RISE?",

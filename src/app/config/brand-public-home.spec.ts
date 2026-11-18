@@ -1,7 +1,7 @@
 import {NO_ERRORS_SCHEMA} from '@angular/core';
 import {TestBed} from '@angular/core/testing';
 import {provideRouter} from '@angular/router';
-import {TranslateModule} from '@ngx-translate/core';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import {PublicHomeComponent} from '../views/public-home/public-home.component';
 import {BrandLogoDirective} from '../directives/brand-logo.directive';
 import {BRAND_CONFIG, EMERGENCY_BRAND, RISE_BRAND} from './brand.config';
@@ -18,6 +18,11 @@ for (const oBrand of [RISE_BRAND, EMERGENCY_BRAND]) {
           schemas: [NO_ERRORS_SCHEMA],
         },
       }).compileComponents();
+      const oTranslate = TestBed.inject(TranslateService);
+      oTranslate.setTranslation('en', {
+        LANDING: {HERO_SUBTITLE: '{{brandName}} gives you the insights you need.'},
+      });
+      oTranslate.use('en');
       const oFixture = TestBed.createComponent(PublicHomeComponent);
       oFixture.detectChanges();
       const oPage: HTMLElement = oFixture.nativeElement;
@@ -26,6 +31,8 @@ for (const oBrand of [RISE_BRAND, EMERGENCY_BRAND]) {
       expect(oPage.querySelector('public-navbar')).not.toBeNull();
       expect(oPage.querySelector('.hero-title')).not.toBeNull();
       expect(oPage.querySelector('.hero-subtitle')).not.toBeNull();
+      expect(oPage.querySelector('.hero-subtitle')!.textContent)
+        .toBe(`${bEmergency ? 'riseforemergency.lu' : 'RISE'} gives you the insights you need.`);
       expect(oPage.querySelector('.logo-small-bianco-1')).not.toBeNull();
       expect(oPage.querySelector('.logo-small-bianco-1')!.getAttribute('src'))
         .toBe(bEmergency ? 'assets/rise-assets/emergency-logo-cropped.png' :

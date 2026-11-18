@@ -38,7 +38,7 @@
                 <span class="material-symbols-outlined sort-icon">{{ getSortIcon('date') }}</span>
               </div>
             </td-->
-            <td class="sortable-header" (click)="toggleSort('price')">
+            <td class="sortable-header price-column" (click)="toggleSort('price')">
               <div class="header-content">
                 {{ "SUBSCRIPTIONS.PRICE" | translate }}
                 <span class="material-symbols-outlined sort-icon">{{ getSortIcon('price') }}</span>
@@ -122,7 +122,7 @@
           <td>{{ oSubscription.name }}</td>
           <td>{{ oSubscription.type }}</td>
           <!--td>{{ getDisplayDate(oSubscription) | date }}</td-->
-          <td>{{ getDisplayPrice(oSubscription) }}</td>
+          <td class="price-column">{{ getDisplayPrice(oSubscription) }}</td>
           <td>{{ oSubscription.expireDate ? (oSubscription.expireDate | date) : 'N/A' }}</td>
           <td>
               <span [ngClass]="getPaymentClass(oSubscription)" class="payment-badge d-inline-flex align-items-center gap-1">

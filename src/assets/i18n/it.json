@@ -551,6 +551,7 @@
     "SO2":"SO2"
   },
   "IMPACTS_DIALOG": {
+  "GO_TO_FEATURE": "Vai a {{name}}",
   "NO_IMPACTS_AVAILABLE_MSG": "RISE non ha trovato dati per la data selezionata in quest'area. Si prega di ricontrollare la data o l'area operativa.",
 	"SELECT_LAYER": "Mostra impatti basati su:",
 	"SELECT_LAYER_PLACEHOLDER": "Seleziona un layer per mostrare gli impatti",

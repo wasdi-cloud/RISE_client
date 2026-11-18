@@ -143,25 +143,6 @@ div.map-container {
   display: none !important;
 }
 
-.rise-sidebar.collapsed ::ng-deep rise-badge.has-items {
-  display: block !important;
-  width: 12px;
-  height: 12px;
-  padding: 0;
-  border: none;
-}
-
-.rise-sidebar.collapsed ::ng-deep rise-badge.has-items .rise-badge {
-  display: block;
-  box-sizing: border-box;
-  width: 12px;
-  height: 12px;
-  padding: 0;
-  border: 2px solid var(--rise-gold);
-  border-radius: 50%;
-  font-size: 0;
-}
-
 /* Center widget header icons */
 .rise-sidebar.collapsed ::ng-deep .widget-header,
 .rise-sidebar.collapsed ::ng-deep .banner-card,

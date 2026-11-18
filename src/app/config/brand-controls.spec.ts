@@ -7,6 +7,10 @@ import {RiseDateInputComponent} from '../components/rise-date-input/rise-date-in
 import {provideRouter} from '@angular/router';
 import {RiseAooWidgetComponent} from '../views/dashboard/rise-aoo-widget/rise-aoo-widget.component';
 import {RiseBadgeComponent} from '../components/rise-badge/rise-badge.component';
+import {PrintMapDialogComponent} from '../dialogs/print-map-dialog/print-map-dialog.component';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {provideHttpClient} from '@angular/common/http';
+import {PrinterService} from '../services/api/printer.service';
 
 for (const sBrand of ['rise', 'emergency']) {
   describe(`${sBrand} shared controls`, () => {
@@ -18,9 +22,14 @@ for (const sBrand of ['rise', 'emergency']) {
       await TestBed.configureTestingModule({
         imports: [
           RiseButtonComponent, RiseTimebarComponent, RiseDateInputComponent, RiseAooWidgetComponent, RiseBadgeComponent,
-          NoopAnimationsModule, TranslateModule.forRoot(),
+          PrintMapDialogComponent, NoopAnimationsModule, TranslateModule.forRoot(),
         ],
-        providers: [provideRouter([])],
+        providers: [
+          provideRouter([]), provideHttpClient(),
+          {provide: MAT_DIALOG_DATA, useValue: {payload: {}}},
+          {provide: MatDialogRef, useValue: {}},
+          {provide: PrinterService, useValue: {}},
+        ],
       }).compileComponents();
     });
 
@@ -29,6 +38,159 @@ for (const sBrand of ['rise', 'emergency']) {
         document.documentElement.removeAttribute('data-brand');
       } else {
         document.documentElement.setAttribute('data-brand', sOriginalBrand);
+      }
+    });
+
+    it('preserves the Emergency monitor logo proportions without changing standard RISE sizing', async () => {
+      const oMonitor = document.createElement('main');
+      oMonitor.className = 'monitor-page';
+      oMonitor.style.cssText = 'display: flex; width: 320px';
+      const oLogo = document.createElement('img');
+      oLogo.className = 'logo-img';
+      oLogo.setAttribute('width', '35%');
+      oLogo.style.height = '24px';
+      oLogo.src = 'assets/rise-assets/emergency-logo-cropped.png';
+      oMonitor.appendChild(oLogo);
+      document.body.appendChild(oMonitor);
+      try {
+        await oLogo.decode();
+        const oBounds = oLogo.getBoundingClientRect();
+        expect(oBounds.height).toBe(24);
+        expect(oBounds.width).toBeCloseTo(sBrand === 'emergency'
+          ? 24 * oLogo.naturalWidth / oLogo.naturalHeight
+          : 320 * 0.35, 1);
+        if (sBrand === 'emergency') {
+          expect(getComputedStyle(oLogo).flexShrink).toBe('0');
+        }
+      } finally {
+        oMonitor.remove();
+      }
+    });
+
+    it('matches the Emergency dashboard logo to the monitor and retains the collapsed mini logo', async () => {
+      if (sBrand !== 'emergency') {
+        return;
+      }
+      const oContainer = document.createElement('div');
+      oContainer.innerHTML = `
+        <div class="rise-sidebar" style="width: 320px">
+          <a class="dashboard-home-link" style="display: inline-block; height: 24px">
+            <img riseBrandLogo class="dashboard-logo" src="assets/rise-assets/emergency-logo-cropped.png">
+          </a>
+        </div>
+        <main class="monitor-page">
+          <img class="logo-img" src="assets/rise-assets/emergency-logo-cropped.png">
+        </main>`;
+      document.body.appendChild(oContainer);
+      try {
+        const oDashboard = oContainer.querySelector<HTMLImageElement>('.dashboard-logo')!;
+        const oMonitor = oContainer.querySelector<HTMLImageElement>('.logo-img')!;
+        await Promise.all([oDashboard.decode(), oMonitor.decode()]);
+        expect(oDashboard.getBoundingClientRect().height).toBe(24);
+        expect(oDashboard.getBoundingClientRect().width)
+          .toBeCloseTo(oMonitor.getBoundingClientRect().width, 1);
+        expect(oContainer.querySelector('.dashboard-home-link')!.getBoundingClientRect().width)
+          .toBeCloseTo(oMonitor.getBoundingClientRect().width, 1);
+        oContainer.querySelector('.rise-sidebar')!.classList.add('collapsed');
+        oDashboard.src = 'assets/rise-assets/emergency-logo-mini.png';
+        await oDashboard.decode();
+        expect(oDashboard.getBoundingClientRect().width).toBe(30);
+        expect(oDashboard.getBoundingClientRect().height).toBe(24);
+        expect(getComputedStyle(oDashboard).objectFit).toBe('contain');
+      } finally {
+        oContainer.remove();
+      }
+    });
+
+    it('keeps event upload and attachment labels readable on the monitor surface', () => {
+      const oMonitor = document.createElement('main');
+      oMonitor.className = 'monitor-page';
+      oMonitor.innerHTML = `
+        <style>
+          /* The branding runner omits Bootstrap; reproduce its relevant base declarations. */
+          .monitor-page .text-light { color: rgb(248, 249, 250) !important; }
+          .monitor-page .text-muted { color: rgba(33, 37, 41, 0.75) !important; }
+          .monitor-page .btn-outline-light { --bs-btn-color: #f8f9fa; }
+          .monitor-page .btn { color: var(--bs-btn-color); }
+        </style>
+        <div class="event-quick-upload">
+          <button class="btn btn-outline-light">Image / Video</button>
+          <span class="text-light">Selected file</span>
+          <span class="text-light">Click the map to drop a pin, then click Upload!</span>
+        </div>
+        <div class="event-attachments">
+          <span class="text-light">Attachments</span>
+          <button class="sidebar-sort-button text-light">Newest</button>
+          <button class="sidebar-sort-button text-muted">A-Z</button>
+        </div>`;
+      document.body.appendChild(oMonitor);
+      try {
+        for (const oLabel of Array.from(oMonitor.querySelectorAll('.text-light, .btn-outline-light'))) {
+          expect(getComputedStyle(oLabel).color).toBe(sBrand === 'emergency'
+            ? 'rgb(41, 37, 36)' : 'rgb(248, 249, 250)');
+        }
+        if (sBrand === 'emergency') {
+          expect(getComputedStyle(oMonitor.querySelector('.text-muted')!).color).toBe('rgb(87, 83, 78)');
+          const oButtonStyle = getComputedStyle(oMonitor.querySelector('.btn-outline-light')!);
+          expect(oButtonStyle.getPropertyValue('--bs-btn-hover-color').trim()).toBe('#292524');
+          expect(oButtonStyle.getPropertyValue('--bs-btn-active-color').trim()).toBe('#292524');
+        }
+        const oSort = oMonitor.querySelector('.sidebar-sort-button')!;
+        oSort.classList.replace('text-light', 'text-muted');
+        if (sBrand === 'emergency') {
+          expect(getComputedStyle(oSort).color).toBe('rgb(87, 83, 78)');
+        }
+      } finally {
+        oMonitor.remove();
+      }
+    });
+
+    it('keeps print format icons and labels readable before and after selection', () => {
+      const oFixture = TestBed.createComponent(PrintMapDialogComponent);
+      const oHost = document.createElement('app-print-map-dialog');
+      document.body.appendChild(oHost);
+      oHost.appendChild(oFixture.nativeElement);
+      try {
+        oFixture.detectChanges();
+        const aoOptions: NodeListOf<HTMLElement> = oHost.querySelectorAll('.format-option');
+        const checkColors = () => {
+          for (const oOption of Array.from(aoOptions)) {
+            for (const oLabel of Array.from(oOption.querySelectorAll('.format-icon, .format-label'))) {
+              expect(getComputedStyle(oLabel).color).toBe(
+                sBrand === 'emergency' && !oOption.classList.contains('active')
+                  ? 'rgb(87, 83, 78)' : 'rgb(255, 255, 255)');
+            }
+          }
+        };
+        expect(aoOptions.length).toBe(2);
+        checkColors();
+        aoOptions[1].click();
+        oFixture.detectChanges();
+        expect(oFixture.componentInstance.m_sSelectedFormat).toBe('png');
+        checkColors();
+      } finally {
+        oFixture.destroy();
+        oHost.remove();
+      }
+    });
+
+    it('keeps the attachment preview title, actions and loading message readable', () => {
+      const oPreview = document.createElement('div');
+      oPreview.className = 'attachment-preview-dialog';
+      oPreview.innerHTML = `
+        <style>.attachment-preview-dialog .text-light { color: #f8f9fa !important; }</style>
+        <span class="file-name text-light">Image title</span>
+        <span class="file-icon text-light">download</span>
+        <span class="file-icon text-light">close</span>
+        <div class="text-light">Loading Preview...</div>`;
+      document.body.appendChild(oPreview);
+      try {
+        for (const oLabel of Array.from(oPreview.querySelectorAll('.text-light'))) {
+          expect(getComputedStyle(oLabel).color).toBe(sBrand === 'emergency'
+            ? 'rgb(41, 37, 36)' : 'rgb(248, 249, 250)');
+        }
+      } finally {
+        oPreview.remove();
       }
     });
 
@@ -87,6 +249,49 @@ for (const sBrand of ['rise', 'emergency']) {
           expect(getComputedStyle(oBadge).color).toBe('rgb(185, 28, 28)');
           oSidebar.classList.add('collapsed');
           expect(getComputedStyle(oBadge).backgroundColor).not.toBe('rgb(254, 242, 242)');
+        }
+      } finally {
+        oSidebar.remove();
+      }
+    });
+
+    it('shows exact nonzero counts in the corner of collapsed event and alert tiles', () => {
+      const oSidebar = document.createElement('div');
+      oSidebar.className = 'rise-sidebar collapsed';
+      oSidebar.style.width = '64px';
+      oSidebar.innerHTML = `
+        <rise-ongoing-widget><div class="widget-card"><div class="widget-header">
+          <rise-badge></rise-badge>
+        </div></div></rise-ongoing-widget>
+        <rise-alerts-widget><div class="widget-card"><div class="widget-header">
+          <rise-badge></rise-badge>
+        </div></div></rise-alerts-widget>`;
+      document.body.appendChild(oSidebar);
+      try {
+        const aoHosts = Array.from(oSidebar.querySelectorAll('rise-badge'));
+        for (const [iIndex, oHost] of aoHosts.entries()) {
+          const oFixture = TestBed.createComponent(RiseBadgeComponent);
+          oHost.appendChild(oFixture.nativeElement);
+          expect(getComputedStyle(oHost).display).toBe('none');
+
+          const iCount = iIndex === 0 ? 7 : 123;
+          oFixture.componentRef.setInput('m_iDisplayNum', iCount);
+          oHost.classList.add('has-items');
+          oFixture.detectChanges();
+          const oBadge = oHost.querySelector('.rise-badge')!;
+          const oBadgeStyle = getComputedStyle(oBadge);
+          expect(oBadge.textContent!.trim()).toBe(String(iCount));
+          expect(oBadgeStyle.fontSize).toBe('10px');
+          const oTile = oHost.parentElement!.getBoundingClientRect();
+          const oBounds = oBadge.getBoundingClientRect();
+          expect(oTile.right - oBounds.right).toBeCloseTo(3);
+          expect(oBounds.top - oTile.top).toBeCloseTo(2);
+          expect(oBounds.width).toBeGreaterThanOrEqual(iCount === 7 ? 14 : 20);
+          expect(oBadgeStyle.backgroundColor).toBe(sBrand === 'emergency'
+            ? 'rgb(185, 28, 28)' : 'rgb(239, 186, 53)');
+          expect(oBadgeStyle.color).toBe(sBrand === 'emergency'
+            ? 'rgb(255, 255, 255)' : 'rgba(0, 0, 0, 0.95)');
+          oFixture.destroy();
         }
       } finally {
         oSidebar.remove();
@@ -158,6 +363,7 @@ for (const sBrand of ['rise', 'emergency']) {
       oContainer.innerHTML = `
         <div class="leaflet-control-geocoder">
           <button class="leaflet-control-geocoder-icon"></button>
+          <div class="leaflet-control-geocoder-form"><input aria-label="Search"></div>
         </div>
         <div class="leaflet-control-layers">
           <a class="leaflet-control-layers-toggle"></a>
@@ -168,6 +374,10 @@ for (const sBrand of ['rise', 'emergency']) {
         for (const bExpanded of [false, true]) {
           oContainer.querySelector('.leaflet-control-geocoder')!
             .classList.toggle('leaflet-control-geocoder-expanded', bExpanded);
+          const oForm = oContainer.querySelector<HTMLElement>('.leaflet-control-geocoder-form')!;
+          // Match the plugin's layout; its stylesheet is not loaded by the branding runner.
+          oForm.style.display = bExpanded ? 'inline-block' : 'none';
+          oForm.style.verticalAlign = 'middle';
           for (const sSelector of ['.leaflet-control-geocoder-icon', '.leaflet-control-layers-toggle']) {
             const oControl = oContainer.querySelector(sSelector)!;
             const oStyle = getComputedStyle(oControl);
@@ -177,6 +387,22 @@ for (const sBrand of ['rise', 'emergency']) {
               const oIconStyle = getComputedStyle(oControl, '::before');
               expect(oIconStyle.backgroundColor).toBe('rgb(41, 37, 36)');
               expect(oIconStyle.width).toBe(sSelector === '.leaflet-control-layers-toggle' ? '20px' : '24px');
+              if (sSelector === '.leaflet-control-geocoder-icon') {
+                expect(oStyle.position).toBe('relative');
+                expect(oStyle.display).toBe('inline-grid');
+                expect(oStyle.verticalAlign).toBe('middle');
+                expect(oStyle.width).toBe('36px');
+                expect(oStyle.height).toBe('36px');
+                const oButtonBounds = oControl.getBoundingClientRect();
+                expect(parseFloat(oIconStyle.width)).toBeLessThan(oButtonBounds.width);
+                expect(parseFloat(oIconStyle.height)).toBeLessThan(oButtonBounds.height);
+                if (bExpanded) {
+                  const oFormBounds = oForm.getBoundingClientRect();
+                  expect(oFormBounds.left).toBeGreaterThanOrEqual(oButtonBounds.right);
+                  expect(oFormBounds.top).toBeLessThan(oButtonBounds.bottom);
+                  expect(oFormBounds.bottom).toBeGreaterThan(oButtonBounds.top);
+                }
+              }
             } else {
               expect(oStyle.backgroundImage).toBe('none');
               expect(oStyle.backgroundColor).not.toBe('rgb(255, 255, 255)');
@@ -185,6 +411,29 @@ for (const sBrand of ['rise', 'emergency']) {
         }
       } finally {
         oContainer.remove();
+      }
+    });
+
+    it('keeps dark geocoder result text readable on the Emergency keyboard highlight', () => {
+      const oControl = document.createElement('div');
+      oControl.className = 'leaflet-control-geocoder leaflet-bar';
+      oControl.innerHTML = `
+        <ul class="leaflet-control-geocoder-alternatives">
+          <li><a href="#">Luxembourg <span class="leaflet-control-geocoder-address-context">City</span></a></li>
+        </ul>`;
+      document.body.appendChild(oControl);
+      try {
+        const oResult = oControl.querySelector('li')!;
+        expect(getComputedStyle(oResult).backgroundColor).toBe('rgba(0, 0, 0, 0)');
+        oResult.classList.add('leaflet-control-geocoder-selected');
+        expect(getComputedStyle(oResult).backgroundColor).toBe(sBrand === 'emergency'
+          ? 'rgb(214, 211, 209)' : 'rgba(0, 0, 0, 0)');
+        if (sBrand === 'emergency') {
+          expect(getComputedStyle(oResult.querySelector('a')!).color).toBe('rgb(41, 37, 36)');
+        }
+        expect(getComputedStyle(oResult.querySelector('a')!).backgroundColor).toBe('rgba(0, 0, 0, 0)');
+      } finally {
+        oControl.remove();
       }
     });
 
