@@ -224,7 +224,7 @@
         ></rise-map>
 
         <!-- 2. THE ATTACHMENTS LIST (Placed in the middle!) -->
-        <div class="d-flex flex-column mt-3" *ngIf="!m_bCreateNewEvent && m_aoAllFiles.length > 0">
+        <div class="event-edit-attachments d-flex flex-column mt-3" *ngIf="!m_bCreateNewEvent && m_aoAllFiles.length > 0">
 
           <div class="d-flex flex-row justify-content-between align-items-center mb-2 px-1">
             <span class="text-uppercase text-light small fw-bold">
@@ -282,7 +282,7 @@
         </div>
 
         <!-- 3. THE UPLOAD ZONES -->
-        <div class="drag-drop-container d-flex flex-row justify-content-between mt-3" *ngIf="!m_bCreateNewEvent">
+        <div class="event-edit-upload-zones drag-drop-container d-flex flex-row justify-content-between mt-3" *ngIf="!m_bCreateNewEvent">
 
           <!-- Images Upload -->
           <div class="d-flex flex-column gap-2 mb-2" style="width: 48%;">
@@ -355,4 +355,3 @@
     </div>
   </div>
 </div>
-

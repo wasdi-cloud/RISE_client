@@ -148,6 +148,14 @@
   color: var(--rise-text-dim) !important;
 }
 
+:root[data-brand="emergency"] rise-events :is(.event-edit-attachments, .event-edit-upload-zones) .text-light {
+  color: var(--rise-text-bright) !important;
+}
+
+:root[data-brand="emergency"] rise-events .event-edit-attachments .text-muted {
+  color: var(--rise-text-dim) !important;
+}
+
 :root[data-brand="emergency"] .attachment-preview-dialog .text-light {
   color: var(--rise-text-bright) !important;
 }
