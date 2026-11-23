@@ -1,4 +1,4 @@
-import {ApplicationConfig, importProvidersFrom} from '@angular/core';
+import {APP_INITIALIZER, ApplicationConfig, importProvidersFrom} from '@angular/core';
 import {provideRouter, withInMemoryScrolling} from '@angular/router';
 
 import {routes} from './app.routes';
@@ -15,10 +15,17 @@ import {LeafletModule} from '@bluehalo/ngx-leaflet';
 import {LeafletDrawModule} from '@asymmetrik/ngx-leaflet-draw';
 import {SessionInjectorInterceptor} from './services/interceptors/session-injector.interceptor';
 import {AuthErrorInterceptor} from './services/interceptors/auth-error.interceptor';
+import {BrandingService} from './services/branding.service';
 
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    {
+      provide: APP_INITIALIZER,
+      multi: true,
+      deps: [BrandingService],
+      useFactory: (oBranding: BrandingService) => () => oBranding.initialize(),
+    },
     provideRouter(routes, withInMemoryScrolling({ scrollPositionRestoration: 'top' })),
     // SessionInjector must run first so that AuthErrorInterceptor sees the x-session-token header
     provideHttpClient(withInterceptors([SessionInjectorInterceptor, AuthErrorInterceptor])),

@@ -3,7 +3,7 @@
   background-color: var(--surface-glass);
   backdrop-filter: blur(20px);
   padding: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.1);
   overflow-wrap: break-word;
   padding: 16px;
   width: 375px;

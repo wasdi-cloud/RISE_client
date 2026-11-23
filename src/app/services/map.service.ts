@@ -20,6 +20,8 @@ import {NotificationsDialogsService} from './notifications-dialogs.service';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ConstantsService} from './constants.service';
 import {TranslateService} from '@ngx-translate/core';
+import {BrandingService} from './branding.service';
+import {localizeMapControls} from './map-control-i18n';
 import {EventViewModel} from "../models/EventViewModel";
 import {MapZoomLevels} from "../shared/MapZoomLevels";
 import { now } from 'moment';
@@ -78,6 +80,21 @@ const oIconPublic = L.icon({
   tooltipAnchor: [16, -28],
   shadowSize: [32, 32],
 });
+
+const oEmergencyMarkers = {
+  private: L.icon({
+    iconUrl: 'assets/branding/marker-private.svg',
+    iconSize: [22, 30], iconAnchor: [11, 29], tooltipAnchor: [11, -20],
+  }),
+  shared: L.icon({
+    iconUrl: 'assets/branding/marker-shared.svg',
+    iconSize: [22, 30], iconAnchor: [11, 29], tooltipAnchor: [11, -20],
+  }),
+  public: L.icon({
+    iconUrl: 'assets/branding/marker-public.svg',
+    iconSize: [22, 30], iconAnchor: [11, 29], tooltipAnchor: [11, -20],
+  }),
+};
 
 
 const MAX_STORAGE_SIZE = 2 * 1024 * 1024; // 2MB for testing
@@ -262,7 +279,8 @@ export class MapService {
     private m_oDialog: MatDialog,
     private m_oHttp: HttpClient,
     private m_oNotificationService: NotificationsDialogsService,
-    private m_oTranslate: TranslateService
+    private m_oTranslate: TranslateService,
+    private m_oBranding: BrandingService,
   ) {
     // --- FIX: Patch the known Leaflet Draw crash for circle resizing ---
     if (L.Edit && L.Edit.Circle) {
@@ -384,6 +402,8 @@ export class MapService {
    */
   setMap(oMap: any) {
     this.m_oRiseMap = oMap;
+    const stopLocalizing = localizeMapControls(oMap.getContainer(), this.m_oTranslate);
+    oMap.once('unload', stopLocalizing);
   }
 
   /**
@@ -979,7 +999,7 @@ export class MapService {
         const oContainer = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
         const oMeasurementButton = L.DomUtil.create(
           'a',
-          'leaflet-control-button',
+          'leaflet-control-button leaflet-control-measure',
           oContainer
         );
         oMeasurementButton.innerHTML =
@@ -1357,7 +1377,8 @@ export class MapService {
         }
         let sPrefix = "";
 
-        let oIcon = oIconDefault;
+        const bEmergency = this.m_oBranding.brand.id === 'emergency';
+        let oIcon = bEmergency ? oEmergencyMarkers.private : oIconDefault;
 
         let oActualUser = this.m_oConstantsService.getUser();
 
@@ -1365,14 +1386,14 @@ export class MapService {
           // Change icon for shared areas
           if (oActualUser.organizationId != oArea.organizationId) {
             sPrefix = "Shared - ";
-            oIcon = oIconShared;
+            oIcon = bEmergency ? oEmergencyMarkers.shared : oIconShared;
           }
         }
 
         // Change icon for public areas
         if (oArea.publicArea) {
           sPrefix = "Public - ";
-          oIcon = oIconPublic;
+          oIcon = bEmergency ? oEmergencyMarkers.public : oIconPublic;
         }
 
         let oMarker = L.marker([fLat, fLon],{icon:oIcon})
@@ -1672,7 +1693,7 @@ export class MapService {
         // Create the button to add to leaflet
         let oButton = L.DomUtil.create(
           'a',
-          'leaflet-control-button',
+          'leaflet-control-button leaflet-control-coordinates',
           oContainer
         );
 

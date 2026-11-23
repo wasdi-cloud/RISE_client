@@ -5,21 +5,33 @@ import { PublicNavbarComponent } from '../../components/public-navbar/public-nav
 import { PublicFooterComponent } from '../../components/public-footer/public-footer.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import {BrandLogoDirective} from '../../directives/brand-logo.directive';
+import {BrandingService} from '../../services/branding.service';
 
 @Component({
   selector: 'app-public-home',
   standalone: true,
-  imports: [PublicNavbarComponent, PublicFooterComponent, RiseButtonComponent, TranslateModule],
+  imports: [PublicNavbarComponent, PublicFooterComponent, RiseButtonComponent, TranslateModule, BrandLogoDirective],
   templateUrl: './public-home.component.html',
   styleUrl: './public-home.component.css',
 })
 export class PublicHomeComponent implements AfterViewInit, OnDestroy {
+  readonly m_bEmergencyBrand: boolean;
   private m_oLangSubscription: Subscription | null = null;
   private m_oTimeoutRef: any = null;
 
-  constructor(private m_oRouter: Router, private m_oTranslateService: TranslateService) {}
+  constructor(
+    private m_oRouter: Router,
+    private m_oTranslateService: TranslateService,
+    oBranding: BrandingService,
+  ) {
+    this.m_bEmergencyBrand = oBranding.brand.id === 'emergency';
+  }
 
   ngAfterViewInit(): void {
+    if (this.m_bEmergencyBrand) {
+      return;
+    }
     const oObserverOptions = {
       root: null,
       rootMargin: '0px',

@@ -134,7 +134,7 @@ h3 {
 
 .impact-count-card {
   background: var(--surface-glass, rgba(5, 24, 30, 0.72));
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.04);
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -155,7 +155,7 @@ h3 {
 }
 
 .impact-count-card-outline {
-  border-color: rgba(242, 201, 76, 0.42);
+  border-color: var(--impact-card-border, rgba(242, 201, 76, 0.42));
 }
 
 /* Features Table & Summary */
@@ -272,6 +272,10 @@ h3 {
   border-collapse: collapse;
   font-size: 0.9rem;
   color: var(--rise-text-bright, #ffffff);
+}
+
+.sidebar-impact-table .cursor-pointer {
+  cursor: pointer;
 }
 
 .sidebar-impact-table thead th {

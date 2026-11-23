@@ -1,6 +1,6 @@
 .map-chip-container {
   background-color: var(--rise-teal);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.2);
   border-radius: 6px;
   cursor: pointer;
   padding: 6px 8px;
@@ -16,6 +16,22 @@
 
 .active {
     background-color: var(--rise-teal-800);
+}
+
+.has-selected-sub-chips {
+  border-color: var(--rise-gold);
+}
+
+.selected-sub-chip-count {
+  min-width: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background-color: var(--rise-gold);
+  color: var(--text-inverse);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: center;
 }
 
 .check {

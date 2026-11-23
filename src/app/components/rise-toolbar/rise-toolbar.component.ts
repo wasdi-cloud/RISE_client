@@ -9,11 +9,13 @@ import {UserService} from "../../services/api/user.service";
 import {ConstantsService} from "../../services/constants.service";
 import {UserViewModel} from "../../models/UserViewModel";
 import FadeoutUtils from "../../shared/utilities/FadeoutUtils";
+import {BrandLogoDirective} from '../../directives/brand-logo.directive';
 
 @Component({
   selector: 'rise-toolbar',
   standalone: true,
   imports: [
+    BrandLogoDirective,
     CommonModule,
     RiseButtonComponent,
     RiseUserMenuComponent,

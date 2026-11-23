@@ -27,7 +27,7 @@
   border: 2px dashed var(--rise-gold); /* Adds the dashed border */
   border-radius: 8px; /* Rounds the corners of the border */
   padding: 24px; /* Creates space inside the border for the component */
-  background-color: #0c303c; /* Optional: A slightly different background color for the drop zone */
+  background-color: var(--rise-teal-600, #0c303c); /* Optional: A slightly different background color for the drop zone */
 }
 
 .dialog-footer {

@@ -24,11 +24,13 @@ import {ManualBoundingBoxComponent} from '../../dialogs/manual-bounding-box-dial
 
 import FadeoutUtils from '../../shared/utilities/FadeoutUtils';
 import {RiseAooWidgetComponent} from "./rise-aoo-widget/rise-aoo-widget.component";
+import {BrandLogoDirective} from '../../directives/brand-logo.directive';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [
+    BrandLogoDirective,
     CommonModule,
     RouterLink,
     RiseAffectedWidgetComponent,

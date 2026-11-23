@@ -1,4 +1,14 @@
 {
+  "MAP_CONTROLS": {
+    "EDIT": "Modifica forme", "DELETE": "Elimina forme", "NO_EDIT": "Nessuna forma da modificare", "NO_DELETE": "Nessuna forma da eliminare",
+    "SETTINGS": "Impostazioni", "FULLSCREEN": "Schermo intero", "EXIT_FULLSCREEN": "Esci da schermo intero",
+    "MEASURE": "Avvia misurazione", "DRAW_LINE": "Disegna polilinea", "DRAW_POLYGON": "Disegna poligono",
+    "DRAW_CIRCLE": "Disegna cerchio", "DRAW_RECTANGLE": "Disegna rettangolo", "CANCEL": "Annulla",
+    "IMPORT": "Importa file di forme", "BOUNDING_BOX": "Definisci i limiti manualmente", "COORDINATES": "Cerca per coordinate",
+    "CANCEL_PIXEL": "Annulla informazioni pixel", "PIXEL": "Attiva informazioni pixel", "PRINT": "Stampa mappa",
+    "AUTO_CIRCLE": "Inserisci automaticamente un cerchio", "ANALYZER": "Analizza livelli",
+    "ZOOM_IN": "Ingrandisci", "ZOOM_OUT": "Riduci", "BASEMAPS": "Mappe di base", "SEARCH": "Cerca"
+  },
 	"ACCOUNT": {
 		"AREA_OF_OPERATIONS": "Aree di Operazioni",
 		"ERROR_INFO": "Impossibile ottenere informazioni sull'account",
@@ -161,6 +171,10 @@
 		"ERROR_LAYER": "Si è verificato un errore durante il recupero delle informazioni sui pixel."
 	},
 	"MONITOR": {
+	  "EVENT_TAB": "Evento",
+	  "NO_EVENT_SELECTED": "Nessun evento selezionato",
+	  "EVENT_TIMELINE": "Cronologia dell'evento",
+	  "CLOSE_IMPACTS": "Chiudi impatti",
     "ADD_TITLE_AND_DESCRIPTION": "Aggiungi Titolo e Descrizione",
     "WIRE_TRANSFER": "se confermi di voler pagare con bonifico bancario, riceverai i dettagli bancari via e-mail",
     "PRINT_PAYLOAD_TITLE": "Titolo",
@@ -537,6 +551,7 @@
     "SO2":"SO2"
   },
   "IMPACTS_DIALOG": {
+  "GO_TO_FEATURE": "Vai a {{name}}",
   "NO_IMPACTS_AVAILABLE_MSG": "RISE non ha trovato dati per la data selezionata in quest'area. Si prega di ricontrollare la data o l'area operativa.",
 	"SELECT_LAYER": "Mostra impatti basati su:",
 	"SELECT_LAYER_PLACEHOLDER": "Seleziona un layer per mostrare gli impatti",

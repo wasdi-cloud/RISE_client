@@ -27,9 +27,9 @@ thead {
 .table-filter-select {
   width: 100%;
   min-width: 90px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.08);
   color: var(--rise-text-bright);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.2);
   border-radius: 6px;
   font-size: 12px;
   padding: 4px 8px;
@@ -40,8 +40,16 @@ thead {
 }
 
 td {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.1);
   padding: 8px;
+}
+
+.price-column {
+  text-align: right;
+}
+
+.price-column .header-content {
+  justify-content: right;
 }
 
 .material-symbols-outlined {
@@ -94,4 +102,3 @@ rise-dropdown {
   font-size: 16px;
   line-height: 1;
 }
-

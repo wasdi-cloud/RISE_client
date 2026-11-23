@@ -27,7 +27,7 @@
 ::ng-deep
   .cdk-overlay-pane:not(.mat-mdc-select-panel-above)
   div.mat-mdc-select-panel {
-  background-color: rgba(0, 31, 40, 0.1);
+  background-color: var(--rise-panel-surface, rgba(0, 31, 40, 0.1));
   backdrop-filter: blur(20px);
   border-radius: 8px !important;
   color: var(--rise-text-bright);
@@ -50,8 +50,8 @@
 .chip {
   display: flex;
   align-items: center;
-  background-color: #0c303c;
-  color: white;
+  background-color: var(--rise-teal-600, #0c303c);
+  color: var(--rise-text-default, white);
   padding: 3px 8px;
   border-radius: 15px;
   font-size: 14px;
@@ -61,7 +61,7 @@
 .chip-close {
   background: none;
   border: none;
-  color: white;
+  color: var(--rise-text-default, white);
   font-weight: bold;
   margin-left: 5px;
   cursor: pointer;
@@ -80,7 +80,7 @@
   right: 0;
   z-index: 10; /* Ensure it stays on top of the options */
   padding: 8px 12px;
-  background-color: rgba(0, 31, 40, 0.9); /* Slightly darker background for visibility */
+  background-color: var(--rise-panel-surface, rgba(0, 31, 40, 0.9)); /* Slightly darker background for visibility */
   border-top-left-radius: 8px; /* Match panel border-radius */
   border-top-right-radius: 8px; /* Match panel border-radius */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
@@ -117,5 +117,5 @@
 /* Focus style for the search input */
 ::ng-deep .mat-select-search:focus {
   border-color: var(--rise-gold); /* Highlight border on focus, adjust to your theme */
-  box-shadow: 0 0 0 2px rgba(var(--rise-gold), 0.2); /* Subtle glow on focus */
+  box-shadow: 0 0 0 2px rgba(var(--rise-accent-rgb, 239, 186, 53), 0.2);
 }

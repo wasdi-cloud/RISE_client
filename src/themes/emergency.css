@@ -1,0 +1,360 @@
+:root[data-brand="emergency"] {
+  color-scheme: light;
+  /* Compatibility aliases keep existing components on the shared token system. */
+  --rise-teal: #e7e5e4;
+  --rise-teal-600: #fee2e2;
+  --rise-teal-800: #fafafa;
+  --rise-white: #292524;
+  --rise-gold: #b91c1c;
+  --rise-primary: #b91c1c;
+  --rise-text: #292524;
+  --rise-text-default: #292524;
+  --rise-text-bright: #292524;
+  --rise-text-dim: #57534e;
+  --rise-danger-text: #9f1239;
+  --text-inverse: #ffffff;
+  --rise-border-default: #d6d3d1;
+  --impact-card-border: #d6d3d1;
+  --impact-chart-track: #a8a29e;
+  --rise-foreground-rgb: 28, 25, 23;
+  --rise-panel-surface: rgba(255, 255, 255, 0.97);
+  --rise-widget-surface: #ffffff;
+  --rise-inset-surface: #f5f5f4;
+  --surface-glass: #ffffff;
+  --surface-glass-elevation: #f5f5f4;
+  --surface-glass-interactive: rgba(28, 25, 23, 0.06);
+  --rise-primary-background: #b91c1c;
+  --rise-primary-text: #ffffff;
+  --rise-primary-active: #991b1b;
+  --rise-on-accent: #ffffff;
+  --rise-accent-rgb: 185, 28, 28;
+  --brand-public-strong: #991b1b;
+  --brand-public-text: #991b1b;
+  --brand-public-muted: #57534e;
+  --brand-public-accent: #b91c1c;
+  --brand-public-accent-text: #b91c1c;
+  --brand-on-accent: #ffffff;
+  --brand-public-accent-hover: #991b1b;
+  --brand-public-rgb: 153, 27, 27;
+  --brand-public-accent-rgb: 185, 28, 28;
+  --mat-datepicker-calendar-date-selected-state-text-color: #ffffff;
+}
+
+:root[data-brand="emergency"] .dashboard-home-link {
+  width: auto;
+}
+
+:root[data-brand="emergency"] rise-aoo-widget input:checked + .ui-slider {
+  background-color: var(--rise-primary);
+}
+
+:root[data-brand="emergency"] rise-aoo-widget .privacy-icon.public {
+  color: var(--rise-text-dim);
+}
+
+:root[data-brand="emergency"] rise-alerts-widget .alert-heading {
+  padding: 0;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: default;
+}
+
+:root[data-brand="emergency"] rise-alerts-widget .alert-heading:hover {
+  background-color: transparent;
+}
+
+:root[data-brand="emergency"] rise-alerts-widget .alert-title {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+:root[data-brand="emergency"] rise-alerts-widget .alert-heading .widget-gold-icon {
+  flex-shrink: 0;
+  font-size: 20px;
+}
+
+:root[data-brand="emergency"] rise-alerts-widget .alert-metric {
+  padding: 0;
+  border: none;
+  background: transparent;
+  flex-wrap: nowrap;
+}
+
+:root[data-brand="emergency"] rise-alerts-widget .alert-metric .body-icon {
+  flex-shrink: 0;
+  font-size: 20px;
+  color: var(--rise-text-dim);
+}
+
+:root[data-brand="emergency"] rise-alerts-widget .alert-content {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+:root[data-brand="emergency"] .rise-sidebar:not(.collapsed) .widget-header .rise-badge {
+  background-color: #f3f4f6;
+  color: #6b7280;
+  border-color: #e5e7eb;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 15px;
+  height: auto;
+  padding: 2px 8px;
+  margin-left: 4px;
+}
+
+:root[data-brand="emergency"] .rise-sidebar:not(.collapsed) .widget-header rise-badge.has-items .rise-badge {
+  background-color: #fef2f2;
+  color: var(--rise-primary);
+  border-color: #fee2e2;
+}
+
+:root[data-brand="emergency"] .rise-sidebar .widget-card,
+:root[data-brand="emergency"] .rise-sidebar .banner-card {
+  border-color: var(--rise-border-default);
+}
+
+:root[data-brand="emergency"] .rise-sidebar.collapsed .dashboard-home-link {
+  width: 30px;
+}
+
+:root[data-brand="emergency"] .dashboard-logo {
+  width: auto;
+  height: 24px;
+  object-position: left center;
+}
+
+:root[data-brand="emergency"] .rise-sidebar.collapsed .dashboard-logo {
+  width: 100%;
+  height: 100%;
+}
+
+:root[data-brand="emergency"] .monitor-page .logo-img {
+  width: auto;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+:root[data-brand="emergency"] .monitor-page :is(.event-quick-upload, .event-attachments) .text-light {
+  color: var(--rise-text-bright) !important;
+}
+
+:root[data-brand="emergency"] .monitor-page .event-attachments .text-muted {
+  color: var(--rise-text-dim) !important;
+}
+
+:root[data-brand="emergency"] .attachment-preview-dialog .text-light {
+  color: var(--rise-text-bright) !important;
+}
+
+:root[data-brand="emergency"] app-print-map-dialog .format-option :is(.format-icon, .format-label) {
+  color: var(--rise-text-dim);
+}
+
+:root[data-brand="emergency"] app-print-map-dialog .format-option.active :is(.format-icon, .format-label) {
+  color: var(--rise-on-accent);
+}
+
+:root[data-brand="emergency"] .monitor-page .event-quick-upload .btn-outline-light {
+  --bs-btn-color: var(--rise-text-bright);
+  --bs-btn-border-color: var(--rise-border-default);
+  --bs-btn-hover-color: var(--rise-text-bright);
+  --bs-btn-hover-bg: var(--surface-glass-interactive);
+  --bs-btn-hover-border-color: var(--rise-text-dim);
+  --bs-btn-active-color: var(--rise-text-bright);
+  --bs-btn-active-bg: var(--surface-glass-interactive);
+  --bs-btn-active-border-color: var(--rise-text-dim);
+  --bs-btn-disabled-color: var(--rise-text-dim);
+  --bs-btn-disabled-border-color: var(--rise-border-default);
+}
+
+:root[data-brand="emergency"] img[riseBrandLogo] {
+  object-fit: contain;
+}
+
+:root[data-brand="emergency"] .hero-img {
+  background-image: none;
+}
+
+:root[data-brand="emergency"] :is(
+  .hero-section, .intro-section, .case-study-section, .steps-section,
+  .plugin-block, .result-card, .testimonials-section, .contact-form-section,
+  .custom-plan-section
+) {
+  --brand-public-accent-text: #ffffff;
+}
+
+:root[data-brand="emergency"] :is(
+  .cta-section, .future-section, .story-whats-next, .connected-section,
+  .active-plugin, .billing-toggle__btn--active
+) {
+  --brand-public-text: #ffffff;
+  --brand-public-accent-text: #ffffff;
+  color: #ffffff;
+}
+
+:root[data-brand="emergency"] :is(.card-large, .step-card, .future-card) {
+  --brand-public-text: #991b1b;
+  --brand-public-accent-text: #b91c1c;
+}
+
+:root[data-brand="emergency"] .connected-section {
+  background-image: linear-gradient(rgba(127, 29, 29, 0.9), rgba(127, 29, 29, 0.9)),
+    url('/assets/rise-assets/connected-map.png');
+}
+
+:root[data-brand="emergency"] .role-badge-rise-admin,
+:root[data-brand="emergency"] .role-badge-admin {
+  color: #ffffff;
+}
+
+:root[data-brand="emergency"] .track-fill {
+  background: var(--rise-gold);
+}
+
+:root[data-brand="emergency"] .event-node:hover .event-dot {
+  box-shadow: 0 0 0 4px rgba(var(--rise-accent-rgb), 0.25);
+}
+
+:root[data-brand="emergency"] .slider {
+  accent-color: var(--rise-gold);
+}
+
+:root[data-brand="emergency"] .slider::-webkit-slider-thumb {
+  background: var(--rise-gold);
+}
+
+:root[data-brand="emergency"] .slider::-moz-range-thumb {
+  background: var(--rise-gold);
+}
+
+:root[data-brand="emergency"] .live-pill.is-live {
+  color: #9f1239;
+}
+
+:root[data-brand="emergency"] .time-display {
+  background: #fee2e2;
+}
+
+:root[data-brand="emergency"] .highlight-date .mat-calendar-body-cell-content {
+  background-color: rgba(var(--rise-accent-rgb), 0.1);
+}
+
+:root[data-brand="emergency"] .event-badge.flood {
+  color: #1e40af;
+}
+
+:root[data-brand="emergency"] .event-badge.fire {
+  color: #991b1b;
+}
+
+:root[data-brand="emergency"] .event-badge.earthquake {
+  color: #78350f;
+}
+
+:root[data-brand="emergency"] .leaflet-draw-toolbar > a {
+  background-color: var(--rise-widget-surface) !important;
+  color: var(--rise-text-default) !important;
+  background-image: none !important;
+  position: relative;
+  width: 36px !important;
+  height: 36px !important;
+  box-sizing: border-box;
+  margin: 0 !important;
+}
+
+:root[data-brand="emergency"] .leaflet-draw-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+:root[data-brand="emergency"] .leaflet-draw-toolbar > a[class*="leaflet-draw-draw-"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 20px;
+  height: 20px;
+  background-color: currentColor;
+  -webkit-mask: var(--map-control-icon) center / contain no-repeat;
+  mask: var(--map-control-icon) center / contain no-repeat;
+  pointer-events: none;
+}
+
+:root[data-brand="emergency"] .leaflet-draw-draw-polyline {
+  --map-control-icon: url('/assets/rise-assets/diagonal-line.svg');
+}
+
+:root[data-brand="emergency"] .leaflet-draw-draw-polygon {
+  --map-control-icon: url('/assets/rise-assets/pentagon.svg');
+}
+
+:root[data-brand="emergency"] .leaflet-draw-draw-rectangle {
+  --map-control-icon: url('/assets/rise-assets/square-icon.svg');
+}
+
+:root[data-brand="emergency"] .leaflet-draw-draw-circle {
+  --map-control-icon: url('/assets/rise-assets/circle.svg');
+}
+
+:root[data-brand="emergency"] rise-date-input .calendar-icon {
+  display: none;
+}
+
+:root[data-brand="emergency"] .leaflet-control-geocoder-icon,
+:root[data-brand="emergency"] .leaflet-control-layers-toggle {
+  display: grid;
+  place-items: center;
+  background-color: var(--rise-widget-surface) !important;
+  background-image: none !important;
+}
+
+:root[data-brand="emergency"] .leaflet-control-geocoder-icon::before,
+:root[data-brand="emergency"] .leaflet-control-layers-toggle::before {
+  content: "";
+  width: 24px;
+  height: 24px;
+  background-color: var(--rise-text-default);
+  -webkit-mask: var(--map-control-icon) center / contain no-repeat;
+  mask: var(--map-control-icon) center / contain no-repeat;
+}
+
+:root[data-brand="emergency"] .leaflet-control-geocoder-icon {
+  --map-control-icon: url('/assets/rise-assets/map-search.svg');
+  position: relative;
+  display: inline-grid;
+  vertical-align: middle;
+}
+
+:root[data-brand="emergency"] .leaflet-control-geocoder-alternatives > li:is(:hover, .leaflet-control-geocoder-selected) {
+  background-color: var(--rise-border-default) !important;
+}
+
+:root[data-brand="emergency"] .leaflet-control-geocoder-alternatives > li > a:hover {
+  background-color: transparent !important;
+}
+
+:root[data-brand="emergency"] .leaflet-control-layers-toggle {
+  --map-control-icon: url('/assets/rise-assets/map-layers.svg');
+}
+
+:root[data-brand="emergency"] .leaflet-control-layers-toggle::before {
+  width: 20px;
+  height: 20px;
+}
+
+:root[data-brand="emergency"] .login-container {
+  border-color: var(--rise-border-default);
+  box-shadow: 0 8px 28px rgba(28, 25, 23, 0.08);
+}
+
+:root[data-brand="emergency"] :focus-visible {
+  outline: 2px solid #b91c1c;
+  outline-offset: 3px;
+}

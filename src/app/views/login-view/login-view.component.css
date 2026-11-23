@@ -10,7 +10,7 @@ div.login-container {
   backdrop-filter: blur(20px);
   border-radius: 24px;
   padding: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.1);
   position: absolute;
   left: 51%;
   height: inherit;
@@ -30,7 +30,7 @@ div.login-container {
 }
 
 .invalid-user {
-  background-color: rgba(255, 255, 255, 0.04);
+  background-color: rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.04);
   border: 1px solid var(--rise-text-dim);
   border-radius: 6px;
   color: var(--rise-danger-text);

@@ -3,7 +3,7 @@
 .pricing-page {
   padding-top: 60px;
   font-family: 'Satoshi Variable', sans-serif;
-  color: #1c3d4a;
+  color: var(--brand-public-text, #1c3d4a);
 }
 
 /* PRICING SECTION */
@@ -22,13 +22,13 @@
   font-family: 'Space Mono', monospace;
   font-size: 36px;
   font-weight: 700;
-  color: #1c3d4a;
+  color: var(--brand-public-text, #1c3d4a);
   margin: 0 0 16px;
 }
 
 .pricing-intro {
   font-size: 15px;
-  color: #4a6672;
+  color: var(--brand-public-muted, #4a6672);
   max-width: 700px;
   margin: 0 auto 36px;
 }
@@ -50,10 +50,10 @@
   justify-content: center;
   padding: 0 24px;
   border-radius: 8px;
-  border: 1px solid rgba(39, 77, 89, 0.15);
+  border: 1px solid rgba(var(--brand-public-rgb, 39, 77, 89), 0.15);
   background: #fff;
   font-size: 14px;
-  color: #4a6672;
+  color: var(--brand-public-muted, #4a6672);
   white-space: nowrap;
   box-sizing: border-box;
   
@@ -71,14 +71,14 @@
 }
 
 .toggle-label--active {
-  background: #274d59;
+  background: var(--brand-public-strong, #274d59);
   color: #fff;
-  border-color: #274d59;
+  border-color: var(--brand-public-strong, #274d59);
 }
 
 .pricing-note {
   font-size: 18px; /* Increased from 14px */
-  color: #1c3d4a;
+  color: var(--brand-public-text, #1c3d4a);
   line-height: 1.7;
   margin-bottom: 36px;
   max-width: 100%;
@@ -86,19 +86,19 @@
 }
 
 .highlight-yellow {
-  color: #EFB840; /* Branded yellow */
+  color: var(--brand-public-accent-text, #EFB840); /* Branded yellow */
   font-weight: 800; /* Extra bold */
 }
 
 ::ng-deep .note-highlight {
-  color: #efb840;
+  color: var(--brand-public-accent-text, #efb840);
 }
 
 /* BILLING TOGGLE */
 .billing-toggle {
   display: inline-flex;
   background: #fff;
-  border: 1px solid rgba(39, 77, 89, 0.15);
+  border: 1px solid rgba(var(--brand-public-rgb, 39, 77, 89), 0.15);
   border-radius: 30px;
   padding: 4px;
   margin-bottom: 12px;
@@ -112,19 +112,19 @@
   font-family: 'Space Mono', monospace;
   font-size: 13px;
   font-weight: 700;
-  color: #4a6672;
+  color: var(--brand-public-muted, #4a6672);
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
 }
 
 .billing-toggle__btn--active {
-  background: #efba35;
-  color: #1c3d4a;
+  background: var(--brand-public-accent, #efba35);
+  color: var(--brand-public-text, #1c3d4a);
 }
 
 .billing-hint {
   font-size: 16px; /* Increased from 13px */
-  color: #7a9ba8;
+  color: var(--brand-public-muted, #7a9ba8);
   margin-bottom: 40px;
 }
 
@@ -134,7 +134,7 @@
   margin: 0 auto 40px;
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid rgba(39, 77, 89, 0.1);
+  border: 1px solid rgba(var(--brand-public-rgb, 39, 77, 89), 0.1);
   background: #fff;
   box-shadow: 0 4px 20px rgba(0,0,0,0.04);
 }
@@ -148,10 +148,10 @@
   font-family: 'Space Mono', monospace;
   font-size: 13px;
   font-weight: 700;
-  color: #1c3d4a;
+  color: var(--brand-public-text, #1c3d4a);
   padding: 20px 24px;
   text-align: center;
-  border-bottom: 1px solid rgba(39, 77, 89, 0.1);
+  border-bottom: 1px solid rgba(var(--brand-public-rgb, 39, 77, 89), 0.1);
 }
 
 .pricing-table th:first-child {
@@ -162,32 +162,32 @@
   padding: 18px 24px;
   text-align: center;
   font-size: 15px;
-  color: #4a6672;
+  color: var(--brand-public-muted, #4a6672);
 }
 
 .pricing-table td:first-child {
   text-align: center; /* Centralized cell */
   font-weight: 500;
-  color: #1c3d4a;
+  color: var(--brand-public-text, #1c3d4a);
 }
 
 .ngo-col {
-  background: rgba(39, 77, 89, 0.04);
+  background: rgba(var(--brand-public-rgb, 39, 77, 89), 0.04);
 }
 
 .price-value {
   font-weight: 700;
-  color: #1c3d4a;
+  color: var(--brand-public-text, #1c3d4a);
   font-size: 18px;
 }
 
 .price-value--ngo {
-  color: #274d59;
+  color: var(--brand-public-text, #274d59);
 }
 
 .area-definition {
   font-size: 13.5px;
-  color: #4a6672;
+  color: var(--brand-public-muted, #4a6672);
   max-width: 1400px;
   margin: 0 auto;
   line-height: 1.6;
@@ -196,7 +196,7 @@
 
 /* CUSTOM PLAN */
 .custom-plan-section {
-  background: #284E59; /* Branded teal */
+  background: var(--brand-public-strong, #284E59); /* Branded teal */
   padding: 100px 24px;
   color: #fff;
   text-align: center; /* Centralized section */
@@ -262,7 +262,7 @@
   left: 16px;
   top: 50%;
   transform: translateY(-50%);
-  color: #284E59;
+  color: var(--brand-public-text, #284E59);
   font-size: 18px;
 }
 
@@ -278,7 +278,7 @@
   border: none;
   border-radius: 8px;
   padding: 14px 20px;
-  color: #284E59;
+  color: var(--brand-public-text, #284E59);
   font-family: inherit;
   font-size: 14px;
   outline: none;
@@ -286,7 +286,7 @@
 
 .custom-plan-input::placeholder,
 .custom-plan-textarea::placeholder {
-  color: #284E59;
+  color: var(--brand-public-text, #284E59);
   opacity: 0.6;
 }
 
@@ -298,7 +298,7 @@
 .btn-primary-yellow {
   display: block;
   width: 100%;
-  background: #F2B84B;
+  background: var(--brand-public-accent, #F2B84B);
   color: #FFF;
   border: none;
   border-radius: 8px;

@@ -35,3 +35,14 @@ $rise-client-theme: mat.define-light-theme((
 // that you are using.
 @include mat.all-component-themes($rise-client-theme);
 
+$emergency-theme: mat.define-light-theme((
+  color: (
+    primary: mat.define-palette(mat.$red-palette, 800),
+    accent: mat.define-palette(mat.$red-palette, 800),
+    warn: mat.define-palette(mat.$deep-orange-palette, 800),
+  ),
+));
+
+:root[data-brand='emergency'] {
+  @include mat.all-component-colors($emergency-theme);
+}

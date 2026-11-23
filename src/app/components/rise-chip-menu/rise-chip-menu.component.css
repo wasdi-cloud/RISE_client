@@ -12,7 +12,7 @@ div {
 }
 
 .chip-options {
-  background-color: rgba(0, 31, 40, 0.8);
+  background-color: var(--rise-panel-surface, rgba(0, 31, 40, 0.8));
   position: absolute;
   border-radius: 8px;
   height: 15rem;

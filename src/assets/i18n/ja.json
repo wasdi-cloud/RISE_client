@@ -1,4 +1,14 @@
 {
+  "MAP_CONTROLS": {
+    "EDIT": "図形を編集", "DELETE": "図形を削除", "NO_EDIT": "編集する図形がありません", "NO_DELETE": "削除する図形がありません",
+    "SETTINGS": "設定", "FULLSCREEN": "全画面表示", "EXIT_FULLSCREEN": "全画面表示を終了",
+    "MEASURE": "計測を開始", "DRAW_LINE": "折れ線を描画", "DRAW_POLYGON": "多角形を描画",
+    "DRAW_CIRCLE": "円を描画", "DRAW_RECTANGLE": "長方形を描画", "CANCEL": "キャンセル",
+    "IMPORT": "シェープファイルをインポート", "BOUNDING_BOX": "範囲を手動で指定", "COORDINATES": "座標で検索",
+    "CANCEL_PIXEL": "ピクセル情報をキャンセル", "PIXEL": "ピクセル情報を切り替え", "PRINT": "地図を印刷",
+    "AUTO_CIRCLE": "円を自動挿入", "ANALYZER": "レイヤーを分析",
+    "ZOOM_IN": "拡大", "ZOOM_OUT": "縮小", "BASEMAPS": "ベースマップ", "SEARCH": "検索"
+  },
   "ACCOUNT": {
     "AREA_OF_OPERATIONS": "Areas of Operations",
     "ERROR_INFO": "Could not get account information",
@@ -159,6 +169,10 @@
     "ERROR_LAYER": "An error occurred while trying to fetch pixel information."
   },
   "MONITOR": {
+    "EVENT_TAB": "イベント",
+    "NO_EVENT_SELECTED": "イベントが選択されていません",
+    "EVENT_TIMELINE": "イベントの時系列",
+    "CLOSE_IMPACTS": "影響情報を閉じる",
     "ADD_TITLE_AND_DESCRIPTION": "Add Title & Description",
     "PRINT_PAYLOAD_TITLE": "Title",
     "PRINT_PAYLOAD_DESCRIPTION": "Description",
@@ -503,6 +517,7 @@
     "SO2":"SO2"
   },
   "IMPACTS_DIALOG": {
+    "GO_TO_FEATURE": "{{name}}へ移動",
     "NO_IMPACTS_AVAILABLE_MSG": "RISE did not find any data for the selected date in this area of operation",
     "SELECT_LAYER": "Show Impacts based on:",
     "SELECT_LAYER_PLACEHOLDER": "Select a layer to show impacts",

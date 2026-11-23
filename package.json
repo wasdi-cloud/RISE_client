@@ -7,6 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "test:branding": "ng test --watch=false --browsers=ChromeHeadless --ts-config=tsconfig.branding.spec.json --include='src/app/**/brand*.spec.ts'",
     "serve:ssr:rise-client": "node dist/rise-client/server/server.mjs"
   },
   "private": true,

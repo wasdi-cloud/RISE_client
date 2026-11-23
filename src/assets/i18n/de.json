@@ -1,4 +1,14 @@
 {
+  "MAP_CONTROLS": {
+    "EDIT": "Formen bearbeiten", "DELETE": "Formen löschen", "NO_EDIT": "Keine Formen zum Bearbeiten", "NO_DELETE": "Keine Formen zum Löschen",
+    "SETTINGS": "Einstellungen", "FULLSCREEN": "Vollbild", "EXIT_FULLSCREEN": "Vollbild verlassen",
+    "MEASURE": "Messung starten", "DRAW_LINE": "Polylinie zeichnen", "DRAW_POLYGON": "Polygon zeichnen",
+    "DRAW_CIRCLE": "Kreis zeichnen", "DRAW_RECTANGLE": "Rechteck zeichnen", "CANCEL": "Abbrechen",
+    "IMPORT": "Shape-Datei importieren", "BOUNDING_BOX": "Begrenzungsrahmen manuell festlegen", "COORDINATES": "Nach Koordinaten suchen",
+    "CANCEL_PIXEL": "Pixelinformationen abbrechen", "PIXEL": "Pixelinformationen umschalten", "PRINT": "Karte drucken",
+    "AUTO_CIRCLE": "Kreis automatisch einfügen", "ANALYZER": "Ebenen analysieren",
+    "ZOOM_IN": "Vergrößern", "ZOOM_OUT": "Verkleinern", "BASEMAPS": "Basiskarten", "SEARCH": "Suchen"
+  },
   "ACCOUNT": {
     "AREA_OF_OPERATIONS": "Areas of Operations",
     "ERROR_INFO": "Could not get account information",
@@ -160,6 +170,10 @@
     "ERROR_LAYER": "An error occurred while trying to fetch pixel information."
   },
   "MONITOR": {
+    "EVENT_TAB": "Ereignis",
+    "NO_EVENT_SELECTED": "Kein Ereignis ausgewählt",
+    "EVENT_TIMELINE": "Ereigniszeitachse",
+    "CLOSE_IMPACTS": "Auswirkungen schließen",
     "ADD_TITLE_AND_DESCRIPTION": "Add Title & Description",
     "PRINT_PAYLOAD_TITLE": "Title",
     "PRINT_PAYLOAD_DESCRIPTION": "Description",
@@ -504,6 +518,7 @@
     "SO2":"SO2"
   },
   "IMPACTS_DIALOG": {
+    "GO_TO_FEATURE": "Zu {{name}} wechseln",
     "NO_IMPACTS_AVAILABLE_MSG": "RISE did not find any data for the selected date in this area of operation",
     "SELECT_LAYER": "Show Impacts based on:",
     "SELECT_LAYER_PLACEHOLDER": "Select a layer to show impacts",

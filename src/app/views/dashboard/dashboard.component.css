@@ -9,7 +9,7 @@ div.map-container {
 
 /* Sidebar Core Positioning */
 .rise-sidebar {
-  background-color: rgba(0, 31, 40, 0.8);
+  background-color: var(--rise-panel-surface, rgba(0, 31, 40, 0.8));
   border-right: 1px solid var(--rise-border-default);
   backdrop-filter: blur(10px);
   position: absolute;
@@ -36,7 +36,7 @@ div.map-container {
   z-index: 1000;
   width: 24px;
   height: 44px;
-  background-color: rgba(0, 31, 40, 0.95);
+  background-color: var(--rise-panel-surface, rgba(0, 31, 40, 0.95));
   border: 1px solid var(--rise-border-default);
   border-left: none;
   border-radius: 0 8px 8px 0;
@@ -44,15 +44,15 @@ div.map-container {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.8);
   box-shadow: 2px 0 6px rgba(0,0,0,0.3);
   transform: translateY(-50%);
   transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s, color 0.2s;
 }
 
 .sidebar-toggle:hover {
-  background-color: rgba(255, 255, 255, 0.15);
-  color: #fff;
+  background-color: rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.15);
+  color: var(--rise-text-default, #fff);
 }
 
 /* Moves button to 80px edge when collapsed */
@@ -143,25 +143,6 @@ div.map-container {
   display: none !important;
 }
 
-.rise-sidebar.collapsed ::ng-deep rise-badge.has-items {
-  display: block !important;
-  width: 12px;
-  height: 12px;
-  padding: 0;
-  border: none;
-}
-
-.rise-sidebar.collapsed ::ng-deep rise-badge.has-items .rise-badge {
-  display: block;
-  box-sizing: border-box;
-  width: 12px;
-  height: 12px;
-  padding: 0;
-  border: 2px solid var(--rise-gold);
-  border-radius: 50%;
-  font-size: 0;
-}
-
 /* Center widget header icons */
 .rise-sidebar.collapsed ::ng-deep .widget-header,
 .rise-sidebar.collapsed ::ng-deep .banner-card,
@@ -196,7 +177,7 @@ div.map-container {
 }
 
 .rise-sidebar.collapsed rise-affected-widget ::ng-deep .widget-body:hover {
-  background-color: rgba(255, 255, 255, 0.08);
+  background-color: rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.08);
 }
 
 .rise-sidebar.collapsed rise-affected-widget ::ng-deep .affected-content,
@@ -210,7 +191,7 @@ div.map-container {
 .rise-sidebar.collapsed rise-affected-widget ::ng-deep .affected-total {
   font-size: 13px !important;
   font-weight: 600;
-  color: #fff;
+  color: var(--rise-text-default, #fff);
 }
 
 .rise-sidebar.collapsed rise-aoo-widget ::ng-deep rise-badge {

@@ -1,4 +1,14 @@
 {
+  "MAP_CONTROLS": {
+    "EDIT": "आकृतियाँ संपादित करें", "DELETE": "आकृतियाँ हटाएँ", "NO_EDIT": "संपादन के लिए कोई आकृति नहीं है", "NO_DELETE": "हटाने के लिए कोई आकृति नहीं है",
+    "SETTINGS": "सेटिंग्स", "FULLSCREEN": "पूर्ण स्क्रीन", "EXIT_FULLSCREEN": "पूर्ण स्क्रीन से बाहर निकलें",
+    "MEASURE": "माप शुरू करें", "DRAW_LINE": "बहुरेखा बनाएँ", "DRAW_POLYGON": "बहुभुज बनाएँ",
+    "DRAW_CIRCLE": "वृत्त बनाएँ", "DRAW_RECTANGLE": "आयत बनाएँ", "CANCEL": "रद्द करें",
+    "IMPORT": "आकृति फ़ाइल आयात करें", "BOUNDING_BOX": "सीमाएँ मैन्युअल रूप से तय करें", "COORDINATES": "निर्देशांक से खोजें",
+    "CANCEL_PIXEL": "पिक्सेल जानकारी रद्द करें", "PIXEL": "पिक्सेल जानकारी चालू या बंद करें", "PRINT": "मानचित्र प्रिंट करें",
+    "AUTO_CIRCLE": "स्वचालित रूप से वृत्त जोड़ें", "ANALYZER": "परतों का विश्लेषण करें",
+    "ZOOM_IN": "ज़ूम इन करें", "ZOOM_OUT": "ज़ूम आउट करें", "BASEMAPS": "आधार मानचित्र", "SEARCH": "खोजें"
+  },
   "ACCOUNT": {
     "AREA_OF_OPERATIONS": "Areas of Operations",
     "ERROR_INFO": "Could not get account information",
@@ -159,6 +169,10 @@
     "ERROR_LAYER": "An error occurred while trying to fetch pixel information."
   },
   "MONITOR": {
+    "EVENT_TAB": "घटना",
+    "NO_EVENT_SELECTED": "कोई घटना चयनित नहीं है",
+    "EVENT_TIMELINE": "घटना की समयरेखा",
+    "CLOSE_IMPACTS": "प्रभाव बंद करें",
     "ADD_TITLE_AND_DESCRIPTION": "Add Title & Description",
     "PRINT_PAYLOAD_TITLE": "Title",
     "PRINT_PAYLOAD_DESCRIPTION": "Description",
@@ -503,6 +517,7 @@
     "SO2":"SO2"
   },
   "IMPACTS_DIALOG": {
+    "GO_TO_FEATURE": "{{name}} पर जाएँ",
     "NO_IMPACTS_AVAILABLE_MSG": "RISE did not find any data for the selected date in this area of operation",
     "SELECT_LAYER": "Show Impacts based on:",
     "SELECT_LAYER_PLACEHOLDER": "Select a layer to show impacts",

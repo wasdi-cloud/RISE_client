@@ -16,7 +16,7 @@
     <button type="button" class="impact-dialog-tab" [class.active]="m_sActiveTab === 'features'"
             (click)="m_sActiveTab = 'features'" role="tab"
             [attr.aria-selected]="m_sActiveTab === 'features'">
-      Affected Features ({{ m_aoImpactRows.length }})
+      Affected Features ({{ m_aoImpactRows.length | number }})
     </button>
   </div>
   <div class="body flex-fill d-flex flex-column gap-3">
@@ -54,15 +54,15 @@
       <div class="impact-counts-grid">
       <div class="impact-count-card impact-count-card-outline flex-grow-1">
         <span>Pop. Affected</span>
-        <strong>{{ m_oSelectedWidget?.payload?.['populationCount'] ?? 'N.A.' }}</strong>
+        <strong>{{ (m_oSelectedWidget?.payload?.['populationCount'] | number) ?? 'N.A.' }}</strong>
       </div>
       <div class="impact-count-card impact-count-card-outline flex-grow-1">
         <span>Exposures</span>
-        <strong>{{ m_oSelectedWidget?.payload?.['exposuresCount'] ?? 'N.A.' }}</strong>
+        <strong>{{ (m_oSelectedWidget?.payload?.['exposuresCount'] | number) ?? 'N.A.' }}</strong>
       </div>
       <div class="impact-count-card impact-count-card-outline flex-grow-1">
         <span>Roads Affected</span>
-        <strong>{{ m_oSelectedWidget?.payload?.['roadsCount'] ?? 'N.A.' }}</strong>
+        <strong>{{ (m_oSelectedWidget?.payload?.['roadsCount'] | number) ?? 'N.A.' }}</strong>
       </div>
       </div>
     </div>
@@ -76,7 +76,7 @@
     <div class="arc-wrapper">
       <svg viewBox="0 0 100 55" class="half-arc">
   <!-- Background Track (Now visible) -->
-  <path d="M 10 45 A 40 40 0 0 1 90 45" fill="none" stroke="rgba(255, 255, 255, 0.1)" stroke-width="8" stroke-linecap="round" />
+  <path class="arc-track" d="M 10 45 A 40 40 0 0 1 90 45" fill="none" stroke="var(--impact-chart-track, rgba(255, 255, 255, 0.1))" stroke-width="8" stroke-linecap="round" />
   
   <!-- Foreground Fill -->
   <path d="M 10 45 A 40 40 0 0 1 90 45" fill="none" stroke="var(--rise-gold, #f2c94c)" stroke-width="8" stroke-linecap="round"
@@ -103,7 +103,7 @@
     <div class="arc-wrapper">
       <svg viewBox="0 0 100 55" class="half-arc">
   <!-- Background Track (Now visible) -->
-  <path d="M 10 45 A 40 40 0 0 1 90 45" fill="none" stroke="rgba(255, 255, 255, 0.1)" stroke-width="8" stroke-linecap="round" />
+  <path class="arc-track" d="M 10 45 A 40 40 0 0 1 90 45" fill="none" stroke="var(--impact-chart-track, rgba(255, 255, 255, 0.1))" stroke-width="8" stroke-linecap="round" />
   
   <!-- Foreground Fill -->
   <path d="M 10 45 A 40 40 0 0 1 90 45" fill="none" stroke="var(--rise-gold, #f2c94c)" stroke-width="8" stroke-linecap="round"
@@ -130,7 +130,7 @@
     <div class="arc-wrapper">
       <svg viewBox="0 0 100 55" class="half-arc">
   <!-- Background Track (Now visible) -->
-  <path d="M 10 45 A 40 40 0 0 1 90 45" fill="none" stroke="rgba(255, 255, 255, 0.1)" stroke-width="8" stroke-linecap="round" />
+  <path class="arc-track" d="M 10 45 A 40 40 0 0 1 90 45" fill="none" stroke="var(--impact-chart-track, rgba(255, 255, 255, 0.1))" stroke-width="8" stroke-linecap="round" />
   
   <!-- Foreground Fill -->
   <path d="M 10 45 A 40 40 0 0 1 90 45" fill="none" stroke="var(--rise-gold, #f2c94c)" stroke-width="8" stroke-linecap="round"
@@ -179,7 +179,7 @@
         </div>
         <div class="drawer-features-header d-flex align-items-center gap-2">
           <span class="material-symbols-outlined">table_chart</span>
-          <strong class="flex-fill">Affected Features ({{ m_aoFilteredImpactRows.length }})</strong>
+          <strong class="flex-fill">Affected Features ({{ m_aoFilteredImpactRows.length | number }})</strong>
           <select class="form-select form-select-sm impact-export-format"
                   [(ngModel)]="m_sExportFormat"
                   aria-label="Export format">
@@ -238,8 +238,8 @@
             <tr *ngFor="let oRow of m_aoFilteredImpactRows"
                 class="cursor-pointer"
                 (click)="zoomToImpact(oRow)"
-                title="Zoom to feature">
-              <td class="text-truncate" [title]="oRow.name">{{ oRow.name }}</td>
+                [title]="'IMPACTS_DIALOG.GO_TO_FEATURE' | translate:{name: oRow.name}">
+              <td class="text-truncate">{{ oRow.name }}</td>
               <td><span class="badge bg-secondary">{{ oRow.type }}</span></td>
             </tr>
             <tr *ngIf="m_aoFilteredImpactRows.length === 0">

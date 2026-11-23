@@ -6,12 +6,16 @@
     'disabled': m_bDisabled
   }"
   [class.pointer-events-none]="m_bDisabled"
+  [class.has-selected-sub-chips]="m_iSelectedSubChipCount > 0"
   [attr.title]="m_sTooltip"
 >
   <span class="material-symbols-outlined">{{ m_sIcon }}</span>
   <div class="no-select">
     {{ m_sTitle }}
   </div>
+  <span *ngIf="m_iSelectedSubChipCount > 0" class="selected-sub-chip-count">
+    {{ m_iSelectedSubChipCount }}
+  </span>
   <span *ngIf="m_bIsActive" class="material-symbols-outlined check">
     check
   </span>

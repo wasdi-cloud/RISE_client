@@ -17,7 +17,7 @@ div.login-container {
   backdrop-filter: blur(20px);
   border-radius: 24px;
   padding: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(var(--rise-foreground-rgb, 255, 255, 255), 0.1);
   position: absolute;
   left: 51%;
   max-width: 450px;

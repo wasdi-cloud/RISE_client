@@ -1,5 +1,5 @@
 div.dialog-container {
-  background-color: rgba(0, 31, 40, 0.4);
+  background-color: var(--rise-panel-surface, rgba(0, 31, 40, 0.4));
   backdrop-filter: blur(20px);
   display: flex;
   flex-direction: column;
