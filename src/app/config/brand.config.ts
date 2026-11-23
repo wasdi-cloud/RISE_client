@@ -24,7 +24,7 @@ export const EMERGENCY_BRAND: BrandConfig = {
 
 export function resolveBrand(sHostname: string): BrandConfig {
   const sNormalizedHostname = sHostname.toLowerCase().replace(/\.$/, '');
-  return sNormalizedHostname === 'riseforemergency.wasdi.net'
+  return sNormalizedHostname === 'emergencylu.wasdi.net'
     ? EMERGENCY_BRAND
     : RISE_BRAND;
 }

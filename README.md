@@ -6,7 +6,7 @@ The shared application selects its visual identity before rendering:
 
 | Hostname | Branding |
 | --- | --- |
-| `riseforemergency.wasdi.net` | RISE for Emergency: light surfaces and red accents |
+| `emergencylu.wasdi.net` | RISE for Emergency: light surfaces and red accents |
 | Any other hostname, including `localhost` | Existing RISE branding |
 
 Matching is exact, case-insensitive, and accepts a DNS trailing dot.
@@ -30,14 +30,14 @@ official ministry identity. Marketing copy, partner logos, screenshots, map styl
 hazard data palettes, subscriptions, routes, permissions, and backend behavior are unchanged.
 This is visual branding, not a tenant or authorization boundary.
 
-For local testing, map `riseforemergency.wasdi.net` to the development machine using
+For local testing, map `emergencylu.wasdi.net` to the development machine using
 a local DNS/hosts override and serve the app on that hostname, for example:
 
 ```sh
-npm start -- --host riseforemergency.wasdi.net --port 4200
+npm start -- --host emergencylu.wasdi.net --port 4200
 ```
 
-Open `http://riseforemergency.wasdi.net:4200`. Remove the override when finished;
+Open `http://emergencylu.wasdi.net:4200`. Remove the override when finished;
 opening `http://localhost:4200` uses the normal RISE identity.
 
 Focused branding tests use a narrow TypeScript configuration because the general
