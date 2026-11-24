@@ -224,6 +224,24 @@ for (const sBrand of ['rise', 'emergency']) {
       }
     });
 
+    it('keeps delete button labels readable on the danger background', () => {
+      const oFixture = TestBed.createComponent(RiseButtonComponent);
+      const oHost = document.createElement('rise-button');
+      document.body.appendChild(oHost);
+      oHost.appendChild(oFixture.nativeElement);
+      try {
+        oFixture.componentRef.setInput('m_sRole', 'danger');
+        oFixture.componentRef.setInput('m_sLabel', 'Delete');
+        oFixture.detectChanges();
+        const oButton = oHost.querySelector('button')!;
+        expect(getComputedStyle(oButton).color).toBe(sBrand === 'emergency'
+          ? 'rgb(255, 255, 255)' : 'rgba(255, 255, 255, 0.9)');
+      } finally {
+        oFixture.destroy();
+        oHost.remove();
+      }
+    });
+
     it('uses compact mockup count badges only in the expanded Emergency sidebar', () => {
       const oFixture = TestBed.createComponent(RiseBadgeComponent);
       const oSidebar = document.createElement('div');

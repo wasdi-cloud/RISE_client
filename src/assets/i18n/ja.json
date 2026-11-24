@@ -100,6 +100,8 @@
     "ID": "Id"
   },
   "COLLABORATORS": {
+    "INVITATION_PENDING": "招待保留中",
+    "INVITATION_EXPIRED": "招待期限切れ",
     "ALL_USERS_ADDED": "All available collaborators from your organization have already been added.",
     "USER_ID": "RISE User Id or Email",
     "ORG_EMPTY_TITLE": "Your Organization is empty",

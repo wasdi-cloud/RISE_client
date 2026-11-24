@@ -31,6 +31,8 @@ export class UserViewModel extends RiseViewModel {
 
   organizationId?:string;
 
+  invitationStatus?: 'PENDING' | 'EXPIRED' | null;
+
   internationalPrefix?:string
   defaultBaseMap?: string;
 

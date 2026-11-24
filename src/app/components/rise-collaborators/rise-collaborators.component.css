@@ -23,3 +23,18 @@ td {
 .font-bold {
   font-weight: 700;
 }
+
+.invitation-status {
+  display: inline-block;
+  margin-inline-start: 8px;
+  padding: 2px 8px;
+  border: 1px solid var(--rise-gold);
+  border-radius: 999px;
+  color: var(--rise-text-bright);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.invitation-status.expired {
+  border-color: var(--rise-danger-text);
+}

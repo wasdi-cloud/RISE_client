@@ -12,7 +12,7 @@ import { AreaService } from '../../services/api/area.service';
 import { NotificationsDialogsService } from '../../services/notifications-dialogs.service';
 
 export class EditableUser extends UserViewModel {
-  isEditing: boolean;
+  isEditing?: boolean;
 }
 
 @Component({
@@ -31,7 +31,7 @@ export class EditableUser extends UserViewModel {
   styleUrl: './rise-collaborators.component.css',
 })
 export class RiseCollaboratorsComponent implements OnInit {
-  @Input() m_aoUsers: Array<any> = [];
+  @Input() m_aoUsers: EditableUser[] = [];
 
   @Input() m_sResourceType: string = '';
 

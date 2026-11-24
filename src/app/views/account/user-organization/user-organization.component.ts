@@ -56,7 +56,7 @@ export class UserOrganizationComponent implements OnInit,OnDestroy {
 
   m_aoOrgTypes = OrganizationTypes;
 
-  m_aoOrgUsers: Array<any> = [];
+  m_aoOrgUsers: EditableUser[] = [];
 
   m_bInviteUser: boolean = false;
 
@@ -387,6 +387,5 @@ export class UserOrganizationComponent implements OnInit,OnDestroy {
 
   protected readonly UserRole = UserRole;
 }
-
 
 

@@ -100,6 +100,8 @@
     "ID": "معرف"
   },
   "COLLABORATORS": {
+    "INVITATION_PENDING": "الدعوة معلقة",
+    "INVITATION_EXPIRED": "انتهت صلاحية الدعوة",
     "ALL_USERS_ADDED": "تمت إضافة جميع المتعاونين المتاحين من منظمتك بالفعل.",
     "USER_ID": "البريد الإلكتروني أو معرّف مستخدم RISE",
     "ORG_EMPTY_TITLE": "مؤسستك فارغة",

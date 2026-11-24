@@ -27,8 +27,14 @@
     </thead>
     <tbody>
       <tr *ngFor="let oUser of m_aoUsers">
-        <td>{{ oUser.userId }}</td>
-        <td>{{ oUser.email }}</td>
+        <td>{{ oUser.userId || '—' }}</td>
+        <td>
+          {{ oUser.email }}
+          <span *ngIf="m_sResourceType === 'organization' && oUser.invitationStatus"
+                class="invitation-status" [class.expired]="oUser.invitationStatus === 'EXPIRED'">
+            {{ (oUser.invitationStatus === 'EXPIRED' ? 'COLLABORATORS.INVITATION_EXPIRED' : 'COLLABORATORS.INVITATION_PENDING') | translate }}
+          </span>
+        </td>
         <td *ngIf="!oUser.isEditing">{{ oUser.role }}</td>
         <td *ngIf="oUser.isEditing">
           <rise-dropdown
@@ -41,7 +47,7 @@
           class="d-flex flex-row justify-content-end align-items-center gap-2"
         >
           <span
-            *ngIf="!oUser.isEditing"
+            *ngIf="!oUser.isEditing && !oUser.invitationStatus"
             class="option material-symbols-outlined edit"
             [matTooltip]="'COLLABORATORS.CHANGE_ROLE'|translate"
             (click)="toggleUserEditing(oUser)"
@@ -65,6 +71,7 @@
             close
           </span>
           <span
+            *ngIf="!oUser.invitationStatus"
             class="option delete material-symbols-outlined remove"
             [matTooltip]="'COLLABORATORS.REMOVE_USER' | translate"
             (click)="emitRemoveClick(oUser)"

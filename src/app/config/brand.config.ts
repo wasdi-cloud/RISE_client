@@ -6,6 +6,7 @@ export interface BrandConfig {
   readonly name: string;
   readonly favicon: string;
   readonly faviconType: string;
+  readonly defaultBaseMap: 'Dark' | 'Standard';
 }
 
 export const RISE_BRAND: BrandConfig = {
@@ -13,6 +14,7 @@ export const RISE_BRAND: BrandConfig = {
   name: 'RISE',
   favicon: 'assets/rise-assets/logo-gold.png',
   faviconType: 'image/png',
+  defaultBaseMap: 'Dark',
 };
 
 export const EMERGENCY_BRAND: BrandConfig = {
@@ -20,6 +22,7 @@ export const EMERGENCY_BRAND: BrandConfig = {
   name: 'RISE for Emergency',
   favicon: 'assets/branding/emergency-icon.svg',
   faviconType: 'image/svg+xml',
+  defaultBaseMap: 'Standard',
 };
 
 export function resolveBrand(sHostname: string): BrandConfig {
@@ -33,5 +36,4 @@ export const BRAND_CONFIG = new InjectionToken<BrandConfig>('Brand configuration
   providedIn: 'root',
   factory: () => resolveBrand(inject(DOCUMENT).location?.hostname ?? ''),
 });
-
 

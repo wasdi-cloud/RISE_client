@@ -37,7 +37,7 @@ export class OrganizationsService {
     );
   }
   getOrganizationUsers() {
-    return this.m_oHttp.get<any>(
+    return this.m_oHttp.get<UserViewModel[]>(
       this.APIURL + '/org/list_users',
     );
 

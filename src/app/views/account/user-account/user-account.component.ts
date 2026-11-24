@@ -30,6 +30,7 @@ import FadeoutUtils from '../../../shared/utilities/FadeoutUtils';
 import {MapService} from "../../../services/map.service";
 import {RiseNumberInputComponent} from "../../../components/rise-number-input/rise-number-input.component";
 import {Subject, takeUntil} from "rxjs";
+import {BrandingService} from '../../../services/branding.service';
 
 @Component({
   selector: 'user-account',
@@ -149,7 +150,8 @@ export class UserAccountComponent implements OnInit,OnDestroy {
     private m_oOrganizationService: OrganizationsService,
     private m_oTranslate: TranslateService,
     private m_oUserService: UserService,
-    private m_oMapService:MapService
+    private m_oMapService:MapService,
+    private m_oBranding: BrandingService,
   ) {
     m_oTranslate.addLangs(['en', 'es', 'fr', 'ar']);
     m_oTranslate.setDefaultLang('en');
@@ -189,7 +191,7 @@ export class UserAccountComponent implements OnInit,OnDestroy {
 
         this.m_oUser = oResponse;
         if (!this.m_oUser.defaultBaseMap) {
-          this.m_oUser.defaultBaseMap = 'Dark';
+          this.m_oUser.defaultBaseMap = this.m_oBranding.brand.defaultBaseMap;
         }
         if (!this.m_oUser.defaultLanguage) {
           this.m_oUser.defaultLanguage = 'en';

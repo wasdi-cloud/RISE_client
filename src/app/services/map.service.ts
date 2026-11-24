@@ -354,7 +354,7 @@ export class MapService {
 
       // 2. Get the user's preference
       let oUser = this.m_oConstantsService.getUser();
-      let sDefaultLayerId = (oUser && oUser.defaultBaseMap) ? oUser.defaultBaseMap : 'Dark';
+      let sDefaultLayerId = oUser?.defaultBaseMap || this.m_oBranding.brand.defaultBaseMap;
 
       // 3. Match the preference
       let oDefaultLayer = this.m_oDarkGrayArcGIS; // Fallback

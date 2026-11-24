@@ -106,6 +106,8 @@
 		"ID": "Id"
 	},
   "COLLABORATORS": {
+    "INVITATION_PENDING": "Invito in attesa",
+    "INVITATION_EXPIRED": "Invito scaduto",
     "ALL_USERS_ADDED": "Tutti i collaboratori disponibili della tua organizzazione sono già stati aggiunti.",
     "USER_ID": "Email o ID utente RISE",
     "ORG_EMPTY_TITLE": "La tua organizzazione è vuota",

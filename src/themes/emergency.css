@@ -44,6 +44,10 @@
   width: auto;
 }
 
+:root[data-brand="emergency"] rise-button .btn.danger {
+  color: #ffffff;
+}
+
 :root[data-brand="emergency"] rise-aoo-widget input:checked + .ui-slider {
   background-color: var(--rise-primary);
 }
